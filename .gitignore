@@ -1,0 +1,7 @@
+*.dart.app.js
+debug
+codegen
+*.local
+javadoc
+.svn
+Thumbs.db
