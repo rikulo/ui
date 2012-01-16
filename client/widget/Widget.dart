@@ -445,7 +445,7 @@ class Widget {
 
   /** Ouptuts all attributes used for the DOM element of this widget.
    */
-  String domAttrs_([noId=false, noStyle=false, noClass=false]) {
+  String domAttrs_([bool noId=false, bool noStyle=false, bool noClass=false]) {
     final StringBuffer sb = new StringBuffer();
     String s;
     if (!noId && !(s = uuid).isEmpty())
@@ -458,12 +458,12 @@ class Widget {
   }
   /** Outputs the style used for the DOM element of this widget.
    */
-  String domStyle_([noDisplay=false]) {
+  String domStyle_([bool noDisplay=false]) {
     return noDisplay || _visible ? _style: "display:none;$_style";
   }
   /** Outputs the class used for the DOM element of this widget.
    */
-  String domClass_([noWclass=false, noClass=false]) {
+  String domClass_([bool noWclass=false, bool noClass=false]) {
     final StringBuffer sb = new StringBuffer();
     if (!noWclass)
       sb.add(_wclass);
