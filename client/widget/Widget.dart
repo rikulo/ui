@@ -13,6 +13,9 @@ Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 #import("IdSpace.dart");
 #import("Skipper.dart");
 
+#source("impl/IdSpaceImpl.dart");
+#source("impl/EventImpl.dart");
+
 /** Called after all [Widget.enterDocument_] methods are called, where
  * [topWidget] is the topmost widget that the binding starts with.
  */ 
@@ -21,11 +24,13 @@ typedef void AfterEnterDocument(Widget topWidget);
 /**
  * A widget.
  */
-class Widget {
+class Widget implements EventTarget {
   String _id = "";
   String _uuid;
   String _style = "", _wclass = "";
   Set<String> _classes;
+
+  Events _on;
 
   Widget _parent;
   Widget _firstChild, _lastChild;
@@ -35,6 +40,7 @@ class Widget {
   Map<String, Widget> _fellows;
   //Virtual ID space. Used only if this is root but not IdSpace
   IdSpace _virtIS;
+
   bool _visible = true, _inDoc;
 
   Widget() {
@@ -42,8 +48,10 @@ class Widget {
     if (this is IdSpace)
       _fellows = {};
   }
-  Widget.from(Map<String, Object> props): this() {
-    //TODO    
+  /** Applies the properties to the filds of this widget.
+   */
+  Widget apply(Map<String, Object> props) {
+    //TODO (reflection required)
   }
 
   /** Returns the UUID of this component, never null.
@@ -377,8 +385,19 @@ class Widget {
       child.exitDocument_(skipper);
   }
   /** Generates the HTML fragment for this widget and its descendants.
+   * <p>The default implementation: invoke [redraw_].
+   * <p>Override this method if the widget supports [Skipper].
+   * Otherwise, override [redraw_] instead.
    */
   void redraw(StringBuffer out, Skipper skipper) {
+  	redraw_(out);
+  }
+  /** Generates the HTML fragment for this widget and its descendants without
+   * the support of [Skipper].
+   * <p>Override this method rather than [redraw] if the widget doesn't support
+   * the concept of [Skipper].
+   */
+  void redraw_(StringBuffer out) {
     for (Widget child = firstChild; child != null; child = child.nextSibling)
       child.redraw(out, null); //don't pass skipper to child
   }
@@ -474,17 +493,34 @@ class Widget {
       }
     return sb.toString();
   }
-}
 
-/** A virtual ID space. Used only internally.
- */
-class _VirtualIdSpace implements IdSpace {
-  Widget _owner;
-  Map<String, Widget> _fellows;
+  /** Returns [Events] for adding or removing event listeners.
+   */
+  Events get on() {
+    if (_on === null)
+      _on = new _EventsImpl(this);
+    return _on;
 
-  _VirtualIdSpace(this._owner): _fellows = {};
-  
-  Widget query(String selector) => _owner.query(selector);
-  List<Widget> queryAll(String selector) => _owner.queryAll(selector);
-  Widget getFellow(String id) => _fellows[id];
+  }
+  /** Adds an event listener.
+   * <code>addEventListener("click", listener)</code> is the same as
+   * <code>on.click.add(listener)</code>.
+   */
+  Widget addEventListener(String type, EventListener listener, [bool useCapture = false]) {
+  	//TODO
+    return this;
+  }
+  /** Removes an event listener.
+   * <code>addEventListener("click", listener)</code> is the same as
+   * <code>on.click.remove(listener)</code>.
+   */
+  Widget removeEventListener(String type, EventListener listener, [bool useCapture = false]) {
+  	//TODO
+    return this;
+  }
+  /** Dispatches an event.
+   */
+  bool dispatchEvent(String type, Event event) {
+    
+  }
 }

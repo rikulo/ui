@@ -19,6 +19,55 @@ String addCharCodes(String src, int diff) {
   return new String.fromCharCodes(dst);
 }
 
+/**
+ * Returns whether the character is according to its opts.
+ * @param char cc the character
+ * @param Map opts the options.
+<table border="1" cellspacing="0" width="100%">
+<caption> Allowed Options
+</caption>
+<tr>
+<th> Name
+</th><th> Allowed Values
+</th><th> Description
+</th></tr>
+<tr>
+<td> digit
+</td><td> true, false
+</td><td> Specifies the character is digit only.
+</td></tr>
+<tr>
+<td> upper
+</td><td> true, false
+</td><td> Specifies the character is upper case only.
+</td></tr>
+<tr>
+<td> lower
+</td><td> true, false
+</td><td> Specifies the character is lower case only.
+</td></tr>
+<tr>
+<td> whitespace
+</td><td> true, false
+</td><td> Specifies the character is whitespace only.
+</td></tr>
+<tr>
+<td> opts[cc]
+</td><td> true, false
+</td><td> Specifies the character is allowed only.
+</td></tr>
+</table>
+ * @return boolean
+ */
+bool isChar(String cc, [bool digit=false, bool upper=false, bool lower=false,
+bool whitespace=false, String match=null]) {
+  return (digit && cc >= '0' && cc <= '9')
+	|| (upper && cc >= 'A' && cc <= 'Z')
+	|| (lower && cc >= 'a' && cc <= 'z')
+	|| (whitespace && (cc == ' ' || cc == '\t' || cc == '\n' || cc == '\r'))
+	|| (match != null && match.indexOf(cc) >= 0);
+}
+
 final Map<String, String>
   _decs = const {'lt': '<', 'gt': '>', 'amp': '&', 'quot': '"'},
   _encs = const {'<': 'lt', '>': 'gt', '&': 'amp', '"': 'quot'};
@@ -42,7 +91,7 @@ String encodeXML(String txt,
 
   if (!multiline && maxlength > 0 && tl > maxlength) {
     int j = maxlength;
-    while (j > 0 && txt[j - 1] == ' ')
+    while (j > 0 && isChar(txt[j - 1], whitespace: true))
       --j;
     return encodeXML(txt.substring(0, j) + '...', pre:pre, multiline:multiline);
   }
@@ -92,8 +141,7 @@ String decodeXML(String txt) {
   final StringBuffer out = new StringBuffer();
   int k = 0, tl = txt.length;
   for (int j = 0; j < tl; ++j) {
-    String cc = txt[j];
-    if (cc == '&') {
+    if (txt[j] == '&') {
       int l = txt.indexOf(';', j + 1);
       if (l >= 0) {
         String dec = txt[j + 1] == '#' ?
