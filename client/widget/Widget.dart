@@ -5,7 +5,7 @@
 
 Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 */
-#library("dargate:widget:Widget");
+#library("artra:widget:Widget");
 
 #import("dart:html");
 #import("../util/Strings.dart");
@@ -31,6 +31,7 @@ class Widget implements EventTarget {
   Set<String> _classes;
 
   Events _on;
+  Map<String, List<EventListener>> _listeners;
 
   Widget _parent;
   Widget _firstChild, _lastChild;
@@ -372,6 +373,19 @@ class Widget implements EventTarget {
    */
   void enterDocument_(Skipper skipper, List<AfterEnterDocument> afters) {
     _inDoc = true;
+
+    //Listen the DOM element if necessary
+    Element n;
+    for (final String type in domEventTypes_)
+      if (isEventListened(type)) {
+        if (n == null) {
+          n = node;
+          if (n == null)
+            break; //nothing to do
+      }
+        domListen_(n, type);
+      }
+
     for (Widget child = firstChild; child != null; child = child.nextSibling)
       child.enterDocument_(skipper, afters);
   }
@@ -381,6 +395,18 @@ class Widget implements EventTarget {
    */
   void exitDocument_(Skipper skipper) {
     _inDoc = false;
+
+    //Unlisten the DOM element if necessary
+    for (final String type in domEventTypes_)
+      if (isEventListened(type)) {
+        if (n == null) {
+          n = node;
+          if (n == null)
+            break; //nothing to do
+      }
+        domUnlisten_(n, type);
+    }
+
     for (Widget child = firstChild; child != null; child = child.nextSibling)
       child.exitDocument_(skipper);
   }
@@ -390,7 +416,7 @@ class Widget implements EventTarget {
    * Otherwise, override [redraw_] instead.
    */
   void redraw(StringBuffer out, Skipper skipper) {
-  	redraw_(out);
+    redraw_(out);
   }
   /** Generates the HTML fragment for this widget and its descendants without
    * the support of [Skipper].
@@ -507,20 +533,71 @@ class Widget implements EventTarget {
    * <code>on.click.add(listener)</code>.
    */
   Widget addEventListener(String type, EventListener listener, [bool useCapture = false]) {
-  	//TODO
+    if (listener == null)
+      throw new UiException("listener required");
+
+    if (_listeners == null)
+      _listeners = {};
+
+    bool first;
+    _listeners.putIfAbsent(type, () {
+      first = true;
+      return [listener];
+    });
+
+    Element n;
+    if (first && (n = node) != null && domEventTypes_.contains(type))
+      domListen_(n, type);
     return this;
   }
+
   /** Removes an event listener.
    * <code>addEventListener("click", listener)</code> is the same as
    * <code>on.click.remove(listener)</code>.
    */
   Widget removeEventListener(String type, EventListener listener, [bool useCapture = false]) {
-  	//TODO
+    List<EventListener> l;
+    if (_listeners != null && (l = _listeners[type]) != null) {
+      int j = l.indexOf(listener);
+      if (j >= 0)
+        l.removeRange(j, 1);
+      if (l.isEmpty() && (n = node) != null && domEventTypes_.contains(type))
+        domUnlisten_(n, type);
+    }
     return this;
   }
   /** Dispatches an event.
    */
   bool dispatchEvent(String type, Event event) {
     
+  }
+  /** Returns if there is any event listener registered to the given type.
+   */
+  bool isEventListened(String type) {
+    List<EventListener> l;
+    return _listeners != null && (l = _listeners[type]) != null && !l.isEmpty();
+  }
+  /** Returns a set of event types that the corresponding listeners
+   * shall be registered to [node].
+   * In other words, if an event type, say, "click", is returned. Then,
+   * [node] will be listened to send it back the application, if [addEventListener]
+   * was called.
+   * <p>Default: ["click"].
+   */
+  Set<String> get domEventTypes_() => _domEvtTypes;
+  static final Set<String> _domEvtTypes = const ["click"];
+
+  /** Listen the given event type.
+   */
+  void domListen_(Element n, String type) {
+    n.on[type].add(_domEvtListener);
+  }
+  static void _domEvtListener(Event event) {
+    
+  }
+  /** Unlisten the given event type.
+   */
+  void domUnlisten_(Element n, String  type) {
+    n.on[type].remove(_domEvtListener);
   }
 }

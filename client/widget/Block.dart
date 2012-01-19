@@ -1,6 +1,6 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 09, 2012
-#library("dargate:widget:Block");
+#library("artra:widget:Block");
 
 #import("Div.dart");
 #import("IdSpace.dart");

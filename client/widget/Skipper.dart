@@ -1,6 +1,6 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 11, 2012
-#library("dargate:widget:Skipper");
+#library("artra:widget:Skipper");
 
 #import("dart:html");
 #import("Widget.dart");

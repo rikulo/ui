@@ -1,6 +1,6 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 09, 2012
-#library("dargate:widget:Button");
+#library("artra:widget:Button");
 
 #import("dart:html");
 #import("Widget.dart");
