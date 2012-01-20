@@ -12,6 +12,7 @@ Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 #import("UiException.dart");
 #import("IdSpace.dart");
 #import("Skipper.dart");
+#import("WidgetEvent.dart");
 
 #source("impl/IdSpaceImpl.dart");
 #source("impl/EventImpl.dart");
@@ -32,6 +33,8 @@ class Widget implements EventTarget {
 
   Events _on;
   Map<String, List<EventListener>> _listeners;
+  //generic DOM event listener
+  EventListener _domEvtListener;
 
   Widget _parent;
   Widget _firstChild, _lastChild;
@@ -556,12 +559,12 @@ class Widget implements EventTarget {
    * <code>on.click.remove(listener)</code>.
    */
   Widget removeEventListener(String type, EventListener listener, [bool useCapture = false]) {
-    List<EventListener> l;
-    if (_listeners != null && (l = _listeners[type]) != null) {
-      int j = l.indexOf(listener);
+    List<EventListener> ls;
+    if (_listeners != null && (ls = _listeners[type]) != null) {
+      int j = ls.indexOf(listener);
       if (j >= 0)
-        l.removeRange(j, 1);
-      if (l.isEmpty() && (n = node) != null && domEventTypes_.contains(type))
+        ls.removeRange(j, 1);
+      if (ls.isEmpty() && (n = node) != null && domEventTypes_.contains(type))
         domUnlisten_(n, type);
     }
     return this;
@@ -569,13 +572,21 @@ class Widget implements EventTarget {
   /** Dispatches an event.
    */
   bool dispatchEvent(String type, Event event) {
-    
+    List<EventListener> ls;
+    if (_listeners != null && (ls = _listeners[type]) != null) {
+	    event.currentTarget = this;
+	    for (final EventListener listener in ls) {
+	    	listener(event);
+	    	if (event.propagationStopped)
+	    		return; //done
+	    }
+	}
   }
   /** Returns if there is any event listener registered to the given type.
    */
   bool isEventListened(String type) {
-    List<EventListener> l;
-    return _listeners != null && (l = _listeners[type]) != null && !l.isEmpty();
+    List<EventListener> ls;
+    return _listeners != null && (ls = _listeners[type]) != null && !ls.isEmpty();
   }
   /** Returns a set of event types that the corresponding listeners
    * shall be registered to [node].
@@ -590,14 +601,19 @@ class Widget implements EventTarget {
   /** Listen the given event type.
    */
   void domListen_(Element n, String type) {
+    if (_domEvtListener == null) {
+      Widget self = this;
+      _domEvtListener = (event) {
+        self.dispatchEvent(type,
+          new WidgetEvent<Object>(self, domEvent: event, type: type));
+      };
+    }
     n.on[type].add(_domEvtListener);
-  }
-  static void _domEvtListener(Event event) {
-    
   }
   /** Unlisten the given event type.
    */
   void domUnlisten_(Element n, String  type) {
-    n.on[type].remove(_domEvtListener);
+    if (_domEvtListener != null)
+      n.on[type].remove(_domEvtListener);
   }
 }
