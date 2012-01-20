@@ -33,10 +33,13 @@ class Widget implements EventTarget {
   String _uuid;
 
   String _wclass = "";
+  //the classes; created on demand
   Set<String> _classes;
+  //the CSS style; created on demand
   CSSStyleDeclaration _style;
 
   Events _on;
+  //the registered event listeners; created on demand
   Map<String, List<EventListener>> _listeners;
   //generic DOM event listener
   EventListener _domEvtListener;
@@ -53,8 +56,6 @@ class Widget implements EventTarget {
   bool _visible = true, _inDoc;
 
   Widget() {
-    _classes = new Set();
-    _style = LevelDom.wrapCSSStyleDeclaration(newCSSStyleWrapper_());
     if (this is IdSpace)
       _fellows = {};
   }
@@ -452,11 +453,16 @@ class Widget implements EventTarget {
    */
   void set visible(bool visible) {
     _visible = visible;
-    _style.display = visible ? "": "none";
+    if (_style != null || !visible)
+    	style.display = visible ? "": "none";
   }
   /** Retuns the CSS style.
    */
-  CSSStyleDeclaration get style() => _style;
+  CSSStyleDeclaration get style() {
+    if (_style == null)
+      _style = LevelDom.wrapCSSStyleDeclaration(newCSSStyleWrapper_());
+    return _style;
+  }
 
   /** Retuns the widget class.
    */
@@ -474,13 +480,18 @@ class Widget implements EventTarget {
       Set<String> clses = new Set();
       if (!_wclass.isEmpty())
         clses.add(_wclass);
-      clses.addAll(_classes);
+      if (_classes != null)
+        clses.addAll(_classes);
       n.classes = clses; 
     }
   }
   /** Returns a readonly list of the additional style classes.
    */
-  Set<String> get classes() => _classes;
+  Set<String> get classes() {
+    if (_classes == null)
+      _classes = new Set();
+    return _classes;
+  }
   /** Adds the give style class.
    */
   void addClass(String className) {
@@ -503,7 +514,7 @@ class Widget implements EventTarget {
     String s;
     if (!noId && !(s = uuid).isEmpty())
       sb.add(' id="').add(s).add('"');
-    if (!noStyle && !(s = _style.cssText).isEmpty())
+    if (!noStyle && _style != null && !(s = _style.cssText).isEmpty())
       sb.add(' style="').add(s).add('"');
     if (!noClass && !(s = domClass_()).isEmpty())
       sb.add(' class="').add(s).add('"');
@@ -516,7 +527,7 @@ class Widget implements EventTarget {
     final StringBuffer sb = new StringBuffer();
     if (!noWclass)
       sb.add(_wclass);
-    if (!noClass)
+    if (!noClass && _classes != null)
       for (final String cls in _classes) {
         if (!sb.isEmpty()) sb.add(' ');
         sb.add(cls);
@@ -575,13 +586,13 @@ class Widget implements EventTarget {
   bool dispatchEvent(String type, Event event) {
     List<EventListener> ls;
     if (_listeners != null && (ls = _listeners[type]) != null) {
-	    event.currentTarget = this;
-	    for (final EventListener listener in ls) {
-	    	listener(event);
-	    	if (event.propagationStopped)
-	    		return; //done
-	    }
-	}
+      event.currentTarget = this;
+      for (final EventListener listener in ls) {
+        listener(event);
+        if (event.propagationStopped)
+          return; //done
+      }
+  }
   }
   /** Returns if there is any event listener registered to the given type.
    */
