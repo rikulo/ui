@@ -9,9 +9,14 @@ class HelloWorld {
   }
 
   void run() {
+  	var lb;
     new Div()
-      .appendChild(new Label("Hello World!"))
+      .appendChild(lb = new Label("Hello World!"))
       .addToDocument(document.query('#test1'), outer:true);
+
+    lb.on.click.add((event) {
+      event.target.style.border = "1px solid blue";
+    });
 
     final btn = new Button("Hi");
     btn.on.click.add((event) {

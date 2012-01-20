@@ -8,11 +8,14 @@ Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 #library("artra:widget:Widget");
 
 #import("dart:html");
+#import("dart:htmlimpl");
+
 #import("../util/Strings.dart");
 #import("UiException.dart");
 #import("IdSpace.dart");
 #import("Skipper.dart");
 #import("WidgetEvent.dart");
+#import("CSSStyleWrapper.dart");
 
 #source("impl/IdSpaceImpl.dart");
 #source("impl/EventImpl.dart");
@@ -28,8 +31,10 @@ typedef void AfterEnterDocument(Widget topWidget);
 class Widget implements EventTarget {
   String _id = "";
   String _uuid;
-  String _style = "", _wclass = "";
+
+  String _wclass = "";
   Set<String> _classes;
+  CSSStyleDeclaration _style;
 
   Events _on;
   Map<String, List<EventListener>> _listeners;
@@ -49,6 +54,7 @@ class Widget implements EventTarget {
 
   Widget() {
     _classes = new Set();
+    _style = LevelDom.wrapCSSStyleDeclaration(newCSSStyleWrapper_());
     if (this is IdSpace)
       _fellows = {};
   }
@@ -57,6 +63,14 @@ class Widget implements EventTarget {
   Widget apply(Map<String, Object> props) {
     //TODO (reflection required)
   }
+
+  /** Instantiates the wrapper to handle [CSSStyleDeclaration].
+   * <p>Default: create an instance of [CSSStyleWrapper].
+   * If a deriving class has to override the default behavior, it could
+   * extend [CSSStyleWrapper] to override the corresponding method, and
+   * then return an instance of the subclass.
+   */
+  CSSStyleWrapper newCSSStyleWrapper_() => new CSSStyleWrapper(this);
 
   /** Returns the UUID of this component, never null.
    */
@@ -438,21 +452,12 @@ class Widget implements EventTarget {
    */
   void set visible(bool visible) {
     _visible = visible;
-    Element n = node;
-    if (n != null) n.style.transform = domStyle_();
+    _style.display = visible ? "": "none";
   }
   /** Retuns the CSS style.
    */
-  String get style() => _style;
-  /** Sets the CSS style.
-   * Notice that it shall not include <code>display</code>, which
-   * is controlled by [visible].
-   */
-  void set style(String style) {
-    _style = style != null ? style: "";
-    Element n = node;
-    if (n != null) n.style.transform = domStyle_();
-  }
+  CSSStyleDeclaration get style() => _style;
+
   /** Retuns the widget class.
    */
   String get wclass() => _wclass;
@@ -498,17 +503,13 @@ class Widget implements EventTarget {
     String s;
     if (!noId && !(s = uuid).isEmpty())
       sb.add(' id="').add(s).add('"');
-    if (!noStyle && !(s = domStyle_()).isEmpty())
+    if (!noStyle && !(s = _style.cssText).isEmpty())
       sb.add(' style="').add(s).add('"');
     if (!noClass && !(s = domClass_()).isEmpty())
       sb.add(' class="').add(s).add('"');
     return sb.toString();
   }
-  /** Outputs the style used for the DOM element of this widget.
-   */
-  String domStyle_([bool noDisplay=false]) {
-    return noDisplay || _visible ? _style: "display:none;$_style";
-  }
+
   /** Outputs the class used for the DOM element of this widget.
    */
   String domClass_([bool noWclass=false, bool noClass=false]) {
@@ -549,7 +550,7 @@ class Widget implements EventTarget {
     });
 
     Element n;
-    if (first && (n = node) != null && domEventTypes_.contains(type))
+    if (first && (n = node) != null && domEventTypes_.indexOf(type) >= 0)
       domListen_(n, type);
     return this;
   }
@@ -564,7 +565,7 @@ class Widget implements EventTarget {
       int j = ls.indexOf(listener);
       if (j >= 0)
         ls.removeRange(j, 1);
-      if (ls.isEmpty() && (n = node) != null && domEventTypes_.contains(type))
+      if (ls.isEmpty() && (n = node) != null && domEventTypes_.indexOf(type) >= 0)
         domUnlisten_(n, type);
     }
     return this;
@@ -595,8 +596,8 @@ class Widget implements EventTarget {
    * was called.
    * <p>Default: ["click"].
    */
-  Set<String> get domEventTypes_() => _domEvtTypes;
-  static final Set<String> _domEvtTypes = const ["click"];
+  List<String> get domEventTypes_() => _domEvtTypes;
+  static final List<String> _domEvtTypes = const ["click"];
 
   /** Listen the given event type.
    */
