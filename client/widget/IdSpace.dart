@@ -8,14 +8,14 @@
  * An ID space.
  */
 interface IdSpace {
-  /** Searches and returns the first widget that matches the given selector,
-   * or null if not found.
-   */
-  Widget query(String selector);
-  /** Searches and returns all widgets that matches the selector (never null).
-   */
-  List<Widget> queryAll(String selector);
-  /** Returns the widget of the given ID, or null if not found.
-   */
-  Widget getFellow(String id);
+	/** Searches and returns the first widget that matches the given selector,
+	 * or null if not found.
+	 */
+	Widget query(String selector);
+	/** Searches and returns all widgets that matches the selector (never null).
+	 */
+	List<Widget> queryAll(String selector);
+	/** Returns the widget of the given ID, or null if not found.
+	 */
+	Widget getFellow(String id);
 }

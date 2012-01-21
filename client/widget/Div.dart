@@ -7,13 +7,13 @@
 /** A div.
  */
 class Div extends Widget {
-  Div() {
-  	wclass = "w-div";
-  }
+	Div() {
+		wclass = "w-div";
+	}
 
-  void redraw_(StringBuffer out) {
-    out.add('<div').add(domAttrs_()).add('>');
-    super.redraw_(out);
-    out.add('</div>');
-  }
+	void redraw_(StringBuffer out) {
+		out.add('<div').add(domAttrs_()).add('>');
+		super.redraw_(out);
+		out.add('</div>');
+	}
 }

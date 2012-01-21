@@ -5,29 +5,29 @@
 
 class HelloWorld {
 
-  helloworld() {
-  }
+	helloworld() {
+	}
 
-  void run() {
-  	var lb;
-    new Div()
-      .appendChild(lb = new Label("Hello World!"))
-      .addToDocument(document.query('#test1'), outer:true);
+	void run() {
+		var lb;
+		new Div()
+			.appendChild(lb = new Label("Hello World!"))
+			.addToDocument(document.query('#test1'), outer:true);
 
-    lb.on.click.add((event) {
-      event.target.style.border = "1px solid blue";
-    });
+		lb.on.click.add((event) {
+			event.target.style.border = "1px solid blue";
+		});
 
-    final btn = new Button("Hi");
-    btn.on.click.add((event) {
-      event.target.parent.appendChild(new Label("Hi, how are you?"));
-    });
-    new Div()
-      .appendChild(btn)
-      .addToDocument(document.query('#test2'), outer:true);
-  }
+		final btn = new Button("Hi");
+		btn.on.click.add((event) {
+			event.target.parent.appendChild(new Label("Hi, how are you?"));
+		});
+		new Div()
+			.appendChild(btn)
+			.addToDocument(document.query('#test2'), outer:true);
+	}
 }
 
 void main() {
-  new HelloWorld().run();
+	new HelloWorld().run();
 }

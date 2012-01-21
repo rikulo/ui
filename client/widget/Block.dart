@@ -8,7 +8,7 @@
 /** A Div that is also an ID space.
  */
 class Block extends Div implements IdSpace {
-  Block() {
-  	wclass = "w-block";
-  }
+	Block() {
+		wclass = "w-block";
+	}
 }

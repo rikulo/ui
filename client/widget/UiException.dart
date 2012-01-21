@@ -5,7 +5,7 @@
 /** An UI exception.
  */
 class UiException implements Exception {
-  final String message;
+	final String message;
 
-  UiException(this.message);
+	UiException(this.message);
 }
