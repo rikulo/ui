@@ -394,14 +394,16 @@ class Widget implements EventTarget {
 
     //Listen the DOM element if necessary
     Element n;
-    for (final String type in domEventTypes_)
-      if (isEventListened(type)) {
-        if (n == null) {
-          n = node;
-          if (n == null)
-            break; //nothing to do
-      }
-        domListen_(n, type);
+    if (_listeners != null)
+      for (final String type in _listeners.getKeys()) {
+      	if (isDomEvent_(type) && !_listeners[type].isEmpty()) {
+          if (n == null) {
+            n = node;
+            if (n == null)
+              break; //nothing to do
+          }
+          domListen_(n, type);
+        }
       }
 
     for (Widget child = firstChild; child != null; child = child.nextSibling)
@@ -415,15 +417,18 @@ class Widget implements EventTarget {
     _inDoc = false;
 
     //Unlisten the DOM element if necessary
-    for (final String type in domEventTypes_)
-      if (isEventListened(type)) {
-        if (n == null) {
-          n = node;
-          if (n == null)
-            break; //nothing to do
-      }
+    Element n;
+    if (_listeners != null)
+      for (final String type in _listeners.getKeys()) {
+      	if (isDomEvent_(type) && !_listeners[type].isEmpty()) {
+          if (n == null) {
+            n = node;
+            if (n == null)
+              break; //nothing to do
+          }
+        }
         domUnlisten_(n, type);
-    }
+      }
 
     for (Widget child = firstChild; child != null; child = child.nextSibling)
       child.exitDocument_(skipper);
@@ -561,7 +566,7 @@ class Widget implements EventTarget {
     });
 
     Element n;
-    if (first && (n = node) != null && domEventTypes_.indexOf(type) >= 0)
+    if (first && (n = node) != null && isDomEvent_(type))
       domListen_(n, type);
     return this;
   }
@@ -576,7 +581,7 @@ class Widget implements EventTarget {
       int j = ls.indexOf(listener);
       if (j >= 0)
         ls.removeRange(j, 1);
-      if (ls.isEmpty() && (n = node) != null && domEventTypes_.indexOf(type) >= 0)
+      if (ls.isEmpty() && (n = node) != null && isDomEvent_(type))
         domUnlisten_(n, type);
     }
     return this;
@@ -600,15 +605,19 @@ class Widget implements EventTarget {
     List<EventListener> ls;
     return _listeners != null && (ls = _listeners[type]) != null && !ls.isEmpty();
   }
-  /** Returns a set of event types that the corresponding listeners
-   * shall be registered to [node].
-   * In other words, if an event type, say, "click", is returned. Then,
-   * [node] will be listened to send it back the application, if [addEventListener]
-   * was called.
-   * <p>Default: ["click"].
+  /** Returns if the given event type is a DOM event.
+   * If true, [domListen_] will be invoked to register the DOM event.
    */
-  List<String> get domEventTypes_() => _domEvtTypes;
-  static final List<String> _domEvtTypes = const ["click"];
+  bool isDomEvent_(String type) {
+    if (_domEvtTypes == null) {
+      _domEvtTypes = new Set();
+      _domEvtTypes.addAll(const ["click", "blur", "focus", "change",
+        "mouseDown", "mouseUp", "mouseOver", "mouseOut"]);
+        //TODO: use reflection to retrieve from ElementEvents (htmlimpl.dart)
+    }
+    return _domEvtTypes.contains(type);
+  }
+  static Set<String> _domEvtTypes;
 
   /** Listen the given event type.
    */
