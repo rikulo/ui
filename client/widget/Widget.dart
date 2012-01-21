@@ -53,7 +53,7 @@ class Widget implements EventTarget {
 	//Virtual ID space. Used only if this is root but not IdSpace
 	IdSpace _virtIS;
 
-	bool _visible = true, _inDoc;
+	bool _hidden, _inDoc;
 
 	Widget() {
 		if (this is IdSpace)
@@ -276,7 +276,57 @@ class Widget implements EventTarget {
 	 * <p>Deriving classes might override this method to modify the HTML content, such as enclosing with TD.
 	 */
 	void insertChildHTML_(Widget child, Widget beforeChild) {
-		
+		String html = child._redrawHTML(null);
+		Element before, cave;
+		if (beforeChild != null)
+			before = beforeChild._firstNode();
+
+		if (before == null)
+			for (Widget w = this;;) {
+				cave = w.caveNode;
+				if (cave != null) break;
+
+				var w2 = w.nextSibling;
+				if (w2 != null && (before = w2._firstNode()) != null)
+					break;
+
+				if ((w = w.parent) == null) {
+					cave = document.body;
+					break;
+				}
+			}
+
+		if (before != null) {
+			Element sib = before.previousSibling;
+			if (_isProlog(sib)) before = sib;
+			before.insertAdjacentHTML("beforeBegin", html);
+		} else {
+			cave.insertAdjacentHTML("beforeEnd", html);
+		}
+
+		child._enterDocument(null);
+	}
+	static bool _isProlog(Element el) {
+		String txt;
+		return el != null && el.nodeType == 3 //textnode
+			&& (txt=el.nodeValue) != null && txt.trim().isEmpty();
+	}
+	/** Returns the first DOM element of this widget.
+	 * If this widget has no corresponding DOM element, this method will look
+	 * for its siblings.
+	 */
+	Element _firstNode() {
+		for (Widget wgt = this; wgt != null; wgt = wgt.nextSibling) {
+			Element n = wgt.node;
+			if (n != null)
+				return n;
+
+			for (Widget w = wgt.firstChild; w != null; w = w.nextSibling) {
+				n = w._firstNode();
+				if (n != null)
+					return n;
+			}
+		}
 	}
 
 	/** Removes a child.
@@ -332,6 +382,13 @@ class Widget implements EventTarget {
 	 * <p>To retrieve a child element, use the [getNode] method instead.
 	 */
 	Element get node() => _inDoc ? document.query('#' + uuid): null;
+	/** Returns the element that is used to place the child elements.
+	 * <p>Default: <code>getNode("cave") || node</code>.
+	 */
+	Element get caveNode() {
+		Element n = getNode("cave");
+		return n != null ? n: node;
+	}
 			//no need to cache since IE6 not supported
 	/** Returns the child element of the given sub-ID.
 	 * This method assumes the ID of the child element the concatenation of
@@ -349,23 +406,21 @@ class Widget implements EventTarget {
 	 * <p>This method can be called only if this widget has no parent.
 	 */
 	void addToDocument(Element node,
-	[bool outer=false, bool inner=false, Element before]) {
+	[bool outer=false, bool inner=false, Element before, Skipper skipper]) {
 		if (parent != null)
 			throw new UiException("Only root widgets are allowed; not $this");
-	
-		var out = new StringBuffer();
-		redraw(out, null);
-		out = out.toString();
+
+		String html = _redrawHTML(skipper);
 		if (outer) {
 			Element p = node.parent, nxt = node.nextElementSibling;
 			node.remove();
-			p.insertBefore(new Element.html(out), nxt);
+			p.insertBefore(new Element.html(html), nxt);
 		} else if (inner) {
-			node.innerHTML = out;
+			node.innerHTML = html;
 		} else if (before != null) {
-			node.insertBefore(new Element.html(out), before);
+			node.insertBefore(new Element.html(html), before);
 		} else {
-			node.nodes.add(new Element.html(out));
+			node.nodes.add(new Element.html(html));
 		}
 		_enterDocument(null);
 	}
@@ -451,6 +506,12 @@ class Widget implements EventTarget {
 	void redraw(StringBuffer out, Skipper skipper) {
 		redraw_(out);
 	}
+	/**Shortcut of [redraw].*/
+	String _redrawHTML(Skipper skipper) {
+		StringBuffer out = new StringBuffer();
+		redraw(out, skipper);
+		return out.toString();
+	}
 	/** Generates the HTML fragment for this widget and its descendants without
 	 * the support of [Skipper].
 	 * <p>Override this method rather than [redraw] if the widget doesn't support
@@ -461,15 +522,15 @@ class Widget implements EventTarget {
 			child.redraw(out, null); //don't pass skipper to child
 	}
 
-	/** Returns if this widget is visible.
+	/** Returns if this widget is hidden.
 	 */
-	bool get visible() => _visible;
-	/** Sets if this widget is visible.
+	bool get hidden() => _hidden;
+	/** Sets if this widget is hidden.
 	 */
-	void set visible(bool visible) {
-		_visible = visible;
-		if (_style != null || !visible)
-			style.display = visible ? "": "none";
+	void set hidden(bool hidden) {
+		_hidden = hidden;
+		if (_style != null || hidden)
+			style.display = hidden ? "none": "";
 	}
 	/** Retuns the CSS style.
 	 */
