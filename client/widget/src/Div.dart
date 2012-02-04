@@ -1,8 +1,5 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 09, 2012
-#library("artra:widget:Div");
-
-#import("Widget.dart");
 
 /** A div.
  */
@@ -11,9 +8,9 @@ class Div extends Widget {
 		wclass = "w-div";
 	}
 
-	void redraw_(StringBuffer out) {
+	void redraw_(StringBuffer out, Skipper skipper) {
 		out.add('<div').add(domAttrs_()).add('>');
-		super.redraw_(out);
+		super.redraw_(out, skipper);
 		out.add('</div>');
 	}
 }

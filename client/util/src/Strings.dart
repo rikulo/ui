@@ -7,7 +7,6 @@
 
 Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 */
-#library("artra:util:Strings");
 
 /** Add the given offset to each character of the given string.
  */

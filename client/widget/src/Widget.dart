@@ -5,20 +5,6 @@
 
 Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 */
-#library("artra:widget:Widget");
-
-#import("dart:html");
-#import("dart:htmlimpl");
-
-#import("../util/Strings.dart");
-#import("UiException.dart");
-#import("IdSpace.dart");
-#import("Skipper.dart");
-#import("WidgetEvent.dart");
-#import("CSSStyleWrapper.dart");
-
-#source("impl/IdSpaceImpl.dart");
-#source("impl/EventImpl.dart");
 
 /** Called after all [Widget.enterDocument_] methods are called, where
  * [topWidget] is the topmost widget that the binding starts with.
@@ -479,6 +465,7 @@ class Widget implements EventTarget {
 	/** Callback when this widget is attached to the document.
 	 * <p>Default: invoke [enterDocument_] for each child.
 	 * <p>Subclass shall call back this method if it overrides this method. 
+	 * <p>See also [isInDocument] and [rerender].
 	 */
 	void enterDocument_(Skipper skipper, List<AfterEnterDocument> afters) {
 		_inDoc = true;
@@ -499,7 +486,8 @@ class Widget implements EventTarget {
 			}
 
 		for (Widget child = firstChild; child != null; child = child.nextSibling)
-			child.enterDocument_(skipper, afters);
+			if (skipper == null || !skipper.isSkipped(this, child))
+				child.enterDocument_(null, afters);
 	}
 	/** Callback when this widget is detached from the document.
 	 * <p>Default: invoke [exitDocument_] for each child.
@@ -523,15 +511,25 @@ class Widget implements EventTarget {
 			}
 
 		for (Widget child = firstChild; child != null; child = child.nextSibling)
-			child.exitDocument_(skipper);
+			if (skipper == null || !skipper.isSkipped(this, child))
+				child.exitDocument_(null);
+	}
+
+	/** Rerenders the DOM elements for this widget and its descendants,
+	 * and refreshes the document accordingly.
+	 * It has no effect if it is not attached (i.e., [isInDocument] is true).
+	 * <p>It 
+	 */
+	void rerender([int timeout=0]) {
+		//TODO
 	}
 	/** Generates the HTML fragment for this widget and its descendants.
 	 * <p>The default implementation: invoke [redraw_].
 	 * <p>Override this method if the widget supports [Skipper].
 	 * Otherwise, override [redraw_] instead.
 	 */
-	void redraw(StringBuffer out, Skipper skipper) {
-		redraw_(out);
+	void redraw(StringBuffer out, [Skipper skipper=null]) {
+		redraw_(out, skipper);
 	}
 	/**Shortcut of [redraw].*/
 	String _redrawHTML(Skipper skipper) {
@@ -544,9 +542,9 @@ class Widget implements EventTarget {
 	 * <p>Override this method rather than [redraw] if the widget doesn't support
 	 * the concept of [Skipper].
 	 */
-	void redraw_(StringBuffer out) {
+	void redraw_(StringBuffer out, Skipper skipper) {
 		for (Widget child = firstChild; child != null; child = child.nextSibling)
-			child.redraw(out, null); //don't pass skipper to child
+			child.redraw(out); //don't pass skipper to child
 	}
 
 	/** Returns if this widget is hidden.
@@ -727,9 +725,7 @@ class Widget implements EventTarget {
 		return _domEvtDisps[type];
 	}
 	static Map<String, DomEventDispatcher> _domEvtDisps;
-/*	 = const {
-	}; 
-*/
+
 	/** Listen the given event type.
 	 */
 	void domListen_(Element n, String type, DomEventDispatcher disp) {

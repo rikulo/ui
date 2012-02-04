@@ -5,10 +5,6 @@
 
 Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 */
-#library("artra:widget:WidgetEvent");
-
-#import("dart:html");
-#import("Widget.dart");
 
 /**
  * A widget event.

@@ -1,7 +1,7 @@
+//Sample Code: Hello World!
+
 #import('dart:html');
-#import('../../client/widget/Div.dart');
-#import('../../client/widget/Label.dart');
-#import('../../client/widget/Button.dart');
+#import('../../client/widget/widget.dart');
 
 class HelloWorld {
 

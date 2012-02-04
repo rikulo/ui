@@ -1,10 +1,5 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 09, 2012
-#library("artra:widget:Button");
-
-#import("dart:html");
-#import("Widget.dart");
-#import("../util/Strings.dart");
 
 /** A button.
  */
@@ -58,7 +53,7 @@ class Button extends Widget {
 		final Element n = node;
 		if (n != null) n.innerHTML = encodeXML(label);
 	}
-	void redraw_(StringBuffer out) {
+	void redraw_(StringBuffer out, Skipper skipper) {
 		out.add('<button type="').add(type).add('"');
 		if (disabled)
 			out.add(' disabled="disabled"');

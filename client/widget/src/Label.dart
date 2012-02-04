@@ -1,10 +1,5 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 09, 2012
-#library("artra:widget:Label");
-
-#import("dart:html");
-#import("Widget.dart");
-#import("../util/Strings.dart");
 
 /** A label.
  */
@@ -78,7 +73,7 @@ class Label extends Widget {
 		if (n != null) n.innerHTML = encodedText();
 	}
 
-	void redraw_(StringBuffer out) {
+	void redraw_(StringBuffer out, Skipper skipper) {
 		out.add('<span').add(domAttrs_()).add('>')
 			.add(encodedText).add('</span>');
 	}

@@ -1,8 +1,5 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 09, 2012
-#library("artra:widget:IdSpace");
-
-#import("Widget.dart");
 
 /**
  * An ID space.
