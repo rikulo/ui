@@ -32,7 +32,7 @@ class WidgetEvent<Data> implements Event {
 	void set currentTarget(Widget target) {
 		_curTarget = target;
 	}
-	EventTarget get srcElement() => _domEvt != null ? _domEvent.srcElement: null;
+	EventTarget get srcElement() => _domEvt != null ? _domEvt.srcElement: null;
 
 	/** Returns the data, or null if not available
 	 */
@@ -75,7 +75,7 @@ class WidgetEvent<Data> implements Event {
 	/** Useless; always true. */
 	bool get bubbles() => true;
 	/** Useless; always true. */
-	bool get cancellable() => true;
+	bool get cancelable() => true;
 	/** Useless; always true. */
 	bool get cancelBubble() => true;
 	/** Useless; does nothing. */

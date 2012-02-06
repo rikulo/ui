@@ -19,7 +19,7 @@ class _EventsImpl implements Events {
 	noSuchMethod(String name, List args) {
 		if (name.startsWith("get:"))
 			return this[name.substring(4)];
-	super.noSuchMethod(name, args);
+		super.noSuchMethod(name, args);
 	}
 	/** Tests if the given event type is listened.
 	 */

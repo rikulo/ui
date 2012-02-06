@@ -2,4 +2,7 @@
 //Feb. 04, 2012
 #library("artra:util");
 
+#import("dart:html");
+
 #source("src/Strings.dart");
+#source("src/RunOnceQueue.dart");

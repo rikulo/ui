@@ -10,10 +10,10 @@
 
 #source("src/UiException.dart");
 #source("src/IdSpace.dart");
-#source("src/Widget.dart");
+#source("src/WidgetC.dart");
+#source("src/WidgetEvent.dart");
 #source("src/_EventsImpl.dart");
 #source("src/_VirtualIdSpace.dart");
-#source("src/WidgetEvent.dart");
 #source("src/Div.dart");
 #source("src/Block.dart");
 #source("src/Label.dart");

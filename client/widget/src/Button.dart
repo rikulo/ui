@@ -32,7 +32,7 @@ class Button extends Widget {
 	 */
 	void set type(String type) {
 		_type = type == null || type.isEmpty() ? "button": type;
-		Element n = node;
+		ButtonElement n = node;
 		if (n != null)
 			n.type = _type;
 	}
@@ -44,7 +44,7 @@ class Button extends Widget {
 	 */
 	void set disabled(bool disabled) {
 		_disabled = disabled;
-		Element n = node;
+		ButtonElement n = node;
 		if (n != null)
 			n.disabled = _disabled;
 	}

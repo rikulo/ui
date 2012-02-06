@@ -60,12 +60,16 @@ String addCharCodes(String src, int diff) {
  */
 bool isChar(String cc, [bool digit=false, bool upper=false, bool lower=false,
 bool whitespace=false, String match=null]) {
-	return (digit && cc >= '0' && cc <= '9')
-	|| (upper && cc >= 'A' && cc <= 'Z')
-	|| (lower && cc >= 'a' && cc <= 'z')
+  int v = cc.isEmpty() ? 0: cc.charCodeAt(0);
+	return (digit && v >= _CC_0 && v <= _CC_9)
+	|| (upper && v >= _CC_A && cc <= _CC_Z)
+	|| (lower && cc >= _CC_a && cc <= _CC_z)
 	|| (whitespace && (cc == ' ' || cc == '\t' || cc == '\n' || cc == '\r'))
 	|| (match != null && match.indexOf(cc) >= 0);
 }
+final int _CC_0 = '0'.charCodeAt(0), _CC_9 = _CC_0 + 9,
+	_CC_A = 'A'.charCodeAt(0), _CC_Z = _CC_A + 25,
+	_CC_a = 'a'.charCodeAt(0), _CC_z = _CC_a + 25;
 
 final Map<String, String>
 	_decs = const {'lt': '<', 'gt': '>', 'amp': '&', 'quot': '"'},

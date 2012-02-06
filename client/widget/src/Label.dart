@@ -70,7 +70,7 @@ class Label extends Widget {
 	}
 	void _updateInner() {
 		final Element n = node;
-		if (n != null) n.innerHTML = encodedText();
+		if (n != null) n.innerHTML = encodedText;
 	}
 
 	void redraw_(StringBuffer out, Skipper skipper) {
