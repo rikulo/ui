@@ -36,7 +36,6 @@ class WidgetChildren extends AbstractList<Widget> {
 	void sort(int compare(Widget a, Widget b)) {
 		List<Widget> copy = new List.from(this);
 		copy.sort(compare);
-print("${copy}");
 		setRange(0, length, copy);
 	}
 	Widget removeLast() {
