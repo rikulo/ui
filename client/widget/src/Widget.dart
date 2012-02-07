@@ -38,6 +38,7 @@ class Widget implements EventTarget {
 	Widget _firstChild, _lastChild;
 	Widget _nextSibling, _prevSibling;
 	int _nChild = 0;
+	List _children;
 	//The fellows. Used only if this is IdSpace
 	Map<String, Widget> _fellows;
 	//Virtual ID space. Used only if this is root but not IdSpace
@@ -67,7 +68,7 @@ class Widget implements EventTarget {
 	/** Returns the UUID of this component, never null.
 	 */
 	String get uuid() {
-		if (_uuid == null)
+		if (_uuid === null)
 			_uuid = _nextUuid();
 		return _uuid;
 	}
@@ -91,7 +92,7 @@ class Widget implements EventTarget {
 	/** Sets the ID of this widget.
 	 */
 	void set id(String id) {
-		if (id == null) id = "";
+		if (id === null) id = "";
 		if (_id != id) {
 			if (id.length > 0)
 				_checkIdSpaces(this, id);
@@ -131,7 +132,7 @@ class Widget implements EventTarget {
 		} while ((p = p.parent) != null);
 
 		if (!ignoreVirtualIS) {
-			if (top._virtIS == null)
+			if (top._virtIS === null)
 				top._virtIS = new _VirtualIdSpace(top);
 			return top._virtIS;
 		}
@@ -169,12 +170,12 @@ class Widget implements EventTarget {
 	//Add the given widget and all its children to the ID space
 	static void _addToIdSpaceDown(Widget wgt, var space) {
 		if (wgt is IdSpace) {
-			if (space == null) //the top invocation made by insertBefore called
+			if (space === null) //the top invocation made by insertBefore called
 				_addToIdSpace(wgt);
 			return; //done
 		}
 
-		if (space == null)
+		if (space === null)
 			space = wgt.spaceOwner;
 
 		var id = wgt.id;
@@ -215,6 +216,16 @@ class Widget implements EventTarget {
 	/** Returns the previous sibling, or null if this widget is the previous sibling.
 	 */
 	Widget get previousSibling() => _prevSibling;
+	/** Returns a list of child widgets.
+	 */
+	List<Widget> get children() {
+		if (_children === null)
+			_children = new WidgetChildren(this);
+		return _children;
+	}
+	/** Returns the number of child widgets.
+	 */
+	int get childCount() => _nChild;
 
 	/** Callback when a child has been added.
 	 * <p>Default: does nothing.
@@ -240,16 +251,15 @@ class Widget implements EventTarget {
 		for (Widget p = this; p != null; p = p.parent)
 			if (p === child)
 				throw new UiException("$child is an ancestor of $this");
-		if (beforeChild != null && beforeChild.parent !== this)
-			beforeChild = null;
-
-		if (child.parent === this) {
-			if (child.nextSibling !== beforeChild) { //move?
-				_unlink(this, child);
-				_link(this, child, beforeChild);
-			}
-			return this; //done
+		if (beforeChild !== null) {
+			if (beforeChild.parent !== this)
+				beforeChild = null;
+			else if (child === beforeChild)
+				return this; //nothing to change
 		}
+
+		if (child.parent !== null)
+			child.parent.removeChild(child);
 
 		_link(this, child, beforeChild);
 		child._parent = this;
@@ -290,7 +300,7 @@ class Widget implements EventTarget {
 		if (beforeChild != null)
 			before = beforeChild._firstNode();
 
-		if (before == null)
+		if (before === null)
 			for (Widget w = this;;) {
 				cave = w.caveNode;
 				if (cave != null) break;
@@ -299,7 +309,7 @@ class Widget implements EventTarget {
 				if (w2 != null && (before = w2._firstNode()) != null)
 					break;
 
-				if ((w = w.parent) == null) {
+				if ((w = w.parent) === null) {
 					cave = document.body;
 					break;
 				}
@@ -316,9 +326,10 @@ class Widget implements EventTarget {
 		child._enterDocument(null);
 	}
 	static bool _isPrefixOfHTML(Element el) {
-		String txt;
-		return el != null && el.nodeType == 3 //textnode
-			&& (txt=el.nodeValue) != null && txt.trim().isEmpty();
+		return false; //TODO: unless Dart fixed the issue
+//		String txt;
+//		return el != null && el.nodeType == 3 //textnode
+//			&& (txt=el.nodeValue) != null && txt.trim().isEmpty();
 	}
 	/** Returns the first DOM element of this widget.
 	 * If this widget has no corresponding DOM element, this method will look
@@ -366,7 +377,7 @@ class Widget implements EventTarget {
 	}
 
 	static void _link(Widget wgt, Widget child, Widget beforeChild) {
-		if (beforeChild == null) {
+		if (beforeChild === null) {
 			Widget p = wgt._lastChild;
 			if (p != null) {
 				p._nextSibling = child;
@@ -500,9 +511,9 @@ class Widget implements EventTarget {
 			for (final String type in _listeners.getKeys()) {
 				final DomEventDispatcher disp = getDomEventDispatcher_(type);
 				if (disp != null && !_listeners[type].isEmpty()) {
-					if (n == null) {
+					if (n === null) {
 						n = node;
-						if (n == null)
+						if (n === null)
 							break; //nothing to do
 					}
 					domListen_(n, type, disp);
@@ -510,7 +521,7 @@ class Widget implements EventTarget {
 			}
 
 		for (Widget child = firstChild; child != null; child = child.nextSibling)
-			if (skipper == null || !skipper.isSkipped(this, child))
+			if (skipper === null || !skipper.isSkipped(this, child))
 				child.enterDocument_(null, afters);
 	}
 	/** Callback when this widget is detached from the document.
@@ -525,9 +536,9 @@ class Widget implements EventTarget {
 		if (_listeners != null)
 			for (final String type in _listeners.getKeys()) {
 				if (getDomEventDispatcher_(type) != null && !_listeners[type].isEmpty()) {
-					if (n == null) {
+					if (n === null) {
 						n = node;
-						if (n == null)
+						if (n === null)
 							break; //nothing to do
 					}
 				}
@@ -535,7 +546,7 @@ class Widget implements EventTarget {
 			}
 
 		for (Widget child = firstChild; child != null; child = child.nextSibling)
-			if (skipper == null || !skipper.isSkipped(this, child))
+			if (skipper === null || !skipper.isSkipped(this, child))
 				child.exitDocument_(null);
 	}
 
@@ -602,7 +613,7 @@ class Widget implements EventTarget {
 	/** Retuns the CSS style.
 	 */
 	CSSStyleDeclaration get style() {
-		if (_style == null)
+		if (_style === null)
 			_style = LevelDom.wrapCSSStyleDeclaration(newCSSStyleWrapper_());
 		return _style;
 	}
@@ -631,7 +642,7 @@ class Widget implements EventTarget {
 	/** Returns a readonly list of the additional style classes.
 	 */
 	Set<String> get classes() {
-		if (_classes == null)
+		if (_classes === null)
 			_classes = new Set();
 		return _classes;
 	}
@@ -692,7 +703,7 @@ class Widget implements EventTarget {
 	 */
 	Widget addEventListener(String type, EventListener listener, [bool useCapture = false]) {
 		if (listener == null)
-			throw new UiException("listener required");
+			throw const UiException("listener required");
 
 		if (_listeners == null)
 			_listeners = {};
@@ -802,4 +813,8 @@ class Widget implements EventTarget {
 		_runOnceQue.add(uuid + key, task, timeout: timeout);
 	}
 	static RunOnceQueue _runOnceQue;
+
+	int hashCode() {
+		return uuid.hashCode(); //uuid is immutiable once assigned
+	}
 }

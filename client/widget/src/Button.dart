@@ -60,4 +60,6 @@ class Button extends Widget {
 		out.add(domAttrs_()).add('>')
 			.add(encodeXML(label)).add('</button>');
 	}
+
+	String toString() => "Label('${label}')";
 }

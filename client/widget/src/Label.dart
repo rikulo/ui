@@ -77,4 +77,6 @@ class Label extends Widget {
 		out.add('<span').add(domAttrs_()).add('>')
 			.add(encodedText).add('</span>');
 	}
+
+	String toString() => "Label('${value}')";
 }

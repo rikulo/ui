@@ -6,5 +6,6 @@
 class UiException implements Exception {
 	final String message;
 
-	UiException(this.message);
+	const UiException(String this.message);
+	String toString() => "UiException: $message";
 }
