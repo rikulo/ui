@@ -2,6 +2,7 @@
 //Feb. 04, 2012
 #library("artra:widgetimpl");
 
+#import("dart:coreimpl");
 #import("dart:html");
 #import("dart:htmlimpl");
 

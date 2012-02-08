@@ -20,9 +20,27 @@ class WidgetChildren extends AbstractList<Widget> {
 	int get length() => _owner.childCount;
 
 	//List//
+	Widget operator[](int index) {
+		Arrays.rangeCheck(this, index, 1);
+
+		int index2 = length - index - 1;
+		if (index <= index2) {
+			Widget child = _owner.firstChild;
+			while (--index >= 0)
+				child = child.nextSibling;
+			return child;
+		} else {
+			Widget child = _owner.lastChild;
+			while (--index2 >= 0)
+				child = child.previousSibling;
+			return child;
+		}
+	}
+			
 	void operator[]=(int index, Widget value) {
 		if (value === null)
 			throw const IllegalArgumentException("null");
+
 		final Widget w = this[index];
 		if (w !== value) {
 			final Widget next = w.nextSibling;
@@ -97,11 +115,8 @@ class WidgetChildren extends AbstractList<Widget> {
 	void removeRange(int start, int length) {
 		if (length <= 0)
 			return; //nothing to do
-		Arrays.rangeCheck(this, start, 1); //length OK to be greater
 
-		Widget child = _owner.firstChild;
-		while (--index >= 0)
-			child = child.nextSibling;
+		Widget child = this[start];
 		while (--length >= 0 && child != null) {
 			Widget next = child.nextSibling;
 			_owner.removeChild(child);

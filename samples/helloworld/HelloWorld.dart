@@ -38,7 +38,7 @@ class HelloWorld {
 
 //			for (Widget p in children)
 //				print("child: $p");
-//			print("[1/${container.childCount}]: ${children[1]}");
+//			print("[0-3/${container.childCount}]: ${children[0]} ${children[1]} ${children[2]} ${children[3]}");
 		});
 		w1 = new Button("sort");
 		w1.on.click.add((event) {
