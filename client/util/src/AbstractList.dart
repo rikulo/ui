@@ -20,10 +20,10 @@ class AbstractList<E> implements List<E> {
 		return Collections.every(this, f);
 	}
 	Collection map(f(E element)) {
-		return Collections.map(this, new GrowableObjectArray.withCapacity(length), f);
+		return Collections.map(this, [], f);
 	}
 	Collection filter(bool f(E element)) {
-		return Collections.filter(this, new GrowableObjectArray<E>(), f);
+		return Collections.filter(this, [], f);
 	}
 	void forEach(f(E element)) {
 		Collections.forEach(this, f);
@@ -98,6 +98,13 @@ class AbstractList<E> implements List<E> {
 	}
 
 	String toString() {
-		return Arrays.asString(this);
+		StringBuffer result = new StringBuffer("[");
+		bool comma;
+		for (final E obj in this) {
+			if (comma) result.add(", ");
+			else comma = true;
+			result.add(obj != null ? obj.toString(): "null");
+		}
+		return result.toString();
 	}
 }

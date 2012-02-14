@@ -326,10 +326,10 @@ class Widget implements EventTarget {
 		child._enterDocument(null);
 	}
 	static bool _isPrefixOfHTML(Element el) {
-		return false; //TODO: unless Dart fixed the issue
-//		String txt;
-//		return el != null && el.nodeType == 3 //textnode
-//			&& (txt=el.nodeValue) != null && txt.trim().isEmpty();
+		String txt;
+		var node = el;
+		return node != null && node is Text //textnode
+			&& (txt=node.wholeText) != null && txt.trim().isEmpty();
 	}
 	/** Returns the first DOM element of this widget.
 	 * If this widget has no corresponding DOM element, this method will look
@@ -416,7 +416,7 @@ class Widget implements EventTarget {
 	 * <p>It is usually used to put extra space among widgets.
 	 */
 	void set prefixOfHTML(String prefixText) {
-	  _prefixOfHTML = prefixText != null ? prefixText: ""; 
+		_prefixOfHTML = prefixText != null ? prefixText: ""; 
 	}
 	/** Returns the DOM element associated with this widget.
 	 * This method returns null if this widget is not bound the DOM,

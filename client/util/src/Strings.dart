@@ -60,16 +60,25 @@ String addCharCodes(String src, int diff) {
  */
 bool isChar(String cc, [bool digit=false, bool upper=false, bool lower=false,
 bool whitespace=false, String match=null]) {
-  int v = cc.isEmpty() ? 0: cc.charCodeAt(0);
+	//TODO: remove them if Dart supports non-constant final
+	if (_CC_0 == null) {
+		_CC_0 = '0'.charCodeAt(0); _CC_9 = _CC_0 + 9;
+		_CC_A = 'A'.charCodeAt(0); _CC_Z = _CC_A + 25;
+		_CC_a = 'a'.charCodeAt(0); _CC_z = _CC_a + 25;
+	}
+
+	int v = cc.isEmpty() ? 0: cc.charCodeAt(0);
 	return (digit && v >= _CC_0 && v <= _CC_9)
-	|| (upper && v >= _CC_A && cc <= _CC_Z)
-	|| (lower && cc >= _CC_a && cc <= _CC_z)
+	|| (upper && v >= _CC_A && v <= _CC_Z)
+	|| (lower && v >= _CC_a && v <= _CC_z)
 	|| (whitespace && (cc == ' ' || cc == '\t' || cc == '\n' || cc == '\r'))
 	|| (match != null && match.indexOf(cc) >= 0);
 }
+/** TODO: use intializer below when Dart supports non-constant final
 final int _CC_0 = '0'.charCodeAt(0), _CC_9 = _CC_0 + 9,
 	_CC_A = 'A'.charCodeAt(0), _CC_Z = _CC_A + 25,
-	_CC_a = 'a'.charCodeAt(0), _CC_z = _CC_a + 25;
+	_CC_a = 'a'.charCodeAt(0), _CC_z = _CC_a + 25;*/
+int _CC_0, _CC_9, _CC_A, _CC_Z, _CC_a, _CC_z;
 
 final Map<String, String>
 	_decs = const {'lt': '<', 'gt': '>', 'amp': '&', 'quot': '"'},
@@ -149,9 +158,10 @@ String decodeXML(String txt) {
 			if (l >= 0) {
 				String dec = txt[j + 1] == '#' ?
 					new String.fromCharCodes(
-						txt[j + 2].toLowerCase() == 'x' ?
-							Math.parseInt(txt.substring(j + 3, l), 16):
-							Math.parseInt(txt.substring(j + 2, l), 10)):
+						[/*TODO: wait until Dart support Hexadecimal parsing
+							txt[j + 2].toLowerCase() == 'x' ?
+							Math.parseInt(txt.substring(j + 3, l), 16):*/
+							Math.parseInt(txt.substring(j + 2, l))]):
 					_decs[txt.substring(j + 1, l)];
 				if (dec != null) {
 					out.add(txt.substring(k, j)).add(dec);

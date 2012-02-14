@@ -57,10 +57,10 @@ class WidgetChildren extends AbstractList<Widget> {
 		setRange(0, length, copy);
 	}
 	Widget removeLast() {
-		final Widget last = last();
-		if (last != null)
-			_owner.removeChild(last);
-		return last;
+		final Widget w = last();
+		if (w != null)
+			_owner.removeChild(w);
+		return w;
 	}
 	Widget last() {
 		return _owner.lastChild;
@@ -150,8 +150,8 @@ class _WCIterator implements Iterator<Widget> {
 	Widget next() {
 		if (_next === null)
 			throw const NoMoreElementsException();
-		Widget next = _next;
+		Widget nxt = _next;
 		_next = _next.nextSibling;
-		return next;
+		return nxt;
 	}
 }
