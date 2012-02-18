@@ -11,5 +11,10 @@ class _VirtualIdSpace implements IdSpace {
 	
 	Widget query(String selector) => _owner.query(selector);
 	List<Widget> queryAll(String selector) => _owner.queryAll(selector);
+
 	Widget getFellow(String id) => _fellows[id];
+	void bindFellow_(String id, Widget fellow) {
+		if (fellow !== null) _fellows[id] = fellow;
+		else _fellows.remove(id);
+	}
 }

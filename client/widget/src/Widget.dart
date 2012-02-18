@@ -17,39 +17,26 @@ typedef EventListener DomEventDispatcher(Widget target);
 
 /**
  * A widget.
+ * <p>Notice that if a widget implements [IdSpace], it has to override
+ * [getFellow] and [bindFellow_]. Please refer to [Segment] for sample code.
  */
 class Widget implements EventTarget {
 	String _id = "";
 	String _uuid;
 
-	String _wclass = "";
-	//the classes; created on demand
-	Set<String> _classes;
-	//the CSS style; created on demand
-	CSSStyleDeclaration _style;
-
-	Events _on;
-	//the registered event listeners; created on demand
-	Map<String, List<EventListener>> _listeners;
-	//generic DOM event listener
-	Map<String, EventListener> _domListeners;
-
 	Widget _parent;
-	Widget _firstChild, _lastChild;
 	Widget _nextSibling, _prevSibling;
-	int _nChild = 0;
-	List _children;
-	//The fellows. Used only if this is IdSpace
-	Map<String, Widget> _fellows;
 	//Virtual ID space. Used only if this is root but not IdSpace
 	IdSpace _virtIS;
+
+	_ChildInfo _childInfo;
+	_CSSInfo _cssInfo;
+	_EventListenerInfo _evlInfo;
 
 	String _prefixOfHTML = "";
 	bool _hidden, _inDoc;
 
 	Widget() {
-		if (this is IdSpace)
-			_fellows = {};
 	}
 	/** Applies the properties to the filds of this widget.
 	 */
@@ -64,6 +51,23 @@ class Widget implements EventTarget {
 	 * then return an instance of the subclass.
 	 */
 	CSSStyleWrapper newCSSStyleWrapper_() => new CSSStyleWrapper(this);
+
+	_CSSInfo _initCSSInfo() {
+		if (_cssInfo === null)
+			_cssInfo = new _CSSInfo();
+		return _cssInfo;
+	}
+	_ChildInfo _initChildInfo() {
+		if (_childInfo === null)
+			_childInfo = new _ChildInfo();
+		return _childInfo;
+	}
+	_EventListenerInfo _initEventListenerInfo() {
+		if (_evlInfo === null)
+			_evlInfo = new _EventListenerInfo();
+		return _evlInfo;
+	}
+
 
 	/** Returns the UUID of this component, never null.
 	 */
@@ -112,10 +116,18 @@ class Widget implements EventTarget {
 		//TODO
 	}
 	/** Returns the widget of the given ID, or null if not found.
+	 * <p>If a widget implements [IdSpace] must override [getFellow] and
+	 * [bindFellow_].
 	 */
-	Widget getFellow(String id) {
-		var owner = spaceOwner;
-		return owner._fellows[id];
+	Widget getFellow(String id) => spaceOwner.getFellow(id);
+	/** Updates the fellow information.
+	 * <p>Default: throw [UnsupportedOperationException].
+	 * <p>If a widget implements [IdSpace] must override [getFellow] and
+	 * [bindFellow_].
+	 * <p>If fellow is null, it means to remove the binding.
+	 */
+	void bindFellow_(String id, Widget fellow) {
+		throw const UnsupportedOperationException ();
 	}
 	/** Returns the owner of the ID space that this widget belongs to.
 	 * <p>A virtual [IdSpace] is used if this widget is a root but is not IdSpace.
@@ -140,14 +152,14 @@ class Widget implements EventTarget {
 	/** Checks the uniqueness in ID space when changing ID. */
 	static void _checkIdSpaces(Widget wgt, String newId) {
 		var space = wgt.spaceOwner;
-		if (space._fellows.containsKey(newId))
+		if (space.getFellow(newId) != null)
 			throw new UiException("Not unique in the ID space of $space: $newId");
 
 		//we have to check one level up if wgt is IdSpace (i.e., unique in two ID spaces)
 		Widget parent;
 		if (wgt is IdSpace && (parent = wgt.parent) != null) {
 			space = parent.spaceOwner;
-			if (space._fellows.containsKey(newId))
+			if (space.getFellows(newId) != null)
 				throw new UiException("Not unique in the ID space of $space: $newId");
 		}
 	}
@@ -158,13 +170,13 @@ class Widget implements EventTarget {
 			return;
 
 		var space = wgt.spaceOwner;
-		space._fellows[id] = wgt;
+		space.bindFellow_(id, wgt);
 
 		//we have to put it one level up if wgt is IdSpace (i.e., unique in two ID spaces)
 		Widget parent;
 		if (wgt is IdSpace && (parent = wgt.parent) != null) {
 			space = parent.spaceOwner;
-			space._fellows[id] = wgt;
+			space.bindFellow_(id, wgt);
 		}
 	}
 	//Add the given widget and all its children to the ID space
@@ -180,7 +192,7 @@ class Widget implements EventTarget {
 
 		var id = wgt.id;
 		if (id.length > 0)
-			space._fellows[id] = wgt;
+			space.bindFellow_(id, wgt);
 
 		for	(wgt = wgt.firstChild; wgt != null; wgt = wgt.nextSibling)
 			_addToIdSpaceDown(wgt, space);
@@ -191,13 +203,13 @@ class Widget implements EventTarget {
 			return;
 
 		var space = wgt.spaceOwner;
-		space._fellows.remove(id);
+		space.bindFellow_(id, null);
 
 		//we have to put it one level up if wgt is IdSpace (i.e., unique in two ID spaces)
 		Widget parent;
 		if (wgt is IdSpace && (parent = wgt.parent) != null) {
 			space = parent.spaceOwner;
-			space._fellows.remove(id);
+			space.bindFellow_(id, null);
 		}
 	}
 
@@ -206,10 +218,10 @@ class Widget implements EventTarget {
 	Widget get parent() => _parent;
 	/** Returns the first child, or null if this widget has no child at all.
 	 */
-	Widget get firstChild() => _firstChild;
+	Widget get firstChild() => _childInfo !== null ? _childInfo.firstChild: null;
 	/** Returns the last child, or null if this widget has no child at all.
 	 */
-	Widget get lastChild() => _lastChild;
+	Widget get lastChild() => _childInfo !== null ? _childInfo.lastChild: null;
 	/** Returns the next sibling, or null if this widget is the last sibling.
 	 */
 	Widget get nextSibling() => _nextSibling;
@@ -219,13 +231,14 @@ class Widget implements EventTarget {
 	/** Returns a list of child widgets.
 	 */
 	List<Widget> get children() {
-		if (_children === null)
-			_children = new WidgetChildren(this);
-		return _children;
+		_ChildInfo ci = _initChildInfo();
+		if (ci.children === null)
+			ci.children = new WidgetChildren(this);
+		return ci.children;
 	}
 	/** Returns the number of child widgets.
 	 */
-	int get childCount() => _nChild;
+	int get childCount() => _childInfo != null ? _childInfo.nChild: 0;
 
 	/** Callback when a child has been added.
 	 * <p>Default: does nothing.
@@ -263,7 +276,7 @@ class Widget implements EventTarget {
 
 		_link(this, child, beforeChild);
 		child._parent = this;
-		++_nChild;
+		++_childInfo.nChild;
 
 		_addToIdSpaceDown(child, null);
 		if (isInDocument())
@@ -284,7 +297,7 @@ class Widget implements EventTarget {
 
 		_unlink(this, child);
 		child._parent = null;
-		--_nChild;
+		--_childInfo.nChild;
 
 		onChildRemove_(child);
 		return true;
@@ -377,22 +390,23 @@ class Widget implements EventTarget {
 	}
 
 	static void _link(Widget wgt, Widget child, Widget beforeChild) {
+		final _ChildInfo ci = wgt._initChildInfo();
 		if (beforeChild === null) {
-			Widget p = wgt._lastChild;
+			Widget p = ci.lastChild;
 			if (p != null) {
 				p._nextSibling = child;
 				child._prevSibling = p;
-				wgt._lastChild = child;
+				ci.lastChild = child;
 			} else {
-				wgt._firstChild = wgt._lastChild = child;
+				ci.firstChild = ci.lastChild = child;
 			}
 		} else {
 			Widget p = beforeChild._prevSibling;
-			if (p != null) {
+			if (p !== null) {
 				child._prevSibling = p;
 				p._nextSibling = child;
 			} else {
-				wgt._firstChild = child;
+				ci.firstChild = child;
 			}
 
 			beforeChild._prevSibling = child;
@@ -401,10 +415,10 @@ class Widget implements EventTarget {
 	}
 	static void _unlink(Widget wgt, Widget child) {
 		var p = child._prevSibling, n = child._nextSibling;
-		if (p != null) p._nextSibling = n;
-		else wgt._firstChild = n;
-		if (n != null) n._prevSibling = p;
-		else wgt._lastChild = p;
+		if (p !== null) p._nextSibling = n;
+		else wgt._childInfo.firstChild = n;
+		if (n !== null) n._prevSibling = p;
+		else wgt._childInfo.lastChild = p;
 		child._nextSibling = child._prevSibling = child._parent = null;
 	}
 
@@ -507,10 +521,11 @@ class Widget implements EventTarget {
 
 		//Listen the DOM element if necessary
 		Element n;
-		if (_listeners != null)
-			for (final String type in _listeners.getKeys()) {
+		if (_evlInfo !== null && _evlInfo.listeners !== null) {
+			final Map<String, List<EventListener>> listeners = _evlInfo.listeners;
+			for (final String type in listeners.getKeys()) {
 				final DomEventDispatcher disp = getDomEventDispatcher_(type);
-				if (disp != null && !_listeners[type].isEmpty()) {
+				if (disp != null && !listeners[type].isEmpty()) {
 					if (n === null) {
 						n = node;
 						if (n === null)
@@ -519,6 +534,7 @@ class Widget implements EventTarget {
 					domListen_(n, type, disp);
 				}
 			}
+		}
 
 		for (Widget child = firstChild; child != null; child = child.nextSibling)
 			if (skipper === null || !skipper.isSkipped(this, child))
@@ -533,9 +549,10 @@ class Widget implements EventTarget {
 
 		//Unlisten the DOM element if necessary
 		Element n;
-		if (_listeners != null)
-			for (final String type in _listeners.getKeys()) {
-				if (getDomEventDispatcher_(type) != null && !_listeners[type].isEmpty()) {
+		if (_evlInfo !== null && _evlInfo.listeners !== null) {
+			final Map<String, List<EventListener>> listeners = _evlInfo.listeners;
+			for (final String type in listeners.getKeys()) {
+				if (getDomEventDispatcher_(type) != null && !listeners[type].isEmpty()) {
 					if (n === null) {
 						n = node;
 						if (n === null)
@@ -544,6 +561,7 @@ class Widget implements EventTarget {
 				}
 				domUnlisten_(n, type);
 			}
+		}
 
 		for (Widget child = firstChild; child != null; child = child.nextSibling)
 			if (skipper === null || !skipper.isSkipped(this, child))
@@ -607,58 +625,70 @@ class Widget implements EventTarget {
 	 */
 	void set hidden(bool hidden) {
 		_hidden = hidden;
-		if (_style != null || hidden)
+		if ((_cssInfo !== null && _cssInfo.style !== null) || hidden)
 			style.display = hidden ? "none": "";
+		Element n = node;
+		if (n !== null)
+			n.hidden = hidden;
 	}
 	/** Retuns the CSS style.
 	 */
 	CSSStyleDeclaration get style() {
-		if (_style === null)
-			_style = LevelDom.wrapCSSStyleDeclaration(newCSSStyleWrapper_());
-		return _style;
+		final _CSSInfo ci = _initCSSInfo();
+		if (ci.style === null)
+			ci.style = LevelDom.wrapCSSStyleDeclaration(newCSSStyleWrapper_());
+		return ci.style;
 	}
 
 	/** Retuns the widget class.
 	 */
-	String get wclass() => _wclass;
+	String get wclass() => _cssInfo != null ? _cssInfo.wclass: "";
 	/** Sets the widget class.
 	 * <p>Default: empty, but an implementation usually provides a default
 	 * class, such as <code>w-label</code>. It is used to provide
 	 * the default look for this widget. If wclass is changed, all the default
 	 * styles are gone.
 	 */
-	void set wclass(String wclass) {
-		_wclass = wclass != null ? wclass: "";
+	void set wclass(String newwc) {
+		String oldwc = wclass;
+		if (oldwc == newwc)
+			return; //nothing to do
+
+		_initCSSInfo().wclass = newwc;
+
 		Element n = node;
 		if (n != null) {
-			Set<String> clses = new Set();
-			if (!_wclass.isEmpty())
-				clses.add(_wclass);
-			if (_classes != null)
-				clses.addAll(_classes);
-			n.classes = clses; 
+			if (!oldwc.isEmpty())
+				n.classes.remove(oldwc);
+			if (!newwc.isEmpty())
+				n.classes.add(newwc);
 		}
 	}
 	/** Returns a readonly list of the additional style classes.
 	 */
 	Set<String> get classes() {
-		if (_classes === null)
-			_classes = new Set();
-		return _classes;
+		final _CSSInfo ci = _initCSSInfo();
+		if (ci.classes === null)
+			ci.classes = new Set();
+		return ci.classes;
 	}
 	/** Adds the give style class.
 	 */
 	void addClass(String className) {
 		classes.add(className);
 		Element n = node;
-		if (n != null) n.classes.add(className);
+		if (n != null)
+			n.classes.add(className);
 	}
 	/** Removes the give style class.
 	 */
 	void removeClass(String className) {
-		classes.remove(className);
-		Element n = node;
-		if (n != null) n.classes.remove(className);
+		if (_cssInfo != null) {
+			_cssInfo.classes.remove(className);
+			Element n = node;
+			if (n != null)
+				n.classes.remove(className);
+		}
 	}
 
 	/** Ouptuts all attributes used for the DOM element of this widget.
@@ -668,7 +698,8 @@ class Widget implements EventTarget {
 		String s;
 		if (!noId && !(s = uuid).isEmpty())
 			sb.add(' id="').add(s).add('"');
-		if (!noStyle && _style != null && !(s = _style.cssText).isEmpty())
+		if (!noStyle && _cssInfo !== null && _cssInfo.style !== null
+		&& !(s = _cssInfo.style.cssText).isEmpty())
 			sb.add(' style="').add(s).add('"');
 		if (!noClass && !(s = domClass_()).isEmpty())
 			sb.add(' class="').add(s).add('"');
@@ -678,11 +709,14 @@ class Widget implements EventTarget {
 	/** Outputs the class used for the DOM element of this widget.
 	 */
 	String domClass_([bool noWclass=false, bool noClass=false]) {
+		if (_cssInfo === null)
+			return "";
+
 		final StringBuffer sb = new StringBuffer();
 		if (!noWclass)
-			sb.add(_wclass);
-		if (!noClass && _classes != null)
-			for (final String cls in _classes) {
+			sb.add(_cssInfo.wclass);
+		if (!noClass && _cssInfo.classes != null)
+			for (final String cls in _cssInfo.classes) {
 				if (!sb.isEmpty()) sb.add(' ');
 				sb.add(cls);
 			}
@@ -692,9 +726,10 @@ class Widget implements EventTarget {
 	/** Returns [Events] for adding or removing event listeners.
 	 */
 	Events get on() {
-		if (_on === null)
-			_on = new _EventsImpl(this);
-		return _on;
+		_EventListenerInfo ei = _initEventListenerInfo();
+		if (ei.on === null)
+			ei.on = new _EventsImpl(this);
+		return ei.on;
 
 	}
 	/** Adds an event listener.
@@ -705,11 +740,12 @@ class Widget implements EventTarget {
 		if (listener == null)
 			throw const UiException("listener required");
 
-		if (_listeners == null)
-			_listeners = {};
+		final _EventListenerInfo ei = _initEventListenerInfo();
+		if (ei.listeners == null)
+			ei.listeners = {};
 
 		bool first;
-		_listeners.putIfAbsent(type, () {
+		ei.listeners.putIfAbsent(type, () {
 			first = true;
 			return [listener];
 		});
@@ -728,10 +764,12 @@ class Widget implements EventTarget {
 	 */
 	Widget removeEventListener(String type, EventListener listener, [bool useCapture = false]) {
 		List<EventListener> ls;
-		if (_listeners != null && (ls = _listeners[type]) != null) {
+		if (_evlInfo !== null && _evlInfo.listeners !== null
+		&& (ls = _evlInfo.listeners[type]) != null) {
 			int j = ls.indexOf(listener);
 			Element n;
-			if (j >= 0)				ls.removeRange(j, 1);
+			if (j >= 0)
+				ls.removeRange(j, 1);
 			if (ls.isEmpty() && (n = node) != null
 			&& getDomEventDispatcher_(type) != null)
 				domUnlisten_(n, type);
@@ -743,7 +781,8 @@ class Widget implements EventTarget {
 	bool dispatchEvent(String type, WidgetEvent event) {
 		List<EventListener> ls;
 		bool dispatched = false;
-		if (_listeners != null && (ls = _listeners[type]) != null) {
+		if (_evlInfo !== null && _evlInfo.listeners != null
+		&& (ls = _evlInfo.listeners[type]) != null) {
 			event.currentTarget = this;
 			for (final EventListener listener in ls) {
 				dispatched = true;
@@ -758,7 +797,8 @@ class Widget implements EventTarget {
 	 */
 	bool isEventListened(String type) {
 		List<EventListener> ls;
-		return _listeners != null && (ls = _listeners[type]) != null && !ls.isEmpty();
+		return _evlInfo !== null && _evlInfo.listeners != null
+			&& (ls = _evlInfo.listeners[type]) != null && !ls.isEmpty();
 	}
 	/** Returns if the given event type is a DOM event.
 	 * If true, [domListen_] will be invoked to register the DOM event.
@@ -786,18 +826,21 @@ class Widget implements EventTarget {
 	/** Listen the given event type.
 	 */
 	void domListen_(Element n, String type, DomEventDispatcher disp) {
-		final EventListener ln = disp(this);
-		if (_domListeners == null)
-			_domListeners = {};
-		_domListeners[type] = ln;
+		final EventListener ln = disp(this); //must be non-null
+		final _EventListenerInfo ei = _initEventListenerInfo();
+		if (ei.domListeners == null)
+			ei.domListeners = {};
+		ei.domListeners[type] = ln;
 		n.on[type].add(ln);
 	}
 	/** Unlisten the given event type.
 	 */
 	void domUnlisten_(Element n, String	type) {
-		final EventListener ln = _domListeners.remove(type);
-		if (ln != null)
-			n.on[type].remove(ln);
+		if (_evlInfo !== null) {
+			final EventListener ln = _evlInfo.domListeners.remove(type);
+			if (ln != null)
+				n.on[type].remove(ln);
+		}
 	}
 
 	/** Schedules a run-once task.
@@ -817,4 +860,24 @@ class Widget implements EventTarget {
 	int hashCode() {
 		return uuid.hashCode(); //uuid is immutiable once assigned
 	}
+}
+
+class _ChildInfo {
+	Widget firstChild, lastChild;
+	int nChild = 0;
+	List children;
+}
+class _CSSInfo {
+	String wclass = "";
+	//the classes; created on demand
+	Set<String> classes;
+	//the CSS style; created on demand
+	CSSStyleDeclaration style;
+}
+class _EventListenerInfo {
+  Events on;
+  //the registered event listeners; created on demand
+  Map<String, List<EventListener>> listeners;
+  //generic DOM event listener
+  Map<String, EventListener> domListeners;
 }

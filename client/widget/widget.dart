@@ -15,6 +15,6 @@
 #source("src/_EventsImpl.dart");
 #source("src/_VirtualIdSpace.dart");
 #source("src/Div.dart");
-#source("src/Block.dart");
+#source("src/Segment.dart");
 #source("src/Label.dart");
 #source("src/Button.dart");

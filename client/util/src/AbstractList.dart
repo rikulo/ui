@@ -15,6 +15,8 @@
  */
 class AbstractList<E> implements List<E> {
 
+	const AbstractList();
+
 	//Collection//
 	bool every(bool f(E element)) {
 		return Collections.every(this, f);
@@ -108,3 +110,5 @@ class AbstractList<E> implements List<E> {
 		return result.toString();
 	}
 }
+
+final List EMPTY_LIST = const [];
