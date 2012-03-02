@@ -4,7 +4,7 @@
 /** A segment that is a division ([Div]
  * and also an ID space ([IdSpace]).
  */
-class Segment extends Div implements IdSpace {
+class Segment extends Widget implements IdSpace {
 	//The fellows. Used only if this is IdSpace
 	Map<String, Widget> _fellows = {};
 

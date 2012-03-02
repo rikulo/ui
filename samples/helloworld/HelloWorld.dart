@@ -9,10 +9,10 @@ class HelloWorld {
 	}
 
 	void run() {
-		var w0, w1;
-		new Div()
-			.appendChild(w0 = new Label("Hello World!"))
-			.addToDocument(document.query('#test1'), outer:true);
+		var div, w0, w1, w2;
+		div = new Widget();
+		div.appendChild(w0 = new Label("Hello World!"));
+		div.addToDocument(document.query('#test1'), outer:true);
 
 		w0.on.click.add((event) {
 			event.target.style.border = "1px solid blue";
@@ -22,11 +22,11 @@ class HelloWorld {
 		w0.on.click.add((event) {
 			event.target.parent.appendChild(new Label("Hi, how are you?"));
 		});
-		new Div()
-			.appendChild(w0)
-			.addToDocument(document.query('#test2'), outer:true);
+		div = new Widget();
+		div.appendChild(w0);
+		div.addToDocument(document.query('#test2'), outer:true);
 
-		Widget container = new Div();
+		Widget container = new Widget();
 		w0 = new Button("Test setRange");
 		w0.on.click.add((event) {
 			List<Widget> children = container.children;
@@ -46,11 +46,22 @@ class HelloWorld {
 				return a.value.compareTo(b.value);
 			});
 		});
-		new Div()
-			.appendChild(w0)
-			.appendChild(w1)
-			.appendChild(container)
-			.addToDocument(document.query('#test3'), outer:true);
+		w1 = new Button("sort");
+		w1.on.click.add((event) {
+			container.children.sort((Label a, Label b) {
+				return a.value.compareTo(b.value);
+			});
+		});
+		w2 = new Button("clear");
+		w2.on.click.add((event) {
+			container.children.clear();
+		});
+		div = new Widget();
+		div.appendChild(w0);
+		div.appendChild(w1);
+		div.appendChild(w2);
+		div.appendChild(container);
+		div.addToDocument(document.query('#test3'), outer:true);
 	}
 }
 
