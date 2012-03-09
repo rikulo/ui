@@ -3,13 +3,13 @@
 
 /** A label.
  */
-class Label extends Widget {
+class Label extends View {
 	String _value;
 	int _maxlength = 0;
 	bool _pre = false, _multiline = false;
 
 	Label([String value=""]) {
-		wclass = "w-label";
+		wclass = "v-label";
 		this.value = value;
 	}
 

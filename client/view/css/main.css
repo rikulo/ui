@@ -1,0 +1,6 @@
+html, body {
+	overflow: hidden;
+}
+body {
+	-webkit-text-size-adjust: none;
+}

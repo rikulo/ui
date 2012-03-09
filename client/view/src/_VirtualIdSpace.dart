@@ -4,16 +4,16 @@
 /** A virtual ID space. Used only internally.
  */
 class _VirtualIdSpace implements IdSpace {
-	Widget _owner;
-	Map<String, Widget> _fellows;
+	View _owner;
+	Map<String, View> _fellows;
 
 	_VirtualIdSpace(this._owner): _fellows = {};
 	
-	Widget query(String selector) => _owner.query(selector);
-	List<Widget> queryAll(String selector) => _owner.queryAll(selector);
+	View query(String selector) => _owner.query(selector);
+	List<View> queryAll(String selector) => _owner.queryAll(selector);
 
-	Widget getFellow(String id) => _fellows[id];
-	void bindFellow_(String id, Widget fellow) {
+	View getFellow(String id) => _fellows[id];
+	void bindFellow_(String id, View fellow) {
 		if (fellow !== null) _fellows[id] = fellow;
 		else _fellows.remove(id);
 	}

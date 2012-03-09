@@ -3,13 +3,13 @@
 
 /** A button.
  */
-class Button extends Widget {
+class Button extends View {
 	String _label;
 	String _type = "button";
 	bool _disabled = false;
 
 	Button([String label=""]) {
-		wclass = "w-button";
+		wclass = "v-button";
 		this.label = label;
 		
 	}

@@ -13,7 +13,7 @@
  * <p>For mutable list, you shall override [operator[]=], [set length],
  * [add], [setRange], [insertRange], and [removeRange].
  */
-class AbstractList<E> implements List<E> {
+abstract class AbstractList<E> implements List<E> {
 
 	const AbstractList();
 

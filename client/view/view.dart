@@ -1,17 +1,16 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Feb. 04, 2012
-#library("artra:widget");
+#library("artra:view");
 
 #import("dart:html");
-#import("dart:htmlimpl");
 
 #import("../util/util.dart");
-#import("../widgetimpl/widgetimpl.dart");
+#import("../viewimpl/viewimpl.dart");
 
 #source("src/UiException.dart");
 #source("src/IdSpace.dart");
-#source("src/Widget.dart");
-#source("src/WidgetEvent.dart");
+#source("src/View.dart");
+#source("src/ViewEvent.dart");
 #source("src/_EventsImpl.dart");
 #source("src/_VirtualIdSpace.dart");
 #source("src/Segment.dart");

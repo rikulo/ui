@@ -3,16 +3,16 @@
 // Author: tomyeh
 
 /**
- * A list of child widgets.
+ * A list of child views.
  * Notice that [set length] are not supported
  */
-class WidgetChildren extends AbstractList<Widget> {
-	final Widget _owner;
+class SubviewList extends AbstractList<View> {
+	final View _owner;
 
-	WidgetChildren(this._owner);
+	SubviewList(this._owner);
 
 	//Iterable//
-	Iterator<Widget> iterator() {
+	Iterator<View> iterator() {
 		return new _WCIterator(_owner);
 	}
 
@@ -20,52 +20,52 @@ class WidgetChildren extends AbstractList<Widget> {
 	int get length() => _owner.childCount;
 
 	//List//
-	Widget operator[](int index) {
+	View operator[](int index) {
 		Arrays.rangeCheck(this, index, 1);
 
 		int index2 = length - index - 1;
 		if (index <= index2) {
-			Widget child = _owner.firstChild;
+			View child = _owner.firstChild;
 			while (--index >= 0)
 				child = child.nextSibling;
 			return child;
 		} else {
-			Widget child = _owner.lastChild;
+			View child = _owner.lastChild;
 			while (--index2 >= 0)
 				child = child.previousSibling;
 			return child;
 		}
 	}
 			
-	void operator[]=(int index, Widget value) {
+	void operator[]=(int index, View value) {
 		if (value === null)
 			throw const IllegalArgumentException("null");
 
-		final Widget w = this[index];
+		final View w = this[index];
 		if (w !== value) {
-			final Widget next = w.nextSibling;
+			final View next = w.nextSibling;
 			_owner.removeChild(w);
 			_owner.insertBefore(value, next);
 		}
 	}
-	void add(Widget widget) {
-		_owner.appendChild(widget);
+	void add(View view) {
+		_owner.appendChild(view);
 	}
-	void sort(int compare(Widget a, Widget b)) {
-		List<Widget> copy = new List.from(this);
+	void sort(int compare(View a, View b)) {
+		List<View> copy = new List.from(this);
 		copy.sort(compare);
 		setRange(0, length, copy);
 	}
-	Widget removeLast() {
-		final Widget w = last();
+	View removeLast() {
+		final View w = last();
 		if (w != null)
 			_owner.removeChild(w);
 		return w;
 	}
-	Widget last() {
+	View last() {
 		return _owner.lastChild;
 	}
-	void setRange(int start, int length, List<Widget> from, [int startFrom = 0]) {
+	void setRange(int start, int length, List<View> from, [int startFrom = 0]) {
 		if (length <= 0)
 			return; //nothing to do
 
@@ -73,18 +73,18 @@ class WidgetChildren extends AbstractList<Widget> {
 			throw new IndexOutOfRangeException(start);
 		} else if (start == this.length) { //append
 			if (startFrom == 0) { //optimize
-				for (Iterator<Widget> it = from.iterator(); --length >= 0;)
+				for (Iterator<View> it = from.iterator(); --length >= 0;)
 					add(it.next());
 			} else {
 				while (--length >= 0)
 					add(from[startFrom++]);
 			}
 		} else if (startFrom == 0) { //optimize
-			Widget w = this[start];
-			Iterator<Widget> it = from.iterator();
+			View w = this[start];
+			Iterator<View> it = from.iterator();
 			while (--length >= 0) { //replace
-				Widget value = it.next();
-				final Widget next = w.nextSibling;
+				View value = it.next();
+				final View next = w.nextSibling;
 				if (w !== value) {
 					_owner.removeChild(w);
 					_owner.insertBefore(value, next);
@@ -96,10 +96,10 @@ class WidgetChildren extends AbstractList<Widget> {
 			while (--length >= 0) //append
 				add(it.next());
 		} else {
-			Widget w = this[start];
+			View w = this[start];
 			while (--length >= 0) { //replace
-				Widget value = from[startFrom++];
-				final Widget next = w.nextSibling;
+				View value = from[startFrom++];
+				final View next = w.nextSibling;
 				if (w !== value) {
 					_owner.removeChild(w);
 					_owner.insertBefore(value, next);
@@ -116,41 +116,41 @@ class WidgetChildren extends AbstractList<Widget> {
 		if (length <= 0)
 			return; //nothing to do
 
-		Widget child = this[start];
+		View child = this[start];
 		while (--length >= 0 && child != null) {
-			Widget next = child.nextSibling;
+			View next = child.nextSibling;
 			_owner.removeChild(child);
 			child = next;
 		}
 	}
-	void insertRange(int start, int length, [Widget initialValue = null]) {
+	void insertRange(int start, int length, [View initialValue = null]) {
 		if (length != 1)
-			throw const IllegalArgumentException("Allow only one widget");
+			throw const IllegalArgumentException("Allow only one view");
 		if (initialValue === null)
 			throw const IllegalArgumentException("Require initialValue");
 		if (start == this.length) {
 			add(initialValue);
 		} else {
-			Widget w = this[start];
+			View w = this[start];
 			_owner.insertBefore(initialValue, w);
 		}
 	}
 }
 
-class _WCIterator implements Iterator<Widget> {
-	Widget _next;
+class _WCIterator implements Iterator<View> {
+	View _next;
 
-	_WCIterator(Widget owner) {
+	_WCIterator(View owner) {
 		_next = owner.firstChild;
 	}
 
 	bool hasNext() {
 		return _next != null;
 	}
-	Widget next() {
+	View next() {
 		if (_next === null)
 			throw const NoMoreElementsException();
-		Widget nxt = _next;
+		View nxt = _next;
 		_next = _next.nextSibling;
 		return nxt;
 	}

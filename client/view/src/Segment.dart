@@ -4,16 +4,17 @@
 /** A segment that is a division ([Div]
  * and also an ID space ([IdSpace]).
  */
-class Segment extends Widget implements IdSpace {
+class Segment extends View implements IdSpace {
 	//The fellows. Used only if this is IdSpace
-	Map<String, Widget> _fellows = {};
+	Map<String, View> _fellows;
 
 	Segment() {
-		wclass = "w-segment";
+	  _fellows = {};
+		wclass = "v-segment";
 	}
 
-	Widget getFellow(String id) => _fellows[id];
-	void bindFellow_(String id, Widget fellow) {
+	View getFellow(String id) => _fellows[id];
+	void bindFellow_(String id, View fellow) {
 		if (fellow !== null) _fellows[id] = fellow;
 		else _fellows.remove(id);
 	}

@@ -2,7 +2,7 @@
 //History: Sat Feb  4 18:18:39 TST 2012
 // Author: tomyeh
 
-/** The run-once task scheduled by <code>Widget.runOnce()</code>.
+/** The run-once task scheduled by <code>View.runOnce()</code>.
  */
 typedef void RunOnceTask();
 
@@ -10,7 +10,7 @@ typedef void RunOnceTask();
  * A task queue used to manage deferred run-once tasks.
  * A run-once task is a task that needs to be executed only once.
  * In other words, the result is the same no matter how many
- * times they are executed. For example, <code>Widget.rerender()</code>.
+ * times they are executed. For example, <code>View.rerender()</code>.
  *
  * <p>If a run-once task takes long to execute, you can schedule it for
  * execution  by invoking [add].

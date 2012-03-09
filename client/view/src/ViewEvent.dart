@@ -1,4 +1,4 @@
-/* WidgetEvent.dart
+/* ViewEvent.dart
 
 	History:
 		Fri Jan 20 14:42:46 TST 2012, Created by tomyeh
@@ -7,19 +7,19 @@ Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 */
 
 /**
- * A widget event.
- * The event received by [Widget]'s event listener must be an instance of this class.
+ * A view event.
+ * The event received by [View]'s event listener must be an instance of this class.
  */
-class WidgetEvent<Data> implements Event {
-	Widget _target;
+class ViewEvent<Data> implements Event {
+	View _target;
 	Event _domEvt;
-	Widget _curTarget;
+	View _curTarget;
 	String _type;
 	Data _data;
 	int _stamp;
 	bool _defPrevt = false, _propStop = true;
 
-	WidgetEvent(Widget target, [Event domEvent, String type, Data data]) {
+	ViewEvent(View target, [Event domEvent, String type, Data data]) {
 		_target = _curTarget = target;
 		_domEvt = domEvent;
 		_stamp = domEvent != null ? domEvent.timeStamp: 0; //TODO
@@ -29,7 +29,7 @@ class WidgetEvent<Data> implements Event {
 
 	EventTarget get target() => _target;
 	EventTarget get currentTarget() => _curTarget;
-	void set currentTarget(Widget target) {
+	void set currentTarget(View target) {
 		_curTarget = target;
 	}
 	EventTarget get srcElement() => _domEvt != null ? _domEvt.srcElement: null;
@@ -38,7 +38,7 @@ class WidgetEvent<Data> implements Event {
 	 */
 	Data get data() => _data;
 
-	/** The DOM event that causes this widget event, or null if not available.
+	/** The DOM event that causes this view event, or null if not available.
 	 */
 	Event get domEvent() => _domEvt;
 
@@ -48,7 +48,7 @@ class WidgetEvent<Data> implements Event {
 	String get type() => _type;
 
 	/** Returns whether to prevent the default behavior from taking place.
-	 * The default behavior and the prevention depend on the widget.
+	 * The default behavior and the prevention depend on the view.
 	 */
 	bool get defaultPrevented() => _defPrevt;
 	/** Prevent the default behavior from taking place.
@@ -90,5 +90,10 @@ class WidgetEvent<Data> implements Event {
 	}
 	/** Useless; does nothing. */
 	void stopImmediatePropagation() {
+	}
+	/** Useless; returns null. */
+	Clipboard get clipboardData() => null;
+	/** Useless; does nothing. */
+	void set clipboardData(Clipboard data) {
 	}
 }

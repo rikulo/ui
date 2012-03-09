@@ -3,15 +3,15 @@
 
 /**
  * The implementation for handling [CSSStyleDeclaration].
- * The default implemetation will update the widget's element (Widget.node).
+ * The default implemetation will update the view's element (View.node).
  * The derived class could override the proper method to handle it different.
  */
 class CSSStyleWrapper {
-	Widget _owner;
+	View _owner;
 	CSSStyleDeclaration _style;
 	var dartObjectLocalStorage;
 
-	CSSStyleWrapper(Widget owner) {
+	CSSStyleWrapper(View owner) {
 		_owner = owner;
 		_style = new CSSStyleDeclaration();
 	}
