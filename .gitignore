@@ -5,3 +5,5 @@ codegen
 javadoc
 .svn
 Thumbs.db
+.project
+.children

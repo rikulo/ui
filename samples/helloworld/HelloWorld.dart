@@ -1,14 +1,12 @@
 //Sample Code: Hello World!
 
 #import('dart:html');
+#import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 
-class HelloWorld {
+class HelloWorld extends Activity {
 
-	helloworld() {
-	}
-
-	void run() {
+	void onCreate() {
 		var div, w0, w1, w2;
 		div = new View();
 		div.appendChild(w0 = new Label("Hello World!"));
