@@ -7,7 +7,8 @@
 
 #import("../util/util.dart");
 #import("../view/view.dart");
+#import("../app/app.dart");
 
-#source("src/CSSStyleWrapper.dart");
+#source("src/CSSStyleDeclarationImpl.dart");
 #source("src/Skipper.dart");
 #source("src/SubviewList.dart");

@@ -59,7 +59,7 @@ class Device {
 
 			if (name === null) {
 				name = "unknown";
-				version = 1;
+				version = 1.0;
 			}
 		}
 		browser = new Browser(name, version);
@@ -77,7 +77,7 @@ class Device {
 		try {
 			return Math.parseDouble(version);
 		} catch (var t) {
-			return 1; //ignore it
+			return 1.0; //ignore it
 		}
 	}
 }

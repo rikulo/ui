@@ -40,14 +40,6 @@ class View implements EventTarget {
 		_wclass = "v-view";
 	}
 
-	/** Instantiates the wrapper to handle [CSSStyleDeclaration].
-	 * <p>Default: create an instance of [CSSStyleWrapper].
-	 * If a deriving class has to override the default behavior, it could
-	 * extend [CSSStyleWrapper] to override the corresponding method, and
-	 * then return an instance of the subclass.
-	 */
-	CSSStyleWrapper newCSSStyleWrapper_() => new CSSStyleWrapper(this);
-
 	_CSSInfo _initCSSInfo() {
 		if (_cssInfo === null)
 			_cssInfo = new _CSSInfo();
@@ -664,7 +656,7 @@ class View implements EventTarget {
 	CSSStyleDeclaration get style() {
 		final _CSSInfo ci = _initCSSInfo();
 		if (ci.style === null)
-			ci.style =  LevelDom.wrapCSSStyleDeclaration(newCSSStyleWrapper_());
+			ci.style =  new CSSStyleDeclarationImpl(this);
 		return ci.style;
 	}
 
