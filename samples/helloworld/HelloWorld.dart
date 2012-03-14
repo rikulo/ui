@@ -6,7 +6,7 @@
 
 class HelloWorld extends Activity {
 
-	void onCreate() {
+	void onCreate_(View mainWindow) {
 		var div, w0, w1, w2;
 		div = new View();
 		div.appendChild(w0 = new Label("Hello World!"));

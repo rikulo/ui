@@ -7,27 +7,49 @@
  * An activity is identified with an URL.
  */
 class Activity {
+	Activity() {
+		if (device === null)
+			device = new Device();
+	}
+
 	/** Start the activity.
 	 */
 	void run() {
-		onCreate();
+		if (activity !== null)
+			throw const UiException("Only one activity is allowed");
+		activity = this;
+		onCreate_(createMainWindow_());
 	}
 
+	/** Called to instantiate the main window.
+	 * Don't call this method directly. It is a callback that
+	 * you can override to provide a different instance if necessary.
+	 * <p>Default: it creates an instance of [Zone] and initializes
+	 * it to fill the whole screen.
+	 */
+	View createMainWindow_() {
+		final View main = new Zone();
+		main.classes.add("v-main");
+		main.addToDocument(document.body);
+		return main;
+	}
 	/** Called when the activity is starting.
 	 */
-	void onCreate() {
+	void onCreate_(View mainWindow) {
 	}
 	/** Called when the activity is going into background.
 	 */
-	void onPause() {
+	void onPause_() {
 	}
 	/** Called when the activity is resumed to start interacting
 	 * with the user.
 	 */
-	void onResume() {
+	void onResume_() {
 	}
 	/** Called when the activity is destroyed.
 	 */
-	void onDestroy() {
+	void onDestroy_() {
 	}
 }
+/** The current activity. */
+Activity activity;

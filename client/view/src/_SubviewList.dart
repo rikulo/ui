@@ -6,10 +6,10 @@
  * A list of child views.
  * Notice that [set length] are not supported
  */
-class SubviewList extends AbstractList<View> {
+class _SubviewList extends AbstractList<View> {
 	final View _owner;
 
-	SubviewList(this._owner);
+	_SubviewList(this._owner);
 
 	//Iterable//
 	Iterator<View> iterator() {

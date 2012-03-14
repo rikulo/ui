@@ -5,11 +5,11 @@
 /**
  * An implementation of [CSSStyleDeclaration].
  */
-class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
+class _CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	final View _view;
 	CSSStyleDeclaration _pcss;
 
-	CSSStyleDeclarationImpl(this._view) {
+	_CSSStyleDeclarationImpl(this._view) {
 	}
 
 	CSSStyleDeclaration get _css() {
@@ -144,7 +144,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "animation-timing-function" */
 	String get animationTimingFunction() =>
 		getPropertyValue('animation-timing-function');
-
 	/** Sets the value of "animation-timing-function" */
 	void set animationTimingFunction(var value) {
 		setProperty('animation-timing-function', value, '');
@@ -153,7 +152,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "appearance" */
 	String get appearance() =>
 		getPropertyValue('appearance');
-
 	/** Sets the value of "appearance" */
 	void set appearance(var value) {
 		setProperty('appearance', value, '');
@@ -162,7 +160,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "backface-visibility" */
 	String get backfaceVisibility() =>
 		getPropertyValue('backface-visibility');
-
 	/** Sets the value of "backface-visibility" */
 	void set backfaceVisibility(var value) {
 		setProperty('backface-visibility', value, '');
@@ -171,7 +168,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background" */
 	String get background() =>
 		getPropertyValue('background');
-
 	/** Sets the value of "background" */
 	void set background(var value) {
 		setProperty('background', value, '');
@@ -180,7 +176,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-attachment" */
 	String get backgroundAttachment() =>
 		getPropertyValue('background-attachment');
-
 	/** Sets the value of "background-attachment" */
 	void set backgroundAttachment(var value) {
 		setProperty('background-attachment', value, '');
@@ -189,7 +184,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-clip" */
 	String get backgroundClip() =>
 		getPropertyValue('background-clip');
-
 	/** Sets the value of "background-clip" */
 	void set backgroundClip(var value) {
 		setProperty('background-clip', value, '');
@@ -198,7 +192,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-color" */
 	String get backgroundColor() =>
 		getPropertyValue('background-color');
-
 	/** Sets the value of "background-color" */
 	void set backgroundColor(var value) {
 		setProperty('background-color', value, '');
@@ -207,7 +200,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-composite" */
 	String get backgroundComposite() =>
 		getPropertyValue('background-composite');
-
 	/** Sets the value of "background-composite" */
 	void set backgroundComposite(var value) {
 		setProperty('background-composite', value, '');
@@ -216,7 +208,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-image" */
 	String get backgroundImage() =>
 		getPropertyValue('background-image');
-
 	/** Sets the value of "background-image" */
 	void set backgroundImage(var value) {
 		setProperty('background-image', value, '');
@@ -225,7 +216,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-origin" */
 	String get backgroundOrigin() =>
 		getPropertyValue('background-origin');
-
 	/** Sets the value of "background-origin" */
 	void set backgroundOrigin(var value) {
 		setProperty('background-origin', value, '');
@@ -234,7 +224,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-position" */
 	String get backgroundPosition() =>
 		getPropertyValue('background-position');
-
 	/** Sets the value of "background-position" */
 	void set backgroundPosition(var value) {
 		setProperty('background-position', value, '');
@@ -243,7 +232,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-position-x" */
 	String get backgroundPositionX() =>
 		getPropertyValue('background-position-x');
-
 	/** Sets the value of "background-position-x" */
 	void set backgroundPositionX(var value) {
 		setProperty('background-position-x', value, '');
@@ -252,7 +240,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-position-y" */
 	String get backgroundPositionY() =>
 		getPropertyValue('background-position-y');
-
 	/** Sets the value of "background-position-y" */
 	void set backgroundPositionY(var value) {
 		setProperty('background-position-y', value, '');
@@ -261,7 +248,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-repeat" */
 	String get backgroundRepeat() =>
 		getPropertyValue('background-repeat');
-
 	/** Sets the value of "background-repeat" */
 	void set backgroundRepeat(var value) {
 		setProperty('background-repeat', value, '');
@@ -270,7 +256,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-repeat-x" */
 	String get backgroundRepeatX() =>
 		getPropertyValue('background-repeat-x');
-
 	/** Sets the value of "background-repeat-x" */
 	void set backgroundRepeatX(var value) {
 		setProperty('background-repeat-x', value, '');
@@ -279,7 +264,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-repeat-y" */
 	String get backgroundRepeatY() =>
 		getPropertyValue('background-repeat-y');
-
 	/** Sets the value of "background-repeat-y" */
 	void set backgroundRepeatY(var value) {
 		setProperty('background-repeat-y', value, '');
@@ -288,7 +272,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "background-size" */
 	String get backgroundSize() =>
 		getPropertyValue('background-size');
-
 	/** Sets the value of "background-size" */
 	void set backgroundSize(var value) {
 		setProperty('background-size', value, '');
@@ -297,7 +280,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border" */
 	String get border() =>
 		getPropertyValue('border');
-
 	/** Sets the value of "border" */
 	void set border(var value) {
 		setProperty('border', value, '');
@@ -306,7 +288,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-after" */
 	String get borderAfter() =>
 		getPropertyValue('border-after');
-
 	/** Sets the value of "border-after" */
 	void set borderAfter(var value) {
 		setProperty('border-after', value, '');
@@ -315,7 +296,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-after-color" */
 	String get borderAfterColor() =>
 		getPropertyValue('border-after-color');
-
 	/** Sets the value of "border-after-color" */
 	void set borderAfterColor(var value) {
 		setProperty('border-after-color', value, '');
@@ -324,7 +304,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-after-style" */
 	String get borderAfterStyle() =>
 		getPropertyValue('border-after-style');
-
 	/** Sets the value of "border-after-style" */
 	void set borderAfterStyle(var value) {
 		setProperty('border-after-style', value, '');
@@ -333,7 +312,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-after-width" */
 	String get borderAfterWidth() =>
 		getPropertyValue('border-after-width');
-
 	/** Sets the value of "border-after-width" */
 	void set borderAfterWidth(var value) {
 		setProperty('border-after-width', value, '');
@@ -342,7 +320,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-before" */
 	String get borderBefore() =>
 		getPropertyValue('border-before');
-
 	/** Sets the value of "border-before" */
 	void set borderBefore(var value) {
 		setProperty('border-before', value, '');
@@ -351,7 +328,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-before-color" */
 	String get borderBeforeColor() =>
 		getPropertyValue('border-before-color');
-
 	/** Sets the value of "border-before-color" */
 	void set borderBeforeColor(var value) {
 		setProperty('border-before-color', value, '');
@@ -360,7 +336,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-before-style" */
 	String get borderBeforeStyle() =>
 		getPropertyValue('border-before-style');
-
 	/** Sets the value of "border-before-style" */
 	void set borderBeforeStyle(var value) {
 		setProperty('border-before-style', value, '');
@@ -369,7 +344,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-before-width" */
 	String get borderBeforeWidth() =>
 		getPropertyValue('border-before-width');
-
 	/** Sets the value of "border-before-width" */
 	void set borderBeforeWidth(var value) {
 		setProperty('border-before-width', value, '');
@@ -378,7 +352,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-bottom" */
 	String get borderBottom() =>
 		getPropertyValue('border-bottom');
-
 	/** Sets the value of "border-bottom" */
 	void set borderBottom(var value) {
 		setProperty('border-bottom', value, '');
@@ -387,7 +360,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-bottom-color" */
 	String get borderBottomColor() =>
 		getPropertyValue('border-bottom-color');
-
 	/** Sets the value of "border-bottom-color" */
 	void set borderBottomColor(var value) {
 		setProperty('border-bottom-color', value, '');
@@ -396,7 +368,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-bottom-left-radius" */
 	String get borderBottomLeftRadius() =>
 		getPropertyValue('border-bottom-left-radius');
-
 	/** Sets the value of "border-bottom-left-radius" */
 	void set borderBottomLeftRadius(var value) {
 		setProperty('border-bottom-left-radius', value, '');
@@ -405,7 +376,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-bottom-right-radius" */
 	String get borderBottomRightRadius() =>
 		getPropertyValue('border-bottom-right-radius');
-
 	/** Sets the value of "border-bottom-right-radius" */
 	void set borderBottomRightRadius(var value) {
 		setProperty('border-bottom-right-radius', value, '');
@@ -414,7 +384,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-bottom-style" */
 	String get borderBottomStyle() =>
 		getPropertyValue('border-bottom-style');
-
 	/** Sets the value of "border-bottom-style" */
 	void set borderBottomStyle(var value) {
 		setProperty('border-bottom-style', value, '');
@@ -423,7 +392,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-bottom-width" */
 	String get borderBottomWidth() =>
 		getPropertyValue('border-bottom-width');
-
 	/** Sets the value of "border-bottom-width" */
 	void set borderBottomWidth(var value) {
 		setProperty('border-bottom-width', value, '');
@@ -432,7 +400,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-collapse" */
 	String get borderCollapse() =>
 		getPropertyValue('border-collapse');
-
 	/** Sets the value of "border-collapse" */
 	void set borderCollapse(var value) {
 		setProperty('border-collapse', value, '');
@@ -441,7 +408,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-color" */
 	String get borderColor() =>
 		getPropertyValue('border-color');
-
 	/** Sets the value of "border-color" */
 	void set borderColor(var value) {
 		setProperty('border-color', value, '');
@@ -450,7 +416,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-end" */
 	String get borderEnd() =>
 		getPropertyValue('border-end');
-
 	/** Sets the value of "border-end" */
 	void set borderEnd(var value) {
 		setProperty('border-end', value, '');
@@ -475,7 +440,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-end-width" */
 	String get borderEndWidth() =>
 		getPropertyValue('border-end-width');
-
 	/** Sets the value of "border-end-width" */
 	void set borderEndWidth(var value) {
 		setProperty('border-end-width', value, '');
@@ -484,7 +448,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-fit" */
 	String get borderFit() =>
 		getPropertyValue('border-fit');
-
 	/** Sets the value of "border-fit" */
 	void set borderFit(var value) {
 		setProperty('border-fit', value, '');
@@ -493,7 +456,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-horizontal-spacing" */
 	String get borderHorizontalSpacing() =>
 		getPropertyValue('border-horizontal-spacing');
-
 	/** Sets the value of "border-horizontal-spacing" */
 	void set borderHorizontalSpacing(var value) {
 		setProperty('border-horizontal-spacing', value, '');
@@ -502,7 +464,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-image" */
 	String get borderImage() =>
 		getPropertyValue('border-image');
-
 	/** Sets the value of "border-image" */
 	void set borderImage(var value) {
 		setProperty('border-image', value, '');
@@ -511,7 +472,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-image-outset" */
 	String get borderImageOutset() =>
 		getPropertyValue('border-image-outset');
-
 	/** Sets the value of "border-image-outset" */
 	void set borderImageOutset(var value) {
 		setProperty('border-image-outset', value, '');
@@ -520,7 +480,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-image-repeat" */
 	String get borderImageRepeat() =>
 		getPropertyValue('border-image-repeat');
-
 	/** Sets the value of "border-image-repeat" */
 	void set borderImageRepeat(var value) {
 		setProperty('border-image-repeat', value, '');
@@ -529,7 +488,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-image-slice" */
 	String get borderImageSlice() =>
 		getPropertyValue('border-image-slice');
-
 	/** Sets the value of "border-image-slice" */
 	void set borderImageSlice(var value) {
 		setProperty('border-image-slice', value, '');
@@ -538,7 +496,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-image-source" */
 	String get borderImageSource() =>
 		getPropertyValue('border-image-source');
-
 	/** Sets the value of "border-image-source" */
 	void set borderImageSource(var value) {
 		setProperty('border-image-source', value, '');
@@ -547,7 +504,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-image-width" */
 	String get borderImageWidth() =>
 		getPropertyValue('border-image-width');
-
 	/** Sets the value of "border-image-width" */
 	void set borderImageWidth(var value) {
 		setProperty('border-image-width', value, '');
@@ -556,7 +512,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-left" */
 	String get borderLeft() =>
 		getPropertyValue('border-left');
-
 	/** Sets the value of "border-left" */
 	void set borderLeft(var value) {
 		setProperty('border-left', value, '');
@@ -565,7 +520,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-left-color" */
 	String get borderLeftColor() =>
 		getPropertyValue('border-left-color');
-
 	/** Sets the value of "border-left-color" */
 	void set borderLeftColor(var value) {
 		setProperty('border-left-color', value, '');
@@ -574,7 +528,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-left-style" */
 	String get borderLeftStyle() =>
 		getPropertyValue('border-left-style');
-
 	/** Sets the value of "border-left-style" */
 	void set borderLeftStyle(var value) {
 		setProperty('border-left-style', value, '');
@@ -583,7 +536,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-left-width" */
 	String get borderLeftWidth() =>
 		getPropertyValue('border-left-width');
-
 	/** Sets the value of "border-left-width" */
 	void set borderLeftWidth(var value) {
 		setProperty('border-left-width', value, '');
@@ -592,7 +544,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-radius" */
 	String get borderRadius() =>
 		getPropertyValue('border-radius');
-
 	/** Sets the value of "border-radius" */
 	void set borderRadius(var value) {
 		setProperty('border-radius', value, '');
@@ -601,7 +552,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-right" */
 	String get borderRight() =>
 		getPropertyValue('border-right');
-
 	/** Sets the value of "border-right" */
 	void set borderRight(var value) {
 		setProperty('border-right', value, '');
@@ -610,7 +560,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-right-color" */
 	String get borderRightColor() =>
 		getPropertyValue('border-right-color');
-
 	/** Sets the value of "border-right-color" */
 	void set borderRightColor(var value) {
 		setProperty('border-right-color', value, '');
@@ -619,7 +568,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-right-style" */
 	String get borderRightStyle() =>
 		getPropertyValue('border-right-style');
-
 	/** Sets the value of "border-right-style" */
 	void set borderRightStyle(var value) {
 		setProperty('border-right-style', value, '');
@@ -628,7 +576,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-right-width" */
 	String get borderRightWidth() =>
 		getPropertyValue('border-right-width');
-
 	/** Sets the value of "border-right-width" */
 	void set borderRightWidth(var value) {
 		setProperty('border-right-width', value, '');
@@ -637,7 +584,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-spacing" */
 	String get borderSpacing() =>
 		getPropertyValue('border-spacing');
-
 	/** Sets the value of "border-spacing" */
 	void set borderSpacing(var value) {
 		setProperty('border-spacing', value, '');
@@ -646,7 +592,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-start" */
 	String get borderStart() =>
 		getPropertyValue('border-start');
-
 	/** Sets the value of "border-start" */
 	void set borderStart(var value) {
 		setProperty('border-start', value, '');
@@ -655,7 +600,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-start-color" */
 	String get borderStartColor() =>
 		getPropertyValue('border-start-color');
-
 	/** Sets the value of "border-start-color" */
 	void set borderStartColor(var value) {
 		setProperty('border-start-color', value, '');
@@ -664,7 +608,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-start-style" */
 	String get borderStartStyle() =>
 		getPropertyValue('border-start-style');
-
 	/** Sets the value of "border-start-style" */
 	void set borderStartStyle(var value) {
 		setProperty('border-start-style', value, '');
@@ -673,7 +616,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-start-width" */
 	String get borderStartWidth() =>
 		getPropertyValue('border-start-width');
-
 	/** Sets the value of "border-start-width" */
 	void set borderStartWidth(var value) {
 		setProperty('border-start-width', value, '');
@@ -682,7 +624,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-style" */
 	String get borderStyle() =>
 		getPropertyValue('border-style');
-
 	/** Sets the value of "border-style" */
 	void set borderStyle(var value) {
 		setProperty('border-style', value, '');
@@ -691,7 +632,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-top" */
 	String get borderTop() =>
 		getPropertyValue('border-top');
-
 	/** Sets the value of "border-top" */
 	void set borderTop(var value) {
 		setProperty('border-top', value, '');
@@ -700,7 +640,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-top-color" */
 	String get borderTopColor() =>
 		getPropertyValue('border-top-color');
-
 	/** Sets the value of "border-top-color" */
 	void set borderTopColor(var value) {
 		setProperty('border-top-color', value, '');
@@ -709,7 +648,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-top-left-radius" */
 	String get borderTopLeftRadius() =>
 		getPropertyValue('border-top-left-radius');
-
 	/** Sets the value of "border-top-left-radius" */
 	void set borderTopLeftRadius(var value) {
 		setProperty('border-top-left-radius', value, '');
@@ -718,7 +656,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-top-right-radius" */
 	String get borderTopRightRadius() =>
 		getPropertyValue('border-top-right-radius');
-
 	/** Sets the value of "border-top-right-radius" */
 	void set borderTopRightRadius(var value) {
 		setProperty('border-top-right-radius', value, '');
@@ -727,7 +664,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-top-style" */
 	String get borderTopStyle() =>
 		getPropertyValue('border-top-style');
-
 	/** Sets the value of "border-top-style" */
 	void set borderTopStyle(var value) {
 		setProperty('border-top-style', value, '');
@@ -736,7 +672,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-top-width" */
 	String get borderTopWidth() =>
 		getPropertyValue('border-top-width');
-
 	/** Sets the value of "border-top-width" */
 	void set borderTopWidth(var value) {
 		setProperty('border-top-width', value, '');
@@ -745,7 +680,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-vertical-spacing" */
 	String get borderVerticalSpacing() =>
 		getPropertyValue('border-vertical-spacing');
-
 	/** Sets the value of "border-vertical-spacing" */
 	void set borderVerticalSpacing(var value) {
 		setProperty('border-vertical-spacing', value, '');
@@ -754,7 +688,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "border-width" */
 	String get borderWidth() =>
 		getPropertyValue('border-width');
-
 	/** Sets the value of "border-width" */
 	void set borderWidth(var value) {
 		setProperty('border-width', value, '');
@@ -763,7 +696,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "bottom" */
 	String get bottom() =>
 		getPropertyValue('bottom');
-
 	/** Sets the value of "bottom" */
 	void set bottom(var value) {
 		setProperty('bottom', value, '');
@@ -836,7 +768,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "box-reflect" */
 	String get boxReflect() =>
 		getPropertyValue('box-reflect');
-
 	/** Sets the value of "box-reflect" */
 	void set boxReflect(var value) {
 		setProperty('box-reflect', value, '');
@@ -861,7 +792,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "caption-side" */
 	String get captionSide() =>
 		getPropertyValue('caption-side');
-
 	/** Sets the value of "caption-side" */
 	void set captionSide(var value) {
 		setProperty('caption-side', value, '');
@@ -870,7 +800,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "clear" */
 	String get clear() =>
 		getPropertyValue('clear');
-
 	/** Sets the value of "clear" */
 	void set clear(var value) {
 		setProperty('clear', value, '');
@@ -879,7 +808,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "clip" */
 	String get clip() =>
 		getPropertyValue('clip');
-
 	/** Sets the value of "clip" */
 	void set clip(var value) {
 		setProperty('clip', value, '');
@@ -920,7 +848,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "column-break-inside" */
 	String get columnBreakInside() =>
 		getPropertyValue('column-break-inside');
-
 	/** Sets the value of "column-break-inside" */
 	void set columnBreakInside(var value) {
 		setProperty('column-break-inside', value, '');
@@ -929,7 +856,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "column-count" */
 	String get columnCount() =>
 		getPropertyValue('column-count');
-
 	/** Sets the value of "column-count" */
 	void set columnCount(var value) {
 		setProperty('column-count', value, '');
@@ -938,7 +864,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "column-gap" */
 	String get columnGap() =>
 		getPropertyValue('column-gap');
-
 	/** Sets the value of "column-gap" */
 	void set columnGap(var value) {
 		setProperty('column-gap', value, '');
@@ -995,7 +920,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "columns" */
 	String get columns() =>
 		getPropertyValue('columns');
-
 	/** Sets the value of "columns" */
 	void set columns(var value) {
 		setProperty('columns', value, '');
@@ -1004,7 +928,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "content" */
 	String get content() =>
 		getPropertyValue('content');
-
 	/** Sets the value of "content" */
 	void set content(var value) {
 		setProperty('content', value, '');
@@ -1013,7 +936,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "counter-increment" */
 	String get counterIncrement() =>
 		getPropertyValue('counter-increment');
-
 	/** Sets the value of "counter-increment" */
 	void set counterIncrement(var value) {
 		setProperty('counter-increment', value, '');
@@ -1022,7 +944,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "counter-reset" */
 	String get counterReset() =>
 		getPropertyValue('counter-reset');
-
 	/** Sets the value of "counter-reset" */
 	void set counterReset(var value) {
 		setProperty('counter-reset', value, '');
@@ -1031,7 +952,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "cursor" */
 	String get cursor() =>
 		getPropertyValue('cursor');
-
 	/** Sets the value of "cursor" */
 	void set cursor(var value) {
 		setProperty('cursor', value, '');
@@ -1040,7 +960,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "direction" */
 	String get direction() =>
 		getPropertyValue('direction');
-
 	/** Sets the value of "direction" */
 	void set direction(var value) {
 		setProperty('direction', value, '');
@@ -1049,7 +968,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "display" */
 	String get display() =>
 		getPropertyValue('display');
-
 	/** Sets the value of "display" */
 	void set display(var value) {
 		setProperty('display', value, '');
@@ -1082,7 +1000,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "flex-flow" */
 	String get flexFlow() =>
 		getPropertyValue('flex-flow');
-
 	/** Sets the value of "flex-flow" */
 	void set flexFlow(var value) {
 		setProperty('flex-flow', value, '');
@@ -1091,7 +1008,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "flex-order" */
 	String get flexOrder() =>
 		getPropertyValue('flex-order');
-
 	/** Sets the value of "flex-order" */
 	void set flexOrder(var value) {
 		setProperty('flex-order', value, '');
@@ -1100,7 +1016,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "flex-pack" */
 	String get flexPack() =>
 		getPropertyValue('flex-pack');
-
 	/** Sets the value of "flex-pack" */
 	void set flexPack(var value) {
 		setProperty('flex-pack', value, '');
@@ -1109,7 +1024,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "float" */
 	String get float() =>
 		getPropertyValue('float');
-
 	/** Sets the value of "float" */
 	void set float(var value) {
 		setProperty('float', value, '');
@@ -1134,7 +1048,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "font" */
 	String get font() =>
 		getPropertyValue('font');
-
 	/** Sets the value of "font" */
 	void set font(var value) {
 		setProperty('font', value, '');
@@ -1143,7 +1056,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "font-family" */
 	String get fontFamily() =>
 		getPropertyValue('font-family');
-
 	/** Sets the value of "font-family" */
 	void set fontFamily(var value) {
 		setProperty('font-family', value, '');
@@ -1184,7 +1096,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "font-stretch" */
 	String get fontStretch() =>
 		getPropertyValue('font-stretch');
-
 	/** Sets the value of "font-stretch" */
 	void set fontStretch(var value) {
 		setProperty('font-stretch', value, '');
@@ -1193,7 +1104,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "font-style" */
 	String get fontStyle() =>
 		getPropertyValue('font-style');
-
 	/** Sets the value of "font-style" */
 	void set fontStyle(var value) {
 		setProperty('font-style', value, '');
@@ -1202,7 +1112,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "font-variant" */
 	String get fontVariant() =>
 		getPropertyValue('font-variant');
-
 	/** Sets the value of "font-variant" */
 	void set fontVariant(var value) {
 		setProperty('font-variant', value, '');
@@ -1211,7 +1120,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "font-weight" */
 	String get fontWeight() =>
 		getPropertyValue('font-weight');
-
 	/** Sets the value of "font-weight" */
 	void set fontWeight(var value) {
 		setProperty('font-weight', value, '');
@@ -1244,7 +1152,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "hyphenate-limit-after" */
 	String get hyphenateLimitAfter() =>
 		getPropertyValue('hyphenate-limit-after');
-
 	/** Sets the value of "hyphenate-limit-after" */
 	void set hyphenateLimitAfter(var value) {
 		setProperty('hyphenate-limit-after', value, '');
@@ -1253,7 +1160,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "hyphenate-limit-before" */
 	String get hyphenateLimitBefore() =>
 		getPropertyValue('hyphenate-limit-before');
-
 	/** Sets the value of "hyphenate-limit-before" */
 	void set hyphenateLimitBefore(var value) {
 		setProperty('hyphenate-limit-before', value, '');
@@ -1262,7 +1168,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "hyphenate-limit-lines" */
 	String get hyphenateLimitLines() =>
 		getPropertyValue('hyphenate-limit-lines');
-
 	/** Sets the value of "hyphenate-limit-lines" */
 	void set hyphenateLimitLines(var value) {
 		setProperty('hyphenate-limit-lines', value, '');
@@ -1279,7 +1184,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "image-rendering" */
 	String get imageRendering() =>
 		getPropertyValue('image-rendering');
-
 	/** Sets the value of "image-rendering" */
 	void set imageRendering(var value) {
 		setProperty('image-rendering', value, '');
@@ -1288,7 +1192,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "left" */
 	String get left() =>
 		getPropertyValue('left');
-
 	/** Sets the value of "left" */
 	void set left(var value) {
 		setProperty('left', value, '');
@@ -1329,7 +1232,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "line-height" */
 	String get lineHeight() =>
 		getPropertyValue('line-height');
-
 	/** Sets the value of "line-height" */
 	void set lineHeight(var value) {
 		setProperty('line-height', value, '');
@@ -1338,7 +1240,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "list-style" */
 	String get listStyle() =>
 		getPropertyValue('list-style');
-
 	/** Sets the value of "list-style" */
 	void set listStyle(var value) {
 		setProperty('list-style', value, '');
@@ -1347,7 +1248,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "list-style-image" */
 	String get listStyleImage() =>
 		getPropertyValue('list-style-image');
-
 	/** Sets the value of "list-style-image" */
 	void set listStyleImage(var value) {
 		setProperty('list-style-image', value, '');
@@ -1356,7 +1256,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "list-style-position" */
 	String get listStylePosition() =>
 		getPropertyValue('list-style-position');
-
 	/** Sets the value of "list-style-position" */
 	void set listStylePosition(var value) {
 		setProperty('list-style-position', value, '');
@@ -1365,7 +1264,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "list-style-type" */
 	String get listStyleType() =>
 		getPropertyValue('list-style-type');
-
 	/** Sets the value of "list-style-type" */
 	void set listStyleType(var value) {
 		setProperty('list-style-type', value, '');
@@ -1374,7 +1272,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "locale" */
 	String get locale() =>
 		getPropertyValue('locale');
-
 	/** Sets the value of "locale" */
 	void set locale(var value) {
 		setProperty('locale', value, '');
@@ -1383,7 +1280,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "logical-height" */
 	String get logicalHeight() =>
 		getPropertyValue('logical-height');
-
 	/** Sets the value of "logical-height" */
 	void set logicalHeight(var value) {
 		setProperty('logical-height', value, '');
@@ -1392,7 +1288,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "logical-width" */
 	String get logicalWidth() =>
 		getPropertyValue('logical-width');
-
 	/** Sets the value of "logical-width" */
 	void set logicalWidth(var value) {
 		setProperty('logical-width', value, '');
@@ -1433,7 +1328,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "margin-before-collapse" */
 	String get marginBeforeCollapse() =>
 		getPropertyValue('margin-before-collapse');
-
 	/** Sets the value of "margin-before-collapse" */
 	void set marginBeforeCollapse(var value) {
 		setProperty('margin-before-collapse', value, '');
@@ -1442,7 +1336,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "margin-bottom" */
 	String get marginBottom() =>
 		getPropertyValue('margin-bottom');
-
 	/** Sets the value of "margin-bottom" */
 	void set marginBottom(var value) {
 		setProperty('margin-bottom', value, '');
@@ -1459,7 +1352,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "margin-collapse" */
 	String get marginCollapse() =>
 		getPropertyValue('margin-collapse');
-
 	/** Sets the value of "margin-collapse" */
 	void set marginCollapse(var value) {
 		setProperty('margin-collapse', value, '');
@@ -1468,7 +1360,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "margin-end" */
 	String get marginEnd() =>
 		getPropertyValue('margin-end');
-
 	/** Sets the value of "margin-end" */
 	void set marginEnd(var value) {
 		setProperty('margin-end', value, '');
@@ -1477,7 +1368,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "margin-left" */
 	String get marginLeft() =>
 		getPropertyValue('margin-left');
-
 	/** Sets the value of "margin-left" */
 	void set marginLeft(var value) {
 		setProperty('margin-left', value, '');
@@ -1590,7 +1480,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "mask-box-image-outset" */
 	String get maskBoxImageOutset() =>
 		getPropertyValue('mask-box-image-outset');
-
 	/** Sets the value of "mask-box-image-outset" */
 	void set maskBoxImageOutset(var value) {
 		setProperty('mask-box-image-outset', value, '');
@@ -1615,7 +1504,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "mask-box-image-source" */
 	String get maskBoxImageSource() =>
 		getPropertyValue('mask-box-image-source');
-
 	/** Sets the value of "mask-box-image-source" */
 	void set maskBoxImageSource(var value) {
 		setProperty('mask-box-image-source', value, '');
@@ -1640,7 +1528,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "mask-composite" */
 	String get maskComposite() =>
 		getPropertyValue('mask-composite');
-
 	/** Sets the value of "mask-composite" */
 	void set maskComposite(var value) {
 		setProperty('mask-composite', value, '');
@@ -1673,7 +1560,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "mask-position-x" */
 	String get maskPositionX() =>
 		getPropertyValue('mask-position-x');
-
 	/** Sets the value of "mask-position-x" */
 	void set maskPositionX(var value) {
 		setProperty('mask-position-x', value, '');
@@ -1682,7 +1568,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "mask-position-y" */
 	String get maskPositionY() =>
 		getPropertyValue('mask-position-y');
-
 	/** Sets the value of "mask-position-y" */
 	void set maskPositionY(var value) {
 		setProperty('mask-position-y', value, '');
@@ -1691,7 +1576,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "mask-repeat" */
 	String get maskRepeat() =>
 		getPropertyValue('mask-repeat');
-
 	/** Sets the value of "mask-repeat" */
 	void set maskRepeat(var value) {
 		setProperty('mask-repeat', value, '');
@@ -1700,7 +1584,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "mask-repeat-x" */
 	String get maskRepeatX() =>
 		getPropertyValue('mask-repeat-x');
-
 	/** Sets the value of "mask-repeat-x" */
 	void set maskRepeatX(var value) {
 		setProperty('mask-repeat-x', value, '');
@@ -1709,7 +1592,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "mask-repeat-y" */
 	String get maskRepeatY() =>
 		getPropertyValue('mask-repeat-y');
-
 	/** Sets the value of "mask-repeat-y" */
 	void set maskRepeatY(var value) {
 		setProperty('mask-repeat-y', value, '');
@@ -1718,7 +1600,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "mask-size" */
 	String get maskSize() =>
 		getPropertyValue('mask-size');
-
 	/** Sets the value of "mask-size" */
 	void set maskSize(var value) {
 		setProperty('mask-size', value, '');
@@ -1727,7 +1608,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "match-nearest-mail-blockquote-color" */
 	String get matchNearestMailBlockquoteColor() =>
 		getPropertyValue('match-nearest-mail-blockquote-color');
-
 	/** Sets the value of "match-nearest-mail-blockquote-color" */
 	void set matchNearestMailBlockquoteColor(var value) {
 		setProperty('match-nearest-mail-blockquote-color', value, '');
@@ -1736,7 +1616,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "max-height" */
 	String get maxHeight() =>
 		getPropertyValue('max-height');
-
 	/** Sets the value of "max-height" */
 	void set maxHeight(var value) {
 		setProperty('max-height', value, '');
@@ -1753,7 +1632,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "max-logical-width" */
 	String get maxLogicalWidth() =>
 		getPropertyValue('max-logical-width');
-
 	/** Sets the value of "max-logical-width" */
 	void set maxLogicalWidth(var value) {
 		setProperty('max-logical-width', value, '');
@@ -1762,7 +1640,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "max-width" */
 	String get maxWidth() =>
 		getPropertyValue('max-width');
-
 	/** Sets the value of "max-width" */
 	void set maxWidth(var value) {
 		setProperty('max-width', value, '');
@@ -1803,7 +1680,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "nbsp-mode" */
 	String get nbspMode() =>
 		getPropertyValue('nbsp-mode');
-
 	/** Sets the value of "nbsp-mode" */
 	void set nbspMode(var value) {
 		setProperty('nbsp-mode', value, '');
@@ -1812,7 +1688,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "opacity" */
 	String get opacity() =>
 		getPropertyValue('opacity');
-
 	/** Sets the value of "opacity" */
 	void set opacity(var value) {
 		setProperty('opacity', value, '');
@@ -1821,7 +1696,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "orphans" */
 	String get orphans() =>
 		getPropertyValue('orphans');
-
 	/** Sets the value of "orphans" */
 	void set orphans(var value) {
 		setProperty('orphans', value, '');
@@ -1830,7 +1704,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "outline" */
 	String get outline() =>
 		getPropertyValue('outline');
-
 	/** Sets the value of "outline" */
 	void set outline(var value) {
 		setProperty('outline', value, '');
@@ -1839,7 +1712,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "outline-color" */
 	String get outlineColor() =>
 		getPropertyValue('outline-color');
-
 	/** Sets the value of "outline-color" */
 	void set outlineColor(var value) {
 		setProperty('outline-color', value, '');
@@ -1848,7 +1720,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "outline-offset" */
 	String get outlineOffset() =>
 		getPropertyValue('outline-offset');
-
 	/** Sets the value of "outline-offset" */
 	void set outlineOffset(var value) {
 		setProperty('outline-offset', value, '');
@@ -1857,7 +1728,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "outline-style" */
 	String get outlineStyle() =>
 		getPropertyValue('outline-style');
-
 	/** Sets the value of "outline-style" */
 	void set outlineStyle(var value) {
 		setProperty('outline-style', value, '');
@@ -1866,7 +1736,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "outline-width" */
 	String get outlineWidth() =>
 		getPropertyValue('outline-width');
-
 	/** Sets the value of "outline-width" */
 	void set outlineWidth(var value) {
 		setProperty('outline-width', value, '');
@@ -1875,7 +1744,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "overflow" */
 	String get overflow() =>
 		getPropertyValue('overflow');
-
 	/** Sets the value of "overflow" */
 	void set overflow(var value) {
 		setProperty('overflow', value, '');
@@ -1884,7 +1752,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "overflow-x" */
 	String get overflowX() =>
 		getPropertyValue('overflow-x');
-
 	/** Sets the value of "overflow-x" */
 	void set overflowX(var value) {
 		setProperty('overflow-x', value, '');
@@ -1893,7 +1760,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "overflow-y" */
 	String get overflowY() =>
 		getPropertyValue('overflow-y');
-
 	/** Sets the value of "overflow-y" */
 	void set overflowY(var value) {
 		setProperty('overflow-y', value, '');
@@ -1902,7 +1768,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "padding" */
 	String get padding() =>
 		getPropertyValue('padding');
-
 	/** Sets the value of "padding" */
 	void set padding(var value) {
 		setProperty('padding', value, '');
@@ -1911,7 +1776,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "padding-after" */
 	String get paddingAfter() =>
 		getPropertyValue('padding-after');
-
 	/** Sets the value of "padding-after" */
 	void set paddingAfter(var value) {
 		setProperty('padding-after', value, '');
@@ -1920,7 +1784,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "padding-before" */
 	String get paddingBefore() =>
 		getPropertyValue('padding-before');
-
 	/** Sets the value of "padding-before" */
 	void set paddingBefore(var value) {
 		setProperty('padding-before', value, '');
@@ -1929,7 +1792,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "padding-bottom" */
 	String get paddingBottom() =>
 		getPropertyValue('padding-bottom');
-
 	/** Sets the value of "padding-bottom" */
 	void set paddingBottom(var value) {
 		setProperty('padding-bottom', value, '');
@@ -1938,7 +1800,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "padding-end" */
 	String get paddingEnd() =>
 		getPropertyValue('padding-end');
-
 	/** Sets the value of "padding-end" */
 	void set paddingEnd(var value) {
 		setProperty('padding-end', value, '');
@@ -1947,7 +1808,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "padding-left" */
 	String get paddingLeft() =>
 		getPropertyValue('padding-left');
-
 	/** Sets the value of "padding-left" */
 	void set paddingLeft(var value) {
 		setProperty('padding-left', value, '');
@@ -1972,7 +1832,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "padding-top" */
 	String get paddingTop() =>
 		getPropertyValue('padding-top');
-
 	/** Sets the value of "padding-top" */
 	void set paddingTop(var value) {
 		setProperty('padding-top', value, '');
@@ -1981,7 +1840,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "page" */
 	String get page() =>
 		getPropertyValue('page');
-
 	/** Sets the value of "page" */
 	void set page(var value) {
 		setProperty('page', value, '');
@@ -1990,7 +1848,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "page-break-after" */
 	String get pageBreakAfter() =>
 		getPropertyValue('page-break-after');
-
 	/** Sets the value of "page-break-after" */
 	void set pageBreakAfter(var value) {
 		setProperty('page-break-after', value, '');
@@ -1999,7 +1856,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "page-break-before" */
 	String get pageBreakBefore() =>
 		getPropertyValue('page-break-before');
-
 	/** Sets the value of "page-break-before" */
 	void set pageBreakBefore(var value) {
 		setProperty('page-break-before', value, '');
@@ -2008,7 +1864,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "page-break-inside" */
 	String get pageBreakInside() =>
 		getPropertyValue('page-break-inside');
-
 	/** Sets the value of "page-break-inside" */
 	void set pageBreakInside(var value) {
 		setProperty('page-break-inside', value, '');
@@ -2025,7 +1880,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "perspective-origin" */
 	String get perspectiveOrigin() =>
 		getPropertyValue('perspective-origin');
-
 	/** Sets the value of "perspective-origin" */
 	void set perspectiveOrigin(var value) {
 		setProperty('perspective-origin', value, '');
@@ -2034,7 +1888,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "perspective-origin-x" */
 	String get perspectiveOriginX() =>
 		getPropertyValue('perspective-origin-x');
-
 	/** Sets the value of "perspective-origin-x" */
 	void set perspectiveOriginX(var value) {
 		setProperty('perspective-origin-x', value, '');
@@ -2043,7 +1896,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "perspective-origin-y" */
 	String get perspectiveOriginY() =>
 		getPropertyValue('perspective-origin-y');
-
 	/** Sets the value of "perspective-origin-y" */
 	void set perspectiveOriginY(var value) {
 		setProperty('perspective-origin-y', value, '');
@@ -2052,7 +1904,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "pointer-events" */
 	String get pointerEvents() =>
 		getPropertyValue('pointer-events');
-
 	/** Sets the value of "pointer-events" */
 	void set pointerEvents(var value) {
 		setProperty('pointer-events', value, '');
@@ -2061,7 +1912,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "position" */
 	String get position() =>
 		getPropertyValue('position');
-
 	/** Sets the value of "position" */
 	void set position(var value) {
 		setProperty('position', value, '');
@@ -2070,7 +1920,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "quotes" */
 	String get quotes() =>
 		getPropertyValue('quotes');
-
 	/** Sets the value of "quotes" */
 	void set quotes(var value) {
 		setProperty('quotes', value, '');
@@ -2079,7 +1928,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "region-break-after" */
 	String get regionBreakAfter() =>
 		getPropertyValue('region-break-after');
-
 	/** Sets the value of "region-break-after" */
 	void set regionBreakAfter(var value) {
 		setProperty('region-break-after', value, '');
@@ -2088,7 +1936,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "region-break-before" */
 	String get regionBreakBefore() =>
 		getPropertyValue('region-break-before');
-
 	/** Sets the value of "region-break-before" */
 	void set regionBreakBefore(var value) {
 		setProperty('region-break-before', value, '');
@@ -2097,7 +1944,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "region-break-inside" */
 	String get regionBreakInside() =>
 		getPropertyValue('region-break-inside');
-
 	/** Sets the value of "region-break-inside" */
 	void set regionBreakInside(var value) {
 		setProperty('region-break-inside', value, '');
@@ -2106,7 +1952,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "region-overflow" */
 	String get regionOverflow() =>
 		getPropertyValue('region-overflow');
-
 	/** Sets the value of "region-overflow" */
 	void set regionOverflow(var value) {
 		setProperty('region-overflow', value, '');
@@ -2115,7 +1960,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "resize" */
 	String get resize() =>
 		getPropertyValue('resize');
-
 	/** Sets the value of "resize" */
 	void set resize(var value) {
 		setProperty('resize', value, '');
@@ -2124,7 +1968,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "right" */
 	String get right() =>
 		getPropertyValue('right');
-
 	/** Sets the value of "right" */
 	void set right(var value) {
 		setProperty('right', value, '');
@@ -2133,7 +1976,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "rtl-ordering" */
 	String get rtlOrdering() =>
 		getPropertyValue('rtl-ordering');
-
 	/** Sets the value of "rtl-ordering" */
 	void set rtlOrdering(var value) {
 		setProperty('rtl-ordering', value, '');
@@ -2142,7 +1984,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "size" */
 	String get size() =>
 		getPropertyValue('size');
-
 	/** Sets the value of "size" */
 	void set size(var value) {
 		setProperty('size', value, '');
@@ -2151,7 +1992,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "speak" */
 	String get speak() =>
 		getPropertyValue('speak');
-
 	/** Sets the value of "speak" */
 	void set speak(var value) {
 		setProperty('speak', value, '');
@@ -2160,7 +2000,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "src" */
 	String get src() =>
 		getPropertyValue('src');
-
 	/** Sets the value of "src" */
 	void set src(var value) {
 		setProperty('src', value, '');
@@ -2185,7 +2024,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-align" */
 	String get textAlign() =>
 		getPropertyValue('text-align');
-
 	/** Sets the value of "text-align" */
 	void set textAlign(var value) {
 		setProperty('text-align', value, '');
@@ -2194,7 +2032,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-combine" */
 	String get textCombine() =>
 		getPropertyValue('text-combine');
-
 	/** Sets the value of "text-combine" */
 	void set textCombine(var value) {
 		setProperty('text-combine', value, '');
@@ -2259,7 +2096,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-indent" */
 	String get textIndent() =>
 		getPropertyValue('text-indent');
-
 	/** Sets the value of "text-indent" */
 	void set textIndent(var value) {
 		setProperty('text-indent', value, '');
@@ -2268,7 +2104,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-line-through" */
 	String get textLineThrough() =>
 		getPropertyValue('text-line-through');
-
 	/** Sets the value of "text-line-through" */
 	void set textLineThrough(var value) {
 		setProperty('text-line-through', value, '');
@@ -2277,7 +2112,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-line-through-color" */
 	String get textLineThroughColor() =>
 		getPropertyValue('text-line-through-color');
-
 	/** Sets the value of "text-line-through-color" */
 	void set textLineThroughColor(var value) {
 		setProperty('text-line-through-color', value, '');
@@ -2286,7 +2120,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-line-through-mode" */
 	String get textLineThroughMode() =>
 		getPropertyValue('text-line-through-mode');
-
 	/** Sets the value of "text-line-through-mode" */
 	void set textLineThroughMode(var value) {
 		setProperty('text-line-through-mode', value, '');
@@ -2295,7 +2128,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-line-through-style" */
 	String get textLineThroughStyle() =>
 		getPropertyValue('text-line-through-style');
-
 	/** Sets the value of "text-line-through-style" */
 	void set textLineThroughStyle(var value) {
 		setProperty('text-line-through-style', value, '');
@@ -2304,7 +2136,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-line-through-width" */
 	String get textLineThroughWidth() =>
 		getPropertyValue('text-line-through-width');
-
 	/** Sets the value of "text-line-through-width" */
 	void set textLineThroughWidth(var value) {
 		setProperty('text-line-through-width', value, '');
@@ -2321,7 +2152,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-overflow" */
 	String get textOverflow() =>
 		getPropertyValue('text-overflow');
-
 	/** Sets the value of "text-overflow" */
 	void set textOverflow(var value) {
 		setProperty('text-overflow', value, '');
@@ -2330,7 +2160,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-overline" */
 	String get textOverline() =>
 		getPropertyValue('text-overline');
-
 	/** Sets the value of "text-overline" */
 	void set textOverline(var value) {
 		setProperty('text-overline', value, '');
@@ -2339,7 +2168,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-overline-color" */
 	String get textOverlineColor() =>
 		getPropertyValue('text-overline-color');
-
 	/** Sets the value of "text-overline-color" */
 	void set textOverlineColor(var value) {
 		setProperty('text-overline-color', value, '');
@@ -2348,7 +2176,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-overline-mode" */
 	String get textOverlineMode() =>
 		getPropertyValue('text-overline-mode');
-
 	/** Sets the value of "text-overline-mode" */
 	void set textOverlineMode(var value) {
 		setProperty('text-overline-mode', value, '');
@@ -2357,7 +2184,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-overline-style" */
 	String get textOverlineStyle() =>
 		getPropertyValue('text-overline-style');
-
 	/** Sets the value of "text-overline-style" */
 	void set textOverlineStyle(var value) {
 		setProperty('text-overline-style', value, '');
@@ -2366,7 +2192,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-overline-width" */
 	String get textOverlineWidth() =>
 		getPropertyValue('text-overline-width');
-
 	/** Sets the value of "text-overline-width" */
 	void set textOverlineWidth(var value) {
 		setProperty('text-overline-width', value, '');
@@ -2375,7 +2200,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-rendering" */
 	String get textRendering() =>
 		getPropertyValue('text-rendering');
-
 	/** Sets the value of "text-rendering" */
 	void set textRendering(var value) {
 		setProperty('text-rendering', value, '');
@@ -2384,7 +2208,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-security" */
 	String get textSecurity() =>
 		getPropertyValue('text-security');
-
 	/** Sets the value of "text-security" */
 	void set textSecurity(var value) {
 		setProperty('text-security', value, '');
@@ -2393,7 +2216,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-shadow" */
 	String get textShadow() =>
 		getPropertyValue('text-shadow');
-
 	/** Sets the value of "text-shadow" */
 	void set textShadow(var value) {
 		setProperty('text-shadow', value, '');
@@ -2402,7 +2224,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-size-adjust" */
 	String get textSizeAdjust() =>
 		getPropertyValue('text-size-adjust');
-
 	/** Sets the value of "text-size-adjust" */
 	void set textSizeAdjust(var value) {
 		setProperty('text-size-adjust', value, '');
@@ -2427,7 +2248,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-stroke-width" */
 	String get textStrokeWidth() =>
 		getPropertyValue('text-stroke-width');
-
 	/** Sets the value of "text-stroke-width" */
 	void set textStrokeWidth(var value) {
 		setProperty('text-stroke-width', value, '');
@@ -2436,7 +2256,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-transform" */
 	String get textTransform() =>
 		getPropertyValue('text-transform');
-
 	/** Sets the value of "text-transform" */
 	void set textTransform(var value) {
 		setProperty('text-transform', value, '');
@@ -2445,7 +2264,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-underline" */
 	String get textUnderline() =>
 		getPropertyValue('text-underline');
-
 	/** Sets the value of "text-underline" */
 	void set textUnderline(var value) {
 		setProperty('text-underline', value, '');
@@ -2454,7 +2272,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-underline-color" */
 	String get textUnderlineColor() =>
 		getPropertyValue('text-underline-color');
-
 	/** Sets the value of "text-underline-color" */
 	void set textUnderlineColor(var value) {
 		setProperty('text-underline-color', value, '');
@@ -2463,7 +2280,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-underline-mode" */
 	String get textUnderlineMode() =>
 		getPropertyValue('text-underline-mode');
-
 	/** Sets the value of "text-underline-mode" */
 	void set textUnderlineMode(var value) {
 		setProperty('text-underline-mode', value, '');
@@ -2472,7 +2288,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-underline-style" */
 	String get textUnderlineStyle() =>
 		getPropertyValue('text-underline-style');
-
 	/** Sets the value of "text-underline-style" */
 	void set textUnderlineStyle(var value) {
 		setProperty('text-underline-style', value, '');
@@ -2481,7 +2296,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "text-underline-width" */
 	String get textUnderlineWidth() =>
 		getPropertyValue('text-underline-width');
-
 	/** Sets the value of "text-underline-width" */
 	void set textUnderlineWidth(var value) {
 		setProperty('text-underline-width', value, '');
@@ -2490,7 +2304,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "top" */
 	String get top() =>
 		getPropertyValue('top');
-
 	/** Sets the value of "top" */
 	void set top(var value) {
 		setProperty('top', value, '');
@@ -2515,7 +2328,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "transform-origin-x" */
 	String get transformOriginX() =>
 		getPropertyValue('transform-origin-x');
-
 	/** Sets the value of "transform-origin-x" */
 	void set transformOriginX(var value) {
 		setProperty('transform-origin-x', value, '');
@@ -2524,7 +2336,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "transform-origin-y" */
 	String get transformOriginY() =>
 		getPropertyValue('transform-origin-y');
-
 	/** Sets the value of "transform-origin-y" */
 	void set transformOriginY(var value) {
 		setProperty('transform-origin-y', value, '');
@@ -2533,7 +2344,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "transform-origin-z" */
 	String get transformOriginZ() =>
 		getPropertyValue('transform-origin-z');
-
 	/** Sets the value of "transform-origin-z" */
 	void set transformOriginZ(var value) {
 		setProperty('transform-origin-z', value, '');
@@ -2542,7 +2352,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "transform-style" */
 	String get transformStyle() =>
 		getPropertyValue('transform-style');
-
 	/** Sets the value of "transform-style" */
 	void set transformStyle(var value) {
 		setProperty('transform-style', value, '');
@@ -2551,7 +2360,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "transition" */
 	String get transition() =>
 		getPropertyValue('transition');
-
 	/** Sets the value of "transition" */
 	void set transition(var value) {
 		setProperty('transition', value, '');
@@ -2560,7 +2368,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "transition-delay" */
 	String get transitionDelay() =>
 		getPropertyValue('transition-delay');
-
 	/** Sets the value of "transition-delay" */
 	void set transitionDelay(var value) {
 		setProperty('transition-delay', value, '');
@@ -2569,7 +2376,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "transition-duration" */
 	String get transitionDuration() =>
 		getPropertyValue('transition-duration');
-
 	/** Sets the value of "transition-duration" */
 	void set transitionDuration(var value) {
 		setProperty('transition-duration', value, '');
@@ -2578,7 +2384,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "transition-property" */
 	String get transitionProperty() =>
 		getPropertyValue('transition-property');
-
 	/** Sets the value of "transition-property" */
 	void set transitionProperty(var value) {
 		setProperty('transition-property', value, '');
@@ -2587,7 +2392,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "transition-timing-function" */
 	String get transitionTimingFunction() =>
 		getPropertyValue('transition-timing-function');
-
 	/** Sets the value of "transition-timing-function" */
 	void set transitionTimingFunction(var value) {
 		setProperty('transition-timing-function', value, '');
@@ -2596,7 +2400,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "unicode-bidi" */
 	String get unicodeBidi() =>
 		getPropertyValue('unicode-bidi');
-
 	/** Sets the value of "unicode-bidi" */
 	void set unicodeBidi(var value) {
 		setProperty('unicode-bidi', value, '');
@@ -2605,7 +2408,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "unicode-range" */
 	String get unicodeRange() =>
 		getPropertyValue('unicode-range');
-
 	/** Sets the value of "unicode-range" */
 	void set unicodeRange(var value) {
 		setProperty('unicode-range', value, '');
@@ -2614,7 +2416,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "user-drag" */
 	String get userDrag() =>
 		getPropertyValue('user-drag');
-
 	/** Sets the value of "user-drag" */
 	void set userDrag(var value) {
 		setProperty('user-drag', value, '');
@@ -2623,7 +2424,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "user-modify" */
 	String get userModify() =>
 		getPropertyValue('user-modify');
-
 	/** Sets the value of "user-modify" */
 	void set userModify(var value) {
 		setProperty('user-modify', value, '');
@@ -2632,7 +2432,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "user-select" */
 	String get userSelect() =>
 		getPropertyValue('user-select');
-
 	/** Sets the value of "user-select" */
 	void set userSelect(var value) {
 		setProperty('user-select', value, '');
@@ -2641,7 +2440,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "vertical-align" */
 	String get verticalAlign() =>
 		getPropertyValue('vertical-align');
-
 	/** Sets the value of "vertical-align" */
 	void set verticalAlign(var value) {
 		setProperty('vertical-align', value, '');
@@ -2650,7 +2448,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "visibility" */
 	String get visibility() =>
 		getPropertyValue('visibility');
-
 	/** Sets the value of "visibility" */
 	void set visibility(var value) {
 		setProperty('visibility', value, '');
@@ -2659,7 +2456,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "white-space" */
 	String get whiteSpace() =>
 		getPropertyValue('white-space');
-
 	/** Sets the value of "white-space" */
 	void set whiteSpace(var value) {
 		setProperty('white-space', value, '');
@@ -2668,7 +2464,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "widows" */
 	String get widows() =>
 		getPropertyValue('widows');
-
 	/** Sets the value of "widows" */
 	void set widows(var value) {
 		setProperty('widows', value, '');
@@ -2677,7 +2472,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "width" */
 	String get width() =>
 		getPropertyValue('width');
-
 	/** Sets the value of "width" */
 	void set width(var value) {
 		setProperty('width', value, '');
@@ -2686,7 +2480,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "word-break" */
 	String get wordBreak() =>
 		getPropertyValue('word-break');
-
 	/** Sets the value of "word-break" */
 	void set wordBreak(var value) {
 		setProperty('word-break', value, '');
@@ -2695,7 +2488,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "word-spacing" */
 	String get wordSpacing() =>
 		getPropertyValue('word-spacing');
-
 	/** Sets the value of "word-spacing" */
 	void set wordSpacing(var value) {
 		setProperty('word-spacing', value, '');
@@ -2704,7 +2496,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "word-wrap" */
 	String get wordWrap() =>
 		getPropertyValue('word-wrap');
-
 	/** Sets the value of "word-wrap" */
 	void set wordWrap(var value) {
 		setProperty('word-wrap', value, '');
@@ -2713,7 +2504,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "wrap-shape" */
 	String get wrapShape() =>
 		getPropertyValue('wrap-shape');
-
 	/** Sets the value of "wrap-shape" */
 	void set wrapShape(var value) {
 		setProperty('wrap-shape', value, '');
@@ -2722,7 +2512,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "writing-mode" */
 	String get writingMode() =>
 		getPropertyValue('writing-mode');
-
 	/** Sets the value of "writing-mode" */
 	void set writingMode(var value) {
 		setProperty('writing-mode', value, '');
@@ -2731,7 +2520,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "z-index" */
 	String get zIndex() =>
 		getPropertyValue('z-index');
-
 	/** Sets the value of "z-index" */
 	void set zIndex(var value) {
 		setProperty('z-index', value, '');
@@ -2740,7 +2528,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	/** Gets the value of "zoom" */
 	String get zoom() =>
 		getPropertyValue('zoom');
-
 	/** Sets the value of "zoom" */
 	void set zoom(var value) {
 		setProperty('zoom', value, '');
@@ -2753,81 +2540,96 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		return _cacheBrowserPrefix;
 	}
 	static String _cacheBrowserPrefix;
+
 	//Translates a property's name to be device-dependent
-	static String _trans(String propertyName)
-		=> _ddnms[propertyName] ? "$_browserPrefix$propertyName": propertyName;
-	static final Map<String, bool> _ddnms = const {
-		'animation': true, 'animation-delay': true, 'animation-direction': true,
-		'animation-duration': true, 'animation-fill-mode': true,
-		'animation-iteration-count': true, 'animation-name': true,
-		'animation-play-state': true, 'animation-timing-function': true,
-		'appearance': true, 'backface-visibility': true,
-		'background-composite': true,
-		'border-after': true, 'border-after-color': true,
-		'border-after-style': true, 'border-after-width': true,
-		'border-before': true, 'border-before-color': true,
-		'border-before-style': true, 'border-before-width': true,
-		'border-end': true, 'border-end-color': true, 'border-end-style': true,
-		'border-end-width': true, 'border-fit': true,
-		'border-horizontal-spacing': true,
-		'border-start': true, 'border-start-color': true,
-		'border-start-style': true, 'border-start-width': true,
-		'border-vertical-spacing': true,
-		'box-align': true, 'box-direction': true, 'box-flex': true,
-		'box-flex-group': true, 'box-lines': true, 'box-ordinal-group': true,
-		'box-orient': true, 'box-pack': true, 'box-reflect': true,
-		'color-correction': true, 'column-break-after': true,
-		'column-break-before': true, 'column-break-inside': true,
-		'column-count': true, 'column-gap': true, 'column-rule': true,
-		'column-rule-color': true, 'column-rule-style': true,
-		'column-rule-width': true, 'column-span': true, 'column-width': true,
-		'columns': true, 'filter': true,
-		'flex-align': true, 'flex-flow': true, 'flex-order': true,
-		'flex-pack': true,
-		'flow-from': true, 'flow-into': true,
-		'font-feature-settings': true, 'font-size-delta': true,
-		'font-smoothing': true,
-		'highlight': true, 'hyphenate-character': true,
-		'hyphenate-limit-after': true, 'hyphenate-limit-before': true,
-		'hyphenate-limit-lines': true, 'hyphens': true,
-		'line-box-contain': true, 'line-break': true, 'line-clamp': true,
-		'locale': true, 'logical-height': true, 'logical-width': true,
-		'margin-after': true, 'margin-after-collapse': true,
-		'margin-before': true, 'margin-before-collapse': true,
-		'margin-bottom-collapse': true, 'margin-collapse': true,
-		'margin-end': true, 'margin-start': true, 'margin-top-collapse': true,
-		'marquee': true, 'marquee-direction': true, 'marquee-increment': true,
-		'marquee-repetition': true, 'marquee-speed': true, 'marquee-style': true,
-		'mask': true, 'mask-attachment': true, 'mask-box-image': true,
-		'mask-box-image-outset': true, 'mask-box-image-repeat': true,
-		'mask-box-image-slice': true, 'mask-box-image-source': true,
-		'mask-box-image-width': true, 'mask-clip': true, 'mask-composite': true,
-		'mask-image': true, 'mask-origin': true, 'mask-position': true,
-		'mask-position-x': true, 'mask-position-y': true, 'mask-repeat': true,
-		'mask-repeat-x': true, 'mask-repeat-y': true, 'mask-size': true,
-		'match-nearest-mail-blockquote-color': true,
-		'max-logical-height': true, 'max-logical-width': true,
-		'min-logical-height': true, 'min-logical-width': true,
-		'nbsp-mode': true,
-		'padding-after': true, 'padding-before': true, 'padding-end': true,
-		'padding-start': true,
-		'perspective': true, 'perspective-origin': true,
-		'perspective-origin-x': true, 'perspective-origin-y': true,
-		'region-break-after': true, 'region-break-before': true,
-		'region-break-inside': true, 'region-overflow': true,
-		'rtl-ordering': true, 'tap-highlight-color': true,
-		'text-combine': true, 'text-decorations-in-effect': true,
-		'text-emphasis': true, 'text-emphasis-color': true,
-		'text-emphasis-position': true, 'text-emphasis-style': true,
-		'text-fill-color': true, 'text-orientation': true,
-		'text-security': true, 'text-size-adjust': true,
-		'text-stroke': true, 'text-stroke-color': true, 'text-stroke-width': true,
-		'transform': true, 'transform-origin': true, 'transform-origin-x': true,
-		'transform-origin-y': true, 'transform-origin-z': true,
-		'transform-style': true,
-		'transition': true, 'transition-delay': true, 'transition-duration': true,
-		'transition-property': true, 'transition-timing-function': true,
-		'user-drag': true, 'user-modify': true, 'user-select': true,
-		'wrap-shape': true, 'writing-mode': true
-	};
+	static String _trans(String propertyName) {
+		if (_ddnms === null) {
+			_ddnms = {};
+			//TODO: no need to check null when Dart can compare null with number
+			//TODO: check other attributes for device-depedent issue (like we did for box-sizing)
+			if ((device.ios !== null && device.ios < 5)
+			|| (device.android !== null && device.android < 2.4)
+			|| device.mozilla !== null) {
+				_ddnms['box-sizing'] = true;
+			}
+
+			for (final String nm in const [
+				'animation', 'animation-delay', 'animation-direction',
+				'animation-duration', 'animation-fill-mode',
+				'animation-iteration-count', 'animation-name',
+				'animation-play-state', 'animation-timing-function',
+				'appearance', 'backface-visibility',
+				'background-composite',
+				'border-after', 'border-after-color',
+				'border-after-style', 'border-after-width',
+				'border-before', 'border-before-color',
+				'border-before-style', 'border-before-width',
+				'border-end', 'border-end-color', 'border-end-style',
+				'border-end-width', 'border-fit',
+				'border-horizontal-spacing',
+				'border-start', 'border-start-color',
+				'border-start-style', 'border-start-width',
+				'border-vertical-spacing',
+				'box-align', 'box-direction', 'box-flex',
+				'box-flex-group', 'box-lines', 'box-ordinal-group',
+				'box-orient', 'box-pack', 'box-reflect',
+				'color-correction', 'column-break-after',
+				'column-break-before', 'column-break-inside',
+				'column-count', 'column-gap', 'column-rule',
+				'column-rule-color', 'column-rule-style',
+				'column-rule-width', 'column-span', 'column-width',
+				'columns', 'filter',
+				'flex-align', 'flex-flow', 'flex-order',
+				'flex-pack',
+				'flow-from', 'flow-into',
+				'font-feature-settings', 'font-size-delta',
+				'font-smoothing',
+				'highlight', 'hyphenate-character',
+				'hyphenate-limit-after', 'hyphenate-limit-before',
+				'hyphenate-limit-lines', 'hyphens',
+				'line-box-contain', 'line-break', 'line-clamp',
+				'locale', 'logical-height', 'logical-width',
+				'margin-after', 'margin-after-collapse',
+				'margin-before', 'margin-before-collapse',
+				'margin-bottom-collapse', 'margin-collapse',
+				'margin-end', 'margin-start', 'margin-top-collapse',
+				'marquee', 'marquee-direction', 'marquee-increment',
+				'marquee-repetition', 'marquee-speed', 'marquee-style',
+				'mask', 'mask-attachment', 'mask-box-image',
+				'mask-box-image-outset', 'mask-box-image-repeat',
+				'mask-box-image-slice', 'mask-box-image-source',
+				'mask-box-image-width', 'mask-clip', 'mask-composite',
+				'mask-image', 'mask-origin', 'mask-position',
+				'mask-position-x', 'mask-position-y', 'mask-repeat',
+				'mask-repeat-x', 'mask-repeat-y', 'mask-size',
+				'match-nearest-mail-blockquote-color',
+				'max-logical-height', 'max-logical-width',
+				'min-logical-height', 'min-logical-width',
+				'nbsp-mode',
+				'padding-after', 'padding-before', 'padding-end',
+				'padding-start',
+				'perspective', 'perspective-origin',
+				'perspective-origin-x', 'perspective-origin-y',
+				'region-break-after', 'region-break-before',
+				'region-break-inside', 'region-overflow',
+				'rtl-ordering', 'tap-highlight-color',
+				'text-combine', 'text-decorations-in-effect',
+				'text-emphasis', 'text-emphasis-color',
+				'text-emphasis-position', 'text-emphasis-style',
+				'text-fill-color', 'text-orientation',
+				'text-security', 'text-size-adjust',
+				'text-stroke', 'text-stroke-color', 'text-stroke-width',
+				'transform', 'transform-origin', 'transform-origin-x',
+				'transform-origin-y', 'transform-origin-z',
+				'transform-style',
+				'transition', 'transition-delay', 'transition-duration',
+				'transition-property', 'transition-timing-function',
+				'user-drag', 'user-modify', 'user-select',
+				'wrap-shape', 'writing-mode']) {
+				_ddnms[nm] = true;
+			}
+		}
+		return _ddnms[propertyName] ? "$_browserPrefix$propertyName": propertyName;
+	}
+	static Map<String, bool> _ddnms;
 }

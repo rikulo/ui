@@ -1,6 +1,17 @@
 html, body {
 	overflow: hidden;
+	padding: 0; margin: 0;
 }
 body {
 	-webkit-text-size-adjust: none;
+}
+
+.v- {
+	-webkit-box-sizing: border-box; /* <= iOS4, <= Android 2.3 */
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+//	position: absolute;
+}
+
+.v-main {
 }

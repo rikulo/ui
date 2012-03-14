@@ -3,9 +3,10 @@
 #library("artra:view");
 
 #import("dart:html");
+#import("dart:coreimpl");
 
 #import("../util/util.dart");
-#import("../viewimpl/viewimpl.dart");
+#import("../app/app.dart");
 
 #source("src/UiException.dart");
 #source("src/IdSpace.dart");
@@ -13,6 +14,9 @@
 #source("src/ViewEvent.dart");
 #source("src/_EventsImpl.dart");
 #source("src/_VirtualIdSpace.dart");
-#source("src/Segment.dart");
+#source("src/_SubviewList.dart");
+#source("src/_CSSStyleDeclarationImpl.dart");
+#source("src/_Invalidator.dart");
+#source("src/Zone.dart");
 #source("src/Label.dart");
 #source("src/Button.dart");

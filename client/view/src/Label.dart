@@ -73,9 +73,12 @@ class Label extends View {
 		if (n != null) n.innerHTML = encodedText;
 	}
 
-	void redraw_(StringBuffer out, Skipper skipper) {
+	void redraw(StringBuffer out) {
 		out.add('<span').add(domAttrs_()).add('>')
 			.add(encodedText).add('</span>');
+	}
+	void insertBefore(View child, View beforeChild) {
+		throw const UiException("No child allowed in Label");
 	}
 
 	String toString() => "Label('${value}')";

@@ -53,12 +53,15 @@ class Button extends View {
 		final Element n = node;
 		if (n != null) n.innerHTML = encodeXML(label);
 	}
-	void redraw_(StringBuffer out, Skipper skipper) {
+	void redraw(StringBuffer out) {
 		out.add('<button type="').add(type).add('"');
 		if (disabled)
 			out.add(' disabled="disabled"');
 		out.add(domAttrs_()).add('>')
 			.add(encodeXML(label)).add('</button>');
+	}
+	void insertBefore(View child, View beforeChild) {
+		throw const UiException("No child allowed in Button");
 	}
 
 	String toString() => "Label('${label}')";
