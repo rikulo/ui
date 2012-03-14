@@ -544,7 +544,7 @@ class View implements EventTarget {
 	/** Callback when this view is attached to the document.
 	 * <p>Default: invoke [enterDocument_] for each child.
 	 * <p>Subclass shall call back this method if it overrides this method. 
-	 * <p>See also [inDocument] and [rerender].
+	 * <p>See also [inDocument] and [invalidate].
 	 */
 	void enterDocument_(List<AfterEnterDocument> afters) {
 		_inDoc = true;
@@ -603,20 +603,8 @@ class View implements EventTarget {
 	 * immediately. If you'd like to render immediately, you have to specify
 	 * <code>timeout: -1</code>.
 	 */
-	void rerender([int timeout=0]) {
-		if (timeout >= 0) {
-			View self = this;
-			runOnce("rerender", () {
-				self.rerender(timeout: -1);
-			});
-			return;
-		}
-
-		Element n = node;
-		if (n != null) {
-			_exitDocument();
-			addToDocument(n, outer: true);
-		}
+	void invalidate() {
+		_invalidator.add(this);
 	}
 	/** Generates the HTML fragment for this view and its descendants.
 	 */
@@ -864,7 +852,7 @@ class View implements EventTarget {
 	 * them (the one with the longest timeout).
 	 */
 	void runOnce(String key, RunOnceTask task, [timeout=0]) {
-		if (_runOnceQue == null)
+		if (_runOnceQue === null)
 			_runOnceQue = new RunOnceQueue();
 		_runOnceQue.add(uuid + key, task, timeout: timeout);
 	}

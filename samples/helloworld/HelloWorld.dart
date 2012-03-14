@@ -7,7 +7,7 @@
 class HelloWorld extends Activity {
 
 	void onCreate_(View mainWindow) {
-		var div, w0, w1, w2;
+		var div, w0, w1, w2, w3;
 		div = new View();
 		div.appendChild(w0 = new Label("Hello World!"));
 		div.addToDocument(document.query('#test1'), outer:true);
@@ -48,10 +48,17 @@ class HelloWorld extends Activity {
 		w2.on.click.add((event) {
 			container.children.clear();
 		});
+		w3 = new Button("invalidate");
 		div = new View();
+		w3.on.click.add((event) {
+			w3.invalidate();
+			w2.invalidate();
+			div.invalidate();
+		});
 		div.appendChild(w0);
 		div.appendChild(w1);
 		div.appendChild(w2);
+		div.appendChild(w3);
 		div.appendChild(container);
 		div.addToDocument(document.query('#test3'), outer:true);
 	}

@@ -2547,6 +2547,7 @@ class _CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 			_ddnms = {};
 			//TODO: no need to check null when Dart can compare null with number
 			//TODO: check other attributes for device-depedent issue (like we did for box-sizing)
+			//CONSIDER: auto-generate this file with a tool
 			if ((device.ios !== null && device.ios < 5)
 			|| (device.android !== null && device.android < 2.4)
 			|| device.mozilla !== null) {
