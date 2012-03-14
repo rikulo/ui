@@ -212,7 +212,7 @@ class View implements EventTarget {
 	/** Returns the nearest ancestor who is an instance of the given class,
 	 * or null if not found.
 	 */
-/* TODO
+/* TODO: wait until Dart supports reflection
 	View getAncestorWith(Class type) {
 		for (View p = this; (p = p.parent) !== null;)
 			if (p is type)
@@ -596,16 +596,23 @@ class View implements EventTarget {
 				child.exitDocument_();
 	}
 
-	/** Rerenders the DOM elements for this view and its descendants,
-	 * and refreshes the document accordingly.
+	/** Invalidates the given view and its descendants.
 	 * It has no effect if it is not attached (i.e., [inDocument] is true).
-	 * <p>Notice that, for better performance, DOM elements won't be rendered
-	 * immediately. If you'd like to render immediately, you have to specify
-	 * <code>timeout: -1</code>.
+	 * <p>Notice that, for better performance, the view won't be redrawn immediately.
+	 * Rather, it is queued and all queued invalidation will be drawn together later.
+	 * If you'd like to redraw all queued invalidation immediately, you can
+	 * invoke [redrawInvalidated].
 	 */
 	void invalidate() {
 		_invalidator.add(this);
 	}
+	/** Redraws the invalidated views now.
+	 * <p>Notice that it is static, i.e., all queued invalidation will be redrawn.
+	 */
+	static void redrawInvalidated() {
+		_invalidator.redraw();
+	}
+
 	/** Generates the HTML fragment for this view and its descendants.
 	 */
 	void redraw(StringBuffer out) {

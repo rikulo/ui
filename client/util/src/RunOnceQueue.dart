@@ -23,16 +23,21 @@ class RunOnceQueue {
 	/** schedules a run-once task for execution.
 	 */
 	void add(String key, RunOnceTask task, [int timeout=0]) {
-		if (_tasks === null)
+		if (_tasks !== null)
+			cancel(key);
+		else
 			_tasks = {};
-
-		final int tid = _tasks[key];
-		if (tid !== null)
-			window.clearTimeout(tid);
 
 		_tasks[key] = window.setTimeout((){
 			_tasks.remove(key);
 			task();
 		}, timeout);
 	}
+	/** Cancels the scheduled task if it is still pending.
+	 */
+	void cancel(String key) {
+		final int tid = _tasks[key];
+		if (tid !== null)
+			window.clearTimeout(tid);
+	}	
 }

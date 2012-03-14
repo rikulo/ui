@@ -17,7 +17,7 @@ class _Invalidator {
 	void add(View view) {
 		if (view.inDocument) {
 			_views.add(view);
-			_runQue.add("", () {redraw();});
+			_runQue.add("", () {redraw();}, 5);
 		}
 	}
 	/** Redraws the views queued in the invalidated queue.
