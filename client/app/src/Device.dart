@@ -17,7 +17,7 @@ class Device {
 		_randroid = const RegExp(@"android[ /]([\w.]+)");
 
 	/** The brower's information. */
-	Version browser;
+	VersionInfo browser;
 	double safari;
 	double chrome;
 	double webkit;
@@ -25,6 +25,7 @@ class Device {
 	double msie;
 	double ios;
 	double android;
+	ScreenInfo screen;
 
 	Device() {
 		_initBrowserInfo();
@@ -75,7 +76,8 @@ class Device {
 			}
 		}
 
-		browser = new Version(name, version);
+		browser = new VersionInfo(name, version);
+		screen = new ScreenInfo(window.innerWidth, window.innerHeight);
 	}
 	static double _versionOf(String version, [char separator='.']) {
 		int j = version.indexOf(separator);
@@ -92,7 +94,7 @@ class Device {
 	}
 }
 
-class Version {
+class VersionInfo {
 	/** The browser's name, such as safari, chrome, mozilla and msie.
 	 */
 	final String name;
@@ -100,7 +102,12 @@ class Version {
 	 */
 	final double version;
 
-	const Version(this.name, this.version);
+	const VersionInfo(this.name, this.version);
+}
+/** The screen information. */
+class ScreenInfo extends Size {
+	ScreenInfo(int width, int height) : super(width, height) {
+	}
 }
 
 /** The current device.

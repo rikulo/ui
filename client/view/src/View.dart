@@ -30,9 +30,14 @@ class View implements EventTarget {
 	IdSpace _virtIS;
 
 	_ChildInfo _childInfo;
-	_CSSInfo _cssInfo;
-	String _wclass;
 	_EventListenerInfo _evlInfo;
+
+	//the classes; created on demand
+	Set<String> _classes;
+	//the CSS style; created on demand
+	CSSStyleDeclaration _style;
+	String _wclass;
+	int _left = 0, _top = 0, _width, _height;
 
 	bool _hidden, _inDoc;
 
@@ -40,11 +45,6 @@ class View implements EventTarget {
 		_wclass = "v-view";
 	}
 
-	_CSSInfo _initCSSInfo() {
-		if (_cssInfo === null)
-			_cssInfo = new _CSSInfo();
-		return _cssInfo;
-	}
 	_ChildInfo _initChildInfo() {
 		if (_childInfo === null)
 			_childInfo = new _ChildInfo();
@@ -635,19 +635,71 @@ class View implements EventTarget {
 	 */
 	void set hidden(bool hidden) {
 		_hidden = hidden;
-		if ((_cssInfo !== null && _cssInfo.style !== null) || hidden)
-			style.display = hidden ? "none": "";
-		Element n = node;
+
+		final Element n = node;
 		if (n !== null)
 			n.hidden = hidden;
 	}
+
+	/** Returns the left position of this view relative to its parent.
+	 * <p>Default: 0
+	 */
+	int get left() => _left;
+	/** Sets the left position of this view relative to its parent.
+	 */
+	void set left(int left) {
+		_left = left;
+
+		final Element n = node;
+		if (n !== null)
+			n.style.left = left + "px";
+	}
+	/** Returns the top position of this view relative to its parent.
+	 * <p>Default: 0
+	 */
+	int get top() => _top;
+	/** Sets the top position of this view relative to its parent.
+	 */
+	void set top(int top) {
+		_top = top;
+
+		final Element n = node;
+		if (n !== null)
+			n.style.top = top + "px";
+	}
+	/** Returns the width of this view.
+	 * <p>Default: null (up to the system)
+	 */
+	int get width() => _width; //TODO: retrieve node.offsetWidth if null
+	/** Sets the width of this view.
+	 */
+	void set width(int width) {
+		_width = width;
+
+		final Element n = node;
+		if (n !== null)
+			n.style.width = width !== null ? width + "px": "";
+	}
+	/** Returns the height of this view.
+	 * <p>Default: null (up to the system)
+	 */
+	int get height() => _height;
+	/** Sets the height of this view.
+	 */
+	void set height(int height) {
+		_height = height;
+
+		final Element n = node;
+		if (n !== null)
+			n.style.height = height !== null ? height + "px": "";
+	}
+
 	/** Retuns the CSS style.
 	 */
 	CSSStyleDeclaration get style() {
-		final _CSSInfo ci = _initCSSInfo();
-		if (ci.style === null)
-			ci.style =  new _CSSStyleDeclarationImpl(this);
-		return ci.style;
+		if (_style === null)
+			_style =  new _CSSStyleDeclarationImpl(this);
+		return _style;
 	}
 
 	/** Retuns the view class.
@@ -677,10 +729,9 @@ class View implements EventTarget {
 	/** Returns a readonly list of the additional style classes.
 	 */
 	Set<String> get classes() {
-		final _CSSInfo ci = _initCSSInfo();
-		if (ci.classes === null)
-			ci.classes = new Set();
-		return ci.classes;
+		if (_classes === null)
+			_classes = new Set();
+		return _classes;
 	}
 	/** Adds the give style class.
 	 */
@@ -693,8 +744,8 @@ class View implements EventTarget {
 	/** Removes the give style class.
 	 */
 	void removeClass(String className) {
-		if (_cssInfo != null) {
-			_cssInfo.classes.remove(className);
+		if (_classes != null) {
+			_classes.remove(className);
 			Element n = node;
 			if (n != null)
 				n.classes.remove(className);
@@ -708,9 +759,18 @@ class View implements EventTarget {
 		String s;
 		if (!noId && !(s = uuid).isEmpty())
 			sb.add(' id="').add(s).add('"');
-		if (!noStyle && _cssInfo !== null && _cssInfo.style !== null
-		&& !(s = _cssInfo.style.cssText).isEmpty())
-			sb.add(' style="').add(s).add('"');
+		if (!noStyle) {
+			final StringBuffer stylesb = new StringBuffer();
+			if (left != 0) stylesb.add("left:").add(left).add("px;");
+			if (top != 0) stylesb.add("top:").add(top).add("px;");
+			if (width !== null) stylesb.add("width:").add(width).add("px;");
+			if (height !== null) stylesb.add("height:").add(height).add("px;");
+			if (hidden) stylesb.add("display:none;");
+			if (_style !== null && !(s = _style.cssText).isEmpty())
+				stylesb.append(s);
+			if (stylesb.length > 0)
+					sb.add(' style="').add(stylesb).add('"');
+		}
 		if (!noClass && !(s = domClass_()).isEmpty())
 			sb.add(' class="').add(s).add('"');
 		return sb.toString();
@@ -719,14 +779,11 @@ class View implements EventTarget {
 	/** Outputs the class used for the DOM element of this view.
 	 */
 	String domClass_([bool noWclass=false, bool noClass=false]) {
-		if (_cssInfo === null)
-			return "v-";
-
 		final StringBuffer sb = new StringBuffer("v-");
 		if (!noWclass)
 			sb.add(' ').add(wclass);
-		if (!noClass && _cssInfo.classes != null)
-			for (final String cls in _cssInfo.classes)
+		if (!noClass && _classes != null)
+			for (final String cls in _classes)
 				sb.add(' ').add(cls);
 		return sb.toString();
 	}
@@ -874,12 +931,6 @@ class _ChildInfo {
 	View firstChild, lastChild;
 	int nChild = 0;
 	List children;
-}
-class _CSSInfo {
-	//the classes; created on demand
-	Set<String> classes;
-	//the CSS style; created on demand
-	CSSStyleDeclaration style;
 }
 class _EventListenerInfo {
 	Events on;

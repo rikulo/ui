@@ -18,8 +18,10 @@ class _CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		return _pcss;
 	}
 
-	String getPropertyValue(String propertyName)
-		=> _pcss !== null ? _pcss.getPropertyValue(_trans(propertyName)): "";
+	String getPropertyValue(String propertyName) {
+		_check(propertyName);
+		return _pcss !== null ? _pcss.getPropertyValue(_trans(propertyName)): "";
+	}
 
 	String removeProperty(String propertyName) {
 		propertyName = _trans(propertyName);
@@ -32,6 +34,7 @@ class _CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	}
 
 	void setProperty(String propertyName, String value, [String priority = null]) {
+		_check(propertyName);
 		propertyName = _trans(propertyName);
 
 		if (priority === null) {
@@ -2541,17 +2544,31 @@ class _CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	}
 	static String _cacheBrowserPrefix;
 
+	//Checks if the property's name is allowed to access directly
+	static void _check(String propertyName) {
+		if (_illnms === null) {
+			_illnms = new Set();
+			for (final String nm in const [
+				"left", "top", "right", "bottom", "width", "height", "display"])
+				_illnms.add(nm);
+		}
+		if (_illnms.contains(propertyName))
+			throw new UiException("$propertyName is not allowed. Please use View.$propertyName instead");
+	}
+	//Illegal names (that are not allowed to access directly
+	static Set<String> _illnms;
+
 	//Translates a property's name to be device-dependent
 	static String _trans(String propertyName) {
 		if (_ddnms === null) {
-			_ddnms = {};
+			_ddnms = new Set();
 			//TODO: no need to check null when Dart can compare null with number
 			//TODO: check other attributes for device-depedent issue (like we did for box-sizing)
 			//CONSIDER: auto-generate this file with a tool
 			if ((device.ios !== null && device.ios < 5)
 			|| (device.android !== null && device.android < 2.4)
 			|| device.mozilla !== null) {
-				_ddnms['box-sizing'] = true;
+				_ddnms.add('box-sizing');
 			}
 
 			for (final String nm in const [
@@ -2627,10 +2644,11 @@ class _CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 				'transition-property', 'transition-timing-function',
 				'user-drag', 'user-modify', 'user-select',
 				'wrap-shape', 'writing-mode']) {
-				_ddnms[nm] = true;
+				_ddnms.add(nm);
 			}
 		}
-		return _ddnms[propertyName] ? "$_browserPrefix$propertyName": propertyName;
+		return _ddnms.contains(propertyName) ?
+			"$_browserPrefix$propertyName": propertyName;
 	}
-	static Map<String, bool> _ddnms;
+	static Set<String> _ddnms;
 }

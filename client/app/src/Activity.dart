@@ -18,7 +18,11 @@ class Activity {
 		if (activity !== null)
 			throw const UiException("Only one activity is allowed");
 		activity = this;
-		onCreate_(createMainWindow_());
+		View main = createMainWindow_();
+		onCreate_(main);
+
+		if (!main.inDocument) //app might add it to Document manually
+			main.addToDocument(document.body);
 	}
 
 	/** Called to instantiate the main window.
@@ -29,13 +33,18 @@ class Activity {
 	 */
 	View createMainWindow_() {
 		final View main = new Zone();
-		main.classes.add("v-main");
-		main.addToDocument(document.body);
+		main.width = device.screen.width;
+		main.height = device.screen.height;
 		return main;
 	}
 	/** Called when the activity is starting.
+	 * Notice that main is not attached to the screen yet when this method
+	 * is called.
+	 * Rather, it will be attached after this method returns (for better
+	 * performance). However, if you'd like to attach it earlier, you can
+	 * invoke [View.addToDocument].
 	 */
-	void onCreate_(View mainWindow) {
+	void onCreate_(View main) {
 	}
 	/** Called when the activity is going into background.
 	 */

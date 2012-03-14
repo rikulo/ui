@@ -20,3 +20,5 @@
 #source("src/Zone.dart");
 #source("src/Label.dart");
 #source("src/Button.dart");
+#source("src/Position.dart");
+#source("src/Size.dart");
