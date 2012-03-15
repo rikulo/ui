@@ -5,11 +5,11 @@
 /**
  * An implementation of [CSSStyleDeclaration].
  */
-class _CSSStyleDeclarationImpl implements CSSStyleDeclaration {
+class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	final View _view;
 	CSSStyleDeclaration _pcss;
 
-	_CSSStyleDeclarationImpl(this._view) {
+	CSSStyleDeclarationImpl(this._view) {
 	}
 
 	CSSStyleDeclaration get _css() {
@@ -20,7 +20,7 @@ class _CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 
 	String getPropertyValue(String propertyName) {
 		_check(propertyName);
-		return _pcss !== null ? _pcss.getPropertyValue(_trans(propertyName)): "";
+		return _pcss !== null ? _unwrap(_pcss.getPropertyValue(_trans(propertyName))): "";
 	}
 
 	String removeProperty(String propertyName) {
@@ -2539,7 +2539,7 @@ class _CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	static String get _browserPrefix() {
 		if (_cacheBrowserPrefix === null)
 			_cacheBrowserPrefix = device.webkit !== null ? '-webkit-':
-				device.ie !== null ? '-ms-': device.mozilla != null ? '-moz-': '';
+				device.msie !== null ? '-ms-': device.mozilla != null ? '-moz-': '';
 		return _cacheBrowserPrefix;
 	}
 	static String _cacheBrowserPrefix;
@@ -2552,12 +2552,16 @@ class _CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 				"left", "top", "right", "bottom", "width", "height", "display"])
 				_illnms.add(nm);
 		}
+		
 		if (_illnms.contains(propertyName))
-			throw new UiException("$propertyName is not allowed. Please use View.$propertyName instead");
+			throw new UiException("$propertyName not allowed. Please use View's API instead, such as left, width and hidden.");
 	}
 	//Illegal names (that are not allowed to access directly
 	static Set<String> _illnms;
 
+	//Converts null to an empty string
+	String _unwrap(String value) => value !== null ? value: "";
+		//TODO: test helloworld to see if Dart fixes Issue 2154
 	//Translates a property's name to be device-dependent
 	static String _trans(String propertyName) {
 		if (_ddnms === null) {

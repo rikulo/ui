@@ -5,6 +5,7 @@
 #library("artra:app");
 
 #import("dart:dom");
+#import("../util/util.dart");
 #import("../view/view.dart");
 
 #source("src/Activity.dart");

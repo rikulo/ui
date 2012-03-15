@@ -38,6 +38,8 @@ class View implements EventTarget {
 	CSSStyleDeclaration _style;
 	String _wclass;
 	int _left = 0, _top = 0, _width, _height;
+	PositionDeclaration _position;
+	LayoutDeclaration _layout;
 
 	bool _hidden, _inDoc;
 
@@ -652,7 +654,7 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null)
-			n.style.left = left + "px";
+			n.style.left = "${left}px";
 	}
 	/** Returns the top position of this view relative to its parent.
 	 * <p>Default: 0
@@ -665,7 +667,7 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null)
-			n.style.top = top + "px";
+			n.style.top = "${top}px";
 	}
 	/** Returns the width of this view.
 	 * <p>Default: null (up to the system)
@@ -678,7 +680,7 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null)
-			n.style.width = width !== null ? width + "px": "";
+			n.style.width = width !== null ? "${width}px": "";
 	}
 	/** Returns the height of this view.
 	 * <p>Default: null (up to the system)
@@ -691,14 +693,27 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null)
-			n.style.height = height !== null ? height + "px": "";
+			n.style.height = height !== null ? "${height}px": "";
 	}
+
+	/** Returns the layout instruction of this view.
+	 * <p>[layout] intructs how a view shall layout the child views.
+	 * In additions, you can specify addition information in individual child
+	 * view's [position].
+	 */
+	LayoutDeclaration get layout() => _layout;
+	/** Returns the position requirement of this view.
+	 * It provides additional information for the parent view to
+	 * layout this view.
+	 * <p>See also [layout].
+	 */
+	PositionDeclaration get position() => _position;
 
 	/** Retuns the CSS style.
 	 */
 	CSSStyleDeclaration get style() {
 		if (_style === null)
-			_style =  new _CSSStyleDeclarationImpl(this);
+			_style =  new CSSStyleDeclarationImpl(this);
 		return _style;
 	}
 
@@ -767,7 +782,7 @@ class View implements EventTarget {
 			if (height !== null) stylesb.add("height:").add(height).add("px;");
 			if (hidden) stylesb.add("display:none;");
 			if (_style !== null && !(s = _style.cssText).isEmpty())
-				stylesb.append(s);
+				stylesb.add(s);
 			if (stylesb.length > 0)
 					sb.add(' style="').add(stylesb).add('"');
 		}

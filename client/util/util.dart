@@ -8,3 +8,5 @@
 #source("src/Strings.dart");
 #source("src/AbstractList.dart");
 #source("src/RunOnceQueue.dart");
+#source("src/Position.dart");
+#source("src/Size.dart");

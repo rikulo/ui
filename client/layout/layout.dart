@@ -4,3 +4,7 @@
 #library("dart:layout");
 
 #import("../view/view.dart");
+
+#source("src/LayoutManager.dart");
+#source("src/Layout.dart");
+#source("src/ArbitraryLayout.dart");

@@ -79,7 +79,7 @@ class Device {
 		browser = new VersionInfo(name, version);
 		screen = new ScreenInfo(window.innerWidth, window.innerHeight);
 	}
-	static double _versionOf(String version, [char separator='.']) {
+	static double _versionOf(String version, [String separator='.']) {
 		int j = version.indexOf(separator);
 		if (j >= 0) {
 			j = version.indexOf(separator, j + 1);

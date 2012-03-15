@@ -18,11 +18,11 @@ class Activity {
 		if (activity !== null)
 			throw const UiException("Only one activity is allowed");
 		activity = this;
-		View main = createMainWindow_();
-		onCreate_(main);
+		View mainView = createMainWindow_();
+		onCreate_(mainView);
 
-		if (!main.inDocument) //app might add it to Document manually
-			main.addToDocument(document.body);
+		if (!mainView.inDocument) //app might add it to Document manually
+		  mainView.addToDocument(document.body);
 	}
 
 	/** Called to instantiate the main window.
@@ -44,7 +44,7 @@ class Activity {
 	 * performance). However, if you'd like to attach it earlier, you can
 	 * invoke [View.addToDocument].
 	 */
-	void onCreate_(View main) {
+	void onCreate_(View mainView) {
 	}
 	/** Called when the activity is going into background.
 	 */

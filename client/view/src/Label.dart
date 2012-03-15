@@ -74,8 +74,8 @@ class Label extends View {
 	}
 
 	void redraw(StringBuffer out) {
-		out.add('<span').add(domAttrs_()).add('>')
-			.add(encodedText).add('</span>');
+		out.add('<div').add(domAttrs_()).add('>')
+			.add(encodedText).add('</div>');
 	}
 	void insertBefore(View child, View beforeChild) {
 		throw const UiException("No child allowed in Label");

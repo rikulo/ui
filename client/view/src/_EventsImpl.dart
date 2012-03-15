@@ -16,6 +16,7 @@ class _EventsImpl implements Events {
 		return _listeners.putIfAbsent(type,
 			() => new _EventListenerListImpl(_ptr, type));
 	}
+	//TODO: provide click and other methods for better auto-complete feature in DartEditor
 	noSuchMethod(String name, List args) {
 		if (name.startsWith("get:"))
 			return this[name.substring(4)];
