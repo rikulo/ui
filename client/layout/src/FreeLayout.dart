@@ -5,5 +5,5 @@
 /**
  * 
  */
-class ArbitraryLayout implements Layout {
+class FreeLayout implements Layout {
 }

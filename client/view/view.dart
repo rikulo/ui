@@ -22,5 +22,5 @@
 #source("src/LayoutDeclaration.dart");
 #source("src/_Invalidator.dart");
 #source("src/Zone.dart");
-#source("src/Label.dart");
+#source("src/TextView.dart");
 #source("src/Button.dart");

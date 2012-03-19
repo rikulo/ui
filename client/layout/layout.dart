@@ -7,4 +7,5 @@
 
 #source("src/LayoutManager.dart");
 #source("src/Layout.dart");
-#source("src/ArbitraryLayout.dart");
+#source("src/FreeLayout.dart");
+#source("src/LinearLayout.dart");

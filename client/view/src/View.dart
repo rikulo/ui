@@ -36,7 +36,7 @@ class View implements EventTarget {
 	Set<String> _classes;
 	//the CSS style; created on demand
 	CSSStyleDeclaration _style;
-	String _wclass;
+	String _vclass;
 	int _left = 0, _top = 0, _width, _height;
 	PositionDeclaration _position;
 	LayoutDeclaration _layout;
@@ -44,7 +44,7 @@ class View implements EventTarget {
 	bool _hidden, _inDoc;
 
 	View() {
-		_wclass = "v-view";
+		_vclass = "v-View";
 	}
 
 	_ChildInfo _initChildInfo() {
@@ -719,19 +719,19 @@ class View implements EventTarget {
 
 	/** Retuns the view class.
 	 */
-	String get wclass() => _wclass;
+	String get vclass() => _vclass;
 	/** Sets the view class.
 	 * <p>Default: empty, but an implementation usually provides a default
-	 * class, such as <code>v-label</code>. It is used to provide
-	 * the default look for this view. If wclass is changed, all the default
+	 * class, such as <code>v-TextView</code>. It is used to provide
+	 * the default look for this view. If vclass is changed, all the default
 	 * styles are gone.
 	 */
-	void set wclass(String newwc) {
-		final String oldwc = _wclass;
+	void set vclass(String newwc) {
+		final String oldwc = _vclass;
 		if (oldwc == newwc)
 			return; //nothing to do
 
-		_wclass = newwc;
+		_vclass = newwc;
 
 		Element n = node;
 		if (n != null) {
@@ -796,7 +796,7 @@ class View implements EventTarget {
 	String domClass_([bool noWclass=false, bool noClass=false]) {
 		final StringBuffer sb = new StringBuffer("v-");
 		if (!noWclass)
-			sb.add(' ').add(wclass);
+			sb.add(' ').add(vclass);
 		if (!noClass && _classes != null)
 			for (final String cls in _classes)
 				sb.add(' ').add(cls);

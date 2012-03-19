@@ -95,7 +95,7 @@ final Map<String, String>
  * @return String the encoded text.
  */
 String encodeXML(String txt,
-[bool pre=false, bool multiline=false, int maxlength=0]) {
+[bool multiline=false, int maxlength=0, bool pre=false]) {
 	if (txt == null) return null; //as it is
 
 	int tl = txt.length;

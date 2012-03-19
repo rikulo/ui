@@ -9,7 +9,7 @@ class Zone extends View implements IdSpace {
 
 	Zone() {
 	  _fellows = {};
-		wclass = "v-zone";
+		vclass = "v-Zone";
 	}
 
 	View getFellow(String id) => _fellows[id];
