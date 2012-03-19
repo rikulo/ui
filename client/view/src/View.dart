@@ -104,6 +104,12 @@ class View implements EventTarget {
 	List<View> queryAll(String selector) {
 		//TODO
 	}
+	/** Checks if a child view matches the given selector.
+	 */
+	bool matches(String selector, View child) {
+		//TODO
+	}
+
 	/** Returns the view of the given ID, or null if not found.
 	 * <p>If a view implements [IdSpace] must override [getFellow] and
 	 * [bindFellow_].
