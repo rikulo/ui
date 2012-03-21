@@ -18,7 +18,7 @@ typedef EventListener DomEventDispatcher(View target);
 /**
  * A view.
  * <p>Notice that if a view implements [IdSpace], it has to override
- * [getFellow] and [bindFellow_]. Please refer to [Zone] for sample code.
+ * [getFellow] and [bindFellow_]. Please refer to [Section] for sample code.
  */
 class View implements EventTarget {
 	String _id = "";

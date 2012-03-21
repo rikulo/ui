@@ -28,11 +28,11 @@ class Activity {
 	/** Called to instantiate the main window.
 	 * Don't call this method directly. It is a callback that
 	 * you can override to provide a different instance if necessary.
-	 * <p>Default: it creates an instance of [Zone] and initializes
+	 * <p>Default: it creates an instance of [Section] and initializes
 	 * it to fill the whole screen.
 	 */
 	View createMainWindow_() {
-		final View main = new Zone();
+		final View main = new Section();
 		main.width = device.screen.width;
 		main.height = device.screen.height;
 		return main;

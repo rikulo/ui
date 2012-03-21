@@ -3,13 +3,13 @@
 
 /** A zone is a view implementing ID space ([IdSpace]).
  */
-class Zone extends View implements IdSpace {
+class Section extends View implements IdSpace {
 	//The fellows. Used only if this is IdSpace
 	Map<String, View> _fellows;
 
-	Zone() {
+	Section() {
 	  _fellows = {};
-		vclass = "v-Zone";
+		vclass = "v-Section";
 	}
 
 	View getFellow(String id) => _fellows[id];

@@ -21,6 +21,6 @@
 #source("src/PositionDeclaration.dart");
 #source("src/LayoutDeclaration.dart");
 #source("src/_Invalidator.dart");
-#source("src/Zone.dart");
+#source("src/Section.dart");
 #source("src/TextView.dart");
 #source("src/Button.dart");
