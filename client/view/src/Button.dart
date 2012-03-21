@@ -38,12 +38,18 @@ class Button extends TextView {
 			n.disabled = _disabled;
 	}
 
-	void redraw(StringBuffer out) {
-		out.add('<button type="').add(type).add('"');
+	void domAttrs_(StringBuffer out,
+	[bool noId=false, bool noStyle=false, bool noClass=false]) {
+		out.add(' type="').add(type).add('"');
 		if (disabled)
 			out.add(' disabled="disabled"');
-		out.add(domAttrs_()).add('>').add(innerHTML_).add('</button>');
+		super.domAttrs_(out, noId, noStyle, noClass);
 	}
+	/** Returns the HTML tag's name representing this widget.
+	 * <p>Default: <code>button</code>.
+	 */
+	String get domTag_() => "button";
+
 	void insertBefore(View child, View beforeChild) {
 		throw const UiException("No child allowed in Button");
 	}

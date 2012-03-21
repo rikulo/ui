@@ -58,9 +58,13 @@ class TextView extends View {
 	 */
 	String get encodedText() => encodeXML(text, multiline:true);
 
-	void redraw(StringBuffer out) {
-		out.add('<div').add(domAttrs_()).add('>').add(innerHTML_).add('</div>');
+	/** Outputs the inner content of this widget. It is everything
+	 * <p>Default: output [innerHTML_].
+	 */
+	void domInner_(StringBuffer out) {
+		out.add(innerHTML_);
 	}
+
 	void insertBefore(View child, View beforeChild) {
 		throw const UiException("No child allowed in TextView");
 	}

@@ -624,11 +624,20 @@ class View implements EventTarget {
 	/** Generates the HTML fragment for this view and its descendants.
 	 */
 	void redraw(StringBuffer out) {
-		out.add('<div').add(domAttrs_()).add('>');
-		for (View child = firstChild; child !== null; child = child.nextSibling)
-			child.redraw(out);
-		out.add('</div>');
+		final String tag = domTag_;
+		out.add('<').add(tag);
+		domAttrs_(out);
+		out.add('>');
+		domInner_(out);
+		out.add('</').add(tag).add('>');
 	}
+	/** Returns the HTML tag's name representing this widget.
+	 * It is called by [redraw]. If you override redraw and don't call
+	 * back super.redraw, this method has no effect.
+	 * <p>Default: <code>div</code>.
+	 */
+	String get domTag_() => "div";
+
 	/**Shortcut of [redraw].*/
 	String _redrawHTML() {
 		StringBuffer out = new StringBuffer();
@@ -773,40 +782,71 @@ class View implements EventTarget {
 		}
 	}
 
-	/** Ouptuts all attributes used for the DOM element of this view.
+	/** Ouptuts all HTML attributes used for the DOM element of this view
+	 * to the given output.
+	 * It is called by [redraw], and the deriving class can override it
+	 * to provide more attributes. Of course, if you override [redraw]
+	 * directly, you can decide whether to call this method.
 	 */
-	String domAttrs_([bool noId=false, bool noStyle=false, bool noClass=false]) {
-		final StringBuffer sb = new StringBuffer();
+	void domAttrs_(StringBuffer out,
+	[bool noId=false, bool noStyle=false, bool noClass=false]) {
 		String s;
 		if (!noId && !(s = uuid).isEmpty())
-			sb.add(' id="').add(s).add('"');
+			out.add(' id="').add(s).add('"');
 		if (!noStyle) {
 			final StringBuffer stylesb = new StringBuffer();
-			if (left != 0) stylesb.add("left:").add(left).add("px;");
-			if (top != 0) stylesb.add("top:").add(top).add("px;");
-			if (width !== null) stylesb.add("width:").add(width).add("px;");
-			if (height !== null) stylesb.add("height:").add(height).add("px;");
-			if (hidden) stylesb.add("display:none;");
-			if (_style !== null && !(s = _style.cssText).isEmpty())
-				stylesb.add(s);
-			if (stylesb.length > 0)
-					sb.add(' style="').add(stylesb).add('"');
+			domStyle_(stylesb);
+			if (!stylesb.isEmpty())
+					out.add(' style="').add(stylesb).add('"');
 		}
-		if (!noClass && !(s = domClass_()).isEmpty())
-			sb.add(' class="').add(s).add('"');
-		return sb.toString();
+		if (!noClass) {
+			final StringBuffer classsb = new StringBuffer();
+			domClass_(classsb);
+			if (!classsb.isEmpty())
+				out.add(' class="').add(classsb).add('"');
+		}
 	}
-
-	/** Outputs the class used for the DOM element of this view.
+	/** Outputs the inner content of this widget. It is everything
+	 * other than the enclosing tag.
+	 * It is called by [redraw], and the deriving class can override it to
+	 * provide the content it wants. Of course, if you override [redraw]
+	 * directly, you can decide whether to call this method.
+	 * <p>Default: invoke each child view's [redraw] sequentially.
 	 */
-	String domClass_([bool noWclass=false, bool noClass=false]) {
-		final StringBuffer sb = new StringBuffer("v-");
-		if (!noWclass)
-			sb.add(' ').add(vclass);
+	void domInner_(StringBuffer out) {
+		for (View child = firstChild; child !== null; child = child.nextSibling)
+			child.redraw(out);
+	}
+	/** Outputs a list of the CSS classes for the DOM element of this view
+	 * to the given output. If there are multiple CSS classes, seperate them
+	 * with a space.
+	 */
+	void domClass_(StringBuffer out, [bool noVclass=false, bool noClass=false]) {
+		out.add("v-");
+		if (!noVclass)
+			out.add(' ').add(vclass);
 		if (!noClass && _classes != null)
 			for (final String cls in _classes)
-				sb.add(' ').add(cls);
-		return sb.toString();
+				out.add(' ').add(cls);
+	}
+	/** Output the CSS style for the DOM element of this view to the given outout.
+	 */
+	void domStyle_(StringBuffer out, [bool noLeft=false, bool noTop=false,
+	bool noWidth=false, bool noHeight=false, bool noHidden=false,
+	bool noStyle=false]) {
+		if (!noLeft && left != 0)
+			out.add("left:").add(left).add("px;");
+		if (!noTop && top != 0)
+			out.add("top:").add(top).add("px;");
+		if (!noWidth && width !== null)
+			out.add("width:").add(width).add("px;");
+		if (!noHeight && height !== null)
+			out.add("height:").add(height).add("px;");
+		if (!noHidden && hidden)
+			out.add("display:none;");
+		String s;
+		if (!noStyle && _style !== null && !(s = _style.cssText).isEmpty())
+			out.add(s);
 	}
 
 	/** Returns [Events] for adding or removing event listeners.

@@ -17,4 +17,9 @@ class Zone extends View implements IdSpace {
 		if (fellow !== null) _fellows[id] = fellow;
 		else _fellows.remove(id);
 	}
+
+	/** Returns the HTML tag's name representing this widget.
+	 * <p>Default: <code>section</code>.
+	 */
+	String get domTag_() => "section";
 }
