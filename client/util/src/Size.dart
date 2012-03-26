@@ -3,7 +3,7 @@
 // Author: tomyeh
 
 /**
- * The dimension.
+ * The size.
  */
 class Size {
 	/** The width. */

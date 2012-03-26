@@ -3,7 +3,10 @@
 // Author: tomyeh
 
 /**
- * 
+ * A layout controller that arranges the layout of the child views.
  */
-interface Layout {
+interface Layout default FreeLayout {
+	/** Measure the dimension of the given view.
+	 */
+	Size measure(LayoutContext ctx, View view);
 }

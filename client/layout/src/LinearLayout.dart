@@ -6,4 +6,7 @@
  * The linear layout.
  */
 class LinearLayout implements Layout {
+	Size measure(LayoutContext ctx, View view) {
+	
+	}
 }

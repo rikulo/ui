@@ -4,7 +4,7 @@
 
 #library("artra:app");
 
-#import("dart:dom");
+#import("dart:html");
 #import("../util/util.dart");
 #import("../view/view.dart");
 

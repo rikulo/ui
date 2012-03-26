@@ -12,9 +12,9 @@
 
 #source("src/View.dart");
 #source("src/ViewEvent.dart");
+#source("src/ViewEvents.dart");
 #source("src/UiException.dart");
 #source("src/IdSpace.dart");
-#source("src/_EventsImpl.dart");
 #source("src/_VirtualIdSpace.dart");
 #source("src/_SubviewList.dart");
 #source("src/Declaration.dart");

@@ -849,12 +849,12 @@ class View implements EventTarget {
 			out.add(s);
 	}
 
-	/** Returns [Events] for adding or removing event listeners.
+	/** Returns [ViewEvents] for adding or removing event listeners.
 	 */
-	Events get on() {
+	ViewEvents get on() {
 		final _EventListenerInfo ei = _initEventListenerInfo();
 		if (ei.on === null)
-			ei.on = new _EventsImpl(this);
+			ei.on = new _ViewEvents(this);
 		return ei.on;
 
 	}

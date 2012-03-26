@@ -18,33 +18,35 @@ class Activity {
 		if (activity !== null)
 			throw const UiException("Only one activity is allowed");
 		activity = this;
-		View mainView = createMainWindow_();
-		onCreate_(mainView);
+		View rootView = createRootView_();
+		onCreate_(rootView);
 
-		if (!mainView.inDocument) //app might add it to Document manually
-		  mainView.addToDocument(document.body);
+		if (!rootView.inDocument) {//app might add it to Document manually
+		  final Element cave = document.query("#v-root");
+      rootView.addToDocument(cave != null ? cave: document.body);
+		}
 	}
 
-	/** Called to instantiate the main window.
+	/** Called to instantiate the root view.
 	 * Don't call this method directly. It is a callback that
 	 * you can override to provide a different instance if necessary.
 	 * <p>Default: it creates an instance of [Section] and initializes
 	 * it to fill the whole screen.
 	 */
-	View createMainWindow_() {
-		final View main = new Section();
-		main.width = device.screen.width;
-		main.height = device.screen.height;
-		return main;
+	View createRootView_() {
+		final View root = new Section();
+		root.width = device.screen.width;
+		root.height = device.screen.height;
+		return root;
 	}
 	/** Called when the activity is starting.
-	 * Notice that main is not attached to the screen yet when this method
+	 * Notice that root is not attached to the screen yet when this method
 	 * is called.
 	 * Rather, it will be attached after this method returns (for better
 	 * performance). However, if you'd like to attach it earlier, you can
 	 * invoke [View.addToDocument].
 	 */
-	void onCreate_(View mainView) {
+	void onCreate_(View rootView) {
 	}
 	/** Called when the activity is going into background.
 	 */

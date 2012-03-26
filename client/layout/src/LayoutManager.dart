@@ -3,7 +3,21 @@
 // Author: tomyeh
 
 /**
- * 
+ * The layout mananger that manages the layout controllers ([Layout]).
+ * There is exactly one layout manager per application.
  */
-class LayoutManager {
+interface LayoutManager {
+	/** Adds the layout for the given name.
+	 */
+	Layout addLayout(String name, Layout layout);
+	/** Removes the layout of the given name if any.
+	 */
+	bool removeLayout(String name);
+	/** Returns the layout of the given name, or null if not found.
+	 */
+	Layout getLayout(String name);
+
+	/** Mesures the size of the given view.
+	 */
+	Size measure(LayoutContext ctx, View view);
 }

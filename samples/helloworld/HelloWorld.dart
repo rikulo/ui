@@ -6,13 +6,13 @@
 
 class HelloWorld extends Activity {
 
-	void onCreate_(View mainView) {
+	void onCreate_(View rootView) {
 		TextView text = new TextView("Hello World!");
 		text.on.click.add((event) {
 			event.target.style.border =
 				event.target.style.border.isEmpty() ? "1px solid blue": "";
 		});
-		mainView.appendChild(text);
+		rootView.appendChild(text);
 	}
 }
 
