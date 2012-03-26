@@ -5,7 +5,7 @@
  */
 class Button extends TextView {
 	String _type = "button";
-	bool _disabled = false;
+	bool _disabled = false, _autofocus = false;
 
 	Button([String text="", String html="", bool disabled=false]):
 	super(text, html), _disabled=disabled {
@@ -38,11 +38,28 @@ class Button extends TextView {
 			n.disabled = _disabled;
 	}
 
+	/** Returns whether this button should automatically get focus.
+	 * <p>Default: false.
+	 */
+	bool get autofocus() => _autofocus;
+	/** Sets whether this button should automatically get focus.
+	 */
+	void set autofocus(bool autofocus) {
+		_autofocus = autofocus;
+		if (autofocus) {
+			ButtonElement n = node;
+			if (n != null)
+				n.focus();
+		}
+	}
+
 	void domAttrs_(StringBuffer out,
 	[bool noId=false, bool noStyle=false, bool noClass=false]) {
 		out.add(' type="').add(type).add('"');
 		if (disabled)
 			out.add(' disabled="disabled"');
+		if (autofocus)
+			out.add(' autofocus="autofocus"');
 		super.domAttrs_(out, noId, noStyle, noClass);
 	}
 	/** Returns the HTML tag's name representing this widget.
