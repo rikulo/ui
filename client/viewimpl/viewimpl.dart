@@ -4,10 +4,13 @@
 #library("artra:viewimpl");
 
 #import("dart:html");
+
 #import("../app/app.dart");
 #import("../view/view.dart");
+#import("../util/util.dart");
 
 #source("src/CSSStyleDeclarationImpl.dart");
 #source("src/DeclarationImpl.dart");
 #source("src/LayoutDeclarationImpl.dart");
 #source("src/PositionDeclarationImpl.dart");
+#source("src/RunOnceViewManager.dart");

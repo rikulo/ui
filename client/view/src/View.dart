@@ -540,6 +540,7 @@ class View implements EventTarget {
 		List<AfterEnterDocument> afters = [];
 
 		enterDocument_(afters);
+		_layoutor.flush(this);
 
 		for (final AfterEnterDocument call in afters)
 			call(this);
@@ -604,22 +605,39 @@ class View implements EventTarget {
 				child.exitDocument_();
 	}
 
-	/** Invalidates the given view and its descendants.
+	/** Called when something has changed and caused that the display of this
+	 * view has to redraw.
 	 * It has no effect if it is not attached (i.e., [inDocument] is true).
 	 * <p>Notice that, for better performance, the view won't be redrawn immediately.
 	 * Rather, it is queued and all queued invalidation will be drawn together later.
 	 * If you'd like to redraw all queued invalidation immediately, you can
-	 * invoke [redrawInvalidated].
+	 * invoke [doInvalidate].
 	 */
 	void invalidate() {
-		_invalidator.add(this);
+		_invalidator.queue(this);
 	}
-	/** Redraws the invalidated views now.
+	/** Redraws the invalidated views queued by [invalidate].
 	 * <p>Notice that it is static, i.e., all queued invalidation will be redrawn.
 	 */
-	static void redrawInvalidated() {
-		_invalidator.redraw();
+	static void doInvalidate() {
+		_invalidator.flush();
 	}
+
+	/** Called when something has changed and caused that the layout of this
+	 * view is changed.
+	 */
+	void requestLayout() {
+		_layoutor.queue(this);
+	}
+	/** Redos the layout of the views queued by [requestLayout].
+	 * <p>Notice that it is static, i.e., all queued layout will be handled.
+	 */
+	static void doLayout() {
+		_layoutor.flush();
+	}
+	/** Measures the size of this view.
+	 */
+	Size measure(LayoutContext ctx) => _layoutor.measure(ctx, this);
 
 	/** Generates the HTML fragment for this view and its descendants.
 	 */
@@ -854,7 +872,7 @@ class View implements EventTarget {
 	ViewEvents get on() {
 		final _EventListenerInfo ei = _initEventListenerInfo();
 		if (ei.on === null)
-			ei.on = new _ViewEvents(this);
+			ei.on = new ViewEvents(this);
 		return ei.on;
 
 	}
@@ -986,17 +1004,4 @@ class View implements EventTarget {
 	int hashCode() {
 		return uuid.hashCode(); //uuid is immutiable once assigned
 	}
-}
-
-class _ChildInfo {
-	View firstChild, lastChild;
-	int nChild = 0;
-	List children;
-}
-class _EventListenerInfo {
-	Events on;
-	//the registered event listeners; created on demand
-	Map<String, List<EventListener>> listeners;
-	//generic DOM event listener
-	Map<String, EventListener> domListeners;
 }

@@ -4,6 +4,8 @@
 /** A map of event handlers for [View].
  */
 interface ViewEvents extends Events default _ViewEvents {
+	ViewEvents(var ptr);
+
 	EventListenerList get blur();
 	EventListenerList get change();
 	EventListenerList get click();

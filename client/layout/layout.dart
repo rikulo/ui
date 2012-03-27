@@ -3,8 +3,9 @@
 // Author: tomyeh
 #library("dart:layout");
 
-#import("../view/view.dart");
 #import("../util/util.dart");
+#import("../view/view.dart");
+#import("../viewimpl/viewimpl.dart");
 
 #source("src/LayoutManager.dart");
 #source("src/Layout.dart");
