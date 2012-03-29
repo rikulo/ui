@@ -38,7 +38,7 @@ class View implements EventTarget {
 	CSSStyleDeclaration _style;
 	String _vclass;
 	int _left = 0, _top = 0, _width, _height;
-	PositionDeclaration _position;
+	ProfileDeclaration _profile;
 	LayoutDeclaration _layout;
 
 	bool _hidden, _inDoc;
@@ -536,7 +536,7 @@ class View implements EventTarget {
 		List<AfterEnterDocument> afters = [];
 
 		enterDocument_(afters);
-		_layoutor.flush(this);
+		layoutManager.flush(this);
 
 		for (final AfterEnterDocument call in afters)
 			call(this);
@@ -623,17 +623,17 @@ class View implements EventTarget {
 	 * view is changed.
 	 */
 	void requestLayout() {
-		_layoutor.queue(this);
+		layoutManager.queue(this);
 	}
 	/** Redos the layout of the views queued by [requestLayout].
 	 * <p>Notice that it is static, i.e., all queued layout will be handled.
 	 */
 	static void doLayout() {
-		_layoutor.flush();
+		layoutManager.flush();
 	}
 	/** Measures the size of this view.
 	 */
-	Size measure(LayoutContext ctx) => _layoutor.measure(ctx, this);
+	Size measure(LayoutContext ctx) => layoutManager.measure(ctx, this);
 
 	/** Generates the HTML fragment for this view and its descendants
 	 * to the given string buffer.
@@ -729,15 +729,23 @@ class View implements EventTarget {
 	/** Returns the layout instruction of this view.
 	 * <p>[layout] intructs how a view shall layout the child views.
 	 * In additions, you can specify addition information in individual child
-	 * view's [position].
+	 * view's [profile].
 	 */
-	LayoutDeclaration get layout() => _layout;
-	/** Returns the position requirement of this view.
+	LayoutDeclaration get layout() {
+		if (_layout == null)
+			_layout = new LayoutDeclarationImpl(this);
+		return _layout;
+	}
+	/** Returns the profile, i.e., the layouot requirement, of this view.
 	 * It provides additional information for the parent view to
 	 * layout this view.
 	 * <p>See also [layout].
 	 */
-	PositionDeclaration get position() => _position;
+	ProfileDeclaration get profile() {
+		if (_profile == null)
+			_profile = new ProfileDeclarationImpl(this);
+		return _profile;
+	}
 
 	/** Retuns the CSS style.
 	 */

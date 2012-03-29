@@ -3,13 +3,13 @@
 // Author: tomyeh
 
 /**
- * The default implementation of [PositionDeclaration].
+ * The default implementation of [ProfileDeclaration].
  */
-class PositionDeclarationImpl extends  DeclarationImpl
-implements PositionDeclaration {
+class ProfileDeclarationImpl extends  DeclarationImpl
+implements ProfileDeclaration {
   final View _owner;
 
-  PositionDeclarationImpl(View owner) : _owner = owner;
+  ProfileDeclarationImpl(View owner) : _owner = owner;
 
 	String get anchor()
 		=> getPropertyValue("anchor");

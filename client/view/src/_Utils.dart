@@ -20,14 +20,6 @@ class _EventListenerInfo {
 	Map<String, EventListener> domListeners;
 }
 
-/** The layout manager used in [View]. */
-LayoutManager get _layoutor() {
-	if (_cachedLayoutor === null)
-		_cachedLayoutor = new LayoutManager();
-	return _cachedLayoutor;
-}
-LayoutManager _cachedLayoutor;
-
 /** The invalidator that handles the invalidated views
  * used in [View].
  */

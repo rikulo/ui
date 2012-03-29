@@ -5,9 +5,9 @@
 /**
  * The position declaration of a view.
  */
-interface PositionDeclaration extends Declaration
-default PositionDeclarationImpl {
-	PositionDeclaration(View owner);
+interface ProfileDeclaration extends Declaration
+default ProfileDeclarationImpl {
+	ProfileDeclaration(View owner);
 
 	/** The anchor.
 	 * <p>Syntax: <code>anchor: auto | <i>CSS selector</i>;</code>

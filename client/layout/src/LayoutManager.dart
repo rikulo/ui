@@ -55,3 +55,16 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		
 	}
 }
+
+/** The layout manager used in [View]. */
+LayoutManager get layoutManager() {
+	if (_cachedLM === null) {
+		_cachedLM = new LayoutManager();
+		_cachedLM.addLayout("linear", new LinearLayout());
+		FreeLayout freeLayout = new FreeLayout();
+		_cachedLM.addLayout("none", freeLayout);
+		_cachedLM.addLayout("", freeLayout);
+	}
+	return _cachedLM;
+}
+LayoutManager _cachedLM;

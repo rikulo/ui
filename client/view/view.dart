@@ -18,7 +18,7 @@
 #source("src/_VirtualIdSpace.dart");
 #source("src/_SubviewList.dart");
 #source("src/Declaration.dart");
-#source("src/PositionDeclaration.dart");
+#source("src/ProfileDeclaration.dart");
 #source("src/LayoutDeclaration.dart");
 #source("src/_Utils.dart");
 #source("src/Section.dart");

@@ -9,8 +9,9 @@
 #import("../view/view.dart");
 #import("../util/util.dart");
 
+#source("src/DomAgent.dart");
 #source("src/CSSStyleDeclarationImpl.dart");
 #source("src/DeclarationImpl.dart");
 #source("src/LayoutDeclarationImpl.dart");
-#source("src/PositionDeclarationImpl.dart");
+#source("src/ProfileDeclarationImpl.dart");
 #source("src/RunOnceViewManager.dart");
