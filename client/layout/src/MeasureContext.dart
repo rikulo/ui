@@ -5,7 +5,7 @@
 /**
  * The measure context.
  */
-interface MeasureContext {
+class MeasureContext {
 	/** Indicates there is no limitation of the given dimension.
 	 */
 	static final int NO_LIMIT = -1;
@@ -21,4 +21,10 @@ interface MeasureContext {
 	 * remove it from this map.
 	 */
 	Map<View, Size> measures;
+
+	MeasureContext() {
+		measures = new Map();
+		max = new Size(NO_LIMIT, NO_LIMIT);
+		min = new Size(NO_LIMIT, NO_LIMIT);
+	}
 }

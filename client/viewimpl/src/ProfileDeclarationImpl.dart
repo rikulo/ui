@@ -8,6 +8,7 @@
 class ProfileDeclarationImpl extends  DeclarationImpl
 implements ProfileDeclaration {
   final View _owner;
+  View _anchorView;
 
   ProfileDeclarationImpl(View owner) : _owner = owner;
 
@@ -15,6 +16,38 @@ implements ProfileDeclaration {
 		=> getPropertyValue("anchor");
 	void set anchor(String value) {
 		setProperty("anchor", value);
+		_anchorView = null;
+	}
+
+	View get anchorView() {
+		if (_anchorView !== null)
+			return _anchorView;
+		//TODO
+		return null;
+	}
+	void set anchorView(View view) {
+		String av;
+		if (view === null) {
+			av = "";
+		} else if (view === _owner.parent) {
+			av = "parent";
+		} else {
+			if (view !== null
+			&& view.parent !== null && _owner.parent !== null //parent might not be assigned yet
+			&& view.parent !== _owner.parent)
+				throw new UiException("Only parent or sibling allowed for an anchor, not $view");
+			if (view === _owner)
+				throw const UiException("The anchor can't be itself.");
+			av = view.id.isEmpty() ? "": "#${view.id}";
+		}
+		setProperty("anchor", av);
+		_anchorView = view;
+	}
+
+	String get location()
+		=> getPropertyValue("location");
+	void set location(String value) {
+		setProperty("location", value);
 	}
 
 	String get width()

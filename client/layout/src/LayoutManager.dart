@@ -6,7 +6,7 @@
  * The layout mananger that manages the layout controllers ([Layout]).
  * There is exactly one layout manager per application.
  */
-interface LayoutManager default _LayoutManager {
+interface LayoutManager extends Layout default _LayoutManager {
 	LayoutManager();
 
 	/** Adds the layout for the given name.
@@ -26,9 +26,6 @@ interface LayoutManager default _LayoutManager {
 	 * all queued views, if the give view is null.
 	 */
 	void flush([View view]);
-	/** Mesures the size of the given view.
-	 */
-	Size measure(MeasureContext ctx, View view);
 }
 
 class _LayoutManager extends RunOnceViewManager implements LayoutManager {
@@ -37,9 +34,9 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 	_LayoutManager(): super(true), _layouts = {} {
 	}
 
-	Layout addLayout(String name, Layout layout) {
+	Layout addLayout(String name, Layout clayout) {
 		final Layout old = _layouts[name];
-		_layouts[name] = layout;
+		_layouts[name] = clayout;
 		return old;
 	}
 	Layout removeLayout(String name) {
@@ -49,10 +46,26 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		return _layouts[name];
 	}
 
-	Size measure(MeasureContext ctx, View view) {
+	Size measure(MeasureContext ctx, View view)
+	=> _layoutOfView(view).measure(ctx, view);
+
+	void layout(MeasureContext ctx, View view) {
+		if (ctx === null)
+			flush(view); //so it will clean up _layouts
+		else
+			_layoutOfView(view).layout(ctx, view);
 	}
+
+	Layout _layoutOfView(View view) {
+		final String name = view.layout.type;
+		final Layout clayout = getLayout(name);
+		if (clayout == null)
+			throw new UiException("Unknown layout, ${name}");
+		return clayout;
+	}
+
 	void handle_(View view) {
-		
+		_layoutOfView(view).layout(new MeasureContext(), view);
 	}
 }
 

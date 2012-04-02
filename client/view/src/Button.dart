@@ -71,5 +71,5 @@ class Button extends TextView {
 		throw const UiException("No child allowed in Button");
 	}
 
-	String toString() => "Button('$text'+'$html')";
+	String toString() => "Button('$text$html')";
 }

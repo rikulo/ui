@@ -31,6 +31,7 @@ class View implements EventTarget {
 
 	_ChildInfo _childInfo;
 	_EventListenerInfo _evlInfo;
+	Map<String, Object> _attrs;
 
 	//the classes; created on demand
 	Set<String> _classes;
@@ -101,12 +102,7 @@ class View implements EventTarget {
 	}
 	/** Searches and returns all views that matches the selector.
 	 */
-	List<View> queryAll(String selector) {
-		//TODO
-	}
-	/** Checks if a child view matches the given selector.
-	 */
-	bool matches(String selector, View child) {
+	Iterable<View> queryAll(String selector) {
 		//TODO
 	}
 
@@ -536,7 +532,7 @@ class View implements EventTarget {
 		List<AfterEnterDocument> afters = [];
 
 		enterDocument_(afters);
-		layoutManager.flush(this);
+		doLayout();
 
 		for (final AfterEnterDocument call in afters)
 			call(this);
@@ -615,7 +611,7 @@ class View implements EventTarget {
 	/** Redraws the invalidated views queued by [invalidate].
 	 * <p>Notice that it is static, i.e., all queued invalidation will be redrawn.
 	 */
-	static void doInvalidate() {
+	static void flushInvalidated() {
 		_invalidator.flush();
 	}
 
@@ -625,15 +621,23 @@ class View implements EventTarget {
 	void requestLayout() {
 		layoutManager.queue(this);
 	}
-	/** Redos the layout of the views queued by [requestLayout].
-	 * <p>Notice that it is static, i.e., all queued layout will be handled.
+	/** Handles the layouts of views queued by [requestLayout].
+	 * <p>Notice that it is static, i.e., all queued requests will be handled.
 	 */
-	static void doLayout() {
+	static void flushRequestedLayouts() {
 		layoutManager.flush();
 	}
-	/** Measures the size of this view.
+	/** Hanldes the layout of this view.
+	 * <p>Default: have [Layout] to handle it.
 	 */
-	Size measure(MeasureContext ctx) => layoutManager.measure(ctx, this);
+	void doLayout([MeasureContext ctx=null]) {
+		layoutManager.layout(ctx, this);
+	}
+	/** Measures the size of this view.
+	 * It is called by [doLayout].
+	 */
+	Size measure(MeasureContext ctx)
+	=> layoutManager.measure(ctx, this);
 
 	/** Generates the HTML fragment for this view and its descendants
 	 * to the given string buffer.
@@ -1020,6 +1024,30 @@ class View implements EventTarget {
 		}
 	}
 
+	/** Returns the value of the given attribute, or null if not assigned.
+	 */
+	Object getAttribute(String name) {
+		return _attrs !== null ? _attrs[name]: null;
+	}
+	/** Returns if the given attribute has been assigned with a value
+	 * (including null).
+	 */
+	bool hasAttribute(String name) {
+		return _attrs !== null && _attrs.containsKey(name);
+	}
+	/** Sets the value to the given attribute.
+	 */
+	void setAttribute(String name, Object value) {
+		if (_attrs == null)
+			_attrs = new Map();
+		_attrs[name] = value;
+	}
+	/** Remove the given attribute.
+	 */
+	void removeAttribute(String name) {
+		if (_attrs !== null) _attrs.remove(name);
+	}
+
 	/** Schedules a run-once task.
 	 * It is used to schedule a long-execution task that has the same effect
 	 * no matter how many times it is executed. For example, [rerender].
@@ -1038,14 +1066,14 @@ class View implements EventTarget {
 		return uuid.hashCode(); //uuid is immutiable once assigned
 	}
 
-	/** useless; always does nothing. */
+  /** useless; always does nothing. */
 	void $dom_addEventListener(String type, void listener(Event event), [bool useCapture]) {
 	}
-	/** useless; always does nothing and returns false. */
+  /** useless; always does nothing and returns false. */
 	bool $dom_dispatchEvent(Event event) {
 	  return false;
 	}
-	/** useless; always does nothing. */
+  /** useless; always does nothing. */
 	void $dom_removeEventListener(String type, void listener(Event event), [bool useCapture]) {
 	}
 }

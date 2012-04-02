@@ -69,5 +69,5 @@ class TextView extends View {
 		throw const UiException("No child allowed in TextView");
 	}
 
-	String toString() => "TextView('$text'+'$html')";
+	String toString() => "TextView('$text$html')";
 }

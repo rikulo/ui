@@ -12,3 +12,4 @@
 #source("src/MeasureContext.dart");
 #source("src/FreeLayout.dart");
 #source("src/LinearLayout.dart");
+#source("src/AnchorRelation.dart");

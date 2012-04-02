@@ -9,4 +9,7 @@ interface Layout default FreeLayout {
 	/** Measure the dimension of the given view.
 	 */
 	Size measure(MeasureContext ctx, View view);
+	/** Handles the layout of the given view.
+	 */
+	void layout(MeasureContext ctx, View view);
 }

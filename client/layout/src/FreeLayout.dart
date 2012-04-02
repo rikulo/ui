@@ -9,4 +9,8 @@ class FreeLayout implements Layout {
 	Size measure(MeasureContext ctx, View view) {
 	
 	}
+	void layout(MeasureContext ctx, View view) {
+		final AnchorRelation ar = new AnchorRelation(view);
+		ar.layout(ar.independences, null, noPosition:true);
+	}
 }

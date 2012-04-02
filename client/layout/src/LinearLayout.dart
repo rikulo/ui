@@ -9,4 +9,6 @@ class LinearLayout implements Layout {
 	Size measure(MeasureContext ctx, View view) {
 	
 	}
+	void layout(MeasureContext ctx, View view) {
+	}
 }

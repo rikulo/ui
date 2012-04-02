@@ -11,7 +11,7 @@ default LayoutDeclarationImpl {
 
 	/** The type of the layout.
 	 * <p>Syntax: <code>type: none | linear | stack | tiles | table;</code>
-	 * <p>Default: <code>none</code>
+	 * <p>Default: an empty string, i.e., <code>none</code>.
 	 * <p>Notice you can plug in addition custom layouts. Refer to [LayoutManager]
 	 * for details.
 	 */
