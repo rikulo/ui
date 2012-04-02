@@ -37,7 +37,7 @@ class View implements EventTarget {
 	//the CSS style; created on demand
 	CSSStyleDeclaration _style;
 	String _vclass;
-	int _left = 0, _top = 0, _width, _height;
+	int _left = 0, _top = 0, _width, _height, _scrlLeft = 0, _scrlTop = 0;
 	ProfileDeclaration _profile;
 	LayoutDeclaration _layout;
 
@@ -633,7 +633,7 @@ class View implements EventTarget {
 	}
 	/** Measures the size of this view.
 	 */
-	Size measure(LayoutContext ctx) => layoutManager.measure(ctx, this);
+	Size measure(MeasureContext ctx) => layoutManager.measure(ctx, this);
 
 	/** Generates the HTML fragment for this view and its descendants
 	 * to the given string buffer.
@@ -699,6 +699,34 @@ class View implements EventTarget {
 		if (n !== null)
 			n.style.top = "${top}px";
 	}
+
+	/** Returns the left position of this view relative to its parent.
+	 * <p>Default: 0
+	 */
+	int get scrollLeft() => _scrlLeft;
+	/** Sets the left position of this view relative to its parent.
+	 */
+	void set scrollLeft(int left) {
+		_scrlLeft = left;
+
+		final Element n = node;
+		if (n !== null)
+			n.$dom_scrollLeft = left;
+	}
+	/** Returns the top position of this view relative to its parent.
+	 * <p>Default: 0
+	 */
+	int get scrollTop() => _scrlTop;
+	/** Sets the top position of this view relative to its parent.
+	 */
+	void set scrollTop(int top) {
+		_scrlTop = top;
+
+		final Element n = node;
+		if (n !== null)
+			n.$dom_scrollTop = top;
+	}
+		
 	/** Returns the width of this view.
 	 * <p>Default: null (up to the system)
 	 */
@@ -1008,5 +1036,16 @@ class View implements EventTarget {
 
 	int hashCode() {
 		return uuid.hashCode(); //uuid is immutiable once assigned
+	}
+
+	/** useless; always does nothing. */
+	void $dom_addEventListener(String type, void listener(Event event), [bool useCapture]) {
+	}
+	/** useless; always does nothing and returns false. */
+	bool $dom_dispatchEvent(Event event) {
+	  return false;
+	}
+	/** useless; always does nothing. */
+	void $dom_removeEventListener(String type, void listener(Event event), [bool useCapture]) {
 	}
 }

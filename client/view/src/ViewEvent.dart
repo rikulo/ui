@@ -96,4 +96,8 @@ class ViewEvent<Data> implements Event {
 	/** Useless; does nothing. */
 	void set clipboardData(Clipboard data) {
 	}
+
+	/** useless; always does nothing. */
+	void $dom_initEvent(String eventTypeArg, bool canBubbleArg, bool cancelableArg) {
+	}
 }

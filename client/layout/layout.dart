@@ -9,6 +9,6 @@
 
 #source("src/LayoutManager.dart");
 #source("src/Layout.dart");
-#source("src/LayoutContext.dart");
+#source("src/MeasureContext.dart");
 #source("src/FreeLayout.dart");
 #source("src/LinearLayout.dart");

@@ -6,7 +6,7 @@
  * The free layout 
  */
 class FreeLayout implements Layout {
-	Size measure(LayoutContext ctx, View view) {
+	Size measure(MeasureContext ctx, View view) {
 	
 	}
 }

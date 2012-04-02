@@ -28,7 +28,7 @@ interface LayoutManager default _LayoutManager {
 	void flush([View view]);
 	/** Mesures the size of the given view.
 	 */
-	Size measure(LayoutContext ctx, View view);
+	Size measure(MeasureContext ctx, View view);
 }
 
 class _LayoutManager extends RunOnceViewManager implements LayoutManager {
@@ -49,7 +49,7 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		return _layouts[name];
 	}
 
-	Size measure(LayoutContext ctx, View view) {
+	Size measure(MeasureContext ctx, View view) {
 	}
 	void handle_(View view) {
 		

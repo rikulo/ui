@@ -8,5 +8,5 @@
 interface Layout default FreeLayout {
 	/** Measure the dimension of the given view.
 	 */
-	Size measure(LayoutContext ctx, View view);
+	Size measure(MeasureContext ctx, View view);
 }
