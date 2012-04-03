@@ -46,14 +46,14 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		return _layouts[name];
 	}
 
-	Size measure(MeasureContext ctx, View view)
-	=> _layoutOfView(view).measure(ctx, view);
+	Size measure(MeasureContext mctx, View view)
+	=> _layoutOfView(view).measure(mctx, view);
 
-	void layout(MeasureContext ctx, View view) {
-		if (ctx === null)
+	void layout(MeasureContext mctx, View view) {
+		if (mctx === null)
 			flush(view); //so it will clean up _layouts
 		else
-			_layoutOfView(view).layout(ctx, view);
+			_layoutOfView(view).layout(mctx, view);
 	}
 
 	Layout _layoutOfView(View view) {

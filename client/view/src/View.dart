@@ -630,14 +630,14 @@ class View implements EventTarget {
 	/** Hanldes the layout of this view.
 	 * <p>Default: have [Layout] to handle it.
 	 */
-	void doLayout([MeasureContext ctx=null]) {
-		layoutManager.layout(ctx, this);
+	void doLayout([MeasureContext mctx=null]) {
+		layoutManager.layout(mctx, this);
 	}
 	/** Measures the size of this view.
 	 * It is called by [doLayout].
 	 */
-	Size measure(MeasureContext ctx)
-	=> layoutManager.measure(ctx, this);
+	Size measure(MeasureContext mctx)
+	=> layoutManager.measure(mctx, this);
 
 	/** Generates the HTML fragment for this view and its descendants
 	 * to the given string buffer.
@@ -734,7 +734,8 @@ class View implements EventTarget {
 	/** Returns the width of this view.
 	 * <p>Default: null (up to the system)
 	 */
-	int get width() => _width; //TODO: retrieve node.offsetWidth if null
+	int get width()
+	=> !inDocument || _width !== null ? _width: node.$dom_offsetWidth;
 	/** Sets the width of this view.
 	 */
 	void set width(int width) {
@@ -747,7 +748,8 @@ class View implements EventTarget {
 	/** Returns the height of this view.
 	 * <p>Default: null (up to the system)
 	 */
-	int get height() => _height;
+	int get height()
+	=> !inDocument || _height !== null ? _height: node.$dom_offsetHeight;
 	/** Sets the height of this view.
 	 */
 	void set height(int height) {
@@ -893,10 +895,10 @@ class View implements EventTarget {
 			out.add("left:").add(left).add("px;");
 		if (!noTop && top != 0)
 			out.add("top:").add(top).add("px;");
-		if (!noWidth && width !== null)
-			out.add("width:").add(width).add("px;");
-		if (!noHeight && height !== null)
-			out.add("height:").add(height).add("px;");
+		if (!noWidth && _width !== null) //don't use width since it has special handling
+			out.add("width:").add(_width).add("px;");
+		if (!noHeight && _height !== null) //don't use height since it has special handling
+			out.add("height:").add(_height).add("px;");
 		if (!noHidden && hidden)
 			out.add("display:none;");
 		String s;

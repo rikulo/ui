@@ -4,7 +4,7 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 
-class LayoutDemo extends Activity {
+class LinearLayoutDemo extends Activity {
 
 	void onCreate_(View rootView) {
 		View vlayout = new View();
@@ -32,5 +32,5 @@ class LayoutDemo extends Activity {
 }
 
 void main() {
-	new LayoutDemo().run();
+	new LinearLayoutDemo().run();
 }
