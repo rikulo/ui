@@ -15,10 +15,13 @@ class AnchorRelation {
 	/** A map of an anchor view and a list of views that depends on the anchor.
 	 */
 	final Map<View, List<View>> anchored;
+	/** the parent of this relation.
+	 */
+	final View parent;
 
 	/** Contructors of the anchor relation of all children of the given view.
 	 */
-	AnchorRelation(View view) : indeps = new List(), anchored = new Map() {
+	AnchorRelation(View view) : indeps = new List(), anchored = new Map(), parent = view {
 		for (final View v in view.children) {
 			final View av = v.profile.anchorView;
 			if (av == null) {
@@ -45,6 +48,7 @@ class AnchorRelation {
 	/** Handles the layout of the anchored views.
 	 */
 	void layoutAnchored(MeasureContext mctx) {
+		_layoutAnchored(mctx, parent);
 		for (final View view in indeps)
 			_layoutAnchored(mctx, view);
 	}
@@ -79,23 +83,25 @@ final Map<String, List<int>> _locations = const {
 	"center left": const [1, 2], "center center": const [2, 2], "center right": const [3, 2],
 	"bottom left": const [1, 3], "bottom center": const [2, 3], "bottom right": const [3, 3]
 };
+//TODO: use const when Dart considers Closure as constant
+//TODO: handle position:fixed
 List<_AnchorHandler> get _anchorXHandlers() {
 	if (_cacheXAnchorHandlers == null)
 		_cacheXAnchorHandlers = [
 			(View anchor, View view) {
-				view.left = anchor.left - view.width;
+				view.left = (anchor === view.parent ? 0: anchor.left) - view.width;
 			},
 			(View anchor, View view) {
-				view.left = anchor.left;
+				view.left = anchor === view.parent ? 0: anchor.left;
 			},
 			(View anchor, View view) {
-				view.left = anchor.left + (anchor.width - view.width) ~/ 2;
+				view.left = (anchor === view.parent ? 0: anchor.left) + (anchor.width - view.width) ~/ 2;
 			},
 			(View anchor, View view) {
-				view.left = anchor.left + anchor.width - view.width;
+				view.left = (anchor === view.parent ? 0: anchor.left) + anchor.width - view.width;
 			},
 			(View anchor, View view) {
-				view.left = anchor.left + anchor.width;
+				view.left = (anchor === view.parent ? 0: anchor.left) + anchor.width;
 			}
 		];
 	return _cacheXAnchorHandlers;
@@ -105,19 +111,19 @@ List<_AnchorHandler> get _anchorYHandlers() {
 	if (_cacheYAnchorHandlers == null)
 		_cacheYAnchorHandlers = [
 			(View anchor, View view) {
-				view.top = anchor.top - view.height;
+				view.top = (anchor === view.parent ? 0: anchor.top) - view.height;
 			},
 			(View anchor, View view) {
-				view.top = anchor.top;
+				view.top = anchor === view.parent ? 0: anchor.top;
 			},
 			(View anchor, View view) {
-				view.top = anchor.top + (anchor.height - view.height) ~/ 2;
+				view.top = (anchor === view.parent ? 0: anchor.top) + (anchor.height - view.height) ~/ 2;
 			},
 			(View anchor, View view) {
-				view.top = anchor.top + anchor.height - view.height;
+				view.top = (anchor === view.parent ? 0: anchor.top) + anchor.height - view.height;
 			},
 			(View anchor, View view) {
-				view.top = anchor.top + anchor.height;
+				view.top = (anchor === view.parent ? 0: anchor.top) + anchor.height;
 			}
 		];
 	return _cacheYAnchorHandlers;

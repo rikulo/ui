@@ -10,8 +10,13 @@ class FreeLayout implements Layout {
 	
 	}
 	void layout(MeasureContext mctx, View view) {
-		final AnchorRelation ar = new AnchorRelation(view);
-		ar.layoutIndeps(mctx);
-		ar.layoutAnchored(mctx);
+		if (view.firstChild !== null) {
+			final AnchorRelation ar = new AnchorRelation(view);
+			ar.layoutIndeps(mctx);
+			ar.layoutAnchored(mctx);
+
+			for (final View child in view.children)
+				child.doLayout(mctx);
+		}
 	}
 }
