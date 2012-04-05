@@ -982,9 +982,14 @@ class View implements EventTarget {
 		}
 		return this;
 	}
-	/** Dispatches an event.
+	/** Dispatches an event to this view.
+	 * <p>Example: <code>view.dispatchEvent(new ViewEvent(target, "click"))</code>.
+	 * If the type parameter is not specified, it is assumed to be [ViewEvent.type].
 	 */
-	bool dispatchEvent(String type, ViewEvent event) {
+	bool dispatchEvent(ViewEvent event, [String type]) {
+		if (type == null)
+			type = event.type;
+
 		List<EventListener> ls;
 		bool dispatched = false;
 		if (_evlInfo !== null && _evlInfo.listeners != null
@@ -1017,8 +1022,7 @@ class View implements EventTarget {
 			//example: click shall carry mouse position, change shall carry value
 			DomEventDispatcher disp = (View target) {
 				return (Event event) {
-					target.dispatchEvent(type,
-						new ViewEvent<Object>(target, domEvent: event, type: type));
+					target.dispatchEvent(new ViewEvent<Object>.dom(target, event, type: type));
 				};
 			};
 			for (final String nm in

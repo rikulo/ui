@@ -75,7 +75,7 @@ class _EventListenerList implements EventListenerList {
 		return this;
 	}
 	bool dispatch(Event event) {
-		return _ptr.dispatchEvent(_type, event);
+		return _ptr.dispatchEvent(event, type: _type);
 	}
 	EventListenerList remove(void listener(Event event), [bool useCapture = false]) {
 		_ptr.removeEventListener(_type, listener, useCapture);

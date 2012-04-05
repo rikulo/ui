@@ -12,19 +12,26 @@ Copyright (C) 2012 Potix Corporation. All Rights Reserved.
  */
 class ViewEvent<Data> implements Event {
 	View _target;
-	Event _domEvt;
+	final Event _domEvt;
 	View _curTarget;
-	String _type;
+	final String _type;
 	Data _data;
-	int _stamp;
+	final int _stamp;
 	bool _defPrevt = false, _propStop = true;
 
-	ViewEvent(View target, [Event domEvent, String type, Data data]) {
+	ViewEvent(View target, String type, [Data data, int stamp=0]):
+	_domEvt = null, _type = type, _stamp = stamp, _data = data {
+		if (type == null)
+			throw const UiException("type required");
 		_target = _curTarget = target;
-		_domEvt = domEvent;
-		_stamp = domEvent != null ? domEvent.timeStamp: 0; //TODO
-		_type = type != null ? type: _domEvt.type;
-		_data = data;
+	}
+	/** Constructs a view event from a DOM event.
+	 * It is rarely called unless you'd like to wrap a DOM event.
+	 */
+	ViewEvent.dom(View target, Event domEvent, [String type]) : 
+	_domEvt = domEvent, _type = type != null ? type: domEvent.type,
+	_stamp = domEvent.timeStamp {
+		_target = _curTarget = target;
 	}
 
 	EventTarget get target() => _target;
