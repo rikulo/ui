@@ -760,6 +760,29 @@ class View implements EventTarget {
 			n.style.height = height !== null ? "${height}px": "";
 	}
 
+	/** Returns the offset of this view relative to the left-top corner
+	 * of the document.
+	 */
+	Offset get documentOffset() {
+		final Offset ofs = new Offset(0, 0);
+		for (View view = this;;) {
+			ofs.left += view.left;
+			ofs.top += view.top;
+			if (view.style.position == "fixed")
+				break; //done
+
+			final View p = view.parent;
+			if (p == null) {
+				final Offset nofs = new DomAgent(view.node).documentOffset;
+				ofs.left += nofs.left;
+				ofs.top += nofs.top;
+				break;
+			} else {
+				view = p;
+			}
+		}
+		return ofs;
+	}
 	/** Returns the layout instruction of this view.
 	 * <p>[layout] intructs how a view shall layout the child views.
 	 * In additions, you can specify addition information in individual child

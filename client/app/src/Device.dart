@@ -77,7 +77,7 @@ class Device {
 		}
 
 		browser = new VersionInfo(name, version);
-		screen = new ScreenInfo(window.innerWidth, window.innerHeight);
+		screen = new ScreenInfo(window.innerWidth, window.innerHeight); //TODO: support simulator
 	}
 	static double _versionOf(String version, [String separator='.']) {
 		int j = version.indexOf(separator);

@@ -2,7 +2,7 @@
 //History: Mon, Apr 02, 2012  6:31:09 PM
 // Author: tomyeh
 
-typedef void _AnchorHandler(View anchor, View view);
+typedef void _AnchorHandler(int offset, View anchor, View view);
 
 /**
  * The anchor relationship.
@@ -59,19 +59,40 @@ class AnchorRelation {
 				//TODO size first: view.measure(mctx);
 
 				//position:
-				final String loc = view.profile.location;
-				final List<int> xy = _locations[loc == null || loc.isEmpty() ? "south start": loc];
-				if (xy == null)
-					throw new UiException("Unknown loation ${loc}");
-
-				_anchorXHandlers[xy[0]](anchor, view);
-				_anchorYHandlers[xy[1]](anchor, view);
+				final List<int> handlers = _getHandlers(view.profile.location);
+				final Offset offset = _getOffset(anchor, view);
+				_anchorXHandlers[handlers[0]](offset.left, anchor, view);
+				_anchorYHandlers[handlers[1]](offset.top, anchor, view);
 			}
 
 			for (final View view in views) {
 				_layoutAnchored(mctx, view); //recursive
 			}
 		}
+	}
+	static List<int> _getHandlers(String loc) {
+		if (loc != null) loc = loc.trim();
+		if (loc == null || loc.isEmpty()) loc = "south start";
+
+		List<int> handlers = _locations[loc];
+		if (handlers != null)
+			return handlers;
+
+		final int j = loc.indexOf(' ');
+		if (j > 0) {
+			final String loc2 = "${loc.substring(j + 1)} ${loc.substring(0, j)}";
+			handlers = _locations[loc2];
+			if (handlers != null)
+				return handlers;
+		}
+		throw new UiException("Unknown loation ${loc}");
+	}
+	/** Returns the offset between two views.
+	 */
+	static Offset _getOffset(View anchor, View view) {
+		return view.style.position == "fixed" ? anchor.documentOffset:
+			anchor === view.parent ? new Offset(0, 0):
+				new Offset(anchor.left, anchor.top);
 	}
 }
 final Map<String, List<int>> _locations = const {
@@ -84,24 +105,23 @@ final Map<String, List<int>> _locations = const {
 	"bottom left": const [1, 3], "bottom center": const [2, 3], "bottom right": const [3, 3]
 };
 //TODO: use const when Dart considers Closure as constant
-//TODO: handle position:fixed
 List<_AnchorHandler> get _anchorXHandlers() {
 	if (_cacheXAnchorHandlers == null)
 		_cacheXAnchorHandlers = [
-			(View anchor, View view) {
-				view.left = (anchor === view.parent ? 0: anchor.left) - view.width;
+			(int offset, View anchor, View view) {
+				view.left = offset - view.width;
 			},
-			(View anchor, View view) {
-				view.left = anchor === view.parent ? 0: anchor.left;
+			(int offset, View anchor, View view) {
+				view.left = offset;
 			},
-			(View anchor, View view) {
-				view.left = (anchor === view.parent ? 0: anchor.left) + (anchor.width - view.width) ~/ 2;
+			(int offset, View anchor, View view) {
+				view.left = offset + (anchor.width - view.width) ~/ 2;
 			},
-			(View anchor, View view) {
-				view.left = (anchor === view.parent ? 0: anchor.left) + anchor.width - view.width;
+			(int offset, View anchor, View view) {
+				view.left = offset + anchor.width - view.width;
 			},
-			(View anchor, View view) {
-				view.left = (anchor === view.parent ? 0: anchor.left) + anchor.width;
+			(int offset, View anchor, View view) {
+				view.left = offset + anchor.width;
 			}
 		];
 	return _cacheXAnchorHandlers;
@@ -110,20 +130,20 @@ List<_AnchorHandler> _cacheXAnchorHandlers;
 List<_AnchorHandler> get _anchorYHandlers() {
 	if (_cacheYAnchorHandlers == null)
 		_cacheYAnchorHandlers = [
-			(View anchor, View view) {
-				view.top = (anchor === view.parent ? 0: anchor.top) - view.height;
+			(int offset, View anchor, View view) {
+				view.top = offset - view.height;
 			},
-			(View anchor, View view) {
-				view.top = anchor === view.parent ? 0: anchor.top;
+			(int offset, View anchor, View view) {
+				view.top = offset;
 			},
-			(View anchor, View view) {
-				view.top = (anchor === view.parent ? 0: anchor.top) + (anchor.height - view.height) ~/ 2;
+			(int offset, View anchor, View view) {
+				view.top = offset + (anchor.height - view.height) ~/ 2;
 			},
-			(View anchor, View view) {
-				view.top = (anchor === view.parent ? 0: anchor.top) + anchor.height - view.height;
+			(int offset, View anchor, View view) {
+				view.top = offset + anchor.height - view.height;
 			},
-			(View anchor, View view) {
-				view.top = (anchor === view.parent ? 0: anchor.top) + anchor.height;
+			(int offset, View anchor, View view) {
+				view.top = offset + anchor.height;
 			}
 		];
 	return _cacheYAnchorHandlers;

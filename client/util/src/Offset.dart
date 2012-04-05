@@ -3,13 +3,13 @@
 // Author: tomyeh
 
 /**
- * The position.
+ * The offset (aka., position).
  */
-class Position {
-	/** The left position. */
+class Offset {
+	/** The left offset. */
 	int left;
-	/** The top position. */
+	/** The top offset. */
 	int top;
 
-	Position(this.left, this.top);
+	Offset(this.left, this.top);
 }
