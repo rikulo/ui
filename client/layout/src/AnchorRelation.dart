@@ -38,13 +38,6 @@ class AnchorRelation {
 		}
 	}
 
-	/** Handles the layout of the independent views.
-	 */
-	void layoutIndeps(MeasureContext mctx) {
-		for (final View view in indeps) {
-			//TODO size: view.measure(mctx);
-		}
-	}
 	/** Handles the layout of the anchored views.
 	 */
 	void layoutAnchored(MeasureContext mctx) {
@@ -56,7 +49,9 @@ class AnchorRelation {
 		final List<View> views = anchored[anchor];
 		if (views !== null && !views.isEmpty()) {
 			for (final View view in views) {
-				//TODO size first: view.measure(mctx);
+				//TODO: measureSize if necessary (such as flex/content...)
+
+				layoutManager.sizeByProfile(view, anchor.width, anchor.height);
 
 				//position:
 				final List<int> handlers = _getHandlers(view.profile.location);

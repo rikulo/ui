@@ -26,6 +26,11 @@ interface LayoutManager extends Layout default _LayoutManager {
 	 * all queued views, if the give view is null.
 	 */
 	void flush([View view]);
+
+	/** Sizes the given view with the information presented in
+	 * [MeasureContext].
+	 */
+	void sizeView(MeasureContext mctx, View view);
 }
 
 class _LayoutManager extends RunOnceViewManager implements LayoutManager {
@@ -46,8 +51,8 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		return _layouts[name];
 	}
 
-	Size measure(MeasureContext mctx, View view)
-	=> _layoutOfView(view).measure(mctx, view);
+	Size measureSize(MeasureContext mctx, View view)
+	=> _layoutOfView(view).measureSize(mctx, view);
 
 	void layout(MeasureContext mctx, View view) {
 		if (mctx === null)
@@ -65,19 +70,52 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 	}
 
 	void handle_(View view) {
-		_layoutOfView(view).layout(new MeasureContext(), view);
+		_layoutOfView(view).layout(new MeasureContext(view), view);
+	}
+
+	void sizeView(MeasureContext mctx, View view) {
+		final Size size = mctx.measures[view];
+		if (size != null) {
+			if (size.width != NO_LIMIT)
+				view.width = size.width;
+			if (size.height != NO_LIMIT)
+				view.height = size.height;
+		}
+	}
+	/** Sizes a view based on its profile.
+	 */
+	void sizeByProfile(View view, int width, int height) {
+		_SizeInfo inf = new _SizeInfo(view.profile.width);
+		switch (inf.type) {
+		case _SizeInfo.FLEX:
+			view.width = width;
+			break;
+		case _SizeInfo.RATIO:
+			view.width = (width * inf.value).round();
+			break;
+		}
+
+		inf = new _SizeInfo(view.profile.height);
+		switch (inf.type) {
+		case _SizeInfo.FLEX:
+			view.height = height;
+			break;
+		case _SizeInfo.RATIO:
+			view.height = (height * inf.value).round();
+			break;
+		}
 	}
 }
 
 /** The layout manager used in [View]. */
 LayoutManager get layoutManager() {
-	if (_cachedLM === null) {
-		_cachedLM = new LayoutManager();
-		_cachedLM.addLayout("linear", new LinearLayout());
+	if (_cacheLayoutManager === null) {
+		_cacheLayoutManager = new LayoutManager();
+		_cacheLayoutManager.addLayout("linear", new LinearLayout());
 		FreeLayout freeLayout = new FreeLayout();
-		_cachedLM.addLayout("none", freeLayout);
-		_cachedLM.addLayout("", freeLayout);
+		_cacheLayoutManager.addLayout("none", freeLayout);
+		_cacheLayoutManager.addLayout("", freeLayout);
 	}
-	return _cachedLM;
+	return _cacheLayoutManager;
 }
-LayoutManager _cachedLM;
+LayoutManager _cacheLayoutManager;

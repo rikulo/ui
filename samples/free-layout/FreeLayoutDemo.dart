@@ -8,12 +8,16 @@
 class FreeLayoutDemo extends Activity {
 
 	void onCreate_(View rootView) {
+		title = "Free Layout Demo";
+
+		rootView.style.backgroundColor = "#cca";
+
 		View view = new View();
-		view.style.backgroundColor = "#ddd";
-		view.left = 90;
-		view.top = 50;
-		view.width = 300;
-		view.height = 200;
+		view.style.backgroundColor = "#ddb";
+		view.profile.anchor = "parent";
+		view.profile.location = "center center";
+		view.profile.width = "70%";
+		view.profile.height = "80%";
 		rootView.appendChild(view);
 
 		//1. first level dependence
@@ -37,6 +41,7 @@ class FreeLayoutDemo extends Activity {
 		txt.style.border = "1px solid red";
 		txt.profile.anchorView = rootView.lastChild;
 		txt.profile.location = "north start";
+		txt.profile.width = "flex";
 		rootView.appendChild(txt);
 	}
 }

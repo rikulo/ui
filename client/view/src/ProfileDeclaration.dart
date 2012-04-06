@@ -11,7 +11,7 @@ default ProfileDeclarationImpl {
 
 	/** The anchor, or null if [anchorView] was assigned and it isn't
 	 * assigned with an ID.
-	 * <p>Syntax: <code>anchor: auto | <i>CSS selector</i>;</code>
+	 * <p>Syntax: <code>anchor: auto | <i>CSS selector</i>;</code> | <code>parent</code>
 	 * <p>Default: <code>auto</code>.
 	 * <p>If <code>auto</code>, the position is decided by parent's layout.
 	 */

@@ -636,8 +636,8 @@ class View implements EventTarget {
 	/** Measures the size of this view.
 	 * It is called by [doLayout].
 	 */
-	Size measure(MeasureContext mctx)
-	=> layoutManager.measure(mctx, this);
+	Size measureSize(MeasureContext mctx)
+	=> layoutManager.measureSize(mctx, this);
 
 	/** Generates the HTML fragment for this view and its descendants
 	 * to the given string buffer.

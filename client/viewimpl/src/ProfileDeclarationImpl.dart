@@ -22,8 +22,8 @@ implements ProfileDeclaration {
 	View get anchorView() {
 		if (_anchorView !== null)
 			return _anchorView;
-		//TODO
-		return null;
+		String ac = anchor;
+		return ac == "parent" ? _owner.parent: null; //TODO: handle CSS selector
 	}
 	void set anchorView(View view) {
 		String av;

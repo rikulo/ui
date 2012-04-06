@@ -7,6 +7,8 @@
  * An activity is identified with an URL.
  */
 class Activity {
+	String _title = "";
+
 	Activity() {
 		if (device === null)
 			device = new Device();
@@ -17,6 +19,7 @@ class Activity {
 	void run() {
 		if (activity !== null)
 			throw const UiException("Only one activity is allowed");
+
 		activity = this;
 		View rootView = createRootView_();
 		onCreate_(rootView);
@@ -25,6 +28,15 @@ class Activity {
 		  final Element cave = document.query("#v-root");
       rootView.addToDocument(cave != null ? cave: document.body);
 		}
+	}
+
+	/** Returns the title of this activity.
+	 */
+	String get title() => _title;
+	/** Sets the title of this activity.
+	 */
+	void set title(String title) {
+		document.title = _title = title != null ? title: "";
 	}
 
 	/** Called to instantiate the root view.

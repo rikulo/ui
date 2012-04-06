@@ -7,6 +7,8 @@
 class HelloWorld extends Activity {
 
 	void onCreate_(View rootView) {
+		title = "Hello World!";
+
 		TextView text = new TextView("Hello World!");
 		text.on.click.add((event) {
 			event.target.style.border =
