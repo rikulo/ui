@@ -49,8 +49,8 @@ class LinearLayout implements Layout {
 			final AnchorRelation ar = new AnchorRelation(view);
 
 			//1) size
-			for (final View child in ar.indeps)
-				layoutManager.sizeView(mctx, child);
+			for (final View child in ar.indeps) {
+			}
 
 			//2) position
 			for (final View child in ar.indeps) {

@@ -10,26 +10,13 @@ class MeasureContext {
 	 */
 	static final int NO_LIMIT = -1;
 
-	/** Indicates the maximal allowed size. */
-	Size max;
-	/** Indicates the minimal allowed size. */
-	Size min;
-
 	/** The size of measured views. The size is stored to speed up
-	 * the measurement since [View.measureSize] might be called multiple time
+	 * the measurement since [View.measureSize] might be called multiple times
 	 * in one layout run. If the size shall be re-measured, you can
 	 * remove it from this map.
 	 */
 	final Map<View, Size> measures;
 
-	MeasureContext(View view): measures = new Map() {
-		Element node = view.node;
-		max = new Size(node.$dom_offsetWidth, node.$dom_offsetHeight);
-		min = new Size(0, 0);
-	}
-	MeasureContext.from(MeasureContext mctx, int width, int height):
-	measures = mctx.measures {
-		max = new Size(width, height);
-		min = new Size(0, 0);
+	MeasureContext(): measures = new Map() {
 	}
 }

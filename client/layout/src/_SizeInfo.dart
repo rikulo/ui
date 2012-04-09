@@ -7,10 +7,10 @@
  */
 class _SizeInfo {
 	static int NONE = 0;
-	static int FLEX = 1;
-	static int CONTENT = 2;
-	static int FIXED = 3;
-	static int RATIO = 4;
+	static int FIXED = 1;
+	static int FLEX = 2;
+	static int RATIO = 3;
+	static int CONTENT = 4;
 
 	num value;
 	int type;

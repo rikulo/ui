@@ -27,10 +27,9 @@ interface LayoutManager extends Layout default _LayoutManager {
 	 */
 	void flush([View view]);
 
-	/** Sizes the given view with the information presented in
-	 * [MeasureContext].
+	/** Sizes a view based on its profile.
 	 */
-	void sizeView(MeasureContext mctx, View view);
+	void sizeByProfile(MeasureContext mctx, View view, AsInt width, AsInt height);
 }
 
 class _LayoutManager extends RunOnceViewManager implements LayoutManager {
@@ -70,38 +69,43 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 	}
 
 	void handle_(View view) {
-		_layoutOfView(view).layout(new MeasureContext(view), view);
+		_layoutOfView(view).layout(new MeasureContext(), view);
 	}
 
-	void sizeView(MeasureContext mctx, View view) {
-		final Size size = mctx.measures[view];
-		if (size != null) {
-			if (size.width != NO_LIMIT)
-				view.width = size.width;
-			if (size.height != NO_LIMIT)
-				view.height = size.height;
-		}
-	}
-	/** Sizes a view based on its profile.
-	 */
-	void sizeByProfile(View view, int width, int height) {
+	void sizeByProfile(MeasureContext mctx, View view, AsInt width, AsInt height) {
 		_SizeInfo inf = new _SizeInfo(view.profile.width);
 		switch (inf.type) {
+		case _SizeInfo.FIXED:
+			view.width = inf.value;
+			break;
 		case _SizeInfo.FLEX:
-			view.width = width;
+			view.width = width();
 			break;
 		case _SizeInfo.RATIO:
-			view.width = (width * inf.value).round();
+			view.width = (width() * inf.value).round();
+			break;
+		case _SizeInfo.CONTENT:
+			final Size sz = view.measureSize(mctx);
+			if (sz != null && sz.width != MeasureContext.NO_LIMIT)
+				view.width = sz.width;
 			break;
 		}
 
 		inf = new _SizeInfo(view.profile.height);
 		switch (inf.type) {
+		case _SizeInfo.FIXED:
+			view.height = inf.value;
+			break;
 		case _SizeInfo.FLEX:
-			view.height = height;
+			view.height = height();
 			break;
 		case _SizeInfo.RATIO:
-			view.height = (height * inf.value).round();
+			view.height = (height() * inf.value).round();
+			break;
+		case _SizeInfo.CONTENT:
+			final Size sz = view.measureSize(mctx);
+			if (sz != null && sz.height != MeasureContext.NO_LIMIT)
+				view.height = sz.height;
 			break;
 		}
 	}

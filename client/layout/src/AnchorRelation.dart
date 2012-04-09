@@ -49,11 +49,11 @@ class AnchorRelation {
 		final List<View> views = anchored[anchor];
 		if (views !== null && !views.isEmpty()) {
 			for (final View view in views) {
-				//TODO: measureSize if necessary (such as flex/content...)
+				//1) size
+				layoutManager.sizeByProfile(mctx,
+					view, () => anchor.width, () => anchor.height);
 
-				layoutManager.sizeByProfile(view, anchor.width, anchor.height);
-
-				//position:
+				//2) position
 				final List<int> handlers = _getHandlers(view.profile.location);
 				final Offset offset = _getOffset(anchor, view);
 				_anchorXHandlers[handlers[0]](offset.left, anchor, view);
