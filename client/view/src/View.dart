@@ -732,10 +732,10 @@ class View implements EventTarget {
 	}
 		
 	/** Returns the width of this view.
-	 * <p>Default: null (up to the system)
+	 * <p>Default: null (up to the system).
+	 * <p>To get the real width on the document, use [offsetWidth].
 	 */
-	int get width()
-	=> !inDocument || _width !== null ? _width: node.$dom_offsetWidth;
+	int get width() => _width;
 	/** Sets the width of this view.
 	 */
 	void set width(int width) {
@@ -747,9 +747,9 @@ class View implements EventTarget {
 	}
 	/** Returns the height of this view.
 	 * <p>Default: null (up to the system)
+	 * <p>To get the real height on the document, use [offsetWidth].
 	 */
-	int get height()
-	=> !inDocument || _height !== null ? _height: node.$dom_offsetHeight;
+	int get height() => _height;
 	/** Sets the height of this view.
 	 */
 	void set height(int height) {
@@ -759,6 +759,23 @@ class View implements EventTarget {
 		if (n !== null)
 			n.style.height = height !== null ? "${height}px": "";
 	}
+
+	/** Returns the real width of this view shown on the document (never null).
+	 * <p>Notice that the performance of this method is not good, if
+	 * [width] is null.
+	 */
+	int get offsetWidth()
+	=> _width !== null ? _width: inDocument ? node.$dom_offsetWidth: 0;
+		//for better performance, we don't need to get $dom_offsetWidth if _width is
+		//assigned (because we use box-sizing: border-box)
+	/** Returns the real height of this view shown on the document (never null).
+	 * <p>Notice that the performance of this method is not good, if
+	 * [height] is null.
+	 */
+	int get offsetHeight()
+	=> _height !== null ? _height: inDocument ? node.$dom_offsetHeight: 0;
+		//for better performance, we don't need to get $dom_offsetHeight if _height is
+		//assigned (because we use box-sizing: border-box)
 
 	/** Returns the offset of this view relative to the left-top corner
 	 * of the document.

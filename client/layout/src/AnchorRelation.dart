@@ -51,7 +51,7 @@ class AnchorRelation {
 			for (final View view in views) {
 				//1) size
 				layoutManager.sizeByProfile(mctx,
-					view, () => anchor.width, () => anchor.height);
+					view, () => anchor.offsetWidth, () => anchor.offsetHeight);
 
 				//2) position
 				final List<int> handlers = _getHandlers(view.profile.location);
@@ -104,19 +104,19 @@ List<_AnchorHandler> get _anchorXHandlers() {
 	if (_cacheXAnchorHandlers == null)
 		_cacheXAnchorHandlers = [
 			(int offset, View anchor, View view) {
-				view.left = offset - view.width;
+				view.left = offset - view.offsetWidth;
 			},
 			(int offset, View anchor, View view) {
 				view.left = offset;
 			},
 			(int offset, View anchor, View view) {
-				view.left = offset + (anchor.width - view.width) ~/ 2;
+				view.left = offset + (anchor.offsetWidth - view.offsetWidth) ~/ 2;
 			},
 			(int offset, View anchor, View view) {
-				view.left = offset + anchor.width - view.width;
+				view.left = offset + anchor.offsetWidth - view.offsetWidth;
 			},
 			(int offset, View anchor, View view) {
-				view.left = offset + anchor.width;
+				view.left = offset + anchor.offsetWidth;
 			}
 		];
 	return _cacheXAnchorHandlers;
@@ -126,19 +126,19 @@ List<_AnchorHandler> get _anchorYHandlers() {
 	if (_cacheYAnchorHandlers == null)
 		_cacheYAnchorHandlers = [
 			(int offset, View anchor, View view) {
-				view.top = offset - view.height;
+				view.top = offset - view.offsetHeight;
 			},
 			(int offset, View anchor, View view) {
 				view.top = offset;
 			},
 			(int offset, View anchor, View view) {
-				view.top = offset + (anchor.height - view.height) ~/ 2;
+				view.top = offset + (anchor.offsetHeight - view.offsetHeight) ~/ 2;
 			},
 			(int offset, View anchor, View view) {
-				view.top = offset + anchor.height - view.height;
+				view.top = offset + anchor.offsetHeight - view.offsetHeight;
 			},
 			(int offset, View anchor, View view) {
-				view.top = offset + anchor.height;
+				view.top = offset + anchor.offsetHeight;
 			}
 		];
 	return _cacheYAnchorHandlers;
