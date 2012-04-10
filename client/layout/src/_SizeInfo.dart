@@ -29,7 +29,7 @@ class _SizeInfo {
 			value= Math.parseDouble(info.substring(0, info.length - 1).trim()) / 100;
 		} else {
 			type = FIXED;
-			value = Math.parseDouble(info);
+			value = Math.parseInt(info);
 		}
 	}
 }

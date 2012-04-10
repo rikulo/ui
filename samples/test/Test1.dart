@@ -24,16 +24,18 @@ class Test1 extends Activity {
 		//test if subview will affect its parent's size
 		View subview = new View();
 		subview.style.backgroundColor = "#eec";
-		subview.left = subview.top = 10;
-		subview.width = 30;
+		subview.left = 100;
+		subview.top = 10;
+		subview.width = 30; //test: direct with
 		subview.height = 20;
 		view.appendChild(subview);
 
 		subview = new View();
 		subview.style.backgroundColor = "#eec";
-		subview.left = subview.top = 100;
-		subview.width = 50;
-		subview.height = 30;
+		subview.left = 10;
+		subview.top = 100;
+		subview.profile.width = "50"; //test: profile.width
+		subview.profile.height = "30";
 		view.appendChild(subview);
 
 		//subview doesn't affect how its parent's size

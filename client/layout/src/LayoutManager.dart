@@ -28,8 +28,16 @@ interface LayoutManager extends Layout default _LayoutManager {
 	void flush([View view]);
 
 	/** Sizes a view based on its profile.
+	 * It is an utility for implementing a layout.
 	 */
 	void sizeByProfile(MeasureContext mctx, View view, AsInt width, AsInt height);
+	/** Measures the content's size.
+	 * It is an utility for implementing a view's [View.measureSize].
+	 * This method assumes the browser will resize the view automatically,
+	 * so it is applied only to a leaf view with some content, such as [TextView]
+	 * and [Button].
+	 */
+	Size measureContentSize(MeasureContext mctx, View view);
 }
 
 class _LayoutManager extends RunOnceViewManager implements LayoutManager {
@@ -108,6 +116,20 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 				view.height = sz.height;
 			break;
 		}
+	}
+	Size measureContentSize(MeasureContext mctx, View view) {
+		Size size = mctx.measures[view];
+		if (size === null) {
+			final String pos = view.style.position;
+			final bool bFixed = pos == "fixed";
+			if (!bFixed) view.style.position = "fixed";
+
+			size = new Size(view.node.$dom_offsetWidth, view.node.$dom_offsetHeight);
+
+			if (!bFixed) view.style.position = pos;
+			mctx.measures[view] = size;
+		}
+		return size;
 	}
 }
 

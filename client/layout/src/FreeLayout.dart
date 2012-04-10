@@ -11,9 +11,8 @@ class FreeLayout implements Layout {
 		if (size !== null)
 			return size;
 
-		int wd = view.width, hgh = view.height;
-		if (wd === null) wd = NO_LIMIT;
-		if (hgh === null) hgh = NO_LIMIT;
+		int wd = _initSize(view.profile.width, () => view.width),
+			hgh = _initSize(view.profile.height, () => view.height);
 		for (final View child in view.children) {
 			if (child.profile.anchorView == null && child.style.position != "fixed") {
 				final Size subsz = child.measureSize(mctx);
@@ -30,6 +29,11 @@ class FreeLayout implements Layout {
 		size = new Size(wd, hgh);
 		mctx.measures[view] = size;
 		return size;
+	}
+	static int _initSize(String profile, AsInt current) {
+		final _SizeInfo szinf = new _SizeInfo(profile);
+		final int v = szinf.type == _SizeInfo.FIXED ? szinf.value: current();
+		return v != null ? v: Layout.NO_LIMIT;
 	}
 	void layout(MeasureContext mctx, View view) {
 		if (view.firstChild !== null) {

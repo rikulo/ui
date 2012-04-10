@@ -69,5 +69,8 @@ class TextView extends View {
 		throw const UiException("No child allowed in TextView");
 	}
 
+	Size measureSize(MeasureContext mctx)
+	=> layoutManager.measureContentSize(mctx, this);
+
 	String toString() => "TextView('$text$html')";
 }
