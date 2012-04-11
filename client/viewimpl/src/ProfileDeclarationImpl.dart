@@ -50,6 +50,12 @@ implements ProfileDeclaration {
 		setProperty("location", value);
 	}
 
+	String get spacing()
+		=> getPropertyValue("spacing");
+	void set spacing(String value) {
+		setProperty("spacing", value);
+	}
+
 	String get width()
 		=> getPropertyValue("width");
 	void set width(String value) {

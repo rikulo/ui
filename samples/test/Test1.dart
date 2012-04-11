@@ -21,31 +21,38 @@ class Test1 extends Activity {
 		view.profile.height = "content"; //must! it forces height being calced
 		rootView.appendChild(view);
 
-		//test if subview will affect its parent's size
-		View subview = new View();
-		subview.style.backgroundColor = "#eec";
-		subview.left = 100;
-		subview.top = 10;
-		subview.width = 30; //test: direct with
-		subview.height = 20;
-		view.appendChild(subview);
+		//test if subView will affect its parent's size
+		View subView = new View();
+		subView.style.backgroundColor = "#eec";
+		subView.left = 100;
+		subView.top = 10;
+		subView.width = 30; //test: direct with
+		subView.height = 20;
+		view.appendChild(subView);
 
-		subview = new View();
-		subview.style.backgroundColor = "#eec";
-		subview.left = 10;
-		subview.top = 100;
-		subview.profile.width = "50"; //test: profile.width
-		subview.profile.height = "30";
-		view.appendChild(subview);
+		subView = new View();
+		subView.style.backgroundColor = "#eec";
+		subView.style.border = "2px solid red";
+		subView.left = 10;
+		subView.top = 100;
+		subView.profile.width = "50"; //test: profile.width
+		subView.profile.height = "30";
+		view.appendChild(subView);
 
-		//subview doesn't affect how its parent's size
-		subview = new View();
-		subview.style.backgroundColor = "#dd8";
-		subview.profile.anchor = "parent";
-		subview.profile.location = "south start";
-		subview.profile.width = "100%";
-		subview.profile.height = "15%";
-		view.appendChild(subview);
+		//it shall be placed inside border
+		View subsubView = new View();
+		subsubView.style.border = "2px solid blue";
+		subsubView.profile.width = subsubView.profile.height = "flex";
+		subView.appendChild(subsubView);
+
+		//anchored view doesn't affect its parent's size
+		subView = new View();
+		subView.style.backgroundColor = "#dd8";
+		subView.profile.anchor = "parent";
+		subView.profile.location = "south start";
+		subView.profile.width = "100%";
+		subView.profile.height = "15%";
+		view.appendChild(subView);
 	}
 }
 

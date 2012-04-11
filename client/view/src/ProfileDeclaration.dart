@@ -29,6 +29,11 @@ default ProfileDeclarationImpl {
 	 */
 	String location;
 
+	/** The spacing of the associated view.
+	 * <p>Syntax: <code>#n1 [#n2 [#n3 #n4]]</code>
+	 */
+	String spacing;
+
 	/** The expected width of the associated view.
 	 * <p>Syntax: <code>width: #n | content | flex | flex #n;</code>
 	 * <p>Default: <code>content</code>.
@@ -43,22 +48,26 @@ default ProfileDeclarationImpl {
 	/** The expected minimal allowed width of the associated view.
 	 * <p>Syntax: <code>min-width: #n | content | flex | flex #n;</code>
 	 * <p>Default: no limitation.
+	 * <p>Not supported yet.
 	 */
 	String minWidth;
 	/** The expected minmal allowed width of the associated view.
 	 * <p>Syntax: <code>min-height: #n | content | flex | flex #n;</code>
 	 * <p>Default: no limitation.
+	 * <p>Not supported yet.
 	 */
 	String minHeight;
 
 	/** The expected maximal allowed width of the associated view.
 	 * <p>Syntax: <code>max-width: #n | content | flex | flex #n;</code>
 	 * <p>Default: no limitation.
+	 * <p>Not supported yet.
 	 */
 	String maxWidth;
 	/** The expected maximal allowed width of the associated view.
 	 * <p>Syntax: <code>max-height: #n | content | flex | flex #n;</code>
 	 * <p>Default: no limitation.
+	 * <p>Not supported yet.
 	 */
 	String maxHeight;
 }

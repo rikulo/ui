@@ -6,43 +6,64 @@
  * The linear layout.
  */
 class LinearLayout implements Layout {
+	static final int _NO_SPACING = -10000;
+	static final int _DEFAULT_AMOUNT = 30;
+
 	Size measureSize(MeasureContext mctx, View view) {
-		final Size size = mctx.measures[view];
-		return size !== null ? size: 
-			view.layout.orient == "horizontal" ?
+		Size size = mctx.measures[view];
+		if (size !== null)
+			return size;
+
+		size = view.layout.orient == "horizontal" ?
 				_measureHSize(mctx, view): _measureVSize(mctx, view);
+		mctx.measures[view] = size;
+		return size;
 	}
 	Size _measureHSize(MeasureContext mctx, View view) {
-		final Size size = new Size(0, 0);
-		int wdTotal = 0, wdLeft = mctx.max.width, flexTotal = 0;
-		final List<View> hflexViews = [];
+		final _AmountInfo amtDefault = new _AmountInfo(view.layout.width);
+		if (amtDefault.type == _AmountInfo.NONE) {
+			amtDefault.type == _AmountInfo.FIXED;
+			amtDefault.value = _DEFAULT_AMOUNT;
+		}
+
+		final int maxWd = view.parent !== null ? view.parent.innerWidth: device.screen.width;
+		final _SideInfo spacing = new _SideInfo(view.profile.spacing, 2);
+		int wd = 0, spacingRight = _NO_SPACING, hgh = 0;
 		for (final View child in view.children) {
-			if (child.profile.anchorView === null) { //not depending
-				String val = child.profile.width.trim();
-				if (val.startsWith("flex")) {
-					print("$child $val");
-				} else if (val == "content") {
-				} else {
+			if (child.profile.anchorView !== null)
+				continue; //ignore anchored
+
+			final _SideInfo spc = new _SideInfo(child.profile.spacing, _NO_SPACING);
+			//1) calculate width
+			if (wd < maxWd) {
+				//add spacing to wd
+				if (spacingRight != _NO_SPACING)
+					wd += spacingRight + (spc.left != _NO_SPACING ? spc.left: spacing.left);
+				spacingRight = spc.right != _NO_SPACING ? spc.right: spacing.right;
+
+				final _AmountInfo amt = new _AmountInfo(child.profile.width);
+				if (amt.type == _AmountInfo.NONE) {
+					amt.type = amtDefault.type;
+					amt.value = amtDefault.value;
 				}
 
-				val = child.profile.height.trim();
-				if (val.startsWith("flex")) {
-				} else {
+				switch (amt.type) {
+				case _AmountInfo.FIXED:
+					if ((wd += amt.value) >= maxWd)
+						wd = maxWd;
+					break;
+				case _AmountInfo.CONTENT:
+					
+				default:
+					//fulfill the parent if flex or ratio is used
+					wd = maxWd;
 				}
 			}
 		}
 
-		if (mctx.max.height != NO_LIMIT && mctx.max.height < size.height)
-			size.height = mctx.max.height;
-		else if (mctx.min.height > size.height)
-			size.height = mctx.min.height;
-		mctx.measures[view] = size;
-		return size;
+		return new Size(wd, hgh);
 	}
 	Size _measureVSize(MeasureContext mctx, View view) {
-		final Size size = new Size(0, 0);
-		mctx.measures[view] = size;
-		return size;
 	}
 	void layout(MeasureContext mctx, View view) {
 		if (view.firstChild !== null) {

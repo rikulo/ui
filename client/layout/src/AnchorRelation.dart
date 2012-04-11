@@ -48,10 +48,17 @@ class AnchorRelation {
 	void _layoutAnchored(MeasureContext mctx, View anchor) {
 		final List<View> views = anchored[anchor];
 		if (views !== null && !views.isEmpty()) {
+			final AsInt
+				anchorOuterWidth = () => anchor.outerWidth,
+				anchorOuterHeight = () => anchor.outerHeight,
+				anchorInnerWidth = () => anchor.innerWidth,
+				anchorInnerHeight = () => anchor.innerHeight;
+
 			for (final View view in views) {
 				//1) size
-				layoutManager.sizeByProfile(mctx,
-					view, () => anchor.offsetWidth, () => anchor.offsetHeight);
+				layoutManager.sizeByProfile(mctx, view,
+					anchor === view.parent ? anchorInnerWidth: anchorOuterWidth,
+					anchor === view.parent ? anchorInnerHeight: anchorOuterHeight);
 
 				//2) position
 				final List<int> handlers = _getHandlers(view.profile.location);
@@ -103,20 +110,22 @@ final Map<String, List<int>> _locations = const {
 List<_AnchorHandler> get _anchorXHandlers() {
 	if (_cacheXAnchorHandlers == null)
 		_cacheXAnchorHandlers = [
-			(int offset, View anchor, View view) {
-				view.left = offset - view.offsetWidth;
+			(int offset, View anchor, View view) { //outer left
+				view.left = offset - view.outerWidth;
 			},
-			(int offset, View anchor, View view) {
+			(int offset, View anchor, View view) { //inner left
 				view.left = offset;
 			},
-			(int offset, View anchor, View view) {
-				view.left = offset + (anchor.offsetWidth - view.offsetWidth) ~/ 2;
+			(int offset, View anchor, View view) { //center
+				view.left = offset + (anchor.outerWidth - view.outerWidth) ~/ 2;
 			},
-			(int offset, View anchor, View view) {
-				view.left = offset + anchor.offsetWidth - view.offsetWidth;
+			(int offset, View anchor, View view) { //inner right
+				view.left = offset
+					+ (anchor === view.parent ? anchor.innerWidth: anchor.outerWidth)
+					- view.outerWidth;
 			},
-			(int offset, View anchor, View view) {
-				view.left = offset + anchor.offsetWidth;
+			(int offset, View anchor, View view) { //outer right
+				view.left = offset + anchor.outerWidth;
 			}
 		];
 	return _cacheXAnchorHandlers;
@@ -126,19 +135,21 @@ List<_AnchorHandler> get _anchorYHandlers() {
 	if (_cacheYAnchorHandlers == null)
 		_cacheYAnchorHandlers = [
 			(int offset, View anchor, View view) {
-				view.top = offset - view.offsetHeight;
+				view.top = offset - view.outerHeight;
 			},
 			(int offset, View anchor, View view) {
 				view.top = offset;
 			},
 			(int offset, View anchor, View view) {
-				view.top = offset + (anchor.offsetHeight - view.offsetHeight) ~/ 2;
+				view.top = offset + (anchor.outerHeight - view.outerHeight) ~/ 2;
+			},
+			(int offset, View anchor, View view) { //inner bottom
+				view.top = offset
+					+ (anchor === view.parent ? anchor.innerHeight: anchor.outerHeight)
+					- view.outerHeight;
 			},
 			(int offset, View anchor, View view) {
-				view.top = offset + anchor.offsetHeight - view.offsetHeight;
-			},
-			(int offset, View anchor, View view) {
-				view.top = offset + anchor.offsetHeight;
+				view.top = offset + anchor.outerHeight;
 			}
 		];
 	return _cacheYAnchorHandlers;

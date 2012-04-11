@@ -22,15 +22,18 @@ default LayoutDeclarationImpl {
 	 */
 	String orient;
 	/** The spacing among child views.
+	 * It can be overriden by child view's [View.profile.spacing].
 	 * <p>Syntax: <code>spacing: #n1 [#n2 [#n3 #n4]];</code>
 	 */
 	String spacing;
 	/** The width of each child view.
+	 * It can be overriden by child view's [View.profile.width].
 	 * <p>Syntax: <code>width: #n | content | flex | flex #n;</code>
 	 * <p>Default: depends on [type]
 	 */
 	String width;
 	/** The width of each child view.
+	 * It can be overriden by child view's [View.profile.height].
 	 * <p>Syntax: <code>height: #n | content | flex | flex #n;</code>
 	 * <p>Default: depends on [type]
 	 */

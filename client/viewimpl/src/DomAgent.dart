@@ -9,7 +9,7 @@
 class DomAgent {
 	final Element node;
 
-	DomAgent(this.node);
+	DomAgent(var v): node = v is View ? v.node: v {}
 
 	/** Returns the offset of this node related to the document.
 	 */
@@ -22,4 +22,16 @@ class DomAgent {
 		} while (el.style.position != "fixed" && (el = el.offsetParent) != null);
 		return ofs;
 	}
+	/** Returns the final used values of all the CSS properties
+	 */
+	CSSStyleDeclaration get computedStyle() 
+	=> window.$dom_getComputedStyle(node, "");
+	/** Returns the width of the border.
+	 */
+	int get borderWidth() {
+		String wd = computedStyle.borderWidth;
+		return wd !== null && !wd.isEmpty() ?
+			Math.parseInt(_reNum.firstMatch(wd).group(0)): 0;
+	}
+	static final RegExp _reNum = const RegExp(@"(\d*)");
 }

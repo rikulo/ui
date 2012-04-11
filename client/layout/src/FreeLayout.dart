@@ -11,8 +11,8 @@ class FreeLayout implements Layout {
 		if (size !== null)
 			return size;
 
-		int wd = _initSize(view.profile.width, () => view.offsetWidth),
-			hgh = _initSize(view.profile.height, () => view.offsetHeight);
+		int wd = _initSize(view.profile.width, () => view.innerWidth),
+			hgh = _initSize(view.profile.height, () => view.innerHeight);
 		for (final View child in view.children) {
 			if (child.profile.anchorView == null && child.style.position != "fixed") {
 				final Size subsz = child.measureSize(mctx);
@@ -31,8 +31,8 @@ class FreeLayout implements Layout {
 		return size;
 	}
 	static int _initSize(String profile, AsInt current) {
-		final _SizeInfo szinf = new _SizeInfo(profile);
-		final int v = szinf.type == _SizeInfo.FIXED ? szinf.value: current();
+		final _AmountInfo szinf = new _AmountInfo(profile);
+		final int v = szinf.type == _AmountInfo.FIXED ? szinf.value: current();
 		return v != null ? v: Layout.NO_LIMIT;
 	}
 	void layout(MeasureContext mctx, View view) {
@@ -40,7 +40,7 @@ class FreeLayout implements Layout {
 			final AnchorRelation ar = new AnchorRelation(view);
 			for (final View child in ar.indeps)
 				layoutManager.sizeByProfile(mctx,
-					child, () => view.offsetWidth, () => view.offsetHeight);
+					child, () => view.innerWidth, () => view.innerHeight);
 
 			ar.layoutAnchored(mctx);
 

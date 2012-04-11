@@ -81,36 +81,36 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 	}
 
 	void sizeByProfile(MeasureContext mctx, View view, AsInt width, AsInt height) {
-		_SizeInfo inf = new _SizeInfo(view.profile.width);
-		switch (inf.type) {
-		case _SizeInfo.FIXED:
-			view.width = inf.value;
+		_AmountInfo amt = new _AmountInfo(view.profile.width);
+		switch (amt.type) {
+		case _AmountInfo.FIXED:
+			view.width = amt.value;
 			break;
-		case _SizeInfo.FLEX:
+		case _AmountInfo.FLEX:
 			view.width = width();
 			break;
-		case _SizeInfo.RATIO:
-			view.width = (width() * inf.value).round();
+		case _AmountInfo.RATIO:
+			view.width = (width() * amt.value).round();
 			break;
-		case _SizeInfo.CONTENT:
+		case _AmountInfo.CONTENT:
 			final Size sz = view.measureSize(mctx);
 			if (sz != null && sz.width != MeasureContext.NO_LIMIT)
 				view.width = sz.width;
 			break;
 		}
 
-		inf = new _SizeInfo(view.profile.height);
-		switch (inf.type) {
-		case _SizeInfo.FIXED:
-			view.height = inf.value;
+		amt = new _AmountInfo(view.profile.height);
+		switch (amt.type) {
+		case _AmountInfo.FIXED:
+			view.height = amt.value;
 			break;
-		case _SizeInfo.FLEX:
+		case _AmountInfo.FLEX:
 			view.height = height();
 			break;
-		case _SizeInfo.RATIO:
-			view.height = (height() * inf.value).round();
+		case _AmountInfo.RATIO:
+			view.height = (height() * amt.value).round();
 			break;
-		case _SizeInfo.CONTENT:
+		case _AmountInfo.CONTENT:
 			final Size sz = view.measureSize(mctx);
 			if (sz != null && sz.height != MeasureContext.NO_LIMIT)
 				view.height = sz.height;

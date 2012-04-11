@@ -733,7 +733,7 @@ class View implements EventTarget {
 		
 	/** Returns the width of this view.
 	 * <p>Default: null (up to the system).
-	 * <p>To get the real width on the document, use [offsetWidth].
+	 * <p>To get the real width on the document, use [outerWidth].
 	 */
 	int get width() => _width;
 	/** Sets the width of this view.
@@ -747,7 +747,7 @@ class View implements EventTarget {
 	}
 	/** Returns the height of this view.
 	 * <p>Default: null (up to the system)
-	 * <p>To get the real height on the document, use [offsetWidth].
+	 * <p>To get the real height on the document, use [outerWidth].
 	 */
 	int get height() => _height;
 	/** Sets the height of this view.
@@ -760,11 +760,40 @@ class View implements EventTarget {
 			n.style.height = height !== null ? "${height}px": "";
 	}
 
+	/** Returns the left offset of the origin of the child's coordinate system.
+	 * <p>Default: 0.
+	 */
+	int get innerLeft() => 0;
+	/** Returns the top offset of the origin of the child's coordinate system.
+	 * <p>Default: 0.
+	 */
+	int get innerTop() => 0;
+	/** Returns the left offset of the origin of the child's coordinate system.
+	 * <p>Default: 0.
+	 * <p>Whether a view allows the developer to change the origin is up to the view's
+	 * spec. By default, it is not supported.
+	 * To support it, the view usually introduced an additional DIV to provide
+	 * the origin for the child views.
+	 */
+	void set innerLeft(int left)  {
+		throw const UiException("Not allowed");
+	}
+	/** Returns the top offset of the origin of the child's coordinate system.
+	 * <p>Default: throws [UiException].
+	 * <p>Whether a view allows the developer to change the origin is up to the view's
+	 * spec. By default, it is not supported.
+	 * To support it, the view usually introduced an additional DIV to provide
+	 * the origin for the child views.
+	 */
+	void set innerTop(int top) {
+		throw const UiException("Not allowed");
+	}
+	
 	/** Returns the real width of this view shown on the document (never null).
 	 * <p>Notice that the performance of this method is not good, if
 	 * [width] is null.
 	 */
-	int get offsetWidth()
+	int get outerWidth()
 	=> _width !== null ? _width: inDocument ? node.$dom_offsetWidth: 0;
 		//for better performance, we don't need to get $dom_offsetWidth if _width is
 		//assigned (because we use box-sizing: border-box)
@@ -772,10 +801,26 @@ class View implements EventTarget {
 	 * <p>Notice that the performance of this method is not good, if
 	 * [height] is null.
 	 */
-	int get offsetHeight()
+	int get outerHeight()
 	=> _height !== null ? _height: inDocument ? node.$dom_offsetHeight: 0;
 		//for better performance, we don't need to get $dom_offsetHeight if _height is
 		//assigned (because we use box-sizing: border-box)
+	/** Returns the viewable width of this view, excluding the borders, margins
+	 * and scrollbars.
+	 * <p>Note: this method returns [width] if [inDocument] is false and [width] is not null.
+	 * In other words, it doesn't exclude the border's width if not attached to the document
+	 * (for performance reason). However, we might change it in the future, so it is better
+	 * not to call this method if the view is not attached.
+	 */
+	int get innerWidth() => inDocument ? node.$dom_clientWidth: _width !== null ? _width: 0;
+	/** Returns the viewable height of this view, excluding the borders, margins
+	 * and scrollbars.
+	 * <p>Note: this method returns [height] if [inDocument] is false and [height] is not null.
+	 * In other words, it doesn't exclude the border's height if not attached to the document
+	 * (for performance reason). However, we might change it in the future, so it is better
+	 * not to call this method if the view is not attached.
+	 */
+	int get innerHeight() => inDocument ? node.$dom_clientHeight: _height !== null ? _height: 0;
 
 	/** Returns the offset of this view relative to the left-top corner
 	 * of the document.
