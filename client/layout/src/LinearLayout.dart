@@ -6,9 +6,6 @@
  * The linear layout.
  */
 class LinearLayout extends AbstractLayout {
-	static final int _DEFAULT_AMOUNT = 30;
-	static final int _DEFAULT_SPACING = 2;
-
 	String getDefaultProfileProperty(View view, String name) {
 		switch (name) {
 		case "height":
@@ -21,130 +18,30 @@ class LinearLayout extends AbstractLayout {
 		return "";
 	}
 
-	/** Returns whether the orient is horizontal.
-	 */
-	static bool _isHorizontal(view) => view.layout.orient != "vertical"; //horizontal is default
+	static bool _isHorizontal(view) => view.layout.orient != "vertical";  //horizontal is default
+	static _LinearLayout _getRealLayout(view)
+	=> _isHorizontal(view) ? new _HLayout(): new _VLayout();
 
 	int measureWidth(MeasureContext mctx, View view) {
 		int width = mctx.widths[view];
 		if (width !== null || mctx.widths.containsKey(view))
 			return width;
 
-		width = _isHorizontal(view) ? _measureHrWidth(mctx, view): _measureVtWidth(mctx, view);
-		mctx.widths[view] = width;
-		return width;
+		return mctx.widths[view] = _getRealLayout(view).measureWidth(mctx, view);
 	}
 	int measureHeight(MeasureContext mctx, View view) {
 		int height = mctx.heights[view];
 		if (height !== null || mctx.heights.containsKey(view))
 			return height;
 
-		height = _isHorizontal(view) ? _measureHrHeight(mctx, view): _measureVtHeight(mctx, view);
-		mctx.heights[view] = height;
-		return height;
+		return mctx.heights[view] = _getRealLayout(view).measureHeight(mctx, view);
 	}
-	int _measureHrWidth(MeasureContext mctx, View view) {
-		final _AmountInfo amtDefault = _getDefaultAmountInfo(view.layout.width, 0);
-		final int maxWd = view.parent !== null ? view.parent.innerWidth: device.screen.width;
-		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, _DEFAULT_SPACING);
-		int width = 0, prevSpacingRight = 0;
-		for (final View child in view.children) {
-			if (child.profile.anchorView !== null)
-				continue; //ignore anchored
-
-			//add spacing to width
-			final _SideInfo si = new _SideInfo(child.profile.spacing, 0, spcinf);
-			if ((width += prevSpacingRight + si.left) >= maxWd)
-				return maxWd;
-			prevSpacingRight = si.right;
-
-			final _AmountInfo amt = new _AmountInfo(child.profile.width);
-			if (amt.type == _AmountInfo.NONE) {
-				if (child.width != null)  {
-					amt.type = _AmountInfo.FIXED;
-					amt.value = child.width;
-				} else {
-					amt.type = amtDefault.type;
-					amt.value =  amtDefault.value;
-				}
-			}
-
-			switch (amt.type) {
-			case _AmountInfo.FIXED:
-				if ((width += amt.value) >= maxWd)
-					return maxWd;
-				break;
-			case _AmountInfo.CONTENT:
-				final int wd = child.measureWidth(mctx);
-				if ((width += wd != null ? wd: amtDefault.value) >= maxWd)
-					return maxWd;
-				break;
-			default:
-				return maxWd; //fulfill the parent if flex or ratio is used
-			}
-		}
-
-		width += prevSpacingRight;
-		return width >= maxWd ? maxWd: width;
-	}
-	int _measureHrHeight(MeasureContext mctx, View view) {
-		final _AmountInfo amtDefault = _getDefaultAmountInfo(view.layout.height, _DEFAULT_AMOUNT);
-		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, _DEFAULT_SPACING);
-		int height;
-		for (final View child in view.children) {
-			if (child.profile.anchorView !== null)
-				continue; //ignore anchored
-
-			//add spacing to width
-			final _SideInfo si = new _SideInfo(child.profile.spacing, 0, spcinf);
-			int hgh = si.top + si.bottom;
-			final _AmountInfo amt = new _AmountInfo(child.profile.height);
-			if (amt.type == _AmountInfo.NONE) {
-				if (child.height != null)  {
-					amt.type = _AmountInfo.FIXED;
-					amt.value = child.height;
-				} else {
-					amt.type = amtDefault.type;
-					amt.value =  amtDefault.value;
-				}
-			}
-
-			switch (amt.type) {
-			case _AmountInfo.FIXED:
-				hgh += amt.value;
-				break;
-			case _AmountInfo.CONTENT:
-				final int h = child.measureHeight(mctx);
-				hgh += h != null ? h: amtDefault.value;
-				break;
-			default:
-				continue; //ignore if flex or ratio is used
-			}
-			if (height == null || hgh > height)
-				height = hgh;
-		}
-		return height;
-	}
-	int _measureVtWidth(MeasureContext mctx, View view) {
-	}
-	int _measureVtHeight(MeasureContext mctx, View view) {
-	}
-	_AmountInfo _getDefaultAmountInfo(String info, int defValue) {
-		final _AmountInfo amt = new _AmountInfo(info);
-		if (amt.type == _AmountInfo.NONE) {
-			amt.type = _AmountInfo.FIXED;
-			amt.value = defValue;
-		}
-		return amt;
-	}
-
 	void layout(MeasureContext mctx, View view) {
 		if (view.firstChild !== null) {
 			final AnchorRelation ar = new AnchorRelation(view);
 
 			//1) layout independents
-			if (_isHorizontal(view)) _hlayout(mctx, view, ar.indeps);
-			else _vlayout(mctx, view, ar.indeps);
+			_getRealLayout(view).layout(mctx, view, ar.indeps);
 
 			//2) do anchored
 			ar.layoutAnchored(mctx);
@@ -154,84 +51,21 @@ class LinearLayout extends AbstractLayout {
 				child.doLayout(mctx);
 		}
 	}
-	void _hlayout(MeasureContext mctx, View view, List<View> children) {
-		//1) size
-		final AsInt innerWidth = () => view.innerWidth;
-		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, _DEFAULT_SPACING);
-		final Map<View, _SideInfo> childspcinfs = new Map();
-		final List<View> flexViews = new List();
-		final List<int> flexs = new List();
-		int nflex = 0, assigned = 0, prevSpacingRight = 0;
-		for (final View child in children) {
-			final _SideInfo si = new _SideInfo(child.profile.spacing, 0, spcinf);
-			childspcinfs[child] = si;
-			assigned += prevSpacingRight + si.left;
-			prevSpacingRight = si.right;
 
-			final _AmountInfo amt = new _AmountInfo(child.profile.width);
-			switch (amt.type) {
-			case _AmountInfo.FIXED:
-				assigned += child.width = amt.value;
-				break;
-			case _AmountInfo.FLEX:
-				nflex += amt.value;
-				flexs.add(amt.value);
-				flexViews.add(child);
-				break;
-			case _AmountInfo.RATIO:
-				assigned += child.width = (innerWidth() * amt.value).round();
-				break;
-			case _AmountInfo.CONTENT:
-				final int wd = child.measureWidth(mctx);
-				if (wd != null)
-					assigned += child.width = wd;
-				else
-					assigned += child.outerWidth;
-				break;
-			}
-
-			layoutManager.setHeightByProfile(mctx, child, () => view.innerHeight - si.top - si.bottom);
+	//Utilities//
+	static final int DEFAULT_AMOUNT = 30;
+	static final int DEFAULT_SPACING = 2;
+	static _AmountInfo getDefaultAmountInfo(String info, int defValue) {
+		final _AmountInfo amt = new _AmountInfo(info);
+		if (amt.type == _AmountInfo.NONE) {
+			amt.type = _AmountInfo.FIXED;
+			amt.value = defValue;
 		}
-
-		//1a) size flex
-		if (nflex > 0) {
-			int space = innerWidth() - assigned - prevSpacingRight;
-			double per = space / nflex;
-			for (int j = 0, len = flexs.length - 1;; ++j) {
-				if (j == len) { //last
-					flexViews[j].width = space;
-					break;
-				}
-				final num delta = (per * flexs[j]).round();
-				flexViews[j].width = delta;
-				space -= delta;
-			}
-		}
-
-		//2) position
-		final String defAlign = view.layout.align;
-		prevSpacingRight = assigned = 0;
-		for (final View child in children) {
-			final _SideInfo si = childspcinfs[child];
-			child.left = assigned += prevSpacingRight + si.left;
-			assigned += child.width;
-			prevSpacingRight = si.right;
-
-			String align = child.profile.align;
-			if (align.isEmpty()) align = defAlign;
-			final int space = childspcinfs[child].top;
-			switch (align) {
-			case "center":
-			case "end":
-				int delta = view.innerHeight - si.top - si.bottom - child.outerHeight;
-				if (align == "center") delta ~/= 2;
-				child.top = space + delta;
-				break; 
-			default:
-				child.top = space;
-			}
-		}
+		return amt;
 	}
-	void _vlayout(MeasureContext mctx, View view, List<View> children) {
-	}
+}
+interface _LinearLayout {
+	int measureWidth(MeasureContext mctx, View view);
+	int measureHeight(MeasureContext mctx, View view);
+	void layout(MeasureContext mctx, View view, List<View> children);
 }

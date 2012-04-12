@@ -14,6 +14,8 @@
 #source("src/MeasureContext.dart");
 #source("src/FreeLayout.dart");
 #source("src/LinearLayout.dart");
+#source("src/_HLayout.dart");
+#source("src/_VLayout.dart");
 #source("src/AnchorRelation.dart");
 #source("src/_AmountInfo.dart");
 #source("src/_SideInfo.dart");
