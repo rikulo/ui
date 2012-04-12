@@ -7,7 +7,7 @@
 
 class Test2 extends Activity {
 
-	void onCreate_(View rootView) {
+	void onCreate_() {
 		title = "Test 2: Free Layout";
 
 		rootView.style.backgroundColor = "#cca";

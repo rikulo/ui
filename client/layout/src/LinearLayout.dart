@@ -5,27 +5,46 @@
 /**
  * The linear layout.
  */
-class LinearLayout implements Layout {
+class LinearLayout extends AbstractLayout {
 	static final int _NO_SPACING = -10000;
 	static final int _DEFAULT_AMOUNT = 30;
 
-	Size measureSize(MeasureContext mctx, View view) {
-		Size size = mctx.measures[view];
-		if (size !== null)
-			return size;
-
-		size = view.layout.orient == "horizontal" ?
-				_measureHSize(mctx, view): _measureVSize(mctx, view);
-		mctx.measures[view] = size;
-		return size;
-	}
-	Size _measureHSize(MeasureContext mctx, View view) {
-		final _AmountInfo amtDefault = new _AmountInfo(view.layout.width);
-		if (amtDefault.type == _AmountInfo.NONE) {
-			amtDefault.type == _AmountInfo.FIXED;
-			amtDefault.value = _DEFAULT_AMOUNT;
+	String getDefaultProfileProperty(View view, String name) {
+		switch (name) {
+		case "height":
+			if (_isHorizontal(view))
+				return "content";
+			//fall thru
+		case "width":
+			return "flex"; //no matter horizontal or vertical
 		}
+		return "";
+	}
 
+	/** Returns whether the orient is horizontal.
+	 */
+	static bool _isHorizontal(view) => view.layout.orient == "horizontal";
+
+	int measureWidth(MeasureContext mctx, View view) {
+		int width = mctx.widths[view];
+		if (width !== null || mctx.widths.containsKey(view))
+			return width;
+
+		width = _isHorizontal(view) ? _measureHWidth(mctx, view): _measureVWidth(mctx, view);
+		mctx.widths[view] = width;
+		return width;
+	}
+	int measureHeight(MeasureContext mctx, View view) {
+		int height = mctx.heights[view];
+		if (height !== null || mctx.heights.containsKey(view))
+			return height;
+
+//		height = _isHorizontal(view) ? _measureHHeight(mctx, view): _measureVHeight(mctx, view);
+		mctx.heights[view] = height;
+		return height;
+	}
+	int _measureHWidth(MeasureContext mctx, View view) {
+		final _AmountInfo amtDefault = _getDefaultAmountInfo(view);
 		final int maxWd = view.parent !== null ? view.parent.innerWidth: device.screen.width;
 		final _SideInfo spacing = new _SideInfo(view.profile.spacing, 2);
 		int wd = 0, spacingRight = _NO_SPACING, hgh = 0;
@@ -60,11 +79,21 @@ class LinearLayout implements Layout {
 				}
 			}
 		}
+		print("$maxWd");
 
-		return new Size(wd, hgh);
+		return wd;
 	}
-	Size _measureVSize(MeasureContext mctx, View view) {
+	int _measureVWidth(MeasureContext mctx, View view) {
 	}
+	_AmountInfo _getDefaultAmountInfo(View view) {
+		final _AmountInfo amtDefault = new _AmountInfo(view.layout.width);
+		if (amtDefault.type == _AmountInfo.NONE) {
+			amtDefault.type == _AmountInfo.FIXED;
+			amtDefault.value = _DEFAULT_AMOUNT;
+		}
+		return amtDefault;
+	}
+
 	void layout(MeasureContext mctx, View view) {
 		if (view.firstChild !== null) {
 			final AnchorRelation ar = new AnchorRelation(view);

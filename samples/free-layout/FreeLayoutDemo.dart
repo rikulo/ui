@@ -7,7 +7,7 @@
 
 class FreeLayoutDemo extends Activity {
 
-	void onCreate_(View rootView) {
+	void onCreate_() {
 		title = "Free Layout Demo";
 
 		rootView.style.backgroundColor = "#cca";

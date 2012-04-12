@@ -5,35 +5,47 @@
 /**
  * The free layout (default).
  */
-class FreeLayout implements Layout {
-	Size measureSize(MeasureContext mctx, View view) {
-		Size size = mctx.measures[view];
-		if (size !== null)
-			return size;
+class FreeLayout extends AbstractLayout {
+	int measureWidth(MeasureContext mctx, View view) {
+		int wd = mctx.widths[view];
+		if (wd !== null || mctx.widths.containsKey(view))
+			return wd;
 
-		int wd = _initSize(view.profile.width, () => view.innerWidth),
-			hgh = _initSize(view.profile.height, () => view.innerHeight);
+		wd = _initSize(view.profile.width, () => view.innerWidth);
 		for (final View child in view.children) {
 			if (child.profile.anchorView == null && child.style.position != "fixed") {
-				final Size subsz = child.measureSize(mctx);
-				int v = subsz != null ? subsz.width: null;
-				v = child.left + (v !== null ? v: 0);
-				if (v > wd) wd = v;
-
-				v = subsz != null ? subsz.height: null;
-				v = child.top + (v !== null ? v: 0);
-				if (v > hgh) hgh = v;
+				int subsz = child.measureWidth(mctx);
+				subsz = child.left + (subsz !== null ? subsz: 0);
+				if (wd == null || subsz > wd)
+					wd = subsz;
 			}
 		}
 
-		size = new Size(wd, hgh);
-		mctx.measures[view] = size;
-		return size;
+		mctx.widths[view] = wd;
+		return wd;
+	}
+	int measureHeight(MeasureContext mctx, View view) {
+		int hgh = mctx.heights[view];
+		if (hgh !== null || mctx.heights.containsKey(view))
+			return hgh;
+
+		hgh = _initSize(view.profile.height, () => view.innerHeight);
+		for (final View child in view.children) {
+			if (child.profile.anchorView == null && child.style.position != "fixed") {
+				int subsz = child.measureHeight(mctx);
+				subsz = child.top + (subsz !== null ? subsz: 0);
+				if (hgh == null || subsz > hgh)
+					hgh = subsz;
+			}
+		}
+
+		mctx.heights[view] = hgh;
+		return hgh;
 	}
 	static int _initSize(String profile, AsInt current) {
 		final _AmountInfo szinf = new _AmountInfo(profile);
 		final int v = szinf.type == _AmountInfo.FIXED ? szinf.value: current();
-		return v != null ? v: Layout.NO_LIMIT;
+		return v != null ? v: null;
 	}
 	void layout(MeasureContext mctx, View view) {
 		if (view.firstChild !== null) {

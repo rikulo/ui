@@ -6,7 +6,7 @@
 
 class HelloWorld extends Activity {
 
-	void onCreate_(View rootView) {
+	void onCreate_() {
 		title = "Hello World!";
 
 		TextView text = new TextView("Hello World!");

@@ -6,14 +6,30 @@
  * A layout controller that arranges the layout of the child views.
  */
 interface Layout default FreeLayout {
-	/** Indicates there is no limitation of the given dimension.
+	/** Measure the width of the given view.
 	 */
-	static final int NO_LIMIT = MeasureContext.NO_LIMIT;
+	int measureWidth(MeasureContext ctx, View view);
+	/** Measure the width of the given view.
+	 */
+	int measureHeight(MeasureContext ctx, View view);
 
-	/** Measure the dimension of the given view.
-	 */
-	Size measureSize(MeasureContext ctx, View view);
 	/** Handles the layout of the given view.
 	 */
 	void layout(MeasureContext ctx, View view);
+
+	/** Returns the default value of the given profile's property.
+	 */
+	String getDefaultProfileProperty(View view, String propertyName);
+	/** Returns the default value of the given layout's property.
+	 */
+	String getDefaultLayoutProperty(View view, String propertyName);
+}
+
+/**
+ * A skeletal implementation of [Layout].
+ */
+//abstract //TODO: until Dart allows it
+class AbstractLayout implements Layout {
+	String getDefaultLayoutProperty(View view, String name) 	=> "";
+	String getDefaultProfileProperty(View view, String name) => "";
 }

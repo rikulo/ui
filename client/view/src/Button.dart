@@ -71,8 +71,10 @@ class Button extends TextView {
 		throw const UiException("No child allowed in Button");
 	}
 
-	Size measureSize(MeasureContext mctx)
-	=> layoutManager.measureContentSize(mctx, this);
+	int measureWidth(MeasureContext mctx)
+	=> layoutManager.measureWidthByContent(mctx, this);
+	int measureHeight(MeasureContext mctx)
+	=> layoutManager.measureHeightByContent(mctx, this);
 
 	String toString() => "Button('$text$html')";
 }

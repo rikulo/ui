@@ -8,10 +8,31 @@
  */
 class Activity {
 	String _title = "";
+	View _rootView;
 
 	Activity() {
 		if (device === null)
 			device = new Device();
+	}
+
+	/** Returns the root view.
+	 */
+	View get rootView() => _rootView;
+	/** Sets the root view.
+	 */
+	void set rootView(View root) {
+		final View prevroot = _rootView;
+		_rootView = root;
+		if (prevroot != null) {
+			if (root.width !== null)
+				root.width = prevroot.width;
+			if (root.height !== null)
+				root.height = prevroot.height;
+
+			if (prevroot.inDocument) {
+				throw const UiException("TODO");
+			}
+		}
 	}
 
 	/** Start the activity.
@@ -21,12 +42,15 @@ class Activity {
 			throw const UiException("Only one activity is allowed");
 
 		activity = this;
-		View rootView = createRootView_();
-		onCreate_(rootView);
+		_rootView = new Section();
+		_rootView.width = device.screen.width;
+		_rootView.height = device.screen.height;
 
-		if (!rootView.inDocument) {//app might add it to Document manually
+		onCreate_();
+
+		if (!_rootView.inDocument) {//app might add it to Document manually
 		  final Element cave = document.query("#v-root");
-      rootView.addToDocument(cave != null ? cave: document.body);
+      _rootView.addToDocument(cave != null ? cave: document.body);
 		}
 	}
 
@@ -39,26 +63,16 @@ class Activity {
 		document.title = _title = title != null ? title: "";
 	}
 
-	/** Called to instantiate the root view.
-	 * Don't call this method directly. It is a callback that
-	 * you can override to provide a different instance if necessary.
-	 * <p>Default: it creates an instance of [Section] and initializes
-	 * it to fill the whole screen.
-	 */
-	View createRootView_() {
-		final View root = new Section();
-		root.width = device.screen.width;
-		root.height = device.screen.height;
-		return root;
-	}
 	/** Called when the activity is starting.
-	 * Notice that root is not attached to the screen yet when this method
-	 * is called.
-	 * Rather, it will be attached after this method returns (for better
-	 * performance). However, if you'd like to attach it earlier, you can
-	 * invoke [View.addToDocument].
+	 * Before calling this method, [rootView] will be instantiated, but
+	 * it won't be attached to the document until this method has returned
+	 * (for better performaance).
+	 * If you'd really like to attach it earlier, you can
+	 * invoke [View.addToDocument] manually.
+	 * <p>If you prefer to instantiate a different root view, you can
+	 * create an instance and then assign to [rootView] directly.
 	 */
-	void onCreate_(View rootView) {
+	void onCreate_() {
 	}
 	/** Called when the activity is going into background.
 	 */

@@ -633,11 +633,16 @@ class View implements EventTarget {
 	void doLayout([MeasureContext mctx=null]) {
 		layoutManager.layout(mctx, this);
 	}
-	/** Measures the size of this view.
+	/** Measures the width of this view.
 	 * It is called by [doLayout].
 	 */
-	Size measureSize(MeasureContext mctx)
-	=> layoutManager.measureSize(mctx, this);
+	int measureWidth(MeasureContext mctx)
+	=> layoutManager.measureWidth(mctx, this);
+	/** Measures the height of this view.
+	 * It is called by [doLayout].
+	 */
+	int measureHeight(MeasureContext mctx)
+	=> layoutManager.measureHeight(mctx, this);
 
 	/** Generates the HTML fragment for this view and its descendants
 	 * to the given string buffer.
@@ -864,6 +869,18 @@ class View implements EventTarget {
 		if (_profile == null)
 			_profile = new ProfileDeclarationImpl(this);
 		return _profile;
+	}
+	/** Returns the default value of the given profile's property.
+	 * <p>Default: invokes [LayoutManager.getDefaultProfileProperty].
+	 */
+	String getDefaultProfileProperty_(String propertyName) {
+		return layoutManager.getDefaultProfileProperty(this, propertyName);
+	}
+	/** Returns the default value of the given layout's property.
+	 * <p>Default: invokes [LayoutManager.getDefaultLayoutProperty].
+	 */
+	String getDefaultLayoutProperty_(String propertyName) {
+		return layoutManager.getDefaultLayoutProperty(this, propertyName);
 	}
 
 	/** Retuns the CSS style.

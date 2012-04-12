@@ -11,6 +11,12 @@ implements LayoutDeclaration {
 
   LayoutDeclarationImpl(View owner): _owner = owner;
 
+	//@Override
+	String getPropertyValue(String propertyName) {
+		final String value = super.getPropertyValue(propertyName);
+		return value.isEmpty() ? _owner.getDefaultLayoutProperty_(propertyName): value;
+	}
+
 	String get type()
 		=> getPropertyValue("type");
 	void set type(String value) {

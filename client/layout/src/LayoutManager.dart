@@ -31,13 +31,27 @@ interface LayoutManager extends Layout default _LayoutManager {
 	 * It is an utility for implementing a layout.
 	 */
 	void sizeByProfile(MeasureContext mctx, View view, AsInt width, AsInt height);
-	/** Measures the content's size.
-	 * It is an utility for implementing a view's [View.measureSize].
+	/** Measures the width based on the view's content.
+	 * It is an utility for implementing a view's [View.measureWidth].
 	 * This method assumes the browser will resize the view automatically,
 	 * so it is applied only to a leaf view with some content, such as [TextView]
 	 * and [Button].
 	 */
-	Size measureContentSize(MeasureContext mctx, View view);
+	int measureWidthByContent(MeasureContext mctx, View view);
+	/** Measures the height based on the view's content.
+	 * It is an utility for implementing a view's [View.measureHeight].
+	 * This method assumes the browser will resize the view automatically,
+	 * so it is applied only to a leaf view with some content, such as [TextView]
+	 * and [Button].
+	 */
+	int measureHeightByContent(MeasureContext mctx, View view);
+
+	/** Returns the default value of the given profile's property.
+	 */
+	String getDefaultProfileProperty(View view, String propertyName);
+	/** Returns the default value of the given layout's property.
+	 */
+	String getDefaultLayoutProperty(View view, String propertyName);
 }
 
 class _LayoutManager extends RunOnceViewManager implements LayoutManager {
@@ -58,8 +72,10 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		return _layouts[name];
 	}
 
-	Size measureSize(MeasureContext mctx, View view)
-	=> _layoutOfView(view).measureSize(mctx, view);
+	int measureWidth(MeasureContext mctx, View view)
+	=> _layoutOfView(view).measureWidth(mctx, view);
+	int measureHeight(MeasureContext mctx, View view)
+	=> _layoutOfView(view).measureHeight(mctx, view);
 
 	void layout(MeasureContext mctx, View view) {
 		if (mctx === null)
@@ -67,6 +83,12 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		else
 			_layoutOfView(view).layout(mctx, view);
 	}
+
+	String getDefaultProfileProperty(View view, String propertyName)
+	=> _layoutOfView(view).getDefaultProfileProperty(view, propertyName);
+	String getDefaultLayoutProperty(View view, String propertyName)
+	=> propertyName == "type" ? "": _layoutOfView(view).getDefaultLayoutProperty(view, propertyName);
+		//we have to check "type" to avoid dead-loop
 
 	Layout _layoutOfView(View view) {
 		final String name = view.layout.type;
@@ -93,9 +115,9 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 			view.width = (width() * amt.value).round();
 			break;
 		case _AmountInfo.CONTENT:
-			final Size sz = view.measureSize(mctx);
-			if (sz != null && sz.width != MeasureContext.NO_LIMIT)
-				view.width = sz.width;
+			final int wd = view.measureWidth(mctx);
+			if (wd != null)
+				view.width = wd;
 			break;
 		}
 
@@ -111,24 +133,30 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 			view.height = (height() * amt.value).round();
 			break;
 		case _AmountInfo.CONTENT:
-			final Size sz = view.measureSize(mctx);
-			if (sz != null && sz.height != MeasureContext.NO_LIMIT)
-				view.height = sz.height;
+			final int hgh = view.measureHeight(mctx);
+			if (hgh != null)
+				view.height = hgh;
 			break;
 		}
 	}
-	Size measureContentSize(MeasureContext mctx, View view) {
-		Size size = mctx.measures[view];
-		if (size === null) {
-			final String pos = view.style.position;
-			final bool bFixed = pos == "fixed";
-			if (!bFixed) view.style.position = "fixed";
-
-			size = new Size(view.node.$dom_offsetWidth, view.node.$dom_offsetHeight);
-
-			if (!bFixed) view.style.position = pos;
-			mctx.measures[view] = size;
-		}
+	int measureWidthByContent(MeasureContext mctx, View view) {
+		int wd = mctx.widths[view];
+		return wd !== null || mctx.widths.containsKey(view) ? wd:
+			_measureByContent(mctx, view).width;
+	}
+	int measureHeightByContent(MeasureContext mctx, View view) {
+		int hgh = mctx.heights[view];
+		return hgh !== null || mctx.heights.containsKey(view) ? hgh:
+			_measureByContent(mctx, view).height;
+	}
+	Size _measureByContent(MeasureContext mctx, View view) {
+		final String pos = view.style.position;
+		final bool bFixed = pos == "fixed";
+		if (!bFixed) view.style.position = "fixed";
+		final Size size = new Size(view.node.$dom_offsetWidth, view.node.$dom_offsetHeight);
+		if (!bFixed) view.style.position = pos;
+		mctx.widths[view] = size.width;
+		mctx.heights[view] = size.height;
 		return size;
 	}
 }
