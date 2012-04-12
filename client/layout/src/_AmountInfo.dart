@@ -13,8 +13,8 @@ class _AmountInfo {
 	static int RATIO = 3;
 	static int CONTENT = 4;
 
-	num value;
 	int type;
+	num value;
 
 	_AmountInfo(String profile) {
 		if (profile == null || (profile = profile.trim()).isEmpty()) {
@@ -32,5 +32,8 @@ class _AmountInfo {
 			type = FIXED;
 			value = Math.parseInt(profile);
 		}
+	}
+	String toString() {
+		return "$type:$value";
 	}
 }

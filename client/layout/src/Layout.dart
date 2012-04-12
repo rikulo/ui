@@ -30,6 +30,6 @@ interface Layout default FreeLayout {
  */
 //abstract //TODO: until Dart allows it
 class AbstractLayout implements Layout {
-	String getDefaultLayoutProperty(View view, String name) 	=> "";
+	String getDefaultLayoutProperty(View view, String name)	=> "";
 	String getDefaultProfileProperty(View view, String name) => "";
 }

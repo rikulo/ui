@@ -27,10 +27,14 @@ interface LayoutManager extends Layout default _LayoutManager {
 	 */
 	void flush([View view]);
 
-	/** Sizes a view based on its profile.
+	/** Set the width of the given view based on its profile.
 	 * It is an utility for implementing a layout.
 	 */
-	void sizeByProfile(MeasureContext mctx, View view, AsInt width, AsInt height);
+	void setWidthByProfile(MeasureContext mctx, View view, AsInt width);
+	/** Set the height of the given view based on its profile.
+	 * It is an utility for implementing a layout.
+	 */
+	void setHeightByProfile(MeasureContext mctx, View view, AsInt width);
 	/** Measures the width based on the view's content.
 	 * It is an utility for implementing a view's [View.measureWidth].
 	 * This method assumes the browser will resize the view automatically,
@@ -102,8 +106,8 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		_layoutOfView(view).layout(new MeasureContext(), view);
 	}
 
-	void sizeByProfile(MeasureContext mctx, View view, AsInt width, AsInt height) {
-		_AmountInfo amt = new _AmountInfo(view.profile.width);
+	void setWidthByProfile(MeasureContext mctx, View view, AsInt width) {
+		final _AmountInfo amt = new _AmountInfo(view.profile.width);
 		switch (amt.type) {
 		case _AmountInfo.FIXED:
 			view.width = amt.value;
@@ -120,8 +124,9 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 				view.width = wd;
 			break;
 		}
-
-		amt = new _AmountInfo(view.profile.height);
+	}
+	void setHeightByProfile(MeasureContext mctx, View view, AsInt height) {
+		final _AmountInfo amt = new _AmountInfo(view.profile.height);
 		switch (amt.type) {
 		case _AmountInfo.FIXED:
 			view.height = amt.value;

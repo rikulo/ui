@@ -10,17 +10,16 @@ class LinearLayoutDemo extends Activity {
 		title = "Linear Layout Demo";
 		rootView.style.backgroundColor = "#cca";
 
-//		View vlayout = new View();
-//		vlayout.layout.type = "linear";
-//		vlayout.layout.orient = "vertical";
-//		rootView.appendChild(vlayout);
+		View vlayout = new View();
+		vlayout.layout.type = "linear";
+		vlayout.layout.orient = "vertical";
+		rootView.appendChild(vlayout);
 
 		View hlayout = new View();
 		hlayout.layout.type = "linear";
 		hlayout.layout.orient = "horizontal";
-		hlayout.profile.width = hlayout.profile.height = "content";
-//		vlayout.appendChild(hlayout);
-rootView.appendChild(hlayout);
+		hlayout.profile.height = "content";
+		vlayout.appendChild(hlayout);
 
 		View view = new View();
 		view.style.backgroundColor = "blue";

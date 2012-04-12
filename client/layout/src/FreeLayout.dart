@@ -50,9 +50,12 @@ class FreeLayout extends AbstractLayout {
 	void layout(MeasureContext mctx, View view) {
 		if (view.firstChild !== null) {
 			final AnchorRelation ar = new AnchorRelation(view);
-			for (final View child in ar.indeps)
-				layoutManager.sizeByProfile(mctx,
-					child, () => view.innerWidth, () => view.innerHeight);
+			final AsInt innerWidth = () => view.innerWidth,
+				innerHeight = () => view.innerHeight; //future: introduce cache
+			for (final View child in ar.indeps) {
+				layoutManager.setWidthByProfile(mctx, child, innerWidth);
+				layoutManager.setHeightByProfile(mctx, child, innerHeight);
+			}
 
 			ar.layoutAnchored(mctx);
 

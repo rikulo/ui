@@ -33,5 +33,5 @@ class DomAgent {
 		return wd !== null && !wd.isEmpty() ?
 			Math.parseInt(_reNum.firstMatch(wd).group(0)): 0;
 	}
-	static final RegExp _reNum = const RegExp(@"(\d*)");
+	static final RegExp _reNum = const RegExp(@"([0-9]*)");
 }
