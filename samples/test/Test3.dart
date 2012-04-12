@@ -40,6 +40,7 @@ class Test3 extends Activity {
 		view.style.backgroundColor = "yellow";
 		view.width = 70;
 		view.height = 30;
+		view.profile.align = "end";
 		hlayout.appendChild(view);
 	}
 	void test2(View parent, int left, int top) {
@@ -49,6 +50,7 @@ class Test3 extends Activity {
 		hlayout.top = top;
 		hlayout.style.border = "1px solid #884";
 		hlayout.layout.type = "linear";
+		hlayout.layout.align = "center";
 		hlayout.layout.orient = "horizontal";
 		hlayout.layout.spacing = "5 5";
 		hlayout.profile.width = "70%";

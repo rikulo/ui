@@ -12,7 +12,7 @@ class _SideInfo {
 	static RegExp _reWord = const RegExp(@"(\w+)");
 
 	_SideInfo(String profile, int defaultValue, [_SideInfo defaultInfo]) {
-		if (profile != null && !(profile = profile.trim()).isEmpty()) {
+		if (profile != null && !profile.isEmpty()) {
 			List<int> wds = [];
 			for (final Match m in _reWord.allMatches(profile))
 				wds.add(Math.parseInt(m.group(0)));

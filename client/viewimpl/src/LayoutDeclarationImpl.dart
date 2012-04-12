@@ -29,6 +29,12 @@ implements LayoutDeclaration {
 		setProperty("orient", value);
 	}
 
+	String get align()
+		=> getPropertyValue("align");
+	void set align(String value) {
+		setProperty("align", value);
+	}
+
 	String get spacing()
 		=> getPropertyValue("spacing");
 	void set spacing(String value) {

@@ -17,7 +17,7 @@ class _AmountInfo {
 	num value;
 
 	_AmountInfo(String profile) {
-		if (profile == null || (profile = profile.trim()).isEmpty()) {
+		if (profile == null || profile.isEmpty()) {
 			type = NONE;
 		} else if (profile == "content") {
 			type = CONTENT;

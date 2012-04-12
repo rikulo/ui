@@ -23,7 +23,7 @@ class LinearLayout extends AbstractLayout {
 
 	/** Returns whether the orient is horizontal.
 	 */
-	static bool _isHorizontal(view) => view.layout.orient == "horizontal";
+	static bool _isHorizontal(view) => view.layout.orient != "vertical"; //horizontal is default
 
 	int measureWidth(MeasureContext mctx, View view) {
 		int width = mctx.widths[view];
@@ -31,7 +31,6 @@ class LinearLayout extends AbstractLayout {
 			return width;
 
 		width = _isHorizontal(view) ? _measureHrWidth(mctx, view): _measureVtWidth(mctx, view);
-		print("wd: $width");
 		mctx.widths[view] = width;
 		return width;
 	}
@@ -41,7 +40,6 @@ class LinearLayout extends AbstractLayout {
 			return height;
 
 		height = _isHorizontal(view) ? _measureHrHeight(mctx, view): _measureVtHeight(mctx, view);
-		print("hgh: $height");
 		mctx.heights[view] = height;
 		return height;
 	}
@@ -211,13 +209,27 @@ class LinearLayout extends AbstractLayout {
 		}
 
 		//2) position
+		final String defAlign = view.layout.align;
 		prevSpacingRight = assigned = 0;
 		for (final View child in children) {
 			final _SideInfo si = childspcinfs[child];
 			child.left = assigned += prevSpacingRight + si.left;
 			assigned += child.width;
 			prevSpacingRight = si.right;
-			child.top = childspcinfs[child].top; //TODO: handle align
+
+			String align = child.profile.align;
+			if (align.isEmpty()) align = defAlign;
+			final int space = childspcinfs[child].top;
+			switch (align) {
+			case "center":
+			case "end":
+				int delta = view.innerHeight - si.top - si.bottom - child.outerHeight;
+				if (align == "center") delta ~/= 2;
+				child.top = space + delta;
+				break; 
+			default:
+				child.top = space;
+			}
 		}
 	}
 	void _vlayout(MeasureContext mctx, View view, List<View> children) {

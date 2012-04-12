@@ -21,6 +21,11 @@ default LayoutDeclarationImpl {
 	 * <p>Default: <code>horizontal</code>
 	 */
 	String orient;
+	/** The alignment.
+	 * <p>Syntax: <code>align: start | center | end;</code>
+	 * <p>Default: <code>start</code>
+	 */
+	String align;
 	/** The spacing among child views.
 	 * It can be overriden by child view's [View.profile.spacing].
 	 * <p>Syntax: <code>spacing: #n1 [#n2 [#n3 #n4]];</code>

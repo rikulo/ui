@@ -29,6 +29,11 @@ default ProfileDeclarationImpl {
 	 */
 	String location;
 
+	/** The alignment.
+	 * <p>Syntax: <code>align: start | center | end;</code>
+	 * <p>Default: <code>start</code>
+	 */
+	String align;
 	/** The spacing of the associated view.
 	 * <p>Syntax: <code>#n1 [#n2 [#n3 #n4]]</code>
 	 */
