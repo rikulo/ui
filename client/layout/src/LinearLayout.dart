@@ -6,21 +6,10 @@
  * The linear layout.
  */
 class LinearLayout extends AbstractLayout {
-	String getDefaultProfileProperty(View view, String name) {
-		switch (name) {
-		case "height":
-			if (_isHorizontal(view))
-				return "content";
-			//fall thru
-		case "width":
-			return "flex"; //no matter horizontal or vertical
-		}
-		return "";
-	}
-
-	static bool _isHorizontal(view) => view.layout.orient != "vertical";  //horizontal is default
-	static _LinearLayout _getRealLayout(view)
-	=> _isHorizontal(view) ? new _HLayout(): new _VLayout();
+	String getDefaultProfileProperty(View view, String name)
+	=> _getRealLayout(view).getDefaultProfileProperty(view, name);
+	static _LinearLayout _getRealLayout(view) //horizontal is default
+	=> view.layout.orient != "vertical" ? new _HLayout(): new _VLayout();
 
 	int measureWidth(MeasureContext mctx, View view) {
 		int width = mctx.widths[view];
@@ -65,6 +54,7 @@ class LinearLayout extends AbstractLayout {
 	}
 }
 interface _LinearLayout {
+	String getDefaultProfileProperty(View view, String name);
 	int measureWidth(MeasureContext mctx, View view);
 	int measureHeight(MeasureContext mctx, View view);
 	void layout(MeasureContext mctx, View view, List<View> children);

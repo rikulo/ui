@@ -6,6 +6,13 @@
  * Horizontal linear layout.
  */
 class _HLayout implements _LinearLayout {
+	String getDefaultProfileProperty(View view, String name) {
+		switch (name) {
+		case "height": return "content";
+		case "width": return "flex";
+		}
+		return "";
+	}
 	int measureWidth(MeasureContext mctx, View view) {
 		final _AmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.width, 0);
 		final int maxWd = view.parent !== null ? view.parent.innerWidth: device.screen.width;

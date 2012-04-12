@@ -22,7 +22,7 @@ class Test3 extends Activity {
     hlayout.top = top;
 		hlayout.style.backgroundColor = "#ddb";
 		hlayout.layout.type = "linear";
-		hlayout.layout.orient = "horizontal";
+		//hlayout.layout.orient = "horizontal"; //default
 		hlayout.profile.width = hlayout.profile.height = "content";
 		parent.appendChild(hlayout);
 
