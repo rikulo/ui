@@ -35,7 +35,7 @@ class LinearLayout implements Layout {
 
 			//3) pass control to children
 			for (final View child in view.children)
-				child.doLayout(mctx);
+				child.doLayout(mctx); //no matter shallLayout_(child)
 		}
 	}
 

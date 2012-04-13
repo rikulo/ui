@@ -22,18 +22,20 @@ class AnchorRelation {
 	/** Contructors of the anchor relation of all children of the given view.
 	 */
 	AnchorRelation(View view) : indeps = new List(), anchored = new Map(), parent = view {
-		for (final View v in view.children) {
-			final View av = v.profile.anchorView;
-			if (av == null) {
-				indeps.add(v);
-			} else {
-				if (av.parent !== view && av !== view)
-					throw new UiException("Anchor can be parent or sibling, not $av");
+		for (final View child in view.children) {
+			if (view.shallLayout_(child)) {
+				final View av = child.profile.anchorView;
+				if (av == null) {
+					indeps.add(child);
+				} else {
+					if (av.parent !== view && av !== view)
+						throw new UiException("Anchor can be parent or sibling, not $av");
 
-				List<View> deps = anchored[av];
-				if (deps == null)
-					anchored[av] = deps = new List();
-				deps.add(v);
+					List<View> deps = anchored[av];
+					if (deps == null)
+						anchored[av] = deps = new List();
+					deps.add(child);
+				}
 			}
 		}
 	}

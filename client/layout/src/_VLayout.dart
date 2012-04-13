@@ -12,7 +12,7 @@ class _VLayout implements _LinearLayout {
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int height = 0, prevSpacingBottom = 0;
 		for (final View child in view.children) {
-			if (child.profile.anchorView !== null)
+			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
 				continue; //ignore anchored
 
 			//add spacing to height
@@ -56,7 +56,7 @@ class _VLayout implements _LinearLayout {
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int width;
 		for (final View child in view.children) {
-			if (child.profile.anchorView !== null)
+			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
 				continue; //ignore anchored
 
 			//add spacing to height

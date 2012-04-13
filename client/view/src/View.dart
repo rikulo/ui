@@ -367,7 +367,7 @@ class View implements EventTarget {
 		if (beforeChild !== null) {
 			beforeChild.node.insertAdjacentHTML("beforeBegin", html);
 		} else {
-			node.insertAdjacentHTML("beforeEnd", html);
+			innerNode.insertAdjacentHTML("beforeEnd", html);
 		}
 	}
 	/** Removes the corresponding DOM elements of the give child from the document.
@@ -431,6 +431,16 @@ class View implements EventTarget {
 	/** Returns if this view has been attached to the document.
 	 */
 	bool get inDocument() => _inDoc;
+
+	/** Returns the element representing the inner element.
+	 * If there is no inner element, this method is the same as [node].
+	 * <p>Default: [node].
+	 * <p>The inner element is used to place the child views and provide a coordinate
+	 * system originating at [innerLeft] and [innerTop] rather than (0, 0).
+	 * <p>To simplify the implementation of a view with the inner element,
+	 * you can extend [InnerOffsetView] rather than [View].
+	 */
+	Element get innerNode() => node;
 
 	/** Adds this view to the document (i.e., the screen that the user interacts with).
 	 * all of its descendant views are added too.
@@ -596,6 +606,17 @@ class View implements EventTarget {
 	 */
 	int measureHeight(MeasureContext mctx)
 	=> layoutManager.measureHeight(mctx, this);
+	/** Returns whether the given child shall be handled by the layout manager.
+	 * <p>Default: always true.
+	 * <p>The deriving class shall override this method if the position of
+	 * some of its child view is <code>static</code>.
+	 * In additions, if the deriving class supports an inner element, it
+	 * shall override this method too. Refer to [InnerOffsetView] for more information.
+	 * <p>Note that, if this method returns false for a child, the layout
+	 * manager won't adjust its position and dimension. However, the child's [doLayout]
+	 * will be still called to arrange the layout of the child's child views.
+	 */
+	bool shallLayout_(View child) => true;
 
 	/** Generates the HTML fragment for this view and its descendants
 	 * to the given string buffer.
@@ -672,7 +693,7 @@ class View implements EventTarget {
 		if (_scrlofs !== null) _scrlofs.left = left;
 		else _scrlofs = new Offset(left, 0);
 
-		final Element n = node;
+		final Element n = innerNode;
 		if (n !== null)
 			n.$dom_scrollLeft = left;
 	}
@@ -686,11 +707,11 @@ class View implements EventTarget {
 		if (_scrlofs !== null) _scrlofs.top = top;
 		else _scrlofs = new Offset(top, 0);
 
-		final Element n = node;
+		final Element n = innerNode;
 		if (n !== null)
 			n.$dom_scrollTop = top;
 	}
-		
+
 	/** Returns the width of this view.
 	 * <p>Default: null (up to the system).
 	 * <p>To get the real width on the document, use [outerWidth].
