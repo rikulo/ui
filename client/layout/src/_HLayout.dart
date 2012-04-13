@@ -149,7 +149,7 @@ class _HLayout implements _LinearLayout {
 		for (final View child in children) {
 			final _SideInfo si = childspcinfs[child];
 			child.left = assigned += prevSpacingRight + si.left;
-			assigned += child.width;
+			assigned += child.outerWidth;
 			prevSpacingRight = si.right;
 
 			String align = child.profile.align;

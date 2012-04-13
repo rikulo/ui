@@ -8,3 +8,12 @@
 	position: absolute;
 	background-color: white;
 }
+.v-Viewport-title {
+	padding: 3px;
+	font-weight: bold;
+	display: inline-block;
+}
+.v-Viewport-toolbar {
+	padding: 3px;
+	display: inline-block;
+}
