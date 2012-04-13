@@ -6,13 +6,6 @@
  * Vertical linear layout.
  */
 class _VLayout implements _LinearLayout {
-	String getDefaultProfileProperty(View view, String name) {
-		switch (name) {
-		case "height": return "flex";
-		case "width": return "content";
-		}
-		return "";
-	}
 	int measureHeight(MeasureContext mctx, View view) {
 		final _AmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.height, 0);
 		final int maxHgh = view.parent !== null ? view.parent.innerHeight: device.screen.height;
@@ -94,7 +87,6 @@ class _VLayout implements _LinearLayout {
 			if (width == null || wd > width)
 				width = wd;
 		}
-	print("$width");
 		return width;
 	}
 	void layout(MeasureContext mctx, View view, List<View> children) {

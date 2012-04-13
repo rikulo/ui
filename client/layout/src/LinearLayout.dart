@@ -5,9 +5,7 @@
 /**
  * The linear layout.
  */
-class LinearLayout extends AbstractLayout {
-	String getDefaultProfileProperty(View view, String name)
-	=> _getRealLayout(view).getDefaultProfileProperty(view, name);
+class LinearLayout implements Layout {
 	static _LinearLayout _getRealLayout(view) //horizontal is default
 	=> view.layout.orient != "vertical" ? new _HLayout(): new _VLayout();
 
@@ -54,7 +52,6 @@ class LinearLayout extends AbstractLayout {
 	}
 }
 interface _LinearLayout {
-	String getDefaultProfileProperty(View view, String name);
 	int measureWidth(MeasureContext mctx, View view);
 	int measureHeight(MeasureContext mctx, View view);
 	void layout(MeasureContext mctx, View view, List<View> children);

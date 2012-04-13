@@ -56,7 +56,7 @@ class Test3 extends Activity {
 		hlayout.profile.width = "70%";
 	   //we can't use flex (which implies parent.innerWidth)
 	   //of course, we can use hlayout to partition but it is not tested here
-		hlayout.height = 40; //..layout.height = "40" is also OK
+		hlayout.profile.height = "40"; //..profile.height = "40" is also OK
 		parent.appendChild(hlayout);
 
 		View view = new View();

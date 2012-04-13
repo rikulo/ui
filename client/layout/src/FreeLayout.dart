@@ -5,7 +5,7 @@
 /**
  * The free layout (default).
  */
-class FreeLayout extends AbstractLayout {
+class FreeLayout implements Layout {
 	int measureWidth(MeasureContext mctx, View view) {
 		int wd = mctx.widths[view];
 		if (wd !== null || mctx.widths.containsKey(view))

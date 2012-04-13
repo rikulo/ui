@@ -12,12 +12,6 @@ implements ProfileDeclaration {
 
   ProfileDeclarationImpl(View owner) : _owner = owner;
 
-	//@Override
-	String getPropertyValue(String propertyName) {
-		final String value = super.getPropertyValue(propertyName);
-		return value.isEmpty() ? _owner.getDefaultProfileProperty_(propertyName): value;
-	}
-
 	String get anchor()
 		=> getPropertyValue("anchor");
 	void set anchor(String value) {

@@ -13,12 +13,15 @@ class LinearLayoutDemo extends Activity {
 		View vlayout = new View();
 		vlayout.layout.type = "linear";
 		vlayout.layout.orient = "vertical";
+		vlayout.profile.width = "flex";
+		vlayout.profile.height = "flex";
 		rootView.appendChild(vlayout);
 
+		//first hlayout
 		View hlayout = new View();
 		hlayout.layout.type = "linear";
-		hlayout.layout.orient = "horizontal";
 		hlayout.profile.height = "content";
+		hlayout.profile.width = "flex";
 		vlayout.appendChild(hlayout);
 
 		View view = new View();
@@ -35,6 +38,30 @@ class LinearLayoutDemo extends Activity {
 		view.style.backgroundColor = "yellow";
 		view.profile.width = "flex 3";
 		view.profile.height = "30";
+		hlayout.appendChild(view);
+
+		//second horizontal layout
+		hlayout = new View();
+		hlayout.layout.type = "linear";
+		hlayout.layout.align = "end";
+		hlayout.profile.height = "flex";
+		hlayout.profile.width = "flex";
+		vlayout.appendChild(hlayout);
+
+		view = new View();
+		view.style.backgroundColor = "yellow";
+		view.profile.width = "flex 3";
+		view.profile.height = "flex";
+		hlayout.appendChild(view);
+		view = new View();
+		view.style.backgroundColor = "orange";
+		view.profile.width = "flex 2";
+		view.profile.height = "50%";
+		hlayout.appendChild(view);
+		view = new View();
+		view.style.backgroundColor = "blue";
+		view.profile.width = "flex 1";
+		view.profile.height = "25%";
 		hlayout.appendChild(view);
 	}
 }

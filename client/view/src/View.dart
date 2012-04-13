@@ -870,18 +870,6 @@ class View implements EventTarget {
 			_profile = new ProfileDeclarationImpl(this);
 		return _profile;
 	}
-	/** Returns the default value of the given profile's property.
-	 * <p>Default: invokes [LayoutManager.getDefaultProfileProperty].
-	 */
-	String getDefaultProfileProperty_(String propertyName) {
-		return layoutManager.getDefaultProfileProperty(this, propertyName);
-	}
-	/** Returns the default value of the given layout's property.
-	 * <p>Default: invokes [LayoutManager.getDefaultLayoutProperty].
-	 */
-	String getDefaultLayoutProperty_(String propertyName) {
-		return layoutManager.getDefaultLayoutProperty(this, propertyName);
-	}
 
 	/** Retuns the CSS style.
 	 */

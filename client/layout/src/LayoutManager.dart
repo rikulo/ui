@@ -49,13 +49,6 @@ interface LayoutManager extends Layout default _LayoutManager {
 	 * and [Button].
 	 */
 	int measureHeightByContent(MeasureContext mctx, View view);
-
-	/** Returns the default value of the given profile's property.
-	 */
-	String getDefaultProfileProperty(View view, String propertyName);
-	/** Returns the default value of the given layout's property.
-	 */
-	String getDefaultLayoutProperty(View view, String propertyName);
 }
 
 class _LayoutManager extends RunOnceViewManager implements LayoutManager {
@@ -87,12 +80,6 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		else
 			_layoutOfView(view).layout(mctx, view);
 	}
-
-	String getDefaultProfileProperty(View view, String propertyName)
-	=> _layoutOfView(view).getDefaultProfileProperty(view, propertyName);
-	String getDefaultLayoutProperty(View view, String propertyName)
-	=> propertyName == "type" ? "": _layoutOfView(view).getDefaultLayoutProperty(view, propertyName);
-		//we have to check "type" to avoid dead-loop
 
 	Layout _layoutOfView(View view) {
 		final String name = view.layout.type;
@@ -155,11 +142,12 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 			_measureByContent(mctx, view).height;
 	}
 	Size _measureByContent(MeasureContext mctx, View view) {
-		final String pos = view.style.position;
+		CSSStyleDeclaration nodestyle = view.node.style;
+		final String pos = nodestyle.position;
 		final bool bFixed = pos == "fixed";
-		if (!bFixed) view.style.position = "fixed";
+		if (!bFixed) nodestyle.position = "fixed";
 		final Size size = new Size(view.node.$dom_offsetWidth, view.node.$dom_offsetHeight);
-		if (!bFixed) view.style.position = pos;
+		if (!bFixed) nodestyle.position = pos;
 		mctx.widths[view] = size.width;
 		mctx.heights[view] = size.height;
 		return size;
