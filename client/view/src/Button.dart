@@ -8,7 +8,8 @@ class Button extends TextView {
 	bool _disabled = false, _autofocus = false;
 
 	Button([String text="", String html="", bool disabled=false]):
-	super(text, html), _disabled=disabled {
+	super(text, html) {
+		_disabled = disabled;
 		vclass = "v-Button";
 	}
 
@@ -67,9 +68,10 @@ class Button extends TextView {
 	 */
 	String get domTag_() => "button";
 
-	void insertBefore(View child, View beforeChild) {
-		throw const UiException("No child allowed in Button");
-	}
+	/** Returns whether this view allows any child views.
+	 * <p>Default: false.
+	 */
+	bool isChildable_() => false;
 
 	int measureWidth(MeasureContext mctx)
 	=> layoutManager.measureWidthByContent(mctx, this);

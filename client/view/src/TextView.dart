@@ -65,9 +65,10 @@ class TextView extends View {
 		out.add(innerHTML_);
 	}
 
-	void insertBefore(View child, View beforeChild) {
-		throw const UiException("No child allowed in TextView");
-	}
+	/** Returns whether this view allows any child views.
+	 * <p>Default: false.
+	 */
+	bool isChildable_() => false;
 
 	int measureWidth(MeasureContext mctx)
 	=> layoutManager.measureWidthByContent(mctx, this);

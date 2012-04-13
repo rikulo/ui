@@ -24,3 +24,4 @@
 #source("src/Section.dart");
 #source("src/TextView.dart");
 #source("src/Button.dart");
+#source("src/Image.dart");

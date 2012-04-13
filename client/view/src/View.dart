@@ -270,6 +270,13 @@ class View implements EventTarget {
 	 */
 	void beforeParentChanged_(View newParent) {}
 
+	/** Returns whether this view allows any child views.
+	 * <p>Default: true.
+	 * <p>The deriving class shall override this method
+	 * to return false if it doesn't allow any child views.
+	 */
+	bool isChildable_() => true;
+
 	/** Appends a child to the end of all children.
 	 * It calls [insertBefore] with beforeChild to be null, so the 
 	 * subclass needs to override [insertBefore] if necessary.
@@ -286,6 +293,8 @@ class View implements EventTarget {
 	void insertBefore(View child, View beforeChild) {
 		if (isDescendantOf(child))
 			throw new UiException("$child is an ancestor of $this");
+		if (!isChildable_())
+			throw const UiException("No child allowed in Button");
 
 		if (beforeChild !== null) {
 			if (beforeChild.parent !== this)
