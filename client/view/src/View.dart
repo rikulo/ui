@@ -796,6 +796,7 @@ class View implements EventTarget {
 	 * not to call this method if the view is not attached.
 	 */
 	int get innerWidth() => inDocument ? node.$dom_clientWidth: _width !== null ? _width: 0;
+		//note: don't count on innerNode since its dimension might not be adjusted yet
 	/** Returns the viewable height of this view, excluding the borders, margins
 	 * and scrollbars.
 	 * <p>Note: this method returns [height] if [inDocument] is false and [height] is not null.
@@ -804,6 +805,7 @@ class View implements EventTarget {
 	 * not to call this method if the view is not attached.
 	 */
 	int get innerHeight() => inDocument ? node.$dom_clientHeight: _height !== null ? _height: 0;
+		//note: don't count on innerNode since its dimension might not be adjusted yet
 
 	/** Returns the offset of this view relative to the left-top corner
 	 * of the document.

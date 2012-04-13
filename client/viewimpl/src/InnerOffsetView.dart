@@ -39,9 +39,36 @@ class InnerOffsetView extends View {
 		if (inner !== null)
 			inner.style.top = "${top}px";
 	}
+	//@Override
 	/** Returns the element representing the inner element.
 	 */
 	Element get innerNode() => getNode("inner");
+
+	//@Override
+	int get innerWidth() {
+		final int v = super.innerWidth - innerSpacing_.width;
+		return v > 0 ? v: 0;
+	}
+	//@Override
+	int get innerHeight() {
+		final int v = super.innerHeight - innerSpacing_.height;
+		return v > 0 ? v: 0;
+	}
+
+	//@Override
+	void set width(int w) {
+		super.width = w;
+		Element inner = innerNode;
+		if (inner !== null)
+			inner.style.width = "${innerWidth}px";
+	}
+	//@Override
+	void set height(int h) {
+		super.height = h;
+		Element inner = innerNode;
+		if (inner !== null)
+			inner.style.height = "${innerHeight}px";
+	}
 
 	/** Returns the spacing between the inner element and the border.
 	 * <p>Default: <code>new Size(innerLeft, innerTop)</code>
@@ -50,16 +77,4 @@ class InnerOffsetView extends View {
 	 * [innerLeft] and [innerTop].
 	 */
 	Size get innerSpacing_() => new Size(_innerLeft, _innerTop);
-	void set width(int w) {
-		super.width = w;
-		Element inner = innerNode;
-		if (inner !== null)
-			inner.style.width = "${innerWidth - innerSpacing_.width}px";
-	}
-	void set height(int h) {
-		super.height = h;
-		Element inner = innerNode;
-		if (inner !== null)
-			inner.style.height = "${innerHeight - innerSpacing_.height}px";
-	}
 }
