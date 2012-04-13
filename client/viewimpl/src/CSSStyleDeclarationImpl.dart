@@ -696,10 +696,10 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		setProperty('border-width', value, '');
 	}
 
-	/** Gets the value of "bottom" */
+	/** Not allowed. Please  use [View.top] instead. */
 	String get bottom() =>
 		getPropertyValue('bottom');
-	/** Sets the value of "bottom" */
+	/** Not allowed. Please  use [View.top] instead. */
 	void set bottom(var value) {
 		setProperty('bottom', value, '');
 	}
@@ -968,10 +968,10 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		setProperty('direction', value, '');
 	}
 
-	/** Gets the value of "display" */
+	/** Not allowed. Please  use [View.hidden] instead. */
 	String get display() =>
 		getPropertyValue('display');
-	/** Sets the value of "display" */
+	/** Not allowed. Please  use [View.hidden] instead. */
 	void set display(var value) {
 		setProperty('display', value, '');
 	}
@@ -1128,10 +1128,10 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		setProperty('font-weight', value, '');
 	}
 
-	/** Gets the value of "height" */
+	/** Not allowed. Please  use [View.height] instead. */
 	String get height() =>
 		getPropertyValue('height');
-	/** Sets the value of "height" */
+	/** Not allowed. Please  use [View.height] instead. */
 	void set height(var value) {
 		setProperty('height', value, '');
 	}
@@ -1192,10 +1192,10 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		setProperty('image-rendering', value, '');
 	}
 
-	/** Gets the value of "left" */
+	/** Not allowed. Please  use [View.left] instead. */
 	String get left() =>
 		getPropertyValue('left');
-	/** Sets the value of "left" */
+	/** Not allowed. Please  use [View.left] instead. */
 	void set left(var value) {
 		setProperty('left', value, '');
 	}
@@ -1968,10 +1968,10 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		setProperty('resize', value, '');
 	}
 
-	/** Gets the value of "right" */
+	/** Not allowed. Please  use [View.left] instead. */
 	String get right() =>
 		getPropertyValue('right');
-	/** Sets the value of "right" */
+	/** Not allowed. Please  use [View.left] instead. */
 	void set right(var value) {
 		setProperty('right', value, '');
 	}
@@ -2304,10 +2304,10 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		setProperty('text-underline-width', value, '');
 	}
 
-	/** Gets the value of "top" */
+	/** Not allowed. Please  use [View.top] instead. */
 	String get top() =>
 		getPropertyValue('top');
-	/** Sets the value of "top" */
+	/** Not allowed. Please  use [View.top] instead. */
 	void set top(var value) {
 		setProperty('top', value, '');
 	}
@@ -2472,10 +2472,10 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		setProperty('widows', value, '');
 	}
 
-	/** Gets the value of "width" */
+	/** Not allowed. Please  use [View.width] instead. */
 	String get width() =>
 		getPropertyValue('width');
-	/** Sets the value of "width" */
+	/** Not allowed. Please  use [View.width] instead. */
 	void set width(var value) {
 		setProperty('width', value, '');
 	}
