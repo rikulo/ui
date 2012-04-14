@@ -520,20 +520,24 @@ class View implements EventTarget {
 	void enterDocument_(List<AfterEnterDocument> afters) {
 		_inDoc = true;
 
+		final Element n = node, inner = innerNode;
+		if (inner !== n) {
+			//sync innerNode's positon and size
+			inner.style.left = "${innerLeft}px";
+			inner.style.top = "${innerTop}px";
+			int v = n.$dom_clientWidth - innerSpacing_.width;
+			inner.style.width = "${v > 0 ? v: 0}px";
+			v = n.$dom_clientHeight - innerSpacing_.height;
+			inner.style.height = "${v > 0 ? v: 0}px";
+		}
+
 		//Listen the DOM element if necessary
-		Element n;
 		if (_evlInfo !== null && _evlInfo.listeners !== null) {
 			final Map<String, List<EventListener>> listeners = _evlInfo.listeners;
 			for (final String type in listeners.getKeys()) {
 				final DomEventDispatcher disp = getDomEventDispatcher_(type);
-				if (disp != null && !listeners[type].isEmpty()) {
-					if (n === null) {
-						n = node;
-						if (n === null)
-							break; //nothing to do
-					}
+				if (disp != null && !listeners[type].isEmpty())
 					domListen_(n, type, disp);
-				}
 			}
 		}
 
@@ -546,18 +550,12 @@ class View implements EventTarget {
 	 */
 	void exitDocument_() {
 		//Unlisten the DOM element if necessary
-		Element n;
+		final Element n = node;
 		if (_evlInfo !== null && _evlInfo.listeners !== null) {
 			final Map<String, List<EventListener>> listeners = _evlInfo.listeners;
 			for (final String type in listeners.getKeys()) {
-				if (getDomEventDispatcher_(type) != null && !listeners[type].isEmpty()) {
-					if (n === null) {
-						n = node;
-						if (n === null)
-							break; //nothing to do
-					}
-				}
-				domUnlisten_(n, type);
+				if (getDomEventDispatcher_(type) != null && !listeners[type].isEmpty())
+					domUnlisten_(n, type);
 			}
 		}
 
@@ -737,8 +735,10 @@ class View implements EventTarget {
 			n.style.width = width !== null ? "${width}px": "";
 
 			final Element inner = innerNode;
-			if (inner !== n)
-				inner.style.width = "${innerWidth}px";
+			if (inner !== n) {
+				final int v = n.$dom_clientWidth - innerSpacing_.width;
+				inner.style.width = "${v > 0 ? v: 0}px";
+			}
 		}
 	}
 	/** Returns the height of this view.
@@ -756,8 +756,10 @@ class View implements EventTarget {
 			n.style.height = height !== null ? "${height}px": "";
 
 			final Element inner = innerNode;
-			if (inner !== n)
-				inner.style.height = "${innerHeight}px";
+			if (inner !== n) {
+				final int v = n.$dom_clientHeight - innerSpacing_.height;
+				inner.style.height = "${v > 0 ? v: 0}px";
+			}
 		}
 	}
 
@@ -837,8 +839,8 @@ class View implements EventTarget {
 	 * not to call this method if the view is not attached.
 	 */
 	int get innerWidth() {
-		final int v = (inDocument ? node.$dom_clientWidth: _width !== null ? _width: 0)
-			- innerSpacing_.width;
+		final int v = inDocument ? innerNode.$dom_clientWidth:
+			(_width !== null ? _width - innerSpacing_.width: 0);
 		return v > 0 ? v: 0;
 	}
 	/** Returns the viewable height of this view, excluding the borders, margins
@@ -849,8 +851,8 @@ class View implements EventTarget {
 	 * not to call this method if the view is not attached.
 	 */
 	int get innerHeight() {
-		final int v = (inDocument ? node.$dom_clientHeight: _height !== null ? _height: 0)
-			- innerSpacing_.height;
+		final int v = inDocument ? innerNode.$dom_clientHeight:
+			(_height !== null ? _height - innerSpacing_.height: 0);
 		return v > 0 ? v: 0;
 	}
 
