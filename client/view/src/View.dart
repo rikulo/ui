@@ -38,8 +38,10 @@ class View implements EventTarget {
 	//the CSS style; created on demand
 	CSSStyleDeclaration _style;
 	String _vclass;
+	Element _node;
+
 	int _left = 0, _top = 0, _width, _height;
-	Offset _scrlofs;
+	Offset _scrlofs, _innerofs; //rarely used (so saving memory)
 	ProfileDeclaration _profile;
 	LayoutDeclaration _layout;
 
@@ -420,7 +422,8 @@ class View implements EventTarget {
 	 * you might have to override [insertChildToDocument_] and/or
 	 * [removeChildFromDocument_] if they share the same DOM element.
 	 */
-	Element get node() => _inDoc ? document.query('#' + uuid): null;
+	Element get node()
+	=> _node !== null ? _node: _inDoc ? (_node=document.query('#' + uuid)): null;
 	/** Returns the child element of the given sub-ID.
 	 * This method assumes the ID of the child element the concatenation of
 	 * uuid, dash ('-'), and subId.
@@ -437,8 +440,11 @@ class View implements EventTarget {
 	 * <p>Default: [node].
 	 * <p>The inner element is used to place the child views and provide a coordinate
 	 * system originating at [innerLeft] and [innerTop] rather than (0, 0).
-	 * <p>To simplify the implementation of a view with the inner element,
-	 * you can extend [InnerOffsetView] rather than [View].
+	 * <p>To support the inner element, the deriving class has to override this method.
+	 * And, optionally, override [innerSpacing_] if there is some spacing at the right
+	 * or at the bottom. If not all child views are in the inner element, it has to
+	 * override [shallLayout_] too.
+	 * Please refer to the viewport example for a sample implementation.
 	 */
 	Element get innerNode() => node;
 
@@ -486,8 +492,9 @@ class View implements EventTarget {
 	 * shall be controlled by its parent.
 	 */
 	void removeFromDocument() {
+		final Element n = node; //store first since _node will be cleared up later
 		_exitDocument();
-		node.remove();
+		n.remove();
 	}
 	/** Binds the view.
 	 */
@@ -538,8 +545,6 @@ class View implements EventTarget {
 	 * <p>Subclass shall call back this method if it overrides this method. 
 	 */
 	void exitDocument_() {
-		_inDoc = false;
-
 		//Unlisten the DOM element if necessary
 		Element n;
 		if (_evlInfo !== null && _evlInfo.listeners !== null) {
@@ -558,6 +563,9 @@ class View implements EventTarget {
 
 		for (View child = firstChild; child != null; child = child.nextSibling)
 				child.exitDocument_();
+
+		_inDoc = false;
+		_node = null; //as the last step since node might be called in exitDocument_
 	}
 
 	/** Called when something has changed and caused that the display of this
@@ -610,8 +618,10 @@ class View implements EventTarget {
 	 * <p>Default: always true.
 	 * <p>The deriving class shall override this method if the position of
 	 * some of its child view is <code>static</code>.
-	 * In additions, if the deriving class supports an inner element, it
-	 * shall override this method too. Refer to [InnerOffsetView] for more information.
+	 * In additions, if the deriving class supports an inner element and not all chid
+	 * elements in the inner element, it shall override this method to skip the child
+	 * views <i>not</i> in the inner element.
+	 * Please refer to the viewport example for a sample implementation.
 	 * <p>Note that, if this method returns false for a child, the layout
 	 * manager won't adjust its position and dimension. However, the child's [doLayout]
 	 * will be still called to arrange the layout of the child's child views.
@@ -723,8 +733,13 @@ class View implements EventTarget {
 		_width = width;
 
 		final Element n = node;
-		if (n !== null)
+		if (n !== null) {
 			n.style.width = width !== null ? "${width}px": "";
+
+			final Element inner = innerNode;
+			if (inner !== n)
+				inner.style.width = "${innerWidth}px";
+		}
 	}
 	/** Returns the height of this view.
 	 * <p>Default: null (up to the system)
@@ -737,41 +752,67 @@ class View implements EventTarget {
 		_height = height;
 
 		final Element n = node;
-		if (n !== null)
+		if (n !== null) {
 			n.style.height = height !== null ? "${height}px": "";
+
+			final Element inner = innerNode;
+			if (inner !== n)
+				inner.style.height = "${innerHeight}px";
+		}
 	}
 
 	/** Returns the left offset of the origin of the child's coordinate system.
 	 * <p>Default: 0.
 	 */
-	int get innerLeft() => 0;
+	int get innerLeft() => _innerofs !== null ? _innerofs.left: 0;
 	/** Returns the top offset of the origin of the child's coordinate system.
 	 * <p>Default: 0.
 	 */
-	int get innerTop() => 0;
+	int get innerTop() => _innerofs !== null ? _innerofs.top: 0;
 	/** Returns the left offset of the origin of the child's coordinate system.
 	 * <p>Default: 0.
 	 * <p>Whether a view allows the developer to change the origin is up to the view's
 	 * spec. By default, it is not supported.
-	 * To support it, the view usually introduced an additional DIV to provide
-	 * the origin for the child views. [InnerOffsetView] provides a skeleton to simplify
-	 * the implementation.
+	 * To support it, the view usually introduces an additional DIV to provide
+	 * the origin for the child views, and overrides [innerNode] to return it.
+	 * Please refer to the viewport example for a sample implementation.
 	 */
 	void set innerLeft(int left)  {
-		throw const UiException("Not allowed");
+		if (_innerofs !== null) _innerofs.left = left;
+		else _innerofs = new Offset(left, 0);
+
+		final Element n = innerNode;
+		if (n != null) {
+			if (n === node) throw const UiException("No inner element");
+			n.style.left = "${left}px";
+		}
 	}
 	/** Returns the top offset of the origin of the child's coordinate system.
 	 * <p>Default: throws [UiException].
 	 * <p>Whether a view allows the developer to change the origin is up to the view's
 	 * spec. By default, it is not supported.
-	 * To support it, the view usually introduced an additional DIV to provide
-	 * the origin for the child views. [InnerOffsetView] provides a skeleton to simplify
-	 * the implementation.
+	 * To support it, the view usually introduces an additional DIV to provide
+	 * the origin for the child views, and overrides [innerNode] to return it.
+	 * Please refer to the viewport example for a sample implementation.
 	 */
 	void set innerTop(int top) {
-		throw const UiException("Not allowed");
+		if (_innerofs !== null) _innerofs.top = top;
+		else _innerofs = new Offset(0, top);
+
+		final Element n = innerNode;
+		if (n != null) {
+			if (n === node) throw const UiException("No inner element");
+			n.style.top = "${top}px";
+		}
 	}
-	
+	/** Returns the spacing between the inner element and the border.
+	 * <p>Default: <code>new Size(innerLeft, innerTop)</code>
+	 * <p>Notice: instead of overriding [width] and [height], you
+	 * shall override this method if the spacing is more than
+	 * [innerLeft] and [innerTop].
+	 */
+	Size get innerSpacing_() => new Size(innerLeft, innerTop);
+
 	/** Returns the real width of this view shown on the document (never null).
 	 * <p>Notice that the performance of this method is not good, if
 	 * [width] is null.
@@ -795,8 +836,11 @@ class View implements EventTarget {
 	 * (for performance reason). However, we might change it in the future, so it is better
 	 * not to call this method if the view is not attached.
 	 */
-	int get innerWidth() => inDocument ? node.$dom_clientWidth: _width !== null ? _width: 0;
-		//note: don't count on innerNode since its dimension might not be adjusted yet
+	int get innerWidth() {
+		final int v = (inDocument ? node.$dom_clientWidth: _width !== null ? _width: 0)
+			- innerSpacing_.width;
+		return v > 0 ? v: 0;
+	}
 	/** Returns the viewable height of this view, excluding the borders, margins
 	 * and scrollbars.
 	 * <p>Note: this method returns [height] if [inDocument] is false and [height] is not null.
@@ -804,8 +848,11 @@ class View implements EventTarget {
 	 * (for performance reason). However, we might change it in the future, so it is better
 	 * not to call this method if the view is not attached.
 	 */
-	int get innerHeight() => inDocument ? node.$dom_clientHeight: _height !== null ? _height: 0;
-		//note: don't count on innerNode since its dimension might not be adjusted yet
+	int get innerHeight() {
+		final int v = (inDocument ? node.$dom_clientHeight: _height !== null ? _height: 0)
+			- innerSpacing_.height;
+		return v > 0 ? v: 0;
+	}
 
 	/** Returns the offset of this view relative to the left-top corner
 	 * of the document.

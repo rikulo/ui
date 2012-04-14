@@ -5,18 +5,18 @@
 
 #import("dart:html");
 #import('../../client/view/view.dart');
-#import('../../client/viewimpl/viewimpl.dart');
 
 /**
  * A view port that demostrates how to use [View.innerLeft]
  * and [View.innerTop], such that the origin of child views
  * is not at the left-top corner of this view.
  */
-class Viewport extends InnerOffsetView {
+class Viewport extends View {
 	String _title = "";
 	View _toolbar;
 
-	Viewport([String title=""]): super(30, 30) {
+	Viewport([String title=""]) {
+		innerLeft = innerTop = 30;
 		_title = title;
 		vclass = "v-Viewport";
 	}
@@ -46,6 +46,8 @@ class Viewport extends InnerOffsetView {
 		}
 	}
 
+	//@Override to returns the element representing the inner element.
+	Element get innerNode() => getNode("inner");
 	//@Override to skip the toolbar
 	bool shallLayout_(View child) => child !== _toolbar;
 	//@Override
