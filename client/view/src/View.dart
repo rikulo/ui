@@ -499,14 +499,26 @@ class View implements EventTarget {
 	/** Binds the view.
 	 */
 	void _enterDocument() {
-		List<AfterEnterDocument> afters = [];
+		_afters = [];
 
-		enterDocument_(afters);
+		enterDocument_();
 		doLayout();
 
-		for (final AfterEnterDocument call in afters)
+		for (final AfterEnterDocument call in _afters)
 			call(this);
+		_afters = null;
 	}
+	/** Adds a task to be executed after all [enterDocument_] are called.
+	 * <p>Notice that this method can be called only in [enterDocument_].
+	 * Furthermore, all tasks scheduled with this method will be queued
+	 * and executed righter [enterDocument_] of all views are called.
+	 * @exception NullPointerException if this method is not called in [enterDocument_]
+	 */
+	static void afterEnterDocument_(AfterEnterDocument after) {
+		_afters.add(after);
+	}
+	static List<AfterEnterDocument> _afters;
+	
 	/** Unbinds the view.
 	 */
 	void _exitDocument() {
@@ -515,9 +527,12 @@ class View implements EventTarget {
 	/** Callback when this view is attached to the document.
 	 * <p>Default: invoke [enterDocument_] for each child.
 	 * <p>Subclass shall call back this method if it overrides this method. 
+	 * <p>If the deriving class would like some tasks to be executed
+	 * after [enterDocument_] of all new-attached views are called, it can
+	 * invoke [afterEnterDocument_] to queue the task.
 	 * <p>See also [inDocument] and [invalidate].
 	 */
-	void enterDocument_(List<AfterEnterDocument> afters) {
+	void enterDocument_() {
 		_inDoc = true;
 
 		final Element n = node, inner = innerNode;
@@ -542,7 +557,7 @@ class View implements EventTarget {
 		}
 
 		for (View child = firstChild; child != null; child = child.nextSibling)
-				child.enterDocument_(afters);
+				child.enterDocument_();
 	}
 	/** Callback when this view is detached from the document.
 	 * <p>Default: invoke [exitDocument_] for each child.

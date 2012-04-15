@@ -23,8 +23,8 @@ class ViewportDemo extends Activity {
 	void createToolbar(Viewport parent) {
 		View toolbar = new View();
 		toolbar.layout.type = "linear";
-		toolbar.width = "content";
-		toolbar.height = "content";
+		toolbar.profile.width = "content";
+		toolbar.profile.height = "content";
 		for (final String src in ["search.png", "received.png", "sent.png"]) {
 			final Image image = new Image("res/$src");
 			image.width = image.height = 16; //TODO: doLayout after all images are loaded

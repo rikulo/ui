@@ -23,26 +23,33 @@ class Viewport extends View {
 
 	String get title() => _title;
 	void set title(String title) {
-		if (title === null) title = "";
+		if (title == null) title = "";
 		_title = title;
 
 		final Element n = getNode("title");
-		if (n !== null)
+		if (n != null)
 			n.innerHTML = title;
 	}
 
 	View get toolbar() => _toolbar;
 	void set toolbar(View tbar) {
-		if (_toolbar !== null) {
+		if (_toolbar != null) {
 			removeChild(_toolbar);
 			_toolbar.style.position = ""; //reset
 		}
 
 		_toolbar = tbar;
 
-		if (_toolbar !== null) {
-			_toolbar.style.position = "static"; //make it static
+		if (_toolbar != null) {
 			insertBefore(_toolbar, firstChild);
+			_syncToolbar();
+		}
+	}
+	void _syncToolbar() {
+		final Element tbar = getNode("toolbar");
+		if (tbar != null) {
+			_toolbar.left = tbar.$dom_offsetLeft;
+			_toolbar.top = tbar.$dom_offsetTop;
 		}
 	}
 
@@ -56,15 +63,16 @@ class Viewport extends View {
 			.add(uuid).add('-title">').add(_title)
 			.add('</div>');
 
-		out.add('<div class="v-Viewport-toolbar" id="').add(uuid).add('-toolbar">');
-		if (_toolbar !== null)
+		out.add('<div class="v-Viewport-toolbar" id="').add(uuid)
+			.add('-toolbar">&nbsp;'); //&nbsp; makes this DIV positioned correctly
+		if (_toolbar != null)
 			_toolbar.draw(out);
 		out.add('</div>');
 
 		out.add('<div class="v-Viewport-inner" id="')
 			.add(uuid).add('-inner">');
 
-		for (View child = firstChild; child !== null; child = child.nextSibling)
+		for (View child = firstChild; child != null; child = child.nextSibling)
 			if (child !== _toolbar)
 				child.draw(out);
 
@@ -77,5 +85,11 @@ class Viewport extends View {
 		} else {
 			super.insertChildToDocument_(child, html, beforeChild === _toolbar ? null: beforeChild);
 		}
+	}
+	void enterDocument_() {
+		super.enterDocument_();
+
+		if (_toolbar != null)
+			_syncToolbar();
 	}
 }
