@@ -63,6 +63,12 @@ class LinearLayoutDemo extends Activity {
 		view.profile.width = "flex 1";
 		view.profile.height = "25%";
 		hlayout.appendChild(view);
+
+		TextView txt = new TextView("flex 2, 25%");
+		txt.style.border = "1px solid #555";
+		txt.profile.anchorView = view.previousSibling;
+		txt.profile.location = "north center";
+		hlayout.appendChild(txt);
 	}
 }
 
