@@ -25,11 +25,8 @@ class ViewportDemo extends Activity {
 		toolbar.layout.type = "linear";
 		toolbar.profile.width = "content";
 		toolbar.profile.height = "content";
-		for (final String src in ["search.png", "received.png", "sent.png"]) {
-			final Image image = new Image("res/$src");
-//			image.width = image.height = 16; //TODO: doLayout after all images are loaded
-			toolbar.appendChild(image);
-		}
+		for (final String src in ["search.png", "received.png", "sent.png"])
+			toolbar.appendChild(new Image("res/$src"));
 		parent.toolbar = toolbar;
 	}
 	void createChildViews(View parent) {
