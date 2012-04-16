@@ -13,8 +13,7 @@ class FreeLayout implements Layout {
 
 		wd = _initSize(view.profile.width, () => view.innerWidth);
 		for (final View child in view.children) {
-			if (view.shallLayout_(child) && child.profile.anchorView == null
-			&& child.style.position != "fixed") {
+			if (view.shallLayout_(child) && child.profile.anchorView == null) {
 				int subsz = child.measureWidth(mctx);
 				subsz = child.left + (subsz !== null ? subsz: 0);
 				if (wd == null || subsz > wd)
@@ -32,8 +31,7 @@ class FreeLayout implements Layout {
 
 		hgh = _initSize(view.profile.height, () => view.innerHeight);
 		for (final View child in view.children) {
-			if (view.shallLayout_(child) && child.profile.anchorView == null
-			&& child.style.position != "fixed") {
+			if (view.shallLayout_(child) && child.profile.anchorView == null) {
 				int subsz = child.measureHeight(mctx);
 				subsz = child.top + (subsz !== null ? subsz: 0);
 				if (hgh == null || subsz > hgh)

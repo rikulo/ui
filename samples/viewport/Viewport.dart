@@ -54,7 +54,7 @@ class Viewport extends View {
 	//@Override to returns the element representing the inner element.
 	Element get innerNode() => getNode("inner");
 	//@Override to skip the toolbar
-	bool shallLayout_(View child) => child !== _toolbar;
+	bool shallLayout_(View child) => child !== _toolbar && super.shallLayout_(child);
 	//@Override
 	void domInner_(StringBuffer out) {
 		out.add('<div class="v-Viewport-title" id="')

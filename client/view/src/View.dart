@@ -628,18 +628,23 @@ class View implements EventTarget {
 	int measureHeight(MeasureContext mctx)
 	=> layoutManager.measureHeight(mctx, this);
 	/** Returns whether the given child shall be handled by the layout manager.
-	 * <p>Default: always true.
-	 * <p>The deriving class shall override this method if the position of
-	 * some of its child view is <code>static</code>.
-	 * In additions, if the deriving class supports an inner element and not all chid
-	 * elements in the inner element, it shall override this method to skip the child
-	 * views <i>not</i> in the inner element.
+	 * <p>Default: return true if the position is absolute.
+	 * Notice that, for better performance, it checks only [View.style], and
+	 * assumes the position defined in
+	 * CSS rules (aka., classes) is <code>absolute</code>.
+	 * <p>The deriving class shall override this method if
+	 * the deriving class supports an inner element and not all child
+	 * elements in the inner element, it shall override this method to skip
+	 * the child views <i>not</i> in the inner element.
 	 * Please refer to the viewport example for a sample implementation.
 	 * <p>Note that, if this method returns false for a child, the layout
 	 * manager won't adjust its position and dimension. However, the child's [doLayout]
 	 * will be still called to arrange the layout of the child's child views.
 	 */
-	bool shallLayout_(View child) => true;
+	bool shallLayout_(View child) {
+		final String v = child.style.position;
+		return v.isEmpty() || v == "absolute";
+	}
 
 	/** Generates the HTML fragment for this view and its descendants
 	 * to the given string buffer.

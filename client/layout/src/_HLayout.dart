@@ -12,8 +12,7 @@ class _HLayout implements _LinearLayout {
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int width = 0, prevSpacingRight = 0;
 		for (final View child in view.children) {
-			if (!view.shallLayout_(child) || child.profile.anchorView !== null
-			|| child.style.position == "fixed")
+			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
 				continue; //ignore anchored and fixed
 
 			//add spacing to width
@@ -57,8 +56,7 @@ class _HLayout implements _LinearLayout {
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int height;
 		for (final View child in view.children) {
-			if (!view.shallLayout_(child) || child.profile.anchorView !== null
-			|| child.style.position == "fixed")
+			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
 				continue; //ignore anchored
 
 			//add spacing to width
@@ -101,7 +99,7 @@ class _HLayout implements _LinearLayout {
 		final List<int> flexs = new List();
 		int nflex = 0, assigned = 0, prevSpacingRight = 0;
 		for (final View child in children) {
-			if (!view.shallLayout_(child) || child.style.position == "fixed") {
+			if (!view.shallLayout_(child)) {
 				layoutManager.setWidthByProfile(mctx, child, () => view.innerWidth);
 				layoutManager.setHeightByProfile(mctx, child, () => view.innerHeight);
 				continue;
@@ -156,7 +154,7 @@ class _HLayout implements _LinearLayout {
 		final String defAlign = view.layout.align;
 		prevSpacingRight = assigned = 0;
 		for (final View child in children) {
-			if (!view.shallLayout_(child) || child.style.position == "fixed")
+			if (!view.shallLayout_(child))
 				continue;
 
 			final _SideInfo si = childspcinfs[child];
