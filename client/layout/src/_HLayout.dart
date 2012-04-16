@@ -12,8 +12,9 @@ class _HLayout implements _LinearLayout {
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int width = 0, prevSpacingRight = 0;
 		for (final View child in view.children) {
-			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
-				continue; //ignore anchored
+			if (!view.shallLayout_(child) || child.profile.anchorView !== null
+			|| child.style.position == "fixed")
+				continue; //ignore anchored and fixed
 
 			//add spacing to width
 			final _SideInfo si = new _SideInfo(child.profile.spacing, 0, spcinf);
@@ -56,7 +57,8 @@ class _HLayout implements _LinearLayout {
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int height;
 		for (final View child in view.children) {
-			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
+			if (!view.shallLayout_(child) || child.profile.anchorView !== null
+			|| child.style.position == "fixed")
 				continue; //ignore anchored
 
 			//add spacing to width
@@ -89,6 +91,7 @@ class _HLayout implements _LinearLayout {
 		}
 		return height;
 	}
+	//children contains only indepedent views
 	void layout(MeasureContext mctx, View view, List<View> children) {
 		//1) size
 		final AsInt innerWidth = () => view.innerWidth;
@@ -98,6 +101,12 @@ class _HLayout implements _LinearLayout {
 		final List<int> flexs = new List();
 		int nflex = 0, assigned = 0, prevSpacingRight = 0;
 		for (final View child in children) {
+			if (!view.shallLayout_(child) || child.style.position == "fixed") {
+				layoutManager.setWidthByProfile(mctx, child, () => view.innerWidth);
+				layoutManager.setHeightByProfile(mctx, child, () => view.innerHeight);
+				continue;
+			}
+
 			final _SideInfo si = new _SideInfo(child.profile.spacing, 0, spcinf);
 			childspcinfs[child] = si;
 			assigned += prevSpacingRight + si.left;
@@ -147,6 +156,9 @@ class _HLayout implements _LinearLayout {
 		final String defAlign = view.layout.align;
 		prevSpacingRight = assigned = 0;
 		for (final View child in children) {
+			if (!view.shallLayout_(child) || child.style.position == "fixed")
+				continue;
+
 			final _SideInfo si = childspcinfs[child];
 			child.left = assigned += prevSpacingRight + si.left;
 			assigned += child.outerWidth;

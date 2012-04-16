@@ -12,7 +12,8 @@ class _VLayout implements _LinearLayout {
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int height = 0, prevSpacingBottom = 0;
 		for (final View child in view.children) {
-			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
+			if (!view.shallLayout_(child) || child.profile.anchorView !== null
+			|| child.style.position == "fixed")
 				continue; //ignore anchored
 
 			//add spacing to height
@@ -56,7 +57,8 @@ class _VLayout implements _LinearLayout {
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int width;
 		for (final View child in view.children) {
-			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
+			if (!view.shallLayout_(child) || child.profile.anchorView !== null
+			|| child.style.position == "fixed")
 				continue; //ignore anchored
 
 			//add spacing to height
@@ -89,6 +91,7 @@ class _VLayout implements _LinearLayout {
 		}
 		return width;
 	}
+	//children contains only indepedent views
 	void layout(MeasureContext mctx, View view, List<View> children) {
 		//1) size
 		final AsInt innerHeight = () => view.innerHeight;
@@ -98,6 +101,12 @@ class _VLayout implements _LinearLayout {
 		final List<int> flexs = new List();
 		int nflex = 0, assigned = 0, prevSpacingBottom = 0;
 		for (final View child in children) {
+			if (!view.shallLayout_(child) || child.style.position == "fixed") {
+				layoutManager.setWidthByProfile(mctx, child, () => view.innerWidth);
+				layoutManager.setHeightByProfile(mctx, child, () => view.innerHeight);
+				continue;
+			}
+
 			final _SideInfo si = new _SideInfo(child.profile.spacing, 0, spcinf);
 			childspcinfs[child] = si;
 			assigned += prevSpacingBottom + si.top;
@@ -147,6 +156,9 @@ class _VLayout implements _LinearLayout {
 		final String defAlign = view.layout.align;
 		prevSpacingBottom = assigned = 0;
 		for (final View child in children) {
+			if (!view.shallLayout_(child) || child.style.position == "fixed")
+				continue;
+
 			final _SideInfo si = childspcinfs[child];
 			child.top = assigned += prevSpacingBottom + si.top;
 			assigned += child.outerHeight;
