@@ -27,7 +27,7 @@ class ViewportDemo extends Activity {
 		toolbar.profile.height = "content";
 		for (final String src in ["search.png", "received.png", "sent.png"]) {
 			final Image image = new Image("res/$src");
-			image.width = image.height = 16; //TODO: doLayout after all images are loaded
+//			image.width = image.height = 16; //TODO: doLayout after all images are loaded
 			toolbar.appendChild(image);
 		}
 		parent.toolbar = toolbar;

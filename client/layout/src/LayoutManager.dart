@@ -49,12 +49,21 @@ interface LayoutManager extends Layout default _LayoutManager {
 	 * and [Button].
 	 */
 	int measureHeightByContent(MeasureContext mctx, View view);
+
+	/** Wait until the given image is loaded.
+	 * If the width and height of the image is not known in advance, this method
+	 * shall be called to make the layout manager wait until the image is loaded.
+	 * <p>Currently, [Image] will invoke this method if the width or height of
+	 * the image is not specified.
+	 */
+	void waitImageLoaded(String imgURI);
 }
 
 class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 	final Map<String, Layout> _layouts;
+	final Set<String> _imgWaits;
 
-	_LayoutManager(): super(true), _layouts = {} {
+	_LayoutManager(): super(true), _layouts = {}, _imgWaits = new Set() {
 	}
 
 	Layout addLayout(String name, Layout clayout) {
@@ -75,10 +84,14 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 	=> _layoutOfView(view).measureHeight(mctx, view);
 
 	void layout(MeasureContext mctx, View view) {
-		if (mctx === null)
-			flush(view); //so it will clean up _layouts
-		else
+		if (mctx === null) {
+			if (_imgWaits.isEmpty())
+				flush(view);
+			else if (view !== null)
+				queue(view); //do it later
+		} else {
 			_layoutOfView(view).layout(mctx, view);
+		}
 	}
 
 	Layout _layoutOfView(View view) {
@@ -151,6 +164,23 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		mctx.widths[view] = size.width;
 		mctx.heights[view] = size.height;
 		return size;
+	}
+	void waitImageLoaded(String imgURI) {
+		if (!_imgWaits.contains(imgURI)) {
+			_imgWaits.add(imgURI);
+			final ImageElement img = new Element.tag("img");
+			var func = (event) {
+				_onImageLoaded(imgURI);
+			};
+			img.on.load.add(func);
+			img.on.error.add(func);
+			img.src = imgURI;
+		}
+	}
+	void _onImageLoaded(String imgURI) {
+		_imgWaits.remove(imgURI);
+		if (_imgWaits.isEmpty())
+			flush(); //flush all
 	}
 }
 

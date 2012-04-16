@@ -43,5 +43,12 @@ class Image extends View {
 	int measureHeight(MeasureContext mctx)
 	=> layoutManager.measureHeightByContent(mctx, this);
 
+	void enterDocument_() {
+		super.enterDocument_();
+
+		if (_src != null && (width === null || height === null))
+			layoutManager.waitImageLoaded(_src);
+	}
+
 	String toString() => "Image('$src')";
 }
