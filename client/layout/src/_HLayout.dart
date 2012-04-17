@@ -121,7 +121,7 @@ class _HLayout implements _LinearLayout {
 				flexViews.add(child);
 				break;
 			case _AmountInfo.RATIO:
-				assigned += child.width = (innerWidth() * amt.value).round().toInt();
+				assigned += child.width = (innerWidth() * amt.value).round();
 				break;
 			case _AmountInfo.CONTENT:
 				final int wd = child.measureWidth(mctx);
@@ -144,7 +144,7 @@ class _HLayout implements _LinearLayout {
 					flexViews[j].width = space;
 					break;
 				}
-				final int delta = (per * flexs[j]).round().toInt();
+				final int delta = (per * flexs[j]).round();
 				flexViews[j].width = delta;
 				space -= delta;
 			}

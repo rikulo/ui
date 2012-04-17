@@ -121,7 +121,7 @@ class _VLayout implements _LinearLayout {
 				flexViews.add(child);
 				break;
 			case _AmountInfo.RATIO:
-				assigned += child.height = (innerHeight() * amt.value).round().toInt();
+				assigned += child.height = (innerHeight() * amt.value).round();
 				break;
 			case _AmountInfo.CONTENT:
 				final int hgh = child.measureHeight(mctx);
@@ -144,7 +144,7 @@ class _VLayout implements _LinearLayout {
 					flexViews[j].height = space;
 					break;
 				}
-				final int delta = (per * flexs[j]).round().toInt();
+				final int delta = (per * flexs[j]).round();
 				flexViews[j].height = delta;
 				space -= delta;
 			}

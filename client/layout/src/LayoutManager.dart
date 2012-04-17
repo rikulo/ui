@@ -116,7 +116,7 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 			view.width = width();
 			break;
 		case _AmountInfo.RATIO:
-			view.width = (width() * amt.value).round().toInt();
+			view.width = (width() * amt.value).round();
 			break;
 		case _AmountInfo.CONTENT:
 			final int wd = view.measureWidth(mctx);
@@ -135,7 +135,7 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 			view.height = height();
 			break;
 		case _AmountInfo.RATIO:
-			view.height = (height() * amt.value).round().toInt();
+			view.height = (height() * amt.value).round();
 			break;
 		case _AmountInfo.CONTENT:
 			final int hgh = view.measureHeight(mctx);
