@@ -2,7 +2,7 @@
 //History: Fri, Mar 09, 2012  7:40:00 PM
 // Author: tomyeh
 
-#library("artra:app");
+#library("rikulo:app");
 
 #import("dart:html");
 #import("../util/util.dart");

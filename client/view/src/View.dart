@@ -613,6 +613,7 @@ class View implements EventTarget {
 	}
 	/** Hanldes the layout of this view.
 	 * <p>Default: have [Layout] to handle it.
+	 * [onLayout] will be called after
 	 */
 	void doLayout([MeasureContext mctx=null]) {
 		layoutManager.layout(mctx, this);

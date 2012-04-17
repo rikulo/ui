@@ -1,7 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu Feb 16 14:51:22 TST 2012
 
-#library("artra:model");
+#library("rikulo:model");
 
 #source("src/ListModel.dart");
 #source("src/ListDataEvent.dart");

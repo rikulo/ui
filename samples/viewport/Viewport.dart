@@ -1,7 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, Apr 13, 2012  2:40:15 PM
 // Author: tomyeh
-#library('artra:samples:viewport');
+#library('rikulo:samples:viewport');
 
 #import("dart:html");
 #import('../../client/view/view.dart');

@@ -1,6 +1,6 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Feb. 04, 2012
-#library("artra:view");
+#library("rikulo:view");
 
 #import("dart:html");
 #import("dart:coreimpl");
