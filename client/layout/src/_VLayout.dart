@@ -47,13 +47,14 @@ class _VLayout implements _LinearLayout {
 			}
 		}
 
-		height += prevSpacingBottom;
+		height += prevSpacingBottom + new DomAgent(view.node).borderWidth * 2;
 		return height >= maxHgh ? maxHgh: height;
 	}
 	int measureWidth(MeasureContext mctx, View view) {
 		final _AmountInfo amtDefault =
 			LinearLayout.getDefaultAmountInfo(view.layout.width, LinearLayout.DEFAULT_AMOUNT);
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
+		final int borderWd = new DomAgent(view.node).borderWidth * 2;
 		int width;
 		for (final View child in view.children) {
 			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
@@ -61,7 +62,7 @@ class _VLayout implements _LinearLayout {
 
 			//add spacing to height
 			final _SideInfo si = new _SideInfo(child.profile.spacing, 0, spcinf);
-			int wd = si.left + si.right;
+			int wd = si.left + si.right + borderWd;
 			final _AmountInfo amt = new _AmountInfo(child.profile.width);
 			if (amt.type == _AmountInfo.NONE) {
 				if (child.width != null)  {
@@ -121,7 +122,7 @@ class _VLayout implements _LinearLayout {
 				flexViews.add(child);
 				break;
 			case _AmountInfo.RATIO:
-				assigned += child.height = (innerHeight() * amt.value).round();
+				assigned += child.height = (innerHeight() * amt.value).round().toInt();
 				break;
 			case _AmountInfo.CONTENT:
 				final int hgh = child.measureHeight(mctx);
@@ -144,7 +145,7 @@ class _VLayout implements _LinearLayout {
 					flexViews[j].height = space;
 					break;
 				}
-				final int delta = (per * flexs[j]).round();
+				final int delta = (per * flexs[j]).round().toInt();
 				flexViews[j].height = delta;
 				space -= delta;
 			}

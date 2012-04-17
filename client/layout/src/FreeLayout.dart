@@ -16,11 +16,13 @@ class FreeLayout implements Layout {
 			if (view.shallLayout_(child) && child.profile.anchorView == null) {
 				int subsz = child.measureWidth(mctx);
 				subsz = child.left + (subsz !== null ? subsz: 0);
-				if (wd == null || subsz > wd)
+				if (wd === null || subsz > wd)
 					wd = subsz;
 			}
 		}
 
+		if (wd !== null)
+			wd += new DomAgent(view.node).borderWidth * 2;
 		mctx.widths[view] = wd;
 		return wd;
 	}
@@ -39,6 +41,8 @@ class FreeLayout implements Layout {
 			}
 		}
 
+		if (hgh !== null)
+			hgh += new DomAgent(view.node).borderWidth * 2;
 		mctx.heights[view] = hgh;
 		return hgh;
 	}
