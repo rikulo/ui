@@ -90,7 +90,7 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 			else if (view !== null)
 				queue(view); //do it later
 		} else {
-			_layoutOfView(view).layout(mctx, view);
+			_doLayout(mctx, view);
 		}
 	}
 
@@ -103,7 +103,11 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 	}
 
 	void handle_(View view) {
-		_layoutOfView(view).layout(new MeasureContext(), view);
+		_doLayout(new MeasureContext(), view);
+	}
+	void _doLayout(MeasureContext mctx, View view) {
+		_layoutOfView(view).layout(mctx, view);
+		view.onLayout();
 	}
 
 	void setWidthByProfile(MeasureContext mctx, View view, AsInt width) {

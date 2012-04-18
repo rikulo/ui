@@ -7,12 +7,11 @@
 
 #import("../util/util.dart");
 #import("../app/app.dart");
+#import("../event/event.dart");
 #import("../viewimpl/viewimpl.dart");
 #import("../layout/layout.dart");
 
 #source("src/View.dart");
-#source("src/ViewEvent.dart");
-#source("src/ViewEvents.dart");
 #source("src/UiException.dart");
 #source("src/IdSpace.dart");
 #source("src/_VirtualIdSpace.dart");

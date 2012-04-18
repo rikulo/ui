@@ -20,6 +20,10 @@ interface ViewEvents extends Events default _ViewEvents {
 	EventListenerList get mouseUp();
 	EventListenerList get mouseWheel();
 	EventListenerList get scroll();
+
+	EventListenerList get layout();
+	EventListenerList get enterDocument();
+	EventListenerList get exitDocument();
 }
 
 /**
@@ -53,6 +57,10 @@ class _ViewEvents implements ViewEvents {
 	EventListenerList get mouseUp() => _get('mouseUp');
 	EventListenerList get mouseWheel() => _get('mouseWheel');
 	EventListenerList get scroll() => _get('scroll');
+
+	EventListenerList get layout() => _get("layout");
+	EventListenerList get enterDocument() => _get("enterDocument");
+	EventListenerList get exitDocument() => _get("exitDocument");
 
 	/** Tests if the given event type is listened.
 	 */

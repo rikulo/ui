@@ -19,6 +19,14 @@ typedef EventListener DomEventDispatcher(View target);
  * A view.
  * <p>Notice that if a view implements [IdSpace], it has to override
  * [getFellow] and [bindFellow_]. Please refer to [Section] for sample code.
+ * <h3>Eventss</h3>
+ * <ol>
+ * <li>layout: an instance of [ViewEvent] indicates the layout of this view has been
+ * handled.</li>
+ * <li>enterDocument: an instanceof [ViewEvent] indicates this view has been
+ * added to the document.</li>
+ * <li>exitDocument: an instanceof [ViewEvent] indicates this view will be
+ * removed from the document.</li>
  */
 class View implements EventTarget {
 	String _id = "";
@@ -254,7 +262,7 @@ class View implements EventTarget {
 	 */
 	int get childCount() => _childInfo != null ? _childInfo.nChild: 0;
 
-	/** Callback when a child has been added.
+	/** Callback AFTER a child has been added.
 	 * <p>Default: does nothing.
 	 */
 	void onChildAdded_(View child) {}
@@ -262,16 +270,23 @@ class View implements EventTarget {
 	 * <p>Default: does nothing.
 	 */
 	void beforeChildRemoved_(View child) {}
-	/** Callback when a child has been removed.
+	/** Callback after a child has been removed.
 	 * <p>Default: does nothing.
 	 */
 	void onChildRemoved_(View child) {}
-	/** Callback when this view's parent has been changed.
+	/** Callback after this view's parent has been changed.
 	 */
 	void onParentChanged_(View oldParent) {}
 	/** Callback before this view's parent is going to change.
 	 */
 	void beforeParentChanged_(View newParent) {}
+	/** Called after the layout of this view has been handled.
+	 * <p>Default: does nothing but fire a [ViewEvent] to itself.
+	 * The application can listen <code>layout</code> for this event.
+	 */
+	void onLayout() {
+		dispatchEvent(new ViewEvent(this, "layout"));
+	}
 
 	/** Returns whether this view allows any child views.
 	 * <p>Default: true.
@@ -499,14 +514,14 @@ class View implements EventTarget {
 	/** Binds the view.
 	 */
 	void _enterDocument() {
-		_afters = [];
+		if (_afters == null) _afters = []; //TODO: when Dart supports, initialize it directly in the declaration
+		_afters.addLast([]);
 
 		enterDocument_();
 		doLayout();
 
-		for (final AfterEnterDocument call in _afters)
+		for (final AfterEnterDocument call in _afters.removeLast())
 			call(this);
-		_afters = null;
 	}
 	/** Adds a task to be executed after all [enterDocument_] are called.
 	 * <p>Notice that this method can be called only in [enterDocument_].
@@ -515,9 +530,9 @@ class View implements EventTarget {
 	 * @exception NullPointerException if this method is not called in [enterDocument_]
 	 */
 	static void afterEnterDocument_(AfterEnterDocument after) {
-		_afters.add(after);
+		_afters.last().add(after);
 	}
-	static List<AfterEnterDocument> _afters;
+	static List<List<AfterEnterDocument>> _afters;
 	
 	/** Unbinds the view.
 	 */
@@ -546,6 +561,9 @@ class View implements EventTarget {
 			inner.style.height = "${v > 0 ? v: 0}px";
 		}
 
+		for (View child = firstChild; child != null; child = child.nextSibling)
+				child.enterDocument_();
+
 		//Listen the DOM element if necessary
 		if (_evlInfo !== null && _evlInfo.listeners !== null) {
 			final Map<String, List<EventListener>> listeners = _evlInfo.listeners;
@@ -556,14 +574,15 @@ class View implements EventTarget {
 			}
 		}
 
-		for (View child = firstChild; child != null; child = child.nextSibling)
-				child.enterDocument_();
+		dispatchEvent(new ViewEvent(this, "enterDocument"));
 	}
 	/** Callback when this view is detached from the document.
 	 * <p>Default: invoke [exitDocument_] for each child.
 	 * <p>Subclass shall call back this method if it overrides this method. 
 	 */
 	void exitDocument_() {
+		dispatchEvent(new ViewEvent(this, "exitDocument"));
+
 		//Unlisten the DOM element if necessary
 		final Element n = node;
 		if (_evlInfo !== null && _evlInfo.listeners !== null) {
@@ -613,7 +632,7 @@ class View implements EventTarget {
 	}
 	/** Hanldes the layout of this view.
 	 * <p>Default: have [Layout] to handle it.
-	 * [onLayout] will be called after
+	 * [onLayout] will be called after the layout of the view has been handled.
 	 */
 	void doLayout([MeasureContext mctx=null]) {
 		layoutManager.layout(mctx, this);
