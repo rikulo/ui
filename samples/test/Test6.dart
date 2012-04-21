@@ -23,7 +23,7 @@ class Test6 extends Activity {
 			txt.style.border = "1px solid #663";
 			txt.left = view.width ~/ 10;
 			txt.top = view.height ~/ 10;
-			txt.on.enterDocument.add((event) {
+			txt.on.enterDocument.add((event2) {
 				TextView txt2 = new TextView("onEnterDocument: another child at 20%, 20%");
 				txt2.style.border = "1px solid #663";
 				txt2.left = view.width ~/ 5;

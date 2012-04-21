@@ -19,7 +19,12 @@ class DomAgent {
 		do {
 			ofs.left += el.$dom_offsetLeft;
 			ofs.top += el.$dom_offsetTop;
-		} while (el.style.position != "fixed" && (el = el.offsetParent) != null);
+			if (el.style.position == "fixed") {
+				//No need to add widnow's innerLeft/Top since we don't allow
+				//window-level scrolling (rather, rootView is scrolled)
+				break;
+			}
+		} while ((el = el.offsetParent) != null);
 		return ofs;
 	}
 	/** Returns the final used values of all the CSS properties

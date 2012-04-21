@@ -161,14 +161,23 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 	Size _measureByContent(MeasureContext mctx, View view) {
 		CSSStyleDeclaration nodestyle = view.node.style;
 		final String pos = nodestyle.position;
-		final bool bFixed = pos == "fixed";
-		if (!bFixed) nodestyle.position = "fixed";
+		final bool bFixed = pos == "fixed" || pos == "static";
+		if (!bFixed)
+			nodestyle.position = _posForMeasure;
 		final Size size = new Size(view.node.$dom_offsetWidth, view.node.$dom_offsetHeight);
-		if (!bFixed) nodestyle.position = pos;
+		if (!bFixed)
+			nodestyle.position = pos !== null ? pos: ""; //TODO: assign pos directly if Dart returns empty
 		mctx.widths[view] = size.width;
 		mctx.heights[view] = size.height;
 		return size;
 	}
+	static String get _posForMeasure() {
+		if (_cachedP4M === null)
+			_cachedP4M = device.ios != null && device.ios < 5 ? "static": "fixed";
+		return _cachedP4M;
+	}
+	static String _cachedP4M;
+
 	void waitImageLoaded(String imgURI) {
 		if (!_imgWaits.contains(imgURI)) {
 			_imgWaits.add(imgURI);
