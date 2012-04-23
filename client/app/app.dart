@@ -5,8 +5,10 @@
 #library("rikulo:app");
 
 #import("dart:html");
+
 #import("../util/util.dart");
 #import("../view/view.dart");
+#import("../viewimpl/viewimpl.dart");
 
 #source("src/Activity.dart");
 #source("src/Device.dart");

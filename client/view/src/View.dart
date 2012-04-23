@@ -909,7 +909,7 @@ class View implements EventTarget {
 
 			final View p = view.parent;
 			if (p == null) {
-				final Offset nofs = new DomAgent(view.node).documentOffset;
+				final Offset nofs = new DomQuery(view.node).documentOffset;
 				ofs.left += nofs.left;
 				ofs.top += nofs.top;
 				break;

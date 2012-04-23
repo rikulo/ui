@@ -47,14 +47,14 @@ class _HLayout implements _LinearLayout {
 			}
 		}
 
-		width += prevSpacingRight + new DomAgent(view.node).borderWidth * 2;
+		width += prevSpacingRight + new DomQuery(view.node).borderWidth * 2;
 		return width >= maxWd ? maxWd: width;
 	}
 	int measureHeight(MeasureContext mctx, View view) {
 		final _AmountInfo amtDefault =
 			LinearLayout.getDefaultAmountInfo(view.layout.height, LinearLayout.DEFAULT_AMOUNT);
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
-		final int borderWd = new DomAgent(view.node).borderWidth * 2;
+		final int borderWd = new DomQuery(view.node).borderWidth * 2;
 		int height;
 		for (final View child in view.children) {
 			if (!view.shallLayout_(child) || child.profile.anchorView !== null)

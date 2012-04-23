@@ -3,13 +3,25 @@
 // Author: tomyeh
 
 /**
- * A DOM agent used to provide the additional utilities
+ * A DOM query agent used to provide the additional utilities
  * for handling DOM.
  */
-class DomAgent {
-	final Element node;
+class DomQuery {
+	final node;
 
-	DomAgent(var v): node = v is View ? v.node: v {}
+	DomQuery(var v) :
+	node = v is String ? document.query(v): v is View ? v.node: v {
+	}
+
+	/** Returns the inner width of the given element.
+	 */
+	int get innerWidth()
+	=> node is Window ? node.innerWidth: node.$dom_clientWidth;
+	/** Returns the inner width of the given element.
+	 */
+	int get innerHeight()
+	=> node is Window ? node.innerHeight: node.$dom_clientHeight;
+
 
 	/** Returns the offset of this node related to the document.
 	 */

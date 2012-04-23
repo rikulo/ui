@@ -37,7 +37,7 @@ class Activity {
 
 	/** Start the activity.
 	 */
-	void run() {
+	void run([String nodeId="v-main"]) {
 		if (activity !== null)
 			throw const UiException("Only one activity is allowed");
 
@@ -50,8 +50,8 @@ class Activity {
 		onCreate_();
 
 		if (!_rootView.inDocument) {//app might add it to Document manually
-		  final Element cave = document.query("#v-root");
-      _rootView.addToDocument(cave != null ? cave: document.body);
+		  final Element main = document.query("#$nodeId");
+      _rootView.addToDocument(main != null ? main: document.body);
 		}
 	}
 

@@ -77,7 +77,10 @@ class Device {
 		}
 
 		browser = new VersionInfo(name, version);
-		screen = new ScreenInfo(window.innerWidth, window.innerHeight); //TODO: support simulator
+
+		final Element simNode = document.query("#v-main");
+		final DomQuery simQuery = new DomQuery(simNode !== null ? simNode: window);
+		screen = new ScreenInfo(simQuery.innerWidth, simQuery.innerHeight);
 	}
 	static double _versionOf(String version, [String separator='.']) {
 		int j = version.indexOf(separator);

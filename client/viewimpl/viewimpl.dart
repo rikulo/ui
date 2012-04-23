@@ -14,4 +14,4 @@
 #source("src/LayoutDeclarationImpl.dart");
 #source("src/ProfileDeclarationImpl.dart");
 #source("src/RunOnceViewManager.dart");
-#source("src/DomAgent.dart");
+#source("src/DomQuery.dart");

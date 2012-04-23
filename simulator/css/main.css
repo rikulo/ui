@@ -1,0 +1,32 @@
+body {
+	margin: 0; padding: 3px 5px;
+}
+#v-simulator {
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	padding: 8px;
+	background-color: #eed;
+	border: 1px solid #886;
+	display: inline-block;
+}
+#v-simulator .top {
+	height: 20px;
+}
+#v-simulator .bottom {
+	height: 60px;
+}
+#v-simulator #v-main {
+	border: 1px solid #331;
+}
+#v-main {
+	width: 320px; height: 480px; /*default as iphone*/
+	background-color: white;
+}
+#v-dashboard {
+	-webkit-box-sizing: border-box; /* <= iOS4, <= Android 2.3 */
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	position: absolute;
+	padding: 3px; border-left: 1px solid #886;
+}
