@@ -45,6 +45,7 @@ class Activity {
 		_rootView = new Section();
 		_rootView.width = device.screen.width;
 		_rootView.height = device.screen.height;
+		_rootView.style.overflow = "hidden"; //crop
 
 		onCreate_();
 

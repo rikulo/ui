@@ -2,8 +2,8 @@
 debug
 codegen
 *.local
+*.class
 javadoc
-.svn
 Thumbs.db
 .project
 .children

@@ -13,7 +13,7 @@ class _HLayout implements _LinearLayout {
 		int width = 0, prevSpacingRight = 0;
 		for (final View child in view.children) {
 			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
-				continue; //ignore anchored and fixed
+				continue; //ignore anchored
 
 			//add spacing to width
 			final _SideInfo si = new _SideInfo(child.profile.spacing, 0, spcinf);

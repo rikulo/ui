@@ -905,7 +905,7 @@ class View implements EventTarget {
 			ofs.left += view.left;
 			ofs.top += view.top;
 			if (view.style.position == "fixed")
-				break; //done
+				break; //done (no need to add innerX/innerY since rootView is full screen)
 
 			final View p = view.parent;
 			if (p == null) {
