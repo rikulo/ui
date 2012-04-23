@@ -6,7 +6,7 @@ body {
 	-moz-border-radius: 15px;
 	border-radius: 15px;
 	padding: 8px;
-	background-color: #eed;
+	background-color: #ddc;
 	border: 1px solid #886;
 	display: inline-block;
 }
@@ -17,7 +17,7 @@ body {
 	height: 60px;
 }
 #v-simulator #v-main {
-	border: 1px solid #331;
+	border: 1px solid #332;
 }
 #v-main {
 	width: 320px; height: 480px; /*default as iphone*/

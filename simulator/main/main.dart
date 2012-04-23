@@ -8,5 +8,8 @@
 #import("../../client/util/util.dart");
 #import("../../client/app/app.dart");
 #import("../../client/view/view.dart");
+#import("../../client/viewimpl/viewimpl.dart");
+
+#import("../dashboard/dashboard.dart");
 
 #source("src/Simulator.dart"); //the main program
