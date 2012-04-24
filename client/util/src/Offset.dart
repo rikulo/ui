@@ -12,4 +12,6 @@ class Offset {
 	int top;
 
 	Offset(this.left, this.top);
+
+	String toString() => "($left, $top)";
 }

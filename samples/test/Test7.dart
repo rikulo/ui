@@ -37,17 +37,29 @@ class Test7 extends Activity {
 		_setBorder(text);
 		view.appendChild(text);
 
-		View group = new View();
+		CheckBox ckbox = new CheckBox("checkbox sample");
+		_setBorder(ckbox);
+		int clickCount = 0;
+		ckbox.on.check.add((event) {
+			ckbox.text = 'checked: ${event.checked} ${++clickCount}';
+			ckbox.parent.requestLayout();
+		});
+		view.appendChild(ckbox);
+
+		RadioGroup group = new RadioGroup();
+		group.on.check.add((event) {
+			event.target.text = 'checked: ${++clickCount}';
+			event.target.parent.requestLayout();
+		});
 		_setHLayout(group);
 		_setBorder(group);
-//		group.profile.width = "content";
 		group.layout.spacing = "0 5";
 		view.appendChild(group);
 
-		TextView horz = new TextView("horizontal");
+		RadioButton horz = new RadioButton("horizontal radio");
 		_setBorder(horz);
 		group.appendChild(horz);
-		TextView vert = new TextView("vertical");
+		RadioButton vert = new RadioButton("vertical radio");
 		_setBorder(vert);
 		group.appendChild(vert);
 	}

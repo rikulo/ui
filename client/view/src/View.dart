@@ -20,13 +20,14 @@ typedef EventListener DomEventDispatcher(View target);
  * <p>Notice that if a view implements [IdSpace], it has to override
  * [getFellow] and [bindFellow_]. Please refer to [Section] for sample code.
  * <h3>Eventss</h3>
- * <ol>
+ * <ul>
  * <li>layout: an instance of [ViewEvent] indicates the layout of this view has been
  * handled.</li>
  * <li>enterDocument: an instanceof [ViewEvent] indicates this view has been
  * added to the document.</li>
  * <li>exitDocument: an instanceof [ViewEvent] indicates this view will be
  * removed from the document.</li>
+ * </ul>
  */
 class View implements EventTarget {
 	String _id = "";
@@ -1241,4 +1242,6 @@ class View implements EventTarget {
   /** useless; always does nothing. */
 	void $dom_removeEventListener(String type, void listener(Event event), [bool useCapture]) {
 	}
+
+	String toString() => "View($uuid)";
 }

@@ -19,8 +19,9 @@ class ViewEvent<Data> implements Event {
 	final int _stamp;
 	bool _defPrevt = false, _propStop = true;
 
-	ViewEvent(View target, String type, [Data data, int stamp=0]):
-	_domEvt = null, _type = type, _stamp = stamp, _data = data {
+	ViewEvent(View target, String type, [Data data]):
+	_domEvt = null, _type = type, _stamp = new Date.now().value,
+	_data = data {
 		if (type == null)
 			throw const UiException("type required");
 		_target = _curTarget = target;

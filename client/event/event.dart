@@ -9,3 +9,4 @@
 
 #source("src/ViewEvent.dart");
 #source("src/ViewEvents.dart");
+#source("src/CheckEvent.dart");

@@ -12,4 +12,6 @@ class Size {
 	int height;
 
 	Size(this.width, this.height);
+
+	String toString() => "($width, $height)";
 }
