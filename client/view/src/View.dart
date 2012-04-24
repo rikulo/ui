@@ -79,7 +79,7 @@ class View implements EventTarget {
 	}
 	static String _nextUuid() {
 		int v = _uuidNext++;
-		final StringBuffer sb = new StringBuffer("w_");
+		final StringBuffer sb = new StringBuffer("v_");
 		do {
 			int v2 = v % 37;
 			if (v2 <= 9) sb.add(addCharCodes('0', v2));

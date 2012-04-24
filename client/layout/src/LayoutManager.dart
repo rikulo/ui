@@ -29,12 +29,14 @@ interface LayoutManager extends Layout default _LayoutManager {
 
 	/** Set the width of the given view based on its profile.
 	 * It is an utility for implementing a layout.
+	 * <p>[defaultWidth] is used if the profile's width is not specified. Ignored if null.
 	 */
-	void setWidthByProfile(MeasureContext mctx, View view, AsInt width);
+	void setWidthByProfile(MeasureContext mctx, View view, AsInt width, [AsInt defaultWidth]);
 	/** Set the height of the given view based on its profile.
 	 * It is an utility for implementing a layout.
+	 * <p>[defaultHeight] is used if the profile's height is not specified. Ignored if null.
 	 */
-	void setHeightByProfile(MeasureContext mctx, View view, AsInt width);
+	void setHeightByProfile(MeasureContext mctx, View view, AsInt height, [AsInt defaultHeight]);
 	/** Measures the width based on the view's content.
 	 * It is an utility for implementing a view's [View.measureWidth].
 	 * This method assumes the browser will resize the view automatically,
@@ -110,9 +112,13 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		view.onLayout();
 	}
 
-	void setWidthByProfile(MeasureContext mctx, View view, AsInt width) {
+	void setWidthByProfile(MeasureContext mctx, View view, AsInt width, [AsInt defaultWidth]) {
 		final _AmountInfo amt = new _AmountInfo(view.profile.width);
 		switch (amt.type) {
+		case _AmountInfo.NONE:
+			if (defaultWidth !== null)
+				view.width = defaultWidth();
+			break;
 		case _AmountInfo.FIXED:
 			view.width = amt.value;
 			break;
@@ -129,9 +135,13 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 			break;
 		}
 	}
-	void setHeightByProfile(MeasureContext mctx, View view, AsInt height) {
+	void setHeightByProfile(MeasureContext mctx, View view, AsInt height, [AsInt defaultHeight]) {
 		final _AmountInfo amt = new _AmountInfo(view.profile.height);
 		switch (amt.type) {
+		case _AmountInfo.NONE:
+			if (defaultHeight !== null)
+				view.height = defaultHeight();
+			break;
 		case _AmountInfo.FIXED:
 			view.height = amt.value;
 			break;

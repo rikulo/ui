@@ -7,7 +7,7 @@
  */
 class _VLayout implements _LinearLayout {
 	int measureHeight(MeasureContext mctx, View view) {
-		final _AmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.height, 0);
+		final _AmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.height);
 		final int maxHgh = view.parent !== null ? view.parent.innerHeight: device.screen.height;
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int height = 0, prevSpacingBottom = 0;
@@ -39,7 +39,7 @@ class _VLayout implements _LinearLayout {
 				break;
 			case _AmountInfo.CONTENT:
 				final int hgh = child.measureHeight(mctx);
-				if ((height += hgh != null ? hgh: amtDefault.value) >= maxHgh)
+				if ((height += hgh != null ? hgh: child.outerHeight) >= maxHgh)
 					return maxHgh;
 				break;
 			default:
@@ -52,7 +52,7 @@ class _VLayout implements _LinearLayout {
 	}
 	int measureWidth(MeasureContext mctx, View view) {
 		final _AmountInfo amtDefault =
-			LinearLayout.getDefaultAmountInfo(view.layout.width, LinearLayout.DEFAULT_AMOUNT);
+			LinearLayout.getDefaultAmountInfo(view.layout.width);
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		final int borderWd = new DomQuery(view.node).borderWidth * 2;
 		int width;
@@ -80,11 +80,12 @@ class _VLayout implements _LinearLayout {
 				break;
 			case _AmountInfo.CONTENT:
 				final int w = child.measureWidth(mctx);
-				wd += w != null ? w: amtDefault.value;
+				wd += w != null ? w: child.outerWidth;
 				break;
 			default:
 				continue; //ignore if flex or ratio is used
 			}
+
 			if (width == null || wd > width)
 				width = wd;
 		}
@@ -113,6 +114,12 @@ class _VLayout implements _LinearLayout {
 
 			final _AmountInfo amt = new _AmountInfo(child.profile.height);
 			switch (amt.type) {
+			case _AmountInfo.NONE:
+				if (child.height != null)
+					assigned += child.height;
+				else
+					assigned += child.outerHeight;
+				break;
 			case _AmountInfo.FIXED:
 				assigned += child.height = amt.value;
 				break;
@@ -133,7 +140,8 @@ class _VLayout implements _LinearLayout {
 				break;
 			}
 
-			layoutManager.setWidthByProfile(mctx, child, () => view.innerWidth - si.left - si.right);
+			final AsInt defaultWidth = () => view.innerWidth - si.left - si.right;
+			layoutManager.setWidthByProfile(mctx, child, defaultWidth, defaultWidth);
 		}
 
 		//1a) size flex

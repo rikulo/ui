@@ -40,14 +40,11 @@ class LinearLayout implements Layout {
 	}
 
 	//Utilities//
-	static final int DEFAULT_AMOUNT = 30;
 	static final int DEFAULT_SPACING = 2;
-	static _AmountInfo getDefaultAmountInfo(String info, int defValue) {
+	static _AmountInfo getDefaultAmountInfo(String info) {
 		final _AmountInfo amt = new _AmountInfo(info);
-		if (amt.type == _AmountInfo.NONE) {
-			amt.type = _AmountInfo.FIXED;
-			amt.value = defValue;
-		}
+		if (amt.type == _AmountInfo.NONE)
+			amt.type = _AmountInfo.CONTENT;
 		return amt;
 	}
 }

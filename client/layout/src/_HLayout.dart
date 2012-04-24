@@ -7,7 +7,7 @@
  */
 class _HLayout implements _LinearLayout {
 	int measureWidth(MeasureContext mctx, View view) {
-		final _AmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.width, 0);
+		final _AmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.width);
 		final int maxWd = view.parent !== null ? view.parent.innerWidth: device.screen.width;
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int width = 0, prevSpacingRight = 0;
@@ -39,7 +39,7 @@ class _HLayout implements _LinearLayout {
 				break;
 			case _AmountInfo.CONTENT:
 				final int wd = child.measureWidth(mctx);
-				if ((width += wd != null ? wd: amtDefault.value) >= maxWd)
+				if ((width += wd != null ? wd: child.outerWidth) >= maxWd)
 					return maxWd;
 				break;
 			default:
@@ -52,7 +52,7 @@ class _HLayout implements _LinearLayout {
 	}
 	int measureHeight(MeasureContext mctx, View view) {
 		final _AmountInfo amtDefault =
-			LinearLayout.getDefaultAmountInfo(view.layout.height, LinearLayout.DEFAULT_AMOUNT);
+			LinearLayout.getDefaultAmountInfo(view.layout.height);
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		final int borderWd = new DomQuery(view.node).borderWidth * 2;
 		int height;
@@ -80,11 +80,12 @@ class _HLayout implements _LinearLayout {
 				break;
 			case _AmountInfo.CONTENT:
 				final int h = child.measureHeight(mctx);
-				hgh += h != null ? h: amtDefault.value;
+				hgh += h != null ? h: child.outerHeight;
 				break;
 			default:
 				continue; //ignore if flex or ratio is used
 			}
+
 			if (height == null || hgh > height)
 				height = hgh;
 		}
@@ -113,6 +114,12 @@ class _HLayout implements _LinearLayout {
 
 			final _AmountInfo amt = new _AmountInfo(child.profile.width);
 			switch (amt.type) {
+			case _AmountInfo.NONE:
+				if (child.width != null)
+					assigned += child.width;
+				else
+					assigned += child.outerWidth;
+				break;
 			case _AmountInfo.FIXED:
 				assigned += child.width = amt.value;
 				break;
@@ -133,7 +140,8 @@ class _HLayout implements _LinearLayout {
 				break;
 			}
 
-			layoutManager.setHeightByProfile(mctx, child, () => view.innerHeight - si.top - si.bottom);
+			final AsInt defaultHeight = () => view.innerHeight - si.top - si.bottom;
+			layoutManager.setHeightByProfile(mctx, child, defaultHeight, defaultHeight);
 		}
 
 		//1a) size flex

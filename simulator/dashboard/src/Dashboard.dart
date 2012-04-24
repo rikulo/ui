@@ -21,7 +21,7 @@ class Dashboard extends View {
 		TextView text = new TextView("Orientation");
 		view.appendChild(text);
 
-		RaioGroup group = new RadioGroup();
+		RadioGroup group = new RadioGroup();
 		_setHLayout(group);
 		group.layout.spacing = "0 5";
 		view.appendChild(group);
