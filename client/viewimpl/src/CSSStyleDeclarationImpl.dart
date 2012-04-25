@@ -2538,8 +2538,8 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 
 	static String get _browserPrefix() {
 		if (_cacheBrowserPrefix === null)
-			_cacheBrowserPrefix = device.webkit !== null ? '-webkit-':
-				device.msie !== null ? '-ms-': device.mozilla != null ? '-moz-': '';
+			_cacheBrowserPrefix = browser.webkit ? '-webkit-':
+				browser.msie ? '-ms-': browser.firefox ? '-moz-': '';
 		return _cacheBrowserPrefix;
 	}
 	static String _cacheBrowserPrefix;
@@ -2562,16 +2562,16 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	//Converts null to an empty string
 	String _unwrap(String value) => value !== null ? value: "";
 		//TODO: test helloworld to see if Dart fixes Issue 2154
-	//Translates a property's name to be device-dependent
+	//Translates a property's name to be browser-dependent
 	static String _trans(String propertyName) {
 		if (_ddnms === null) {
 			_ddnms = new Set();
 			//TODO: no need to check null when Dart can compare null with number
-			//TODO: check other attributes for device-depedent issue (like we did for box-sizing)
+			//TODO: check other attributes for browser-depedent issue (like we did for box-sizing)
 			//CONSIDER: auto-generate this file with a tool
-			if ((device.ios !== null && device.ios < 5)
-			|| (device.android !== null && device.android < 2.4)
-			|| device.mozilla !== null) {
+			if ((browser.ios && browser.iosVersion < 5)
+			|| (browser.android && browser.androidVersion < 2.4)
+			|| browser.firefox) {
 				_ddnms.add('box-sizing');
 			}
 

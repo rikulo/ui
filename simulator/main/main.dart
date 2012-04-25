@@ -1,7 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Apr 23, 2012  2:41:37 PM
 // Author: tomyeh
-#library("rikulo:simulator:device");
+#library("rikulo:simulator:main");
 
 #import("dart:html");
 

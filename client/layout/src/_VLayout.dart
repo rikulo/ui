@@ -8,7 +8,7 @@
 class _VLayout implements _LinearLayout {
 	int measureHeight(MeasureContext mctx, View view) {
 		final _AmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.height);
-		final int maxHgh = view.parent !== null ? view.parent.innerHeight: device.screen.height;
+		final int maxHgh = view.parent !== null ? view.parent.innerHeight: browser.size.height;
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int height = 0, prevSpacingBottom = 0;
 		for (final View child in view.children) {

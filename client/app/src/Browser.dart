@@ -5,9 +5,9 @@
 typedef bool _BrowserMatch(RegExp regex);
 
 /**
- * The device;
+ * The browser.
  */
-class Device {
+class Browser {
 	static final RegExp _rwebkit = const RegExp(@"(webkit)[ /]([\w.]+)"),
 		_rsafari = const RegExp(@"(safari)[ /]([\w.]+)"),
 		_rchrome = const RegExp(@"(chrome)[ /]([\w.]+)"),
@@ -16,23 +16,43 @@ class Device {
 		_rios = const RegExp(@"OS[ /]([\w_]+) like Mac OS"),
 		_randroid = const RegExp(@"android[ /]([\w.]+)");
 
-	/** The brower's information. */
-	VersionInfo browser;
-	double safari;
-	double chrome;
-	double webkit;
-	double mozilla;
-	double msie;
-	double ios;
-	double android;
-	ScreenInfo screen;
+	/** The browser's name. */
+	String name;
+	/** The browser's version. */
+	double version;
 
-	Device() {
+	/** Whether it is Safari. */
+	bool safari = false;
+	/** Whether it is Chrome. */
+	bool chrome = false;
+	/** Whether it is Internet Explorer. */
+	bool msie = false;
+	/** Whether it is Firefox. */
+	bool firefox = false;
+	/** Whether it is WebKit-based. */
+	bool webkit = false;
+
+	/** Whether it is running on iOS. */
+	bool ios = false;
+	/** Whether it is running on Android. */
+	bool android = false;
+
+	/** The webkit's version if this is a webkit-based browser, or null
+	 * if it is not webkit-based.
+	 */
+	double webkitVersion;
+	/** The version of iOS if it is running on iOS, or null if not.
+	 */
+	double iosVersion;
+	/** The version of Android if it is running on Android, or null if not.
+	 */
+	double androidVersion;
+	Size size;
+
+	Browser() {
 		_initBrowserInfo();
 	}
 	void _initBrowserInfo() {
-		String name;
-		double version;
 		final String ua = window.navigator.userAgent.toLowerCase();
 		final _BrowserMatch bm = (RegExp regex) {
 			Match m = regex.firstMatch(ua);
@@ -45,42 +65,39 @@ class Device {
 		};
 
 		if (bm(_rwebkit)) {
-			webkit = version;
+			webkit = true;
+			webkitVersion = version;
 
 			if (bm(_rchrome)) {
-				chrome = version;
+				chrome = true;
 
 				Match m = _randroid.firstMatch(ua);
-				if (m !== null)
-					android = _versionOf(m.group(1));
-
+				if (m !== null) {
+					android = true;
+					androidVersion = _versionOf(m.group(1));
+				}
 			} else if (bm(_rsafari)) {
-				safari = version;
+				safari = true;
 
 				Match m = _rios.firstMatch(ua);
-				if (m !== null)
-					ios = _versionOf(m.group(1), '_');
+				if (m !== null) {
+					ios = true;
+					iosVersion = _versionOf(m.group(1), '_');
+				}
 			}
-
 		} else if (bm(_rmsie)) {
-				msie = version;
-
+			msie = true;
+		} else if (ua.indexOf("compatible") < 0 && bm(_rmozilla)) {
+			name = "firefox";
+			firefox = true;
 		} else {
-			if (ua.indexOf("compatible") < 0 && bm(_rmozilla)) {
-				mozilla = version;
-			}
-
-			if (name === null) {
-				name = "unknown";
-				version = 1.0;
-			}
+			name = "unknown";
+			version = 1.0;
 		}
-
-		browser = new VersionInfo(name, version);
 
 		final Element simNode = document.query("#v-main");
 		final DomQuery simQuery = new DomQuery(simNode !== null ? simNode: window);
-		screen = new ScreenInfo(simQuery.innerWidth, simQuery.innerHeight);
+		size = new Size(simQuery.innerWidth, simQuery.innerHeight);
 	}
 	static double _versionOf(String version, [String separator='.']) {
 		int j = version.indexOf(separator);
@@ -97,22 +114,6 @@ class Device {
 	}
 }
 
-class VersionInfo {
-	/** The browser's name, such as safari, chrome, mozilla and msie.
-	 */
-	final String name;
-	/** The browser's version.
-	 */
-	final double version;
-
-	const VersionInfo(this.name, this.version);
-}
-/** The screen information. */
-class ScreenInfo extends Size {
-	ScreenInfo(int width, int height) : super(width, height) {
-	}
-}
-
-/** The current device.
+/** The current browser.
  */
-Device device;
+Browser browser;

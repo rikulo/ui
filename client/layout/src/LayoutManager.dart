@@ -174,7 +174,7 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		final bool bAdjust = orgval != "fixed" && orgval != "static";
 		if (bAdjust) {
 			orgval = nodestyle.width;
-			nodestyle.width = "${device.screen.width}px"; //TODO: use profile.maxWidth
+			nodestyle.width = "${browser.size.width}px"; //TODO: use profile.maxWidth
 		}
 		final Size size = new Size(view.node.$dom_offsetWidth, view.node.$dom_offsetHeight);
 		if (bAdjust)
@@ -185,7 +185,7 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 	}
 	static String get _posForMeasure() {
 		if (_cachedP4M === null)
-			_cachedP4M = device.ios != null && device.ios < 5 ? "static": "fixed";
+			_cachedP4M = browser.ios && browser.iosVersion < 5 ? "static": "fixed";
 		return _cachedP4M;
 	}
 	static String _cachedP4M;

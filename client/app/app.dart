@@ -11,4 +11,4 @@
 #import("../viewimpl/viewimpl.dart");
 
 #source("src/Activity.dart");
-#source("src/Device.dart");
+#source("src/Browser.dart");

@@ -8,7 +8,7 @@
 class _HLayout implements _LinearLayout {
 	int measureWidth(MeasureContext mctx, View view) {
 		final _AmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.width);
-		final int maxWd = view.parent !== null ? view.parent.innerWidth: device.screen.width;
+		final int maxWd = view.parent !== null ? view.parent.innerWidth: browser.size.width;
 		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int width = 0, prevSpacingRight = 0;
 		for (final View child in view.children) {

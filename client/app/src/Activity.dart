@@ -11,8 +11,8 @@ class Activity {
 	View _rootView;
 
 	Activity() {
-		if (device === null)
-			device = new Device();
+		if (browser === null)
+			browser = new Browser();
 	}
 
 	/** Returns the root view.
@@ -43,8 +43,8 @@ class Activity {
 
 		activity = this;
 		_rootView = new Section();
-		_rootView.width = device.screen.width;
-		_rootView.height = device.screen.height;
+		_rootView.width = browser.size.width;
+		_rootView.height = browser.size.height;
 		_rootView.style.overflow = "hidden"; //crop
 
 		onCreate_();
