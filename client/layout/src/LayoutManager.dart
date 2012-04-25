@@ -170,13 +170,15 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 	}
 	Size _measureByContent(MeasureContext mctx, View view) {
 		CSSStyleDeclaration nodestyle = view.node.style;
-		final String pos = nodestyle.position;
-		final bool bFixed = pos == "fixed" || pos == "static";
-		if (!bFixed)
-			nodestyle.position = _posForMeasure;
+		String orgval = nodestyle.position;
+		final bool bAdjust = orgval != "fixed" && orgval != "static";
+		if (bAdjust) {
+			orgval = nodestyle.width;
+			nodestyle.width = "${device.screen.width}px"; //TODO: use profile.maxWidth
+		}
 		final Size size = new Size(view.node.$dom_offsetWidth, view.node.$dom_offsetHeight);
-		if (!bFixed)
-			nodestyle.position = pos !== null ? pos: ""; //TODO: assign pos directly if Dart returns empty
+		if (bAdjust)
+			nodestyle.width = orgval !== null ? orgval: ""; //TODO: assign orgval directly if Dart returns empty
 		mctx.widths[view] = size.width;
 		mctx.heights[view] = size.height;
 		return size;

@@ -21,10 +21,15 @@ class Dashboard extends View {
 		TextView text = new TextView("Orientation");
 		view.appendChild(text);
 
-		RadioButton horz = new RadioButton("horizontal", groupName: "orientation");
-		view.appendChild(horz);
-		RadioButton vert = new RadioButton("vertical", checked: true, groupName: "orientation");
-		view.appendChild(vert);
+		RadioGroup group = new RadioGroup();
+		_setHLayout(group);
+		group.layout.spacing = "0 5";
+		view.appendChild(group);
+
+		RadioButton horz = new RadioButton("horizontal");
+		group.appendChild(horz);
+		RadioButton vert = new RadioButton("vertical");
+		group.appendChild(vert);
 	}
 	void _setHLayout(View view) {
 		view.layout.type = "linear";
