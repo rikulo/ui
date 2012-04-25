@@ -10,4 +10,5 @@
 #source("src/RunOnceQueue.dart");
 #source("src/Offset.dart");
 #source("src/Size.dart");
+#source("src/Selection.dart");
 #source("src/Functions.dart");

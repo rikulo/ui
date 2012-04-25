@@ -6,24 +6,26 @@
  * The simulator.
  */
 class Simulator extends Activity {
-	Size _scrnSize;
+	Size _simScrnSize;
 	Dashboard _dashboard;
 
 	Simulator() {
 		simulator = this;
+		device.screen.width = window.innerWidth;
+		device.screen.width = window.innerHeight;
 
 		//TODO: the screen resolution shall be based on the device the user chose
-		_setScreenSize(320, 480);
+		_setSimScreenSize(320, 480);
 	}
-	void _setScreenSize(int width, int height) {
-		_scrnSize = new Size(width, height);
+	void _setSimScreenSize(int width, int height) {
+		_simScrnSize = new Size(width, height);
 
 		CSSStyleDeclaration style = document.query("#v-main").style;
 		style.width = "${width}px";
 		style.height = "${height}px";
 	}
 	void _syncDashboardSize() {
-		int left = screenSize.width + 40;
+		int left = simScreenSize.width + 40;
 		Element dashNode = document.query("#v-dashboard");
 		CSSStyleDeclaration style = dashNode.style;
 		style.left = "${left}px";
@@ -33,20 +35,21 @@ class Simulator extends Activity {
 
 		_dashboard.width = rootView.width = new DomQuery(dashNode).innerWidth;
 		_dashboard.height = rootView.height = new DomQuery(dashNode).innerHeight;
+		_dashboard.requestLayout();
 	}
 
-	/** Returns the screen's dimension.
+	/** Returns the screen's dimension of the simulated device.
 	 */
-	Size get screenSize() => _scrnSize;
+	Size get simScreenSize() => _simScrnSize;
 
 	void onCreate_() {
-		window.on.resize.add((event) {
-			_syncDashboardSize();
-		});
-
 		_dashboard = new Dashboard();
 		rootView.appendChild(_dashboard);
 		_syncDashboardSize();
+
+		window.on.resize.add((event) {
+			_syncDashboardSize();
+		});
 	}
 }
 Simulator simulator;

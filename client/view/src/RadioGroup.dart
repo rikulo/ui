@@ -10,8 +10,9 @@
  * Notice that [CheckEvent.target] is an instance of [RadioButton] that has been checked.</li>
  * </ul>
  */
-class RadioGroup extends View {
+class RadioGroup extends View implements Selection<RadioButton> {
 	String _name;
+	RadioButton _selItem;
 
 	RadioGroup([String name]) {
 		_name = name;
@@ -35,16 +36,27 @@ class RadioGroup extends View {
 				radio._setGroupName(name);
 	}
 
-	/** Handles the check event for this group of radio buttons.
+	/** Returns the selected radio button, or null if none is selected.
 	 */
-	void _doCheck(CheckEvent event) { //called from RadioButton
-		var target = event.target;
-		for (final RadioButton radio in items) {
-			if (radio !== target)
-				radio._doUncheck();
-		}
+	RadioButton get selectedItem() => _selItem;
+	//@Override
+	Set<RadioButton> get selectedItems() {
+		final Set<RadioButton> sels = new Set();
+		if (_selItem !== null)
+			sels.add(_selItem);
+		return sels;
+	}
 
-		dispatchEvent(event);
+	/** Handles the selected item when a radio button's check state is changed.
+	 */
+	void _updateSelected(RadioButton changed, bool checked) { //called from RadioButton
+		if (checked) {
+			if (_selItem !== null)
+				_selItem._setChecked(false, false);
+			_selItem = changed;
+		} else if (_selItem === changed) {
+			_selItem = null;
+		}
 	}
 
 	/** Returns all radio buttons in this group.

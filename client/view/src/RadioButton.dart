@@ -31,14 +31,14 @@ class RadioButton extends CheckBox {
 	 * ancestor radio group.
 	 */
 	RadioGroup get radioGroup() {
-		if (_radioGroup !== null)
-			return _radioGroup;
-
-		for (View view = this; (view = view.parent) !== null;)
-			if (view is RadioGroup)
-				return view;
-		return null;
+		return _radioGroup !== null ? _radioGroup: _getRadioGroup(this);
 	}
+	RadioGroup _getRadioGroup(View view) {
+		for (;; view = view.parent)
+			if (view === null || view is RadioGroup)
+				return view;
+	}
+
 	/** Sets the radio group that this radio button belongs to.
 	 * You don't need to invoke this method if the radio group is ancestor of this radio button.
 	 */
@@ -52,6 +52,21 @@ class RadioButton extends CheckBox {
 			n.name = name;
 	}
 
+	//@Overide
+	void set checked(bool checked) {
+		_setChecked(checked, true); //yes, sync the radio group
+	}
+	void _setChecked(bool checked, bool updateGroup) {
+		if (_checked != checked) {
+			super.checked = checked;
+
+			if (updateGroup) {
+				RadioGroup group = radioGroup;
+				if (group !== null)
+					group._updateSelected(this, checked);
+			}
+		}
+	}
 	//@Override
 	void onCheck_() {
 		assert(_checked); //it must be checked for radio button
@@ -59,13 +74,27 @@ class RadioButton extends CheckBox {
 		final CheckEvent event = new CheckEvent(this, _checked);
 		dispatchEvent(event);
 		final RadioGroup group = radioGroup;
-		if (group !== null)
-			group._doCheck(event);
+		if (group !== null) {
+			group._updateSelected(this, true);
+			group.dispatchEvent(event);
+		}
 	}
-	void _doUncheck() { //call from RadioGroup
-		if (_checked) {
-			_checked = false;
-			dispatchEvent(new CheckEvent(this, false));
+	//@Override
+	void onParentChanged_(View oldParent) {
+		super.onParentChanged_(oldParent);
+
+		if (checked) {
+			RadioGroup group = _getRadioGroup(oldParent);
+			if (group !== null)
+				group._updateSelected(this, false);
+
+			group = _getRadioGroup(this);
+			if (group !== null) {
+				if (group._selItem !== null)
+					_setChecked(false, false);
+				else
+					group._updateSelected(this, true);
+			}
 		}
 	}
 

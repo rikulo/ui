@@ -26,7 +26,7 @@ class Dashboard extends View {
 		group.layout.spacing = "0 5";
 		view.appendChild(group);
 
-		RadioButton horz = new RadioButton("horizontal");
+		RadioButton horz = new RadioButton("horizontal", checked: true);
 		group.appendChild(horz);
 		RadioButton vert = new RadioButton("vertical");
 		group.appendChild(vert);
