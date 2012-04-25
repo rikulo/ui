@@ -18,7 +18,7 @@
  * </ul>
  */
 class RadioButton extends CheckBox {
-	RadioGroup _radioGroup;
+	RadioGroup _group;
 
 	RadioButton([String text="", String html="",
 	bool checked=false, bool disabled=false, bool autofocus=false]):
@@ -31,28 +31,22 @@ class RadioButton extends CheckBox {
 	 * ancestor radio group.
 	 */
 	RadioGroup get radioGroup() {
-		return _radioGroup !== null ? _radioGroup: _getRadioGroup(this);
+		return _group !== null ? _group: _groupOf(this);
 	}
-	RadioGroup _getRadioGroup(View view) {
-		for (;; view = view.parent)
-			if (view === null || view is RadioGroup)
-				return view;
-	}
-
 	/** Sets the radio group that this radio button belongs to.
 	 * You don't need to invoke this method if the radio group is ancestor of this radio button.
 	 */
 	void set radioGroup(RadioGroup group) {
-		throw const UnsupportedOperationException("n/a"); //TODO
+		final RadioGroup oldgroup = radioGroup;
+
+		_group = group;
+
+		group = radioGroup;
+		if (group !== oldgroup)
+			_groupChanged(oldgroup, group);
 	}
 
-	void _setGroupName(String name) {
-		InputElement n = inputNode;
-		if (n != null)
-			n.name = name;
-	}
-
-	//@Overide
+	//@Override
 	void set checked(bool checked) {
 		_setChecked(checked, true); //yes, sync the radio group
 	}
@@ -73,9 +67,14 @@ class RadioButton extends CheckBox {
 
 		final CheckEvent event = new CheckEvent(this, _checked);
 		dispatchEvent(event);
+
 		final RadioGroup group = radioGroup;
 		if (group !== null) {
-			group._updateSelected(this, true);
+			final RadioButton oldradio = group.selectedItem;
+			group._updateSelected(this, _checked);
+
+			if (oldradio !== null)
+				oldradio.dispatchEvent(new CheckEvent(oldradio, !_checked));
 			group.dispatchEvent(event);
 		}
 	}
@@ -83,29 +82,39 @@ class RadioButton extends CheckBox {
 	void onParentChanged_(View oldParent) {
 		super.onParentChanged_(oldParent);
 
+		if (_group === null)
+			_groupChanged(_groupOf(oldParent), _groupOf(parent));
+	}
+	RadioGroup _groupOf(View view) {
+		for (;; view = view.parent)
+			if (view === null || view is RadioGroup)
+				return view;
+	}
+	void _groupChanged(RadioGroup oldgroup, RadioGroup newgroup) {
 		if (checked) {
-			RadioGroup group = _getRadioGroup(oldParent);
-			if (group !== null)
-				group._updateSelected(this, false);
+			if (oldgroup !== null)
+				oldgroup._updateSelected(this, false);
 
-			group = _getRadioGroup(this);
-			if (group !== null) {
-				if (group._selItem !== null)
+			if (newgroup !== null) {
+				if (newgroup.selectedItem !== null)
 					_setChecked(false, false);
 				else
-					group._updateSelected(this, true);
+					newgroup._updateSelected(this, true);
 			}
+			final InputElement n = inputNode;
+			if (n !== null)
+				n.name = newgroup !== null ? newgroup.uuid: "";
 		}
 	}
 
 	//@Override
 	String get domInputType_() => "radio";
 	//@Override
-	/** Default: [radioGroup]'s name.
+	/** Default: [radioGroup]'s UUID.
 	 */
 	String get domInputName_() {
 		final RadioGroup group = radioGroup;
-		return group != null ? group.name: null;
+		return group != null ? group.uuid: null;
 	}
 	//@Override
 	String toString() => "RadioButton('$text$html', $checked)";

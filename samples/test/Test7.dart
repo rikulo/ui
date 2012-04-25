@@ -47,7 +47,7 @@ class Test7 extends Activity {
 		view.appendChild(ckbox);
 
 		RadioGroup group = new RadioGroup();
-		group.on.check.add((event) {
+			group.on.check.add((event) {
 			event.target.text = 'checked: ${++clickCount}';
 			event.target.parent.requestLayout();
 		});
