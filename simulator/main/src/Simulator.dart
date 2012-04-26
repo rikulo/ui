@@ -51,7 +51,6 @@ class Simulator extends Activity {
 
 		_dashboard.width = rootView.width = new DomQuery(dashNode).innerWidth;
 		_dashboard.height = rootView.height = new DomQuery(dashNode).innerHeight;
-print("${window.innerWidth-left} vs ${_dashboard.width}");
 		_dashboard.requestLayout();
 	}
 }

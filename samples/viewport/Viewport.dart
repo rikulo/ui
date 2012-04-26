@@ -5,6 +5,7 @@
 
 #import("dart:html");
 #import('../../client/view/view.dart');
+#import('../../client/viewimpl/viewimpl.dart');
 
 /**
  * A view port that demostrates how to use [View.innerLeft]
@@ -46,8 +47,9 @@ class Viewport extends View {
 	void _syncToolbar() {
 		final Element tbar = getNode("toolbar");
 		if (tbar != null) {
-			_toolbar.left = tbar.$dom_offsetLeft;
-			_toolbar.top = tbar.$dom_offsetTop;
+			final DomQuery qtbar = new DomQuery(tbar);
+			_toolbar.left = qtbar.offsetLeft;
+			_toolbar.top = qtbar.offsetTop;
 		}
 	}
 

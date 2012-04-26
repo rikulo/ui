@@ -42,15 +42,17 @@ interface LayoutManager extends Layout default _LayoutManager {
 	 * This method assumes the browser will resize the view automatically,
 	 * so it is applied only to a leaf view with some content, such as [TextView]
 	 * and [Button].
+	 * <p>[autowidth] specifies whether to adjust the width automatically.
 	 */
-	int measureWidthByContent(MeasureContext mctx, View view);
+	int measureWidthByContent(MeasureContext mctx, View view, bool autowidth);
 	/** Measures the height based on the view's content.
 	 * It is an utility for implementing a view's [View.measureHeight].
 	 * This method assumes the browser will resize the view automatically,
 	 * so it is applied only to a leaf view with some content, such as [TextView]
 	 * and [Button].
+	 * <p>[autowidth] specifies whether to adjust the width automatically.
 	 */
-	int measureHeightByContent(MeasureContext mctx, View view);
+	int measureHeightByContent(MeasureContext mctx, View view, bool autowidth);
 
 	/** Wait until the given image is loaded.
 	 * If the width and height of the image is not known in advance, this method
@@ -158,29 +160,49 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 			break;
 		}
 	}
-	int measureWidthByContent(MeasureContext mctx, View view) {
+	int measureWidthByContent(MeasureContext mctx, View view, bool autowidth) {
 		int wd = mctx.widths[view];
 		return wd !== null || mctx.widths.containsKey(view) ? wd:
-			_measureByContent(mctx, view).width;
+			_measureByContent(mctx, view, autowidth).width;
 	}
-	int measureHeightByContent(MeasureContext mctx, View view) {
+	int measureHeightByContent(MeasureContext mctx, View view, bool autowidth) {
 		int hgh = mctx.heights[view];
 		return hgh !== null || mctx.heights.containsKey(view) ? hgh:
-			_measureByContent(mctx, view).height;
+			_measureByContent(mctx, view, autowidth).height;
 	}
-	Size _measureByContent(MeasureContext mctx, View view) {
-		CSSStyleDeclaration nodestyle = view.node.style;
-		String orgval = nodestyle.position;
-		final bool bAdjust = orgval != "fixed" && orgval != "static";
-		if (bAdjust) {
-			orgval = nodestyle.width;
-			nodestyle.width = "${browser.size.width}px"; //TODO: use profile.maxWidth
+	Size _measureByContent(MeasureContext mctx, View view, bool autowidth) {
+		CSSStyleDeclaration nodestyle;
+		String orgval;
+		if (autowidth) {
+			nodestyle = view.node.style;
+			orgval = nodestyle.position;
+			if (orgval != "fixed" && orgval != "static") {
+				orgval = nodestyle.whiteSpace;
+				if (orgval === null) orgval = ""; //TODO: no need if Dart handles it
+				nodestyle.whiteSpace = "nowrap";
+			} else {
+				orgval = null;
+			}
 		}
 
 		final DomQuery qview = new DomQuery(view);
 		final Size size = new Size(qview.outerWidth, qview.outerHeight);
-		if (bAdjust)
-			nodestyle.width = orgval !== null ? orgval: ""; //TODO: assign orgval directly if Dart returns empty
+
+		if (orgval !== null) {
+			nodestyle.whiteSpace = orgval; //restore
+		}
+
+		if (autowidth && size.width > browser.size.width) { //TODO: use profile.maxWidth instead
+			orgval = nodestyle.width;
+			if (orgval === null) orgval = ""; //TODO: no need if Dart handles it
+			nodestyle.width = browser.size.width; //TODO: use profile.maxWidth
+
+			size.width = qview.outerWidth;
+			size.height = qview.outerHeight;
+
+			nodestyle.width = orgval; //restore
+		}
+
 		mctx.widths[view] = size.width;
 		mctx.heights[view] = size.height;
 		return size;

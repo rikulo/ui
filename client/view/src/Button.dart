@@ -74,10 +74,5 @@ class Button extends TextView {
 	 */
 	bool isChildable_() => false;
 
-	int measureWidth(MeasureContext mctx)
-	=> layoutManager.measureWidthByContent(mctx, this);
-	int measureHeight(MeasureContext mctx)
-	=> layoutManager.measureHeightByContent(mctx, this);
-
 	String toString() => "Button('$text$html')";
 }

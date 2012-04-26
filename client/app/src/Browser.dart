@@ -55,6 +55,9 @@ class Browser {
 	Browser() {
 		_initBrowserInfo();
 	}
+	String toString() {
+		return "$name(v$version, $size)";
+	}
 	void _initBrowserInfo() {
 		final String ua = window.navigator.userAgent.toLowerCase();
 		final _BrowserMatch bm = (RegExp regex) {

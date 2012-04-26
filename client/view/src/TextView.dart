@@ -71,9 +71,9 @@ class TextView extends View {
 	bool isChildable_() => false;
 
 	int measureWidth(MeasureContext mctx)
-	=> layoutManager.measureWidthByContent(mctx, this);
+	=> layoutManager.measureWidthByContent(mctx, this, true);
 	int measureHeight(MeasureContext mctx)
-	=> layoutManager.measureHeightByContent(mctx, this);
+	=> layoutManager.measureHeightByContent(mctx, this, true);
 
 	String toString() => "TextView('$text$html')";
 }

@@ -39,9 +39,9 @@ class Image extends View {
 	bool isChildable_() => false;
 
 	int measureWidth(MeasureContext mctx)
-	=> layoutManager.measureWidthByContent(mctx, this);
+	=> layoutManager.measureWidthByContent(mctx, this, false);
 	int measureHeight(MeasureContext mctx)
-	=> layoutManager.measureHeightByContent(mctx, this);
+	=> layoutManager.measureHeightByContent(mctx, this, false);
 
 	void enterDocument_() {
 		super.enterDocument_();

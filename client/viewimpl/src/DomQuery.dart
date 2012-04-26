@@ -33,6 +33,22 @@ class DomQuery {
 	 * border and margin.
 	 */
 	int get outerHeight() => node.$dom_offsetHeight;
+	/** Returns the closest ancestor elemento in the DOM hierachy from
+	 * which the position of the current element is calculated, or null
+	 * if it is the topmost element.
+	 * <p>Use [offsetLeft] and [offsetTop] to retrieve the position of
+	 * the top-left corner of an object relative to the top-left corner
+	 * of its offset parent object.
+	 */
+	Element get offsetParent() => node.offsetParent;
+	/** Returns the left position of this element relative to the left side of
+	 * its [offsetParent] element.
+	 */
+	int get offsetLeft() => node.$dom_offsetLeft;
+	/** Returns the left position of this element relative to the top side of
+	 * its [offsetParent] element.
+	 */
+	int get offsetTop() => node.$dom_offsetTop;
 
 	/** Returns the offset of this node related to the document.
 	 */
@@ -84,4 +100,6 @@ class _WindowQuery extends DomQuery {
 	int get outerWidth() => node.outerWidth;
 	//@Override
 	int get outerHeight() => node.outerHeight;
+	//@Override
+	Element get offsetParent() => null;
 }
