@@ -26,6 +26,7 @@ class Test7 extends Activity {
 		view.appendChild(text);
 		
 		_addOrientation(view);
+		_addLogView(view);
 	}
 	void _addOrientation(View parent) {
 		View view = new View();
@@ -62,6 +63,19 @@ class Test7 extends Activity {
 		RadioButton vert = new RadioButton("vertical radio");
 		_setBorder(vert);
 		group.appendChild(vert);
+	}
+	void _addLogView(View view) {
+		View log = new View();
+		log.layout.type = "linear";
+		log.layout.orient = "vertical";
+		log.layout.spacing = "0";
+		log.profile.width = log.profile.height = "flex";
+		log.style.backgroundColor = "#cca";
+		_setBorder(log);
+		TextView text = new TextView(html: '<h2 style="margin:0">Log View</h2>');
+		_setBorder(text);
+		log.appendChild(text);
+		view.appendChild(log);
 	}
 	void _setBorder(View view) {
 		view.style.border = "1px solid black";
