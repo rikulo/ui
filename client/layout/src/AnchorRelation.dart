@@ -42,8 +42,9 @@ class AnchorRelation {
 	 */
 	void layoutAnchored(MeasureContext mctx) {
 		_layoutAnchored(mctx, parent);
-		for (final View view in indeps)
+		for (final View view in indeps) {
 			_layoutAnchored(mctx, view);
+		}
 	}
 	void _layoutAnchored(MeasureContext mctx, View anchor) {
 		final List<View> views = anchored[anchor];

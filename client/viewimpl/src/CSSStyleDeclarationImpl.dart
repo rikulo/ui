@@ -2549,8 +2549,9 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		if (_illnms === null) {
 			_illnms = new Set();
 			for (final String nm in const [
-				"left", "top", "right", "bottom", "width", "height", "display"])
+				"left", "top", "right", "bottom", "width", "height", "display"]) {
 				_illnms.add(nm);
+			}
 		}
 		
 		if (_illnms.contains(propertyName))

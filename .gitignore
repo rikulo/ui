@@ -1,4 +1,3 @@
-*.dart.app.js
 debug
 codegen
 *.local
@@ -7,3 +6,4 @@ javadoc
 Thumbs.db
 .project
 .children
+*.dart.js

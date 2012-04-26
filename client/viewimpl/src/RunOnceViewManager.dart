@@ -71,8 +71,9 @@ class RunOnceViewManager {
 		final List<View> todo = new List.from(_views);
 		_views.clear();
 
-		for (final View view in todo)
+		for (final View view in todo) {
 			handle_(view);
+		}
 	}
 	void _flushOne(View view) {
 			if (!_ignoreDetached || view.inDocument) {

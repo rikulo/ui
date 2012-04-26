@@ -73,8 +73,9 @@ class _SubviewList extends AbstractList<View> {
 			throw new IndexOutOfRangeException(start);
 		} else if (start == this.length) { //append
 			if (startFrom == 0) { //optimize
-				for (Iterator<View> it = from.iterator(); --length >= 0;)
+				for (Iterator<View> it = from.iterator(); --length >= 0;) {
 					add(it.next());
+				}
 			} else {
 				while (--length >= 0)
 					add(from[startFrom++]);

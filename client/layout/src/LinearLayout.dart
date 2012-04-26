@@ -34,8 +34,9 @@ class LinearLayout implements Layout {
 			ar.layoutAnchored(mctx);
 
 			//3) pass control to children
-			for (final View child in view.children)
+			for (final View child in view.children) {
 				child.doLayout(mctx); //no matter shallLayout_(child)
+			}
 		}
 	}
 

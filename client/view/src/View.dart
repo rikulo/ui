@@ -197,8 +197,9 @@ class View implements EventTarget {
 		if (id.length > 0)
 			space.bindFellow_(id, view);
 
-		for	(view = view.firstChild; view != null; view = view.nextSibling)
+		for (view = view.firstChild; view != null; view = view.nextSibling) {
 			_addToIdSpaceDown(view, space);
+		}
 	}
 	static void _removeFromIdSpaces(View view) {
 		String id = view.id;
@@ -220,9 +221,10 @@ class View implements EventTarget {
 	 * it is identical to this view.
 	 */
 	bool isDescendantOf(View parent) {
-		for (View w = this; w !== null; w = w.parent)
+		for (View w = this; w !== null; w = w.parent) {
 			if (w === parent)
 				return true;
+		}
 		return false;
 	}
 	/** Returns the nearest ancestor who is an instance of the given class,
@@ -230,9 +232,10 @@ class View implements EventTarget {
 	 */
 /* TODO: wait until Dart supports reflection
 	View getAncestorWith(Class type) {
-		for (View p = this; (p = p.parent) !== null;)
+		for (View p = this; (p = p.parent) !== null;) {
 			if (p is type)
 				return p;
+		}
 		return null;
 	}
 */
@@ -521,8 +524,9 @@ class View implements EventTarget {
 		enterDocument_();
 		doLayout();
 
-		for (final AfterEnterDocument call in _afters.removeLast())
+		for (final AfterEnterDocument call in _afters.removeLast()) {
 			call(this);
+		}
 	}
 	/** Adds a task to be executed after all [enterDocument_] are called.
 	 * <p>Notice that this method can be called only in [enterDocument_].
@@ -562,8 +566,9 @@ class View implements EventTarget {
 			inner.style.height = "${v > 0 ? v: 0}px";
 		}
 
-		for (View child = firstChild; child != null; child = child.nextSibling)
-				child.enterDocument_();
+		for (View child = firstChild; child != null; child = child.nextSibling) {
+			child.enterDocument_();
+		}
 
 		//Listen the DOM element if necessary
 		if (_evlInfo !== null && _evlInfo.listeners !== null) {
@@ -594,8 +599,9 @@ class View implements EventTarget {
 			}
 		}
 
-		for (View child = firstChild; child != null; child = child.nextSibling)
-				child.exitDocument_();
+		for (View child = firstChild; child != null; child = child.nextSibling) {
+			child.exitDocument_();
+		}
 
 		_inDoc = false;
 		_node = null; //as the last step since node might be called in exitDocument_
@@ -1031,8 +1037,9 @@ class View implements EventTarget {
 	 * <p>Default: invoke each child view's [draw] sequentially.
 	 */
 	void domInner_(StringBuffer out) {
-		for (View child = firstChild; child !== null; child = child.nextSibling)
+		for (View child = firstChild; child !== null; child = child.nextSibling) {
 			child.draw(out);
+		}
 	}
 	/** Outputs a list of the CSS classes for the DOM element of this view
 	 * to the given output. If there are multiple CSS classes, seperate them
@@ -1043,8 +1050,9 @@ class View implements EventTarget {
 		if (!noVclass)
 			out.add(' ').add(vclass);
 		if (!noClass && _classes != null)
-			for (final String cls in _classes)
+			for (final String cls in _classes) {
 				out.add(' ').add(cls);
+			}
 	}
 	/** Output the CSS style for the DOM element of this view to the given outout.
 	 */
@@ -1163,8 +1171,9 @@ class View implements EventTarget {
 				};
 			};
 			for (final String nm in
-			const ["click", "blur", "focus", "change", "mouseDown", "mouseUp", "mouseOver", "mouseOut"])
+			const ["click", "blur", "focus", "change", "mouseDown", "mouseUp", "mouseOver", "mouseOut"]) {
 				_domEvtDisps[nm] = disp;
+			}
 		}
 		return _domEvtDisps[type];
 	}

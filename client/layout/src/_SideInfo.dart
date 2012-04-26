@@ -14,8 +14,9 @@ class _SideInfo {
 	_SideInfo(String profile, int defaultValue, [_SideInfo defaultInfo]) {
 		if (profile != null && !profile.isEmpty()) {
 			List<int> wds = [];
-			for (final Match m in _reWord.allMatches(profile))
+			for (final Match m in _reWord.allMatches(profile)) {
 				wds.add(Math.parseInt(m.group(0)));
+			}
 
 			switch (wds.length) {
 			case 0:

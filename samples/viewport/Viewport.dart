@@ -72,9 +72,10 @@ class Viewport extends View {
 		out.add('<div class="v-Viewport-inner" id="')
 			.add(uuid).add('-inner">');
 
-		for (View child = firstChild; child != null; child = child.nextSibling)
+		for (View child = firstChild; child != null; child = child.nextSibling) {
 			if (child !== _toolbar)
 				child.draw(out);
+		}
 
 		out.add('</div>');
 	}

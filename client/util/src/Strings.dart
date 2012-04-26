@@ -129,12 +129,13 @@ String encodeXML(String txt,
 			}
 		}
 	} else {
-		for (int j = 0; j < tl; ++j)
+		for (int j = 0; j < tl; ++j) {
 			if ((enc = _encs[txt[j]]) != null) {
 				out.add(txt.substring(k, j))
 					.add('&').add(enc).add(';');
 				k = j + 1;
 			}
+		}
 	}
 
 	if (k == 0) return txt;

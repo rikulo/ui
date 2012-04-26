@@ -59,8 +59,9 @@ abstract class AbstractList<E> implements List<E> {
 		add(element);
 	}
 	void addAll(Collection<E> elements) {
-		for (final E e in elements)
+		for (final E e in elements) {
 			add(e);
+		}
 	}
 	void sort(int compare(E a, E b)) {
 		DualPivotQuicksort.sort(this, compare);
