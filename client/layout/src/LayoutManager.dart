@@ -180,6 +180,8 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 				orgval = nodestyle.whiteSpace;
 				if (orgval === null) orgval = ""; //TODO: no need if Dart handles it
 				nodestyle.whiteSpace = "nowrap";
+				//Node: an absolute DIV's width will be limited by its parent's width
+				//so we have to unlimit it (by either nowrap or fixed/staic position)
 			} else {
 				orgval = null;
 			}
