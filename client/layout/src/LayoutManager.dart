@@ -176,7 +176,9 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 			orgval = nodestyle.width;
 			nodestyle.width = "${browser.size.width}px"; //TODO: use profile.maxWidth
 		}
-		final Size size = new Size(view.node.$dom_offsetWidth, view.node.$dom_offsetHeight);
+
+		final DomQuery qview = new DomQuery(view);
+		final Size size = new Size(qview.outerWidth, qview.outerHeight);
 		if (bAdjust)
 			nodestyle.width = orgval !== null ? orgval: ""; //TODO: assign orgval directly if Dart returns empty
 		mctx.widths[view] = size.width;

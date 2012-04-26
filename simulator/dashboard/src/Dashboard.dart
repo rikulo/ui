@@ -12,6 +12,7 @@ class Dashboard extends View {
 
 		appendChild(new TextView(html: '<h1 style="margin:0">Rikulo Simulator</h1>'));
 		_addOrientation(this);
+		_addLogView(this);
 	}
 	void _addOrientation(View parent) {
 		View view = new View();
@@ -30,6 +31,15 @@ class Dashboard extends View {
 		group.appendChild(horz);
 		RadioButton vert = new RadioButton("vertical");
 		group.appendChild(vert);
+	}
+	void _addLogView(View view) {
+		View log = new View();
+		log.layout.type = "linear";
+		log.layout.orient = "vertical";
+		log.layout.spacing = "0";
+		log.profile.width = log.profile.height = "flex";
+		log.classes.add("v-dashboard-log");
+		view.appendChild(log);
 	}
 	void _setHLayout(View view) {
 		view.layout.type = "linear";

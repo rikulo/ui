@@ -9,7 +9,6 @@ class Test7 extends Activity {
 
 	void onCreate_() {
 		title = "Test 7: hlayout in hlayout";
-
 		View view = new View();
 		_setBorder(view);
 		view.layout.type = "linear";

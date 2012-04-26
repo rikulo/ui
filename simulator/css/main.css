@@ -28,5 +28,10 @@ body {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	position: absolute;
-	padding: 3px; border-left: 1px solid #886;
+	border-left: 1px solid #886;
+}
+
+.v-dashboard-log {
+	border: 1px solid #332;
+	background-color: #eec;
 }

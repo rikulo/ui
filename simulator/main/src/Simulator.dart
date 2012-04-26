@@ -11,12 +11,28 @@ class Simulator extends Activity {
 
 	Simulator() {
 		simulator = this;
+		browser.inSimulator = false;
 		browser.size.width = window.innerWidth;
-		browser.size.width = window.innerHeight;
+		browser.size.height = window.innerHeight;
 
 		//TODO: the simulated size shall be based on what the user chose
 		_setSimScreenSize(320, 480);
 	}
+	//@Override
+	void onCreate_() {
+		_dashboard = new Dashboard();
+		rootView.appendChild(_dashboard);
+		_syncDashboardSize();
+
+		window.on.resize.add((event) {
+			_syncDashboardSize();
+		});
+	}
+
+	/** Returns the simulated dimension of the device.
+	 */
+	Size get simulatedSize() => _simSize;
+
 	void _setSimScreenSize(int width, int height) {
 		_simSize = new Size(width, height);
 
@@ -35,21 +51,8 @@ class Simulator extends Activity {
 
 		_dashboard.width = rootView.width = new DomQuery(dashNode).innerWidth;
 		_dashboard.height = rootView.height = new DomQuery(dashNode).innerHeight;
+print("${window.innerWidth-left} vs ${_dashboard.width}");
 		_dashboard.requestLayout();
-	}
-
-	/** Returns the simulated dimension of the device.
-	 */
-	Size get simulatedSize() => _simSize;
-
-	void onCreate_() {
-		_dashboard = new Dashboard();
-		rootView.appendChild(_dashboard);
-		_syncDashboardSize();
-
-		window.on.resize.add((event) {
-			_syncDashboardSize();
-		});
 	}
 }
 Simulator simulator;

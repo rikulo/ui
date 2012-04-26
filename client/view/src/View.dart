@@ -556,9 +556,9 @@ class View implements EventTarget {
 			//sync innerNode's positon and size
 			inner.style.left = "${innerLeft}px";
 			inner.style.top = "${innerTop}px";
-			int v = n.$dom_clientWidth - innerSpacing_.width;
+			int v = new DomQuery(n).innerWidth - innerSpacing_.width;
 			inner.style.width = "${v > 0 ? v: 0}px";
-			v = n.$dom_clientHeight - innerSpacing_.height;
+			v = new DomQuery(n).innerHeight - innerSpacing_.height;
 			inner.style.height = "${v > 0 ? v: 0}px";
 		}
 
@@ -777,7 +777,7 @@ class View implements EventTarget {
 
 			final Element inner = innerNode;
 			if (inner !== n) {
-				final int v = n.$dom_clientWidth - innerSpacing_.width;
+				final int v = new DomQuery(n).innerWidth - innerSpacing_.width;
 				inner.style.width = "${v > 0 ? v: 0}px";
 			}
 		}
@@ -798,7 +798,7 @@ class View implements EventTarget {
 
 			final Element inner = innerNode;
 			if (inner !== n) {
-				final int v = n.$dom_clientHeight - innerSpacing_.height;
+				final int v = new DomQuery(n).innerHeight - innerSpacing_.height;
 				inner.style.height = "${v > 0 ? v: 0}px";
 			}
 		}
@@ -861,16 +861,16 @@ class View implements EventTarget {
 	 * [width] is null.
 	 */
 	int get outerWidth()
-	=> _width !== null ? _width: inDocument ? node.$dom_offsetWidth: 0;
-		//for better performance, we don't need to get $dom_offsetWidth if _width is
+	=> _width !== null ? _width: inDocument ? new DomQuery(node).outerWidth: 0;
+		//for better performance, we don't need to get the outer width if _width is
 		//assigned (because we use box-sizing: border-box)
 	/** Returns the real height of this view shown on the document (never null).
 	 * <p>Notice that the performance of this method is not good, if
 	 * [height] is null.
 	 */
 	int get outerHeight()
-	=> _height !== null ? _height: inDocument ? node.$dom_offsetHeight: 0;
-		//for better performance, we don't need to get $dom_offsetHeight if _height is
+	=> _height !== null ? _height: inDocument ? new DomQuery(node).outerHeight: 0;
+		//for better performance, we don't need to get the outer height if _height is
 		//assigned (because we use box-sizing: border-box)
 	/** Returns the viewable width of this view, excluding the borders, margins
 	 * and scrollbars.
@@ -880,7 +880,7 @@ class View implements EventTarget {
 	 * not to call this method if the view is not attached.
 	 */
 	int get innerWidth() {
-		final int v = inDocument ? innerNode.$dom_clientWidth:
+		final int v = inDocument ? new DomQuery(innerNode).innerWidth:
 			(_width !== null ? _width - innerSpacing_.width: 0);
 		return v > 0 ? v: 0;
 	}
@@ -892,7 +892,7 @@ class View implements EventTarget {
 	 * not to call this method if the view is not attached.
 	 */
 	int get innerHeight() {
-		final int v = inDocument ? innerNode.$dom_clientHeight:
+		final int v = inDocument ? new DomQuery(innerNode).innerHeight:
 			(_height !== null ? _height - innerSpacing_.height: 0);
 		return v > 0 ? v: 0;
 	}

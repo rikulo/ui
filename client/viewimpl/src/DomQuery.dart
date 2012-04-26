@@ -9,19 +9,30 @@
 class DomQuery {
 	final node;
 
-	DomQuery(var v) :
-	node = v is String ? document.query(v): v is View ? v.node: v {
+	factory DomQuery(var v) {
+		v = v is View ? v.node: v is String ? document.query(v): v;
+		return v is Window ? new _WindowQuery._from(v): new DomQuery._from(v);
 	}
 
-	/** Returns the inner width of the given element.
-	 */
-	int get innerWidth()
-	=> node is Window ? node.innerWidth: node.$dom_clientWidth;
-	/** Returns the inner width of the given element.
-	 */
-	int get innerHeight()
-	=> node is Window ? node.innerHeight: node.$dom_clientHeight;
+	DomQuery._from(this.node) {
+	}
 
+	/** Returns the inner width of the given element, including padding
+	 * but not border.
+	 */
+	int get innerWidth() => node.$dom_clientWidth;
+	/** Returns the inner width of the given element, including padding
+	 * but not border.
+	 */
+	int get innerHeight() => node.$dom_clientHeight;
+	/** Returns the other width of the given element, including padding,
+	 * border and margin.
+	 */
+	int get outerWidth() => node.$dom_offsetWidth;
+	/** Returns the other width of the given element, including padding,
+	 * border and margin.
+	 */
+	int get outerHeight() => node.$dom_offsetHeight;
 
 	/** Returns the offset of this node related to the document.
 	 */
@@ -40,12 +51,37 @@ class DomQuery {
 	 */
 	CSSStyleDeclaration get computedStyle() 
 	=> window.$dom_getComputedStyle(node, "");
+
 	/** Returns the width of the border.
 	 */
-	int get borderWidth() {
-		String wd = computedStyle.borderWidth;
-		return wd !== null && !wd.isEmpty() ?
-			Math.parseInt(_reNum.firstMatch(wd).group(0)): 0;
-	}
+	int get borderWidth() => _parseInt(computedStyle.borderWidth);
+	/** Returns the size of the padding at left.
+	 */
+	int get paddingLeft() => _parseInt(computedStyle.paddingLeft);
+	/** Returns the size of the padding at right.
+	 */
+	int get paddingRight() => _parseInt(computedStyle.paddingRight);
+	/** Returns the size of the padding at top.
+	 */
+	int get paddingTop() => _parseInt(computedStyle.paddingTop);
+	/** Returns the size of the padding at bottom.
+	 */
+	int get paddingBottom() => _parseInt(computedStyle.paddingBottom);
+
+	static int _parseInt(String val)
+	=> val !== null && !val.isEmpty() ?
+		Math.parseInt(_reNum.firstMatch(val).group(0)): 0;
 	static final RegExp _reNum = const RegExp(@"([0-9]*)");
+}
+class _WindowQuery extends DomQuery {
+	_WindowQuery._from(var v): super._from(v) {}
+
+	//@Override
+	int get innerWidth() => node.innerWidth;
+	//@Override
+	int get innerHeight() => node.innerHeight;
+	//@Override
+	int get outerWidth() => node.outerWidth;
+	//@Override
+	int get outerHeight() => node.outerHeight;
 }

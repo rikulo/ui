@@ -37,6 +37,9 @@ class Browser {
 	/** Whether it is running on Android. */
 	bool android = false;
 
+	/** Whether it is running on a simulator. */
+	bool inSimulator = false;
+
 	/** The webkit's version if this is a webkit-based browser, or null
 	 * if it is not webkit-based.
 	 */
@@ -96,7 +99,8 @@ class Browser {
 		}
 
 		final Element simNode = document.query("#v-main");
-		final DomQuery simQuery = new DomQuery(simNode !== null ? simNode: window);
+		inSimulator = simNode !== null;
+		final DomQuery simQuery = new DomQuery(inSimulator ? simNode: window);
 		size = new Size(simQuery.innerWidth, simQuery.innerHeight);
 	}
 	static double _versionOf(String version, [String separator='.']) {
