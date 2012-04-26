@@ -21,7 +21,7 @@ class _SubviewList extends AbstractList<View> {
 
 	//List//
 	View operator[](int index) {
-		Arrays.rangeCheck(this, index, 1);
+		rangeCheck(this, index, 1);
 
 		int index2 = length - index - 1;
 		if (index <= index2) {

@@ -1049,10 +1049,11 @@ class View implements EventTarget {
 		out.add("v-");
 		if (!noVclass)
 			out.add(' ').add(vclass);
-		if (!noClass && _classes != null)
+		if (!noClass && _classes != null) {
 			for (final String cls in _classes) {
 				out.add(' ').add(cls);
 			}
+		}
 	}
 	/** Output the CSS style for the DOM element of this view to the given outout.
 	 */

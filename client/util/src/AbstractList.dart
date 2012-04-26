@@ -39,7 +39,7 @@ abstract class AbstractList<E> implements List<E> {
 
 	//List//
 	E operator[](int index) {
-		Arrays.rangeCheck(this, index, 1);
+		rangeCheck(this, index, 1);
 
 		final Iterator<E> it = iterator();
 		while (--index >= 0)
@@ -84,7 +84,7 @@ abstract class AbstractList<E> implements List<E> {
 	}
 	List<E> getRange(int start, int length) {
 		if (length == 0) return [];
-		Arrays.rangeCheck(this, start, length);
+		rangeCheck(this, start, length);
 		List list = new List<E>();
 		list.length = length;
 		Arrays.copy(this, start, list, 0, length);
@@ -109,6 +109,18 @@ abstract class AbstractList<E> implements List<E> {
 			result.add(obj != null ? obj.toString(): "null");
 		}
 		return result.toString();
+	}
+
+	static void rangeCheck(List a, int start, int length) {
+	  if (length < 0) {
+		  throw new IllegalArgumentException("negative length $length");
+		}
+	  if (start < 0 || start >= a.length) {
+		  throw new IndexOutOfRangeException(start);
+		}
+	  if (start + length > a.length) {
+		  throw new IndexOutOfRangeException(start + length);
+		}
 	}
 }
 
