@@ -549,12 +549,12 @@ class View implements EventTarget {
 		final Element n = node, inner = innerNode;
 		if (inner !== n) {
 			//sync innerNode's positon and size
-			inner.style.left = "${innerLeft}px";
-			inner.style.top = "${innerTop}px";
+			inner.style.left = StringUtil.px(innerLeft);
+			inner.style.top = StringUtil.px(innerTop);
 			int v = new DomQuery(n).innerWidth - innerSpacing_.width;
-			inner.style.width = "${v > 0 ? v: 0}px";
+			inner.style.width = StringUtil.px(v > 0 ? v: 0);
 			v = new DomQuery(n).innerHeight - innerSpacing_.height;
-			inner.style.height = "${v > 0 ? v: 0}px";
+			inner.style.height = StringUtil.px(v > 0 ? v: 0);
 		}
 
 		for (View child = firstChild; child != null; child = child.nextSibling) {
@@ -713,7 +713,7 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null)
-			n.style.left = "${left}px";
+			n.style.left = StringUtil.px(left);
 	}
 	/** Returns the top position of this view relative to its parent.
 	 * <p>Default: 0
@@ -726,7 +726,7 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null)
-			n.style.top = "${top}px";
+			n.style.top = StringUtil.px(top);
 	}
 
 	/** Returns the left position of this view relative to its parent.
@@ -770,12 +770,12 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null) {
-			n.style.width = width !== null ? "${width}px": "";
+			n.style.width = StringUtil.px(width);
 
 			final Element inner = innerNode;
 			if (inner !== n) {
 				final int v = new DomQuery(n).innerWidth - innerSpacing_.width;
-				inner.style.width = "${v > 0 ? v: 0}px";
+				inner.style.width = StringUtil.px(v > 0 ? v: 0);
 			}
 		}
 	}
@@ -791,12 +791,12 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null) {
-			n.style.height = height !== null ? "${height}px": "";
+			n.style.height = StringUtil.px(height);
 
 			final Element inner = innerNode;
 			if (inner !== n) {
 				final int v = new DomQuery(n).innerHeight - innerSpacing_.height;
-				inner.style.height = "${v > 0 ? v: 0}px";
+				inner.style.height = StringUtil.px(v > 0 ? v: 0);
 			}
 		}
 	}
@@ -824,7 +824,7 @@ class View implements EventTarget {
 		final Element n = innerNode;
 		if (n != null) {
 			if (n === node) throw const UiException("No inner element");
-			n.style.left = "${left}px";
+			n.style.left = StringUtil.px(left);
 		}
 	}
 	/** Returns the top offset of the origin of the child's coordinate system.
@@ -842,7 +842,7 @@ class View implements EventTarget {
 		final Element n = innerNode;
 		if (n != null) {
 			if (n === node) throw const UiException("No inner element");
-			n.style.top = "${top}px";
+			n.style.top = StringUtil.px(top);
 		}
 	}
 	/** Returns the spacing between the inner element and the border.

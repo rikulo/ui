@@ -62,6 +62,8 @@ class Test7 extends Activity {
 		RadioButton vert = new RadioButton("vertical radio");
 		_setBorder(vert);
 		group.appendChild(vert);
+
+		_addTextWithMaxWidth(view, 150);
 	}
 	void _addLogView(View view) {
 		View log = new View();
@@ -74,6 +76,7 @@ class Test7 extends Activity {
 		TextView text = new TextView(html: '<h2 style="margin:0">Log View</h2>');
 		_setBorder(text);
 		log.appendChild(text);
+
 		view.appendChild(log);
 	}
 	void _setBorder(View view) {
@@ -84,6 +87,12 @@ class Test7 extends Activity {
 		view.layout.width = "content";
 		view.profile.width = "flex";
 		view.profile.height = "content";
+	}
+	void _addTextWithMaxWidth(View view, int maxWd) {
+		TextView text = new TextView("This is limited by max-width:${maxWd}");
+		_setBorder(text);
+		text.profile.maxWidth = maxWd.toString();
+		view.appendChild(text);
 	}
 }
 

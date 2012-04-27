@@ -124,6 +124,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 			break;
 		}
 	}
+
 	/** Measures the width based on the view's content.
 	 * It is an utility for implementing a view's [View.measureWidth].
 	 * This method assumes the browser will resize the view automatically,
@@ -172,20 +173,49 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 			nodestyle.whiteSpace = orgval; //restore
 		}
 
-		if (autowidth && size.width > browser.size.width) { //TODO: use profile.maxWidth instead
-			orgval = nodestyle.width;
-			if (orgval === null) orgval = ""; //TODO: no need if Dart handles it
-			nodestyle.width = browser.size.width; //TODO: use profile.maxWidth
+		final AsInt parentInnerWidth =
+			() => view.parent !== null ? view.parent.innerWidth: browser.size.width;
+		final AsInt parentInnerHeight =
+			() => view.parent !== null ? view.parent.innerHeight: browser.size.height;
+
+		int limit = _amountOf(view.profile.maxWidth, parentInnerWidth);
+		if ((autowidth && size.width > browser.size.width)
+		|| (limit !== null && size.width > limit)) {
+			nodestyle.width = StringUtil.px(limit != null ? limit: browser.size.width);
 
 			size.width = qview.outerWidth;
 			size.height = qview.outerHeight;
+			//Note: we don't restore the width such that browser will really limit the width
+		}
 
-			nodestyle.width = orgval; //restore
+		if ((limit = _amountOf(view.profile.maxHeight, parentInnerHeight)) !== null
+		&& size.height > limit) {
+			size.height = limit;
+		}
+		if ((limit = _amountOf(view.profile.minWidth, parentInnerWidth)) !== null
+		&& size.width < limit) {
+			size.width = limit;
+		}
+		if ((limit = _amountOf(view.profile.minHeight, parentInnerHeight)) !== null
+		&& size.height < limit) {
+			size.height = limit;
 		}
 
 		mctx.widths[view] = size.width;
 		mctx.heights[view] = size.height;
 		return size;
+	}
+	static int _amountOf(String profile, AsInt parentInner) {
+		final LayoutAmountInfo ai = new LayoutAmountInfo(profile);
+		switch (ai.type) {
+		case LayoutAmountInfo.FIXED:
+			return ai.value;
+		case LayoutAmountInfo.FLEX:
+			return parentInner();
+		case LayoutAmountInfo.RATIO:
+			return (parentInner() * ai.value).round().toInt();
+		}
+		return null;
 	}
 
 	/** Wait until the given image is loaded.

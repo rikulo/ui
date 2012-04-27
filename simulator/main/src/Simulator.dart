@@ -40,17 +40,17 @@ class Simulator extends Activity {
 		_simSize = new Size(width, height);
 
 		CSSStyleDeclaration style = document.query("#v-main").style;
-		style.width = "${width}px";
-		style.height = "${height}px";
+		style.width = StringUtil.px(width);
+		style.height = StringUtil.px(height});
 	}
 	void _syncDashboardSize() {
 		int left = simulatedSize.width + 40;
 		Element dashNode = document.query("#v-dashboard");
 		CSSStyleDeclaration style = dashNode.style;
-		style.left = "${left}px";
+		style.left = StringUtil.px(left);
 		style.top = "0px";
-		style.width = "${window.innerWidth - left}px";
-		style.height = "${window.innerHeight}px";
+		style.width = StringUtil.px(window.innerWidth - left);
+		style.height = StringUtil.px(window.innerHeight);
 
 		_dashboard.width = rootView.width = new DomQuery(dashNode).innerWidth;
 		_dashboard.height = rootView.height = new DomQuery(dashNode).innerHeight;

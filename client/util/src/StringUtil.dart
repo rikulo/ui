@@ -195,4 +195,11 @@ class StringUtil {
 		} while ((v ~/= 37) >= 1);
 		return sb.toString();
 	}
+
+	/** Convert a number to a string appended with "px".
+	 * Notice that it returns an empty string if val is null.
+	 */
+	static String px(num val) {
+		return val !== null ? "${val}px": "";
+	}
 }

@@ -40,39 +40,55 @@ default ProfileDeclarationImpl {
 	String spacing;
 
 	/** The expected width of the associated view.
-	 * <p>Syntax: <code>width: #n | content | flex | flex #n;</code>
+	 * <p>Syntax: <code>width: #n | content | flex | flex #n | #n %;</code>
 	 * <p>Default: <code>content</code>.
 	 */
 	String width;
 	/** The expected width of the associated view.
-	 * <p>Syntax: <code>height: #n | content | flex | flex #n;</code>
+	 * <p>Syntax: <code>height: #n | content | flex | flex #n | #n %;</code>
 	 * <p>Default: <code>content</code>.
 	 */
 	String height;
 
 	/** The expected minimal allowed width of the associated view.
-	 * <p>Syntax: <code>min-width: #n | content | flex | flex #n;</code>
+	 * <p>Syntax: <code>min-width: #n | flex | #n %;</code>
 	 * <p>Default: no limitation.
-	 * <p>Not supported yet.
+	 * <p>Currently, it is supported only by [TextView], [Image] and their derives,
+	 * when the width is being measured (i.e., the width depends on content).
+	 * <p>Notice that, if, under your layout, the parent's width is decided by
+	 * the child, don't use flex or percentage at child's profile.
+	 * Otherwise, it will become zero.
 	 */
 	String minWidth;
 	/** The expected minmal allowed width of the associated view.
-	 * <p>Syntax: <code>min-height: #n | content | flex | flex #n;</code>
+	 * <p>Syntax: <code>min-height: #n | flex | #n %;</code>
 	 * <p>Default: no limitation.
-	 * <p>Not supported yet.
+	 * <p>Currently, it is supported only by [TextView], [Image] and their derives,
+	 * when the height is being measured (i.e., the height depends on content).
+	 * <p>Notice that, if, under your layout, the parent's width is decided by
+	 * the child, don't use flex or percentage at child's profile.
+	 * Otherwise, it will become zero.
 	 */
 	String minHeight;
 
 	/** The expected maximal allowed width of the associated view.
-	 * <p>Syntax: <code>max-width: #n | content | flex | flex #n;</code>
+	 * <p>Syntax: <code>max-width: #n | flex | #n %;</code>
 	 * <p>Default: no limitation.
-	 * <p>Not supported yet.
+	 * <p>Currently, it is supported only by [TextView], [Image] and their derives,
+	 * when the width is being measured (i.e., the width depends on content).
+	 * <p>Notice that, if, under your layout, the parent's width is decided by
+	 * the child, don't use flex or percentage at child's profile.
+	 * Otherwise, it will become zero.
 	 */
 	String maxWidth;
 	/** The expected maximal allowed width of the associated view.
-	 * <p>Syntax: <code>max-height: #n | content | flex | flex #n;</code>
+	 * <p>Syntax: <code>max-height: #n | flex | #n %;</code>
 	 * <p>Default: no limitation.
-	 * <p>Not supported yet.
+	 * <p>Currently, it is supported only by [TextView], [Image] and their derives,
+	 * when the height is being measured (i.e., the height depends on content).
+	 * <p>Notice that, if, under your layout, the parent's width is decided by
+	 * the child, don't use flex or percentage at child's profile.
+	 * Otherwise, it will become zero.
 	 */
 	String maxHeight;
 }

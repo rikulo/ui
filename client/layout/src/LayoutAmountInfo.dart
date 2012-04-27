@@ -16,6 +16,8 @@ class LayoutAmountInfo {
 	int type;
 	num value;
 
+	/** Constructor.
+	 */
 	LayoutAmountInfo(String profile) {
 		if (profile == null || profile.isEmpty()) {
 			type = NONE;
