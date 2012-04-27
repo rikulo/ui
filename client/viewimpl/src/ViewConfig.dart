@@ -16,19 +16,28 @@ class ViewConfig {
 	 */
 	String uuidPrefix = "v_";
 
+	/** Resets the states.
+	 * It is used only by the simulator, such that [uuidPrefix] for an application
+	 * won't be affected by whether there is a simulator.
+	 * The application shall not invoke this method.
+	 */
+	void reset() {
+		document.body.$dom_removeAttribute(_PREFIX_COUNT);
+	}
+
 	ViewConfig() {
 		final Element body = document.body;
 		if (body !== null) {
-			String sval = body.$dom_getAttribute(_KEY_COUNT);
+			String sval = body.$dom_getAttribute(_PREFIX_COUNT);
 			if (sval !== null) {
 				final int val = Math.parseInt(sval);
 				uuidPrefix = "${StringUtil.encodeId(val, 'v')}_";
-				body.$dom_setAttribute(_KEY_COUNT, (val + 1).toString());
+				body.$dom_setAttribute(_PREFIX_COUNT, (val + 1).toString());
 			} else {
-				body.$dom_setAttribute(_KEY_COUNT, "1");
+				body.$dom_setAttribute(_PREFIX_COUNT, "1");
 			}
 		}
 	}
-	static final String _KEY_COUNT = "data-rikuloAppCount";
+	static final String _PREFIX_COUNT = "data-rikuloPrefixCount";
 }
 ViewConfig viewConfig;

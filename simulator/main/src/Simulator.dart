@@ -15,6 +15,9 @@ class Simulator extends Activity {
 		browser.size.width = window.innerWidth;
 		browser.size.height = window.innerHeight;
 
+		viewConfig.reset();
+		viewConfig.uuidPrefix = "_v_";
+
 		//TODO: the simulated size shall be based on what the user chose
 		_setSimScreenSize(320, 480);
 	}
