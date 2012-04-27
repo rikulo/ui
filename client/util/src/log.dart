@@ -7,8 +7,8 @@
  */
 void log(var msg) {
 	if (_log === null) {
-			//note: browser.xxx and "#v-dashboard .v-dashbord-log" might not be ready yet
-		_log = document.query("#v-dashboard") !== null ? new _SimuLog(): new _ConsoleLog();
+		_log = document.query("#v-simulator") !== null ? new _SimuLog(): new _ConsoleLog();
+			//don't use browser.inSimulator since it might be ready yet
 	}
 
 	_log.log(msg);
@@ -45,6 +45,7 @@ class _SimuLog extends _ConsoleLog {
 	Element _node;
 
 	void _print(String msg) {
+		//TODO: send to simulator (rather than handling here)
 		if (_node === null) {
 			_node = document.query("#v-dashboard .v-dashboard-log");
 			if (_node === null) { //not ready yet
