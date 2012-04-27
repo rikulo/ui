@@ -6,7 +6,7 @@
  * The linear layout.
  */
 class LinearLayout implements Layout {
-	static _LinearLayout _getRealLayout(view) //horizontal is default
+	static _RealLinearLayout _getRealLayout(view) //horizontal is default
 	=> view.layout.orient != "vertical" ? new _HLayout(): new _VLayout();
 
 	int measureWidth(MeasureContext mctx, View view) {
@@ -42,14 +42,14 @@ class LinearLayout implements Layout {
 
 	//Utilities//
 	static final int DEFAULT_SPACING = 2;
-	static _AmountInfo getDefaultAmountInfo(String info) {
-		final _AmountInfo amt = new _AmountInfo(info);
-		if (amt.type == _AmountInfo.NONE)
-			amt.type = _AmountInfo.CONTENT;
+	static LayoutAmountInfo getDefaultAmountInfo(String info) {
+		final LayoutAmountInfo amt = new LayoutAmountInfo(info);
+		if (amt.type == LayoutAmountInfo.NONE)
+			amt.type = LayoutAmountInfo.CONTENT;
 		return amt;
 	}
 }
-interface _LinearLayout {
+interface _RealLinearLayout {
 	int measureWidth(MeasureContext mctx, View view);
 	int measureHeight(MeasureContext mctx, View view);
 	void layout(MeasureContext mctx, View view, List<View> children);

@@ -75,22 +75,22 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	 * <p>[defaultWidth] is used if the profile's width is not specified. Ignored if null.
 	 */
 	void setWidthByProfile(MeasureContext mctx, View view, AsInt width, [AsInt defaultWidth]) {
-		final _AmountInfo amt = new _AmountInfo(view.profile.width);
+		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.width);
 		switch (amt.type) {
-		case _AmountInfo.NONE:
+		case LayoutAmountInfo.NONE:
 			if (defaultWidth !== null)
 				view.width = defaultWidth();
 			break;
-		case _AmountInfo.FIXED:
+		case LayoutAmountInfo.FIXED:
 			view.width = amt.value;
 			break;
-		case _AmountInfo.FLEX:
+		case LayoutAmountInfo.FLEX:
 			view.width = width();
 			break;
-		case _AmountInfo.RATIO:
+		case LayoutAmountInfo.RATIO:
 			view.width = (width() * amt.value).round().toInt();
 			break;
-		case _AmountInfo.CONTENT:
+		case LayoutAmountInfo.CONTENT:
 			final int wd = view.measureWidth(mctx);
 			if (wd != null)
 				view.width = wd;
@@ -102,22 +102,22 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	 * <p>[defaultHeight] is used if the profile's height is not specified. Ignored if null.
 	 */
 	void setHeightByProfile(MeasureContext mctx, View view, AsInt height, [AsInt defaultHeight]) {
-		final _AmountInfo amt = new _AmountInfo(view.profile.height);
+		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.height);
 		switch (amt.type) {
-		case _AmountInfo.NONE:
+		case LayoutAmountInfo.NONE:
 			if (defaultHeight !== null)
 				view.height = defaultHeight();
 			break;
-		case _AmountInfo.FIXED:
+		case LayoutAmountInfo.FIXED:
 			view.height = amt.value;
 			break;
-		case _AmountInfo.FLEX:
+		case LayoutAmountInfo.FLEX:
 			view.height = height();
 			break;
-		case _AmountInfo.RATIO:
+		case LayoutAmountInfo.RATIO:
 			view.height = (height() * amt.value).round().toInt();
 			break;
-		case _AmountInfo.CONTENT:
+		case LayoutAmountInfo.CONTENT:
 			final int hgh = view.measureHeight(mctx);
 			if (hgh != null)
 				view.height = hgh;

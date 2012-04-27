@@ -3,10 +3,10 @@
 // Author: tomyeh
 
 /**
- * The amount information.
+ * The dimension information specified in layout and profile.
  * <p>Format: <code>#n | content | flex | flex #n | #n %</code>
  */
-class _AmountInfo {
+class LayoutAmountInfo {
 	static int NONE = 0;
 	static int FIXED = 1;
 	static int FLEX = 2;
@@ -16,7 +16,7 @@ class _AmountInfo {
 	int type;
 	num value;
 
-	_AmountInfo(String profile) {
+	LayoutAmountInfo(String profile) {
 		if (profile == null || profile.isEmpty()) {
 			type = NONE;
 		} else if (profile == "content") {

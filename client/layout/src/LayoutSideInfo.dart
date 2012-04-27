@@ -3,15 +3,15 @@
 // Author: tomyeh
 
 /**
- * The side information.
+ * The side information specified in layout.
  * <p>Format: <code>#n1 [#n2 [#n3 #n4]]</code>.
  */
-class _SideInfo {
+class LayoutSideInfo {
 	int top, bottom, left, right;
 
 	static RegExp _reWord = const RegExp(@"(\w+)");
 
-	_SideInfo(String profile, int defaultValue, [_SideInfo defaultInfo]) {
+	LayoutSideInfo(String profile, int defaultValue, [LayoutSideInfo defaultInfo]) {
 		if (profile != null && !profile.isEmpty()) {
 			List<int> wds = [];
 			for (final Match m in _reWord.allMatches(profile)) {

@@ -17,5 +17,5 @@
 #source("src/_HLayout.dart");
 #source("src/_VLayout.dart");
 #source("src/AnchorRelation.dart");
-#source("src/_AmountInfo.dart");
-#source("src/_SideInfo.dart");
+#source("src/LayoutAmountInfo.dart");
+#source("src/LayoutSideInfo.dart");

@@ -5,26 +5,26 @@
 /**
  * Horizontal linear layout.
  */
-class _HLayout implements _LinearLayout {
+class _HLayout implements _RealLinearLayout {
 	int measureWidth(MeasureContext mctx, View view) {
-		final _AmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.width);
+		final LayoutAmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.width);
 		final int maxWd = view.parent !== null ? view.parent.innerWidth: browser.size.width;
-		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
+		final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		int width = 0, prevSpacingRight = 0;
 		for (final View child in view.children) {
 			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
 				continue; //ignore anchored
 
 			//add spacing to width
-			final _SideInfo si = new _SideInfo(child.profile.spacing, 0, spcinf);
+			final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
 			if ((width += prevSpacingRight + si.left) >= maxWd)
 				return maxWd;
 			prevSpacingRight = si.right;
 
-			final _AmountInfo amt = new _AmountInfo(child.profile.width);
-			if (amt.type == _AmountInfo.NONE) {
+			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.width);
+			if (amt.type == LayoutAmountInfo.NONE) {
 				if (child.width != null)  {
-					amt.type = _AmountInfo.FIXED;
+					amt.type = LayoutAmountInfo.FIXED;
 					amt.value = child.width;
 				} else {
 					amt.type = amtDefault.type;
@@ -33,11 +33,11 @@ class _HLayout implements _LinearLayout {
 			}
 
 			switch (amt.type) {
-			case _AmountInfo.FIXED:
+			case LayoutAmountInfo.FIXED:
 				if ((width += amt.value) >= maxWd)
 					return maxWd;
 				break;
-			case _AmountInfo.CONTENT:
+			case LayoutAmountInfo.CONTENT:
 				final int wd = child.measureWidth(mctx);
 				if ((width += wd != null ? wd: child.outerWidth) >= maxWd)
 					return maxWd;
@@ -51,9 +51,9 @@ class _HLayout implements _LinearLayout {
 		return width >= maxWd ? maxWd: width;
 	}
 	int measureHeight(MeasureContext mctx, View view) {
-		final _AmountInfo amtDefault =
+		final LayoutAmountInfo amtDefault =
 			LinearLayout.getDefaultAmountInfo(view.layout.height);
-		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
+		final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		final int borderWd = new DomQuery(view.node).borderWidth * 2;
 		int height;
 		for (final View child in view.children) {
@@ -61,12 +61,12 @@ class _HLayout implements _LinearLayout {
 				continue; //ignore anchored
 
 			//add spacing to width
-			final _SideInfo si = new _SideInfo(child.profile.spacing, 0, spcinf);
+			final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
 			int hgh = si.top + si.bottom + borderWd;
-			final _AmountInfo amt = new _AmountInfo(child.profile.height);
-			if (amt.type == _AmountInfo.NONE) {
+			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.height);
+			if (amt.type == LayoutAmountInfo.NONE) {
 				if (child.height != null)  {
-					amt.type = _AmountInfo.FIXED;
+					amt.type = LayoutAmountInfo.FIXED;
 					amt.value = child.height;
 				} else {
 					amt.type = amtDefault.type;
@@ -75,10 +75,10 @@ class _HLayout implements _LinearLayout {
 			}
 
 			switch (amt.type) {
-			case _AmountInfo.FIXED:
+			case LayoutAmountInfo.FIXED:
 				hgh += amt.value;
 				break;
-			case _AmountInfo.CONTENT:
+			case LayoutAmountInfo.CONTENT:
 				final int h = child.measureHeight(mctx);
 				hgh += h != null ? h: child.outerHeight;
 				break;
@@ -95,8 +95,8 @@ class _HLayout implements _LinearLayout {
 	void layout(MeasureContext mctx, View view, List<View> children) {
 		//1) size
 		final AsInt innerWidth = () => view.innerWidth;
-		final _SideInfo spcinf = new _SideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
-		final Map<View, _SideInfo> childspcinfs = new Map();
+		final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
+		final Map<View, LayoutSideInfo> childspcinfs = new Map();
 		final List<View> flexViews = new List();
 		final List<int> flexs = new List();
 		int nflex = 0, assigned = 0, prevSpacingRight = 0;
@@ -107,31 +107,31 @@ class _HLayout implements _LinearLayout {
 				continue;
 			}
 
-			final _SideInfo si = new _SideInfo(child.profile.spacing, 0, spcinf);
+			final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
 			childspcinfs[child] = si;
 			assigned += prevSpacingRight + si.left;
 			prevSpacingRight = si.right;
 
-			final _AmountInfo amt = new _AmountInfo(child.profile.width);
+			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.width);
 			switch (amt.type) {
-			case _AmountInfo.NONE:
+			case LayoutAmountInfo.NONE:
 				if (child.width != null)
 					assigned += child.width;
 				else
 					assigned += child.outerWidth;
 				break;
-			case _AmountInfo.FIXED:
+			case LayoutAmountInfo.FIXED:
 				assigned += child.width = amt.value;
 				break;
-			case _AmountInfo.FLEX:
+			case LayoutAmountInfo.FLEX:
 				nflex += amt.value;
 				flexs.add(amt.value);
 				flexViews.add(child);
 				break;
-			case _AmountInfo.RATIO:
+			case LayoutAmountInfo.RATIO:
 				assigned += child.width = (innerWidth() * amt.value).round().toInt();
 				break;
-			case _AmountInfo.CONTENT:
+			case LayoutAmountInfo.CONTENT:
 				final int wd = child.measureWidth(mctx);
 				if (wd != null)
 					assigned += child.width = wd;
@@ -166,7 +166,7 @@ class _HLayout implements _LinearLayout {
 			if (!view.shallLayout_(child))
 				continue;
 
-			final _SideInfo si = childspcinfs[child];
+			final LayoutSideInfo si = childspcinfs[child];
 			child.left = assigned += prevSpacingRight + si.left;
 			assigned += child.outerWidth;
 			prevSpacingRight = si.right;
