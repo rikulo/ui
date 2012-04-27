@@ -5,7 +5,7 @@
 #import("dart:coreimpl");
 #import("dart:html");
 
-#source("src/Strings.dart");
+#source("src/StringUtil.dart");
 #source("src/AbstractList.dart");
 #source("src/RunOnceQueue.dart");
 #source("src/Offset.dart");

@@ -22,7 +22,7 @@ class ViewConfig {
 			String sval = body.$dom_getAttribute(_KEY_COUNT);
 			if (sval !== null) {
 				final int val = Math.parseInt(sval);
-				uuidPrefix = "v${val}_";
+				uuidPrefix = "${StringUtil.encodeId(val, 'v')}_";
 				body.$dom_setAttribute(_KEY_COUNT, (val + 1).toString());
 			} else {
 				body.$dom_setAttribute(_KEY_COUNT, "1");
@@ -31,9 +31,4 @@ class ViewConfig {
 	}
 	static final String _KEY_COUNT = "data-rikuloAppCount";
 }
-ViewConfig get viewConfig() {
-	if (_cachedVConfig === null)
-		_cachedVConfig = new ViewConfig();
-	return _cachedVConfig;
-}
-ViewConfig _cachedVConfig;
+ViewConfig viewConfig;

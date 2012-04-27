@@ -101,10 +101,11 @@ class Browser {
 			version = 1.0;
 		}
 
-		final Element simNode = document.query("#v-main");
-		inSimulator = simNode !== null;
-		final DomQuery simQuery = new DomQuery(inSimulator ? simNode: window);
+		final Element caveNode = document.query("#v-main");
+		final DomQuery simQuery = new DomQuery(caveNode !== null ? caveNode: window);
 		size = new Size(simQuery.innerWidth, simQuery.innerHeight);
+
+		inSimulator = caveNode !== null && document.query("#v-simulator") !== null;
 	}
 	static double _versionOf(String version, [String separator='.']) {
 		int j = version.indexOf(separator);
