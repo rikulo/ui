@@ -41,7 +41,7 @@ class Simulator extends Activity {
 
 		CSSStyleDeclaration style = document.query("#v-main").style;
 		style.width = StringUtil.px(width);
-		style.height = StringUtil.px(height});
+		style.height = StringUtil.px(height);
 	}
 	void _syncDashboardSize() {
 		int left = simulatedSize.width + 40;
