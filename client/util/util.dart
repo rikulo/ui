@@ -5,6 +5,7 @@
 #import("dart:coreimpl");
 #import("dart:html");
 
+#source("src/log.dart");
 #source("src/StringUtil.dart");
 #source("src/AbstractList.dart");
 #source("src/RunOnceQueue.dart");

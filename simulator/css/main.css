@@ -29,9 +29,13 @@ body {
 	box-sizing: border-box;
 	position: absolute;
 	border-left: 1px solid #886;
+	background-color: #ffe;
 }
 
 .v-dashboard-log {
 	border: 1px solid #332;
 	background-color: #eec;
+	overflow: auto;
+	padding: 3px;
+	white-space: pre-wrap;
 }
