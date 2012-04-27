@@ -19,9 +19,9 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 
 	/** Adds the layout for the given name.
 	 */
-	Layout addLayout(String name, Layout layout) {
+	Layout addLayout(String name, Layout clayout) {
 		final Layout old = _layouts[name];
-		_layouts[name] = layout;
+		_layouts[name] = clayout;
 		return old;
 	}
 	/** Removes the layout of the given name if any.

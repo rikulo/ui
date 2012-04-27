@@ -23,6 +23,6 @@ class MeasureContext {
 	 */
 	final Map<View, int> heights;
 
-	MeasureContext(): widths = {}, heights = {} {
+	MeasureContext(): widths = new Map(), heights = new Map() {
 	}
 }
