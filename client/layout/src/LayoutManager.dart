@@ -6,87 +6,42 @@
  * The layout mananger that manages the layout controllers ([Layout]).
  * There is exactly one layout manager per application.
  */
-interface LayoutManager extends Layout default _LayoutManager {
-	LayoutManager();
-
-	/** Adds the layout for the given name.
-	 */
-	Layout addLayout(String name, Layout layout);
-	/** Removes the layout of the given name if any.
-	 */
-	Layout removeLayout(String name);
-	/** Returns the layout of the given name, or null if not found.
-	 */
-	Layout getLayout(String name);
-
-	/** Adds the given view to the invalidated queue.
-	 */
-	void queue(View view);
-	/** Redo the layout of the given view, if not null, or
-	 * all queued views, if the give view is null.
-	 */
-	void flush([View view]);
-
-	/** Set the width of the given view based on its profile.
-	 * It is an utility for implementing a layout.
-	 * <p>[defaultWidth] is used if the profile's width is not specified. Ignored if null.
-	 */
-	void setWidthByProfile(MeasureContext mctx, View view, AsInt width, [AsInt defaultWidth]);
-	/** Set the height of the given view based on its profile.
-	 * It is an utility for implementing a layout.
-	 * <p>[defaultHeight] is used if the profile's height is not specified. Ignored if null.
-	 */
-	void setHeightByProfile(MeasureContext mctx, View view, AsInt height, [AsInt defaultHeight]);
-	/** Measures the width based on the view's content.
-	 * It is an utility for implementing a view's [View.measureWidth].
-	 * This method assumes the browser will resize the view automatically,
-	 * so it is applied only to a leaf view with some content, such as [TextView]
-	 * and [Button].
-	 * <p>[autowidth] specifies whether to adjust the width automatically.
-	 */
-	int measureWidthByContent(MeasureContext mctx, View view, bool autowidth);
-	/** Measures the height based on the view's content.
-	 * It is an utility for implementing a view's [View.measureHeight].
-	 * This method assumes the browser will resize the view automatically,
-	 * so it is applied only to a leaf view with some content, such as [TextView]
-	 * and [Button].
-	 * <p>[autowidth] specifies whether to adjust the width automatically.
-	 */
-	int measureHeightByContent(MeasureContext mctx, View view, bool autowidth);
-
-	/** Wait until the given image is loaded.
-	 * If the width and height of the image is not known in advance, this method
-	 * shall be called to make the layout manager wait until the image is loaded.
-	 * <p>Currently, [Image] will invoke this method if the width or height of
-	 * the image is not specified.
-	 */
-	void waitImageLoaded(String imgURI);
-}
-
-class _LayoutManager extends RunOnceViewManager implements LayoutManager {
+class LayoutManager extends RunOnceViewManager implements Layout {
 	final Map<String, Layout> _layouts;
 	final Set<String> _imgWaits;
 
-	_LayoutManager(): super(true), _layouts = {}, _imgWaits = new Set() {
+	LayoutManager(): super(true), _layouts = {}, _imgWaits = new Set() {
+		addLayout("linear", new LinearLayout());
+		FreeLayout freeLayout = new FreeLayout();
+		addLayout("none", freeLayout);
+		addLayout("", freeLayout);
 	}
 
-	Layout addLayout(String name, Layout clayout) {
+	/** Adds the layout for the given name.
+	 */
+	Layout addLayout(String name, Layout layout) {
 		final Layout old = _layouts[name];
-		_layouts[name] = clayout;
+		_layouts[name] = layout;
 		return old;
 	}
+	/** Removes the layout of the given name if any.
+	 */
 	Layout removeLayout(String name) {
 		return _layouts.remove(name);
 	}
+	/** Returns the layout of the given name, or null if not found.
+	 */
 	Layout getLayout(String name) {
 		return _layouts[name];
 	}
 
+	//@Override Layout
 	int measureWidth(MeasureContext mctx, View view)
 	=> _layoutOfView(view).measureWidth(mctx, view);
+	//@Override Layout
 	int measureHeight(MeasureContext mctx, View view)
 	=> _layoutOfView(view).measureHeight(mctx, view);
-
+	//@Override Layout
 	void layout(MeasureContext mctx, View view) {
 		if (mctx === null) {
 			if (_imgWaits.isEmpty())
@@ -106,6 +61,7 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		return clayout;
 	}
 
+	//@Override RunOnceViewManager
 	void handle_(View view) {
 		_doLayout(new MeasureContext(), view);
 	}
@@ -114,6 +70,10 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		view.onLayout();
 	}
 
+	/** Set the width of the given view based on its profile.
+	 * It is an utility for implementing a layout.
+	 * <p>[defaultWidth] is used if the profile's width is not specified. Ignored if null.
+	 */
 	void setWidthByProfile(MeasureContext mctx, View view, AsInt width, [AsInt defaultWidth]) {
 		final _AmountInfo amt = new _AmountInfo(view.profile.width);
 		switch (amt.type) {
@@ -137,6 +97,10 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 			break;
 		}
 	}
+	/** Set the height of the given view based on its profile.
+	 * It is an utility for implementing a layout.
+	 * <p>[defaultHeight] is used if the profile's height is not specified. Ignored if null.
+	 */
 	void setHeightByProfile(MeasureContext mctx, View view, AsInt height, [AsInt defaultHeight]) {
 		final _AmountInfo amt = new _AmountInfo(view.profile.height);
 		switch (amt.type) {
@@ -160,11 +124,25 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 			break;
 		}
 	}
+	/** Measures the width based on the view's content.
+	 * It is an utility for implementing a view's [View.measureWidth].
+	 * This method assumes the browser will resize the view automatically,
+	 * so it is applied only to a leaf view with some content, such as [TextView]
+	 * and [Button].
+	 * <p>[autowidth] specifies whether to adjust the width automatically.
+	 */
 	int measureWidthByContent(MeasureContext mctx, View view, bool autowidth) {
 		int wd = mctx.widths[view];
 		return wd !== null || mctx.widths.containsKey(view) ? wd:
 			_measureByContent(mctx, view, autowidth).width;
 	}
+	/** Measures the height based on the view's content.
+	 * It is an utility for implementing a view's [View.measureHeight].
+	 * This method assumes the browser will resize the view automatically,
+	 * so it is applied only to a leaf view with some content, such as [TextView]
+	 * and [Button].
+	 * <p>[autowidth] specifies whether to adjust the width automatically.
+	 */
 	int measureHeightByContent(MeasureContext mctx, View view, bool autowidth) {
 		int hgh = mctx.heights[view];
 		return hgh !== null || mctx.heights.containsKey(view) ? hgh:
@@ -209,13 +187,13 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 		mctx.heights[view] = size.height;
 		return size;
 	}
-	static String get _posForMeasure() {
-		if (_cachedP4M === null)
-			_cachedP4M = browser.ios && browser.iosVersion < 5 ? "static": "fixed";
-		return _cachedP4M;
-	}
-	static String _cachedP4M;
 
+	/** Wait until the given image is loaded.
+	 * If the width and height of the image is not known in advance, this method
+	 * shall be called to make the layout manager wait until the image is loaded.
+	 * <p>Currently, [Image] will invoke this method if the width or height of
+	 * the image is not specified.
+	 */
 	void waitImageLoaded(String imgURI) {
 		if (!_imgWaits.contains(imgURI)) {
 			_imgWaits.add(imgURI);
@@ -235,15 +213,6 @@ class _LayoutManager extends RunOnceViewManager implements LayoutManager {
 	}
 }
 
-/** The layout manager used in [View]. */
-LayoutManager get layoutManager() {
-	if (_cacheLayoutManager === null) {
-		_cacheLayoutManager = new LayoutManager();
-		_cacheLayoutManager.addLayout("linear", new LinearLayout());
-		FreeLayout freeLayout = new FreeLayout();
-		_cacheLayoutManager.addLayout("none", freeLayout);
-		_cacheLayoutManager.addLayout("", freeLayout);
-	}
-	return _cacheLayoutManager;
-}
-LayoutManager _cacheLayoutManager;
+/** The layout manager.
+ */
+LayoutManager layoutManager;

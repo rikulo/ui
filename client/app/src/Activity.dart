@@ -15,6 +15,8 @@ class Activity {
 			browser = new Browser();
 		if (viewConfig === null)
 			viewConfig = new ViewConfig();
+		if (layoutManager == null)
+			layoutManager = new LayoutManager();
 	}
 
 	/** Returns the root view.
