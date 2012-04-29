@@ -24,10 +24,10 @@ class SimulatorMessage extends HashMapImplementation<String, Object> {
 MessageQueue<SimulatorMessage> get simulatorMessageQueue() {
 	if (_cachedSMQ == null) {
 		_cachedSMQ = new MessageQueue();
-		_cachedSBMB = new BrowserMessageBridge();
-		_cachedSBMB.subscribe(_cachedSMQ);
+		_cachedIAB = new InterApplicationBridge("simulator");
+		_cachedIAB.connect(_cachedSMQ);
 	}
 	return _cachedSMQ;
 }
 MessageQueue<SimulatorMessage> _cachedSMQ;
-BrowserMessageBridge<SimulatorMessage> _cachedSBMB;
+InterApplicationBridge<SimulatorMessage> _cachedIAB;

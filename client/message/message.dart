@@ -11,4 +11,4 @@
 #import("../util/util.dart");
 
 #source("src/MessageQueue.dart");
-#source("src/BrowserMessageBridge.dart");
+#source("src/InterApplicationBridge.dart");

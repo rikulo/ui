@@ -11,10 +11,10 @@ class DomQuery {
 
 	factory DomQuery(var v) {
 		v = v is View ? v.node: v is String ? document.query(v): v;
-		return v is Window ? new _WindowQuery._from(v): new DomQuery._from(v);
+		return v is Window ? new _WindowQuery._with(v): new DomQuery._with(v);
 	}
 
-	DomQuery._from(this.node) {
+	DomQuery._with(this.node) {
 	}
 
 	/** Returns the inner width of the given element, including padding
@@ -90,7 +90,7 @@ class DomQuery {
 	static final RegExp _reNum = const RegExp(@"([0-9]*)");
 }
 class _WindowQuery extends DomQuery {
-	_WindowQuery._from(var v): super._from(v) {}
+	_WindowQuery._with(var v): super._with(v) {}
 
 	//@Override
 	int get innerWidth() => node.innerWidth;

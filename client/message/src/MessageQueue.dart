@@ -31,7 +31,7 @@ interface MessageQueue<Message> default _MessageQueueImpl<Message> {
 	 * This method returns true if the listener was added.
 	 */
 	bool remove(MessageListener listener, [MessageFilter filter]);
-	/** Sends a message to all subscribers in this message queue.
+	/** Sends a message to all listeners in this message queue.
 	 */
 	void send(Message message);
 }
