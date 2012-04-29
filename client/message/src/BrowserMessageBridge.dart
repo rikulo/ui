@@ -18,6 +18,7 @@ class BrowserMessageBridge<Message> {
 	final List<_MQueueInfo<Message>> _sends;
 	EventListener _evtListener;
 	MessageListener _msgListener;
+	bool _ignoreMessage = false;
 
 	/** To avoid conflicts with other cross-window messages. */
 	static final String _BMB_ID = "rikulo.BMB";
@@ -30,19 +31,26 @@ class BrowserMessageBridge<Message> {
 				final String uuid = data["uuid"];
 				final message = data["message"];
 				for (final _MQueueInfo<Message> info in _sends) {
-					if (info.queue.uuid != uuid //skip the sending queue to avoid data loop
+					if (info.queue.uuid != uuid //skip the sending queue to avoid dead loop
 					&& (info.origin == "*" || info.origin == origin)) {
-//						info.queue.send(message);
+							_ignoreMessage = true; //avoid dead loop
+							try {
+								info.queue.send(message);
+							} finally {
+								_ignoreMessage = false;
+							}
 					}
 				}
 			}
 		};
 		_msgListener = (message) {
-			for (final _MQueueInfo<Message> info in _receives) {
-				window.postMessage(JSON.stringify({
-					"uuid": info.queue.uuid,
-					"bqid": _BMB_ID,
-					"message": message}), info.origin);
+			if (!_ignoreMessage) {
+				for (final _MQueueInfo<Message> info in _receives) {
+					window.postMessage(JSON.stringify({
+						"uuid": info.queue.uuid,
+						"bqid": _BMB_ID,
+						"message": message}), info.origin);
+				}
 			}
 		};
 	}

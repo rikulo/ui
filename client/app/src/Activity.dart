@@ -11,14 +11,8 @@ class Activity {
 	View _rootView;
 
 	Activity() {
-		if (browser === null)
-			browser = new Browser();
 		if (application == null)
-			application = new Application();
-		if (viewConfig === null)
-			viewConfig = new ViewConfig();
-		if (layoutManager == null)
-			layoutManager = new LayoutManager();
+			new Application();
 	}
 
 	/** Returns the root view.

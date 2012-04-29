@@ -6,6 +6,7 @@
 
 #import("dart:html");
 
+#import("../../client/util/util.dart");
 #import("../../client/simulator-comm/simulator-comm.dart");
 
 #source("src/SimulatorService.dart");

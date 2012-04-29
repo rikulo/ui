@@ -15,6 +15,7 @@ class Simulator extends Activity {
 	SimulatorService service;
 
 	Simulator() {
+		application.name = "Simulator";
 		simulator = this;
 		service = new SimulatorService();
 

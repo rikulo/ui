@@ -14,6 +14,14 @@ class Application {
 
 	Application([String name=""]) {
 		this.name = name;
+		application = this;
+
+		if (browser === null)
+			browser = new Browser();
+		if (viewConfig === null)
+			viewConfig = new ViewConfig();
+		if (layoutManager == null)
+			layoutManager = new LayoutManager();
 	}
 
 	/** Returns UUID representing this application.
@@ -41,7 +49,7 @@ class Application {
 /** The application.
  * If you extend [Application], you can initialize it as follows:<br/>
  * <code>application = new MyApp()</code>
- * <p>It is suggested to initialize it before instantiates
- * you own application.
+ * <p>Notice that you must initialize your custom appliction, before instantiating
+ * your first activity.
  */
 Application application; //initialized by Activity
