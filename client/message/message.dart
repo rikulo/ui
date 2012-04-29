@@ -5,5 +5,10 @@
 #library("rikulo:message");
 
 #import("dart:html");
+#import("dart:json");
+
+#import("../app/app.dart");
+#import("../util/util.dart");
 
 #source("src/MessageQueue.dart");
+#source("src/BrowserMessageBridge.dart");

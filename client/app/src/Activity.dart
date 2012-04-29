@@ -13,6 +13,8 @@ class Activity {
 	Activity() {
 		if (browser === null)
 			browser = new Browser();
+		if (application == null)
+			application = new Application();
 		if (viewConfig === null)
 			viewConfig = new ViewConfig();
 		if (layoutManager == null)

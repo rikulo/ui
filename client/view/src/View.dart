@@ -75,10 +75,9 @@ class View implements EventTarget {
 	 */
 	String get uuid() {
 		if (_uuid === null)
-			_uuid = _nextUuid();
+			_uuid = StringUtil.encodeId(_uuidNext++, viewConfig.uuidPrefix);
 		return _uuid;
 	}
-	static String _nextUuid() => StringUtil.encodeId(_uuidNext++, viewConfig.uuidPrefix);
 	static int _uuidNext = 0;
 
 	/** Returns the ID of this view, or an empty string if not assigned.

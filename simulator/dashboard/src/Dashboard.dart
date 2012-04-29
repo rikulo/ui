@@ -33,13 +33,13 @@ class Dashboard extends View {
 		group.appendChild(vert);
 	}
 	void _addLogView(View view) {
-		View log = new View();
-		log.layout.type = "linear";
-		log.layout.orient = "vertical";
-		log.layout.spacing = "0";
-		log.profile.width = log.profile.height = "flex";
-		log.classes.add("v-dashboard-log");
-		view.appendChild(log);
+		View logView = new View();
+		logView.layout.type = "linear";
+		logView.layout.orient = "vertical";
+		logView.layout.spacing = "0";
+		logView.profile.width = logView.profile.height = "flex";
+		logView.classes.add("v-dashboard-log");
+		view.appendChild(logView);
 	}
 	void _setHLayout(View view) {
 		view.layout.type = "linear";

@@ -5,6 +5,8 @@
 #import("dart:coreimpl");
 #import("dart:html");
 
+#import("../simulator-comm/simulator-comm.dart");
+
 #source("src/log.dart");
 #source("src/StringUtil.dart");
 #source("src/AbstractList.dart");

@@ -55,6 +55,18 @@ class Browser {
 	Browser() {
 		_initBrowserInfo();
 	}
+	/** Returns the URL of this page.
+	 * For example, "http://www.yourserver.com" and "file://".
+	 */
+	String get url() {
+		final Location l = window.location;
+		final StringBuffer sb = new StringBuffer();
+		sb.add(l.protocol).add("//").add(l.hostname);
+		if (l.port != "80" && !l.port.isEmpty())
+			sb.add(':').add(l.port);
+		return sb.toString();
+	}
+
 	String toString() {
 		return "$name(v$version, $size)";
 	}

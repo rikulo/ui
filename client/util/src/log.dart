@@ -45,15 +45,7 @@ class _SimuLog extends _ConsoleLog {
 	Element _node;
 
 	void _print(String msg) {
-		//TODO: send to simulator (rather than handling here)
-		if (_node === null) {
-			_node = document.query("#v-dashboard .v-dashboard-log");
-			if (_node === null) { //not ready yet
-				super._print(msg);
-				return;
-			}
-		}
-		_node.insertAdjacentHTML("beforeEnd", StringUtil.encodeXML(msg));
+		simulatorMessageQueue.send(new SimulatorMessage("log", msg));
 	}
 }
 _ConsoleLog _log;

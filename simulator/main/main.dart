@@ -11,5 +11,6 @@
 #import("../../client/viewimpl/viewimpl.dart");
 
 #import("../dashboard/dashboard.dart");
+#import("../service/service.dart");
 
 #source("src/Simulator.dart"); //the main program

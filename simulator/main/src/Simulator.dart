@@ -7,31 +7,34 @@
  */
 class Simulator extends Activity {
 	Size _simSize;
-	Dashboard _dashboard;
+	/** The dashboard. */
+	Dashboard dashboard;
+	/** The service for handling the communication between the simulator
+	 * and the application.
+	 */
+	SimulatorService service;
 
 	Simulator() {
 		simulator = this;
+		service = new SimulatorService();
+
 		browser.inSimulator = false;
 		browser.size.width = window.innerWidth;
 		browser.size.height = window.innerHeight;
-
-		viewConfig.reset();
-		viewConfig.uuidPrefix = "_v_";
 
 		//TODO: the simulated size shall be based on what the user chose
 		_setSimScreenSize(320, 480);
 	}
 	//@Override
 	void onCreate_() {
-		_dashboard = new Dashboard();
-		rootView.appendChild(_dashboard);
+		dashboard = new Dashboard();
+		rootView.appendChild(dashboard);
 		_syncDashboardSize();
 
 		window.on.resize.add((event) {
 			_syncDashboardSize();
 		});
 	}
-
 	/** Returns the simulated dimension of the device.
 	 */
 	Size get simulatedSize() => _simSize;
@@ -52,9 +55,9 @@ class Simulator extends Activity {
 		style.width = StringUtil.px(window.innerWidth - left);
 		style.height = StringUtil.px(window.innerHeight);
 
-		_dashboard.width = rootView.width = new DomQuery(dashNode).innerWidth;
-		_dashboard.height = rootView.height = new DomQuery(dashNode).innerHeight;
-		_dashboard.requestLayout();
+		dashboard.width = rootView.width = new DomQuery(dashNode).innerWidth;
+		dashboard.height = rootView.height = new DomQuery(dashNode).innerHeight;
+		dashboard.requestLayout();
 	}
 }
 Simulator simulator;

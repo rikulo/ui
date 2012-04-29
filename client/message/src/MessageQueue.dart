@@ -18,6 +18,12 @@ typedef MessageFilter(var message);
  * A message queue.
  */
 interface MessageQueue<Message> default _MessageQueueImpl<Message> {
+	MessageQueue();
+
+	/** The UUID of this message queue.
+	 */
+	String get uuid();
+
 	/** Adds a message listener to this message queue with an optional filter.
 	 */
 	void add(MessageListener listener, [MessageFilter filter]);
@@ -32,9 +38,21 @@ interface MessageQueue<Message> default _MessageQueueImpl<Message> {
 
 class _MessageQueueImpl<Message> implements MessageQueue<Message> {
 	final List<_ListenerInfo> _listenerInfos;
+	String _uuid;
 
 	_MessageQueueImpl(): _listenerInfos = new List() {
 	}
+
+	//@Override
+	String get uuid() {
+		if (_uuid === null) {
+			final int appid = application.uuid;
+			_uuid = StringUtil.encodeId(_uuidNext++,
+				appid > 0 ? "q${StringUtil.encodeId(appid)}_": "q_");
+		}
+		return _uuid;
+	}
+	static int _uuidNext = 0;
 
 	//@Override
 	void add(MessageListener listener, [MessageFilter filter]) {
@@ -59,6 +77,7 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
 			}
 		}
 	}
+	String toString() => "MessageQueue($uuid)";
 }
 class _ListenerInfo {
 	final MessageListener listener;
