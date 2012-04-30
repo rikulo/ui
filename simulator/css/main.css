@@ -6,8 +6,8 @@ body {
 	-moz-border-radius: 15px;
 	border-radius: 15px;
 	padding: 8px;
-	background-color: #ddc;
-	border: 1px solid #886;
+	background-color: #cca;
+	border: 1px solid #665;
 	display: inline-block;
 }
 #v-simulator .v-top {
@@ -25,6 +25,21 @@ body {
 	width: 320px; height: 480px; /*default as iphone*/
 	background-color: white;
 }
+#v-simulator .v-home {
+	-webkit-border-radius: 16px;
+	-moz-border-radius: 16px;
+	border-radius: 15px;
+	border: 2px solid #665;
+	width: 32px; height: 32px;
+	background-color: #cacaa0;
+}
+#v-simulator .v-bottom .v-home {
+	margin: 10px auto 0 auto;
+}
+#v-simulator .v-right .v-home {
+	margin-left: 10px;
+}
+
 #v-dashboard {
 	-webkit-box-sizing: border-box; /* <= iOS4, <= Android 2.3 */
 	-moz-box-sizing: border-box;

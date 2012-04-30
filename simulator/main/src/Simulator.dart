@@ -23,6 +23,7 @@ class Simulator extends Activity {
 		browser.size.height = window.innerHeight;
 
 		//TODO: the simulated size shall be based on what the user chose
+		_createDeviceLook();
 		_setSimulatedSize(320, 480, false);
 	}
 	//@Override
@@ -62,7 +63,7 @@ class Simulator extends Activity {
 		style.height = StringUtil.px(height);
 
 		Element simNode = document.query("#v-simulator");
-		if (_horizontal) {
+ 		if (_horizontal) {
 			style = simNode.query(".v-top").style;
 			style.height = "0";
 			style = simNode.query(".v-bottom").style;
@@ -71,6 +72,11 @@ class Simulator extends Activity {
 			style.width = "20px";
 			style = simNode.query(".v-right").style;
 			style.width = "60px";
+			style.height = StringUtil.px(height ~/ 2  + 16); //position home at center
+			style = simNode.query(".v-right .v-home").style;
+			style.display = "";
+			style = simNode.query(".v-bottom .v-home").style;
+			style.display = "none";
 		} else {
 			style = simNode.query(".v-top").style;
 			style.height = "20px";
@@ -80,7 +86,22 @@ class Simulator extends Activity {
 			style.width = "0";
 			style = simNode.query(".v-right").style;
 			style.width = "0";
+			style = simNode.query(".v-right .v-home").style;
+			style.display = "none";
+			style = simNode.query(".v-bottom .v-home").style;
+			style.display = "";
 		}
+	}
+	void _createDeviceLook() {
+		document.query("#v-simulator").insertAdjacentHTML("beforeEnd",
+			'''
+<div class="v-top"></div><div class="v-left"></div>
+<div id="v-main"></div>
+<div class="v-right"><div class="v-home" style="display:none"></div></div>
+<div class="v-bottom"><div class="v-home"></div></div>
+		''');
+//		for (final Element node in document.queryAll("#v-simulator .v-home"))
+//			print("listener $node");
 	}
 	void _syncDashboardSize() {
 		int left = simulatedSize.width + (_horizontal ? 110: 40);
