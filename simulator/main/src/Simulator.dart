@@ -40,18 +40,27 @@ class Simulator extends Activity {
 	void mount_() {
 		//does nothing
 	}
+
 	/** Returns the simulated dimension of the device.
 	 */
 	Size get simulatedSize() => _simSize;
-
+	/** Sets the orientation.
+	 */
 	void setOrient(bool horizontal) {
 		setSimulatedSize(_simSize.height, _simSize.width, horizontal);
 	}
+	/** Sets the size and orientation.
+	 */
 	void setSimulatedSize(int width, int height, bool horizontal) {
 		_setSimulatedSize(width, height, horizontal);
 		_syncDashboardSize();
 
 		simulatorQueue.send({'name': 'setSize', 'orient': horizontal});
+	}
+	/** Called when the Home button was clicked.
+	 */
+	void onHome() {
+		print("Home is pressed"); //TODO
 	}
 
 	void _setSimulatedSize(int width, int height, bool horizontal) {
@@ -100,8 +109,9 @@ class Simulator extends Activity {
 <div class="v-right"><div class="v-home" style="display:none"></div></div>
 <div class="v-bottom"><div class="v-home"></div></div>
 		''');
-//		for (final Element node in document.queryAll("#v-simulator .v-home"))
-//			print("listener $node");
+		for (final Element node in document.queryAll("#v-simulator .v-home")) {
+			node.on.click.add((event) {onHome();});
+		}
 	}
 	void _syncDashboardSize() {
 		int left = simulatedSize.width + (_horizontal ? 110: 40);
