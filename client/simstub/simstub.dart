@@ -8,6 +8,7 @@
 
 #import("../app/app.dart");
 #import("../util/util.dart");
+#import("../view/view.dart");
 #import("../viewimpl/viewimpl.dart");
 #import("../simcomm/simcomm.dart");
 
