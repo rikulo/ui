@@ -37,6 +37,9 @@ class Browser {
 	/** Whether it is running on Android. */
 	bool android = false;
 
+	/** Whehter it is running on a mobile device. */
+	bool mobile = false;
+
 	/** The webkit's version if this is a webkit-based browser, or null
 	 * if it is not webkit-based.
 	 */
@@ -88,7 +91,7 @@ class Browser {
 
 				Match m = _randroid.firstMatch(ua);
 				if (m !== null) {
-					android = true;
+					mobile = android = true;
 					androidVersion = _versionOf(m.group(1));
 				}
 			} else if (bm(_rsafari)) {
@@ -96,12 +99,13 @@ class Browser {
 
 				Match m = _rios.firstMatch(ua);
 				if (m !== null) {
-					ios = true;
+					mobile = ios = true;
 					iosVersion = _versionOf(m.group(1), '_');
 				}
 			}
 		} else if (bm(_rmsie)) {
 			msie = true;
+			mobile = ua.indexOf("IEMobile") >= 0;
 		} else if (ua.indexOf("compatible") < 0 && bm(_rmozilla)) {
 			name = "firefox";
 			firefox = true;

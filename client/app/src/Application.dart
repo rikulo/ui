@@ -29,8 +29,10 @@ class Application {
 		if (layoutManager == null)
 			layoutManager = new LayoutManager();
 
-		if (this.inSimulator)
+		if (this.inSimulator) {
+			browser.mobile = true; //simulate a mobile device
 			new SimulatorStub(); //after browser has been initialized
+		}
 
 		onCreate_();
 	}

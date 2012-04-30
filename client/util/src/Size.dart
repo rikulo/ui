@@ -11,7 +11,11 @@ class Size {
 	/** The height. */
 	int height;
 
-	Size(this.width, this.height);
+	Size(int this.width, int this.height);
+
+	bool operator ==(Size other) {
+		return other !== null && width == other.width && height == other.height;
+	}
 
 	String toString() => "($width, $height)";
 }

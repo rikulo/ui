@@ -59,8 +59,7 @@ class Activity {
 	/** Initializes the browser window, such as registering the events.
 	 */
 	void mount_() {
-		//TODO: handle resize if it is not a mobile device
-		window.on.deviceOrientation.add((event) {
+		window.on[browser.mobile ? 'deviceOrientation': 'resize'].add((event) {
 			browser._updateSize();
 
 			//Note: we have to check if the size is changed, since deviceOrientation
