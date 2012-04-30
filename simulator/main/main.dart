@@ -9,6 +9,7 @@
 #import("../../client/app/app.dart");
 #import("../../client/view/view.dart");
 #import("../../client/viewimpl/viewimpl.dart");
+#import("../../client/simcomm/simcomm.dart");
 
 #import("../dashboard/dashboard.dart");
 #import("../service/service.dart");

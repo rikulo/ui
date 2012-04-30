@@ -17,12 +17,24 @@ class SimulatorStub {
 	void _serve(SimulatorMessage message) {
 		final data = message["data"];
 		switch (message["name"]) {
-		case "changeOrient":
-			
-			break;
 		case "setSize":
-			print('${data["width"]}, ${data["height"]}'); //TODO
+			_setSize(message);
 			break;
+		}
+	}
+	void _setSize(SimulatorMessage message) {
+		final DomQuery qcave = new DomQuery(document.query("#v-main"));
+		browser.size.width = qcave.innerWidth;
+		browser.size.height = qcave.innerHeight;
+
+		//Unable to dispatch event to window, so we invoke requestLayout directly
+		//window.on.deviceOrientation.dispatch(new Event("deviceOrientation"));
+		View rootView = activity.rootView;
+		if (rootView !== null) {
+			rootView.width = browser.size.width;
+			rootView.height = browser.size.height;
+
+			activity.rootView.requestLayout();
 		}
 	}
 }

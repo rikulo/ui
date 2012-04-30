@@ -8,4 +8,3 @@
 #import("../message/message.dart");
 
 #source("src/SimulatorMessage.dart");
-#source("src/SimulatorStub.dart");

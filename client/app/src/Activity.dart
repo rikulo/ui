@@ -42,6 +42,8 @@ class Activity {
 			throw const UiException("Only one activity is allowed");
 
 		activity = this;
+		mount_();
+
 		_rootView = new Section();
 		_rootView.width = browser.size.width;
 		_rootView.height = browser.size.height;
@@ -50,9 +52,26 @@ class Activity {
 		onCreate_();
 
 		if (!_rootView.inDocument) {//app might add it to Document manually
-		  final Element main = document.query("#$nodeId");
-      _rootView.addToDocument(main != null ? main: document.body);
+			final Element main = document.query("#$nodeId");
+			rootView.addToDocument(main != null ? main: document.body);
 		}
+	}
+	/** Initializes the browser window, such as registering the events.
+	 */
+	void mount_() {
+		//TODO: handle resize if it is not a mobile device
+		window.on.deviceOrientation.add((event) {
+			browser._updateSize();
+
+			//Note: we have to check if the size is changed, since deviceOrientation
+			//will be always fired when the listener is added.
+			if (rootView !== null && (rootView.width != browser.size.width
+			|| rootView.height != browser.size.height)) {
+				rootView.width = browser.size.width;
+				rootView.height = browser.size.height;
+				rootView.requestLayout();
+			}
+		});
 	}
 
 	/** Returns the title of this activity.

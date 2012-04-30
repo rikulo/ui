@@ -10,6 +10,8 @@ class HelloWorld extends Activity {
 		title = "Hello World!";
 
 		TextView text = new TextView("Hello World!");
+		text.profile.anchorView = rootView;
+		text.profile.location = "center center";
 		text.on.click.add((event) {
 			event.target.style.border =
 				event.target.style.border.isEmpty() ? "1px solid blue": "";

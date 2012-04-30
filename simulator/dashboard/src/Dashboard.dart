@@ -27,15 +27,15 @@ class Dashboard extends View {
 		group.layout.spacing = "0 5";
 		view.appendChild(group);
 
-		RadioButton horz = new RadioButton("horizontal", checked: true);
-		group.appendChild(horz);
-		RadioButton vert = new RadioButton("vertical");
+		RadioButton vert = new RadioButton("vertical", checked: true);
 		group.appendChild(vert);
+		RadioButton horz = new RadioButton("horizontal");
+		group.appendChild(horz);
 		group.on.check.add(_orientListener);
 	}
 	static EventListener get _orientListener() {
 		return (event) {
-			simulatorQueue.send({'name': 'changeOrient', 'orient': event.target.text});
+			simulator.setOrient(event.target.text == 'horizontal');
 		};
 	}
 	void _addLogView(View view) {

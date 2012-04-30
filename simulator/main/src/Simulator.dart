@@ -7,6 +7,7 @@
  */
 class Simulator extends Activity {
 	Size _simSize;
+	bool _horizontal;
 	/** The dashboard. */
 	Dashboard dashboard;
 	/** The service for handling the communication between the simulator
@@ -22,7 +23,7 @@ class Simulator extends Activity {
 		browser.size.height = window.innerHeight;
 
 		//TODO: the simulated size shall be based on what the user chose
-		_setSimScreenSize(320, 480);
+		_setSimulatedSize(320, 480, false);
 	}
 	//@Override
 	void onCreate_() {
@@ -34,19 +35,55 @@ class Simulator extends Activity {
 			_syncDashboardSize();
 		});
 	}
+	//@Override
+	void mount_() {
+		//does nothing
+	}
 	/** Returns the simulated dimension of the device.
 	 */
 	Size get simulatedSize() => _simSize;
 
-	void _setSimScreenSize(int width, int height) {
+	void setOrient(bool horizontal) {
+		setSimulatedSize(_simSize.height, _simSize.width, horizontal);
+	}
+	void setSimulatedSize(int width, int height, bool horizontal) {
+		_setSimulatedSize(width, height, horizontal);
+		_syncDashboardSize();
+
+		simulatorQueue.send({'name': 'setSize', 'orient': horizontal});
+	}
+
+	void _setSimulatedSize(int width, int height, bool horizontal) {
 		_simSize = new Size(width, height);
+		_horizontal = horizontal;
 
 		CSSStyleDeclaration style = document.query("#v-main").style;
 		style.width = StringUtil.px(width);
 		style.height = StringUtil.px(height);
+
+		Element simNode = document.query("#v-simulator");
+		if (_horizontal) {
+			style = simNode.query(".v-top").style;
+			style.height = "0";
+			style = simNode.query(".v-bottom").style;
+			style.height = "0";
+			style = simNode.query(".v-left").style;
+			style.width = "20px";
+			style = simNode.query(".v-right").style;
+			style.width = "60px";
+		} else {
+			style = simNode.query(".v-top").style;
+			style.height = "20px";
+			style = simNode.query(".v-bottom").style;
+			style.height = "60px";
+			style = simNode.query(".v-left").style;
+			style.width = "0";
+			style = simNode.query(".v-right").style;
+			style.width = "0";
+		}
 	}
 	void _syncDashboardSize() {
-		int left = simulatedSize.width + 40;
+		int left = simulatedSize.width + (_horizontal ? 110: 40);
 		Element dashNode = document.query("#v-dashboard");
 		CSSStyleDeclaration style = dashNode.style;
 		style.left = StringUtil.px(left);

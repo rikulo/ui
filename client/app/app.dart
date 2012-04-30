@@ -10,7 +10,7 @@
 #import("../view/view.dart");
 #import("../viewimpl/viewimpl.dart");
 #import("../layout/layout.dart");
-#import("../simcomm/simcomm.dart");
+#import("../simstub/simstub.dart");
 
 #source("src/Activity.dart");
 #source("src/Browser.dart");

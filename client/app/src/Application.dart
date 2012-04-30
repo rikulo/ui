@@ -31,8 +31,14 @@ class Application {
 
 		if (this.inSimulator)
 			new SimulatorStub(); //after browser has been initialized
+
+		onCreate_();
 	}
 
+	/** Called when the application is starting.
+	 */
+	void onCreate_() {
+	}
 	/** Returns UUID representing this application.
 	 */
 	int get uuid() {

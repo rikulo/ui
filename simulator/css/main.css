@@ -10,16 +10,18 @@ body {
 	border: 1px solid #886;
 	display: inline-block;
 }
-#v-simulator .top {
+#v-simulator .v-top {
 	height: 20px;
 }
-#v-simulator .bottom {
+#v-simulator .v-bottom {
 	height: 60px;
 }
-#v-simulator #v-main {
-	border: 1px solid #332;
+#v-simulator .v-left, #v-simulator .v-right {
+	display: inline-block;
 }
-#v-main {
+#v-simulator #v-main {
+	display: inline-block;
+	border: 1px solid #332;
 	width: 320px; height: 480px; /*default as iphone*/
 	background-color: white;
 }
