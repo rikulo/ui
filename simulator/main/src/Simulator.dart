@@ -22,7 +22,8 @@ class Simulator extends Activity {
 		browser.size.width = window.innerWidth;
 		browser.size.height = window.innerHeight;
 
-		//TODO: the simulated size shall be based on what the user chose
+		//Note: the app might run faster than the simulator,
+		//so the initial size has to be the same as CSS in main.css
 		_createDeviceLook();
 		_setSimulatedSize(320, 480, false);
 	}
@@ -30,6 +31,8 @@ class Simulator extends Activity {
 	void onCreate_() {
 		dashboard = new Dashboard();
 		rootView.appendChild(dashboard);
+
+		//TODO: load the default simulated size and invoke setSimulatedSize here
 		_syncDashboardSize();
 
 		window.on.resize.add((event) {
@@ -73,42 +76,37 @@ class Simulator extends Activity {
 
 		Element simNode = document.query("#v-simulator");
  		if (_horizontal) {
-			style = simNode.query(".v-top").style;
-			style.height = "0";
-			style = simNode.query(".v-bottom").style;
-			style.height = "0";
-			style = simNode.query(".v-left").style;
-			style.width = "20px";
+			simNode.query(".v-top").style.height = "0";
+			simNode.query(".v-bottom").style.height = "0";
+			simNode.query(".v-left").style.width = "20px";
+
 			style = simNode.query(".v-right").style;
 			style.width = "60px";
 			style.height = StringUtil.px(height ~/ 2  + 16); //position home at center
-			style = simNode.query(".v-right .v-home").style;
-			style.display = "";
-			style = simNode.query(".v-bottom .v-home").style;
-			style.display = "none";
+
+			simNode.query(".v-right .v-home").style.display = "";
+			simNode.query(".v-bottom .v-home").style.display = "none";
 		} else {
-			style = simNode.query(".v-top").style;
-			style.height = "20px";
-			style = simNode.query(".v-bottom").style;
-			style.height = "60px";
-			style = simNode.query(".v-left").style;
-			style.width = "0";
-			style = simNode.query(".v-right").style;
-			style.width = "0";
-			style = simNode.query(".v-right .v-home").style;
-			style.display = "none";
-			style = simNode.query(".v-bottom .v-home").style;
-			style.display = "";
+			simNode.query(".v-top").style.height = "20px";
+			simNode.query(".v-bottom").style.height = "60px";
+			simNode.query(".v-left").style.width = "0";
+			simNode.query(".v-right").style.width = "0";
+
+			simNode.query(".v-right .v-home").style.display = "none";
+			simNode.query(".v-bottom .v-home").style.display = "";
 		}
 	}
 	void _createDeviceLook() {
-		document.query("#v-simulator").insertAdjacentHTML("beforeEnd",
+		final Element simNode = document.query("#v-simulator");
+		simNode.insertAdjacentHTML("afterBegin",
+			'<div class="v-top">rikulo</div><div class="v-left"></div>');
+		simNode.insertAdjacentHTML("beforeEnd",
 			'''
-<div class="v-top">rikulo</div><div class="v-left"></div>
-<div id="v-main"></div>
 <div class="v-right"><div class="v-home" style="display:none"></div></div>
 <div class="v-bottom"><div class="v-home"></div></div>
-		''');
+			''');
+		simNode.insertAdjacentHTML("afterEnd", '<div id="v-dashboard"></div>');
+
 		for (final Element node in document.queryAll("#v-simulator .v-home")) {
 			node.on.click.add((event) {onHome();});
 		}
