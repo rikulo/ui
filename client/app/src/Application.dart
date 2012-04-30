@@ -6,15 +6,21 @@
  * An application.
  */
 class Application {
-	int _uuid;
 	/** The name of the application.
 	 * Default: "" (an empty string)
 	 */
 	String name;
+	/** Whether it is running on a simulator. */
+	bool inSimulator = false;
 
-	Application([String name=""]) {
+	int _uuid;
+
+	Application([String name="", bool inSimulator]) {
 		this.name = name;
 		application = this;
+
+		this.inSimulator = inSimulator !== null ?
+			 inSimulator: document.query("#v-simulator") !== null;
 
 		if (browser === null)
 			browser = new Browser();
@@ -22,6 +28,9 @@ class Application {
 			viewConfig = new ViewConfig();
 		if (layoutManager == null)
 			layoutManager = new LayoutManager();
+
+		if (this.inSimulator)
+			new SimulatorStub(); //after browser has been initialized
 	}
 
 	/** Returns UUID representing this application.

@@ -21,7 +21,7 @@ class SimulatorMessage extends HashMapImplementation<String, Object> {
 	String toString() => "SimulatorMessage($name, $data)";
 }
 
-MessageQueue<SimulatorMessage> get simulatorMessageQueue() {
+MessageQueue<SimulatorMessage> get simulatorQueue() {
 	if (_cachedSMQ == null) {
 		_cachedSMQ = new MessageQueue();
 		_cachedIAB = new InterApplicationBridge("simulator");

@@ -8,7 +8,7 @@
 void log(var msg) {
 	if (_log === null) {
 		_log = document.query("#v-simulator") !== null ? new _SimuLog(): new _ConsoleLog();
-			//don't use browser.inSimulator since it might be ready yet
+			//don't use application.inSimulator since it might be ready yet
 	}
 
 	_log.log(msg);
@@ -45,7 +45,7 @@ class _SimuLog extends _ConsoleLog {
 	Element _node;
 
 	void _print(String msg) {
-		simulatorMessageQueue.send(new SimulatorMessage("log", msg));
+		simulatorQueue.send(new SimulatorMessage("log", msg));
 	}
 }
 _ConsoleLog _log;

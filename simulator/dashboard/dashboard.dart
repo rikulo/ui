@@ -8,5 +8,6 @@
 
 #import("../../client/util/util.dart");
 #import("../../client/view/view.dart");
+#import("../../client/simcomm/simcomm.dart");
 
 #source("src/Dashboard.dart");

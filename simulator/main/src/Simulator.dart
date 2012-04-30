@@ -15,11 +15,9 @@ class Simulator extends Activity {
 	SimulatorService service;
 
 	Simulator() {
-		application.name = "Simulator";
 		simulator = this;
 		service = new SimulatorService();
 
-		browser.inSimulator = false;
 		browser.size.width = window.innerWidth;
 		browser.size.height = window.innerHeight;
 
@@ -64,5 +62,6 @@ class Simulator extends Activity {
 Simulator simulator;
 
 void main() {
+	new Application(name: "Simulator", inSimulator: false);
 	new Simulator().run(nodeId: "v-dashboard");
 }

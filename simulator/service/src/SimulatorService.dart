@@ -3,13 +3,12 @@
 // Author: tomyeh
 
 /**
- * The simulator server handling the messages for communication between the simulator
- * and the application.
+ * The simulator service serves the request sent from an application.
  * <p>A command is an instance of [SimulatorMessage].
  */
 class SimulatorService {
 	SimulatorService() {
-		simulatorMessageQueue.add((message) {
+		simulatorQueue.add((message) {
 			_serve(message);
 		});
 	}
@@ -21,6 +20,8 @@ class SimulatorService {
 			break;
 		}
 	}
+
+	//log
 	void _log(String msg) {
 		if (_logNode === null) {
 			_logNode = document.query("#v-dashboard .v-dashboard-log");

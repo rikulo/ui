@@ -31,6 +31,12 @@ class Dashboard extends View {
 		group.appendChild(horz);
 		RadioButton vert = new RadioButton("vertical");
 		group.appendChild(vert);
+		group.on.check.add(_orientListener);
+	}
+	static EventListener get _orientListener() {
+		return (event) {
+			simulatorQueue.send({'name': 'changeOrient', 'orient': event.target.text});
+		};
 	}
 	void _addLogView(View view) {
 		View logView = new View();
