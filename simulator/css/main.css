@@ -6,12 +6,13 @@ body {
 	-moz-border-radius: 15px;
 	border-radius: 15px;
 	padding: 8px;
-	background-color: #cca;
+	background-color: #c8c8aa;
 	border: 1px solid #665;
 	display: inline-block;
 }
 #v-simulator .v-top {
 	height: 20px;
+	font-size: 11px; color: white;
 }
 #v-simulator .v-bottom {
 	height: 60px;

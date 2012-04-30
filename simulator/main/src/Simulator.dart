@@ -104,7 +104,7 @@ class Simulator extends Activity {
 	void _createDeviceLook() {
 		document.query("#v-simulator").insertAdjacentHTML("beforeEnd",
 			'''
-<div class="v-top"></div><div class="v-left"></div>
+<div class="v-top">rikulo</div><div class="v-left"></div>
 <div id="v-main"></div>
 <div class="v-right"><div class="v-home" style="display:none"></div></div>
 <div class="v-bottom"><div class="v-home"></div></div>
@@ -114,7 +114,7 @@ class Simulator extends Activity {
 		}
 	}
 	void _syncDashboardSize() {
-		int left = simulatedSize.width + (_horizontal ? 110: 40);
+		int left = simulatedSize.width + (_horizontal ? 120: 40);
 		Element dashNode = document.query("#v-dashboard");
 		CSSStyleDeclaration style = dashNode.style;
 		style.left = StringUtil.px(left);
