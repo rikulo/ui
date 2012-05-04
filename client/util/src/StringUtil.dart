@@ -23,8 +23,10 @@ class StringUtil {
 	}
 
 	/** Return a string representation of the integer argument in base 16.
+	 * <p>[digits] specifies how many digits to generate at least.
+	 * If non-positive, it is ignored (i.e., any number is OK).
 	 */
-	static String toHexString(num value) {
+	static String toHexString(num value, [int digits=0]) {
 		_init();
 		final List<int> codes = new List();
 		int val = value.toInt();
@@ -36,6 +38,9 @@ class StringUtil {
 			else cc += _CC_a - 10;
 			codes.insertRange(0, 1, cc);
 		}
+		
+		if ((val = digits - codes.length) > 0)
+			codes.insertRange(0, val, _CC_0);
 		return codes.isEmpty() ? "0": new String.fromCharCodes(codes);
 	}
 
