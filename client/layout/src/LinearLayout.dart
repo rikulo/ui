@@ -44,8 +44,8 @@ class LinearLayout implements Layout {
 	static final int DEFAULT_SPACING = 2;
 	static LayoutAmountInfo getDefaultAmountInfo(String info) {
 		final LayoutAmountInfo amt = new LayoutAmountInfo(info);
-		if (amt.type == LayoutAmountInfo.NONE)
-			amt.type = LayoutAmountInfo.CONTENT;
+		if (amt.type == LayoutAmountType.NONE)
+			amt.type = LayoutAmountType.CONTENT;
 		return amt;
 	}
 }

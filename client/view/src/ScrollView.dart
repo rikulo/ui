@@ -15,7 +15,7 @@ class ScrollView extends View {
 	//@Override
 	void enterDocument_() {
 		super.enterDocument_();
-		_scroller = new Scroller(innerNode);
+		_scroller = new Scroller(innerNode, Dir.BOTH);
 	}
 	//@Override
 	void exitDocument_() {

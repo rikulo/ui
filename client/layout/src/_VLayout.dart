@@ -22,9 +22,9 @@ class _VLayout implements _RealLinearLayout {
 			prevSpacingBottom = si.bottom;
 
 			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.height);
-			if (amt.type == LayoutAmountInfo.NONE) {
+			if (amt.type == LayoutAmountType.NONE) {
 				if (child.height != null)  {
-					amt.type = LayoutAmountInfo.FIXED;
+					amt.type = LayoutAmountType.FIXED;
 					amt.value = child.height;
 				} else {
 					amt.type = amtDefault.type;
@@ -33,11 +33,11 @@ class _VLayout implements _RealLinearLayout {
 			}
 
 			switch (amt.type) {
-				case LayoutAmountInfo.FIXED:
+				case LayoutAmountType.FIXED:
 					if ((height += amt.value) >= maxHgh)
 						return maxHgh;
 					break;
-				case LayoutAmountInfo.CONTENT:
+				case LayoutAmountType.CONTENT:
 					final int hgh = child.measureHeight(mctx);
 					if ((height += hgh != null ? hgh: child.outerHeight) >= maxHgh)
 						return maxHgh;
@@ -64,9 +64,9 @@ class _VLayout implements _RealLinearLayout {
 			final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
 			int wd = si.left + si.right + borderWd;
 			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.width);
-			if (amt.type == LayoutAmountInfo.NONE) {
+			if (amt.type == LayoutAmountType.NONE) {
 				if (child.width != null)  {
-					amt.type = LayoutAmountInfo.FIXED;
+					amt.type = LayoutAmountType.FIXED;
 					amt.value = child.width;
 				} else {
 					amt.type = amtDefault.type;
@@ -75,10 +75,10 @@ class _VLayout implements _RealLinearLayout {
 			}
 
 			switch (amt.type) {
-				case LayoutAmountInfo.FIXED:
+				case LayoutAmountType.FIXED:
 					wd += amt.value;
 					break;
-				case LayoutAmountInfo.CONTENT:
+				case LayoutAmountType.CONTENT:
 					final int w = child.measureWidth(mctx);
 					wd += w != null ? w: child.outerWidth;
 					break;
@@ -114,24 +114,24 @@ class _VLayout implements _RealLinearLayout {
 
 			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.height);
 			switch (amt.type) {
-				case LayoutAmountInfo.NONE:
+				case LayoutAmountType.NONE:
 					if (child.height != null)
 						assigned += child.height;
 					else
 						assigned += child.outerHeight;
 					break;
-				case LayoutAmountInfo.FIXED:
+				case LayoutAmountType.FIXED:
 					assigned += child.height = amt.value;
 					break;
-				case LayoutAmountInfo.FLEX:
+				case LayoutAmountType.FLEX:
 					nflex += amt.value;
 					flexs.add(amt.value);
 					flexViews.add(child);
 					break;
-				case LayoutAmountInfo.RATIO:
+				case LayoutAmountType.RATIO:
 					assigned += child.height = (innerHeight() * amt.value).round().toInt();
 					break;
-				case LayoutAmountInfo.CONTENT:
+				case LayoutAmountType.CONTENT:
 					final int hgh = child.measureHeight(mctx);
 					if (hgh != null)
 						assigned += child.height = hgh;

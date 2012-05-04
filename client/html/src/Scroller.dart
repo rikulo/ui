@@ -6,9 +6,10 @@
  * A custom-scrolling handler.
  */
 interface Scroller default _Tx3dScroller {
-	Scroller(Element node);
+	Scroller(Element node, Dir dir);
 		//FUTURE: to support non-touch browser, we can introduce factory
 		//to use _owner.parent.style.overflow = "auto";
+
 	/** Destroys the scroller.
 	 * It shall be called to clean up the scroller, if it is no longer used.
 	 */
@@ -23,10 +24,13 @@ interface Scroller default _Tx3dScroller {
  */
 class _Tx3dScroller implements Scroller {
 	final Element _owner;
+	Dir _dir;
 
-	_Tx3dScroller(Element this._owner) {
+	_Tx3dScroller(Element this._owner, Dir this._dir) {
 	}
+
 	Element get owner() => _owner;
+
 	void destroy() {
 	}
 }

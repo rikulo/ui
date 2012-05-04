@@ -77,20 +77,20 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	void setWidthByProfile(MeasureContext mctx, View view, AsInt width, [AsInt defaultWidth]) {
 		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.width);
 		switch (amt.type) {
-			case LayoutAmountInfo.NONE:
+			case LayoutAmountType.NONE:
 				if (defaultWidth !== null)
 					view.width = defaultWidth();
 				break;
-			case LayoutAmountInfo.FIXED:
+			case LayoutAmountType.FIXED:
 				view.width = amt.value;
 				break;
-			case LayoutAmountInfo.FLEX:
+			case LayoutAmountType.FLEX:
 				view.width = width();
 				break;
-			case LayoutAmountInfo.RATIO:
+			case LayoutAmountType.RATIO:
 				view.width = (width() * amt.value).round().toInt();
 				break;
-			case LayoutAmountInfo.CONTENT:
+			case LayoutAmountType.CONTENT:
 				final int wd = view.measureWidth(mctx);
 				if (wd != null)
 					view.width = wd;
@@ -104,20 +104,20 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	void setHeightByProfile(MeasureContext mctx, View view, AsInt height, [AsInt defaultHeight]) {
 		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.height);
 		switch (amt.type) {
-			case LayoutAmountInfo.NONE:
+			case LayoutAmountType.NONE:
 				if (defaultHeight !== null)
 					view.height = defaultHeight();
 				break;
-			case LayoutAmountInfo.FIXED:
+			case LayoutAmountType.FIXED:
 				view.height = amt.value;
 				break;
-			case LayoutAmountInfo.FLEX:
+			case LayoutAmountType.FLEX:
 				view.height = height();
 				break;
-			case LayoutAmountInfo.RATIO:
+			case LayoutAmountType.RATIO:
 				view.height = (height() * amt.value).round().toInt();
 				break;
-			case LayoutAmountInfo.CONTENT:
+			case LayoutAmountType.CONTENT:
 				final int hgh = view.measureHeight(mctx);
 				if (hgh != null)
 					view.height = hgh;
@@ -208,11 +208,11 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	static int _amountOf(String profile, AsInt parentInner) {
 		final LayoutAmountInfo ai = new LayoutAmountInfo(profile);
 		switch (ai.type) {
-			case LayoutAmountInfo.FIXED:
+			case LayoutAmountType.FIXED:
 				return ai.value;
-			case LayoutAmountInfo.FLEX:
+			case LayoutAmountType.FLEX:
 				return parentInner();
-			case LayoutAmountInfo.RATIO:
+			case LayoutAmountType.RATIO:
 				return (parentInner() * ai.value).round().toInt();
 		}
 		return null;
