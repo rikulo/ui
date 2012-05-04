@@ -16,3 +16,4 @@
 #source("src/RunOnceViewManager.dart");
 #source("src/DomQuery.dart");
 #source("src/ViewConfig.dart");
+#source("src/Scroller.dart");

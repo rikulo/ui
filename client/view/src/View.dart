@@ -98,9 +98,19 @@ class View implements EventTarget {
 		}
 	}
 	/** Searches and returns the first view that matches the given selector.
+	 * <p>Notice that, in additions to CSS selector, it also supports
+	 * "parent" for identifying the parent, "spaceOwner" for the space owner.
+	 * <p>It returns null if selector is null or empty.
 	 */
 	View query(String selector) {
-		//TODO
+		switch (selector) {
+			case null: case "": return null;
+			case "parent": return parent;
+			case "spaceOwner": return spaceOwner;
+		}
+		//TODO: support CSS selector
+		if (selector.startsWith('#'))
+			return getFellow(selector.substring(1));
 	}
 	/** Searches and returns all views that matches the selector.
 	 */

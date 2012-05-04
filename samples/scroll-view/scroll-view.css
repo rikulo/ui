@@ -1,0 +1,10 @@
+.scroll-view {
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	border: 5px solid #886;
+
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+}

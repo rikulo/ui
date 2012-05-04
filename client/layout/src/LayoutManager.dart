@@ -77,24 +77,24 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	void setWidthByProfile(MeasureContext mctx, View view, AsInt width, [AsInt defaultWidth]) {
 		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.width);
 		switch (amt.type) {
-		case LayoutAmountInfo.NONE:
-			if (defaultWidth !== null)
-				view.width = defaultWidth();
-			break;
-		case LayoutAmountInfo.FIXED:
-			view.width = amt.value;
-			break;
-		case LayoutAmountInfo.FLEX:
-			view.width = width();
-			break;
-		case LayoutAmountInfo.RATIO:
-			view.width = (width() * amt.value).round().toInt();
-			break;
-		case LayoutAmountInfo.CONTENT:
-			final int wd = view.measureWidth(mctx);
-			if (wd != null)
-				view.width = wd;
-			break;
+			case LayoutAmountInfo.NONE:
+				if (defaultWidth !== null)
+					view.width = defaultWidth();
+				break;
+			case LayoutAmountInfo.FIXED:
+				view.width = amt.value;
+				break;
+			case LayoutAmountInfo.FLEX:
+				view.width = width();
+				break;
+			case LayoutAmountInfo.RATIO:
+				view.width = (width() * amt.value).round().toInt();
+				break;
+			case LayoutAmountInfo.CONTENT:
+				final int wd = view.measureWidth(mctx);
+				if (wd != null)
+					view.width = wd;
+				break;
 		}
 	}
 	/** Set the height of the given view based on its profile.
@@ -104,24 +104,24 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	void setHeightByProfile(MeasureContext mctx, View view, AsInt height, [AsInt defaultHeight]) {
 		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.height);
 		switch (amt.type) {
-		case LayoutAmountInfo.NONE:
-			if (defaultHeight !== null)
-				view.height = defaultHeight();
-			break;
-		case LayoutAmountInfo.FIXED:
-			view.height = amt.value;
-			break;
-		case LayoutAmountInfo.FLEX:
-			view.height = height();
-			break;
-		case LayoutAmountInfo.RATIO:
-			view.height = (height() * amt.value).round().toInt();
-			break;
-		case LayoutAmountInfo.CONTENT:
-			final int hgh = view.measureHeight(mctx);
-			if (hgh != null)
-				view.height = hgh;
-			break;
+			case LayoutAmountInfo.NONE:
+				if (defaultHeight !== null)
+					view.height = defaultHeight();
+				break;
+			case LayoutAmountInfo.FIXED:
+				view.height = amt.value;
+				break;
+			case LayoutAmountInfo.FLEX:
+				view.height = height();
+				break;
+			case LayoutAmountInfo.RATIO:
+				view.height = (height() * amt.value).round().toInt();
+				break;
+			case LayoutAmountInfo.CONTENT:
+				final int hgh = view.measureHeight(mctx);
+				if (hgh != null)
+					view.height = hgh;
+				break;
 		}
 	}
 
@@ -208,12 +208,12 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	static int _amountOf(String profile, AsInt parentInner) {
 		final LayoutAmountInfo ai = new LayoutAmountInfo(profile);
 		switch (ai.type) {
-		case LayoutAmountInfo.FIXED:
-			return ai.value;
-		case LayoutAmountInfo.FLEX:
-			return parentInner();
-		case LayoutAmountInfo.RATIO:
-			return (parentInner() * ai.value).round().toInt();
+			case LayoutAmountInfo.FIXED:
+				return ai.value;
+			case LayoutAmountInfo.FLEX:
+				return parentInner();
+			case LayoutAmountInfo.RATIO:
+				return (parentInner() * ai.value).round().toInt();
 		}
 		return null;
 	}

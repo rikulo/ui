@@ -33,17 +33,17 @@ class _VLayout implements _RealLinearLayout {
 			}
 
 			switch (amt.type) {
-			case LayoutAmountInfo.FIXED:
-				if ((height += amt.value) >= maxHgh)
-					return maxHgh;
-				break;
-			case LayoutAmountInfo.CONTENT:
-				final int hgh = child.measureHeight(mctx);
-				if ((height += hgh != null ? hgh: child.outerHeight) >= maxHgh)
-					return maxHgh;
-				break;
-			default:
-				return maxHgh; //fulfill the parent if flex or ratio is used
+				case LayoutAmountInfo.FIXED:
+					if ((height += amt.value) >= maxHgh)
+						return maxHgh;
+					break;
+				case LayoutAmountInfo.CONTENT:
+					final int hgh = child.measureHeight(mctx);
+					if ((height += hgh != null ? hgh: child.outerHeight) >= maxHgh)
+						return maxHgh;
+					break;
+				default:
+					return maxHgh; //fulfill the parent if flex or ratio is used
 			}
 		}
 
@@ -75,15 +75,15 @@ class _VLayout implements _RealLinearLayout {
 			}
 
 			switch (amt.type) {
-			case LayoutAmountInfo.FIXED:
-				wd += amt.value;
-				break;
-			case LayoutAmountInfo.CONTENT:
-				final int w = child.measureWidth(mctx);
-				wd += w != null ? w: child.outerWidth;
-				break;
-			default:
-				continue; //ignore if flex or ratio is used
+				case LayoutAmountInfo.FIXED:
+					wd += amt.value;
+					break;
+				case LayoutAmountInfo.CONTENT:
+					final int w = child.measureWidth(mctx);
+					wd += w != null ? w: child.outerWidth;
+					break;
+				default:
+					continue; //ignore if flex or ratio is used
 			}
 
 			if (width == null || wd > width)
@@ -114,30 +114,30 @@ class _VLayout implements _RealLinearLayout {
 
 			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.height);
 			switch (amt.type) {
-			case LayoutAmountInfo.NONE:
-				if (child.height != null)
-					assigned += child.height;
-				else
-					assigned += child.outerHeight;
-				break;
-			case LayoutAmountInfo.FIXED:
-				assigned += child.height = amt.value;
-				break;
-			case LayoutAmountInfo.FLEX:
-				nflex += amt.value;
-				flexs.add(amt.value);
-				flexViews.add(child);
-				break;
-			case LayoutAmountInfo.RATIO:
-				assigned += child.height = (innerHeight() * amt.value).round().toInt();
-				break;
-			case LayoutAmountInfo.CONTENT:
-				final int hgh = child.measureHeight(mctx);
-				if (hgh != null)
-					assigned += child.height = hgh;
-				else
-					assigned += child.outerHeight;
-				break;
+				case LayoutAmountInfo.NONE:
+					if (child.height != null)
+						assigned += child.height;
+					else
+						assigned += child.outerHeight;
+					break;
+				case LayoutAmountInfo.FIXED:
+					assigned += child.height = amt.value;
+					break;
+				case LayoutAmountInfo.FLEX:
+					nflex += amt.value;
+					flexs.add(amt.value);
+					flexViews.add(child);
+					break;
+				case LayoutAmountInfo.RATIO:
+					assigned += child.height = (innerHeight() * amt.value).round().toInt();
+					break;
+				case LayoutAmountInfo.CONTENT:
+					final int hgh = child.measureHeight(mctx);
+					if (hgh != null)
+						assigned += child.height = hgh;
+					else
+						assigned += child.outerHeight;
+					break;
 			}
 
 			final AsInt defaultWidth = () => view.innerWidth - si.left - si.right;
@@ -175,14 +175,14 @@ class _VLayout implements _RealLinearLayout {
 			if (align.isEmpty()) align = defAlign;
 			final int space = childspcinfs[child].left;
 			switch (align) {
-			case "center":
-			case "end":
-				int delta = view.innerWidth - si.left - si.right - child.outerWidth;
-				if (align == "center") delta ~/= 2;
-				child.left = space + delta;
-				break; 
-			default:
-				child.left = space;
+				case "center":
+				case "end":
+					int delta = view.innerWidth - si.left - si.right - child.outerWidth;
+					if (align == "center") delta ~/= 2;
+					child.left = space + delta;
+					break; 
+				default:
+					child.left = space;
 			}
 		}
 	}

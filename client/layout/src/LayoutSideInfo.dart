@@ -19,26 +19,26 @@ class LayoutSideInfo {
 			}
 
 			switch (wds.length) {
-			case 0:
-				break;
-			case 1:
-				top = bottom = left = right = wds[0];
-				return;
-			case 2:
-				top = bottom = wds[0];
-				left = right = wds[1];
-				return;
-			case 3:
-				top = wds[0];
-				left = right = wds[1];
-				bottom = wds[2];
-				return;
-			default:
-				top = wds[0];
-				right = wds[1];
-				bottom = wds[2];
-				left = wds[3];
-				return;
+				case 0:
+					break;
+				case 1:
+					top = bottom = left = right = wds[0];
+					return;
+				case 2:
+					top = bottom = wds[0];
+					left = right = wds[1];
+					return;
+				case 3:
+					top = wds[0];
+					left = right = wds[1];
+					bottom = wds[2];
+					return;
+				default:
+					top = wds[0];
+					right = wds[1];
+					bottom = wds[2];
+					left = wds[3];
+					return;
 			}
 		}
 		if (defaultInfo != null) {

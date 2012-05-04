@@ -9,6 +9,14 @@ body {
 .v- {
 	-webkit-box-sizing: border-box; /* <= iOS4, <= Android 2.3 */
 	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	position: absolute;
+}
+
+.v-ScrollView {
+	overflow: hidden;
+}
+.v-ScrollView-inner {
+	width: 100%; height: 100%;
 }
