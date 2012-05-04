@@ -38,7 +38,7 @@ class Activity {
 	/** Start the activity.
 	 */
 	void run([String nodeId="v-main"]) {
-		if (activity !== null)
+		if (activity !== null) //TODO: switching activity
 			throw const UiException("Only one activity is allowed");
 
 		activity = this;
@@ -49,12 +49,14 @@ class Activity {
 		_rootView.height = browser.size.height;
 		_rootView.style.overflow = "hidden"; //crop
 
-		onCreate_();
+		application._ready(() {
+			onCreate_();
 
-		if (!_rootView.inDocument) {//app might add it to Document manually
-			final Element main = document.query("#$nodeId");
-			rootView.addToDocument(main != null ? main: document.body);
-		}
+			if (!_rootView.inDocument) {//app might add it to Document manually
+				final Element main = document.query("#$nodeId");
+				rootView.addToDocument(main != null ? main: document.body);
+			}
+		});
 	}
 	/** Initializes the browser window, such as registering the events.
 	 */
