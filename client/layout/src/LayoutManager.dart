@@ -41,6 +41,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	//@Override Layout
 	int measureHeight(MeasureContext mctx, View view)
 	=> _layoutOfView(view).measureHeight(mctx, view);
+
 	//@Override Layout
 	void layout(MeasureContext mctx, View view) {
 		if (mctx === null) {
@@ -51,6 +52,12 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 		} else {
 			_doLayout(mctx, view);
 		}
+	}
+	//@Override
+	void flush([View view=null]) {
+		//ignore flush if not empty (_onImageLoaded will invoke it later)
+		if (_imgWaits.isEmpty())
+			super.flush(view);
 	}
 
 	Layout _layoutOfView(View view) {
@@ -221,8 +228,8 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	/** Wait until the given image is loaded.
 	 * If the width and height of the image is not known in advance, this method
 	 * shall be called to make the layout manager wait until the image is loaded.
-	 * <p>Currently, [Image] will invoke this method if the width or height of
-	 * the image is not specified.
+	 * <p>Currently, [Image] will invoke this method automatically
+	 * if the width or height of the image is not specified.
 	 */
 	void waitImageLoaded(String imgURI) {
 		if (!_imgWaits.contains(imgURI)) {
