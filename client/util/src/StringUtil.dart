@@ -22,6 +22,23 @@ class StringUtil {
 		return new String.fromCharCodes(dst);
 	}
 
+	/** Return a string representation of the integer argument in base 16.
+	 */
+	static String toHexString(num value) {
+		_init();
+		final List<int> codes = new List();
+		int val = value.toInt();
+		if (val < 0) val = (0xffffffff + val) + 1;
+		while (val > 0) {
+			int cc = val & 0xf;
+			val >>= 4;
+			if (cc < 10) cc += _CC_0;
+			else cc += _CC_a - 10;
+			codes.insertRange(0, 1, cc);
+		}
+		return codes.isEmpty() ? "0": new String.fromCharCodes(codes);
+	}
+
 	/**
 	 * Returns whether the character is according to its opts.
 	 * @param char cc the character
@@ -64,12 +81,7 @@ class StringUtil {
 	 */
 	static bool isChar(String cc, [bool digit=false, bool upper=false, bool lower=false,
 	bool whitespace=false, String match=null]) {
-		//TODO: remove them if Dart supports non-constant final
-		if (_CC_0 == null) {
-			_CC_0 = '0'.charCodeAt(0); _CC_9 = _CC_0 + 9;
-			_CC_A = 'A'.charCodeAt(0); _CC_Z = _CC_A + 25;
-			_CC_a = 'a'.charCodeAt(0); _CC_z = _CC_a + 25;
-		}
+		_init();
 
 		int v = cc.isEmpty() ? 0: cc.charCodeAt(0);
 		return (digit && v >= _CC_0 && v <= _CC_9)
@@ -77,6 +89,14 @@ class StringUtil {
 		|| (lower && v >= _CC_a && v <= _CC_z)
 		|| (whitespace && (cc == ' ' || cc == '\t' || cc == '\n' || cc == '\r'))
 		|| (match != null && match.indexOf(cc) >= 0);
+	}
+	static void _init() {
+		//TODO: remove them if Dart supports non-constant final
+		if (_CC_0 == null) {
+			_CC_0 = '0'.charCodeAt(0); _CC_9 = _CC_0 + 9;
+			_CC_A = 'A'.charCodeAt(0); _CC_Z = _CC_A + 25;
+			_CC_a = 'a'.charCodeAt(0); _CC_z = _CC_a + 25;
+		}
 	}
 	/** TODO: use intializer below when Dart supports non-constant final
 	final int _CC_0 = '0'.charCodeAt(0), _CC_9 = _CC_0 + 9,
