@@ -106,7 +106,9 @@ class View implements EventTarget {
 		switch (selector) {
 			case null: case "": return null;
 			case "parent": return parent;
-			case "spaceOwner": return spaceOwner;
+			case "spaceOwner":
+			  var so = spaceOwner;
+			  return so is View ? so: null;
 		}
 		//TODO: support CSS selector
 		if (selector.startsWith('#'))
