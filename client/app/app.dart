@@ -9,6 +9,7 @@
 #import("../util/util.dart");
 #import("../view/view.dart");
 #import("../viewimpl/viewimpl.dart");
+#import("../html/html.dart");
 #import("../layout/layout.dart");
 #import("../simstub/simstub.dart");
 

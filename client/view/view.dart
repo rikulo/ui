@@ -9,6 +9,7 @@
 #import("../app/app.dart");
 #import("../event/event.dart");
 #import("../viewimpl/viewimpl.dart");
+#import("../html/html.dart");
 #import("../layout/layout.dart");
 
 #source("src/View.dart");

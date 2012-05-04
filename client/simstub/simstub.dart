@@ -9,7 +9,7 @@
 #import("../app/app.dart");
 #import("../util/util.dart");
 #import("../view/view.dart");
-#import("../viewimpl/viewimpl.dart");
+#import("../html/html.dart");
 #import("../simcomm/simcomm.dart");
 
 #source("src/SimulatorStub.dart");
