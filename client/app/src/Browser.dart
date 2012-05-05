@@ -37,7 +37,11 @@ class Browser {
 	/** Whether it is running on Android. */
 	bool android = false;
 
-	/** Whehter it is running on a mobile device. */
+	/** Whehter it is running on a mobile device.
+	 * By mobile we mean the browser takes the full screen and non-sizable.
+	 * If false, the browser is assumed to run on a desktop and
+	 * it can be resized by the user.
+	 */
 	bool mobile = false;
 
 	/** The webkit's version if this is a webkit-based browser, or null
