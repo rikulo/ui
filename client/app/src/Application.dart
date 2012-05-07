@@ -21,7 +21,7 @@ class Application {
 
 	Application([String name=""]) {
 		this.name = name;
-		application = this;
+		_app = this;
 
 		this.inSimulator = document.query("#v-simulator") !== null;
 
@@ -98,4 +98,9 @@ class Application {
  * <p>Notice that you must initialize your custom appliction, before instantiating
  * your first activity.
  */
-Application application; //initialized by Activity
+Application get application() { //initialized by Activity
+	if (_app === null)
+		_app = new Application();
+	return _app;
+}
+Application _app;

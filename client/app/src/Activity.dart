@@ -11,8 +11,7 @@ class Activity {
 	View _rootView;
 
 	Activity() {
-		if (application == null)
-			new Application();
+		_title = application.name; //also force "get application()" to be called
 	}
 
 	/** Returns the root view.
@@ -35,7 +34,7 @@ class Activity {
 		}
 	}
 
-	/** Start the activity.
+	/** Starts the activity.
 	 */
 	void run([String nodeId="v-main"]) {
 		if (activity !== null) //TODO: switching activity
