@@ -23,6 +23,7 @@ abstract class _ScrollerImpl implements Scroller {
 		return new _Tx3dScroller(node, dir);
 		//FUTURE: to support non-touch browser, we can introduce factory
 		//to use _owner.parent.style.overflow = "auto";
+		//Or, make the scrollbar visible when mouseover
 	}
 }
 

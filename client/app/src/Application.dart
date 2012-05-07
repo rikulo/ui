@@ -19,12 +19,11 @@ class Application {
 	ReadyCallback _readyCB;
 	int _uuid;
 
-	Application([String name="", bool inSimulator]) {
+	Application([String name=""]) {
 		this.name = name;
 		application = this;
 
-		this.inSimulator = inSimulator !== null ?
-			 inSimulator: document.query("#v-simulator") !== null;
+		this.inSimulator = document.query("#v-simulator") !== null;
 
 		if (browser === null)
 			browser = new Browser();
@@ -32,11 +31,6 @@ class Application {
 			viewConfig = new ViewConfig();
 		if (layoutManager == null)
 			layoutManager = new LayoutManager();
-
-		if (this.inSimulator) {
-			browser.mobile = true; //simulate a mobile device
-			new SimulatorStub(); //after browser has been initialized
-		}
 
 		onCreate_();
 	}
