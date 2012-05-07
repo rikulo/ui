@@ -128,6 +128,6 @@ class Simulator extends Activity {
 Simulator simulator;
 
 void main() {
-	new Application(name: "Simulator", inSimulator: false);
+	new Application(name: "Simulator", inSimulator: true);
 	new Simulator().run(nodeId: "v-dashboard");
 }

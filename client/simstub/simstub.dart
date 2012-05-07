@@ -11,5 +11,6 @@
 #import("../view/view.dart");
 #import("../viewimpl/viewimpl.dart");
 #import("../simcomm/simcomm.dart");
+#import("../device/device.dart");
 
 #source("src/SimulatorStub.dart");

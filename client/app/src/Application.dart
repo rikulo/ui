@@ -21,7 +21,15 @@ class Application {
 
 		this.inSimulator = inSimulator !== null ?
 			 inSimulator: document.query("#v-simulator") !== null;
-
+		if (device === null) {
+			if (this.inSimulator) {
+print("new SimulatorDevice");       
+				device = new SimulatorDevice();
+			} else {
+print("new CordovaDevice");			  
+				device = new CordovaDevice();
+			}
+		}
 		if (browser === null)
 			browser = new Browser();
 		if (viewConfig === null)
@@ -70,3 +78,7 @@ class Application {
  * your first activity.
  */
 Application application; //initialized by Activity
+
+/** The current device.
+ */
+Device device; //singleton device

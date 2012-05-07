@@ -7,6 +7,9 @@
 
 #import("../../client/util/util.dart");
 #import("../../client/app/app.dart");
+#import("../../client/event/event.dart");
+#import("../../client/device/device.dart");
+#import("../../client/deviceimpl/deviceimpl.dart");
 #import("../../client/view/view.dart");
 #import("../../client/viewimpl/viewimpl.dart");
 #import("../../client/simcomm/simcomm.dart");
@@ -14,4 +17,6 @@
 #import("../dashboard/dashboard.dart");
 #import("../service/service.dart");
 
+#source("src/SimulatorAccelerometer.dart");
+#source("src/SimulatorDevice.dart");
 #source("src/Simulator.dart"); //the main program

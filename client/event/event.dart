@@ -10,3 +10,6 @@
 #source("src/ViewEvent.dart");
 #source("src/ViewEvents.dart");
 #source("src/CheckEvent.dart");
+#source("src/DeviceEvent.dart");
+#source("src/DeviceEvents.dart");
+#source("src/AccelerationEvent.dart");
