@@ -11,10 +11,29 @@ class DeclarationImpl implements Declaration {
 	DeclarationImpl(): _props = new Map();
 
 	String get text() {
-		throw const UiException("TODO");
+		final StringBuffer sb = new StringBuffer();
+		for (final String key in _props.getKeys())
+			sb.add(key).add(':').add(_props[key]).add(';');
+		return sb.toString();
 	}
 	void set text(String text) {
-		throw const UiException("TODO");
+		_props.clear();
+
+		for (String pair in text.split(';')) {
+			pair = pair.trim();
+			if (pair.isEmpty())
+				continue;
+			final int j = pair.indexOf(':');
+			if (j > 0) {
+				final String key = pair.substring(0, j).trim();
+				final String value = pair.substring(j + 1).trim();
+				if (!key.isEmpty()) {
+					setProperty(key, value);
+					continue;
+				}
+			}
+			throw new UiException("Unknown declaration: ${pair}");
+		}
 	}
 
 	/** Returns a collection of properties that are assigned with

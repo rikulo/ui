@@ -48,7 +48,7 @@ class FreeLayout implements Layout {
 	}
 	static int _initSize(String profile, AsInt current) {
 		final LayoutAmountInfo szinf = new LayoutAmountInfo(profile);
-		final int v = szinf.type == LayoutAmountInfo.FIXED ? szinf.value: current();
+		final int v = szinf.type == LayoutAmountType.FIXED ? szinf.value: current();
 		return v != null ? v: null;
 	}
 	void layout(MeasureContext mctx, View view) {

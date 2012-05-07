@@ -50,7 +50,7 @@ class View implements EventTarget {
 	Element _node;
 
 	int _left = 0, _top = 0, _width, _height;
-	Offset _scrlofs, _innerofs; //rarely used (so saving memory)
+	Offset _innerofs; //rarely used (so saving memory)
 	ProfileDeclaration _profile;
 	LayoutDeclaration _layout;
 
@@ -98,9 +98,21 @@ class View implements EventTarget {
 		}
 	}
 	/** Searches and returns the first view that matches the given selector.
+	 * <p>Notice that, in additions to CSS selector, it also supports
+	 * "parent" for identifying the parent, "spaceOwner" for the space owner.
+	 * <p>It returns null if selector is null or empty.
 	 */
 	View query(String selector) {
-		//TODO
+		switch (selector) {
+			case null: case "": return null;
+			case "parent": return parent;
+			case "spaceOwner":
+			  var so = spaceOwner;
+			  return so is View ? so: null;
+		}
+		//TODO: support CSS selector
+		if (selector.startsWith('#'))
+			return getFellow(selector.substring(1));
 	}
 	/** Searches and returns all views that matches the selector.
 	 */
@@ -456,6 +468,31 @@ class View implements EventTarget {
 	 * Please refer to the viewport example for a sample implementation.
 	 */
 	Element get innerNode() => node;
+	/** Adjusts the left, top, width, and/or height of the innerNode.
+	 * <p>Default: adjust it based [innerWidth], [innerHeight], and [innerSpacing_].
+	 * <p>If the subclass uses the static position and percentage to let the
+	 * browser adjust the offset and dimensions automatically, it can
+	 * override this method to do nothing (for better performance).
+	 * [ScrollView] is a typical example.
+	 */
+	void adjustInnerNode_([bool left=false, bool top=false, bool width=false, bool height=false]) {
+		final Element n = node, inner = innerNode;
+		if (inner !== n) {
+			//sync innerNode's positon and size
+			if (left)
+				inner.style.left = StringUtil.px(innerLeft);
+			if (top)
+				inner.style.top = StringUtil.px(innerTop);
+			if (width) {
+				int v = new DomQuery(n).innerWidth - innerSpacing_.width;
+				inner.style.width = StringUtil.px(v > 0 ? v: 0);
+			}
+			if (height) {
+				int v = new DomQuery(n).innerHeight - innerSpacing_.height;
+				inner.style.height = StringUtil.px(v > 0 ? v: 0);
+			}
+		}
+	}
 
 	/** Adds this view to the document (i.e., the screen that the user interacts with).
 	 * all of its descendant views are added too.
@@ -545,22 +582,14 @@ class View implements EventTarget {
 	void enterDocument_() {
 		_inDoc = true;
 
-		final Element n = node, inner = innerNode;
-		if (inner !== n) {
-			//sync innerNode's positon and size
-			inner.style.left = StringUtil.px(innerLeft);
-			inner.style.top = StringUtil.px(innerTop);
-			int v = new DomQuery(n).innerWidth - innerSpacing_.width;
-			inner.style.width = StringUtil.px(v > 0 ? v: 0);
-			v = new DomQuery(n).innerHeight - innerSpacing_.height;
-			inner.style.height = StringUtil.px(v > 0 ? v: 0);
-		}
+		adjustInnerNode_(true, true, true, true);
 
 		for (View child = firstChild; child != null; child = child.nextSibling) {
 			child.enterDocument_();
 		}
 
 		//Listen the DOM element if necessary
+		final Element n = node;
 		if (_evlInfo !== null && _evlInfo.listeners !== null) {
 			final Map<String, List<EventListener>> listeners = _evlInfo.listeners;
 			for (final String type in listeners.getKeys()) {
@@ -728,35 +757,6 @@ class View implements EventTarget {
 			n.style.top = StringUtil.px(top);
 	}
 
-	/** Returns the left position of this view relative to its parent.
-	 * <p>Default: 0
-	 */
-	int get scrollLeft() => _scrlofs !== null ? _scrlofs.left: 0;
-	/** Sets the left position of this view relative to its parent.
-	 */
-	void set scrollLeft(int left) {
-		if (_scrlofs !== null) _scrlofs.left = left;
-		else _scrlofs = new Offset(left, 0);
-
-		final Element n = innerNode;
-		if (n !== null)
-			n.$dom_scrollLeft = left;
-	}
-	/** Returns the top position of this view relative to its parent.
-	 * <p>Default: 0
-	 */
-	int get scrollTop() => _scrlofs !== null ? _scrlofs.top: 0;
-	/** Sets the top position of this view relative to its parent.
-	 */
-	void set scrollTop(int top) {
-		if (_scrlofs !== null) _scrlofs.top = top;
-		else _scrlofs = new Offset(top, 0);
-
-		final Element n = innerNode;
-		if (n !== null)
-			n.$dom_scrollTop = top;
-	}
-
 	/** Returns the width of this view.
 	 * <p>Default: null (up to the system).
 	 * <p>To get the real width on the document, use [outerWidth].
@@ -771,11 +771,7 @@ class View implements EventTarget {
 		if (n !== null) {
 			n.style.width = StringUtil.px(width);
 
-			final Element inner = innerNode;
-			if (inner !== n) {
-				final int v = new DomQuery(n).innerWidth - innerSpacing_.width;
-				inner.style.width = StringUtil.px(v > 0 ? v: 0);
-			}
+			adjustInnerNode_(width: true);
 		}
 	}
 	/** Returns the height of this view.
@@ -792,11 +788,7 @@ class View implements EventTarget {
 		if (n !== null) {
 			n.style.height = StringUtil.px(height);
 
-			final Element inner = innerNode;
-			if (inner !== n) {
-				final int v = new DomQuery(n).innerHeight - innerSpacing_.height;
-				inner.style.height = StringUtil.px(v > 0 ? v: 0);
-			}
+			adjustInnerNode_(height: true);
 		}
 	}
 
@@ -820,11 +812,7 @@ class View implements EventTarget {
 		if (_innerofs !== null) _innerofs.left = left;
 		else _innerofs = new Offset(left, 0);
 
-		final Element n = innerNode;
-		if (n != null) {
-			if (n === node) throw const UiException("No inner element");
-			n.style.left = StringUtil.px(left);
-		}
+		adjustInnerNode_(left: true);
 	}
 	/** Returns the top offset of the origin of the child's coordinate system.
 	 * <p>Default: throws [UiException].
@@ -838,11 +826,7 @@ class View implements EventTarget {
 		if (_innerofs !== null) _innerofs.top = top;
 		else _innerofs = new Offset(0, top);
 
-		final Element n = innerNode;
-		if (n != null) {
-			if (n === node) throw const UiException("No inner element");
-			n.style.top = StringUtil.px(top);
-		}
+		adjustInnerNode_(top: true);
 	}
 	/** Returns the spacing between the inner element and the border.
 	 * <p>Default: <code>new Size(innerLeft, innerTop)</code>

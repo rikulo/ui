@@ -12,15 +12,11 @@ class SimulatorDevice implements Device {
 	String version = "1.0"; //operating system version of this device
 	String uuid = "1234567890"; //uuid of this device
 
-	bool ready = true; //indicate whether the device is ready for access
-
+	ThenCallback readyFunction;
+	
 	Accelerometer accelerometer;
 	
 	SimulatorDevice() {
 		accelerometer = new SimulatorAccelerometer();
 	}
-	void runOnReady(Function runFn, String nodeId) {
-		runFn(nodeId);
-	}
-	Function deviceReadyFunction; //never used
 }

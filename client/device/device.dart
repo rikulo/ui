@@ -7,6 +7,7 @@
 #import("dart:html");
 #import("dart:json");
 
+#import("../app/app.dart");
 #import("../event/event.dart");
 
 #source("src/Accelerometer.dart");

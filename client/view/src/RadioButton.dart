@@ -21,8 +21,8 @@ class RadioButton extends CheckBox {
 	RadioGroup _group;
 
 	RadioButton([String text="", String html="",
-	bool checked=false, bool disabled=false, bool autofocus=false]):
-	super(text, html, checked, disabled, autofocus) {
+	bool checked=false, bool disabled=false, bool autoFocus=false]):
+	super(text, html, checked, disabled, autoFocus) {
 		vclass = "v-RadioButton";
 	}
 

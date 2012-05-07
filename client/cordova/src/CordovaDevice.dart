@@ -12,34 +12,37 @@ class CordovaDevice implements Device {
 	String get version() {_getVersion();} //operating system version of this device
 	String get uuid() {_getUuid();} //uuid of this device
 
-	bool ready; //indicate whether the device is ready for access
+	ThenCallback readyFunction;
+	
+	bool _ready; //indicate whether the device is ready for access
 
 	Accelerometer accelerometer;
-	Function deviceReadyFunction;
 	
 	CordovaDevice() {
 		accelerometer = new CordovaAccelerometer();
+		application.addReadyCallback((then) {
+			if (_ready) {
+				then();
+			} else {
+				_doUntilReady(then);
+			}
+		});
 	}
 	
-	void _initCordova() native "document.addEventListener('deviceready', onDeviceReady, false);";
+	void _doUntilReady(ThenCallback then) {
+		var f = _onDeviceReady; //avoid frogc tree shaking
+		readyFunction = () {_ready = true; then();};
+		_initCordova();
+	}
+	void _initCordova() native "document.addEventListener('deviceready', _onDeviceReady, false);";
 	void _getName() native "return device.name;"; //name of this device
 	void _getCordovaVersion() native "return device.cordova;"; //version of Cordova running on the device
 	void _getPlatform() native "return device.platform;"; //operating system name of this device
 	void _getVersion() native "return device.version;"; //operating system version of this device
-	void _getUuid() native "return device.uuid;"; //uuid of this device
-	
-	void runOnReady(Function runFn, String nodeId) {
-print("runOnReady()");
-		var f = onDeviceReady; //avoid frogc tree-shaking
-		var $runFn = runFn;
-		var $nodeId = nodeId;
-		deviceReadyFunction = (() => $runFn($nodeId));
-		_initCordova(); //register cordova deviceready event
-	}
+	void _getUuid() native "return device.uuid;"; //uuid of this device	
 }
 
-Function onDeviceReady() {
-print("onDeviceReady()");
-	if (device.deviceReadyFunction !== null) 
-		device.deviceReadyFunction();
+Function _onDeviceReady() {
+print("_onDeviceReady()");
+	device.readyFunction();
 }

@@ -58,7 +58,7 @@ class Simulator extends Activity {
 		_setSimulatedSize(width, height, horizontal);
 		_syncDashboardSize();
 
-		simulatorQueue.send({'name': 'setSize', 'orient': horizontal});
+		simulatorQueue.send(new SimulatorMessage('setSize', {'orient': horizontal}));
 	}
 	/** Called when the Home button was clicked.
 	 */

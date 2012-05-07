@@ -5,7 +5,7 @@
 
 #import("dart:html");
 #import('../../client/view/view.dart');
-#import('../../client/viewimpl/viewimpl.dart');
+#import("../../client/html/html.dart");
 
 /**
  * A view port that demostrates how to use [View.innerLeft]

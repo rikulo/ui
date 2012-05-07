@@ -22,6 +22,28 @@ class StringUtil {
 		return new String.fromCharCodes(dst);
 	}
 
+	/** Return a string representation of the integer argument in base 16.
+	 * <p>[digits] specifies how many digits to generate at least.
+	 * If non-positive, it is ignored (i.e., any number is OK).
+	 */
+	static String toHexString(num value, [int digits=0]) {
+		_init();
+		final List<int> codes = new List();
+		int val = value.toInt();
+		if (val < 0) val = (0xffffffff + val) + 1;
+		while (val > 0) {
+			int cc = val & 0xf;
+			val >>= 4;
+			if (cc < 10) cc += _CC_0;
+			else cc += _CC_a - 10;
+			codes.insertRange(0, 1, cc);
+		}
+		
+		if ((val = digits - codes.length) > 0)
+			codes.insertRange(0, val, _CC_0);
+		return codes.isEmpty() ? "0": new String.fromCharCodes(codes);
+	}
+
 	/**
 	 * Returns whether the character is according to its opts.
 	 * @param char cc the character
@@ -64,12 +86,7 @@ class StringUtil {
 	 */
 	static bool isChar(String cc, [bool digit=false, bool upper=false, bool lower=false,
 	bool whitespace=false, String match=null]) {
-		//TODO: remove them if Dart supports non-constant final
-		if (_CC_0 == null) {
-			_CC_0 = '0'.charCodeAt(0); _CC_9 = _CC_0 + 9;
-			_CC_A = 'A'.charCodeAt(0); _CC_Z = _CC_A + 25;
-			_CC_a = 'a'.charCodeAt(0); _CC_z = _CC_a + 25;
-		}
+		_init();
 
 		int v = cc.isEmpty() ? 0: cc.charCodeAt(0);
 		return (digit && v >= _CC_0 && v <= _CC_9)
@@ -77,6 +94,14 @@ class StringUtil {
 		|| (lower && v >= _CC_a && v <= _CC_z)
 		|| (whitespace && (cc == ' ' || cc == '\t' || cc == '\n' || cc == '\r'))
 		|| (match != null && match.indexOf(cc) >= 0);
+	}
+	static void _init() {
+		//TODO: remove them if Dart supports non-constant final
+		if (_CC_0 == null) {
+			_CC_0 = '0'.charCodeAt(0); _CC_9 = _CC_0 + 9;
+			_CC_A = 'A'.charCodeAt(0); _CC_Z = _CC_A + 25;
+			_CC_a = 'a'.charCodeAt(0); _CC_z = _CC_a + 25;
+		}
 	}
 	/** TODO: use intializer below when Dart supports non-constant final
 	final int _CC_0 = '0'.charCodeAt(0), _CC_9 = _CC_0 + 9,
@@ -196,10 +221,16 @@ class StringUtil {
 		return sb.toString();
 	}
 
-	/** Convert a number to a string appended with "px".
+	/** Converts a number to a string appended with "px".
 	 * Notice that it returns an empty string if val is null.
 	 */
 	static String px(num val) {
 		return val !== null ? "${val}px": "";
+	}
+	/** Converts to RGB.
+	 */
+	static String rgb(int red, int green, int blue, [num alpha]) {
+		return alpha !== null ? "rgba($red,$green,$blue,$alpha)":
+			"#${toHexString(red,2)}${toHexString(green,2)}${toHexString(blue,2)}";
 	}
 }

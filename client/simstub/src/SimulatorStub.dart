@@ -17,12 +17,12 @@ class SimulatorStub {
 	void _serve(SimulatorMessage message) {
 		final data = message["data"];
 		switch (message["name"]) {
-		case "setSize":
-			_setSize(message);
-			break;
+			case "setSize":
+				_setSize(data);
+				break;
 		}
 	}
-	void _setSize(SimulatorMessage message) {
+	void _setSize(Map<String, String> data) {
 		final DomQuery qcave = new DomQuery(document.query("#v-main"));
 		browser.size.width = qcave.innerWidth;
 		browser.size.height = qcave.innerHeight;

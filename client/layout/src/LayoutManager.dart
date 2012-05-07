@@ -41,6 +41,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	//@Override Layout
 	int measureHeight(MeasureContext mctx, View view)
 	=> _layoutOfView(view).measureHeight(mctx, view);
+
 	//@Override Layout
 	void layout(MeasureContext mctx, View view) {
 		if (mctx === null) {
@@ -51,6 +52,12 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 		} else {
 			_doLayout(mctx, view);
 		}
+	}
+	//@Override
+	void flush([View view=null]) {
+		//ignore flush if not empty (_onImageLoaded will invoke it later)
+		if (_imgWaits.isEmpty())
+			super.flush(view);
 	}
 
 	Layout _layoutOfView(View view) {
@@ -77,24 +84,24 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	void setWidthByProfile(MeasureContext mctx, View view, AsInt width, [AsInt defaultWidth]) {
 		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.width);
 		switch (amt.type) {
-		case LayoutAmountInfo.NONE:
-			if (defaultWidth !== null)
-				view.width = defaultWidth();
-			break;
-		case LayoutAmountInfo.FIXED:
-			view.width = amt.value;
-			break;
-		case LayoutAmountInfo.FLEX:
-			view.width = width();
-			break;
-		case LayoutAmountInfo.RATIO:
-			view.width = (width() * amt.value).round().toInt();
-			break;
-		case LayoutAmountInfo.CONTENT:
-			final int wd = view.measureWidth(mctx);
-			if (wd != null)
-				view.width = wd;
-			break;
+			case LayoutAmountType.NONE:
+				if (defaultWidth !== null)
+					view.width = defaultWidth();
+				break;
+			case LayoutAmountType.FIXED:
+				view.width = amt.value;
+				break;
+			case LayoutAmountType.FLEX:
+				view.width = width();
+				break;
+			case LayoutAmountType.RATIO:
+				view.width = (width() * amt.value).round().toInt();
+				break;
+			case LayoutAmountType.CONTENT:
+				final int wd = view.measureWidth(mctx);
+				if (wd != null)
+					view.width = wd;
+				break;
 		}
 	}
 	/** Set the height of the given view based on its profile.
@@ -104,24 +111,24 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	void setHeightByProfile(MeasureContext mctx, View view, AsInt height, [AsInt defaultHeight]) {
 		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.height);
 		switch (amt.type) {
-		case LayoutAmountInfo.NONE:
-			if (defaultHeight !== null)
-				view.height = defaultHeight();
-			break;
-		case LayoutAmountInfo.FIXED:
-			view.height = amt.value;
-			break;
-		case LayoutAmountInfo.FLEX:
-			view.height = height();
-			break;
-		case LayoutAmountInfo.RATIO:
-			view.height = (height() * amt.value).round().toInt();
-			break;
-		case LayoutAmountInfo.CONTENT:
-			final int hgh = view.measureHeight(mctx);
-			if (hgh != null)
-				view.height = hgh;
-			break;
+			case LayoutAmountType.NONE:
+				if (defaultHeight !== null)
+					view.height = defaultHeight();
+				break;
+			case LayoutAmountType.FIXED:
+				view.height = amt.value;
+				break;
+			case LayoutAmountType.FLEX:
+				view.height = height();
+				break;
+			case LayoutAmountType.RATIO:
+				view.height = (height() * amt.value).round().toInt();
+				break;
+			case LayoutAmountType.CONTENT:
+				final int hgh = view.measureHeight(mctx);
+				if (hgh != null)
+					view.height = hgh;
+				break;
 		}
 	}
 
@@ -208,12 +215,12 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	static int _amountOf(String profile, AsInt parentInner) {
 		final LayoutAmountInfo ai = new LayoutAmountInfo(profile);
 		switch (ai.type) {
-		case LayoutAmountInfo.FIXED:
-			return ai.value;
-		case LayoutAmountInfo.FLEX:
-			return parentInner();
-		case LayoutAmountInfo.RATIO:
-			return (parentInner() * ai.value).round().toInt();
+			case LayoutAmountType.FIXED:
+				return ai.value;
+			case LayoutAmountType.FLEX:
+				return parentInner();
+			case LayoutAmountType.RATIO:
+				return (parentInner() * ai.value).round().toInt();
 		}
 		return null;
 	}
@@ -221,8 +228,8 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	/** Wait until the given image is loaded.
 	 * If the width and height of the image is not known in advance, this method
 	 * shall be called to make the layout manager wait until the image is loaded.
-	 * <p>Currently, [Image] will invoke this method if the width or height of
-	 * the image is not specified.
+	 * <p>Currently, [Image] will invoke this method automatically
+	 * if the width or height of the image is not specified.
 	 */
 	void waitImageLoaded(String imgURI) {
 		if (!_imgWaits.contains(imgURI)) {

@@ -11,7 +11,7 @@
 #import("../../client/device/device.dart");
 #import("../../client/deviceimpl/deviceimpl.dart");
 #import("../../client/view/view.dart");
-#import("../../client/viewimpl/viewimpl.dart");
+#import("../../client/html/html.dart");
 #import("../../client/simcomm/simcomm.dart");
 
 #import("../dashboard/dashboard.dart");

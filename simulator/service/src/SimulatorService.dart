@@ -15,9 +15,9 @@ class SimulatorService {
 	void _serve(SimulatorMessage message) {
 		final data = message["data"];
 		switch (message["name"]) {
-		case "log":
-			_log(data);
-			break;
+			case "log":
+				_log(data);
+				break;
 		}
 	}
 
