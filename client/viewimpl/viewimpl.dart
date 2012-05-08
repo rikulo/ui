@@ -6,6 +6,7 @@
 #import("dart:html");
 
 #import("../app/app.dart");
+#import("../html/html.dart");
 #import("../view/view.dart");
 #import("../util/util.dart");
 

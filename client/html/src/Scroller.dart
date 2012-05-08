@@ -32,12 +32,30 @@ abstract class _ScrollerImpl implements Scroller {
 class _Tx3dScroller implements _ScrollerImpl {
 	final Element _owner;
 	Dir _dir;
+	EventListener _touchStart, _touchMove, _touchEnd;
 
 	_Tx3dScroller(Element this._owner, Dir this._dir) {
+		_listen();
 	}
 
 	Element get owner() => _owner;
 
 	void destroy() {
+		_unlisten();
+	}
+
+	void _listen() {
+		_owner.on.touchStart.add(_touchStart = (TouchEvent event) {
+			event.preventDefault();
+		});
+		_owner.on.touchMove.add(_touchMove = (TouchEvent event) {
+			event.preventDefault();
+			print("${event.targetTouches[0].clientX}");
+		});
+		_owner.on.touchEnd.add(_touchEnd = (TouchEvent event) {
+			event.preventDefault();
+		});
+	}
+	void _unlisten() {
 	}
 }

@@ -75,15 +75,16 @@ class Application {
 	int get uuid() {
 		if (_uuid === null) {
 			final Element body = document.body;
-			if (body !== null) {
-				String sval = body.$dom_getAttribute(_APP_COUNT);
-				if (sval !== null) {
-					_uuid = Math.parseInt(sval);
-					body.$dom_setAttribute(_APP_COUNT, (_uuid + 1).toString());
-				} else {
-					_uuid = 0;
-					body.$dom_setAttribute(_APP_COUNT, "1");
-				}
+			if (body === null)
+				throw const UiException("document not ready yet");
+
+			String sval = body.$dom_getAttribute(_APP_COUNT);
+			if (sval !== null) {
+				_uuid = Math.parseInt(sval);
+				body.$dom_setAttribute(_APP_COUNT, (_uuid + 1).toString());
+			} else {
+				_uuid = 0;
+				body.$dom_setAttribute(_APP_COUNT, "1");
 			}
 		}
 		return _uuid;
