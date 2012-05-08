@@ -13,5 +13,4 @@
 #import("../layout/layout.dart");
 
 #source("src/Activity.dart");
-#source("src/Browser.dart");
 #source("src/Application.dart");

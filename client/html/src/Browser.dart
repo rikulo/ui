@@ -118,14 +118,9 @@ class Browser {
 			version = 1.0;
 		}
 
-		size = new Size(0, 0);
-		_updateSize();
-	}
-	void _updateSize() {
 		final Element caveNode = document.query("#v-main");
 		final DomQuery qcave = new DomQuery(caveNode !== null ? caveNode: window);
-		size.width = qcave.innerWidth;
-		size.height = qcave.innerHeight;
+		size = new Size(qcave.innerWidth, qcave.innerHeight);
 	}
 	static double _versionOf(String version, [String separator='.']) {
 		int j = version.indexOf(separator);

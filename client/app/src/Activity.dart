@@ -64,18 +64,27 @@ class Activity {
 	/** Initializes the browser window, such as registering the events.
 	 */
 	void mount_() {
-		window.on[browser.mobile ? 'deviceOrientation': 'resize'].add((event) {
-			browser._updateSize();
-
-			//Note: we have to check if the size is changed, since deviceOrientation
-			//will be always fired when the listener is added.
-			if (rootView !== null && (rootView.width != browser.size.width
-			|| rootView.height != browser.size.height)) {
-				rootView.width = browser.size.width;
-				rootView.height = browser.size.height;
-				rootView.requestLayout();
-			}
+		window.on[browser.mobile || application.inSimulator ? 'deviceOrientation': 'resize'].add((event) {
+			updateSize();
 		});
+	}
+	/** Handles resizing, including device's orientation is changed.
+	 * It is called automatically, so the application rarely need to call it.
+	 */
+	void updateSize() {
+		final Element caveNode = document.query("#v-main");
+		final DomQuery qcave = new DomQuery(caveNode !== null ? caveNode: window);
+		browser.size.width = qcave.innerWidth;
+		browser.size.height = qcave.innerHeight;
+
+		//Note: we have to check if the size is changed, since deviceOrientation
+		//will be always fired when the listener is added.
+		if (rootView !== null && (rootView.width != browser.size.width
+		|| rootView.height != browser.size.height)) {
+			rootView.width = browser.size.width;
+			rootView.height = browser.size.height;
+			rootView.requestLayout();
+		}
 	}
 
 	/** Returns the title of this activity.
