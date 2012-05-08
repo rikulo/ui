@@ -4,7 +4,7 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 
-#import('viewport.dart');
+#import('Viewport.dart');
 
 class ViewportDemo extends Activity {
 

@@ -35,6 +35,7 @@ class _Tx3dScroller implements _ScrollerImpl {
 	EventListener _touchStart, _touchMove, _touchEnd;
 
 	_Tx3dScroller(Element this._owner, Dir this._dir) {
+		_initListeners();
 		_listen();
 	}
 
@@ -44,18 +45,36 @@ class _Tx3dScroller implements _ScrollerImpl {
 		_unlisten();
 	}
 
+	void _initListeners() {
+		if (browser.touch) {
+			_touchStart = (TouchEvent event) {
+				event.preventDefault();
+			};
+			_touchMove = (TouchEvent event) {
+				event.preventDefault();
+			};
+			_touchEnd = (TouchEvent event) {
+				event.preventDefault();
+			};
+		} else {
+		}
+	}
 	void _listen() {
-		_owner.on.touchStart.add(_touchStart = (TouchEvent event) {
-			event.preventDefault();
-		});
-		_owner.on.touchMove.add(_touchMove = (TouchEvent event) {
-			event.preventDefault();
-			print("${event.targetTouches[0].clientX}");
-		});
-		_owner.on.touchEnd.add(_touchEnd = (TouchEvent event) {
-			event.preventDefault();
-		});
+		final Events on = _owner.on;
+		if (browser.touch) {
+			on.touchStart.add(_touchStart);
+			on.touchMove.add(_touchMove);
+			on.touchEnd.add(_touchEnd);
+		} else {
+		}
 	}
 	void _unlisten() {
+		final Events on = _owner.on;
+		if (browser.touch) {
+			on.touchStart.add(_touchStart);
+			on.touchMove.add(_touchMove);
+			on.touchEnd.add(_touchEnd);
+		} else {
+		}
 	}
 }

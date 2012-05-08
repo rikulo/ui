@@ -43,6 +43,9 @@ class Browser {
 	 * it can be resized by the user.
 	 */
 	bool mobile = false;
+	/** Whether it supports the touch events.
+	 */
+	bool touch = false;
 
 	/** The webkit's version if this is a webkit-based browser, or null
 	 * if it is not webkit-based.
@@ -95,7 +98,7 @@ class Browser {
 
 				Match m = _randroid.firstMatch(ua);
 				if (m !== null) {
-					mobile = android = true;
+					touch = mobile = android = true;
 					androidVersion = _versionOf(m.group(1));
 				}
 			} else if (bm(_rsafari)) {
@@ -103,13 +106,13 @@ class Browser {
 
 				Match m = _rios.firstMatch(ua);
 				if (m !== null) {
-					mobile = ios = true;
+					touch = mobile = ios = true;
 					iosVersion = _versionOf(m.group(1), '_');
 				}
 			}
 		} else if (bm(_rmsie)) {
 			msie = true;
-			mobile = ua.indexOf("IEMobile") >= 0;
+			touch = mobile = ua.indexOf("IEMobile") >= 0;
 		} else if (ua.indexOf("compatible") < 0 && bm(_rmozilla)) {
 			name = "firefox";
 			firefox = true;
