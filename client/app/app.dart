@@ -11,10 +11,6 @@
 #import("../viewimpl/viewimpl.dart");
 #import("../html/html.dart");
 #import("../layout/layout.dart");
-#import("../simstub/simstub.dart");
-#import("../device/device.dart");
-#import("../cordova/cordova.dart");
-#import("../../simulator/main/main.dart");
 
 #source("src/Activity.dart");
 #source("src/Browser.dart");

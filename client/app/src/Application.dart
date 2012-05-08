@@ -19,32 +19,18 @@ class Application {
 	ReadyCallback _readyCB;
 	int _uuid;
 
-	Application([String name="", bool inSimulator]) {
+	Application([String name=""]) {
 		this.name = name;
-		application = this;
+		_app = this;
 
-		this.inSimulator = inSimulator !== null ?
-			 inSimulator: document.query("#v-simulator") !== null;
-		if (device === null) {
-			if (this.inSimulator) {
-print("new SimulatorDevice");       
-				device = new SimulatorDevice();
-			} else {
-print("new CordovaDevice");			  
-				device = new CordovaDevice();
-			}
-		}
+		this.inSimulator = document.query("#v-simulator") !== null;
+
 		if (browser === null)
 			browser = new Browser();
 		if (viewConfig === null)
 			viewConfig = new ViewConfig();
 		if (layoutManager == null)
 			layoutManager = new LayoutManager();
-
-		if (this.inSimulator) {
-			browser.mobile = true; //simulate a mobile device
-			new SimulatorStub(); //after browser has been initialized
-		}
 
 		onCreate_();
 	}
@@ -112,8 +98,17 @@ print("new CordovaDevice");
  * <p>Notice that you must initialize your custom appliction, before instantiating
  * your first activity.
  */
+<<<<<<< HEAD
 Application application; //initialized by Activity
 
 /** The current device.
  */
 Device device; //singleton device
+=======
+Application get application() { //initialized by Activity
+	if (_app === null)
+		_app = new Application();
+	return _app;
+}
+Application _app;
+>>>>>>> master
