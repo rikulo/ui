@@ -98,17 +98,13 @@ class Application {
  * <p>Notice that you must initialize your custom appliction, before instantiating
  * your first activity.
  */
-<<<<<<< HEAD
-Application application; //initialized by Activity
-
-/** The current device.
- */
-Device device; //singleton device
-=======
 Application get application() { //initialized by Activity
 	if (_app === null)
 		_app = new Application();
 	return _app;
 }
 Application _app;
->>>>>>> master
+
+/** The current device.
+ */
+Device device; //singleton device
