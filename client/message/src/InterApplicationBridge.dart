@@ -65,7 +65,7 @@ class InterApplicationBridge<Message> {
 				if (queue.uuid != queId) { //skip the sending queue to avoid dead loop
 					_ignoreMessage = true; //avoid dead loop
 					try {
-						queue.send(message);
+						queue.publish(message);
 					} finally {
 						_ignoreMessage = false;
 					}
@@ -97,13 +97,13 @@ class InterApplicationBridge<Message> {
 	 * the given message queue. In other words, the message will be forwarded
 	 * to other browser windows and/or other Dart applications.
 	 * <p>If [send] is true, this bridde will send the messages to
-	 * the given message queue. In other words, this bridge will add a listener
+	 * the given message queue. In other words, this bridge will subscribe a listener
 	 * to the browser window, and then forward the message received from
 	 * other windows to the message queue.
 	 */
 	void connect(MessageQueue queue, [bool receive=true, bool send=true]) {
 		if (receive) {
-			queue.add(_msgListener);
+			queue.subscribe(_msgListener);
 			_receives.add(queue);
 		}
 		if (send) {
@@ -121,7 +121,7 @@ class InterApplicationBridge<Message> {
 		if (receive) {
 			for (int j = _receives.length; --j >= 0;) {
 				if (_receives[j] == queue) {
-					queue.remove(_msgListener);
+					queue.unsubscribe(_msgListener);
 					_receives.removeRange(j, 1);
 					found = true;
 					break;
