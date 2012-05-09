@@ -29,10 +29,9 @@ class _Log {
 			final Element db = document.query("#v-dashboard");
 			if (db === null) { //not in simulator
 				_node = new Element.html('''
-	<div style="border:1px solid #332;background-color:#eec;overflow:auto;padding:3px;white-space:pre-wrap;font-size:11px;position:absolute;right:0px;bottom:0px;width:40%;height:30%"><div style="border:1px solid #553;padding:1px;position:absolute;right:0;cursor:pointer">X</div></div>
+	<div style="width:40%;height:30%;border:1px solid #332;background-color:#eed;overflow:auto;padding:3px;white-space:pre-wrap;font-size:11px;position:absolute;right:0px;bottom:0px"></div>
 		''');
 				document.body.nodes.add(_node);
-				_node.query("div").on.click.add((e) {_node.remove();});
 			} else { //running in simulator
 				_node = db.query(".v-logView");
 				if (_node === null) {
@@ -40,8 +39,14 @@ class _Log {
 					return false;
 				}
 			}
+			new HoldGesture(_node, _gestureAction());
 		}
 		return true;
+	}
+	HoldGestureAction _gestureAction() {
+		return () {
+			print("gesture called");
+		};
 	}
 	void _defer() {
 		window.setTimeout(_globalFlush, 100);

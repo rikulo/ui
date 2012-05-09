@@ -64,7 +64,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 		final String name = view.layout.type;
 		final Layout clayout = getLayout(name);
 		if (clayout == null)
-			throw new UiException("Unknown layout, ${name}");
+			throw new UIException("Unknown layout, ${name}");
 		return clayout;
 	}
 

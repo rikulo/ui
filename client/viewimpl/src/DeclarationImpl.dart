@@ -32,7 +32,7 @@ class DeclarationImpl implements Declaration {
 					continue;
 				}
 			}
-			throw new UiException("Unknown declaration: ${pair}");
+			throw new UIException("Unknown declaration: ${pair}");
 		}
 	}
 

@@ -29,7 +29,7 @@ class Activity {
 				root.height = prevroot.height;
 
 			if (prevroot.inDocument) {
-				throw const UiException("TODO");
+				throw const UIException("TODO");
 			}
 		}
 	}
@@ -38,7 +38,7 @@ class Activity {
 	 */
 	void run([String nodeId="v-main"]) {
 		if (activity !== null) //TODO: switching activity
-			throw const UiException("Only one activity is allowed");
+			throw const UIException("Only one activity is allowed");
 
 		activity = this;
 		mount_();

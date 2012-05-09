@@ -32,9 +32,9 @@ implements ProfileDeclaration {
 			if (view !== null
 			&& view.parent !== null && _owner.parent !== null //parent might not be assigned yet
 			&& view.parent !== _owner.parent)
-				throw new UiException("Only parent or sibling allowed for an anchor, not $view");
+				throw new UIException("Only parent or sibling allowed for an anchor, not $view");
 			if (view === _owner)
-				throw const UiException("The anchor can't be itself.");
+				throw const UIException("The anchor can't be itself.");
 			av = view.id.isEmpty() ? "": "#${view.id}";
 		}
 		setProperty("anchor", av);

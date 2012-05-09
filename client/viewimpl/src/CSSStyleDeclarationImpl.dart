@@ -2555,7 +2555,7 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		}
 		
 		if (_illnms.contains(propertyName))
-			throw new UiException("$propertyName not allowed. Please use View's API instead, such as left, width and hidden.");
+			throw new UIException("$propertyName not allowed. Please use View's API instead, such as left, width and hidden.");
 	}
 	//Illegal names (that are not allowed to access directly
 	static Set<String> _illnms;

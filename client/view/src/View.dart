@@ -158,14 +158,14 @@ class View implements EventTarget {
 	static void _checkIdSpaces(View view, String newId) {
 		var space = view.spaceOwner;
 		if (space.getFellow(newId) !== null)
-			throw new UiException("Not unique in the ID space of $space: $newId");
+			throw new UIException("Not unique in the ID space of $space: $newId");
 
 		//we have to check one level up if view is IdSpace (i.e., unique in two ID spaces)
 		View parent;
 		if (view is IdSpace && (parent = view.parent) != null) {
 			space = parent.spaceOwner;
 			if (space.getFellows(newId) !== null)
-				throw new UiException("Not unique in the ID space of $space: $newId");
+				throw new UIException("Not unique in the ID space of $space: $newId");
 		}
 	}
 	//Add the given view to the ID space
@@ -316,9 +316,9 @@ class View implements EventTarget {
 	 */
 	void insertBefore(View child, View beforeChild) {
 		if (isDescendantOf(child))
-			throw new UiException("$child is an ancestor of $this");
+			throw new UIException("$child is an ancestor of $this");
 		if (!isChildable_())
-			throw const UiException("No child allowed in Button");
+			throw const UIException("No child allowed in Button");
 
 		if (beforeChild !== null) {
 			if (beforeChild.parent !== this)
@@ -815,7 +815,7 @@ class View implements EventTarget {
 		adjustInnerNode_(left: true);
 	}
 	/** Returns the top offset of the origin of the child's coordinate system.
-	 * <p>Default: throws [UiException].
+	 * <p>Default: throws [UIException].
 	 * <p>Whether a view allows the developer to change the origin is up to the view's
 	 * spec. By default, it is not supported.
 	 * To support it, the view usually introduces an additional DIV to provide
@@ -1064,7 +1064,7 @@ class View implements EventTarget {
 	 */
 	View addEventListener(String type, EventListener listener, [bool useCapture = false]) {
 		if (listener == null)
-			throw const UiException("listener required");
+			throw const UIException("listener required");
 
 		final _EventListenerInfo ei = _initEventListenerInfo();
 		if (ei.listeners == null)

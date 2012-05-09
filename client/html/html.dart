@@ -11,4 +11,5 @@
 
 #source("src/Browser.dart");
 #source("src/DomQuery.dart");
+#source("src/HoldGesture.dart");
 #source("src/Scroller.dart");

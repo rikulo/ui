@@ -60,7 +60,7 @@ class _Tx3dScroller implements _ScrollerImpl {
 		}
 	}
 	void _listen() {
-		final Events on = _owner.on;
+		final ElementEvents on = owner.on;
 		if (browser.touch) {
 			on.touchStart.add(_touchStart);
 			on.touchMove.add(_touchMove);
@@ -69,11 +69,11 @@ class _Tx3dScroller implements _ScrollerImpl {
 		}
 	}
 	void _unlisten() {
-		final Events on = _owner.on;
+		final ElementEvents on = owner.on;
 		if (browser.touch) {
-			on.touchStart.add(_touchStart);
-			on.touchMove.add(_touchMove);
-			on.touchEnd.add(_touchEnd);
+			if (_touchStart !== null) on.touchStart.remove(_touchStart);
+			if (_touchMove !== null) on.touchMove.add(_touchMove);
+			if (_touchEnd !== null) on.touchEnd.add(_touchEnd);
 		} else {
 		}
 	}
