@@ -66,7 +66,7 @@ class RadioButton extends CheckBox {
 		assert(_checked); //it must be checked for radio button
 
 		final CheckEvent event = new CheckEvent(this, _checked);
-		dispatchEvent(event);
+		sendEvent(event);
 
 		final RadioGroup group = radioGroup;
 		if (group !== null) {
@@ -74,8 +74,8 @@ class RadioButton extends CheckBox {
 			group._updateSelected(this, _checked);
 
 			if (oldradio !== null)
-				oldradio.dispatchEvent(new CheckEvent(oldradio, !_checked));
-			group.dispatchEvent(event);
+				oldradio.sendEvent(new CheckEvent(oldradio, !_checked));
+			group.sendEvent(event);
 		}
 	}
 	//@Override

@@ -31,10 +31,16 @@ interface MessageQueue<Message> default _MessageQueueImpl<Message> {
 	 * This method returns true if the listener was added.
 	 */
 	bool unsubscribe(MessageListener listener, [MessageFilter filter]);
-	/** Publishes a message to this queue, such that
-	 * all listeners in this message queue will be notified.
+	/** Sends a message to this queue, such that
+	 * all subscribers in this message queue will be notified.
 	 */
-	void publish(Message message);
+	void send(Message message);
+	/** Posts a message to this queue.
+	 * Unlike [send], the subscribers will be invoked later.
+	 * In other words, this method returned immediately without waiting
+	 * any subscriber to be invoked.
+	 */
+	void post(Message message);
 }
 
 class _MessageQueueImpl<Message> implements MessageQueue<Message> {
@@ -71,13 +77,19 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
 		return false;
 	}
 	//@Override
-	void publish(Message message) {
+	void send(Message message) {
 		for (final _ListenerInfo info in _listenerInfos) {
 			if (info.filter === null || (message = info.filter(message)) !== null) {
 				info.listener(message);
 			}
 		}
 	}
+	//@Override
+	void post(Message message) {
+		window.setTimeout(() {send(message);}, 0);
+			//note: the order of messages is preserved across all message queues
+	}
+
 	String toString() => "MessageQueue($uuid)";
 }
 class _ListenerInfo {

@@ -291,7 +291,7 @@ class View implements EventTarget {
 	 * The application can listen <code>layout</code> for this event.
 	 */
 	void onLayout() {
-		dispatchEvent(new ViewEvent(this, "layout"));
+		sendEvent(new ViewEvent(this, "layout"));
 	}
 
 	/** Returns whether this view allows any child views.
@@ -599,14 +599,14 @@ class View implements EventTarget {
 			}
 		}
 
-		dispatchEvent(new ViewEvent(this, "enterDocument"));
+		sendEvent(new ViewEvent(this, "enterDocument"));
 	}
 	/** Callback when this view is detached from the document.
 	 * <p>Default: invoke [exitDocument_] for each child.
 	 * <p>Subclass shall call back this method if it overrides this method. 
 	 */
 	void exitDocument_() {
-		dispatchEvent(new ViewEvent(this, "exitDocument"));
+		sendEvent(new ViewEvent(this, "exitDocument"));
 
 		//Unlisten the DOM element if necessary
 		final Element n = node;
@@ -1056,13 +1056,12 @@ class View implements EventTarget {
 		if (ei.on === null)
 			ei.on = new ViewEvents(this);
 		return ei.on;
-
 	}
 	/** Adds an event listener.
 	 * <code>addEventListener("click", listener)</code> is the same as
 	 * <code>on.click.add(listener)</code>.
 	 */
-	View addEventListener(String type, EventListener listener, [bool useCapture = false]) {
+	void addEventListener(String type, EventListener listener) {
 		if (listener == null)
 			throw const UIException("listener required");
 
@@ -1073,40 +1072,44 @@ class View implements EventTarget {
 		bool first;
 		ei.listeners.putIfAbsent(type, () {
 			first = true;
-			return [listener];
-		});
+			return [];
+		}).add(listener);
 
 		Element n;
 		DomEventDispatcher disp;
 		if (first && (n = node) != null
 		&& (disp = getDomEventDispatcher_(type)) != null)
 			domListen_(n, type, disp);
-		return this;
 	}
 
 	/** Removes an event listener.
 	 * <code>addEventListener("click", listener)</code> is the same as
 	 * <code>on.click.remove(listener)</code>.
 	 */
-	View removeEventListener(String type, EventListener listener, [bool useCapture = false]) {
+	bool removeEventListener(String type, EventListener listener) {
 		List<EventListener> ls;
+		bool found = false;
 		if (_evlInfo !== null && _evlInfo.listeners !== null
 		&& (ls = _evlInfo.listeners[type]) != null) {
 			int j = ls.indexOf(listener);
 			Element n;
-			if (j >= 0)
+			if (j >= 0) {
+				found = true;
+
 				ls.removeRange(j, 1);
-			if (ls.isEmpty() && (n = node) != null
-			&& getDomEventDispatcher_(type) != null)
-				domUnlisten_(n, type);
+				if (ls.isEmpty() && (n = node) != null
+				&& getDomEventDispatcher_(type) != null)
+					domUnlisten_(n, type);
+			}
 		}
-		return this;
+		return found;
 	}
-	/** Dispatches an event to this view.
-	 * <p>Example: <code>view.dispatchEvent(new ViewEvent(target, "click"))</code>.
+	/** Sends an event to this view.
+	 * <p>Example: <code>view.sendEvent(new ViewEvent(target, "click"))</code>.
 	 * If the type parameter is not specified, it is assumed to be [ViewEvent.type].
+	 * <p>To broadcast an event, please use [broadcaster] instead.
 	 */
-	bool dispatchEvent(ViewEvent event, [String type]) {
+	bool sendEvent(ViewEvent event, [String type]) {
 		if (type == null)
 			type = event.type;
 
@@ -1124,6 +1127,16 @@ class View implements EventTarget {
 		}
 		return dispatched;
 	}
+	/** Posts an event to this view.
+	 * Unlike [sendEvent], [postEvent] puts the event in a queue and returns
+	 * immediately. The event will be handled later.
+	 */
+	void postEvent(ViewEvent event, [String type]) {
+		window.setTimeout(() {sendEvent(event, type);}, 0);
+			//note: the order of messages is preserved across all views (and message queues)
+			//CONSIDER if it is better to have a queue shared by views/message queues/broadcaster
+	}
+
 	/** Returns if there is any event listener registered to the given type.
 	 */
 	bool isEventListened(String type) {
@@ -1142,7 +1155,7 @@ class View implements EventTarget {
 			//example: click shall carry mouse position, change shall carry value
 			DomEventDispatcher disp = (View target) {
 				return (Event event) {
-					target.dispatchEvent(new ViewEvent<Object>.dom(target, event, type: type));
+					target.sendEvent(new ViewEvent<Object>.dom(target, event, type: type));
 				};
 			};
 			for (final String nm in
@@ -1216,15 +1229,17 @@ class View implements EventTarget {
 		return uuid.hashCode(); //uuid is immutiable once assigned
 	}
 
-  /** useless; always does nothing. */
+  /** useless; throws UIException. */
 	void $dom_addEventListener(String type, void listener(Event event), [bool useCapture]) {
+		throw const UIException("not available");
 	}
-  /** useless; always does nothing and returns false. */
+  /** useless; throws UIException. */
 	bool $dom_dispatchEvent(Event event) {
-	  return false;
+		throw const UIException("not available");
 	}
-  /** useless; always does nothing. */
+  /** useless; throws UIException. */
 	void $dom_removeEventListener(String type, void listener(Event event), [bool useCapture]) {
+		throw const UIException("not available");
 	}
 
 	String toString() => "View($uuid)";

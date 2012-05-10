@@ -65,7 +65,7 @@ class InterApplicationBridge<Message> {
 				if (queue.uuid != queId) { //skip the sending queue to avoid dead loop
 					_ignoreMessage = true; //avoid dead loop
 					try {
-						queue.publish(message);
+						queue.send(message);
 					} finally {
 						_ignoreMessage = false;
 					}
