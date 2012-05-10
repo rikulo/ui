@@ -1131,7 +1131,7 @@ class View implements EventTarget {
 		if (_evlInfo !== null && _evlInfo.listeners != null
 		&& (ls = _evlInfo.listeners[type]) != null) {
 			event.currentTarget = this;
-			for (final EventListener listener in ls) {
+			for (final EventListener listener in new List.from(ls)) { //we have to make a copy since the listener might change it
 				dispatched = true;
 				listener(event);
 				if (event.propagationStopped)

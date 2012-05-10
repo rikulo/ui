@@ -90,7 +90,7 @@ class _BroadcastListeners {
 		List<EventListener> ls;
 		bool dispatched = false;
 		if ((ls = _listeners[type]) != null) {
-			for (final EventListener listener in ls) {
+			for (final EventListener listener in new List.from(ls)) { //we have to make a copy since the listener might change it
 				dispatched = true;
 				listener(event);
 				if (event.propagationStopped)

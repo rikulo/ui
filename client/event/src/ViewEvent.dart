@@ -17,7 +17,7 @@ class ViewEvent<Data> implements Event {
 	final String _type;
 	Data _data;
 	final int _stamp;
-	bool _defPrevt = false, _propStop = true;
+	bool _defPrevt = false, _propStop = false;
 
 	ViewEvent(View target, String type, [Data data]):
 	_domEvt = null, _type = type, _stamp = new Date.now().value,

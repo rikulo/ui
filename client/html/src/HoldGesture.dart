@@ -4,7 +4,7 @@
 
 /** The action for the touch-and-hold gesture.
  */
-typedef void HoldGestureCallback(int x, int y);
+typedef void HoldGestureCallback(int pageX, int pageY);
 
 /**
  * A touch-and-hold gesture handler.
@@ -14,7 +14,7 @@ abstract class HoldGesture {
 	final int _dur;
 	final int _mov;
 	final HoldGestureCallback _start, _action;
-	int _x, _y;
+	int _pageX, _pageY;
 	int _timer;
 
 	factory HoldGesture(Element owner, HoldGestureCallback action,
@@ -56,15 +56,15 @@ abstract class HoldGesture {
 	abstract void _listen();
 	abstract void _unlisten();
 
-	void _touchStart(int x, int y) {
-		_x = x; _y = y;
+	void _touchStart(int pageX, int pageY) {
+		_pageX = pageX; _pageY = pageY;
 		_clear();
 		_timer = window.setTimeout(_call, duration);
 		if (_start !== null)
-			_start(x, y);
+			_start(pageX, pageY);
 	}
-	void _touchMove(int x, int y) {
-		if (x - _x > movement || y - _y > movement)
+	void _touchMove(int pageX, int pageY) {
+		if (pageX - _pageX > movement || pageY - _pageY > movement)
 			_clear();
 	}
 	void _touchEnd() {
@@ -72,7 +72,7 @@ abstract class HoldGesture {
 	}
 	void _call() {
 		_clear();
-		_action(_x, _y);
+		_action(_pageX, _pageY);
 	}
 	void _clear() {
 		if (_timer !== null) {
