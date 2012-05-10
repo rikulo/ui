@@ -56,6 +56,17 @@ class View implements EventTarget {
 
 	bool _hidden, _inDoc;
 
+	/** Returns the view of the given UUID.
+	 * <p>Notice that, if a view is not attached to the document, it won't
+	 * be returned
+	 * (i.e., it is considered as not found and <code>null</code> is returned).
+	 */
+//	static View getView(String uuid) => _views[uuid];
+//	static Map<String, View> _views = new Map();
+//Note supported because the memory overhead to maintain _views
+
+	/** Constructor.
+	 */
 	View() {
 		_vclass = "v-View";
 	}
@@ -581,6 +592,7 @@ class View implements EventTarget {
 	 */
 	void enterDocument_() {
 		_inDoc = true;
+//		_views[uuid] = this;
 
 		adjustInnerNode_(true, true, true, true);
 
@@ -622,6 +634,7 @@ class View implements EventTarget {
 			child.exitDocument_();
 		}
 
+//		_views.remove(uuid);
 		_inDoc = false;
 		_node = null; //as the last step since node might be called in exitDocument_
 	}

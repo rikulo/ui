@@ -60,9 +60,14 @@ class Activity {
 	/** Initializes the browser window, such as registering the events.
 	 */
 	void mount_() {
-		window.on[browser.mobile || application.inSimulator ? 'deviceOrientation': 'resize'].add((event) {
-			updateSize();
-		});
+		window.on[browser.mobile || application.inSimulator ? 'deviceOrientation': 'resize'].add(
+			(event) {
+				updateSize();
+			});
+		document.on[browser.touch ? 'touchStart': 'mouseDown'].add(
+			(event) {
+				broadcaster.sendEvent(new PopupEvent(event.target));
+			});
 	}
 	/** Handles resizing, including device's orientation is changed.
 	 * It is called automatically, so the application rarely need to call it.

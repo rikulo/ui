@@ -4,9 +4,10 @@
 
 /**
  * A popup event. It is a broadcast event used to notify popup views and elements
- * that another popup is showing. By popup we mean a UI object that is shown up
+ * that another popup is showing or all popups shall be dimissed.
+ * By popup we mean a UI object that is shown up
  * only in short period of time, and dismissed as soon as the user takes an action.
- * For example, clicking somewhere else.
+ * Typical examples include a popup menu and an information bubble.
  * <p>A popup shall listen to this event by registering the listener to [broadcaster].
  * When the listener is called, it shall invoke [shallClose] to check if the popup
  * has to be closed.

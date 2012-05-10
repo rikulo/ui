@@ -4,7 +4,7 @@
 
 /** The action for the touch-and-hold gesture.
  */
-typedef void HoldGestureAction();
+typedef void HoldGestureCallback(int x, int y);
 
 /**
  * A touch-and-hold gesture handler.
@@ -13,16 +13,18 @@ abstract class HoldGesture {
 	final Element _owner;
 	final int _dur;
 	final int _mov;
-	final HoldGestureAction _action;
+	final HoldGestureCallback _start, _action;
 	int _x, _y;
 	int _timer;
 
-	factory HoldGesture(Element owner, HoldGestureAction action, [int duration=1000, int movement=3]) {
+	factory HoldGesture(Element owner, HoldGestureCallback action,
+	[HoldGestureCallback start, int duration=1000, int movement=3]) {
 		return browser.touch ?
-			new _TouchHoldGesture(owner, action, duration, movement):
-			new _MouseHoldGesture(owner, action, duration, movement);
+			new _TouchHoldGesture(owner, action, start, duration, movement):
+			new _MouseHoldGesture(owner, action, start, duration, movement);
 	}
-	HoldGesture._init(Element this._owner, HoldGestureAction this._action, int this._dur, int this._mov) {
+	HoldGesture._init(Element this._owner, HoldGestureCallback this._action,
+	HoldGestureCallback this._start, int this._dur, int this._mov) {
 		_listen();
 	}
 
@@ -43,9 +45,13 @@ abstract class HoldGesture {
 	 * In other words, if the user moves more than the movement, it won't consider a hold.
 	 */
 	int get movement() => _mov;
-	/** Returns the action to call when the touch-and-hold gesture is detected.
+	/** Returns the callback to call when the touch-and-hold gesture is detected.
 	 */
-	HoldGestureAction get action() => _action;
+	HoldGestureCallback get action() => _action;
+	/** Returns the callback to call when the user starts a potential gesture,
+	 * or null if not specified.
+	 */
+	HoldGestureCallback get start() => _start;
 
 	abstract void _listen();
 	abstract void _unlisten();
@@ -54,6 +60,8 @@ abstract class HoldGesture {
 		_x = x; _y = y;
 		_clear();
 		_timer = window.setTimeout(_call, duration);
+		if (_start !== null)
+			_start(x, y);
 	}
 	void _touchMove(int x, int y) {
 		if (x - _x > movement || y - _y > movement)
@@ -64,7 +72,7 @@ abstract class HoldGesture {
 	}
 	void _call() {
 		_clear();
-		action();
+		_action(_x, _y);
 	}
 	void _clear() {
 		if (_timer !== null) {
@@ -79,8 +87,9 @@ abstract class HoldGesture {
 class _TouchHoldGesture extends HoldGesture {
 	EventListener _elStart, _elMove, _elEnd;
 
-	_TouchHoldGesture(Element owner, HoldGestureAction action, int duration, int movement)
-	: super._init(owner, action, duration, movement) {
+	_TouchHoldGesture(Element owner, HoldGestureCallback action,
+	HoldGestureCallback start, int duration, int movement)
+	: super._init(owner, action, start, duration, movement) {
 	}
 
 	void _listen() {
@@ -111,8 +120,9 @@ class _MouseHoldGesture extends HoldGesture {
   EventListener _elStart, _elMove, _elEnd;
   bool _down = false;
 
-  _MouseHoldGesture(Element owner, HoldGestureAction action, int duration, int movement)
-	: super._init(owner, action, duration, movement) {
+  _MouseHoldGesture(Element owner, HoldGestureCallback action,
+  HoldGestureCallback start, int duration, int movement)
+	: super._init(owner, action, start, duration, movement) {
 	}
 
 	void _listen() {

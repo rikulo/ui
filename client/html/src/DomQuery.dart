@@ -73,12 +73,27 @@ class DomQuery {
 	 * it is identical to this element.
 	 */
 	bool isDescendantOf(Element parent) {
-		for (Element w = node; w !== null; w = w.parent) {
-			if (w === parent)
+		for (Element n = node; n !== null; n = n.parent) {
+			if (n === parent)
 				return true;
 		}
 		return false;
 	}
+	/** Returns the nearest view containing this element.
+	 */
+	/** View.getView(uuid) not supported yet (because of memory overhead)
+	View get view() {
+		for (Element n = node; n !== null && n !== document.body
+		&& n !== document; n = n.parent) {
+			final String id = n.id;
+			if (id !== null && !id.isEmpty()) {
+				final View view = View.getView(id);
+				if (view !== null)
+					return view;
+			}
+		}
+		return null;
+	}*/
 
 	/** Returns the width of the border.
 	 */

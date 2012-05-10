@@ -43,9 +43,9 @@ class _Log {
 		}
 		return true;
 	}
-	HoldGestureAction _gestureAction() {
-		return () {
-			print("gesture called");
+	HoldGestureCallback _gestureAction() {
+		return (int x, int y) {
+			print("gesture called ($x,$y)");
 		};
 	}
 	void _defer() {
