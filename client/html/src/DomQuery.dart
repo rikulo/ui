@@ -7,6 +7,7 @@
  * for handling DOM.
  */
 class DomQuery {
+	/** The DOM element in query. */
 	final node;
 
 	factory DomQuery(var v) {
@@ -67,6 +68,17 @@ class DomQuery {
 	 */
 	CSSStyleDeclaration get computedStyle() 
 	=> window.$dom_getComputedStyle(node, "");
+
+	/** Returns if a DOM element is a descendant of this element or
+	 * it is identical to this element.
+	 */
+	bool isDescendantOf(Element parent) {
+		for (Element w = node; w !== null; w = w.parent) {
+			if (w === parent)
+				return true;
+		}
+		return false;
+	}
 
 	/** Returns the width of the border.
 	 */
