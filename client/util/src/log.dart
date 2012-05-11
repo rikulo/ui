@@ -16,6 +16,7 @@ _Log _log;
 class _Log {
 	final StringBuffer _msg;
 	Element _node;
+	_LogPopup _popup;
 
 	_Log() : _msg = new StringBuffer() {
 	}
@@ -29,7 +30,7 @@ class _Log {
 			final Element db = document.query("#v-dashboard");
 			if (db === null) { //not in simulator
 				_node = new Element.html(
-	'<div style="width:40%;height:30%;border:1px solid #332;background-color:#eed;overflow:auto;padding:3px;white-space:pre-wrap;font-size:11px;position:absolute;right:0px;bottom:0px"></div>');
+	'<div class="v-logView-x"></div>');
 				document.body.nodes.add(_node);
 			} else { //running in simulator
 				_node = db.query(".v-logView");
@@ -38,15 +39,37 @@ class _Log {
 					return false;
 				}
 			}
-			new HoldGesture(_node, _gestureAction());
+
+			document.body.insertAdjacentHTML("afterBegin", '''
+<style>
+.v-logView-x {
+ -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box;
+ width:40%; height:30%; border:1px solid #332;  background-color:#eec;
+ overflow:auto; padding:3px; white-space:pre-wrap;
+ font-size:11px; position:absolute; right:0; bottom:0;
+}
+.v-logView-pp {
+ position:absolute; border:1px solid #221; padding:2px; background:white;
+}
+.v-logView-pp div {
+ display: inline-block; border:1px solid #553; margin:2px; padding:0 2px;
+ font-size:15px; cursor:pointer;
+}
+</style>
+			''');
+			new HoldGesture(_node, _gestureAction(), _gestureStart());
 		}
 		return true;
 	}
 	HoldGestureCallback _gestureAction() {
-		return (int pageX, int pageY) {
+		return (Element touched, int pageX, int pageY) {
 			final Offset ofs = new DomQuery(_node).documentOffset;
-			new _LogPopup(_node).open(pageX - ofs.left, pageY - ofs.top);
+			(_popup = new _LogPopup(this)).open(pageX - ofs.left, pageY - ofs.top);
 		};
+	}
+	HoldGestureCallback _gestureStart() {
+		return (Element touched, int pageX, int pageY)
+			=> _popup === null || !new DomQuery(touched).isDescendantOf(_popup._node);
 	}
 
 	void _defer() {
@@ -68,27 +91,44 @@ class _Log {
 			_node.$dom_scrollTop = 30000;
 		}
 	}
+	void close() {
+		if (_popup !== null)
+			_popup.close();
+		if (_node !== null) {
+			_node.remove();
+			_node = null;
+		}
+	}
 }
 class _LogPopup {
-	final Element _owner;
+	final _Log _owner;
 	Element _node;
 	EventListener _elPopup;
 
-	_LogPopup(Element this._owner) {
+	_LogPopup(_Log this._owner) {
 	}
 	void open(int x, int y) {
-		_node = new Element.html('''
-<div style="left:${x+2}px;top:${y+2}px;position:absolute;border:1px solid #221;padding:2px;background:white"><style>
-.v-log-button{border:1px solid #553;margin:2px;cursor:pointer;padding:0 2px;font-size:15px;
-}</style><span class="v-log-button">*</span><span class="v-log-button">+</span><span class="v-log-button">-</span><span class="v-log-button">X</span></div>
-		''');
-		_owner.nodes.add(_node);
+		_node = new Element.html('<div style="left:${x+2}px;top:${y+2}px" class="v-logView-pp"><div>*</div><div>+</div><div>-</div><div>X</div></div>');
+
+		_node.nodes[0].on.click.add((e) {_size("100%", "100%");});
+		_node.nodes[1].on.click.add((e) {_size("100%", "30%");});
+		_node.nodes[2].on.click.add((e) {_size("40%", "30%");});
+		_node.nodes[3].on.click.add((e) {_owner.close();});
+
+		_owner._node.nodes.add(_node);
 		broadcaster.on.popup.add(_onPopup());
+	}
+	void _size(String width, String height) {
+		final CSSStyleDeclaration style = _owner._node.style;
+		style.width = width;
+		style.height = height;
+		close();
 	}
 	void close() {
 		broadcaster.on.popup.remove(_onPopup());
 		_node.remove();
 		_node = null;
+		_owner._popup = null;
 	}
 	EventListener _onPopup() {
 		if (_elPopup === null)

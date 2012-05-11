@@ -4,7 +4,7 @@
 
 /** The action for the touch-and-hold gesture.
  */
-typedef void HoldGestureCallback(int pageX, int pageY);
+typedef HoldGestureCallback(Element touched, int pageX, int pageY);
 
 /**
  * A touch-and-hold gesture handler.
@@ -14,9 +14,14 @@ abstract class HoldGesture {
 	final int _dur;
 	final int _mov;
 	final HoldGestureCallback _start, _action;
+	Element _touched;
 	int _pageX, _pageY;
 	int _timer;
 
+	/** Constructor.
+	 * @param start the callback before starting monitoring the touch-and-hold
+	 * gesture. If it returns false, the monitoring will be cancelled.
+	 */
 	factory HoldGesture(Element owner, HoldGestureCallback action,
 	[HoldGestureCallback start, int duration=1000, int movement=3]) {
 		return browser.touch ?
@@ -56,12 +61,17 @@ abstract class HoldGesture {
 	abstract void _listen();
 	abstract void _unlisten();
 
-	void _touchStart(int pageX, int pageY) {
+	bool _touchStart(Element touched, int pageX, int pageY) {
 		_pageX = pageX; _pageY = pageY;
+		_touched = touched;
 		_clear();
+		if (_start !== null) {
+			bool c = _start(_touched, pageX, pageY);
+			if (c !== null && !c)
+				return false; //don't start it
+		}
 		_timer = window.setTimeout(_call, duration);
-		if (_start !== null)
-			_start(pageX, pageY);
+		return true; //started
 	}
 	void _touchMove(int pageX, int pageY) {
 		if (pageX - _pageX > movement || pageY - _pageY > movement)
@@ -72,7 +82,7 @@ abstract class HoldGesture {
 	}
 	void _call() {
 		_clear();
-		_action(_pageX, _pageY);
+		_action(_touched, _pageX, _pageY);
 	}
 	void _clear() {
 		if (_timer !== null) {
@@ -98,7 +108,7 @@ class _TouchHoldGesture extends HoldGesture {
 			if (event.touches.length > 1)
 				_touchEnd(); //ignore multiple fingers
 			else
-				_touchStart(event.pageX, event.pageY);
+				_touchStart(event.target, event.pageX, event.pageY);
 		});
 		on.touchMove.add(_elMove = (TouchEvent event) {
 			_touchMove(event.pageX, event.pageY);
@@ -128,8 +138,7 @@ class _MouseHoldGesture extends HoldGesture {
 	void _listen() {
 		final ElementEvents on = owner.on;
 		on.mouseDown.add(_elStart = (MouseEvent event) {
-			_down = true;
-			_touchStart(event.pageX, event.pageY);
+			_down = _touchStart(event.target, event.pageX, event.pageY);
 		});
 		on.mouseMove.add(_elMove = (MouseEvent event) {
 			if (_down)
