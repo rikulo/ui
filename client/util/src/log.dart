@@ -43,17 +43,18 @@ class _Log {
 			document.body.insertAdjacentHTML("afterBegin", '''
 <style>
 .v-logView-x {
- -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box;
- width:40%; height:30%; border:1px solid #332;  background-color:#eec;
+ ${browser.css('box-sizing')}: border-box;
+ width:40%; height:30%; border:1px solid #332; background-color:#eec;
  overflow:auto; padding:3px; white-space:pre-wrap;
  font-size:11px; position:absolute; right:0; bottom:0;
 }
 .v-logView-pp {
- position:absolute; border:1px solid #221; padding:2px; background:white;
+ position:absolute; border:1px solid #221; padding:1px; background-color:white;
+ border-radius: 1px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
 }
 .v-logView-pp div {
- display: inline-block; border:1px solid #553; margin:2px; padding:0 2px;
- font-size:15px; cursor:pointer;
+ display: inline-block; border:1px solid #553; border-radius: 3px;
+ margin:2px; padding:0 2px; font-size:15px; cursor:pointer;
 }
 </style>
 			''');
@@ -108,7 +109,7 @@ class _LogPopup {
 	_LogPopup(_Log this._owner) {
 	}
 	void open(int x, int y) {
-		_node = new Element.html('<div style="left:${x+2}px;top:${y+2}px" class="v-logView-pp"><div>*</div><div>+</div><div>-</div><div>X</div></div>');
+		_node = new Element.html('<div style="left:${x+2}px;top:${y+2}px" class="v-logView-pp"><div>[]</div><div>+</div><div>-</div><div>x</div></div>');
 
 		_node.nodes[0].on.click.add((e) {_size("100%", "100%");});
 		_node.nodes[1].on.click.add((e) {_size("100%", "30%");});
