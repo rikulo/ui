@@ -20,11 +20,11 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 
 	String getPropertyValue(String propertyName) {
 		_check(propertyName);
-		return _pcss !== null ? _unwrap(_pcss.getPropertyValue(_trans(propertyName))): "";
+		return _pcss !== null ? _unwrap(_pcss.getPropertyValue(CSS.name(propertyName))): "";
 	}
 
 	String removeProperty(String propertyName) {
-		propertyName = _trans(propertyName);
+		propertyName = CSS.name(propertyName);
 
 		final String prev = _pcss !== null ? _pcss.removeProperty(propertyName): "";
 		Element node;
@@ -35,7 +35,7 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 
 	void setProperty(String propertyName, String value, [String priority = null]) {
 		_check(propertyName);
-		propertyName = _trans(propertyName);
+		propertyName = CSS.name(propertyName);
 
 		if (priority === null) {
 			_css.setProperty(propertyName, value);
@@ -66,15 +66,15 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 
 	CSSRule get parentRule() => _pcss !== null ? _pcss.parentRule: null;
 	CSSValue getPropertyCSSValue(String propertyName)
-		=> _pcss !== null ? _pcss.getPropertyCSSValue(_trans(propertyName)): null;
+		=> _pcss !== null ? _pcss.getPropertyCSSValue(CSS.name(propertyName)): null;
 	String getPropertyPriority(String propertyName)
-		=> _pcss !== null ? _pcss.getPropertyPriority(_trans(propertyName)): "";
+		=> _pcss !== null ? _pcss.getPropertyPriority(CSS.name(propertyName)): "";
 	String getPropertyShorthand(String propertyName)
-		=> _css.getPropertyShorthand(_trans(propertyName)); 
+		=> _css.getPropertyShorthand(CSS.name(propertyName)); 
 			//Not sure what to return by default
 
 	bool isPropertyImplicit(String propertyName)
-		=> _css.isPropertyImplicit(_trans(propertyName)); //Not sure what to return by default
+		=> _css.isPropertyImplicit(CSS.name(propertyName)); //Not sure what to return by default
 
 	String item(int index) => _css.item(index); //Not sure what to return by default
 
@@ -2555,7 +2555,7 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 		}
 		
 		if (_illnms.contains(propertyName))
-			throw new UiException("$propertyName not allowed. Please use View's API instead, such as left, width and hidden.");
+			throw new UIException("$propertyName not allowed. Please use View's API instead, such as left, width and hidden.");
 	}
 	//Illegal names (that are not allowed to access directly
 	static Set<String> _illnms;
@@ -2563,97 +2563,4 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 	//Converts null to an empty string
 	String _unwrap(String value) => value !== null ? value: "";
 		//TODO: test helloworld to see if Dart fixes Issue 2154
-	//Translates a property's name to be browser-dependent
-	static String _trans(String propertyName) {
-		if (_ddnms === null) {
-			_ddnms = new Set();
-			//TODO: no need to check null when Dart can compare null with number
-			//TODO: check other attributes for browser-depedent issue (like we did for box-sizing)
-			//CONSIDER: auto-generate this file with a tool
-			if ((browser.ios && browser.iosVersion < 5)
-			|| (browser.android && browser.androidVersion < 2.4)
-			|| browser.firefox) {
-				_ddnms.add('box-sizing');
-			}
-
-			for (final String nm in const [
-				'animation', 'animation-delay', 'animation-direction',
-				'animation-duration', 'animation-fill-mode',
-				'animation-iteration-count', 'animation-name',
-				'animation-play-state', 'animation-timing-function',
-				'appearance', 'backface-visibility',
-				'background-composite',
-				'border-after', 'border-after-color',
-				'border-after-style', 'border-after-width',
-				'border-before', 'border-before-color',
-				'border-before-style', 'border-before-width',
-				'border-end', 'border-end-color', 'border-end-style',
-				'border-end-width', 'border-fit',
-				'border-horizontal-spacing',
-				'border-start', 'border-start-color',
-				'border-start-style', 'border-start-width',
-				'border-vertical-spacing',
-				'box-align', 'box-direction', 'box-flex',
-				'box-flex-group', 'box-lines', 'box-ordinal-group',
-				'box-orient', 'box-pack', 'box-reflect',
-				'color-correction', 'column-break-after',
-				'column-break-before', 'column-break-inside',
-				'column-count', 'column-gap', 'column-rule',
-				'column-rule-color', 'column-rule-style',
-				'column-rule-width', 'column-span', 'column-width',
-				'columns', 'filter',
-				'flex-align', 'flex-flow', 'flex-order',
-				'flex-pack',
-				'flow-from', 'flow-into',
-				'font-feature-settings', 'font-size-delta',
-				'font-smoothing',
-				'highlight', 'hyphenate-character',
-				'hyphenate-limit-after', 'hyphenate-limit-before',
-				'hyphenate-limit-lines', 'hyphens',
-				'line-box-contain', 'line-break', 'line-clamp',
-				'locale', 'logical-height', 'logical-width',
-				'margin-after', 'margin-after-collapse',
-				'margin-before', 'margin-before-collapse',
-				'margin-bottom-collapse', 'margin-collapse',
-				'margin-end', 'margin-start', 'margin-top-collapse',
-				'marquee', 'marquee-direction', 'marquee-increment',
-				'marquee-repetition', 'marquee-speed', 'marquee-style',
-				'mask', 'mask-attachment', 'mask-box-image',
-				'mask-box-image-outset', 'mask-box-image-repeat',
-				'mask-box-image-slice', 'mask-box-image-source',
-				'mask-box-image-width', 'mask-clip', 'mask-composite',
-				'mask-image', 'mask-origin', 'mask-position',
-				'mask-position-x', 'mask-position-y', 'mask-repeat',
-				'mask-repeat-x', 'mask-repeat-y', 'mask-size',
-				'match-nearest-mail-blockquote-color',
-				'max-logical-height', 'max-logical-width',
-				'min-logical-height', 'min-logical-width',
-				'nbsp-mode',
-				'padding-after', 'padding-before', 'padding-end',
-				'padding-start',
-				'perspective', 'perspective-origin',
-				'perspective-origin-x', 'perspective-origin-y',
-				'region-break-after', 'region-break-before',
-				'region-break-inside', 'region-overflow',
-				'rtl-ordering', 'tap-highlight-color',
-				'text-combine', 'text-decorations-in-effect',
-				'text-emphasis', 'text-emphasis-color',
-				'text-emphasis-position', 'text-emphasis-style',
-				'text-fill-color', 'text-orientation',
-				'text-security', 'text-size-adjust',
-				'text-stroke', 'text-stroke-color', 'text-stroke-width',
-				'transform', 'transform-origin', 'transform-origin-x',
-				'transform-origin-y', 'transform-origin-z',
-				'transform-style',
-				'transition', 'transition-delay', 'transition-duration',
-				'transition-property', 'transition-timing-function',
-				'user-drag', 'user-modify', 'user-select',
-				'wrap-shape', 'writing-mode']) {
-				_ddnms.add(nm);
-			}
-		}
-		return _ddnms.contains(propertyName) ?
-			"$_browserPrefix$propertyName": propertyName;
-	}
-	static Set<String> _ddnms;
 }

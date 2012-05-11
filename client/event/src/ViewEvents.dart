@@ -1,10 +1,14 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 17, 2012
 
-/** A map of event handlers for [View].
+/** A map of event listeners for [View].
  */
 interface ViewEvents extends Events default _ViewEvents {
 	ViewEvents(var ptr);
+
+	/** Tests if the given event type is listened.
+	 */
+	bool isListened(String type);
 
 	EventListenerList get blur();
 	EventListenerList get change();
@@ -28,21 +32,31 @@ interface ViewEvents extends Events default _ViewEvents {
 	EventListenerList get exitDocument();
 }
 
-/**
- * An implementation of [ViewEvents].
+/** An implementation of [Events].
  */
-class _ViewEvents implements ViewEvents {
+class _Events implements Events {
 	//raw event target
 	final _ptr;
-	Map<String, EventListenerList> _listeners;
+	final Map<String, EventListenerList> _lnlist;
 
-	_ViewEvents(this._ptr) {
-		_listeners = {};
+	_Events(this._ptr): _lnlist = new Map() {
 	}
+
 	EventListenerList operator [](String type) => _get(type); 
   _EventListenerList _get(String type) {
-		return _listeners.putIfAbsent(type,
-			() => new _EventListenerList(_ptr, type));
+		return _lnlist.putIfAbsent(type, () => new _EventListenerList(_ptr, type));
+	}
+
+	bool isListened(String type) {
+		final p = _lnlist[type];
+		return p == null || p.isEmpty();
+	}
+}
+
+/** An implementation of [ViewEvents].
+ */
+class _ViewEvents extends _Events implements ViewEvents {
+	_ViewEvents(var ptr): super(ptr) {
 	}
 
 	EventListenerList get blur() => _get('blur');
@@ -65,13 +79,6 @@ class _ViewEvents implements ViewEvents {
 	EventListenerList get exitDocument() => _get("exitDocument");
 
 	EventListenerList get check() => _get("check");
-
-	/** Tests if the given event type is listened.
-	 */
-	bool isListened(String type) {
-		final p = _listeners[type];
-		return p == null || p.isEmpty();
-	}
 }
 
 /** An implementation of [EventListenerList].
@@ -82,15 +89,15 @@ class _EventListenerList implements EventListenerList {
 
 	_EventListenerList(this._ptr, this._type);
 
-	EventListenerList add(void listener(Event event), [bool useCapture = false]) {
-		_ptr.addEventListener(_type, listener, useCapture);
+	EventListenerList add(void listener(Event event), [bool useCapture]) {
+		_ptr.addEventListener(_type, listener);
 		return this;
 	}
 	bool dispatch(Event event) {
-		return _ptr.dispatchEvent(event, type: _type);
+		return _ptr.sendEvent(event, type: _type);
 	}
-	EventListenerList remove(void listener(Event event), [bool useCapture = false]) {
-		_ptr.removeEventListener(_type, listener, useCapture);
+	EventListenerList remove(void listener(Event event), [bool useCapture]) {
+		_ptr.removeEventListener(_type, listener);
 		return this;
 	}
 	/** Tests if any listener is registered.

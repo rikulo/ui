@@ -29,7 +29,7 @@ class Activity {
 				root.height = prevroot.height;
 
 			if (prevroot.inDocument) {
-				throw const UiException("TODO");
+				throw const UIException("TODO");
 			}
 		}
 	}
@@ -37,8 +37,8 @@ class Activity {
 	/** Starts the activity.
 	 */
 	void run([String nodeId="v-main"]) {
-		if (activity !== null)
-			throw const UiException("Only one activity is allowed");
+		if (activity !== null) //TODO: switching activity
+			throw const UIException("Only one activity is allowed");
 
 		activity = this;
 		mount_();
@@ -60,9 +60,14 @@ class Activity {
 	/** Initializes the browser window, such as registering the events.
 	 */
 	void mount_() {
-		window.on[browser.mobile || application.inSimulator ? 'deviceOrientation': 'resize'].add((event) {
-			updateSize();
-		});
+		window.on[browser.mobile || application.inSimulator ? 'deviceOrientation': 'resize'].add(
+			(event) {
+				updateSize();
+			});
+		document.on[browser.touch ? 'touchStart': 'mouseDown'].add(
+			(event) {
+				broadcaster.sendEvent(new PopupEvent(event.target));
+			});
 	}
 	/** Handles resizing, including device's orientation is changed.
 	 * It is called automatically, so the application rarely need to call it.

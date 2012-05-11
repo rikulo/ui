@@ -66,18 +66,18 @@ class Test7 extends Activity {
 		_addTextWithMaxWidth(view, 150);
 	}
 	void _addLogView(View view) {
-		View log = new View();
-		log.layout.type = "linear";
-		log.layout.orient = "vertical";
-		log.layout.spacing = "0";
-		log.profile.width = log.profile.height = "flex";
-		log.style.backgroundColor = "#cca";
-		_setBorder(log);
+		View logView = new View();
+		logView.layout.type = "linear";
+		logView.layout.orient = "vertical";
+		logView.layout.spacing = "0";
+		logView.profile.width = logView.profile.height = "flex";
+		logView.style.backgroundColor = "#cca";
+		_setBorder(logView);
 		TextView text = new TextView(html: '<h2 style="margin:0">Log View</h2>');
 		_setBorder(text);
-		log.appendChild(text);
+		logView.appendChild(text);
 
-		view.appendChild(log);
+		view.appendChild(logView);
 	}
 	void _setBorder(View view) {
 		view.style.border = "1px solid black";

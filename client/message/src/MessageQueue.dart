@@ -24,16 +24,23 @@ interface MessageQueue<Message> default _MessageQueueImpl<Message> {
 	 */
 	String get uuid();
 
-	/** Adds a message listener to this message queue with an optional filter.
+	/** Subscribes a message listener to this message queue with an optional filter.
 	 */
-	void add(MessageListener listener, [MessageFilter filter]);
-	/** Removes a message listener from this message queue.
+	void subscribe(MessageListener listener, [MessageFilter filter]);
+	/** Unsubscribes a message listener from this message queue.
 	 * This method returns true if the listener was added.
 	 */
-	bool remove(MessageListener listener, [MessageFilter filter]);
-	/** Sends a message to all listeners in this message queue.
+	bool unsubscribe(MessageListener listener, [MessageFilter filter]);
+	/** Sends a message to this queue, such that
+	 * all subscribers in this message queue will be notified.
 	 */
 	void send(Message message);
+	/** Posts a message to this queue.
+	 * Unlike [send], the subscribers will be invoked later.
+	 * In other words, this method returned immediately without waiting
+	 * any subscriber to be invoked.
+	 */
+	void post(Message message);
 }
 
 class _MessageQueueImpl<Message> implements MessageQueue<Message> {
@@ -55,11 +62,11 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
 	static int _uuidNext = 0;
 
 	//@Override
-	void add(MessageListener listener, [MessageFilter filter]) {
+	void subscribe(MessageListener listener, [MessageFilter filter]) {
 		_listenerInfos.add(new _ListenerInfo(listener, filter));
 	}
 	//@Override
-	bool remove(MessageListener listener, [MessageFilter filter]) {
+	bool unsubscribe(MessageListener listener, [MessageFilter filter]) {
 		for (int j = _listenerInfos.length; --j >= 0;) {
 			final _ListenerInfo info = _listenerInfos[j];
 			if (listener == info.listener && filter == info.filter) {
@@ -77,6 +84,12 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
 			}
 		}
 	}
+	//@Override
+	void post(Message message) {
+		window.setTimeout(() {send(message);}, 0);
+			//note: the order of messages is preserved across all message queues
+	}
+
 	String toString() => "MessageQueue($uuid)";
 }
 class _ListenerInfo {

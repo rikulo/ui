@@ -10,5 +10,7 @@
 #import("../util/util.dart");
 
 #source("src/Browser.dart");
+#source("src/CSS.dart");
 #source("src/DomQuery.dart");
+#source("src/HoldGesture.dart");
 #source("src/Scroller.dart");

@@ -76,7 +76,7 @@ class Application {
 		if (_uuid === null) {
 			final Element body = document.body;
 			if (body === null)
-				throw const UiException("document not ready yet");
+				throw const UIException("document not ready yet");
 
 			String sval = body.$dom_getAttribute(_APP_COUNT);
 			if (sval !== null) {

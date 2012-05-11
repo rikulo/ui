@@ -5,8 +5,8 @@
 
 #import("dart:html");
 #import("../app/app.dart");
-#import("../util/util.dart");
 #import("../view/view.dart");
+#import("../util/util.dart");
 #import("../html/html.dart");
 #import("../viewimpl/viewimpl.dart");
 

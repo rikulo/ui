@@ -28,7 +28,7 @@ class AnchorRelation {
 				indeps.add(child);
 			} else {
 				if (av.parent !== view && av !== view)
-					throw new UiException("Anchor can be parent or sibling, not $av");
+					throw new UIException("Anchor can be parent or sibling, not $av");
 
 				List<View> deps = anchored[av];
 				if (deps == null)
@@ -89,7 +89,7 @@ class AnchorRelation {
 			if (handlers != null)
 				return handlers;
 		}
-		throw new UiException("Unknown loation ${loc}");
+		throw new UIException("Unknown loation ${loc}");
 	}
 	/** Returns the offset between two views.
 	 */

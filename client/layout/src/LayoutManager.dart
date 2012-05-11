@@ -64,7 +64,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 		final String name = view.layout.type;
 		final Layout clayout = getLayout(name);
 		if (clayout == null)
-			throw new UiException("Unknown layout, ${name}");
+			throw new UIException("Unknown layout, ${name}");
 		return clayout;
 	}
 
@@ -188,7 +188,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 		int limit = _amountOf(view.profile.maxWidth, parentInnerWidth);
 		if ((autowidth && size.width > browser.size.width)
 		|| (limit !== null && size.width > limit)) {
-			nodestyle.width = StringUtil.px(limit != null ? limit: browser.size.width);
+			nodestyle.width = CSS.px(limit != null ? limit: browser.size.width);
 
 			size.width = qview.outerWidth;
 			size.height = qview.outerHeight;

@@ -5,7 +5,8 @@
 #import("dart:coreimpl");
 #import("dart:html");
 
-#import("../simcomm/simcomm.dart");
+#import("../html/html.dart");
+#import("../event/event.dart");
 
 #source("src/log.dart");
 #source("src/StringUtil.dart");

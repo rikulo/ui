@@ -13,7 +13,7 @@
 #import("../layout/layout.dart");
 
 #source("src/View.dart");
-#source("src/UiException.dart");
+#source("src/UIException.dart");
 #source("src/IdSpace.dart");
 #source("src/_VirtualIdSpace.dart");
 #source("src/_SubviewList.dart");

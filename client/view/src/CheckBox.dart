@@ -78,7 +78,7 @@ class CheckBox extends TextView {
 	/** Callback when user's click changes [checked].
 	 */
 	void onCheck_() {
-		dispatchEvent(new CheckEvent(this, _checked));
+		sendEvent(new CheckEvent(this, _checked));
 	}
 
 	//@Override
