@@ -56,15 +56,6 @@ class View implements EventTarget {
 
 	bool _hidden, _inDoc;
 
-	/** Returns the view of the given UUID.
-	 * <p>Notice that, if a view is not attached to the document, it won't
-	 * be returned
-	 * (i.e., it is considered as not found and <code>null</code> is returned).
-	 */
-//	static View getView(String uuid) => _views[uuid];
-//	static Map<String, View> _views = new Map();
-//Note supported because the memory overhead to maintain _views
-
 	/** Constructor.
 	 */
 	View() {
@@ -592,7 +583,7 @@ class View implements EventTarget {
 	 */
 	void enterDocument_() {
 		_inDoc = true;
-//		_views[uuid] = this;
+//		ViewUtil._views[uuid] = this;
 
 		adjustInnerNode_(true, true, true, true);
 
@@ -634,7 +625,7 @@ class View implements EventTarget {
 			child.exitDocument_();
 		}
 
-//		_views.remove(uuid);
+//		ViewUtil._views.remove(uuid);
 		_inDoc = false;
 		_node = null; //as the last step since node might be called in exitDocument_
 	}
@@ -645,29 +636,22 @@ class View implements EventTarget {
 	 * <p>Notice that, for better performance, the view won't be redrawn immediately.
 	 * Rather, it is queued and all queued invalidation will be drawn together later.
 	 * If you'd like to draw all queued invalidation immediately, you can
-	 * invoke [doInvalidate].
+	 * invoke [ViewUtil.flushInvalidated].
 	 */
 	void invalidate() {
 		_invalidator.queue(this);
 	}
-	/** Redraws the invalidated views queued by [invalidate].
-	 * <p>Notice that it is static, i.e., all queued invalidation will be redrawn.
-	 */
-	static void flushInvalidated() {
-		_invalidator.flush();
-	}
 
 	/** Called when something has changed and caused that the layout of this
 	 * view is changed.
+	 *<p>Notice that, for better performance, the layout will be taken place
+	 *immediately. Rather, it is queued and all queued views are handled
+	 * together later.
+	 * If you'd like to handle all queued layouts, you can invoke
+	 * [ViewUtil.flushRequestedLayouts].
 	 */
 	void requestLayout() {
 		layoutManager.queue(this);
-	}
-	/** Handles the layouts of views queued by [requestLayout].
-	 * <p>Notice that it is static, i.e., all queued requests will be handled.
-	 */
-	static void flushRequestedLayouts() {
-		layoutManager.flush();
 	}
 	/** Hanldes the layout of this view.
 	 * <p>Default: have [Layout] to handle it.
@@ -1238,10 +1222,6 @@ class View implements EventTarget {
 	}
 	static RunOnceQueue _runOnceQue;
 
-	int hashCode() {
-		return uuid.hashCode(); //uuid is immutiable once assigned
-	}
-
   /** useless; throws UIException. */
 	void $dom_addEventListener(String type, void listener(Event event), [bool useCapture]) {
 		throw const UIException("not available");
@@ -1255,5 +1235,6 @@ class View implements EventTarget {
 		throw const UIException("not available");
 	}
 
+	int hashCode() => uuid.hashCode(); //uuid is immutiable once assigned
 	String toString() => "View($uuid)";
 }

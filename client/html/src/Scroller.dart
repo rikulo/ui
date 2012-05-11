@@ -119,7 +119,7 @@ class _TouchScroller extends Scroller {
 		final ElementEvents on = owner.on;
 		on.touchStart.add(_elStart = (TouchEvent event) {
 			if (event.touches.length > 1)
-				_touchEnd(); //ignore multiple fingers
+				_touchEnd(event.pageX, event.pageY); //ignore multiple fingers
 			else
 				_touchStart(event.target, event.pageX, event.pageY);
 		});
@@ -127,7 +127,7 @@ class _TouchScroller extends Scroller {
 			_touchMove(event.pageX, event.pageY);
 		});
 		on.touchEnd.add(_elEnd = (event) {
-			_touchEnd();
+			_touchEnd(event.pageX, event.pageY);
 		});
 	}
 	void _unlisten() {

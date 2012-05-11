@@ -13,6 +13,7 @@
 #import("../layout/layout.dart");
 
 #source("src/View.dart");
+#source("src/ViewUtil.dart");
 #source("src/UIException.dart");
 #source("src/IdSpace.dart");
 #source("src/_VirtualIdSpace.dart");

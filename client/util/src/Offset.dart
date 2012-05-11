@@ -30,6 +30,7 @@ class Offset {
 		top = y;
 	}
 
+	int hashCode() => left + top;
 	String toString() => "($left, $top)";
 }
 
@@ -51,5 +52,6 @@ class Offset3d extends Offset {
 		zIndex = z;
 	}
 
+	int hashCode() => x + y + z;
 	String toString() => "($x, $y, $z)";
 }

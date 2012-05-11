@@ -12,6 +12,21 @@ class ScrollView extends View {
 		vclass = "v-ScrollView";
 	}
 
+	/** Returns the size that the content occupies.
+	 * In other words, [ScrollView] assumes the content occupies
+	 * from the left-top corner of [innerNode] and up to the size
+	 * returned by this method.
+	 * <p>Default: it iterates through all child views to calculate
+	 * the size. It could be slow if there are a lot of children.
+	 * However, depending on the application, it is usually to
+	 * calculate the content's size without iterating all children.
+	 * For example, it could be a fixed value multiplied with number of rows.
+	 * Therefore, it is strongly suggested to override this method to calculate
+	 * the content's size more efficiently.
+	 */
+	Size get contentSize() {
+	}
+
 	//@Override
 	void enterDocument_() {
 		super.enterDocument_();
