@@ -8,10 +8,11 @@
 #import("dart:json");
 
 #import("../app/app.dart");
-#import("../event/event.dart");
 #import("../device/device.dart");
-#import("../deviceimpl/deviceimpl.dart");
+#import("../device/event/event.dart");
+#import("../device/accelerometer/accelerometer.dart");
+#import("../device/camera/camera.dart");
 
-#source("src/CordovaCamera.dart");
-#source("src/CordovaAccelerometer.dart");
 #source("src/CordovaDevice.dart");
+#source("src/CordovaAccelerometer.dart");
+#source("src/CordovaCamera.dart");

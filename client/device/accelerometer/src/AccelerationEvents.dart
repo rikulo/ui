@@ -11,7 +11,7 @@ class AccelerometerOptions {
 class AccelerationEvents extends DeviceEvents {
 	AccelerationEvents(ptr) : super(ptr);
 	AccelerationEventListenerList get accelerate() 
-		=> _get('accelerate', new AccelerationEventListenerList(this._ptr, 'accelerate'));
+		=> get_('accelerate', new AccelerationEventListenerList(this.getEventTarget_(), 'accelerate'));
 }
 
 /** AccelerationEvent listener list */

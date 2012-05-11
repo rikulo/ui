@@ -6,11 +6,11 @@
  * Accelerometer implementation for Cordova device.
  */
 class CordovaAccelerometer extends AbstractAccelerometer {
-	void getCurrentAcceleration(AccelerationEventListener onSuccess, ErrorListener onError) {
+	void getCurrentAcceleration(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError) {
 		_getCurrentAcceleration0(_wrapFunction(onSuccess), onError);
 	}
 
-	watchAcceleration(AccelerationEventListener onSuccess, ErrorListener onError, [Map options]) {
+	watchAcceleration(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError, [Map options]) {
 		String opts = options === null || options["frequency"] === null ? '{"frequency":3000}' : JSON.stringify(options);
 print("CordovaAccelerometer.watchAcceleration: opts:"+opts);		
 		return _watchAcceleration0(_wrapFunction(onSuccess), onError, opts);

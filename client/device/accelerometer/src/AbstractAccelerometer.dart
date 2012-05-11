@@ -2,7 +2,7 @@
 //History: Fri, May 4, 2012  04:45:33 PM
 // Author: henrichen
 
-/*abstract*/ class AbstractAccelerometer implements Accelerometer {
+/*abstract*/ class AbstractAccelerometer implements Accelerometer, DeviceEventTarget {
 	AccelerationEvents _on;
 	List<_WatchIDInfo> _listeners;
 	
@@ -56,7 +56,7 @@ print("AbstractAccelerometer.removeEventListener: LEAVE! type:"+type);
 	* options = {"frequency" : 3000}; //update every 3 seconds
 	* @return a watchID that can be used to stop this watching later by #clearWatch() method.
 	*/  
-	abstract watchAcceleration(AccelerationEventListener listener, ErrorListener onError, [Map options]);
+	abstract watchAcceleration(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError, [Map options]);
 	
 	/**
 	* Stop watching the motion Acceleration.

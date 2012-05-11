@@ -6,7 +6,6 @@
 #import('../../client/view/view.dart');
 #import('../../client/event/event.dart');
 #import('../../client/device/device.dart');
-#import('../../client/deviceimpl/deviceimpl.dart');
 
 class HelloWorld extends Activity {
 

@@ -56,10 +56,13 @@ class DeviceEvents {
 	DeviceEvents(this._ptr) {
 		_listeners = {};
 	}
-	DeviceEventListenerList _get(String type, DeviceEventListenerList listenerList) {
+	DeviceEventListenerList get_(String type, DeviceEventListenerList listenerList) {
 		print("DeviceEventListenerList._get(): type:"+type);
 		_listeners[type] = listenerList;
 		return listenerList;
+	}
+	DeviceEventTarget getEventTarget_() {
+	  return _ptr;
 	}
 
 	/** Tests if the given event type is listened.

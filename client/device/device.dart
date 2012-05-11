@@ -8,9 +8,9 @@
 #import("dart:json");
 
 #import("../app/app.dart");
+#import("event/event.dart");
+#import("accelerometer/accelerometer.dart");
+#import("camera/camera.dart");
 
-#source("src/Acceleration.dart");
-#source("src/Accelerometer.dart");
-#source("src/Camera.dart");
 #source("src/Device.dart");
 

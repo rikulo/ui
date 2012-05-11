@@ -8,7 +8,7 @@ typedef AccelerometerErrorCallback();
 /**
  * Capture device motion in x, y, and z direction.
  */
-interface Accelerometer extends DeviceEventTarget {
+interface Accelerometer {
   final AccelerationEvents on;
 
   /**
