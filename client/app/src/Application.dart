@@ -106,7 +106,7 @@ Application get application() { //initialized by Activity
 }
 Application _app;
 
-/** Initializes the device.
+/** Enable the device accesibility.
  *
  * <p>Notice that this method will instantiate the default application if
  * the application is not instantiated. Thus, if you subclass the application,
@@ -117,7 +117,7 @@ Application _app;
  * <p>This method can be called multiple times, but the second invocation
  * will be ignored.
  */
-void initDevice() {
+void enableDeviceAccess() {
 	//Initilize Cordova device if not in simulator
 	if (device === null && !application.inSimulator) { 
 print("CordovaDevice");
