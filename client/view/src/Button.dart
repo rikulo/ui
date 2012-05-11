@@ -19,7 +19,7 @@ class Button extends TextView {
 	 */
 	String get type() => _type;
 	/** Sets the button type.
-	 * @param String type either "button", "submit" or "reset".
+	 * <p>[type] can be either "button", "submit" or "reset".
 	 */
 	void set type(String type) {
 		_type = type == null || type.isEmpty() ? "button": type;

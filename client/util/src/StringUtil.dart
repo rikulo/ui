@@ -46,43 +46,36 @@ class StringUtil {
 
 	/**
 	 * Returns whether the character is according to its opts.
-	 * @param char cc the character
-	 * @param Map opts the options.
+	 * <p>[cc] is the character to test.
 	<table border="1" cellspacing="0" width="100%">
 	<caption> Allowed Options
 	</caption>
 	<tr>
 	<th> Name
-	</th><th> Allowed Values
 	</th><th> Description
 	</th></tr>
 	<tr>
-	<td> digit
-	</td><td> true, false
+	<td> [digit]
 	</td><td> Specifies the character is digit only.
 	</td></tr>
 	<tr>
-	<td> upper
-	</td><td> true, false
+	<td> [upper]
 	</td><td> Specifies the character is upper case only.
 	</td></tr>
 	<tr>
-	<td> lower
+	<td> [lower]
 	</td><td> true, false
 	</td><td> Specifies the character is lower case only.
 	</td></tr>
 	<tr>
-	<td> whitespace
-	</td><td> true, false
+	<td> [whitespace]
 	</td><td> Specifies the character is whitespace only.
 	</td></tr>
 	<tr>
-	<td> opts[cc]
-	</td><td> true, false
-	</td><td> Specifies the character is allowed only.
+	<td> [match]
+	</td><td> Specifies a string of characters that is allowed.
 	</td></tr>
 	</table>
-	 * @return boolean
 	 */
 	static bool isChar(String cc, [bool digit=false, bool upper=false, bool lower=false,
 	bool whitespace=false, String match=null]) {
@@ -114,14 +107,12 @@ class StringUtil {
 		_encs = const {'<': 'lt', '>': 'gt', '&': 'amp', '"': 'quot'};
 
 	/** Encodes the string to a valid XML string.
-	 * @param String txt the text to encode
-	 * @param Map opts [optional] the options. Allowd value:
+	 * <p>[txt] is the text to encode.
 	 * <ul>
-	 * <li>pre - whether to replace whitespace with &amp;nbsp;</li>
-	 * <li>multiline - whether to replace linefeed with &lt;br/&gt;</li>
-	 * <li>maxlength - the maximal allowed length of the text</li>
+	 * <li>[pre] - whether to replace whitespace with &amp;nbsp;</li>
+	 * <li>[multiline] - whether to replace linefeed with &lt;br/&gt;</li>
+	 * <li>[maxlength] - the maximal allowed length of the text</li>
 	 * </ul>
-	 * @return String the encoded text.
 	 */
 	static String encodeXML(String txt,
 	[bool multiline=false, int maxlength=0, bool pre=false]) {
@@ -175,8 +166,7 @@ class StringUtil {
 
 	/** Decodes the XML string into a normal string.
 	 * For example, &amp;lt; is convert to &lt;
-	 * @param String txt the text to decode
-	 * @return String the decoded string
+	 * <p>[txt] is the text to decode.
 	 */
 	static String decodeXML(String txt) {
 		if (txt == null) return null; //as it is

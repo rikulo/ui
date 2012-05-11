@@ -26,13 +26,13 @@ interface Selectable<E> {
 	bool isSelectionEmpty();
 	/**
 	 * Add the specified object into selection.
-	 * @return whether it has been added successfully.
+	 * It returns whether it has been added successfully.
 	 * Returns false if it is already selected.
 	 */
 	bool addToSelection(E obj);
 	/**
 	 * Remove the specified object from selection.
-	 * @return whether it is removed successfully.
+	 * It returns whether it is removed successfully.
 	 * Returns false if is not selected.
 	 */
 	bool removeFromSelection(Object obj);

@@ -28,7 +28,6 @@ class ScrollViewDemo extends Activity {
 		}
 
 		rootView.appendChild(view);
-		log("hello");
 	}
 }
 
