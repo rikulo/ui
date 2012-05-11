@@ -16,7 +16,7 @@ class CSS {
 
 	/** Converts a CSS value representing a pixel.
 	 * In other words, it converts a number to a string appended with "px".
-	 * Notice that it returns an empty string if val is null.
+	 * Notice that it returns an empty string if [val] is null.
 	 */
 	static String px(num val) {
 		return val !== null ? "${val}px": "";
@@ -33,6 +33,36 @@ class CSS {
 	static String translate3d(int x, int y, [int z]) {
 		return "translate3d(${x}px, ${y}px, ${z !== null ? z: 0}px)";
 	}
+	/** Converts a string of a 3-tuples to [Offset3d].
+	 * If it is 2-tuples, [Offset3d.z] will be zero.
+	 */
+	static Offset3d offset3dOf(String value) {
+		if (value == null || value.isEmpty())
+			return new Offset3d(0, 0, 0);
+
+		final List<int> ary = [0, 0, 0];
+		int i = value.indexOf('(');
+		if (i >= 0) value = value.substring(i + 1);
+		i = 0;
+		for (String tuple in value.split(',')) {
+			ary[i++] = intOf(tuple);
+			if (i == 3)
+				break;
+		}
+		return new Offset3d(ary[0], ary[1], ary[2]);
+	}
+	/** Converts a string of a CSS value to an integer.
+	 * It returns 0 if value is null, empty, or failed to parse.
+	 */
+	static int intOf(String value) {
+		try {
+			return value !== null && !value.isEmpty() ?
+				Math.parseInt(_reNum.firstMatch(value).group(0)): 0;
+		} catch (var e) {
+			return 0;
+		}
+	}
+	static final RegExp _reNum = const RegExp(@"([0-9]+)");
 
 	/** Returns the corrected name for the given CSS property name.
 	 * For example, <code>css('text-size-adjust')</code> will return
