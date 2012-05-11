@@ -5,17 +5,24 @@
 /**
  * The size.
  */
-class Size {
+interface Size default _Size {
 	/** The width. */
 	int width;
 	/** The height. */
 	int height;
 
-	Size(int this.width, int this.height);
+	Size(int width, int height);
+	bool operator ==(Size other);
+}
 
-	bool operator ==(Size other) {
-		return other !== null && width == other.width && height == other.height;
-	}
+class _Size implements Size {
+	int width, height;
 
+	_Size(int this.width, int this.height);
+
+	bool operator ==(Size other)
+	=> other !== null && width == other.width && height == other.height;
+
+	int hashCode() => width + height;
 	String toString() => "($width, $height)";
 }

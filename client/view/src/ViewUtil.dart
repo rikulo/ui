@@ -19,6 +19,12 @@ class ViewUtil {
 		layoutManager.flush();
 	}
 
+	/** Returns the rectangle enclosing all views in the given list.
+	 *Views in [children] must belong to the same parent.
+	 */
+	static Rectangle getRectangle(List<View> children) {
+	}
+
 	/** Returns the view of the given UUID.
 	 * <p>Notice that, if a view is not attached to the document, it won't
 	 * be returned
