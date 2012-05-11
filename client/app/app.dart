@@ -11,6 +11,8 @@
 #import("../viewimpl/viewimpl.dart");
 #import("../html/html.dart");
 #import("../layout/layout.dart");
+#import("../device/device.dart");
+#import("../cordova/cordova.dart");
 
 #source("src/Activity.dart");
 #source("src/Application.dart");

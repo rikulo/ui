@@ -12,5 +12,6 @@
 #import("../device/device.dart");
 #import("../deviceimpl/deviceimpl.dart");
 
+#source("src/CordovaCamera.dart");
 #source("src/CordovaAccelerometer.dart");
 #source("src/CordovaDevice.dart");

@@ -6,6 +6,7 @@
 
 #import("dart:html");
 #import("../view/view.dart");
+#import("../device/device.dart");
 
 #source("src/ViewEvent.dart");
 #source("src/ViewEvents.dart");
@@ -13,3 +14,4 @@
 #source("src/DeviceEvent.dart");
 #source("src/DeviceEvents.dart");
 #source("src/AccelerationEvent.dart");
+#source("src/AccelerationEvents.dart");

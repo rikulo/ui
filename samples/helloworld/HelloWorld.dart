@@ -21,9 +21,6 @@ print("onCreate_()");
 				event.target.style.border.isEmpty() ? "1px solid blue": "";
 		});
 		rootView.appendChild(text);
-		
-print("addAccelerate");   
-		device.accelerometer.on.accelerate.add((AccelerationEvent event)=>print('accelerate called: x:' + event.x+ ", y:" + event.y + ", z:" + event.z + ", timestamp:" + event.timestamp));
 	}
 }
 

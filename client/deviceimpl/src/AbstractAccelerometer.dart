@@ -42,7 +42,7 @@ print("AbstractAccelerometer.removeEventListener: LEAVE! type:"+type);
 		
 	}
 	
-	bool dispatchEvent(AccelerationEvent event, [String type]) {
+	bool dispatchEvent(DeviceEvent event, [String type]) {
 		//ignore
 	}
 	

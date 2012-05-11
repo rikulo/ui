@@ -48,10 +48,6 @@ class Activity {
 		_rootView.height = browser.size.height;
 		_rootView.style.overflow = "hidden"; //crop
 
-		if (device === null && !application.inSimulator) { //only if not in simulator, we initilize Cordova device
-			device = new CordovaDevice();
-		}
-		
 		application._ready(() {
 			onCreate_();
 

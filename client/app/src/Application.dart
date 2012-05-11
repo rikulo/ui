@@ -106,6 +106,25 @@ Application get application() { //initialized by Activity
 }
 Application _app;
 
-/** The current device.
+/** Initializes the device.
+ *
+ * <p>Notice that this method will instantiate the default application if
+ * the application is not instantiated. Thus, if you subclass the application,
+ * you shall instantiate it before invoking this method, such as
+ * <pre><code>new FooApplication();
+ *initSimulator();</code></pre>
+ *
+ * <p>This method can be called multiple times, but the second invocation
+ * will be ignored.
  */
-Device device; //singleton device
+void initDevice() {
+	//Initilize Cordova device if not in simulator
+	if (device === null && !application.inSimulator) { 
+print("CordovaDevice");
+		device = new CordovaDevice();
+	}
+	
+	if (device === null)
+		throw const UiException("Remember to call initSimulator() if application running in simulator...");
+}
+Device device; //singleton device per application

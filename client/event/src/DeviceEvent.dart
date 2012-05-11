@@ -5,18 +5,21 @@
 /**
  * Event fired from the device.
  */
-class DeviceEvent {
+class DeviceEvent<Data> {
 	/** Event target
 	 */
-	final DeviceEventTarget _target;
+	final DeviceEventTarget target;
 	/** Event type
 	 */
 	final String type;
+	/** Event payload
+	 */
+	final Data data;
 	/** Whether to stop propagate this event.
 	 */
 	bool propagationStopped;
 	
-	DeviceEvent(DeviceEventTarget target, String type) : 
-	_target = target, this.type = type {
+	DeviceEvent(DeviceEventTarget target, String type, Data data) : 
+		this.target = target, this.type = type,  this.data = data {
 	}
 }
