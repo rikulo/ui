@@ -491,16 +491,16 @@ class View implements EventTarget {
 		if (inner !== n) {
 			//sync innerNode's positon and size
 			if (left)
-				inner.style.left = StringUtil.px(innerLeft);
+				inner.style.left = CSS.px(innerLeft);
 			if (top)
-				inner.style.top = StringUtil.px(innerTop);
+				inner.style.top = CSS.px(innerTop);
 			if (width) {
 				int v = new DomQuery(n).innerWidth - innerSpacing_.width;
-				inner.style.width = StringUtil.px(v > 0 ? v: 0);
+				inner.style.width = CSS.px(v > 0 ? v: 0);
 			}
 			if (height) {
 				int v = new DomQuery(n).innerHeight - innerSpacing_.height;
-				inner.style.height = StringUtil.px(v > 0 ? v: 0);
+				inner.style.height = CSS.px(v > 0 ? v: 0);
 			}
 		}
 	}
@@ -754,7 +754,7 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null)
-			n.style.left = StringUtil.px(left);
+			n.style.left = CSS.px(left);
 	}
 	/** Returns the top position of this view relative to its parent.
 	 * <p>Default: 0
@@ -767,7 +767,7 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null)
-			n.style.top = StringUtil.px(top);
+			n.style.top = CSS.px(top);
 	}
 
 	/** Returns the width of this view.
@@ -782,7 +782,7 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null) {
-			n.style.width = StringUtil.px(width);
+			n.style.width = CSS.px(width);
 
 			adjustInnerNode_(width: true);
 		}
@@ -799,7 +799,7 @@ class View implements EventTarget {
 
 		final Element n = node;
 		if (n !== null) {
-			n.style.height = StringUtil.px(height);
+			n.style.height = CSS.px(height);
 
 			adjustInnerNode_(height: true);
 		}

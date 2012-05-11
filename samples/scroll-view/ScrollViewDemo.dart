@@ -3,7 +3,7 @@
 #import('dart:html');
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
-#import('../../client/util/util.dart');
+#import('../../client/html/html.dart');
 
 class ScrollViewDemo extends Activity {
 
@@ -18,7 +18,7 @@ class ScrollViewDemo extends Activity {
 		for (int x = 0; x < 20; ++x) {
 			for (int y = 0; y < 20; ++y) {
 				View child = new View();
-				final String color = StringUtil.rgb(250 - x * 4, 250 - y * 4, 200);
+				final String color = CSS.color(250 - x * 4, 250 - y * 4, 200);
 				child.style.cssText = "border: 1px solid #553; background-color: $color";
 				child.left = x * 50 + 2;
 				child.top = y * 50 + 2;

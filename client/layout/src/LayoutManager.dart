@@ -188,7 +188,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 		int limit = _amountOf(view.profile.maxWidth, parentInnerWidth);
 		if ((autowidth && size.width > browser.size.width)
 		|| (limit !== null && size.width > limit)) {
-			nodestyle.width = StringUtil.px(limit != null ? limit: browser.size.width);
+			nodestyle.width = CSS.px(limit != null ? limit: browser.size.width);
 
 			size.width = qview.outerWidth;
 			size.height = qview.outerHeight;

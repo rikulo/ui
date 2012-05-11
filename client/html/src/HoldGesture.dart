@@ -62,33 +62,39 @@ abstract class HoldGesture {
 	abstract void _unlisten();
 
 	bool _touchStart(Element touched, int pageX, int pageY) {
-		_pageX = pageX; _pageY = pageY;
-		_touched = touched;
-		_clear();
+		_stop();
+
 		if (_start !== null) {
-			bool c = _start(_touched, pageX, pageY);
+			bool c = _start(touched, pageX, pageY);
 			if (c !== null && !c)
 				return false; //don't start it
 		}
+
+		_pageX = pageX;
+		_pageY = pageY;
+		_touched = touched;
 		_timer = window.setTimeout(_call, duration);
 		return true; //started
 	}
 	void _touchMove(int pageX, int pageY) {
-		if (pageX - _pageX > movement || pageY - _pageY > movement)
-			_clear();
+		if (_touched !== null
+		&& (pageX - _pageX > movement || pageY - _pageY > movement))
+			_stop();
 	}
 	void _touchEnd() {
-		_clear();
+		if (_touched !== null)
+			_stop();
 	}
 	void _call() {
-		_clear();
+		_stop();
 		_action(_touched, _pageX, _pageY);
 	}
-	void _clear() {
+	void _stop() {
 		if (_timer !== null) {
 			window.clearTimeout(_timer);
 			_timer = null;
 		}
+		_touched = null;
 	}
 }
 
@@ -128,7 +134,6 @@ class _TouchHoldGesture extends HoldGesture {
  */
 class _MouseHoldGesture extends HoldGesture {
   EventListener _elStart, _elMove, _elEnd;
-  bool _down = false;
 
   _MouseHoldGesture(Element owner, HoldGestureCallback action,
   HoldGestureCallback start, int duration, int movement)
@@ -138,14 +143,12 @@ class _MouseHoldGesture extends HoldGesture {
 	void _listen() {
 		final ElementEvents on = owner.on;
 		on.mouseDown.add(_elStart = (MouseEvent event) {
-			_down = _touchStart(event.target, event.pageX, event.pageY);
+			_touchStart(event.target, event.pageX, event.pageY);
 		});
 		on.mouseMove.add(_elMove = (MouseEvent event) {
-			if (_down)
-				_touchMove(event.pageX, event.pageY);
+			_touchMove(event.pageX, event.pageY);
 		});
 		on.mouseUp.add(_elEnd = (event) {
-			_down = false;
 			_touchEnd();
 		});
 	}

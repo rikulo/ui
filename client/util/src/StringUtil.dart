@@ -210,17 +210,4 @@ class StringUtil {
 		} while ((v ~/= 37) >= 1);
 		return sb.toString();
 	}
-
-	/** Converts a number to a string appended with "px".
-	 * Notice that it returns an empty string if val is null.
-	 */
-	static String px(num val) {
-		return val !== null ? "${val}px": "";
-	}
-	/** Converts to RGB.
-	 */
-	static String rgb(int red, int green, int blue, [num alpha]) {
-		return alpha !== null ? "rgba($red,$green,$blue,$alpha)":
-			"#${toHexString(red,2)}${toHexString(green,2)}${toHexString(blue,2)}";
-	}
 }

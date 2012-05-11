@@ -20,11 +20,11 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 
 	String getPropertyValue(String propertyName) {
 		_check(propertyName);
-		return _pcss !== null ? _unwrap(_pcss.getPropertyValue(browser.css(propertyName))): "";
+		return _pcss !== null ? _unwrap(_pcss.getPropertyValue(CSS.name(propertyName))): "";
 	}
 
 	String removeProperty(String propertyName) {
-		propertyName = browser.css(propertyName);
+		propertyName = CSS.name(propertyName);
 
 		final String prev = _pcss !== null ? _pcss.removeProperty(propertyName): "";
 		Element node;
@@ -35,7 +35,7 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 
 	void setProperty(String propertyName, String value, [String priority = null]) {
 		_check(propertyName);
-		propertyName = browser.css(propertyName);
+		propertyName = CSS.name(propertyName);
 
 		if (priority === null) {
 			_css.setProperty(propertyName, value);
@@ -66,15 +66,15 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 
 	CSSRule get parentRule() => _pcss !== null ? _pcss.parentRule: null;
 	CSSValue getPropertyCSSValue(String propertyName)
-		=> _pcss !== null ? _pcss.getPropertyCSSValue(browser.css(propertyName)): null;
+		=> _pcss !== null ? _pcss.getPropertyCSSValue(CSS.name(propertyName)): null;
 	String getPropertyPriority(String propertyName)
-		=> _pcss !== null ? _pcss.getPropertyPriority(browser.css(propertyName)): "";
+		=> _pcss !== null ? _pcss.getPropertyPriority(CSS.name(propertyName)): "";
 	String getPropertyShorthand(String propertyName)
-		=> _css.getPropertyShorthand(browser.css(propertyName)); 
+		=> _css.getPropertyShorthand(CSS.name(propertyName)); 
 			//Not sure what to return by default
 
 	bool isPropertyImplicit(String propertyName)
-		=> _css.isPropertyImplicit(browser.css(propertyName)); //Not sure what to return by default
+		=> _css.isPropertyImplicit(CSS.name(propertyName)); //Not sure what to return by default
 
 	String item(int index) => _css.item(index); //Not sure what to return by default
 

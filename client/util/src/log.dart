@@ -43,14 +43,14 @@ class _Log {
 			document.body.insertAdjacentHTML("afterBegin", '''
 <style>
 .v-logView-x {
- ${browser.css('box-sizing')}: border-box;
+ ${CSS.name('box-sizing')}: border-box;
  width:40%; height:30%; border:1px solid #332; background-color:#eec;
  overflow:auto; padding:3px; white-space:pre-wrap;
  font-size:11px; position:absolute; right:0; bottom:0;
 }
 .v-logView-pp {
  position:absolute; border:1px solid #221; padding:1px; background-color:white;
- border-radius: 1px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+ border-radius: 1px; box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
 .v-logView-pp div {
  display: inline-block; border:1px solid #553; border-radius: 3px;
