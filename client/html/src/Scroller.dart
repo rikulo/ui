@@ -16,6 +16,7 @@ abstract class Scroller {
 	final Element _owner;
 	final Dir _dir;
 	final ScrollerCallback _start, _scrollTo, _scrolling;
+	final AsSize _size;
 	Element _touched;
 	int _pageX, _pageY;
 	Offset3d _initOfs;
@@ -24,14 +25,16 @@ abstract class Scroller {
 	 * <p>[start] is the callback before starting scrolling.
 	 * If it returns false, the scrolling won't be activated.
 	 */
-	factory Scroller(Element owner, [Dir dir=Dir.BOTH, ScrollerCallback start,
-	ScrollerCallback scrollTo, ScrollerCallback scrolling]) {
+	factory Scroller(Element owner, [Dir dir=Dir.BOTH, AsSize size,
+	ScrollerCallback start, ScrollerCallback scrollTo, ScrollerCallback scrolling]) {
 		return browser.touch ?
-			new _TouchScroller(owner, dir, start, scrollTo, scrolling):
-			new _MouseScroller(owner, dir, start, scrollTo, scrolling);
+			new _TouchScroller(owner, dir, size, start, scrollTo, scrolling):
+			new _MouseScroller(owner, dir, size, start, scrollTo, scrolling);
+			//TODO: support desktop - if not in simulator, mousewheel/draggable scrollbar
 	}
-	Scroller._init(Element this._owner, Dir this._dir, ScrollerCallback this._start,
-	ScrollerCallback this._scrollTo, ScrollerCallback this._scrolling) {
+	Scroller._init(Element this._owner, Dir this._dir, AsSize this._size,
+	ScrollerCallback this._start, ScrollerCallback this._scrollTo,
+	ScrollerCallback this._scrolling) {
 		_listen();
 	}
 
@@ -110,9 +113,9 @@ abstract class Scroller {
 class _TouchScroller extends Scroller {
   EventListener _elStart, _elMove, _elEnd;
 
-	_TouchScroller(Element owner, Dir dir, ScrollerCallback start,
+	_TouchScroller(Element owner, Dir dir, AsSize size, ScrollerCallback start,
 	ScrollerCallback scrollTo, ScrollerCallback scrolling)
-	: super._init(owner, dir, start, scrollTo, scrolling) {
+	: super._init(owner, dir, size, start, scrollTo, scrolling) {
 	}
 
 	void _listen() {
@@ -144,9 +147,9 @@ class _MouseScroller extends Scroller {
   EventListener _elStart, _elMove, _elEnd;
   bool _captured = false;
 
-	_MouseScroller(Element owner, Dir dir, ScrollerCallback start,
+	_MouseScroller(Element owner, Dir dir, AsSize size, ScrollerCallback start,
 	ScrollerCallback scrollTo, ScrollerCallback scrolling)
-	: super._init(owner, dir, start, scrollTo, scrolling) {
+	: super._init(owner, dir, size, start, scrollTo, scrolling) {
 	}
 
 	//@Override

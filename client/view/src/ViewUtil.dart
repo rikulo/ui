@@ -23,6 +23,22 @@ class ViewUtil {
 	 *Views in [children] must belong to the same parent.
 	 */
 	static Rectangle getRectangle(List<View> children) {
+		final Rectangle r = new Rectangle(0,0,0,0);
+		for (final View child in children) {
+			final String pos = child.style.position;
+			if (pos != "static" && pos != "fixed") {
+				if (child.left < r.left) r.left = child.left;
+				int val = child.width;
+				if (val !== null && (val += child.left) > r.right)
+					r.right = val;
+
+				if (child.top < r.top) r.top = child.top;
+				val = child.height;
+				if (val !== null && (val += child.top) > r.bottom)
+					r.bottom = val;
+			}
+		}
+		return r;
 	}
 
 	/** Returns the view of the given UUID.

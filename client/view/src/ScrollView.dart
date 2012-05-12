@@ -24,13 +24,12 @@ class ScrollView extends View {
 	 * Therefore, it is strongly suggested to override this method to calculate
 	 * the content's size more efficiently.
 	 */
-	Size get contentSize() {
-	}
+	Size get contentSize() => ViewUtil.getRectangle(children);
 
 	//@Override
 	void enterDocument_() {
 		super.enterDocument_();
-		_scroller = new Scroller(innerNode, Dir.BOTH);
+		_scroller = new Scroller(innerNode, size: () => contentSize);
 	}
 	//@Override
 	void exitDocument_() {
