@@ -13,9 +13,9 @@ class _ChildInfo {
 /** The information of an event listener used in [View].
  */
 class _EventListenerInfo {
-	Events on;
+	ViewEvents on;
 	//the registered event listeners; created on demand
-	Map<String, List<EventListener>> listeners;
+	Map<String, List<ViewEventListener>> listeners;
 	//generic DOM event listener
 	Map<String, EventListener> domListeners;
 }

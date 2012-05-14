@@ -50,12 +50,12 @@ class _Broadcaster implements Broadcaster {
 }
 class _BroadcastListeners {
 	final Broadcaster _owner;
-	final Map<String, List<EventListener>> _listeners;
+	final Map<String, List<ViewEventListener>> _listeners;
 
 	_BroadcastListeners(Broadcaster this._owner): _listeners = new Map() {
 	}
 
-	void addEventListener(String type, EventListener listener) {
+	void addEventListener(String type, ViewEventListener listener) {
 		if (listener == null)
 			throw const UIException("listener required");
 
@@ -66,8 +66,8 @@ class _BroadcastListeners {
 	 * <code>addEventListener("click", listener)</code> is the same as
 	 * <code>on.click.remove(listener)</code>.
 	 */
-	bool removeEventListener(String type, EventListener listener) {
-		List<EventListener> ls;
+	bool removeEventListener(String type, ViewEventListener listener) {
+		List<ViewEventListener> ls;
 		bool found = false;
 		if ((ls = _listeners[type]) != null) {
 			int j = ls.indexOf(listener);
@@ -87,10 +87,10 @@ class _BroadcastListeners {
 		if (type == null)
 			type = event.type;
 
-		List<EventListener> ls;
+		List<ViewEventListener> ls;
 		bool dispatched = false;
 		if ((ls = _listeners[type]) != null) {
-			for (final EventListener listener in new List.from(ls)) { //we have to make a copy since the listener might change it
+			for (final ViewEventListener listener in new List.from(ls)) { //we have to make a copy since the listener might change it
 				dispatched = true;
 				listener(event);
 				if (event.propagationStopped)

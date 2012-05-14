@@ -1,50 +1,98 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 17, 2012
 
-/** A map of event listeners for [View].
+/** A list of [ViewEvent] listeners.
  */
-interface ViewEvents extends Events default _ViewEvents {
-	ViewEvents(var ptr);
+interface ViewEventListenerList default _ViewEventListenerList {
+	/** Adds an event listener to this list.
+	 */
+	ViewEventListenerList add(ViewEventListener handler);
+	/** Removes an event listener from this list.
+	 */
+	ViewEventListenerList remove(ViewEventListener handler);
+	/** Dispatches the event to the listeners in this list.
+	 */
+	bool dispatch(ViewEvent event);
+	/** Tests if any event listener is registered.
+	 */
+	bool isEmpty();
+}
+/** A map of [ViewEvent] listeners.
+ * It is a skeletal interface for any object that handles events,
+ * such as [View] and [Broadcaster].
+ */
+interface ViewEventListenerMap default _ViewEventListenerMap {
+	/** Returns the list of [ViewEvent] listeners for the given type.
+	 */
+	ViewEventListenerList operator [](String type);
 
 	/** Tests if the given event type is listened.
 	 */
 	bool isListened(String type);
+}
+/** A map of [ViewEvent] listeners that [View] accepts.
+ */
+interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
+	ViewEvents(var ptr);
 
-	EventListenerList get blur();
-	EventListenerList get change();
-	EventListenerList get click();
-	EventListenerList get focus();
-	EventListenerList get keyDown();
-	EventListenerList get keyPress();
-	EventListenerList get keyUp();
-	EventListenerList get mouseDown();
-	EventListenerList get mouseMove();
-	EventListenerList get mouseOut();
-	EventListenerList get mouseOver();
-	EventListenerList get mouseUp();
-	EventListenerList get mouseWheel();
-	EventListenerList get scroll();
+	ViewEventListenerList get blur();
+	ViewEventListenerList get change();
+	ViewEventListenerList get click();
+	ViewEventListenerList get focus();
+	ViewEventListenerList get keyDown();
+	ViewEventListenerList get keyPress();
+	ViewEventListenerList get keyUp();
+	ViewEventListenerList get mouseDown();
+	ViewEventListenerList get mouseMove();
+	ViewEventListenerList get mouseOut();
+	ViewEventListenerList get mouseOver();
+	ViewEventListenerList get mouseUp();
+	ViewEventListenerList get mouseWheel();
+	ViewEventListenerList get scroll();
 
-	EventListenerList get check();
+	ViewEventListenerList get check();
 
-	EventListenerList get layout();
-	EventListenerList get enterDocument();
-	EventListenerList get exitDocument();
+	ViewEventListenerList get layout();
+	ViewEventListenerList get enterDocument();
+	ViewEventListenerList get exitDocument();
 }
 
-/** An implementation of [Events].
+/** An implementation of [ViewEventListenerList].
  */
-class _Events implements Events {
+class _ViewEventListenerList implements ViewEventListenerList {
+	final _ptr;
+	final String _type;
+
+	_ViewEventListenerList(this._ptr, this._type);
+
+	ViewEventListenerList add(ViewEventListener handler) {
+		_ptr.addEventListener(_type, handler);
+		return this;
+	}
+	ViewEventListenerList remove(ViewEventListener handler) {
+		_ptr.removeEventListener(_type, handler);
+		return this;
+	}
+	bool dispatch(ViewEvent event) {
+		return _ptr.sendEvent(event, type: _type);
+	}
+	bool isEmpty() {
+		return _ptr.isEventListened(_type);
+	}
+}
+/** An implementation of [ViewEventListenerMap].
+ */
+class _ViewEventListenerMap implements ViewEventListenerMap {
 	//raw event target
 	final _ptr;
-	final Map<String, EventListenerList> _lnlist;
+	final Map<String, ViewEventListenerList> _lnlist;
 
-	_Events(this._ptr): _lnlist = new Map() {
+	_ViewEventListenerMap(this._ptr): _lnlist = new Map() {
 	}
 
-	EventListenerList operator [](String type) => _get(type); 
-  _EventListenerList _get(String type) {
-		return _lnlist.putIfAbsent(type, () => new _EventListenerList(_ptr, type));
+	ViewEventListenerList operator [](String type) => _get(type); 
+  _ViewEventListenerList _get(String type) {
+		return _lnlist.putIfAbsent(type, () => new _ViewEventListenerList(_ptr, type));
 	}
 
 	bool isListened(String type) {
@@ -55,54 +103,28 @@ class _Events implements Events {
 
 /** An implementation of [ViewEvents].
  */
-class _ViewEvents extends _Events implements ViewEvents {
+class _ViewEvents extends _ViewEventListenerMap implements ViewEvents {
 	_ViewEvents(var ptr): super(ptr) {
 	}
 
-	EventListenerList get blur() => _get('blur');
-	EventListenerList get change() => _get('change');
-	EventListenerList get click() => _get('click');
-	EventListenerList get focus() => _get('focus');
-	EventListenerList get keyDown() => _get('keyDown');
-	EventListenerList get keyPress() => _get('keyPress');
-	EventListenerList get keyUp() => _get('keyUp');
-	EventListenerList get mouseDown() => _get('mouseDown');
-	EventListenerList get mouseMove() => _get('mouseMove');
-	EventListenerList get mouseOut() => _get('mouseOut');
-	EventListenerList get mouseOver() => _get('mouseOver');
-	EventListenerList get mouseUp() => _get('mouseUp');
-	EventListenerList get mouseWheel() => _get('mouseWheel');
-	EventListenerList get scroll() => _get('scroll');
+	ViewEventListenerList get blur() => _get('blur');
+	ViewEventListenerList get change() => _get('change');
+	ViewEventListenerList get click() => _get('click');
+	ViewEventListenerList get focus() => _get('focus');
+	ViewEventListenerList get keyDown() => _get('keyDown');
+	ViewEventListenerList get keyPress() => _get('keyPress');
+	ViewEventListenerList get keyUp() => _get('keyUp');
+	ViewEventListenerList get mouseDown() => _get('mouseDown');
+	ViewEventListenerList get mouseMove() => _get('mouseMove');
+	ViewEventListenerList get mouseOut() => _get('mouseOut');
+	ViewEventListenerList get mouseOver() => _get('mouseOver');
+	ViewEventListenerList get mouseUp() => _get('mouseUp');
+	ViewEventListenerList get mouseWheel() => _get('mouseWheel');
+	ViewEventListenerList get scroll() => _get('scroll');
 
-	EventListenerList get layout() => _get("layout");
-	EventListenerList get enterDocument() => _get("enterDocument");
-	EventListenerList get exitDocument() => _get("exitDocument");
+	ViewEventListenerList get layout() => _get("layout");
+	ViewEventListenerList get enterDocument() => _get("enterDocument");
+	ViewEventListenerList get exitDocument() => _get("exitDocument");
 
-	EventListenerList get check() => _get("check");
-}
-
-/** An implementation of [EventListenerList].
- */
-class _EventListenerList implements EventListenerList {
-	final _ptr;
-	final String _type;
-
-	_EventListenerList(this._ptr, this._type);
-
-	EventListenerList add(void listener(Event event), [bool useCapture]) {
-		_ptr.addEventListener(_type, listener);
-		return this;
-	}
-	bool dispatch(Event event) {
-		return _ptr.sendEvent(event, type: _type);
-	}
-	EventListenerList remove(void listener(Event event), [bool useCapture]) {
-		_ptr.removeEventListener(_type, listener);
-		return this;
-	}
-	/** Tests if any listener is registered.
-	 */
-	bool isEmpty() {
-		return _ptr.isEventListened(_type);
-	}
+	ViewEventListenerList get check() => _get("check");
 }

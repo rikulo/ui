@@ -5,23 +5,18 @@
 /**
  * A map of event listeners for handling the broadcasted events.
  */
-interface BroadcastEvents extends Events default _BroadcastEvents {
+interface BroadcastEvents extends ViewEventListenerMap default _BroadcastEvents {
 	BroadcastEvents(var ptr);
-
-	/** Tests if the given event type is listened.
-	 */
-	bool isListened(String type);
 
 	/** Listeners for the popup event ([PopupEvent]).
 	 */
-	EventListenerList get popup();
+	ViewEventListenerList get popup();
 }
 
 /** An implementation of [BroadcastEvents].
  */
-class _BroadcastEvents extends _Events implements BroadcastEvents {
-	_BroadcastEvents(var ptr): super(ptr) {
-	}
+class _BroadcastEvents extends _ViewEventListenerMap implements BroadcastEvents {
+	_BroadcastEvents(var ptr): super(ptr);
 
-	EventListenerList get popup() => _get('popup');
+	ViewEventListenerList get popup() => _get('popup');
 }

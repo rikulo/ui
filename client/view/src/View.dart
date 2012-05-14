@@ -29,7 +29,7 @@ typedef EventListener DomEventDispatcher(View target);
  * removed from the document.</li>
  * </ul>
  */
-class View implements EventTarget {
+class View {
 	String _id = "";
 	String _uuid;
 
@@ -594,7 +594,7 @@ class View implements EventTarget {
 		//Listen the DOM element if necessary
 		final Element n = node;
 		if (_evlInfo !== null && _evlInfo.listeners !== null) {
-			final Map<String, List<EventListener>> listeners = _evlInfo.listeners;
+			final Map<String, List<ViewEventListener>> listeners = _evlInfo.listeners;
 			for (final String type in listeners.getKeys()) {
 				final DomEventDispatcher disp = getDomEventDispatcher_(type);
 				if (disp != null && !listeners[type].isEmpty())
@@ -614,7 +614,7 @@ class View implements EventTarget {
 		//Unlisten the DOM element if necessary
 		final Element n = node;
 		if (_evlInfo !== null && _evlInfo.listeners !== null) {
-			final Map<String, List<EventListener>> listeners = _evlInfo.listeners;
+			final Map<String, List<ViewEventListener>> listeners = _evlInfo.listeners;
 			for (final String type in listeners.getKeys()) {
 				if (getDomEventDispatcher_(type) != null && !listeners[type].isEmpty())
 					domUnlisten_(n, type);
@@ -1058,7 +1058,7 @@ class View implements EventTarget {
 	 * <code>addEventListener("click", listener)</code> is the same as
 	 * <code>on.click.add(listener)</code>.
 	 */
-	void addEventListener(String type, EventListener listener) {
+	void addEventListener(String type, ViewEventListener listener) {
 		if (listener == null)
 			throw const UIException("listener required");
 
@@ -1083,8 +1083,8 @@ class View implements EventTarget {
 	 * <code>addEventListener("click", listener)</code> is the same as
 	 * <code>on.click.remove(listener)</code>.
 	 */
-	bool removeEventListener(String type, EventListener listener) {
-		List<EventListener> ls;
+	bool removeEventListener(String type, ViewEventListener listener) {
+		List<ViewEventListener> ls;
 		bool found = false;
 		if (_evlInfo !== null && _evlInfo.listeners !== null
 		&& (ls = _evlInfo.listeners[type]) != null) {
@@ -1110,12 +1110,12 @@ class View implements EventTarget {
 		if (type == null)
 			type = event.type;
 
-		List<EventListener> ls;
+		List<ViewEventListener> ls;
 		bool dispatched = false;
 		if (_evlInfo !== null && _evlInfo.listeners != null
 		&& (ls = _evlInfo.listeners[type]) != null) {
 			event.currentTarget = this;
-			for (final EventListener listener in new List.from(ls)) { //we have to make a copy since the listener might change it
+			for (final ViewEventListener listener in new List.from(ls)) { //we have to make a copy since the listener might change it
 				dispatched = true;
 				listener(event);
 				if (event.propagationStopped)
@@ -1137,7 +1137,7 @@ class View implements EventTarget {
 	/** Returns if there is any event listener registered to the given type.
 	 */
 	bool isEventListened(String type) {
-		List<EventListener> ls;
+		List<ViewEventListener> ls;
 		return _evlInfo !== null && _evlInfo.listeners != null
 			&& (ls = _evlInfo.listeners[type]) != null && !ls.isEmpty();
 	}
@@ -1221,19 +1221,6 @@ class View implements EventTarget {
 		_runOnceQue.add(uuid + key, task, timeout: timeout);
 	}
 	static RunOnceQueue _runOnceQue;
-
-  /** useless; throws UIException. */
-	void $dom_addEventListener(String type, void listener(Event event), [bool useCapture]) {
-		throw const UIException("not available");
-	}
-  /** useless; throws UIException. */
-	bool $dom_dispatchEvent(Event event) {
-		throw const UIException("not available");
-	}
-  /** useless; throws UIException. */
-	void $dom_removeEventListener(String type, void listener(Event event), [bool useCapture]) {
-		throw const UIException("not available");
-	}
 
 	int hashCode() => uuid.hashCode(); //uuid is immutiable once assigned
 	String toString() => "View($uuid)";
