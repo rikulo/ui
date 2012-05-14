@@ -133,7 +133,7 @@ class _LogPopup {
 	}
 	ViewEventListener _onPopup() {
 		if (_elPopup === null)
-			_elPopup = (event) {
+			_elPopup = (PopupEvent event) {
 				if (_node !== null && event.shallClose(_node))
 					close();
 			};

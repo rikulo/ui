@@ -48,7 +48,7 @@ class InterApplicationBridge<Message> {
 	}
 	InterApplicationBridge._with(this._name, this._origin):
 	_receives = [], _sends = [] {
-		_evtListener = (event) {
+		_evtListener = (event) { //DOM event
 			var data;
 			try {
 				data = JSON.parse(event.data);

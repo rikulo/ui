@@ -235,7 +235,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 		if (!_imgWaits.contains(imgURI)) {
 			_imgWaits.add(imgURI);
 			final ImageElement img = new Element.tag("img");
-			var func = (event) {
+			var func = (event) { //DOM event
 				_onImageLoaded(imgURI);
 			};
 			img.on.load.add(func);

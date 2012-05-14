@@ -130,7 +130,7 @@ class _TouchScroller extends Scroller {
 		on.touchMove.add(_elMove = (TouchEvent event) {
 			_touchMove(event.pageX, event.pageY);
 		});
-		on.touchEnd.add(_elEnd = (event) {
+		on.touchEnd.add(_elEnd = (TouchEvent event) {
 			_touchEnd(event.pageX, event.pageY);
 		});
 	}
@@ -172,7 +172,7 @@ class _MouseScroller extends Scroller {
 		on.mouseMove.add(_elMove = (MouseEvent event) {
 			_touchMove(event.pageX, event.pageY);
 		});
-		on.mouseUp.add(_elEnd = (event) {
+		on.mouseUp.add(_elEnd = (MouseEvent event) {
 			_touchEnd(event.pageX, event.pageY);
 		});
 	}

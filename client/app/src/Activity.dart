@@ -61,11 +61,11 @@ class Activity {
 	 */
 	void mount_() {
 		window.on[browser.mobile || application.inSimulator ? 'deviceOrientation': 'resize'].add(
-			(event) {
+			(event) { //DOM event
 				updateSize();
 			});
 		document.on[browser.touch ? 'touchStart': 'mouseDown'].add(
-			(event) {
+			(event) { //DOM event
 				broadcaster.sendEvent(new PopupEvent(event.target));
 			});
 	}
