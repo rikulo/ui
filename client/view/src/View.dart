@@ -1152,7 +1152,7 @@ class View implements EventTarget {
 			//example: click shall carry mouse position, change shall carry value
 			DomEventDispatcher disp = (View target) {
 				return (Event event) {
-					target.sendEvent(new ViewEvent<Object>.dom(target, event, type: type));
+					target.sendEvent(new ViewEvent.dom(target, event, type: type));
 				};
 			};
 			for (final String nm in

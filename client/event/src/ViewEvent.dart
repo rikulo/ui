@@ -10,18 +10,16 @@ Copyright (C) 2012 Potix Corporation. All Rights Reserved.
  * A view event.
  * The event received by [View]'s event listener must be an instance of this class.
  */
-class ViewEvent<Data> implements Event {
+class ViewEvent implements Event {
 	View _target;
 	final Event _domEvt;
 	View _curTarget;
 	final String _type;
-	Data _data;
 	final int _stamp;
 	bool _defPrevt = false, _propStop = false;
 
-	ViewEvent(View target, String type, [Data data]):
-	_domEvt = null, _type = type, _stamp = new Date.now().value,
-	_data = data {
+	ViewEvent(View target, String type):
+	_domEvt = null, _type = type, _stamp = new Date.now().value {
 		if (type == null)
 			throw const UIException("type required");
 		_target = _curTarget = target;
@@ -41,10 +39,6 @@ class ViewEvent<Data> implements Event {
 		_curTarget = target;
 	}
 	EventTarget get srcElement() => _domEvt != null ? _domEvt.srcElement: null;
-
-	/** Returns the data, or null if not available
-	 */
-	Data get data() => _data;
 
 	/** The DOM event that causes this view event, or null if not available.
 	 */

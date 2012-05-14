@@ -12,18 +12,20 @@
  * When the listener is called, it shall invoke [shallClose] to check if the popup
  * has to be closed.
  */
-class PopupEvent extends ViewEvent<Object> {
+class PopupEvent extends ViewEvent {
+	final _source;
+
 	/** Constructor.
 	 * The source parameter is either an instance of [View], a DOM element, or null.
 	 * If null, it means all pop ups shall be closed.
 	 */
 	PopupEvent(var source, [String type="popup"]):
-	super(null, type, source) {
+	super(null, type), _source = source {
 	}
 	/** Returns the UI object triggers this event.
 	 * It is either a view or a DOM element.
 	 */
-	get source() => data;
+	get source() => _source;
 
 	/** Whether the given popup shall be closed.
 	 */

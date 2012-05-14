@@ -5,12 +5,14 @@
 /**
  * A check event.
  */
-class CheckEvent extends ViewEvent<bool> {
+class CheckEvent extends ViewEvent {
+	final bool _checked;
+
 	CheckEvent(View target, bool checked, [String type="check"]):
-	super(target, type, checked) {
+	super(target, type), _checked = checked {
 	}
 
 	/** Returns whether it is checked.
 	 */
-	bool get checked() => data;
+	bool get checked() => _checked;
 }
