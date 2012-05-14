@@ -36,7 +36,7 @@ class _Rectangle extends _Offset implements Rectangle {
 	void set width(int width) {
 		right = left + width;
 	}
-	int get height() => bottom - height;
+	int get height() => bottom - top;
 	void set height(int height) {
 		bottom = top + height;
 	}

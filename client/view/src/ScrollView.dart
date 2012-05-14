@@ -26,10 +26,14 @@ class ScrollView extends View {
 	 */
 	Size get contentSize() => ViewUtil.getRectangle(children);
 
+	/** Instantiates and returns the scroller.
+	 */
+	Scroller newScroller_() => new Scroller(innerNode, totalSize: () => contentSize);
+
 	//@Override
 	void enterDocument_() {
 		super.enterDocument_();
-		_scroller = new Scroller(innerNode, size: () => contentSize);
+		_scroller = newScroller_();
 	}
 	//@Override
 	void exitDocument_() {
@@ -42,7 +46,8 @@ class ScrollView extends View {
 		final String tag = domTag_;
 		out.add('<').add(tag);
 		domAttrs_(out);
-		out.add('><div class="v-ScrollView-inner" id="')
+		out.add('><div class="v-ScrollView-inner" style="${CSS.name('transform')}:translate3d(0px,0px,0px)" id="')
+				//Note: we have to specify translate3d(0,0,0). otherwise, the offset will be wrong in Dartium (seems a bug)
 			.add(uuid).add('-inner">');
 		domInner_(out);
 		out.add('</div></').add(tag).add('>');
