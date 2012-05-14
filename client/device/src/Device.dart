@@ -15,3 +15,24 @@ interface Device {
 	final Camera camera; //camera of this device
 	final Compass compass; //compass of this device
 }
+
+/** Enable the device accesibility.
+ *
+ * <p>Notice that this method will instantiate the default application if
+ * the application is not instantiated. Thus, if you subclass the application,
+ * you shall instantiate it before invoking this method, such as
+ * <pre><code>new FooApplication();
+ *initSimulator();</code></pre>
+ *
+ * <p>This method can be called multiple times, but the second invocation
+ * will be ignored.
+ */
+void enableDeviceAccess() {
+	//Initilize Cordova device if not in simulator
+	if (device === null) {
+		if (application.inSimulator)
+			throw const SystemException("enableSimulator() must be called first");
+		device = new CordovaDevice();
+	}
+}
+Device device; //singleton device per application

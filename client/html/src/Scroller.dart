@@ -16,7 +16,8 @@ abstract class Scroller {
 	final Element _owner;
 	final Dir _dir;
 	final ScrollerCallback _start, _scrollTo, _scrolling;
-	final AsSize _size;
+	final AsSize _fsize;
+	Size _size; //cached size
 	Element _touched;
 	int _pageX, _pageY;
 	Offset3d _initOfs;
@@ -32,7 +33,7 @@ abstract class Scroller {
 			new _MouseScroller(owner, dir, size, start, scrollTo, scrolling);
 			//TODO: support desktop - if not in simulator, mousewheel/draggable scrollbar
 	}
-	Scroller._init(Element this._owner, Dir this._dir, AsSize this._size,
+	Scroller._init(Element this._owner, Dir this._dir, AsSize this._fsize,
 	ScrollerCallback this._start, ScrollerCallback this._scrollTo,
 	ScrollerCallback this._scrolling) {
 		_listen();

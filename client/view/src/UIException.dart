@@ -7,5 +7,5 @@ class UIException implements Exception {
 	final String message;
 
 	const UIException(String this.message);
-	String toString() => "UIException: $message";
+	String toString() => "UIException($message)";
 }

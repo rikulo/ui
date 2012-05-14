@@ -8,6 +8,7 @@
 #import("dart:json");
 
 #import("../app/app.dart");
+#import("../cordova/cordova.dart");
 #import("event/event.dart");
 #import("accelerometer/accelerometer.dart");
 #import("camera/camera.dart");

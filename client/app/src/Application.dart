@@ -76,7 +76,7 @@ class Application {
 		if (_uuid === null) {
 			final Element body = document.body;
 			if (body === null)
-				throw const UIException("document not ready yet");
+				throw const SystemException("document not ready yet");
 
 			String sval = body.$dom_getAttribute(_APP_COUNT);
 			if (sval !== null) {
@@ -105,26 +105,3 @@ Application get application() { //initialized by Activity
 	return _app;
 }
 Application _app;
-
-/** Enable the device accesibility.
- *
- * <p>Notice that this method will instantiate the default application if
- * the application is not instantiated. Thus, if you subclass the application,
- * you shall instantiate it before invoking this method, such as
- * <pre><code>new FooApplication();
- *initSimulator();</code></pre>
- *
- * <p>This method can be called multiple times, but the second invocation
- * will be ignored.
- */
-void enableDeviceAccess() {
-	//Initilize Cordova device if not in simulator
-	if (device === null && !application.inSimulator) { 
-print("CordovaDevice");
-		device = new CordovaDevice();
-	}
-	
-	if (device === null)
-		throw const UIException("Are your application running in simulator? Remember to call enableSimulator() first.");
-}
-Device device; //singleton device per application
