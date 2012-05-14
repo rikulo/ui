@@ -14,3 +14,15 @@ typedef String AsString();
 /** A function that returns a bool.
  */
 typedef bool AsBool();
+/** A function that returns a [Offset].
+ */
+typedef Offset AsOffset();
+/** A function that returns a [Offset3d].
+ */
+typedef Offset3d AsOffset3d();
+/** A function that returns a [Size].
+ */
+typedef Size AsSize();
+/** A function that returns a [Rectangle].
+ */
+typedef Rectangle AsRectangle();

@@ -16,21 +16,25 @@ abstract class Scroller {
 	final Element _owner;
 	final Dir _dir;
 	final ScrollerCallback _start, _scrollTo, _scrolling;
+	final AsSize _size;
 	Element _touched;
 	int _pageX, _pageY;
+	Offset3d _initOfs;
 
 	/** Constructor.
 	 * <p>[start] is the callback before starting scrolling.
 	 * If it returns false, the scrolling won't be activated.
 	 */
-	factory Scroller(Element owner, [Dir dir=Dir.BOTH, ScrollerCallback start,
-	ScrollerCallback scrollTo, ScrollerCallback scrolling]) {
+	factory Scroller(Element owner, [Dir dir=Dir.BOTH, AsSize size,
+	ScrollerCallback start, ScrollerCallback scrollTo, ScrollerCallback scrolling]) {
 		return browser.touch ?
-			new _TouchScroller(owner, dir, start, scrollTo, scrolling):
-			new _MouseScroller(owner, dir, start, scrollTo, scrolling);
+			new _TouchScroller(owner, dir, size, start, scrollTo, scrolling):
+			new _MouseScroller(owner, dir, size, start, scrollTo, scrolling);
+			//TODO: support desktop - if not in simulator, mousewheel/draggable scrollbar
 	}
-	Scroller._init(Element this._owner, Dir this._dir, ScrollerCallback this._start,
-	ScrollerCallback this._scrollTo, ScrollerCallback this._scrolling) {
+	Scroller._init(Element this._owner, Dir this._dir, AsSize this._size,
+	ScrollerCallback this._start, ScrollerCallback this._scrollTo,
+	ScrollerCallback this._scrolling) {
 		_listen();
 	}
 
@@ -38,6 +42,7 @@ abstract class Scroller {
 	 * It shall be called to clean up the scroller, if it is no longer used.
 	 */
 	void destroy() {
+		_stop();
 		_unlisten();
 	}
 
@@ -76,6 +81,7 @@ abstract class Scroller {
 				return false; //don't start it
 		}
 
+		_initOfs = CSS.offset3dOf(owner.style.transform);
 		_pageX = pageX;
 		_pageY = pageY;
 		_touched = touched;
@@ -83,27 +89,22 @@ abstract class Scroller {
 	}
 	void _touchMove(int pageX, int pageY) {
 		if (_touched !== null) {
-			final int
-				deltaX = pageX - _pageX,
-				deltaY = pageY - _pageY;
-			_owner.style.transform = CSS.translate3d(deltaX, deltaY);
-
-			if (_scrolling !== null)
-				_scrolling(_touched, deltaX, deltaY);
+			_moveBy(pageX - _pageX, pageY - _pageY, _scrolling); 
 		}
 	}
 	void _touchEnd(int pageX, int pageY) {
 		if (_touched !== null) {
-			final int
-				deltaX = pageX - _pageX,
-				deltaY = pageY - _pageY;
-			_owner.style.transform = CSS.translate3d(deltaX, deltaY);
-
-			if (_scrollTo !== null)
-				_scrollTo(_touched, deltaX, deltaY);
-
+			_moveBy(pageX - _pageX, pageY - _pageY, _scrollTo); 
 			_stop();
 		}
+	}
+	void _moveBy(int deltaX, int deltaY, [ScrollerCallback callback]) {
+		deltaX += _initOfs.x;
+		deltaY += _initOfs.y;
+		_owner.style.transform = CSS.translate3d(deltaX, deltaY);
+
+		if (callback !== null)
+			callback(_touched, deltaX, deltaY);
 	}
 }
 
@@ -112,36 +113,23 @@ abstract class Scroller {
 class _TouchScroller extends Scroller {
   EventListener _elStart, _elMove, _elEnd;
 
-	_TouchScroller(Element owner, Dir dir, ScrollerCallback start,
+	_TouchScroller(Element owner, Dir dir, AsSize size, ScrollerCallback start,
 	ScrollerCallback scrollTo, ScrollerCallback scrolling)
-	: super._init(owner, dir, start, scrollTo, scrolling) {
-	}
-
-	void _listen() {
-	}
-	void _unlisten() {
-	}
-}
-
-/** The scroller for mouse-based devices.
- */
-class _MouseScroller extends Scroller {
-  EventListener _elStart, _elMove, _elEnd;
-
-	_MouseScroller(Element owner, Dir dir, ScrollerCallback start,
-	ScrollerCallback scrollTo, ScrollerCallback scrolling)
-	: super._init(owner, dir, start, scrollTo, scrolling) {
+	: super._init(owner, dir, size, start, scrollTo, scrolling) {
 	}
 
 	void _listen() {
 		final ElementEvents on = owner.on;
-		on.mouseDown.add(_elStart = (MouseEvent event) {
-			_touchStart(event.target, event.pageX, event.pageY);
+		on.touchStart.add(_elStart = (TouchEvent event) {
+			if (event.touches.length > 1)
+				_touchEnd(event.pageX, event.pageY); //ignore multiple fingers
+			else
+				_touchStart(event.target, event.pageX, event.pageY);
 		});
-		on.mouseMove.add(_elMove = (MouseEvent event) {
+		on.touchMove.add(_elMove = (TouchEvent event) {
 			_touchMove(event.pageX, event.pageY);
 		});
-		on.mouseUp.add(_elEnd = (event) {
+		on.touchEnd.add(_elEnd = (event) {
 			_touchEnd(event.pageX, event.pageY);
 		});
 	}
@@ -150,5 +138,51 @@ class _MouseScroller extends Scroller {
 		if (_elStart !== null) on.touchStart.remove(_elStart);
 		if (_elMove !== null) on.touchMove.remove(_elMove);
 		if (_elEnd !== null) on.touchEnd.remove(_elEnd);
+	}
+}
+
+/** The scroller for mouse-based devices.
+ */
+class _MouseScroller extends Scroller {
+  EventListener _elStart, _elMove, _elEnd;
+  bool _captured = false;
+
+	_MouseScroller(Element owner, Dir dir, AsSize size, ScrollerCallback start,
+	ScrollerCallback scrollTo, ScrollerCallback scrolling)
+	: super._init(owner, dir, size, start, scrollTo, scrolling) {
+	}
+
+	//@Override
+	void _stop() {
+		if (_captured) {
+			_captured = false;
+			final ElementEvents on = document.on;
+			if (_elMove !== null)
+				on.mouseMove.remove(_elMove);
+			if (_elEnd !== null)
+				on.mouseUp.remove(_elEnd);
+		}
+		super._stop();
+	}
+	void _capture() {
+		//TO capture, we have to register to document
+		_captured = true;
+		final ElementEvents on = document.on;
+		on.mouseMove.add(_elMove = (MouseEvent event) {
+			_touchMove(event.pageX, event.pageY);
+		});
+		on.mouseUp.add(_elEnd = (event) {
+			_touchEnd(event.pageX, event.pageY);
+		});
+	}
+	void _listen() {
+		owner.on.mouseDown.add(_elStart = (MouseEvent event) {
+			if (_touchStart(event.target, event.pageX, event.pageY))
+				_capture();
+		});
+	}
+	void _unlisten() {
+		if (_elStart !== null)
+			owner.on.mouseDown.remove(_elStart);
 	}
 }

@@ -31,7 +31,7 @@ class _Log {
 			if (db === null) { //not in simulator
 				_node = new Element.html(
 	'<div class="v-logView-x"></div>');
-				document.body.nodes.add(_node);
+				document.body.elements.add(_node);
 			} else { //running in simulator
 				_node = db.query(".v-logView");
 				if (_node === null) {
@@ -111,12 +111,12 @@ class _LogPopup {
 	void open(int x, int y) {
 		_node = new Element.html('<div style="left:${x+2}px;top:${y+2}px" class="v-logView-pp"><div>[]</div><div>+</div><div>-</div><div>x</div></div>');
 
-		_node.nodes[0].on.click.add((e) {_size("100%", "100%");});
-		_node.nodes[1].on.click.add((e) {_size("100%", "30%");});
-		_node.nodes[2].on.click.add((e) {_size("40%", "30%");});
-		_node.nodes[3].on.click.add((e) {_owner.close();});
+		_node.elements[0].on.click.add((e) {_size("100%", "100%");});
+		_node.elements[1].on.click.add((e) {_size("100%", "30%");});
+		_node.elements[2].on.click.add((e) {_size("40%", "30%");});
+		_node.elements[3].on.click.add((e) {_owner.close();});
 
-		_owner._node.nodes.add(_node);
+		_owner._node.elements.add(_node);
 		broadcaster.on.popup.add(_onPopup());
 	}
 	void _size(String width, String height) {

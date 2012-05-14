@@ -37,6 +37,7 @@ abstract class HoldGesture {
 	 * It shall be called to clean up the handler, if it is no longer used.
 	 */
 	void destroy() {
+		_stop();
 		_unlisten();
 	}
 
@@ -154,8 +155,8 @@ class _MouseHoldGesture extends HoldGesture {
 	}
 	void _unlisten() {
 		final ElementEvents on = owner.on;
-		if (_elStart !== null) on.touchStart.remove(_elStart);
-		if (_elMove !== null) on.touchMove.remove(_elMove);
-		if (_elEnd !== null) on.touchEnd.remove(_elEnd);
+		if (_elStart !== null) on.mouseDown.remove(_elStart);
+		if (_elMove !== null) on.mouseMove.remove(_elMove);
+		if (_elEnd !== null) on.mouseUp.remove(_elEnd);
 	}
 }

@@ -5,13 +5,68 @@
 /**
  * The offset (aka., position).
  */
-class Offset {
+interface Offset default _Offset {
 	/** The left offset. */
 	int left;
 	/** The top offset. */
 	int top;
 
-	Offset(this.left, this.top);
+	/** The left offset (the same as [left], i.e., an alias).
+	 */
+	int x;
+	/** The top offset (the same as [top], i.e., an alias).
+	 */
+	int y;
 
+	Offset(int left, int top);
+	bool operator ==(Offset other);
+}
+/**
+ * The 3D offset.
+ */
+interface Offset3d extends Offset default _Offset3d {
+  /** The Z index. */
+  int zIndex;
+  /** The Z index (the same as [zIndex], i.e., an alias). */
+  int z;
+
+  Offset3d(int x, int y, int z);
+}
+
+class _Offset implements Offset {
+	int left, top;
+
+	_Offset(int this.left, int this.top);
+
+	int get x() => left;
+	void set x(int x) {
+		left = x;
+	}
+	int get y() => top;
+	void set y(int y) {
+		top = y;
+	}
+
+	bool operator ==(Offset other)
+	=> other !== null && left == other.left && top == other.top;
+
+	int hashCode() => left + top;
 	String toString() => "($left, $top)";
+}
+
+class _Offset3d extends _Offset implements Offset3d {
+	int zIndex;
+
+	_Offset3d(int x, int y, int z): super(x, y), zIndex = z;
+
+	int get z() => zIndex;
+	void set z(int z) {
+		zIndex = z;
+	}
+
+	bool operator ==(Offset3d other)
+	=> other !== null && left == other.left && top == other.top && zIndex == other.zIndex;
+
+	int hashCode() => x + y + z;
+	String toString() => "($x, $y, $z)";
 }

@@ -97,24 +97,20 @@ class DomQuery {
 
 	/** Returns the width of the border.
 	 */
-	int get borderWidth() => _parseInt(computedStyle.borderWidth);
+	int get borderWidth() => CSS.intOf(computedStyle.borderWidth);
 	/** Returns the size of the padding at left.
 	 */
-	int get paddingLeft() => _parseInt(computedStyle.paddingLeft);
+	int get paddingLeft() => CSS.intOf(computedStyle.paddingLeft);
 	/** Returns the size of the padding at right.
 	 */
-	int get paddingRight() => _parseInt(computedStyle.paddingRight);
+	int get paddingRight() => CSS.intOf(computedStyle.paddingRight);
 	/** Returns the size of the padding at top.
 	 */
-	int get paddingTop() => _parseInt(computedStyle.paddingTop);
+	int get paddingTop() => CSS.intOf(computedStyle.paddingTop);
 	/** Returns the size of the padding at bottom.
 	 */
-	int get paddingBottom() => _parseInt(computedStyle.paddingBottom);
+	int get paddingBottom() => CSS.intOf(computedStyle.paddingBottom);
 
-	static int _parseInt(String val)
-	=> val !== null && !val.isEmpty() ?
-		Math.parseInt(_reNum.firstMatch(val).group(0)): 0;
-	static final RegExp _reNum = const RegExp(@"([0-9]*)");
 }
 class _WindowQuery extends DomQuery {
 	_WindowQuery._with(var v): super._with(v) {}
