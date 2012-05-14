@@ -16,7 +16,7 @@ class ViewEvent implements Event {
 	View _curTarget;
 	final String _type;
 	final int _stamp;
-	bool _defPrevt = false, _propStop = false;
+	bool _propStop = false;
 
 	ViewEvent(View target, String type):
 	_domEvt = null, _type = type, _stamp = new Date.now().value {
@@ -49,18 +49,6 @@ class ViewEvent implements Event {
 	/** Returns the event's type. */
 	String get type() => _type;
 
-	/** Returns whether to prevent the default behavior from taking place.
-	 * The default behavior and the prevention depend on the view.
-	 */
-	bool get defaultPrevented() => _defPrevt;
-	/** Prevent the default behavior from taking place.
-	 * <p>Notice that it doesn't invoke [domEvent]'s preventDefault().
-	 * If you'd like to prevent browser's default behavior, you have to invoke
-	 * [domEvent]'s preventDefault() explicitly.
-	 */
-	void preventDefault() {
-		_defPrevt = true;
-	}
 	/** Returns whether this event's propagation is stopped.
 	 * <p>Default: false.
 	 * <p>It becomes true if {@link #stopPropagation} is called,
@@ -92,6 +80,11 @@ class ViewEvent implements Event {
 	}
 	/** Useless; does nothing. */
 	void stopImmediatePropagation() {
+	}
+	/** Useless; return false. */
+	bool get defaultPrevented() => false;
+	/** Useless; does nothing. */
+	void preventDefault() {
 	}
 	/** Useless; returns null. */
 	Clipboard get clipboardData() => null;
