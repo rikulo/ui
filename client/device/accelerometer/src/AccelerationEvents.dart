@@ -3,7 +3,7 @@
 // Author: henrichen
 
 class AccelerometerOptions {
-  /** interval in milliseconds to retrieve Accleration back */
+  /** interval in milliseconds to retrieve Accleration back; default to 3000 */
   int frequency;
 }
 
@@ -25,9 +25,6 @@ class AccelerationEventListenerList implements DeviceEventListenerList {
 		print("AccelerationEventListenerList.add()");
 		_delegate.add(listener, _toMap(options));
 		return this;
-	}
-	bool dispatch(DeviceEvent event) {
-		return _delegate.dispatch(event);
 	}
 	AccelerationEventListenerList remove(AccelerationEventListener listener) {
 		_delegate.remove(listener);

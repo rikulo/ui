@@ -11,6 +11,7 @@
 #import("event/event.dart");
 #import("accelerometer/accelerometer.dart");
 #import("camera/camera.dart");
+#import("compass/compass.dart");
 
 #source("src/Device.dart");
 

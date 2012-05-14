@@ -18,10 +18,12 @@ class CordovaDevice implements Device {
 
 	Accelerometer accelerometer;
 	Camera camera;
+	Compass compass;
 	
 	CordovaDevice() {
 		accelerometer = new CordovaAccelerometer();
 		camera = new CordovaCamera();
+		compass = new CordovaCompass();
 		application.addReadyCallback((then) {
 			if (_ready) {
 				then();

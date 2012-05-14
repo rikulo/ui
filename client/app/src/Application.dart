@@ -125,6 +125,6 @@ print("CordovaDevice");
 	}
 	
 	if (device === null)
-		throw const UiException("Remember to call initSimulator() if application running in simulator...");
+		throw const UIException("Are your application running in simulator? Remember to call enableSimulator() first.");
 }
 Device device; //singleton device per application

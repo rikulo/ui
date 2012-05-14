@@ -17,33 +17,22 @@
 	}
 
 	void addEventListener(String type, AccelerationEventListener listener, [Map options]) {
-print("AbstractAccelerometer.addEventListener(): type:"+type);	
 		removeEventListener(type, listener);
-print("AbstractAccelerometer.after removeEventListener: type:"+type);	
 		var watchID = watchAcceleration(listener, () => print("onAccelerationError"), options);
 		_listeners.add(new _WatchIDInfo(listener, watchID));
 	}
 	
 	void removeEventListener(String type, AccelerationEventListener listener) {
-print("AbstractAccelerometer.removeEventListener: type:"+type);
 		for(int j = 0; j < _listeners.length; ++j) {
 		  print("AbstractAccelerometer.removeEventListener: j:"+j);        
 			if (_listeners[j]._listener == listener) {
 				var watchID = _listeners[j]._watchID;
 				if (watchID !== null) {
-print("AbstractAccelerometer.removeEventListener: watchID:"+watchID);				
 				  clearWatch(watchID);
 				}
 				break;
 			}
 		}
-
-print("AbstractAccelerometer.removeEventListener: LEAVE! type:"+type);       
-		
-	}
-	
-	bool dispatchEvent(DeviceEvent event, [String type]) {
-		//ignore
 	}
 	
 	bool isEventListened(String type) {

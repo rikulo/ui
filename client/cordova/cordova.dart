@@ -12,7 +12,9 @@
 #import("../device/event/event.dart");
 #import("../device/accelerometer/accelerometer.dart");
 #import("../device/camera/camera.dart");
+#import("../device/compass/compass.dart");
 
 #source("src/CordovaDevice.dart");
 #source("src/CordovaAccelerometer.dart");
 #source("src/CordovaCamera.dart");
+#source("src/CordovaCompass.dart");

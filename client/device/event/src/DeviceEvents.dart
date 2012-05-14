@@ -8,11 +8,6 @@ interface DeviceEventTarget {
 	*/
 	void addEventListener(String type, Function listener, [Map options]);
 
-	/** Dispatch event to registered event listener for this event target.
-	* @return true if dispatched to any registered listener.
-	*/
-	bool dispatchEvent(DeviceEvent event, [String type]);
-
 	/** Unregister event listener from this event target.
 	*/
 	void removeEventListener(String type, Function listener);
@@ -34,11 +29,6 @@ interface DeviceEventListenerList default _DeviceEventListenerList {
 	/** Unregister event listener from this event listener list.
 	*/
 	DeviceEventListenerList remove(Function listener);
-
-	/** Dispatch event to registered event listener.
-	* @return true if dispatched to any registered listener.
-	*/
-	bool dispatch(DeviceEvent event);
 
 	/** Tests if any listener is registered.
 	*/
@@ -74,9 +64,6 @@ class DeviceEvents {
 	
 }
 
-/** Generic Error listener */
-typedef void ErrorListener();
-
 /** A generic implementation of [DeviceEventListenerList].
  */
 class _DeviceEventListenerList implements DeviceEventListenerList {
@@ -90,63 +77,11 @@ class _DeviceEventListenerList implements DeviceEventListenerList {
 		_ptr.addEventListener(_type, listener, options);
 		return this;
 	}
-	bool dispatch(DeviceEvent event) {
-		return _ptr.dispatchEvent(event, type: _type);
-	}
 	DeviceEventListenerList remove(Function listener) {
 		_ptr.removeEventListener(_type, listener);
 		return this;
 	}
 	bool isEventListened() {
 		return !_ptr.isEventListened(_type);
-	}
-}
-
-/* A generic implementation of DeviceEvent dispatcher */
-class DeviceEventDispatcher {
-	Map<String, List<Function>> _listeners;
-	
-	DeviceEventDispatcher() {
-		_listeners = {};
-	}
-	
-	void addEventListener(String type, Function listener) {
-		List<Function> lst = _listeners[type];
-		if (lst === null) {
-			lst = [];
-			_listeners[type] = lst;
-		}
-		lst.add(listener);
-	}
-	
-	bool dispatchEvent(DeviceEvent event, [String type]) {
-		List<Function> lst = _listeners[type];
-		bool dispatched = false;
-		if (lst !== null) {
-			for(final Function listener in lst){
-				dispatched = true;
-				listener(event);
-				if (event.propagationStopped)
-					return true; //done
-			}
-		}
-		return dispatched;
-	}
-	
-	void removeEventListener(String type, Function listener) {
-		final List<Function> lst = _listeners[type];
-		if (lst !== null) {
-			for(int j = 0; j < lst.length; ++j) {
-				if (lst[j] == listener) {
-					lst.removeRange(j, 1);
-					break;
-				}
-			}
-		}
-	}
-	
-	bool isEventListened(String type) {
-		final List<Function> lst = _listeners[type];
-		return lst != null && !lst.isEmpty();
 	}
 }

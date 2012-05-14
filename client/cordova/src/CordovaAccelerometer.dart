@@ -12,12 +12,10 @@ class CordovaAccelerometer extends AbstractAccelerometer {
 
 	watchAcceleration(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError, [Map options]) {
 		String opts = options === null || options["frequency"] === null ? '{"frequency":3000}' : JSON.stringify(options);
-print("CordovaAccelerometer.watchAcceleration: opts:"+opts);		
 		return _watchAcceleration0(_wrapFunction(onSuccess), onError, opts);
 	}
 	
 	void clearWatch(var watchID) {
-print("CordovaAccelerometer.clearWatch: watchID:"+watchID);		
 		_clearWatch0(watchID);
 	}
 
@@ -25,13 +23,12 @@ print("CordovaAccelerometer.clearWatch: watchID:"+watchID);
 	_wrapFunction(dartFn) {   
 		var $dartFn = dartFn;
 		return ((Acceleration accel) { //Use Acceleration to trick frogc to generate proper code
-		  print("orignal accel is Acceleration:"+ (accel is Acceleration));
 		  $dartFn(new AccelerationEvent(this, new Acceleration(accel.x, accel.y, accel.z, accel.timestamp)));});
 	}
 
-	void _getCurrentAcceleration0(AccelerationEventListener onSuccess, ErrorListener onError) native
+	void _getCurrentAcceleration0(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError) native
 		"navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);";
-	_watchAcceleration0(AccelerationEventListener onSuccess, ErrorListener onError, String opts) native
+	_watchAcceleration0(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError, String opts) native
 		"return navigator.accelerometer.watchAcceleration(onSuccess, onError, opts ? JSON.parse(opts) : null);";
 	void _clearWatch0(var watchID) native
 		"navigator.accelerometer.clearWatch(watchID);";
