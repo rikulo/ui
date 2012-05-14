@@ -104,7 +104,7 @@ class _Log {
 class _LogPopup {
 	final _Log _owner;
 	Element _node;
-	EventListener _elPopup;
+	ViewEventListener _elPopup;
 
 	_LogPopup(_Log this._owner) {
 	}
@@ -131,7 +131,7 @@ class _LogPopup {
 		_node = null;
 		_owner._popup = null;
 	}
-	EventListener _onPopup() {
+	ViewEventListener _onPopup() {
 		if (_elPopup === null)
 			_elPopup = (event) {
 				if (_node !== null && event.shallClose(_node))
