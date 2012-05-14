@@ -9,7 +9,7 @@
 
 #import("../app/app.dart");
 #import("../cordova/cordova.dart");
-#import("event/event.dart");
+#import("../deviceimpl/deviceimpl.dart");
 #import("accelerometer/accelerometer.dart");
 #import("camera/camera.dart");
 #import("compass/compass.dart");

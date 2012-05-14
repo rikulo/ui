@@ -2,13 +2,14 @@
 //History: Thu, May 3, 2012  11:22:40 AM
 // Author: henrichen
 
-class AccelerationEvent extends DeviceEvent<Acceleration> {
-	AccelerationEvent(DeviceEventTarget target, Acceleration data) : super(target, "accelerate", data);
+class AccelerationEvent extends DeviceEvent {
+	AccelerationEvent(DeviceEventTarget target, Acceleration data) :
+		x = data.x, y = data.y, z = data.z, timestamp = data.timestamp;
 	
-	double get x() => data.x;
-	double get y() => data.y;
-	double get z() => data.z;
-	int get timestamp() => data.timestamp;
+	final double x;
+	final double y;
+	final double z;
+	final int timestamp;
 }
 
 /** AcclerationEvent listener function */

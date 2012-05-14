@@ -9,7 +9,7 @@
 
 #import("../app/app.dart");
 #import("../device/device.dart");
-#import("../device/event/event.dart");
+#import("../deviceimpl/deviceimpl.dart");
 #import("../device/accelerometer/accelerometer.dart");
 #import("../device/camera/camera.dart");
 #import("../device/compass/compass.dart");
