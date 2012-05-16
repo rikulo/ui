@@ -15,7 +15,7 @@ print("onCreate_()");
 
 		TextView text = new TextView("Hello World!");
 		text.profile.text = "anchor:  parent; location: center center";
-		text.on.click.add((event) {
+		text.on.click.add((ViewEvent event) {
 			event.target.style.border =
 				event.target.style.border.isEmpty() ? "1px solid blue": "";
 		});

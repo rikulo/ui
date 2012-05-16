@@ -40,14 +40,14 @@ class Test7 extends Activity {
 		CheckBox ckbox = new CheckBox("checkbox sample");
 		_setBorder(ckbox);
 		int clickCount = 0;
-		ckbox.on.check.add((event) {
+		ckbox.on.check.add((CheckEvent event) {
 			ckbox.text = 'checked: ${event.checked} ${++clickCount}';
 			ckbox.parent.requestLayout();
 		});
 		view.appendChild(ckbox);
 
 		RadioGroup group = new RadioGroup();
-			group.on.check.add((event) {
+			group.on.check.add((CheckEvent event) {
 			event.target.text = 'checked: ${++clickCount}';
 			event.target.parent.requestLayout();
 		});

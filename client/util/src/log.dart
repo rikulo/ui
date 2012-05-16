@@ -43,7 +43,7 @@ class _Log {
 			document.body.insertAdjacentHTML("afterBegin", '''
 <style>
 .v-logView-x {
- ${CSS.name('box-sizing')}: border-box;
+ ${CSS.$('box-sizing')}: border-box;
  width:40%; height:30%; border:1px solid #332; background-color:#eec;
  overflow:auto; padding:3px; white-space:pre-wrap;
  font-size:11px; position:absolute; right:0; bottom:0;
@@ -133,7 +133,7 @@ class _LogPopup {
 	}
 	ViewEventListener _onPopup() {
 		if (_elPopup === null)
-			_elPopup = (event) {
+			_elPopup = (PopupEvent event) {
 				if (_node !== null && event.shallClose(_node))
 					close();
 			};

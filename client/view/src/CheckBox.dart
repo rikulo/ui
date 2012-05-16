@@ -22,8 +22,8 @@ class CheckBox extends TextView {
 		_autoFocus = autoFocus;
 		vclass = "v-CheckBox";
 
-		_onInputClick = (event) {
-			bool cked = event.domEvent.srcElement.checked;
+		_onInputClick = (Event event) {
+			bool cked = event.srcElement.checked;
 			if (_checked != cked) {
 				_checked = cked;
 				onCheck_();

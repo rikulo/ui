@@ -30,9 +30,8 @@ class CSS {
 
 	/** Converts a CSS value presenting <code>translate3d</code> for the property called <code>transform</code>.
 	 */
-	static String translate3d(int x, int y, [int z]) {
-		return "translate3d(${x}px, ${y}px, ${z !== null ? z: 0}px)";
-	}
+	static String translate3d(int x, int y, [int z])
+	=> "translate3d(${x}px,${y}px,${z !== null ? z: 0}px)";
 	/** Converts a string of a 3-tuples to [Offset3d].
 	 * If it is 2-tuples, [Offset3d.z] will be zero.
 	 */
@@ -62,14 +61,14 @@ class CSS {
 			return 0;
 		}
 	}
-	static final RegExp _reNum = const RegExp(@"([0-9]+)");
+	static final RegExp _reNum = const RegExp(@"([-+][0-9]+)");
 
 	/** Returns the corrected name for the given CSS property name.
 	 * For example, <code>css('text-size-adjust')</code> will return
 	 * <code>'-webkit-text-size-adjust'</code> if the browser is Webkit-based.
 	 * <p>Notice that the prefix is defined in [prefix].
 	 */
-	static String name(String propertyName) {
+	static String $(String propertyName) {
 		if (_nsnms === null) {
 			_nsnms = new Set();
 			//TODO: no need to check null when Dart can compare null with number
