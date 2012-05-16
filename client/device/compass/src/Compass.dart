@@ -20,7 +20,9 @@ interface Compass {
 
 /** error code */
 class CompassError {
-	static final int COMPASS_INTERNAL_ERR = 0; //TODO: unknow real value, give 0 first
-	static final int COMPASS_NOT_SUPPORTED = 1; //TODO: unknow real value, give 1 first
+	static final int COMPASS_INTERNAL_ERR = 0;
+	static final int COMPASS_NOT_SUPPORTED = 20;
 	int code;
+	
+	CompassError(this.code);
 }

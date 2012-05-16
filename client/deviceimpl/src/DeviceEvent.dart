@@ -6,6 +6,8 @@
  * Event fired from the device.
  */
 class DeviceEvent {
+	bool _propStop;
+  
 	/** Returns whether this event's propagation is stopped.
 	 * <p>Default: false.
 	 * <p>It becomes true if {@link #stopPropagation} is called,

@@ -14,6 +14,7 @@ interface Device {
 	final Accelerometer accelerometer; //accelerometer of this device
 	final Camera camera; //camera of this device
 	final Compass compass; //compass of this device
+	final Contacts contacts; //contacts of this device
 }
 
 /** Enable the device accesibility.

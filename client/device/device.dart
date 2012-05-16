@@ -13,6 +13,7 @@
 #import("accelerometer/accelerometer.dart");
 #import("camera/camera.dart");
 #import("compass/compass.dart");
+#import("contacts/contacts.dart");
 
 #source("src/Device.dart");
 

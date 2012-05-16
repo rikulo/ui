@@ -4,5 +4,8 @@
 
 #library("rikulo:deviceimpl");
 
+#import("dart:core");
+
 #source("src/DeviceEvent.dart");
 #source("src/DeviceEvents.dart");
+
