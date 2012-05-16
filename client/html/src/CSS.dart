@@ -68,7 +68,7 @@ class CSS {
 	 * <code>'-webkit-text-size-adjust'</code> if the browser is Webkit-based.
 	 * <p>Notice that the prefix is defined in [prefix].
 	 */
-	static String name(String propertyName) {
+	static String $(String propertyName) {
 		if (_nsnms === null) {
 			_nsnms = new Set();
 			//TODO: no need to check null when Dart can compare null with number
