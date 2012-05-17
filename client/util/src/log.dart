@@ -2,8 +2,11 @@
 //History: Fri, Apr 27, 2012  4:20:01 PM
 // Author: tomyeh
 
-/** Logs the information to the screen.
- * It does nothing if the application is not connected to a simulator.
+/** Logs the information to the screen rather than console.
+ * <p>Since it prints the time between two consecutive logs,
+ * you can use it measure the performance of particular functions.
+ * <p>[log] queues the message and displays it later, so there won't be
+ * much performance overhead.
  */
 void log(var msg) {
 	if (_log === null)
@@ -12,7 +15,6 @@ void log(var msg) {
 }
 _Log _log;
 
-//Log to console
 class _Log {
 	final List<_LogMsg> _msgs;
 	Element _node;
@@ -88,12 +90,12 @@ class _Log {
 
 			final StringBuffer sb = new StringBuffer();
 			for (final _LogMsg msg in _msgs) {
-				final Date time = msg.time;
+				final Date time = msg.t;
 				sb.add(time.hours).add(':').add(time.minutes).add(':').add(time.seconds);
 				if (_lastLogTime !== null)
 					sb.add('>').add((time.value - _lastLogTime)/1000);
 				_lastLogTime = time.value;
-				sb.add(': ').add(msg.msg).add('\n');
+				sb.add(': ').add(msg.m).add('\n');
 			}
 			_msgs.clear();
 
@@ -113,9 +115,10 @@ class _Log {
 	}
 }
 class _LogMsg {
-	final msg;
-	final Date time;
-	_LogMsg(this.msg): time = new Date.now();
+	final String m;
+	final Date t;
+	_LogMsg(var msg): m = "$msg", t = new Date.now();
+		//we have to 'snapshot' the value since it might be changed later
 }
 class _LogPopup {
 	final _Log _owner;
