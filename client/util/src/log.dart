@@ -14,15 +14,15 @@ _Log _log;
 
 //Log to console
 class _Log {
-	final StringBuffer _msg;
+	final List<_LogMsg> _msgs;
 	Element _node;
 	_LogPopup _popup;
 
-	_Log() : _msg = new StringBuffer() {
+	_Log() : _msgs = new List() {
 	}
 
 	void log(var msg) {
-		_msg.add(new Date.now()).add(": ").add(msg).add('\n');
+		_msgs.add(new _LogMsg(msg));
 		_defer();
 	}
 	bool _ready() {
@@ -80,18 +80,29 @@ class _Log {
 		_log._flush();
 	}
 	void _flush() {
-		if (!_msg.isEmpty()) {
+		if (!_msgs.isEmpty()) {
 			if (!_ready()) {
 				_defer();
 				return;
 			}
 
-			final String msg = _msg.toString();
-			_msg.clear();
-			_node.insertAdjacentHTML("beforeEnd", StringUtil.encodeXML(msg));;
+			final StringBuffer sb = new StringBuffer();
+			for (final _LogMsg msg in _msgs) {
+				final Date time = msg.time;
+				sb.add(time.hours).add(':').add(time.minutes).add(':').add(time.seconds);
+				if (_lastLogTime !== null)
+					sb.add('>').add((time.value - _lastLogTime)/1000);
+				_lastLogTime = time.value;
+				sb.add(': ').add(msg.msg).add('\n');
+			}
+			_msgs.clear();
+
+			_node.insertAdjacentHTML("beforeEnd", StringUtil.encodeXML(sb.toString()));;
 			_node.$dom_scrollTop = 30000;
 		}
 	}
+	static int _lastLogTime;
+
 	void close() {
 		if (_popup !== null)
 			_popup.close();
@@ -100,6 +111,11 @@ class _Log {
 			_node = null;
 		}
 	}
+}
+class _LogMsg {
+	final msg;
+	final Date time;
+	_LogMsg(this.msg): time = new Date.now();
 }
 class _LogPopup {
 	final _Log _owner;

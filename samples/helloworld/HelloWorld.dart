@@ -10,7 +10,6 @@
 class HelloWorld extends Activity {
 
 	void onCreate_() {
-print("onCreate_()");	  
 		title = "Hello World!";
 
 		TextView text = new TextView("Hello World!");

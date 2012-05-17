@@ -5,7 +5,7 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 
-class Test4 extends Activity {
+class TestLinearLayout2 extends Activity {
 
 	void onCreate_() {
 		title = "Test 4: Vertical Linear Layout";
@@ -78,5 +78,5 @@ class Test4 extends Activity {
 }
 
 void main() {
-	new Test4().run();
+	new TestLinearLayout2().run();
 }

@@ -5,7 +5,7 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 
-class Test6 extends Activity {
+class TestCustomLayout1 extends Activity {
 
 	void onCreate_() {
 		title = "Custom Layout Test";
@@ -37,5 +37,5 @@ class Test6 extends Activity {
 }
 
 void main() {
-	new Test6().run();
+	new TestCustomLayout1().run();
 }
