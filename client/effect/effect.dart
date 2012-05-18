@@ -4,3 +4,5 @@
 
 #library("rikulo:effect");
 
+#source("src/Animation.dart");
+

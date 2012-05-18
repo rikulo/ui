@@ -1208,20 +1208,6 @@ class View {
 		if (_attrs !== null) _attrs.remove(name);
 	}
 
-	/** Schedules a run-once task.
-	 * It is used to schedule a long-execution task that has the same effect
-	 * no matter how many times it is executed. For example, [rerender].
-	 * <p>If tasks are run with the same against the same view, they are
-	 * considered as the same task, and [runOnce] will execute only one of
-	 * them (the one with the longest timeout).
-	 */
-	void runOnce(String key, RunOnceTask task, [timeout=0]) {
-		if (_runOnceQue === null)
-			_runOnceQue = new RunOnceQueue();
-		_runOnceQue.add(uuid + key, task, timeout: timeout);
-	}
-	static RunOnceQueue _runOnceQue;
-
 	int hashCode() => uuid.hashCode(); //uuid is immutiable once assigned
 	String toString() => "View($uuid)";
 }

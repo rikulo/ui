@@ -12,7 +12,7 @@ class CordovaDevice implements Device {
 	String get version() {_getVersion();} //operating system version of this device
 	String get uuid() {_getUuid();} //uuid of this device
 
-	ThenCallback readyFunction;
+	Task readyFunction;
 	
 	bool _ready; //indicate whether the device is ready for access
 
@@ -40,8 +40,7 @@ class CordovaDevice implements Device {
 		});
 	}
 	
-	void _doUntilReady(ThenCallback then) {
-print("_doUntilReady");	  
+	void _doUntilReady(Task then) {
 		var f = _onDeviceReady; //avoid frogc tree shaking
 		readyFunction = () {
 			_ready = true;
