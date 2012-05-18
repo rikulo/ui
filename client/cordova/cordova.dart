@@ -14,6 +14,7 @@
 #import("../device/accelerometer/accelerometer.dart");
 #import("../device/camera/camera.dart");
 #import("../device/compass/compass.dart");
+#import("../device/connection/connection.dart");
 #import("../device/contacts/contacts.dart");
 #import("../device/geolocation/geolocation.dart");
 #import("../device/notification/notification.dart");
@@ -23,6 +24,7 @@
 #source("src/CordovaAccelerometer.dart");
 #source("src/CordovaCamera.dart");
 #source("src/CordovaCompass.dart");
+#source("src/CordovaConnection.dart");
 #source("src/CordovaContact.dart");
 #source("src/CordovaContacts.dart");
 #source("src/CordovaGeolocation.dart");
