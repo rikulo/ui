@@ -4,10 +4,10 @@
 
 /*abstract*/ class AbstractAccelerometer implements Accelerometer, DeviceEventTarget {
 	AccelerationEvents _on;
-	List<_WatchIDInfo> _listeners;
+	List<WatchIDInfo> _listeners;
 	
 	AbstractAccelerometer() {
-		_listeners = new List<_WatchIDInfo>();
+		_listeners = new List<WatchIDInfo>();
 	}
 
 	AccelerationEvents get on() {
@@ -18,8 +18,13 @@
 
 	void addEventListener(String type, AccelerationEventListener listener, [Map options]) {
 		removeEventListener(type, listener);
-		var watchID = watchAcceleration(listener, () => print("onAccelerationError"), options);
-		_listeners.add(new _WatchIDInfo(listener, watchID));
+		var watchID = watchAcceleration(_wrapListener(listener), () => print("onAccelerationError"), options);
+		_listeners.add(new WatchIDInfo(listener, watchID));
+	}
+	
+	AccelerometerSuccessCallback _wrapListener(AccelerationEventListener listener) {
+		return ((Acceleration accel) { //Use Acceleration to trick frogc to generate proper code
+		  listener(new AccelerationEvent(this, new Acceleration(accel.x, accel.y, accel.z, accel.timestamp)));});
 	}
 	
 	void removeEventListener(String type, AccelerationEventListener listener) {
@@ -51,10 +56,4 @@
 	* Stop watching the motion Acceleration.
 	*/
 	abstract void clearWatch(var watchID);
-}
-
-class _WatchIDInfo {
-	final AccelerationEventListener _listener;
-	final _watchID;
-	_WatchIDInfo(this._listener, this._watchID);
 }

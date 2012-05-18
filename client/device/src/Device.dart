@@ -15,6 +15,8 @@ interface Device {
 	final Camera camera; //camera of this device
 	final Compass compass; //compass of this device
 	final Contacts contacts; //contacts of this device
+	final XGeolocation geolocation; //geolocation of this device
+	final XNotification notification; //notification facility of this device
 }
 
 /** Enable the device accesibility.

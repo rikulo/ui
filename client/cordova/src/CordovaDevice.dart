@@ -20,12 +20,17 @@ class CordovaDevice implements Device {
 	Camera camera;
 	Compass compass;
 	Contacts contacts;
+	XGeolocation geolocation;
+	XNotification notification;
 	
 	CordovaDevice() {
 		accelerometer = new CordovaAccelerometer();
 		camera = new CordovaCamera();
 		compass = new CordovaCompass();
 		contacts = new CordovaContacts();
+		geolocation = new CordovaGeolocation();
+		notification = new CordovaNotification();
+		
 		application.addReadyCallback((then) {
 			if (_ready) {
 				then();

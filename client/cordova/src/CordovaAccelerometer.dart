@@ -9,21 +9,19 @@ class CordovaAccelerometer extends AbstractAccelerometer {
 	void getCurrentAcceleration(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError) {
 		_getCurrentAcceleration0(_wrapFunction(onSuccess), onError);
 	}
-
+	
+	AccelerometerSuccessCallback _wrapFunction(AccelerometerSuccessCallback fn) {
+		return ((Acceleration accel) { //Use Acceleration to trick frogc to generate proper code
+		  fn(new Acceleration(accel.x, accel.y, accel.z, accel.timestamp));});
+	}
+	
 	watchAcceleration(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError, [Map options]) {
 		String opts = options === null || options["frequency"] === null ? '{"frequency":3000}' : JSON.stringify(options);
-		return _watchAcceleration0(_wrapFunction(onSuccess), onError, opts);
+		return _watchAcceleration0(onSuccess, onError, opts);
 	}
 	
 	void clearWatch(var watchID) {
 		_clearWatch0(watchID);
-	}
-
-	//parameter called back from javascript Cordova would be a {}, must convert paremeter type back to dart Acceleration
-	_wrapFunction(dartFn) {   
-		var $dartFn = dartFn;
-		return ((Acceleration accel) { //Use Acceleration to trick frogc to generate proper code
-		  $dartFn(new AccelerationEvent(this, new Acceleration(accel.x, accel.y, accel.z, accel.timestamp)));});
 	}
 
 	void _getCurrentAcceleration0(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError) native
