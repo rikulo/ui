@@ -4,5 +4,6 @@
 
 #library("rikulo:effect");
 
+#source("src/TimingFunction.dart");
 #source("src/Animation.dart");
-
+#source("src/Animator.dart");
