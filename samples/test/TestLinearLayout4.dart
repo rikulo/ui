@@ -5,7 +5,7 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 
-class Test7 extends Activity {
+class TestLinearLayout4 extends Activity {
 
 	void onCreate_() {
 		title = "Test 7: hlayout in hlayout";
@@ -97,5 +97,5 @@ class Test7 extends Activity {
 }
 
 void main() {
-	new Test7().run();
+	new TestLinearLayout4().run();
 }

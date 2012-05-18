@@ -5,7 +5,7 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 
-class Test1 extends Activity {
+class TestFreeLayout1 extends Activity {
 
 	void onCreate_() {
 		title = "Test 1: Free Layout";
@@ -57,5 +57,5 @@ class Test1 extends Activity {
 }
 
 void main() {
-	new Test1().run();
+	new TestFreeLayout1().run();
 }
