@@ -21,6 +21,7 @@ class CordovaDevice implements Device {
 	Compass compass;
 	Contacts contacts;
 	XGeolocation geolocation;
+	XNotification notification;
 	
 	CordovaDevice() {
 		accelerometer = new CordovaAccelerometer();
@@ -28,6 +29,8 @@ class CordovaDevice implements Device {
 		compass = new CordovaCompass();
 		contacts = new CordovaContacts();
 		geolocation = new CordovaGeolocation();
+		notification = new CordovaNotification();
+		
 		application.addReadyCallback((then) {
 			if (_ready) {
 				then();
