@@ -9,7 +9,7 @@ interface Device {
 	String version; //operating system version of this device
 	String uuid; //uuid of this device
 
-	ThenCallback readyFunction; //function called when the device is ready
+	Task readyFunction; //function called when the device is ready
 	
 	final Accelerometer accelerometer; //accelerometer of this device
 	final Camera camera; //camera of this device

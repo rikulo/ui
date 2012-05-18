@@ -2,8 +2,8 @@
 //History: Sun, Apr 29, 2012 11:22:57 AM
 // Author: tomyeh
 
-typedef void ThenCallback();
-typedef void ReadyCallback(ThenCallback then);
+/** A callback to be invoked when Rikulo is ready to run. */
+typedef void ReadyCallback(Task then);
 
 /**
  * An application.
@@ -40,7 +40,7 @@ class Application {
 	 * is satisfied.
 	 * <p>A typical implementation of the callback:
 	 *<pre><code>
-(ThenCallback then) {
+(Task then) {
 	if (_ready) {
 		then(); //do it immediately
 	} else {
@@ -61,7 +61,7 @@ class Application {
 		}
 	}
 	//called by Activity to start an activity
-	void _ready(ThenCallback then) {
+	void _ready(Task then) {
 		if (_readyCB !== null) _readyCB(then);
 		else then();
 	}

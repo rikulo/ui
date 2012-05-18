@@ -2,6 +2,9 @@
 //History: Fri, Apr 06, 2012  5:11:49 PM
 // Author: tomyeh
 
+/** A task that is a function taking no argument and returning nothing.
+ */
+typedef void Task();
 /** A function that returns an integer.
  */
 typedef int AsInt();
