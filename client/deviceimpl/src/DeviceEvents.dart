@@ -85,3 +85,10 @@ class _DeviceEventListenerList implements DeviceEventListenerList {
 		return !_ptr.isEventListened(_type);
 	}
 }
+
+/** Internal class for maintain the watchID */
+class WatchIDInfo {
+	final _listener;
+	final _watchID;
+	WatchIDInfo(this._listener, this._watchID);
+}

@@ -15,6 +15,7 @@
 #import("../device/camera/camera.dart");
 #import("../device/compass/compass.dart");
 #import("../device/contacts/contacts.dart");
+#import("../device/geolocation/geolocation.dart");
 
 #source("src/JSUtil.dart");
 #source("src/CordovaDevice.dart");
@@ -23,3 +24,4 @@
 #source("src/CordovaCompass.dart");
 #source("src/CordovaContact.dart");
 #source("src/CordovaContacts.dart");
+#source("src/CordovaGeolocation.dart");

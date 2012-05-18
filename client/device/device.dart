@@ -14,6 +14,7 @@
 #import("camera/camera.dart");
 #import("compass/compass.dart");
 #import("contacts/contacts.dart");
+#import("geolocation/geolocation.dart");
 
 #source("src/Device.dart");
 
