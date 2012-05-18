@@ -15,13 +15,13 @@ interface XGeolocation { //rename to XGeolocation to avoid name confilct with da
    * Returns the current Position of this device.
    * The Position is returned via the onSuccess callback function.
    */
-  void getCurrentPosition(GeolocationSuccessCallback onSuccess, [GeolocationErrorCallback onError, GeolocationOptions]);
+  void getCurrentPosition(GeolocationSuccessCallback onSuccess, [GeolocationErrorCallback onError, GeolocationOptions options]);
 }
 
 class XPositionError { //rename to XPositionError to avoid name confilct with dart:html PostionError interface
-	final static int PERMISSION_DENIED = 1;
-	final static int POSITION_UNAVAILABLE = 2;
-	final static int TIMEOUT = 3;
+	static final int PERMISSION_DENIED = 1;
+	static final int POSITION_UNAVAILABLE = 2;
+	static final int TIMEOUT = 3;
 	
 	int code;
 	String message;

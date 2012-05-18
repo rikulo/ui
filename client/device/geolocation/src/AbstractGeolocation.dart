@@ -18,7 +18,7 @@
 
 	void addEventListener(String type, PositionEventListener listener, [Map options]) {
 		removeEventListener(type, listener);
-		var watchID = watchPosition(_wrapListener(listener), () => print("onPositionError"), options); //TODO: log and forget?
+		var watchID = watchPosition(_wrapListener(listener), (XPositionError error) => print("onPositionError: code:"+error.code+", message:"+error.message), options); //TODO: log and forget?
 		_listeners.add(new WatchIDInfo(listener, watchID));
 	}
 	
