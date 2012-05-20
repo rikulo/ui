@@ -4,6 +4,7 @@
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
+#import('../../client/event/event.dart');
 
 class TestLinearLayout4 extends Activity {
 
@@ -48,9 +49,10 @@ class TestLinearLayout4 extends Activity {
 
 		RadioGroup group = new RadioGroup();
 			group.on.check.add((CheckEvent event) {
-			event.target.text = 'checked: ${++clickCount}';
-			event.target.parent.requestLayout();
-		});
+				final target = event.target;
+				target.text = 'checked: ${++clickCount}';
+				target.parent.requestLayout();
+			});
 		_setHLayout(group);
 		_setBorder(group);
 		group.layout.spacing = "0 5";

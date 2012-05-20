@@ -1,4 +1,4 @@
-//Sample Code: Hello World!
+//Sample Code: ScrollView
 
 #import('dart:html');
 #import('../../client/app/app.dart');

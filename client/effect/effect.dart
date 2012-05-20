@@ -4,6 +4,8 @@
 
 #library("rikulo:effect");
 
-#source("src/TimingFunction.dart");
-#source("src/Animation.dart");
+#import("dart:html");
+
 #source("src/Animator.dart");
+#source("src/EffectFunction.dart");
+#source("src/Effect.dart");

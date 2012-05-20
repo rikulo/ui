@@ -21,11 +21,11 @@ interface Broadcaster {
 /** The broadcaster used to broadcast events.
  */
 Broadcaster get broadcaster() {
-	if (_cachedBroadcaster === null)
-		_cachedBroadcaster = new _Broadcaster();
-	return _cachedBroadcaster;
+	if (_broadcaster === null)
+		_broadcaster = new _Broadcaster();
+	return _broadcaster;
 }
-Broadcaster _cachedBroadcaster;
+Broadcaster _broadcaster;
 
 /** An implementation of [Broadcaster].
  */
@@ -90,7 +90,9 @@ class _BroadcastListeners {
 		List<ViewEventListener> ls;
 		bool dispatched = false;
 		if ((ls = _listeners[type]) != null) {
-			for (final ViewEventListener listener in new List.from(ls)) { //we have to make a copy since the listener might change it
+			//Note: we make a copy of ls since listener might remove other listeners
+			//It means the removing and adding of listeners won't take effect until next event
+			for (final ViewEventListener listener in new List.from(ls)) {
 				dispatched = true;
 				listener(event);
 				if (event.propagationStopped)
