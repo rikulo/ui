@@ -25,8 +25,6 @@ interface Animator default _Animator {
 
 	/** Adds an animation callback, such that it will be
 	 * called periodically.
-	 * <p>Notice it is suggested not to add the same animation callback twice
-	 * (though this method doesn't check if there is a duplicate).
 	 */
 	void add(Animate animate);
 	/** Removes this animation callback.
@@ -40,12 +38,8 @@ interface Animator default _Animator {
 
 class _Animator implements Animator {
 	final List<Animate> _anims;
-	//Used to hold new added animation callback when callbacks are processed
-	//(to avoid dead loop).
-	List<Animate> _tmpAdded;
 	//Used to hold deleted animation callback when callbacks are processed
-	//(so the for loop is faster to operate)
-	Set<Animate> _tmpRemoved;
+	List<Animate> _tmpRemoved;
 	Function _callback;
 	int _prevTime;
 
@@ -58,14 +52,12 @@ class _Animator implements Animator {
 
 				_beforeCallback();
 				try {
-					//Note: _anims won't be changed by [add]/[remove]
-					//after _beforeCallback is called
-					for (int j = 0, len = _anims.length; j < len; ++j) {
-						//TODO: when Dart fixed Issue 144
-						if (/*!_tmpRemoved.contains(_anims[j]) &&*/ !_anims[j](inow, diff)) {
+					//Note: _anims won't be changed by [remove] because of _beforeCallback
+					//so it is OK to use index to iterate
+					for (int j = 0; j < _anims.length; ++j) { //note: length might increase
+						if (!_isRemoved(j) && !_anims[j](inow, diff)) {
 							_anims.removeRange(j, 1);
 							--j;
-							--len;
 						}
 					}
 				} finally {
@@ -78,31 +70,36 @@ class _Animator implements Animator {
 		};
 	}
 	void _beforeCallback() {
-		_tmpAdded = new List();
-		_tmpRemoved = new Set();
+		_tmpRemoved = new List();
 	}
 	void _afterCallback() {
-		final List<Animate> added = _tmpAdded;
-		final Set<Animate> removed = _tmpRemoved;
-		_tmpAdded = null;
+		final List<Animate> removed = _tmpRemoved;
 		_tmpRemoved = null;
 
-		for (final Animate animate in added) {
-			add(animate);
-		}
 		for (final Animate animate in removed) {
 			remove(animate);
 		}
 	}
+	bool _isRemoved(int index) {
+		if (!_tmpRemoved.isEmpty()) {
+			final Animate animate = _anims[index];
+			int cnt = 0;
+			for (final Animate anim in _tmpRemoved) {
+				if (anim == animate)
+					++cnt;
+			}
+			if (cnt > 0) { //animate shall be deleted
+				for (int j = 0; j < index; ++j) {
+					if (_anims[j] == animate && --cnt == 0)
+						return false;
+				}
+				return true;
+			}
+		}
+		return false;
+	}
 
 	void add(Animate animate) {
-		if (_tmpAdded !== null) {
-			//don't add it immediately to avoid dead loop if app doesn't do it wrong
-			//_tmpRemoved.remove(animate); //TODO: when Dart fixed Issue 144
-			_tmpAdded.add(animate);
-			return;
-		}
-
 		_anims.add(animate);
 		if (_anims.length == 1) {
 			_prevTime = _now();
@@ -110,22 +107,13 @@ class _Animator implements Animator {
 		}
 	}
 	void remove(Animate animate) {
-		int j = _anims.indexOf(animate);
 		if (_tmpRemoved !== null) {
-			//don't remove from _anims since _callback assumes it
-			if (j < 0) {
-				j = _tmpAdded.indexOf(animate);
-				if (j >= 0)
-					_tmpAdded.removeRange(j, 1);
-				return;
-			}
-
-			_tmpRemoved.add(animate);
-			return;
+			_tmpRemoved.add(animate); //handle it later
+		} else {
+			final int j = _anims.indexOf(animate);
+			if (j >= 0)
+				_anims.removeRange(j, 1);
 		}
-
-		if (j >= 0)
-			_anims.removeRange(j, 1);
 	}
 	Collection<Animate> get animates() => _anims;	//TODO: readonly
 
