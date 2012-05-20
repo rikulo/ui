@@ -61,7 +61,8 @@ class _Animator implements Animator {
 					//Note: _anims won't be changed by [add]/[remove]
 					//after _beforeCallback is called
 					for (int j = 0, len = _anims.length; j < len; ++j) {
-						if (!_tmpRemoved.contains(_anims[j]) && !_anims[j](inow, diff)) {
+						//TODO: when Dart fixed Issue 144
+						if (/*!_tmpRemoved.contains(_anims[j]) &&*/ !_anims[j](inow, diff)) {
 							_anims.removeRange(j, 1);
 							--j;
 							--len;
@@ -97,7 +98,7 @@ class _Animator implements Animator {
 	void add(Animate animate) {
 		if (_tmpAdded !== null) {
 			//don't add it immediately to avoid dead loop if app doesn't do it wrong
-			_tmpRemoved.remove(animate);
+			//_tmpRemoved.remove(animate); //TODO: when Dart fixed Issue 144
 			_tmpAdded.add(animate);
 			return;
 		}
