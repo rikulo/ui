@@ -12,6 +12,7 @@
 #import("../deviceimpl/deviceimpl.dart");
 #import("accelerometer/accelerometer.dart");
 #import("camera/camera.dart");
+#import("capture/capture.dart");
 #import("compass/compass.dart");
 #import("contacts/contacts.dart");
 #import("geolocation/geolocation.dart");
