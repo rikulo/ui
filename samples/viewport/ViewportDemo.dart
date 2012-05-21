@@ -1,4 +1,4 @@
-//Sample Code: Hello World!
+//Sample Code: Viewport
 
 #import('dart:html');
 #import('../../client/app/app.dart');

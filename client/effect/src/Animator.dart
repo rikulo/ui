@@ -1,0 +1,121 @@
+//Copyright (C) 2012 Potix Corporation. All Rights Reserved.
+//History: Fri, May 18, 2012  7:12:55 PM
+// Author: tomyeh
+
+/** An animation callbak.
+ * To start an animation, you can add a callback to [Animator], such that
+ * the callback will be called periodically until the callback returns false.
+ *
+ * <p>To add an animation, please invoke [Animator.add]. If the callback
+ * returns false, it will be removed from the animator automatially.
+ * If you'd like, you can remove it manually by use of [Animator.remove].
+ *
+ * <p>[time] is the milliseconds from 1970-01-01 (UTC).
+ * In other words, it is the same as <code>new Date.now().value</code>.
+ * [elapsed] is the number of milliseconds elapsed since the previous
+ * invocation.
+ */
+typedef bool Animate(int time, int elapsed);
+
+/**
+ * The animator used to play [Animate].
+ */
+interface Animator default _Animator {
+	Animator();
+
+	/** Adds an animation callback, such that it will be
+	 * called periodically.
+	 */
+	void add(Animate animate);
+	/** Removes this animation callback.
+	 * <p>It is called automatically, if the callback returns false.
+	 */
+	void remove(Animate animate);
+	/** Returns a readonly collection of all animation callbacks.
+	 */
+	Collection<Animate> get animates();
+}
+
+class _Animator implements Animator {
+	final List<Animate> _anims;
+	//Used to hold deleted animation callback when callbacks are processed
+	List<Animate> _tmpRemoved;
+	Function _callback;
+	int _prevTime;
+
+	_Animator(): _anims = new List() {
+		_callback = (num now) {
+			if (!_anims.isEmpty()) {
+				final int inow = now === null ? _now(): now.toInt();
+				final int diff = inow - _prevTime;
+				_prevTime = inow;
+
+				_beforeCallback();
+				try {
+					//Note: _anims won't be changed by [remove] because of _beforeCallback
+					//so it is OK to use index to iterate
+					for (int j = 0; j < _anims.length; ++j) { //note: length might increase
+						if (!_isRemoved(j) && !_anims[j](inow, diff)) {
+							_anims.removeRange(j, 1);
+							--j;
+						}
+					}
+				} finally {
+					_afterCallback();
+				}
+
+				if (!_anims.isEmpty())
+					window.requestAnimationFrame(_callback);
+			}
+		};
+	}
+	void _beforeCallback() {
+		_tmpRemoved = new List();
+	}
+	void _afterCallback() {
+		final List<Animate> removed = _tmpRemoved;
+		_tmpRemoved = null;
+
+		for (final Animate animate in removed) {
+			remove(animate);
+		}
+	}
+	bool _isRemoved(int index) {
+		if (!_tmpRemoved.isEmpty()) {
+			final Animate animate = _anims[index];
+			int cnt = 0;
+			for (final Animate anim in _tmpRemoved) {
+				if (anim == animate)
+					++cnt;
+			}
+			if (cnt > 0) { //animate shall be deleted
+				for (int j = 0; j < index; ++j) {
+					if (_anims[j] == animate && --cnt == 0)
+						return false;
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	void add(Animate animate) {
+		_anims.add(animate);
+		if (_anims.length == 1) {
+			_prevTime = _now();
+			window.requestAnimationFrame(_callback);
+		}
+	}
+	void remove(Animate animate) {
+		if (_tmpRemoved !== null) {
+			_tmpRemoved.add(animate); //handle it later
+		} else {
+			final int j = _anims.indexOf(animate);
+			if (j >= 0)
+				_anims.removeRange(j, 1);
+		}
+	}
+	Collection<Animate> get animates() => _anims;	//TODO: readonly
+
+	static int _now() => new Date.now().value;
+}

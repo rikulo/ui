@@ -24,7 +24,6 @@ class _EventListenerInfo {
  * used in [View].
  */
 class _Invalidator extends RunOnceViewManager {
-
 	_Invalidator(): super(true) {
 	}
 
@@ -38,8 +37,8 @@ class _Invalidator extends RunOnceViewManager {
 }
 
 _Invalidator get _invalidator() {
-	if (_cachedInvalidator == null)
-		_cachedInvalidator = new _Invalidator();
-	return _cachedInvalidator;
+	if (_$invalidator == null)
+		_$invalidator = new _Invalidator();
+	return _$invalidator;
 }
-_Invalidator _cachedInvalidator;
+_Invalidator _$invalidator;

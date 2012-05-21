@@ -1,11 +1,10 @@
 //Sample Code: Hello World!
 
 #import('dart:html');
-//#import('dart:io');
+
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/event/event.dart');
-#import('../../client/device/device.dart');
 
 class HelloWorld extends Activity {
 

@@ -1115,7 +1115,9 @@ class View {
 		if (_evlInfo !== null && _evlInfo.listeners != null
 		&& (ls = _evlInfo.listeners[type]) != null) {
 			event.currentTarget = this;
-			for (final ViewEventListener listener in new List.from(ls)) { //we have to make a copy since the listener might change it
+			//Note: we make a copy of ls since listener might remove other listeners
+			//It means the removing and adding of listeners won't take effect until next event
+			for (final ViewEventListener listener in new List.from(ls)) {
 				dispatched = true;
 				listener(event);
 				if (event.propagationStopped)
