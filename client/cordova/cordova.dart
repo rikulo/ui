@@ -9,6 +9,7 @@
 #import("dart:json");
 
 #import("../app/app.dart");
+#import("../util/util.dart");
 #import("../device/device.dart");
 #import("../deviceimpl/deviceimpl.dart");
 #import("../device/accelerometer/accelerometer.dart");
