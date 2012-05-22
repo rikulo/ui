@@ -508,6 +508,8 @@ class View implements Hashable {
 	 */
 	void addToDocument(Element node,
 	[bool outer=false, bool inner=false, Element before]) {
+		_exitDocument();
+
 		String html = _asHTML();
 		Element p, nxt;
 		if (inner) {
@@ -571,7 +573,8 @@ class View implements Hashable {
 	/** Unbinds the view.
 	 */
 	void _exitDocument() {
-		exitDocument_();
+		if (inDocument)
+			exitDocument_();
 	}
 	/** Callback when this view is attached to the document.
 	 * <p>Default: invoke [enterDocument_] for each child.
@@ -637,6 +640,9 @@ class View implements Hashable {
 	 * Rather, it is queued and all queued invalidation will be drawn together later.
 	 * If you'd like to draw all queued invalidation immediately, you can
 	 * invoke [ViewUtil.flushInvalidated].
+	 * <p>Also notice that, though not obvious,
+	 * <code>addToDocument(node, outer: true)</code> will cause the view to be
+	 * re-rendered immediately.
 	 */
 	void invalidate() {
 		_invalidator.queue(this);
@@ -691,6 +697,7 @@ class View implements Hashable {
 
 	/** Generates the HTML fragment for this view and its descendants
 	 * to the given string buffer.
+	 * <p>See also [invalidate].
 	 */
 	void draw(StringBuffer out) {
 		final String tag = domTag_;
