@@ -3,8 +3,8 @@
 // Author: tomyeh
 
 /**
- * A skeletal implementation for views that support the text and image.
- * <p>Notice that there are two kinds of text: normal text and HTML fragment.
+ * Displays plain text or a fragment of HTML content to the user.
+ * <p>Notice that there are two kinds of text: plain text and HTML fragment.
  * You can specify the normal text with [text], and the HTML fragment with [html].
  * If both are specified, [text] will be shown in front of [html].
  */

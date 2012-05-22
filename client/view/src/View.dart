@@ -29,7 +29,7 @@ typedef EventListener DomEventDispatcher(View target);
  * removed from the document.</li>
  * </ul>
  */
-class View {
+class View implements Hashable {
 	String _id = "";
 	String _uuid;
 
