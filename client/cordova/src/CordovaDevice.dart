@@ -18,6 +18,7 @@ class CordovaDevice implements Device {
 
 	Accelerometer accelerometer;
 	Camera camera;
+	Capture capture;
 	Compass compass;
 	Contacts contacts;
 	XGeolocation geolocation;
@@ -26,6 +27,7 @@ class CordovaDevice implements Device {
 	CordovaDevice() {
 		accelerometer = new CordovaAccelerometer();
 		camera = new CordovaCamera();
+		capture = new CordovaCapture();
 		compass = new CordovaCompass();
 		contacts = new CordovaContacts();
 		geolocation = new CordovaGeolocation();

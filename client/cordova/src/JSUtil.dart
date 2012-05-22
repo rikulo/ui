@@ -38,3 +38,12 @@ jsDateToDartDate(jsDate, [TimeZone timezone]) {
 //return time in milliseconds of a Javascript date
 _jsGetTime(jsDate) native "return jsDate.getTime();"; 
 	
+/** Converts a Dart Date to JavaScript Date
+ * @param dartDate the dart Date
+ * @return the converted JavaScript Date
+ */
+DartDateToJSDate(Date date) {
+	int msecs = date !== null ? date.value : null;
+	return msecs != null ? _jsNewDate(msecs) : null;
+}
+_jsNewDate(msecs) native "return new Date(msecs);";
