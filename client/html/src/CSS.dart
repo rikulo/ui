@@ -61,7 +61,7 @@ class CSS {
 			return 0;
 		}
 	}
-	static final RegExp _reNum = const RegExp(@"([-+][0-9]+)");
+	static final RegExp _reNum = const RegExp(@"([-]?[0-9]+)");
 
 	/** Returns the corrected name for the given CSS property name.
 	 * For example, <code>css('text-size-adjust')</code> will return

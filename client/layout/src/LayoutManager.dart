@@ -79,13 +79,14 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 
 	/** Set the width of the given view based on its profile.
 	 * It is an utility for implementing a layout.
-	 * <p>[defaultWidth] is used if the profile's width is not specified. Ignored if null.
+	 * <p>[defaultWidth] is used if the profile's width and view's width are not specified. Ignored if null.
 	 */
 	void setWidthByProfile(MeasureContext mctx, View view, AsInt width, [AsInt defaultWidth]) {
 		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.width);
 		switch (amt.type) {
 			case LayoutAmountType.NONE:
-				if (defaultWidth !== null)
+				//Use defaultWidth only if width is null (so user can assign view.width -- in addition to view.profile.width -- the same)
+				if (view.width === null && defaultWidth !== null)
 					view.width = defaultWidth();
 				break;
 			case LayoutAmountType.FIXED:
@@ -106,13 +107,14 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	}
 	/** Set the height of the given view based on its profile.
 	 * It is an utility for implementing a layout.
-	 * <p>[defaultHeight] is used if the profile's height is not specified. Ignored if null.
+	 * <p>[defaultHeight] is used if the profile's height and view's height are not specified. Ignored if null.
 	 */
 	void setHeightByProfile(MeasureContext mctx, View view, AsInt height, [AsInt defaultHeight]) {
 		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.height);
 		switch (amt.type) {
 			case LayoutAmountType.NONE:
-				if (defaultHeight !== null)
+				//Use defaultHeight only if height is null (so user can assign view.height -- in addition to view.profile.height -- the same)
+				if (view.height === null && defaultHeight !== null)
 					view.height = defaultHeight();
 				break;
 			case LayoutAmountType.FIXED:
