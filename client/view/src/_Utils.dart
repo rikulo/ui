@@ -30,7 +30,6 @@ class _Invalidator extends RunOnceViewManager {
 	void handle_(View view) {
 		final Element n = view.node;
 		if (n != null) {
-			view._exitDocument();
 			view.addToDocument(n, outer: true);
 		}
 	}

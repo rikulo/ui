@@ -114,12 +114,6 @@ class _VLayout implements _RealLinearLayout {
 
 			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.height);
 			switch (amt.type) {
-				case LayoutAmountType.NONE:
-					if (child.height != null)
-						assigned += child.height;
-					else
-						assigned += child.outerHeight;
-					break;
 				case LayoutAmountType.FIXED:
 					assigned += child.height = amt.value;
 					break;
@@ -131,7 +125,21 @@ class _VLayout implements _RealLinearLayout {
 				case LayoutAmountType.RATIO:
 					assigned += child.height = (innerHeight() * amt.value).round().toInt();
 					break;
+				case LayoutAmountType.NONE:
 				case LayoutAmountType.CONTENT:
+					if (amt.type == LayoutAmountType.NONE) {
+						if (child.height != null) {
+							assigned += child.height;
+							break;
+						}
+						final int v = child.outerHeight;
+						if (v != 0) {
+							assigned += v;
+							break;
+						}
+						//fall through
+					}
+
 					final int hgh = child.measureHeight(mctx);
 					if (hgh != null)
 						assigned += child.height = hgh;

@@ -13,7 +13,8 @@
  * <p>For mutable list, you shall override [operator[]=], [set length],
  * [add], [setRange], [insertRange], and [removeRange].
  */
-/*abstract*/ class AbstractList<E> implements List<E> {
+//abstract //TODO: fix it when dart2js supports it
+class AbstractList<E> implements List<E> {
 
 	const AbstractList();
 
@@ -38,6 +39,8 @@
 	}
 
 	//List//
+	Iterator<E> iterator() => null; //TODO: remove it when dart2js supports it
+
 	E operator[](int index) {
 		rangeCheck(this, index, 1);
 

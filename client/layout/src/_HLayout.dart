@@ -114,12 +114,6 @@ class _HLayout implements _RealLinearLayout {
 
 			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.width);
 			switch (amt.type) {
-				case LayoutAmountType.NONE:
-					if (child.width != null)
-						assigned += child.width;
-					else
-						assigned += child.outerWidth;
-					break;
 				case LayoutAmountType.FIXED:
 					assigned += child.width = amt.value;
 					break;
@@ -131,7 +125,21 @@ class _HLayout implements _RealLinearLayout {
 				case LayoutAmountType.RATIO:
 					assigned += child.width = (innerWidth() * amt.value).round().toInt();
 					break;
+				case LayoutAmountType.NONE:
 				case LayoutAmountType.CONTENT:
+					if (amt.type == LayoutAmountType.NONE) {
+						if (child.width != null) {
+							assigned += child.width;
+							break;
+						}
+						final int v = child.outerWidth;
+						if (v != 0) {
+							assigned += v;
+							break;
+						}
+						//fall through
+					}
+
 					final int wd = child.measureWidth(mctx);
 					if (wd != null)
 						assigned += child.width = wd;

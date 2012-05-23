@@ -65,15 +65,17 @@ class TextView extends View {
 		out.add(innerHTML_);
 	}
 
+	//@Override
 	/** Returns whether this view allows any child views.
 	 * <p>Default: false.
 	 */
 	bool isChildable_() => false;
-
+	//@Override
 	int measureWidth(MeasureContext mctx)
 	=> layoutManager.measureWidthByContent(mctx, this, true);
+	//@Override
 	int measureHeight(MeasureContext mctx)
 	=> layoutManager.measureHeightByContent(mctx, this, true);
-
+	//@Override
 	String toString() => "TextView('$text$html')";
 }

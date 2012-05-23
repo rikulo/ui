@@ -29,4 +29,5 @@
 #source("src/RadioButton.dart");
 #source("src/RadioGroup.dart");
 #source("src/CheckBox.dart");
+#source("src/TextBox.dart");
 #source("src/ScrollView.dart");
