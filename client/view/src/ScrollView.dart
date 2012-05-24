@@ -55,7 +55,7 @@ class ScrollView extends View {
 	//@Override
 	Element get innerNode() => getNode("inner");
 	//@Override
-	void adjustInnerNode_([bool left=false, bool top=false, bool width=false, bool height=false]) {
+	void adjustInnerNode_([bool bLeft=false, bool bTop=false, bool bWidth=false, bool bHeight=false]) {
 		//nothing to do since it is controlled by CSS (and handled by browser)
 	}
 }

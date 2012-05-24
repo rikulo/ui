@@ -31,3 +31,4 @@
 #source("src/CheckBox.dart");
 #source("src/TextBox.dart");
 #source("src/ScrollView.dart");
+#source("src/Canvas.dart");

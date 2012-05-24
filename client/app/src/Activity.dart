@@ -55,6 +55,8 @@ class Activity {
 				final Element main = document.query("#$nodeId");
 				rootView.addToDocument(main != null ? main: document.body);
 			}
+
+			onEnterDocument_();
 		});
 	}
 	/** Initializes the browser window, such as registering the events.
@@ -107,6 +109,12 @@ class Activity {
 	 * create an instance and then assign to [rootView] directly.
 	 */
 	void onCreate_() {
+	}
+	/**Called after [onCreate_] is called and [rootView] has been
+	 * added to the document.
+	 *<p>Tasks that depends on DOM elements can be done in this method.
+	 */
+	void onEnterDocument_() {
 	}
 	/** Called when the activity is going into background.
 	 */

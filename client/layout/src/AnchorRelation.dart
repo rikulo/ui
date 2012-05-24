@@ -76,7 +76,7 @@ class AnchorRelation {
 	}
 	static List<int> _getHandlers(String loc) {
 		if (loc == null || loc.isEmpty())
-			loc = "south start";
+			loc = "top left";
 
 		List<int> handlers = _locations[loc];
 		if (handlers != null)

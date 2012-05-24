@@ -26,6 +26,7 @@ default ProfileDeclarationImpl {
 	/** The location of the associated view.
 	 * It is used only if [anchor] is not assigned with an non-empty value
 	 * (or [anchorView] is assigned with a view).
+	 * <p>Default: <code>top left</code>
 	 */
 	String location;
 

@@ -477,19 +477,19 @@ class View implements Hashable {
 	 * override this method to do nothing (for better performance).
 	 * [ScrollView] is a typical example.
 	 */
-	void adjustInnerNode_([bool left=false, bool top=false, bool width=false, bool height=false]) {
+	void adjustInnerNode_([bool bLeft=false, bool bTop=false, bool bWidth=false, bool bHeight=false]) {
 		final Element n = node, inner = innerNode;
 		if (inner !== n) {
 			//sync innerNode's positon and size
-			if (left)
+			if (bLeft)
 				inner.style.left = CSS.px(innerLeft);
-			if (top)
+			if (bTop)
 				inner.style.top = CSS.px(innerTop);
-			if (width) {
+			if (bWidth) {
 				int v = new DomQuery(n).innerWidth - innerSpacing_.width;
 				inner.style.width = CSS.px(v > 0 ? v: 0);
 			}
-			if (height) {
+			if (bHeight) {
 				int v = new DomQuery(n).innerHeight - innerSpacing_.height;
 				inner.style.height = CSS.px(v > 0 ? v: 0);
 			}
@@ -775,7 +775,7 @@ class View implements Hashable {
 		if (n !== null) {
 			n.style.width = CSS.px(width);
 
-			adjustInnerNode_(width: true);
+			adjustInnerNode_(bWidth: true);
 		}
 	}
 	/** Returns the height of this view.
@@ -792,7 +792,7 @@ class View implements Hashable {
 		if (n !== null) {
 			n.style.height = CSS.px(height);
 
-			adjustInnerNode_(height: true);
+			adjustInnerNode_(bHeight: true);
 		}
 	}
 
@@ -816,7 +816,7 @@ class View implements Hashable {
 		if (_innerofs !== null) _innerofs.left = left;
 		else _innerofs = new Offset(left, 0);
 
-		adjustInnerNode_(left: true);
+		adjustInnerNode_(bLeft: true);
 	}
 	/** Returns the top offset of the origin of the child's coordinate system.
 	 * <p>Default: throws [UIException].
@@ -830,7 +830,7 @@ class View implements Hashable {
 		if (_innerofs !== null) _innerofs.top = top;
 		else _innerofs = new Offset(0, top);
 
-		adjustInnerNode_(top: true);
+		adjustInnerNode_(bTop: true);
 	}
 	/** Returns the spacing between the inner element and the border.
 	 * <p>Default: <code>new Size(innerLeft, innerTop)</code>
