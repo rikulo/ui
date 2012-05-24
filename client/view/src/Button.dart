@@ -7,9 +7,8 @@ class Button extends TextView {
 	String _type = "button";
 	bool _disabled = false, _autoFocus = false;
 
-	Button([String text="", String html="", bool autoFocus=false]):
+	Button([String text="", String html=""]):
 	super(text, html) {
-		_autoFocus = autoFocus;
 		vclass = "v-Button";
 	}
 

@@ -14,10 +14,8 @@ class CheckBox extends TextView {
 	bool _checked = false, _disabled = false, _autoFocus = false;
 	EventListener _onInputClick;
 
-	CheckBox([String text="", String html="", bool checked=false, bool autoFocus=false]):
-	super(text, html) {
-		_checked = checked;
-		_autoFocus = autoFocus;
+	CheckBox([String text="", String html="", bool checked=false]):
+	super(text, html), _checked = checked {
 		vclass = "v-CheckBox";
 
 		_onInputClick = (Event event) {

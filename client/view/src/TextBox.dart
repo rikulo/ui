@@ -12,11 +12,9 @@ class TextBox extends View {
 	int _maxLength = -1, _cols = 20, _rows = 2;
 	bool _disabled = false, _autoFocus = false, _autoComplete = true;
 
-	TextBox([String value="", String type="text", bool autoFocus=false]) {
+	TextBox([String value="", String type="text"]):
+	_value = value, _type = type {
 		vclass = "v-TextBox";
-		_value = value;
-		_type = type;
-		_autoFocus = autoFocus;
 	}
 
 	/** Returns the type of data being placed in this text box.
