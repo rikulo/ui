@@ -55,11 +55,14 @@ class CSS {
 	 */
 	static int intOf(String value) {
 		try {
-			return value !== null && !value.isEmpty() ?
-				Math.parseInt(_reNum.firstMatch(value).group(0)): 0;
+			if (value !== null && !value.isEmpty()) {
+				final Match m = _reNum.firstMatch(value);
+				if (m !== null)
+					return Math.parseInt(m.group(0));
+			}
 		} catch (var e) {
-			return 0;
 		}
+		return 0;
 	}
 	static final RegExp _reNum = const RegExp(@"([-]?[0-9]+)");
 

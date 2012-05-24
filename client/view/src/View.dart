@@ -1153,7 +1153,9 @@ class View implements Hashable {
 	/** Returns if the given event type is a DOM event.
 	 * If true, [domListen_] will be invoked to register the DOM event.
 	 */
-	DomEventDispatcher getDomEventDispatcher_(String type) {
+	DomEventDispatcher getDomEventDispatcher_(String type)
+	=> _getDomEventDispatcher(type);
+	static DomEventDispatcher _getDomEventDispatcher(String type) {
 		if (_domEvtDisps == null) {
 			_domEvtDisps = {};
 			

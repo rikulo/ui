@@ -14,7 +14,7 @@ class InputSamples extends Activity {
 		rootView.layout.text = "type: linear; orient: vertical";
 
 		for (final String type in
-		["text", "password", "multiline", "date"]) {
+		["text", "password", "multiline", "date", "color"]) {
 			View view = new View();
 			view.layout.text = "type: linear";
 			rootView.appendChild(view);

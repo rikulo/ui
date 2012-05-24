@@ -60,7 +60,7 @@ class TextBox extends View {
 
 	/** Returns the value of this text box.
 	 */
-	String get value() => _value;
+	String get value() => inDocument ? inputNode.value: _value;
 	/** Sets the value of this text box.
 	 * <p>Default: an empty string.
 	 */
@@ -176,7 +176,26 @@ class TextBox extends View {
 
 	/** Returns the INPUT element in this view.
 	 */
-	InputElement get inputNode() => getNode("inp");
+	InputElement get inputNode() => node;
+
+	//@Override
+	void exitDocument_() {
+		_value = inputNode.value; //store back
+
+		super.exitDocument_();
+	}
+	//@Override
+	DomEventDispatcher getDomEventDispatcher_(String type)
+	=> type == "change" ? _getChangeDispatcher(): getDomEventDispatcher_(type);
+	static DomEventDispatcher _getChangeDispatcher() {
+		if (_changeDispatcher === null)
+			_changeDispatcher = (View target) => (Event  event) {
+				final t = target; //TODO: replace it when Dart supports cast
+				target.sendEvent(new ChangeEvent<String>(target, t.value));
+			};
+		return _changeDispatcher;
+	}
+	static DomEventDispatcher _changeDispatcher;
 
 	//@Override
 	/** Returns the HTML tag's name representing this view.

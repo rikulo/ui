@@ -3,16 +3,17 @@
 // Author: tomyeh
 
 /**
- * A check event.
+ * A check event. It is sent with [ViewEvents.check].
  */
 class CheckEvent extends ViewEvent {
 	final bool _checked;
 
 	CheckEvent(View target, bool checked, [String type="check"]):
-	super(target, type), _checked = checked {
-	}
+	super(target, type), _checked = checked;
 
 	/** Returns whether it is checked.
 	 */
 	bool get checked() => _checked;
+
+	String toString() => "CheckEvent($target,$checked)";
 }

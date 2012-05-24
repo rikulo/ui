@@ -64,4 +64,6 @@ class ViewEvent {
 	void stopPropagation() {
 		_propStop = true;
 	}
+
+	String toString() => "ViewEvent($target,$type)";
 }
