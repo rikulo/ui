@@ -17,6 +17,7 @@ class Ball {
 	String color;
 
 	Ball(int this.radius, double this.speed, int this.size, String this.color);
+
 	void updatePosition(int time) {
 		final double degree = time * speed / 1000;
 		ctx2d.beginPath();

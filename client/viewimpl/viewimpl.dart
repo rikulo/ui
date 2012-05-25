@@ -10,6 +10,7 @@
 #import("../view/view.dart");
 #import("../util/util.dart");
 
+#source("src/Functions.dart");
 #source("src/CSSStyleDeclarationImpl.dart");
 #source("src/DeclarationImpl.dart");
 #source("src/LayoutDeclarationImpl.dart");
