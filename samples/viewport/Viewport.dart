@@ -80,15 +80,15 @@ class Viewport extends View {
 		out.add('</div>');
 	}
 	//@Override to insert the toolbar to the right place
-	void insertChildToDocument_(View child, String childHtml, View beforeChild, [Element childNode]) {
+	void insertChildToDocument_(View child, var childInfo, View beforeChild) {
 		if (child === _toolbar) {
-			if (childNode !== null)
-				getNode("toolbar").insertAdjacentElement("beforeEnd", childNode);
+			if (childInfo is Element)
+				getNode("toolbar").insertAdjacentElement("beforeEnd", childInfo);
 			else
-				getNode("toolbar").insertAdjacentHTML("beforeEnd", childHtml);
+				getNode("toolbar").insertAdjacentHTML("beforeEnd", childInfo);
 		} else {
-			super.insertChildToDocument_(child, childHtml,
-				beforeChild === _toolbar ? null: beforeChild, childNode);
+			super.insertChildToDocument_(child, childInfo,
+				beforeChild === _toolbar ? null: beforeChild);
 		}
 	}
 	void enterDocument_() {
