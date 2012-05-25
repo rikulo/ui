@@ -13,18 +13,22 @@ class Canvas extends View {
 	/** Returns a drawing context for 2D on the canvas.
 	 * A drawing context lets you draw on the canvas.
 	 */
-	CanvasRenderingContext2D get context2D() => node.getContext("2d");
+	CanvasRenderingContext2D get context2D() => canvasNode.getContext("2d");
 	/** Returns a drawing context for WebGL on the canvas, or null
 	 * if the browser doesn't support WebGL.
 	 */
-	WebGLRenderingContext get contextWebGL() => node.getContext("experimental-webgl");
+	WebGLRenderingContext get contextWebGL() => canvasNode.getContext("experimental-webgl");
+
+	/** Returns the canvas element. It is the same as [node].
+	 */
+	CanvasElement get canvasNode() => node;
 
 	//@Override
 	void adjustInnerNode_([bool bLeft=false, bool bTop=false, bool bWidth=false, bool bHeight=false]) {
 		if (bWidth)
-			node.width = width; //TODO: replace with Dart's cast if it is supported
+			canvasNode.width = width;
 		if (bHeight)
-			node.height = height; //TODO: replace with Dart's cast if it is supported
+			canvasNode.height = height;
 		super.adjustInnerNode_(bLeft, bTop, bWidth, bHeight);
 	}
 	//@Override

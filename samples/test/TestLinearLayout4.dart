@@ -49,7 +49,7 @@ class TestLinearLayout4 extends Activity {
 
 		RadioGroup group = new RadioGroup();
 			group.on.check.add((CheckEvent event) {
-				final target = event.target;
+				final RadioButton target = event.target;
 				target.text = 'checked: ${++clickCount}';
 				target.parent.requestLayout();
 			});

@@ -19,7 +19,8 @@ class CheckBox extends TextView {
 		vclass = "v-CheckBox";
 
 		_onInputClick = (Event event) {
-			final bool cked = event.srcElement.checked;
+			final InputElement n = event.srcElement;
+			final bool cked = n.checked;
 			if (_checked != cked) {
 				_checked = cked;
 				onCheck_();

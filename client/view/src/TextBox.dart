@@ -48,7 +48,8 @@ class TextBox extends View {
 					addToDocument(node, outer: true);
 						//we don't use invalidate since the user might modify other properties later
 				} else {
-					inputNode.type = type;
+					final InputElement inp = inputNode; //no need to check _multiline since we need to silent compiler only
+					inp.type = type; 
 				}
 		}
 	}
@@ -58,15 +59,18 @@ class TextBox extends View {
 
 	/** Returns the value of this text box.
 	 */
-	String get value() => inDocument ? inputNode.value: _value;
+	String get value() {
+		final InputElement inp = inputNode;
+		return inp != null ? inp.value: _value;
+	}
 	/** Sets the value of this text box.
 	 * <p>Default: an empty string.
 	 */
 	void set value(String value) {
 		_value = value;
-		final Element n = inputNode;
-		if (n != null)
-			n.value = value;
+		final InputElement inp = inputNode;
+		if (inp != null)
+			inp.value = value;
 	}
 
 	/** Returns whether it is disabled.
@@ -77,9 +81,9 @@ class TextBox extends View {
 	 */
 	void set disabled(bool disabled) {
 		_disabled = disabled;
-		Element n = inputNode;
-		if (n != null)
-			n.disabled = _disabled;
+		final InputElement inp = inputNode;
+		if (inp != null)
+			inp.disabled = _disabled;
 	}
 
 	/** Returns whether this input should automatically get focus.
@@ -91,9 +95,9 @@ class TextBox extends View {
 	void set autofocus(bool autofocus) {
 		_autofocus = autofocus;
 		if (autofocus) {
-			Element n = inputNode;
-			if (n != null)
-				n.focus();
+			final InputElement inp = inputNode;
+			if (inp != null)
+				inp.focus();
 		}
 	}
 
@@ -108,9 +112,9 @@ class TextBox extends View {
 	 */
 	void set autocomplete(bool autocomplete) {
 		_autocomplete = autocomplete;
-		Element n = inputNode;
-		if (n != null)
-			n.autocomplete = _autocomplete ? "on": "off";
+		final InputElement inp = inputNode;
+		if (inp != null)
+			inp.autocomplete = _autocomplete ? "on": "off";
 	}
 
 	/** Returns a short hint that describes this text box.
@@ -124,9 +128,9 @@ class TextBox extends View {
 	 */
 	void set placeholder(String placeholder) {
 		_placeholder = placeholder;
-		final Element n = inputNode;
-		if (n != null)
-			n.placeholder = _placeholder;
+		final InputElement inp = inputNode;
+		if (inp != null)
+			inp.placeholder = _placeholder;
 	}
 
 	/** Returns the width of this text box in average character width.
@@ -138,12 +142,14 @@ class TextBox extends View {
 	 */
 	void set cols(int cols) {
 		_cols = cols;
-		final Element n = inputNode;
-		if (n != null)
-			if (_multiline)
-				n.cols = _cols;
-			else
-				n.size = _cols;
+		if (inDocument)
+			if (_multiline) {
+				final TextAreaElement inp = inputNode;
+				inp.cols = _cols;
+			} else {
+				final InputElement inp = inputNode;
+				inp.size = _cols;
+			}
 	}
 	/** Returns the height of this text box in number of lines.
 	 * <p>Default: 2.
@@ -157,9 +163,9 @@ class TextBox extends View {
 	void set rows(int rows) {
 		_rows = rows;
 		if (_multiline) {
-			Element n = inputNode;
-			if (n != null)
-				n.rows = _rows;
+			final TextAreaElement inp = inputNode;
+			if (inp != null)
+				inp.rows = _rows;
 		}
 	}
 
@@ -172,9 +178,9 @@ class TextBox extends View {
 	 */
 	void set maxLength(int maxLength) {
 		_maxLength = maxLength;
-		Element n = inputNode;
-		if (n != null)
-			n.maxLength = _maxLength;
+		final InputElement inp = inputNode;
+		if (inp != null)
+			inp.maxLength = _maxLength;
 	}
 
 	/** Returns the INPUT element in this view.
@@ -184,7 +190,8 @@ class TextBox extends View {
 
 	//@Override
 	void exitDocument_() {
-		_value = inputNode.value; //store back
+		final InputElement inp = inputNode;
+		_value = inp.value; //store back
 
 		super.exitDocument_();
 	}
@@ -194,7 +201,8 @@ class TextBox extends View {
 	static DOMEventDispatcher _getChangeDispatcher() {
 		if (_changeDispatcher === null)
 			_changeDispatcher = (View target) => (Event  event) {
-				target.sendEvent(new ChangeEvent<String>(target, target.value));
+				final TextBox t = target;
+				t.sendEvent(new ChangeEvent<String>(t, t.value));
 			};
 		return _changeDispatcher;
 	}
