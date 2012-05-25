@@ -142,11 +142,10 @@ class View implements Hashable {
 	IdSpace get spaceOwner() => _spaceOwner(this, false); //not to ignore virtual
 
 	static IdSpace _spaceOwner(View view, bool ignoreVirtualIS) {
-		View top;
-		var p = view;
+		View top, p = view;
 		do {
 			if (p is IdSpace)
-				return p;
+				return _cast(p);
 			top = p;
 		} while ((p = p.parent) != null);
 
@@ -156,6 +155,8 @@ class View implements Hashable {
 			return top._virtIS;
 		}
 	}
+	static _cast(var v) => v; //TODO: remove it when Dart allows to cast to any type, not just downcast
+
 	/** Checks the uniqueness in ID space when changing ID. */
 	static void _checkIdSpaces(View view, String newId) {
 		var space = view.spaceOwner;
@@ -176,7 +177,7 @@ class View implements Hashable {
 		if (id.length == 0)
 			return;
 
-		final space = view.spaceOwner;
+		var space = _cast(view.spaceOwner);
 		space.bindFellow_(id, view);
 
 		//we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
@@ -210,7 +211,7 @@ class View implements Hashable {
 		if (id.length == 0)
 			return;
 
-		var space = view.spaceOwner;
+		var space = _cast(view.spaceOwner);
 		space.bindFellow_(id, null);
 
 		//we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
