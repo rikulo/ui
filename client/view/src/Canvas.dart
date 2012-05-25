@@ -21,11 +21,10 @@ class Canvas extends View {
 
 	//@Override
 	void adjustInnerNode_([bool bLeft=false, bool bTop=false, bool bWidth=false, bool bHeight=false]) {
-		final n = node; //TODO: replace with Dart's cast if it is supported
 		if (bWidth)
-			n.width = width;
+			node.width = width; //TODO: replace with Dart's cast if it is supported
 		if (bHeight)
-			n.height = height;
+			node.height = height; //TODO: replace with Dart's cast if it is supported
 		super.adjustInnerNode_(bLeft, bTop, bWidth, bHeight);
 	}
 	//@Override

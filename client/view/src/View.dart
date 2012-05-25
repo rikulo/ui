@@ -166,7 +166,7 @@ class View implements Hashable {
 		View parent;
 		if (view is IdSpace && (parent = view.parent) != null) {
 			space = parent.spaceOwner;
-			if (space.getFellows(newId) !== null)
+			if (space.getFellow(newId) !== null)
 				throw new UIException("Not unique in the ID space of $space: $newId");
 		}
 	}
@@ -176,7 +176,7 @@ class View implements Hashable {
 		if (id.length == 0)
 			return;
 
-		var space = view.spaceOwner;
+		final space = view.spaceOwner;
 		space.bindFellow_(id, view);
 
 		//we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)

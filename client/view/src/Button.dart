@@ -5,7 +5,7 @@
  */
 class Button extends TextView {
 	String _type = "button";
-	bool _disabled = false, _autoFocus = false;
+	bool _disabled = false, _autofocus = false;
 
 	Button([String text="", String html=""]):
 	super(text, html) {
@@ -41,12 +41,12 @@ class Button extends TextView {
 	/** Returns whether this button should automatically get focus.
 	 * <p>Default: false.
 	 */
-	bool get autoFocus() => _autoFocus;
+	bool get autofocus() => _autofocus;
 	/** Sets whether this button should automatically get focus.
 	 */
-	void set autoFocus(bool autoFocus) {
-		_autoFocus = autoFocus;
-		if (autoFocus) {
+	void set autofocus(bool autofocus) {
+		_autofocus = autofocus;
+		if (autofocus) {
 			ButtonElement n = node;
 			if (n != null)
 				n.focus();
@@ -58,7 +58,7 @@ class Button extends TextView {
 		out.add(' type="').add(type).add('"');
 		if (disabled)
 			out.add(' disabled="disabled"');
-		if (autoFocus)
+		if (autofocus)
 			out.add(' autofocus="autofocus"');
 		super.domAttrs_(out, noId, noStyle, noClass);
 	}

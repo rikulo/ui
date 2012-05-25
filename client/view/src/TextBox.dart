@@ -8,9 +8,9 @@
 class TextBox extends View {
 	String _value;
 	String _type;
-	String _placeHolder = "";
+	String _placeholder = "";
 	int _maxLength = -1, _cols = 20, _rows = 2;
-	bool _disabled = false, _autoFocus = false, _autoComplete = true;
+	bool _disabled = false, _autofocus = false, _autocomplete = true;
 
 	TextBox([String value="", String type="text"]):
 	_value = value, _type = type {
@@ -38,7 +38,7 @@ class TextBox extends View {
 	void set type(String type) {
 		if (_type != type) {
 			if (type == null || type.isEmpty())
-				throw const UiException("type required");
+				throw const UIException("type required");
 
 			final bool oldMultiline = _multiline;
 			_type = type;
@@ -64,7 +64,7 @@ class TextBox extends View {
 	 */
 	void set value(String value) {
 		_value = value;
-		final InputElement n = inputNode;
+		final Element n = inputNode;
 		if (n != null)
 			n.value = value;
 	}
@@ -77,7 +77,7 @@ class TextBox extends View {
 	 */
 	void set disabled(bool disabled) {
 		_disabled = disabled;
-		InputElement n = inputNode;
+		Element n = inputNode;
 		if (n != null)
 			n.disabled = _disabled;
 	}
@@ -85,13 +85,13 @@ class TextBox extends View {
 	/** Returns whether this input should automatically get focus.
 	 * <p>Default: false.
 	 */
-	bool get autoFocus() => _autoFocus;
+	bool get autofocus() => _autofocus;
 	/** Sets whether this input should automatically get focus.
 	 */
-	void set autoFocus(bool autoFocus) {
-		_autoFocus = autoFocus;
-		if (autoFocus) {
-			InputElement n = inputNode;
+	void set autofocus(bool autofocus) {
+		_autofocus = autofocus;
+		if (autofocus) {
+			Element n = inputNode;
 			if (n != null)
 				n.focus();
 		}
@@ -103,14 +103,14 @@ class TextBox extends View {
 	 * ealier typed values
 	 * <p>Default: true (enabled).
 	 */
-	bool get autoComplete() => _autoComplete;
+	bool get autocomplete() => _autocomplete;
 	/** Sets whether to predict the value based on ealier typed value.
 	 */
-	void set autoComplete(bool autoComplete) {
-		_autoComplete = autoComplete;
-		InputElement n = inputNode;
+	void set autocomplete(bool autocomplete) {
+		_autocomplete = autocomplete;
+		Element n = inputNode;
 		if (n != null)
-			n.autoComplete = _autoComplete;
+			n.autocomplete = _autocomplete ? "on": "off";
 	}
 
 	/** Returns a short hint that describes this text box.
@@ -118,15 +118,15 @@ class TextBox extends View {
 	 * disappears when it gets focus.
 	 * <p>Default: an empty string.
 	 */
-	String get placeHolder() => _placeHolder;
+	String get placeholder() => _placeholder;
 	/** Returns a short hint that describes this text box.
 	 * <p>Default: an empty string.
 	 */
-	void set placeHolder(String placeHolder) {
-		_placeHolder = placeHolder;
-		final InputElement n = inputNode;
+	void set placeholder(String placeholder) {
+		_placeholder = placeholder;
+		final Element n = inputNode;
 		if (n != null)
-			n.placeHolder = _placeHolder;
+			n.placeholder = _placeholder;
 	}
 
 	/** Returns the width of this text box in average character width.
@@ -138,9 +138,12 @@ class TextBox extends View {
 	 */
 	void set cols(int cols) {
 		_cols = cols;
-		InputElement n = inputNode;
+		final Element n = inputNode;
 		if (n != null)
-			n.cols = _cols;
+			if (_multiline)
+				n.cols = _cols;
+			else
+				n.size = _cols;
 	}
 	/** Returns the height of this text box in number of lines.
 	 * <p>Default: 2.
@@ -153,9 +156,11 @@ class TextBox extends View {
 	 */
 	void set rows(int rows) {
 		_rows = rows;
-		InputElement n = inputNode;
-		if (n != null)
-			n.rows = _rows;
+		if (_multiline) {
+			Element n = inputNode;
+			if (n != null)
+				n.rows = _rows;
+		}
 	}
 
 	/** Returns the maximal allowed number of characters.
@@ -167,14 +172,15 @@ class TextBox extends View {
 	 */
 	void set maxLength(int maxLength) {
 		_maxLength = maxLength;
-		InputElement n = inputNode;
+		Element n = inputNode;
 		if (n != null)
 			n.maxLength = _maxLength;
 	}
 
 	/** Returns the INPUT element in this view.
+	 * It could be an instance of InputElement or TextArea
 	 */
-	InputElement get inputNode() => node;
+	Element get inputNode() => node;
 
 	//@Override
 	void exitDocument_() {
@@ -188,8 +194,7 @@ class TextBox extends View {
 	static DOMEventDispatcher _getChangeDispatcher() {
 		if (_changeDispatcher === null)
 			_changeDispatcher = (View target) => (Event  event) {
-				final t = target; //TODO: replace it when Dart supports cast
-				target.sendEvent(new ChangeEvent<String>(target, t.value));
+				target.sendEvent(new ChangeEvent<String>(target, target.value));
 			};
 		return _changeDispatcher;
 	}
@@ -219,14 +224,14 @@ class TextBox extends View {
 			out.add(' cols="').add(cols).add('"');
 		if (disabled)
 			out.add(' disabled="disabled"');
-		if (autoFocus)
+		if (autofocus)
 			out.add(' autofocus="autofocus"');
-		if (!autoComplete)
+		if (!autocomplete)
 			out.add(' autocomplete="off"');
 		if (maxLength > 0)
 			out.add(' maxlength="').add(maxLength).add('"');
-		if (!placeHolder.isEmpty())
-			out.add(' placeholder="').add(StringUtil.encodeXML(placeHolder)).add('"');
+		if (!placeholder.isEmpty())
+			out.add(' placeholder="').add(StringUtil.encodeXML(placeholder)).add('"');
 		super.domAttrs_(out, noId, noStyle, noClass);
 	}
 	//@Override

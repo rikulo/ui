@@ -11,7 +11,7 @@
  * </ul>
  */
 class CheckBox extends TextView {
-	bool _checked = false, _disabled = false, _autoFocus = false;
+	bool _checked = false, _disabled = false, _autofocus = false;
 	EventListener _onInputClick;
 
 	CheckBox([String text="", String html="", bool checked=false]):
@@ -19,8 +19,7 @@ class CheckBox extends TextView {
 		vclass = "v-CheckBox";
 
 		_onInputClick = (Event event) {
-			final target = event.srcElement;
-			final bool cked = target.checked;
+			final bool cked = event.srcElement.checked;
 			if (_checked != cked) {
 				_checked = cked;
 				onCheck_();
@@ -49,7 +48,7 @@ class CheckBox extends TextView {
 	 */
 	void set disabled(bool disabled) {
 		_disabled = disabled;
-		ButtonElement n = inputNode;
+		InputElement n = inputNode;
 		if (n != null)
 			n.disabled = _disabled;
 	}
@@ -57,20 +56,20 @@ class CheckBox extends TextView {
 	/** Returns whether this button should automatically get focus.
 	 * <p>Default: false.
 	 */
-	bool get autoFocus() => _autoFocus;
+	bool get autofocus() => _autofocus;
 	/** Sets whether this button should automatically get focus.
 	 */
-	void set autoFocus(bool autoFocus) {
-		_autoFocus = autoFocus;
-		if (autoFocus) {
-			ButtonElement n = inputNode;
+	void set autofocus(bool autofocus) {
+		_autofocus = autofocus;
+		if (autofocus) {
+			InputElement n = inputNode;
 			if (n != null)
 				n.focus();
 		}
 	}
 	/** Returns the INPUT element in this view.
 	 */
-	Element get inputNode() => getNode("inp");
+	InputElement get inputNode() => getNode("inp");
 
 	/** Callback when user's click changes [checked].
 	 */
@@ -108,7 +107,7 @@ class CheckBox extends TextView {
 			out.add(' checked="checked"');
 		if (_disabled)
 			out.add(' disabled="disabled"');
-		if (_autoFocus)
+		if (_autofocus)
 			out.add(' autofocus="autofocus"');
 		out.add('/><label for="').add(uuid).add('-inp" class="')
 			.add(vclass).add('-cnt">').add(innerHTML_).add('</label>');
