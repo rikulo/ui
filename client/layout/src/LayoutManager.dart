@@ -175,7 +175,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 			}
 		}
 
-		final DomQuery qview = new DomQuery(view);
+		final DOMQuery qview = new DOMQuery(view);
 		final Size size = new Size(qview.outerWidth, qview.outerHeight);
 
 		if (orgval !== null) {

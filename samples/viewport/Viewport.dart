@@ -47,7 +47,7 @@ class Viewport extends View {
 	void _syncToolbar() {
 		final Element tbar = getNode("toolbar");
 		if (tbar != null) {
-			final DomQuery qtbar = new DomQuery(tbar);
+			final DOMQuery qtbar = new DOMQuery(tbar);
 			_toolbar.left = qtbar.offsetLeft;
 			_toolbar.top = qtbar.offsetTop;
 		}

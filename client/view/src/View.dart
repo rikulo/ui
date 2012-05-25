@@ -13,7 +13,7 @@ typedef void AfterEnterDocument(View topView);
 /** Returns a DOM-level event listener that converts a DOM event to a view event
  * ([ViewEvent]) and dispatch to the right target.
  */
-typedef EventListener DomEventDispatcher(View target);
+typedef EventListener DOMEventDispatcher(View target);
 
 /**
  * A view.
@@ -486,11 +486,11 @@ class View implements Hashable {
 			if (bTop)
 				inner.style.top = CSS.px(innerTop);
 			if (bWidth) {
-				int v = new DomQuery(n).innerWidth - innerSpacing_.width;
+				int v = new DOMQuery(n).innerWidth - innerSpacing_.width;
 				inner.style.width = CSS.px(v > 0 ? v: 0);
 			}
 			if (bHeight) {
-				int v = new DomQuery(n).innerHeight - innerSpacing_.height;
+				int v = new DOMQuery(n).innerHeight - innerSpacing_.height;
 				inner.style.height = CSS.px(v > 0 ? v: 0);
 			}
 		}
@@ -599,7 +599,7 @@ class View implements Hashable {
 		if (_evlInfo !== null && _evlInfo.listeners !== null) {
 			final Map<String, List<ViewEventListener>> listeners = _evlInfo.listeners;
 			for (final String type in listeners.getKeys()) {
-				final DomEventDispatcher disp = getDomEventDispatcher_(type);
+				final DOMEventDispatcher disp = getDOMEventDispatcher_(type);
 				if (disp != null && !listeners[type].isEmpty())
 					domListen_(n, type, disp);
 			}
@@ -619,7 +619,7 @@ class View implements Hashable {
 		if (_evlInfo !== null && _evlInfo.listeners !== null) {
 			final Map<String, List<ViewEventListener>> listeners = _evlInfo.listeners;
 			for (final String type in listeners.getKeys()) {
-				if (getDomEventDispatcher_(type) != null && !listeners[type].isEmpty())
+				if (getDOMEventDispatcher_(type) != null && !listeners[type].isEmpty())
 					domUnlisten_(n, type);
 			}
 		}
@@ -845,7 +845,7 @@ class View implements Hashable {
 	 * [width] is null.
 	 */
 	int get outerWidth()
-	=> _width !== null ? _width: inDocument ? new DomQuery(node).outerWidth: 0;
+	=> _width !== null ? _width: inDocument ? new DOMQuery(node).outerWidth: 0;
 		//for better performance, we don't need to get the outer width if _width is
 		//assigned (because we use box-sizing: border-box)
 	/** Returns the real height of this view shown on the document (never null).
@@ -853,7 +853,7 @@ class View implements Hashable {
 	 * [height] is null.
 	 */
 	int get outerHeight()
-	=> _height !== null ? _height: inDocument ? new DomQuery(node).outerHeight: 0;
+	=> _height !== null ? _height: inDocument ? new DOMQuery(node).outerHeight: 0;
 		//for better performance, we don't need to get the outer height if _height is
 		//assigned (because we use box-sizing: border-box)
 	/** Returns the viewable width of this view, excluding the borders, margins
@@ -864,7 +864,7 @@ class View implements Hashable {
 	 * not to call this method if the view is not attached.
 	 */
 	int get innerWidth() {
-		final int v = inDocument ? new DomQuery(innerNode).innerWidth:
+		final int v = inDocument ? new DOMQuery(innerNode).innerWidth:
 			(_width !== null ? _width - innerSpacing_.width: 0);
 		return v > 0 ? v: 0;
 	}
@@ -876,7 +876,7 @@ class View implements Hashable {
 	 * not to call this method if the view is not attached.
 	 */
 	int get innerHeight() {
-		final int v = inDocument ? new DomQuery(innerNode).innerHeight:
+		final int v = inDocument ? new DOMQuery(innerNode).innerHeight:
 			(_height !== null ? _height - innerSpacing_.height: 0);
 		return v > 0 ? v: 0;
 	}
@@ -894,7 +894,7 @@ class View implements Hashable {
 
 			final View p = view.parent;
 			if (p == null) {
-				final Offset nofs = new DomQuery(view.node).documentOffset;
+				final Offset nofs = new DOMQuery(view.node).documentOffset;
 				ofs.left += nofs.left;
 				ofs.top += nofs.top;
 				break;
@@ -1080,9 +1080,9 @@ class View implements Hashable {
 		}).add(listener);
 
 		Element n;
-		DomEventDispatcher disp;
+		DOMEventDispatcher disp;
 		if (first && (n = node) != null
-		&& (disp = getDomEventDispatcher_(type)) != null)
+		&& (disp = getDOMEventDispatcher_(type)) != null)
 			domListen_(n, type, disp);
 	}
 
@@ -1102,7 +1102,7 @@ class View implements Hashable {
 
 				ls.removeRange(j, 1);
 				if (ls.isEmpty() && (n = node) != null
-				&& getDomEventDispatcher_(type) != null)
+				&& getDOMEventDispatcher_(type) != null)
 					domUnlisten_(n, type);
 			}
 		}
@@ -1153,15 +1153,15 @@ class View implements Hashable {
 	/** Returns if the given event type is a DOM event.
 	 * If true, [domListen_] will be invoked to register the DOM event.
 	 */
-	DomEventDispatcher getDomEventDispatcher_(String type)
-	=> _getDomEventDispatcher(type);
-	static DomEventDispatcher _getDomEventDispatcher(String type) {
+	DOMEventDispatcher getDOMEventDispatcher_(String type)
+	=> _getDOMEventDispatcher(type);
+	static DOMEventDispatcher _getDOMEventDispatcher(String type) {
 		if (_domEvtDisps == null) {
 			_domEvtDisps = {};
 			
 			//TODO: handle event better, and handle more DOM events
 			//example: click shall carry mouse position, change shall carry value
-			DomEventDispatcher disp = (View target) {
+			DOMEventDispatcher disp = (View target) {
 				return (Event event) {
 					target.sendEvent(new ViewEvent.dom(target, event, type: type));
 				};
@@ -1173,11 +1173,11 @@ class View implements Hashable {
 		}
 		return _domEvtDisps[type];
 	}
-	static Map<String, DomEventDispatcher> _domEvtDisps;
+	static Map<String, DOMEventDispatcher> _domEvtDisps;
 
 	/** Listen the given event type.
 	 */
-	void domListen_(Element n, String type, DomEventDispatcher disp) {
+	void domListen_(Element n, String type, DOMEventDispatcher disp) {
 		final EventListener ln = disp(this); //must be non-null
 		final _EventListenerInfo ei = _initEventListenerInfo();
 		if (ei.domListeners === null)

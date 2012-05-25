@@ -47,14 +47,14 @@ class _VLayout implements _RealLinearLayout {
 			}
 		}
 
-		height += prevSpacingBottom + new DomQuery(view.node).borderWidth * 2;
+		height += prevSpacingBottom + new DOMQuery(view.node).borderWidth * 2;
 		return height >= maxHgh ? maxHgh: height;
 	}
 	int measureWidth(MeasureContext mctx, View view) {
 		final LayoutAmountInfo amtDefault =
 			LinearLayout.getDefaultAmountInfo(view.layout.width);
 		final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
-		final int borderWd = new DomQuery(view.node).borderWidth * 2;
+		final int borderWd = new DOMQuery(view.node).borderWidth * 2;
 		int width;
 		for (final View child in view.children) {
 			if (!view.shallLayout_(child) || child.profile.anchorView !== null)

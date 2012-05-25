@@ -43,6 +43,6 @@ class PopupEvent extends ViewEvent {
 			srcNode = source;
 			popNode = popup is View ? popup.node: popup;
 		}
-		return !new DomQuery(srcNode).isDescendantOf(popNode);
+		return !new DOMQuery(srcNode).isDescendantOf(popNode);
 	}
 }

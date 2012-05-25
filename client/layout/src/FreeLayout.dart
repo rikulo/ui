@@ -22,7 +22,7 @@ class FreeLayout implements Layout {
 		}
 
 		if (wd !== null)
-			wd += new DomQuery(view.node).borderWidth * 2;
+			wd += new DOMQuery(view.node).borderWidth * 2;
 		mctx.widths[view] = wd;
 		return wd;
 	}
@@ -42,7 +42,7 @@ class FreeLayout implements Layout {
 		}
 
 		if (hgh !== null)
-			hgh += new DomQuery(view.node).borderWidth * 2;
+			hgh += new DOMQuery(view.node).borderWidth * 2;
 		mctx.heights[view] = hgh;
 		return hgh;
 	}

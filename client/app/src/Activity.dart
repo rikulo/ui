@@ -76,7 +76,7 @@ class Activity {
 	 */
 	void updateSize() {
 		final Element caveNode = document.query("#v-main");
-		final DomQuery qcave = new DomQuery(caveNode !== null ? caveNode: window);
+		final DOMQuery qcave = new DOMQuery(caveNode !== null ? caveNode: window);
 		browser.size.width = qcave.innerWidth;
 		browser.size.height = qcave.innerHeight;
 

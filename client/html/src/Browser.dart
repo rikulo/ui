@@ -128,7 +128,7 @@ class Browser {
 		}
 
 		final Element caveNode = document.query("#v-main");
-		final DomQuery qcave = new DomQuery(caveNode !== null ? caveNode: window);
+		final DOMQuery qcave = new DOMQuery(caveNode !== null ? caveNode: window);
 		size = new Size(qcave.innerWidth, qcave.innerHeight);
 	}
 	static double _versionOf(String version, [String separator='.']) {

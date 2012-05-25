@@ -66,13 +66,13 @@ class _Log {
 	}
 	HoldGestureCallback _gestureAction() {
 		return (Element touched, int pageX, int pageY) {
-			final Offset ofs = new DomQuery(_node).documentOffset;
+			final Offset ofs = new DOMQuery(_node).documentOffset;
 			(_popup = new _LogPopup(this)).open(pageX - ofs.left, pageY - ofs.top);
 		};
 	}
 	HoldGestureCallback _gestureStart() {
 		return (Element touched, int pageX, int pageY)
-			=> _popup === null || !new DomQuery(touched).isDescendantOf(_popup._node);
+			=> _popup === null || !new DOMQuery(touched).isDescendantOf(_popup._node);
 	}
 
 	void _defer() {

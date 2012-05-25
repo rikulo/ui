@@ -117,7 +117,7 @@ class Scroller {
 		if (_fnViewSize !== null) {
 			viewSize = _fnViewSize();
 		} else {
-			final DomQuery q = new DomQuery(_owner);
+			final DOMQuery q = new DOMQuery(_owner);
 			viewSize = new Size(q.outerWidth, q.outerHeight);
 		}
 

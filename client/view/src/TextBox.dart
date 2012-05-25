@@ -183,9 +183,9 @@ class TextBox extends View {
 		super.exitDocument_();
 	}
 	//@Override
-	DomEventDispatcher getDomEventDispatcher_(String type)
-	=> type == "change" ? _getChangeDispatcher(): getDomEventDispatcher_(type);
-	static DomEventDispatcher _getChangeDispatcher() {
+	DOMEventDispatcher getDOMEventDispatcher_(String type)
+	=> type == "change" ? _getChangeDispatcher(): getDOMEventDispatcher_(type);
+	static DOMEventDispatcher _getChangeDispatcher() {
 		if (_changeDispatcher === null)
 			_changeDispatcher = (View target) => (Event  event) {
 				final t = target; //TODO: replace it when Dart supports cast
@@ -193,7 +193,7 @@ class TextBox extends View {
 			};
 		return _changeDispatcher;
 	}
-	static DomEventDispatcher _changeDispatcher;
+	static DOMEventDispatcher _changeDispatcher;
 
 	//@Override
 	/** Returns the HTML tag's name representing this view.

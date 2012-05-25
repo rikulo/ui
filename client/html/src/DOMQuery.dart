@@ -6,16 +6,16 @@
  * A DOM query agent used to provide the additional utilities
  * for handling DOM.
  */
-class DomQuery {
+class DOMQuery {
 	/** The DOM element in query. */
 	final node;
 
-	factory DomQuery(var v) {
+	factory DOMQuery(var v) {
 		v = v is View ? v.node: v is String ? document.query(v): v;
-		return v is Window ? new _WindowQuery._with(v): new DomQuery._with(v);
+		return v is Window ? new _WindowQuery._init(v): new DOMQuery._init(v);
 	}
 
-	DomQuery._with(this.node) {
+	DOMQuery._init(this.node) {
 	}
 
 	/** Returns the inner width of the given element, including padding
@@ -112,8 +112,8 @@ class DomQuery {
 	int get paddingBottom() => CSS.intOf(computedStyle.paddingBottom);
 
 }
-class _WindowQuery extends DomQuery {
-	_WindowQuery._with(var v): super._with(v) {}
+class _WindowQuery extends DOMQuery {
+	_WindowQuery._init(var v): super._init(v) {}
 
 	//@Override
 	int get innerWidth() => node.innerWidth;
