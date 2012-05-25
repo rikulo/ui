@@ -14,6 +14,8 @@
 
 #source("src/View.dart");
 #source("src/ViewUtil.dart");
+#source("src/ViewCut.dart");
+#source("src/Style.dart");
 #source("src/UIException.dart");
 #source("src/IdSpace.dart");
 #source("src/_VirtualIdSpace.dart");
@@ -21,7 +23,7 @@
 #source("src/Declaration.dart");
 #source("src/ProfileDeclaration.dart");
 #source("src/LayoutDeclaration.dart");
-#source("src/_Utils.dart");
+#source("src/_ViewImpl.dart");
 #source("src/Section.dart");
 #source("src/TextView.dart");
 #source("src/Button.dart");

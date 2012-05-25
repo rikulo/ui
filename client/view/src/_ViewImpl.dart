@@ -2,7 +2,6 @@
 //History: Tue, Mar 13, 2012  2:14:29 PM
 // Author: tomyeh
 
-
 /** The children information used in [View].
  */
 class _ChildInfo {
