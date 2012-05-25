@@ -85,7 +85,7 @@ class View implements Hashable {
 		if (_id != id) {
 			if (id.length > 0)
 				_checkIdSpaces(this, id);
-			_removeFromIdSpaces(this);
+			_removeFromIdSpace(this);
 			_id = id;
 			_addToIdSpace(this);
 		}
@@ -163,18 +163,20 @@ class View implements Hashable {
 		}
 	}
 	//Add the given view to the ID space
-	static void _addToIdSpace(View view){
+	static void _addToIdSpace(View view, [bool skipThis=false]){
 		String id = view.id;
 		if (id.length == 0)
 			return;
 
-		var space = _cast(view.spaceOwner);
-		space.bindFellow_(id, view);
+		if (!skipThis) {
+			var space = _cast(view.spaceOwner);
+			space.bindFellow_(id, view);
+		}
 
 		//we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
 		View parent;
 		if (view is IdSpace && (parent = view.parent) != null) {
-			space = parent.spaceOwner;
+			var space = _cast(parent.spaceOwner);
 			space.bindFellow_(id, view);
 		}
 	}
@@ -182,7 +184,7 @@ class View implements Hashable {
 	static void _addToIdSpaceDown(View view, var space) {
 		if (view is IdSpace) {
 			if (space === null) //the top invocation made by insertBefore called
-				_addToIdSpace(view);
+				_addToIdSpace(view, true); //have to try a level up
 			return; //done
 		}
 
@@ -197,19 +199,39 @@ class View implements Hashable {
 			_addToIdSpaceDown(view, space);
 		}
 	}
-	static void _removeFromIdSpaces(View view) {
+	static void _removeFromIdSpace(View view, [bool skipThis=false]) {
 		String id = view.id;
 		if (id.length == 0)
 			return;
 
-		var space = _cast(view.spaceOwner);
-		space.bindFellow_(id, null);
+		if (!skipThis) {
+			var space = _cast(view.spaceOwner);
+			space.bindFellow_(id, null);
+		}
 
 		//we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
 		View parent;
 		if (view is IdSpace && (parent = view.parent) != null) {
-			space = parent.spaceOwner;
+			var space = _cast(parent.spaceOwner);
 			space.bindFellow_(id, null);
+		}
+	}
+	static void _removeFromIdSpaceDown(View view, var space) {
+		if (view is IdSpace) {
+			if (space === null) //the top invocation made by removeChild
+				_removeFromIdSpace(view, true);
+			return; //done
+		}
+
+		if (space === null)
+			space = view.spaceOwner;
+
+		var id = view.id;
+		if (id.length > 0)
+			space.bindFellow_(id, null);
+
+		for (view = view.firstChild; view != null; view = view.nextSibling) {
+			_removeFromIdSpaceDown(view, space);
 		}
 	}
 
@@ -329,13 +351,10 @@ class View implements Hashable {
 		if (parentChanged)
 			child.beforeParentChanged_(this);
 		if (oldParent !== null)
-			oldParent._removeChild(child, false); //not to notify child
+			oldParent._removeChild(child, notifyChild:false);
 
 		_link(this, child, beforeChild);
-		child._parent = this;
-		++_childInfo.nChild;
 
-		_addToIdSpaceDown(child, null);
 		if (inDocument) {
 			insertChildToDocument_(child, child._asHTML(), beforeChild);
 			child._enterDocument();
@@ -345,14 +364,21 @@ class View implements Hashable {
 		if (parentChanged)
 			child.onParentChanged_(oldParent);
 	}
+
 	/** Removes a child.
 	 * It returns true if the child is removed succefully, or false if it is
 	 * a child.
+	 * <p>If the child is in the document ([inDocument] is true), the DOM
+	 * element will be removed. Furthermore, if the child is added back,
+	 * a new DOM element will be created to represent the child.
+	 * <p>If you just want to move the child, you can use the so-called
+	 * cut-and-paste. It won't re-create the DOM element, so the performance
+	 * is better. Please refer to [cut] for more information.
 	 */
 	bool removeChild(View child) {
-		_removeChild(child, true);
+		_removeChild(child);
 	}
-	bool _removeChild(View child, bool notifyChild) {
+	bool _removeChild(View child, [bool notifyChild=true]) {
 		if (child.parent !== this)
 			return false;
 
@@ -360,16 +386,56 @@ class View implements Hashable {
 		if (notifyChild)
 			child.beforeParentChanged_(null);
 
-		child._exitDocument();
-		removeChildFromDocument_(child);
-
+		if (inDocument) {
+			final Element childNode = child.node; //cache first since not callable after _exitDocument 
+			child._exitDocument();
+			removeChildFromDocument_(child, childNode);
+		}
 		_unlink(this, child);
-		child._parent = null;
-		--_childInfo.nChild;
+
 		if (notifyChild)
 			child.onParentChanged_(this);
 		onChildRemoved_(child);
 		return true;
+	}
+
+	/** Cuts this view and the DOM elements from its parent.
+	 * It is the first step of the so-called cut-and-paste feature.
+	 * Unlike [removeChild], the DOM element will be kept in the returned
+	 * object ([ViewCut]). Thus, you can attach both the view and DOM element
+	 * back by use of [paste].
+	 * <p>Since the DOM element is not changed, the performance is better
+	 * then remove-and-add (with [removeChild] and [insertBefore]).
+	 * However, unlike remove-and-remove, you can not modify the view after it
+	 * is cut (until it is pasted back). Otherwise, the result is unpreditable.
+	 * <p>It can be called even if it is the root view.
+	 */
+	ViewCut cut() {
+		final Element n = node;
+		if (n === null)
+			throw new UIException("Not in document: $this");
+
+		if (parent !== null) {
+			parent.removeChildFromDocument_(this, node);
+			_unlink(parent, this);
+		} else { //TODO: update activity.rootView
+			n.remove();
+		}
+		return new _ViewCut(this, n);
+	}
+	/** Pastes the view int the given [ViewCut], and makes it as a child of this view.
+	 * <p>Notice that, for each [ViewCut] instance returned by [cut],
+	 * this method can be called only once.
+	 */
+	void paste(ViewCut vcut, [View beforeChild]) {
+		final View child = vcut.view;
+		if (child.parent !== null)
+			throw const UIException("Unable to paste twice");
+		if (beforeChild !== null && beforeChild.parent !== this)
+			beforeChild = null;
+
+		_link(this, child, beforeChild);
+		insertChildToDocument_(child, null, beforeChild, vcut.node);
 	}
 
 	/** Inserts the HTML content generated by the given child view before
@@ -379,19 +445,26 @@ class View implements Hashable {
 	 * <p>Deriving classes might override this method to modify the HTML content,
 	 * such as enclosing with TD, or to insert the HTML content to a different
 	 * position.
+	 * <p>Notice: if [childNode] is specified, [childHtml] shall be ignored.
 	 */
-	void insertChildToDocument_(View child, String html, View beforeChild) {
+	void insertChildToDocument_(View child, String childHtml, View beforeChild, [Element childNode]) {
 		if (beforeChild !== null) {
-			beforeChild.node.insertAdjacentHTML("beforeBegin", html);
+			if (childNode !== null)
+				beforeChild.node.insertAdjacentElement("beforeBegin", childNode);
+			else
+				beforeChild.node.insertAdjacentHTML("beforeBegin", childHtml);
 		} else {
-			innerNode.insertAdjacentHTML("beforeEnd", html);
+			if (childNode !== null)
+				innerNode.insertAdjacentElement("beforeEnd", childNode);
+			else
+				innerNode.insertAdjacentHTML("beforeEnd", childHtml);
 		}
 	}
 	/** Removes the corresponding DOM elements of the give child from the document.
 	 * It is called by [removeChild] to remove the DOM elements.
 	 */
-	void removeChildFromDocument_(View child) {
-		child.node.remove();
+	void removeChildFromDocument_(View child, Element childNode) {
+		childNode.remove();
 	}
 
 	static void _link(View view, View child, View beforeChild) {
@@ -417,14 +490,22 @@ class View implements Hashable {
 			beforeChild._prevSibling = child;
 			child._nextSibling = beforeChild;
 		}
+		child._parent = view;
+
+		++view._childInfo.nChild;
+		_addToIdSpaceDown(child, null);
 	}
 	static void _unlink(View view, View child) {
+		_removeFromIdSpaceDown(child, null);
+
 		var p = child._prevSibling, n = child._nextSibling;
 		if (p !== null) p._nextSibling = n;
 		else view._childInfo.firstChild = n;
 		if (n !== null) n._prevSibling = p;
 		else view._childInfo.lastChild = p;
 		child._nextSibling = child._prevSibling = child._parent = null;
+
+		--view._childInfo.nChild;
 	}
 
 	/** Returns the DOM element associated with this view.
@@ -532,6 +613,7 @@ class View implements Hashable {
 	 * Notice that this method can be called only if this view has no parent.
 	 * If a view has a parent, whether it is attached to the document
 	 * shall be controlled by its parent.
+	 * <p>See also [cut].
 	 */
 	void removeFromDocument() {
 		final Element n = node; //store first since _node will be cleared up later
