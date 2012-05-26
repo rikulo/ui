@@ -23,11 +23,11 @@ class ScrollViewDemo extends Activity {
 				child.left = x * 50 + 2;
 				child.top = y * 50 + 2;
 				child.width = child.height = 46;
-				view.appendChild(child);
+				view.addChild(child);
 			}
 		}
 
-		rootView.appendChild(view);
+		rootView.addChild(view);
 	}
 }
 

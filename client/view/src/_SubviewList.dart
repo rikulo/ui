@@ -45,11 +45,11 @@ class _SubviewList extends AbstractList<View> {
 		if (w !== value) {
 			final View next = w.nextSibling;
 			_owner.removeChild(w);
-			_owner.insertBefore(value, next);
+			_owner.addChild(value, next);
 		}
 	}
 	void add(View view) {
-		_owner.appendChild(view);
+		_owner.addChild(view);
 	}
 	void sort(int compare(View a, View b)) {
 		List<View> copy = new List.from(this);
@@ -88,7 +88,7 @@ class _SubviewList extends AbstractList<View> {
 				final View next = w.nextSibling;
 				if (w !== value) {
 					_owner.removeChild(w);
-					_owner.insertBefore(value, next);
+					_owner.addChild(value, next);
 				}
 				if (next === null)
 					break;
@@ -103,7 +103,7 @@ class _SubviewList extends AbstractList<View> {
 				final View next = w.nextSibling;
 				if (w !== value) {
 					_owner.removeChild(w);
-					_owner.insertBefore(value, next);
+					_owner.addChild(value, next);
 				}
 				if (next === null)
 					break;
@@ -133,7 +133,7 @@ class _SubviewList extends AbstractList<View> {
 			add(initialValue);
 		} else {
 			View w = this[start];
-			_owner.insertBefore(initialValue, w);
+			_owner.addChild(initialValue, w);
 		}
 	}
 }

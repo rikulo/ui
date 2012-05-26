@@ -28,11 +28,11 @@ class TestCustomLayout1 extends Activity {
 				txt2.style.border = "1px solid #663";
 				txt2.left = view.width ~/ 5;
 				txt2.top = view.height ~/ 5;
-				view.appendChild(txt2);
+				view.addChild(txt2);
 			});
-			view.appendChild(txt);
+			view.addChild(txt);
 		});
-		rootView.appendChild(view);
+		rootView.addChild(view);
 	}
 }
 

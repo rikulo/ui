@@ -40,7 +40,7 @@ class Viewport extends View {
 		_toolbar = tbar;
 
 		if (_toolbar != null) {
-			insertBefore(_toolbar, firstChild);
+			addChild(_toolbar, firstChild);
 			_syncToolbar();
 		}
 	}

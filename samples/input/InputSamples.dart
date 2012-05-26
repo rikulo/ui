@@ -17,10 +17,10 @@ class InputSamples extends Activity {
 		["text", "password", "multiline", "date", "color"]) {
 			View view = new View();
 			view.layout.text = "type: linear";
-			rootView.appendChild(view);
+			rootView.addChild(view);
 
-			view.appendChild(new TextView(type));
-			view.appendChild(new TextBox(type: type));
+			view.addChild(new TextView(type));
+			view.addChild(new TextBox(type: type));
 		}
 	}
 }

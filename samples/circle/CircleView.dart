@@ -36,11 +36,11 @@ class Circle extends Activity {
 	void onCreate_() {
 		title = "Circles";
 		animator = new Animator();
-		rootView.appendChild(new Ball(50, 2.0, 6, "red").view);
-		rootView.appendChild(new Ball(30, 1.3, 6, "blue").view);
-		rootView.appendChild(new Ball(70, 1.6, 10, "green").view);
-		rootView.appendChild(new Ball(100, 1.0, 13, "yellow").view);
-		rootView.appendChild(new Ball(130, 0.8, 8, "#0ff").view);
+		rootView.addChild(new Ball(50, 2.0, 6, "red").view);
+		rootView.addChild(new Ball(30, 1.3, 6, "blue").view);
+		rootView.addChild(new Ball(70, 1.6, 10, "green").view);
+		rootView.addChild(new Ball(100, 1.0, 13, "yellow").view);
+		rootView.addChild(new Ball(130, 0.8, 8, "#0ff").view);
 	}
 }
 

@@ -214,20 +214,11 @@ class View implements Hashable {
 	 */
 	bool isChildable_() => true;
 
-	/** Appends a child to the end of all children.
-	 * It calls [insertBefore] with beforeChild to be null, so the 
-	 * subclass needs to override [insertBefore] if necessary.
+	/** Adds a child.
+	 * If [beforeChild] is specified, the child will be inserted before it.
+	 * Otherwise, it will be added to the end.
 	 */
-	void appendChild(View child) {
-		insertBefore(child, null);
-	}
-	/** Inserts a child before the reference child.
-	 * If the given view is always a child, its position among children
-	 * will be changed depending on [beforeChild].
-	 * <p>Notice that [appendChild] will call back this methid, so the subclass
-	 * need only to override this method, if necessary.
-	 */
-	void insertBefore(View child, View beforeChild) {
+	void addChild(View child, [View beforeChild]) {
 		if (isDescendantOf(child))
 			throw new UIException("$child is an ancestor of $this");
 		if (!isChildable_())
@@ -320,8 +311,7 @@ class View implements Hashable {
 
 	/** Inserts the DOM element of the given [child] view before
 	 * the reference view ([beforeChild]).
-	 * It is called by {@link #insertBefore} and {@link #appendChild} to attach
-	 * the DOM elements to the document.
+	 * It is called by {@link #addChild} to attach the DOM elements to the document.
 	 * <p>Deriving classes might override this method to modify the HTML content,
 	 * such as enclosing with TD, or to insert the HTML content to a different
 	 * position.
@@ -412,7 +402,7 @@ class View implements Hashable {
 	/** Adds this view to the document (i.e., the screen that the user interacts with).
 	 * all of its descendant views are added too.
 	 * <p>You rarely need to invoke this method directly. In most cases,
-	 * you shall invoke [appendChild] or [insertBefore] instead.
+	 * you shall invoke [addChild] instead.
 	 * <p>On the other hand, this method is usually used if you'd like to add
 	 * a view to the content of [WebView].
 	 * Notice that this method can be called only if this view has no parent.

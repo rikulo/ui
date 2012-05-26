@@ -21,23 +21,23 @@ class LinearLayoutDemo extends Activity {
 		hlayout.layout.type = "linear";
 		hlayout.profile.height = "content";
 		hlayout.profile.width = "flex";
-		rootView.appendChild(hlayout);
+		rootView.addChild(hlayout);
 
 		View view = new View();
 		view.style.backgroundColor = "blue";
 		view.profile.width = "flex";
 		view.profile.height = "50";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "orange";
 		view.profile.width = "flex 2";
 		view.profile.height = "40";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "yellow";
 		view.profile.width = "flex 3";
 		view.profile.height = "30";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 
 		//second horizontal layout
 		hlayout = new View();
@@ -45,29 +45,29 @@ class LinearLayoutDemo extends Activity {
 		hlayout.layout.align = "end";
 		hlayout.profile.height = "flex";
 		hlayout.profile.width = "flex";
-		rootView.appendChild(hlayout);
+		rootView.addChild(hlayout);
 
 		view = new View();
 		view.style.backgroundColor = "yellow";
 		view.profile.width = "flex 3";
 		view.profile.height = "flex";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "orange";
 		view.profile.width = "flex 2";
 		view.profile.height = "50%";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "blue";
 		view.profile.width = "flex 1";
 		view.profile.height = "25%";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 
 		TextView txt = new TextView("flex 2, 25%");
 		txt.style.border = "1px solid #555";
 		txt.profile.anchorView = view.previousSibling;
 		txt.profile.location = "north center";
-		hlayout.appendChild(txt);
+		hlayout.addChild(txt);
 	}
 }
 

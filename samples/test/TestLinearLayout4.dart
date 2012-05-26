@@ -15,15 +15,15 @@ class TestLinearLayout4 extends Activity {
 		view.layout.type = "linear";
 		view.layout.orient = "vertical";
 		view.profile.width = view.profile.height = "flex";
-		rootView.appendChild(view);
+		rootView.addChild(view);
 
 		TextView text = new TextView(html: '<h1 style="margin:0">$title</h1>');
 		_setBorder(text);
-		view.appendChild(text);
+		view.addChild(text);
 
 		text = new TextView("Description here");
 		_setBorder(text);
-		view.appendChild(text);
+		view.addChild(text);
 		
 		_addOrientation(view);
 		_addLogView(view);
@@ -32,11 +32,11 @@ class TestLinearLayout4 extends Activity {
 		View view = new View();
 		_setBorder(view);
 		_setHLayout(view);
-		parent.appendChild(view);
+		parent.addChild(view);
 
 		TextView text = new TextView("Orientation");
 		_setBorder(text);
-		view.appendChild(text);
+		view.addChild(text);
 
 		CheckBox ckbox = new CheckBox("checkbox sample");
 		_setBorder(ckbox);
@@ -45,7 +45,7 @@ class TestLinearLayout4 extends Activity {
 			ckbox.text = 'checked: ${event.checked} ${++clickCount}';
 			ckbox.parent.requestLayout();
 		});
-		view.appendChild(ckbox);
+		view.addChild(ckbox);
 
 		RadioGroup group = new RadioGroup();
 			group.on.check.add((CheckEvent event) {
@@ -56,14 +56,14 @@ class TestLinearLayout4 extends Activity {
 		_setHLayout(group);
 		_setBorder(group);
 		group.layout.spacing = "0 5";
-		view.appendChild(group);
+		view.addChild(group);
 
 		RadioButton horz = new RadioButton("horizontal radio");
 		_setBorder(horz);
-		group.appendChild(horz);
+		group.addChild(horz);
 		RadioButton vert = new RadioButton("vertical radio");
 		_setBorder(vert);
-		group.appendChild(vert);
+		group.addChild(vert);
 
 		_addTextWithMaxWidth(view, 150);
 	}
@@ -77,9 +77,9 @@ class TestLinearLayout4 extends Activity {
 		_setBorder(logView);
 		TextView text = new TextView(html: '<h2 style="margin:0">Log View</h2>');
 		_setBorder(text);
-		logView.appendChild(text);
+		logView.addChild(text);
 
-		view.appendChild(logView);
+		view.addChild(logView);
 	}
 	void _setBorder(View view) {
 		view.style.border = "1px solid black";
@@ -94,7 +94,7 @@ class TestLinearLayout4 extends Activity {
 		TextView text = new TextView("This is limited by max-width:${maxWd}");
 		_setBorder(text);
 		text.profile.maxWidth = maxWd.toString();
-		view.appendChild(text);
+		view.addChild(text);
 	}
 }
 

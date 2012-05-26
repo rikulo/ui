@@ -15,7 +15,7 @@ class ViewportDemo extends Activity {
 		viewport.layout.type = "linear";
 		viewport.layout.orient = "vertical";
 		viewport.profile.width = viewport.profile.height = "flex";
-		rootView.appendChild(viewport);
+		rootView.addChild(viewport);
 
 		createToolbar(viewport);
 		createChildViews(viewport);
@@ -26,7 +26,7 @@ class ViewportDemo extends Activity {
 		toolbar.profile.width = "content";
 		toolbar.profile.height = "content";
 		for (final String src in ["search.png", "received.png", "sent.png"]) {
-			toolbar.appendChild(new Image("res/$src"));
+			toolbar.addChild(new Image("res/$src"));
 		}
 		parent.toolbar = toolbar;
 	}
@@ -36,23 +36,23 @@ class ViewportDemo extends Activity {
 		hlayout.layout.type = "linear";
 		hlayout.profile.height = "content";
 		hlayout.profile.width = "flex";
-		parent.appendChild(hlayout);
+		parent.addChild(hlayout);
 
 		View view = new View();
 		view.style.backgroundColor = "blue";
 		view.profile.width = "flex";
 		view.profile.height = "50";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "orange";
 		view.profile.width = "flex 2";
 		view.profile.height = "40";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "yellow";
 		view.profile.width = "flex 3";
 		view.profile.height = "30";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 
 		//second horizontal layout
 		hlayout = new View();
@@ -60,23 +60,23 @@ class ViewportDemo extends Activity {
 		hlayout.layout.align = "end";
 		hlayout.profile.height = "flex";
 		hlayout.profile.width = "flex";
-		parent.appendChild(hlayout);
+		parent.addChild(hlayout);
 
 		view = new View();
 		view.style.backgroundColor = "yellow";
 		view.profile.width = "flex 3";
 		view.profile.height = "flex";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "orange";
 		view.profile.width = "flex 2";
 		view.profile.height = "50%";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "blue";
 		view.profile.width = "flex 1";
 		view.profile.height = "25%";
-		hlayout.appendChild(view);
+		hlayout.addChild(view);
 	}
 }
 

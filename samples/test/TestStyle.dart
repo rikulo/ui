@@ -24,7 +24,7 @@ class TestStyle extends Activity {
 }
 	''';
 		Style style = new Style.content(style1);
-		rootView.appendChild(style);
+		rootView.addChild(style);
 
 		View view = new View();
 		view.profile.text =
@@ -35,8 +35,8 @@ class TestStyle extends Activity {
 		btn.on.click.add((event) {
 			style.content = style.content == style1 ? style2: style1;
 		});
-		view.appendChild(btn);
-		rootView.appendChild(view);
+		view.addChild(btn);
+		rootView.addChild(view);
 	}
 }
 

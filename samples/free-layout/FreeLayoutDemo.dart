@@ -18,7 +18,7 @@ class FreeLayoutDemo extends Activity {
 		view.profile.location = "center center";
 		view.profile.width = "70%";
 		view.profile.height = "80%";
-		rootView.appendChild(view);
+		rootView.addChild(view);
 
 		//1. first level dependence
 		for (final String loc in [
@@ -33,7 +33,7 @@ class FreeLayoutDemo extends Activity {
 			txt.style.border = "1px solid #555";
 			txt.profile.anchorView = view;
 			txt.profile.location = loc;
-			rootView.appendChild(txt);
+			rootView.addChild(txt);
 		}
 
 		//2. second level dependence
@@ -42,7 +42,7 @@ class FreeLayoutDemo extends Activity {
 		txt.profile.anchorView = rootView.lastChild;
 		txt.profile.location = "north start";
 		txt.profile.width = "flex";
-		rootView.appendChild(txt);
+		rootView.addChild(txt);
 	}
 }
 

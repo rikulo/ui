@@ -24,24 +24,24 @@ class TestLinearLayout2 extends Activity {
 		vlayout.layout.type = "linear";
 		vlayout.layout.orient = "vertical";
 		vlayout.profile.width = vlayout.profile.height = "content";
-		parent.appendChild(vlayout);
+		parent.addChild(vlayout);
 
 		View view = new View();
 		view.style.backgroundColor = "blue";
 		view.profile.height = "30"; //test profile.height
 		view.width = 50; //test width
-		vlayout.appendChild(view);
+		vlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "orange";
 		view.height = 50;
 		view.profile.width = "40";
-		vlayout.appendChild(view);
+		vlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "yellow";
 		view.height = 70;
 		view.width = 30;
 		view.profile.align = "end";
-		vlayout.appendChild(view);
+		vlayout.addChild(view);
 	}
 	void test2(View parent, int left, int top) {
 		//case 2: flex
@@ -57,23 +57,23 @@ class TestLinearLayout2 extends Activity {
 	   //we can't use flex (which implies parent.innerHeight)
 	   //of course, we can use vlayout to partition but it is not tested here
 		vlayout.width = 50; //..layout.width = "50" is also OK
-		parent.appendChild(vlayout);
+		parent.addChild(vlayout);
 
 		View view = new View();
 		view.style.backgroundColor = "blue";
 		view.profile.height = "flex"; //test profile.width
 		view.profile.width = "flex";
-		vlayout.appendChild(view);
+		vlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "orange";
 		view.profile.height = "flex 2";
 		view.profile.width = "50%";
-		vlayout.appendChild(view);
+		vlayout.addChild(view);
 		view = new View();
 		view.style.backgroundColor = "yellow";
 		view.profile.height = "flex 3";
 		view.profile.width = "100%";
-		vlayout.appendChild(view);
+		vlayout.addChild(view);
 	}
 }
 

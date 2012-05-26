@@ -19,28 +19,28 @@ class TestFreeLayout2 extends Activity {
 		view.profile.location = "center center";
 		view.profile.width = "70%";
 		view.profile.height = "80%";
-		rootView.appendChild(view);
+		rootView.addChild(view);
 
 		TextView txt = new TextView("child (right top)");
 		txt.style.border = "1px solid #555";
 		txt.profile.anchorView = view;
 		txt.profile.location = "right top";
 		txt.profile.width = "flex";
-		view.appendChild(txt);
+		view.addChild(txt);
 
 		txt = new TextView("child (left bottom)");
 		txt.style.border = "1px solid #555";
 		txt.profile.anchorView = view;
 		txt.profile.location = "left bottom";
 		txt.profile.width = "flex";
-		view.appendChild(txt);
+		view.addChild(txt);
 
 		txt = new TextView("sibling (left center)");
 		txt.style.border = "1px solid #555";
 		txt.profile.anchorView = view;
 		txt.profile.location = "left center";
 		txt.profile.width = "flex";
-		rootView.appendChild(txt);
+		rootView.addChild(txt);
 	}
 }
 

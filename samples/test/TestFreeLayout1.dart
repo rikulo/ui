@@ -19,7 +19,7 @@ class TestFreeLayout1 extends Activity {
 		view.profile.location = "center center";
 		view.profile.width = "content"; //must! it forces width being calced
 		view.profile.height = "content"; //must! it forces height being calced
-		rootView.appendChild(view);
+		rootView.addChild(view);
 
 		//test if subView will affect its parent's size
 		View subView = new View();
@@ -28,7 +28,7 @@ class TestFreeLayout1 extends Activity {
 		subView.top = 10;
 		subView.width = 30; //test: direct with
 		subView.height = 20;
-		view.appendChild(subView);
+		view.addChild(subView);
 
 		subView = new View();
 		subView.style.backgroundColor = "#eec";
@@ -37,13 +37,13 @@ class TestFreeLayout1 extends Activity {
 		subView.top = 100;
 		subView.profile.width = "50"; //test: profile.width
 		subView.profile.height = "30";
-		view.appendChild(subView);
+		view.addChild(subView);
 
 		//it shall be placed inside border
 		View subsubView = new View();
 		subsubView.style.border = "2px solid blue";
 		subsubView.profile.width = subsubView.profile.height = "flex";
-		subView.appendChild(subsubView);
+		subView.addChild(subsubView);
 
 		//anchored view doesn't affect its parent's size
 		subView = new View();
@@ -52,7 +52,7 @@ class TestFreeLayout1 extends Activity {
 		subView.profile.location = "south start";
 		subView.profile.width = "100%";
 		subView.profile.height = "15%";
-		view.appendChild(subView);
+		view.addChild(subView);
 	}
 }
 

@@ -19,7 +19,7 @@ class TestLinearLayout3 extends Activity {
 			hlayout.profile.height = "content";
 			hlayout.layout.type = "linear";
 			hlayout.style.border = "1px solid #885";
-			rootView.appendChild(hlayout);
+			rootView.addChild(hlayout);
 
 			for (int j = 0; j < 50; ++j) {
 				TextView view = new TextView("$i.$j");
@@ -29,7 +29,7 @@ class TestLinearLayout3 extends Activity {
 				view.width = 50; //equivalent to view.profile.width = "50"
 				view.height = 30; //equivalent to view.profile.height = "30"
 					 //performance is much better if not to use "content" (default)
-				hlayout.appendChild(view);
+				hlayout.addChild(view);
 			}
 		}
 	}
