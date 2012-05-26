@@ -270,7 +270,7 @@ class View implements Hashable {
 	 * is better. Please refer to [cut] for more information.
 	 * If it is a root view, it will be detached from the document.
 	 */
-	void remove() {
+	void removeFromParent() {
 		if (parent !== null) {
 			parent._removeChild(this);
 		} else {
@@ -304,13 +304,13 @@ class View implements Hashable {
 
 	/** Cuts this view and the DOM elements from its parent.
 	 * It is the first step of the so-called cut-and-paste feature.
-	 * Unlike [remove], the DOM element will be kept intact (though it is
+	 * Unlike [removeFromParent], the DOM element will be kept intact (though it is
 	 * removed from the document). Then, you can attach both the view and DOM
 	 * element back by use of [ViewCut.pasteTo]. For example,
 	 * <pre><code>view.cut().pasteTo(newParent);</code></pre>
 	 *
 	 * <p>Since the DOM element is kept intact, the performance is better
-	 * then remove-and-add (with [remove] and [addChild]).
+	 * then remove-and-add (with [removeFromParent] and [addChild]).
 	 * However, unlike remove-and-add, you cannot modify the view after it
 	 * is cut (until it is pasted back). Otherwise, the result is unpreditable.
 	 * <p>It can be called even if it is the root view.
@@ -340,7 +340,7 @@ class View implements Hashable {
 		}
 	}
 	/** Removes the corresponding DOM elements of the give child from the document.
-	 * It is called by [remove] to remove the DOM elements.
+	 * It is called by [removeFromParent] to remove the DOM elements.
 	 */
 	void removeChildFromDocument_(View child, Element childNode) {
 		childNode.remove();
@@ -445,7 +445,7 @@ class View implements Hashable {
 	/** Removes this view from the document.
 	 * All of its descendant views are removed too.
 	 * <p>You rarely need to invoke this method directly. In most cases,
-	 * you shall invoke [remove] instead.
+	 * you shall invoke [removeFromParent] instead.
 	 * <p>On the other hand, this method is usually used if you'd like to undo
 	 * the attachment made by [addToDocument].
 	 * Notice that this method can be called only if this view has no parent.

@@ -18,7 +18,7 @@
  * <p>If you decide not to paste it to another place, it is better to invoke
  * [drop] to remove DOM elements. It will invoke [View.exitDocument_] such that
  * your application or utility can clean up if necessary. After dropped, the view
- * can be used normally as if they are removed normally (with [View.remove]).
+ * can be used normally as if they are removed normally (with [View.removeFromParent]).
  *
  * <p>Notice that there is one limitation:
  * the view being cut (i.e., [view]) cannot be modified until
@@ -43,7 +43,8 @@ interface ViewCut {
 	 * It will invoke [exitDocument_] and other detaching tasks such
 	 * that your application or utilties depending on the exitDocument event
 	 * can clean up correctly.
-	 * Furthermore, the view can be accessed normall as if the view is removed by [View.remove].
+	 * Furthermore, the view can be accessed normall as if the view is removed
+	 * by [View.removeFromParent].
 	 */
 	void drop();
 }
