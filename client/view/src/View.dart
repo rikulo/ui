@@ -259,22 +259,31 @@ class View implements Hashable {
 			child.onParentChanged_(oldParent);
 	}
 
-	/** Removes a child.
-	 * It returns true if the child is removed succefully, or false if it is
-	 * a child.
-	 * <p>If the child is in the document ([inDocument] is true), the DOM
-	 * element will be removed. Furthermore, if the child is added back,
-	 * a new DOM element will be created to represent the child.
+	/** Removes this view from its parent.
+	 *
+	 * <p>If the view is in the document ([inDocument] is true), the DOM
+	 * element will be removed too. Furthermore, if the view is added back
+	 * to the document, a new DOM element will be created to represent the child.
+	 *
 	 * <p>If you just want to move the child, you can use the so-called
 	 * cut-and-paste. It won't re-create the DOM element, so the performance
 	 * is better. Please refer to [cut] for more information.
+	 * If it is a root view, it will be detached from the document.
 	 */
-	bool removeChild(View child) {
-		_removeChild(child);
+	void remove() {
+		if (parent !== null) {
+			parent._removeChild(this);
+		} else {
+			final Element n = node;
+			if (n !== null) { //TODO: update activity.rootView
+				_exitDocument();
+				n.remove();
+			}
+		}
 	}
-	bool _removeChild(View child, [bool notifyChild=true, bool exit=true]) {
+	void _removeChild(View child, [bool notifyChild=true, bool exit=true]) {
 		if (child.parent !== this)
-			return false;
+			return;
 
 		beforeChildRemoved_(child);
 		if (notifyChild)
@@ -291,18 +300,17 @@ class View implements Hashable {
 		if (notifyChild)
 			child.onParentChanged_(this);
 		onChildRemoved_(child);
-		return true;
 	}
 
 	/** Cuts this view and the DOM elements from its parent.
 	 * It is the first step of the so-called cut-and-paste feature.
-	 * Unlike [removeChild], the DOM element will be kept intact (though it is
+	 * Unlike [remove], the DOM element will be kept intact (though it is
 	 * removed from the document). Then, you can attach both the view and DOM
 	 * element back by use of [ViewCut.pasteTo]. For example,
 	 * <pre><code>view.cut().pasteTo(newParent);</code></pre>
 	 *
 	 * <p>Since the DOM element is kept intact, the performance is better
-	 * then remove-and-add (with [removeChild] and [addChild]).
+	 * then remove-and-add (with [remove] and [addChild]).
 	 * However, unlike remove-and-add, you cannot modify the view after it
 	 * is cut (until it is pasted back). Otherwise, the result is unpreditable.
 	 * <p>It can be called even if it is the root view.
@@ -332,7 +340,7 @@ class View implements Hashable {
 		}
 	}
 	/** Removes the corresponding DOM elements of the give child from the document.
-	 * It is called by [removeChild] to remove the DOM elements.
+	 * It is called by [remove] to remove the DOM elements.
 	 */
 	void removeChildFromDocument_(View child, Element childNode) {
 		childNode.remove();
@@ -437,7 +445,7 @@ class View implements Hashable {
 	/** Removes this view from the document.
 	 * All of its descendant views are removed too.
 	 * <p>You rarely need to invoke this method directly. In most cases,
-	 * you shall invoke [removeChild] instead.
+	 * you shall invoke [remove] instead.
 	 * <p>On the other hand, this method is usually used if you'd like to undo
 	 * the attachment made by [addToDocument].
 	 * Notice that this method can be called only if this view has no parent.

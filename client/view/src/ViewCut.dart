@@ -18,8 +18,7 @@
  * <p>If you decide not to paste it to another place, it is better to invoke
  * [drop] to remove DOM elements. It will invoke [View.exitDocument_] such that
  * your application or utility can clean up if necessary. After dropped, the view
- * can be used normally as if they are removed normally (with [View.remove]
- * or [View.removeChild].
+ * can be used normally as if they are removed normally (with [View.remove]).
  *
  * <p>Notice that there is one limitation:
  * the view being cut (i.e., [view]) cannot be modified until
