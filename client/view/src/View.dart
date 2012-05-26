@@ -84,10 +84,10 @@ class View implements Hashable {
 		if (id === null) id = "";
 		if (_id != id) {
 			if (id.length > 0)
-				_checkIdSpaces(this, id);
-			_removeFromIdSpace(this);
+				_ViewImpl.checkIdSpaces(this, id);
+			_ViewImpl.removeFromIdSpace(this);
 			_id = id;
-			_addToIdSpace(this);
+			_ViewImpl.addToIdSpace(this);
 		}
 	}
 	/** Searches and returns the first view that matches the given selector.
@@ -130,92 +130,7 @@ class View implements Hashable {
 	/** Returns the owner of the ID space that this view belongs to.
 	 * <p>A virtual [IdSpace] is used if this view is a root but is not IdSpace.
 	 */
-	IdSpace get spaceOwner() => _spaceOwner(this, false); //not to ignore virtual
-
-	static IdSpace _spaceOwner(View view, bool ignoreVirtualIS) {
-		View top, p = view;
-		do {
-			if (p is IdSpace)
-				return _cast(p);
-			top = p;
-		} while ((p = p.parent) != null);
-
-		if (!ignoreVirtualIS) {
-			if (top._virtIS === null)
-				top._virtIS = new _VirtualIdSpace(top);
-			return top._virtIS;
-		}
-	}
-	static _cast(var v) => v; //TODO: remove it when Dart allows to cast to any type, not just downcast
-
-	/** Checks the uniqueness in ID space when changing ID. */
-	static void _checkIdSpaces(View view, String newId) {
-		IdSpace space = view.spaceOwner;
-		if (space.getFellow(newId) !== null)
-			throw new UIException("Not unique in the ID space of $space: $newId");
-
-		//we have to check one level up if view is IdSpace (i.e., unique in two ID spaces)
-		View parent;
-		if (view is IdSpace && (parent = view.parent) != null) {
-			space = parent.spaceOwner;
-			if (space.getFellow(newId) !== null)
-				throw new UIException("Not unique in the ID space of $space: $newId");
-		}
-	}
-	//Add the given view to the ID space
-	static void _addToIdSpace(View view, [bool skipFirst=false]){
-		String id = view.id;
-		if (id.length == 0)
-			return;
-
-		if (!skipFirst) {
-			var space = _cast(view.spaceOwner);
-			space.bindFellow_(id, view);
-		}
-
-		//we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
-		View parent;
-		if (view is IdSpace && (parent = view.parent) != null) {
-			var space = _cast(parent.spaceOwner);
-			space.bindFellow_(id, view);
-		}
-	}
-	//Add the given view and all its children to the ID space
-	static void _addToIdSpaceDown(View view, var space) {
-		var id = view.id;
-		if (id.length > 0)
-			space.bindFellow_(id, view);
-
-		if (view is! IdSpace)
-			for (view = view.firstChild; view != null; view = view.nextSibling)
-				_addToIdSpaceDown(view, space);
-	}
-	static void _removeFromIdSpace(View view, [bool skipFirst=false]) {
-		String id = view.id;
-		if (id.length == 0)
-			return;
-
-		if (!skipFirst) {
-			var space = _cast(view.spaceOwner);
-			space.bindFellow_(id, null);
-		}
-
-		//we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
-		View parent;
-		if (view is IdSpace && (parent = view.parent) != null) {
-			var space = _cast(parent.spaceOwner);
-			space.bindFellow_(id, null);
-		}
-	}
-	static void _removeFromIdSpaceDown(View view, var space) {
-		var id = view.id;
-		if (id.length > 0)
-			space.bindFellow_(id, null);
-
-		if (view is! IdSpace)
-			for (view = view.firstChild; view != null; view = view.nextSibling)
-				_removeFromIdSpaceDown(view, space);
-	}
+	IdSpace get spaceOwner() => _ViewImpl.spaceOwner(this, false); //not to ignore virtual
 
 	/** Returns if a view is a descendant of this view or
 	 * it is identical to this view.
@@ -335,7 +250,7 @@ class View implements Hashable {
 		if (oldParent !== null)
 			oldParent._removeChild(child, notifyChild:false);
 
-		_link(this, child, beforeChild);
+		_ViewImpl.link(this, child, beforeChild);
 
 		if (inDocument) {
 			insertChildToDocument_(child, child._asHTML(), beforeChild);
@@ -373,7 +288,7 @@ class View implements Hashable {
 			child._exitDocument();
 			removeChildFromDocument_(child, childNode);
 		}
-		_unlink(this, child);
+		_ViewImpl.unlink(this, child);
 
 		if (notifyChild)
 			child.onParentChanged_(this);
@@ -399,7 +314,7 @@ class View implements Hashable {
 
 		if (parent !== null) {
 			parent.removeChildFromDocument_(this, node);
-			_unlink(parent, this);
+			_ViewImpl.unlink(parent, this);
 		} else { //TODO: update activity.rootView
 			n.remove();
 		}
@@ -416,7 +331,7 @@ class View implements Hashable {
 		if (beforeChild !== null && beforeChild.parent !== this)
 			beforeChild = null;
 
-		_link(this, child, beforeChild);
+		_ViewImpl.link(this, child, beforeChild);
 		insertChildToDocument_(child, vcut.node, beforeChild);
 	}
 
@@ -448,53 +363,6 @@ class View implements Hashable {
 	 */
 	void removeChildFromDocument_(View child, Element childNode) {
 		childNode.remove();
-	}
-
-	static void _link(View view, View child, View beforeChild) {
-		final _ChildInfo ci = view._initChildInfo();
-		if (beforeChild === null) {
-			View p = ci.lastChild;
-			if (p !== null) {
-				p._nextSibling = child;
-				child._prevSibling = p;
-				ci.lastChild = child;
-			} else {
-				ci.firstChild = ci.lastChild = child;
-			}
-		} else {
-			View p = beforeChild._prevSibling;
-			if (p !== null) {
-				child._prevSibling = p;
-				p._nextSibling = child;
-			} else {
-				ci.firstChild = child;
-			}
-
-			beforeChild._prevSibling = child;
-			child._nextSibling = beforeChild;
-		}
-		child._parent = view;
-
-		++view._childInfo.nChild;
-		if (child is IdSpace)
-			_addToIdSpace(child, true); //skip the first owner (i.e., child)
-		else
-			_addToIdSpaceDown(child, child.spaceOwner);
-	}
-	static void _unlink(View view, View child) {
-		if (child is IdSpace)
-			_removeFromIdSpace(child, true); //skip the first owner (i.e., child)
-		else
-			_removeFromIdSpaceDown(child, child.spaceOwner);
-
-		var p = child._prevSibling, n = child._nextSibling;
-		if (p !== null) p._nextSibling = n;
-		else view._childInfo.firstChild = n;
-		if (n !== null) n._prevSibling = p;
-		else view._childInfo.lastChild = p;
-		child._nextSibling = child._prevSibling = child._parent = null;
-
-		--view._childInfo.nChild;
 	}
 
 	/** Returns the DOM element associated with this view.
@@ -1217,26 +1085,7 @@ class View implements Hashable {
 	 * If true, [domListen_] will be invoked to register the DOM event.
 	 */
 	DOMEventDispatcher getDOMEventDispatcher_(String type)
-	=> _getDOMEventDispatcher(type);
-	static DOMEventDispatcher _getDOMEventDispatcher(String type) {
-		if (_domEvtDisps == null) {
-			_domEvtDisps = {};
-			
-			//TODO: handle event better, and handle more DOM events
-			//example: click shall carry mouse position, change shall carry value
-			DOMEventDispatcher disp = (View target) {
-				return (Event event) {
-					target.sendEvent(new ViewEvent.dom(target, event, type: type));
-				};
-			};
-			for (final String nm in
-			const ["click", "blur", "focus", "change", "mouseDown", "mouseUp", "mouseOver", "mouseOut"]) {
-				_domEvtDisps[nm] = disp;
-			}
-		}
-		return _domEvtDisps[type];
-	}
-	static Map<String, DOMEventDispatcher> _domEvtDisps;
+	=> _ViewImpl.getDOMEventDispatcher(type);
 
 	/** Listen the given event type.
 	 */
