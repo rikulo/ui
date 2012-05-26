@@ -37,7 +37,8 @@ class TestCutPaste extends Activity {
 		Button button = new Button("Cut and Paste");
 		button.profile.text = "anchor: parent; location: center center";
 		button.on.click.add((event) {
-			(view1.firstChild != null ? view2: view1).paste(subview.cut());
+			View newparent = view1.firstChild != null ? view2: view1;
+			subview.cut().pasteTo(newparent);
 		});
 		rootView.appendChild(button);
 

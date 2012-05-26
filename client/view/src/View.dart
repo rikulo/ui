@@ -232,7 +232,9 @@ class View implements Hashable {
 			throw new UIException("$child is an ancestor of $this");
 		if (!isChildable_())
 			throw const UIException("No child allowed in Button");
-
+		_addChild(child, beforeChild);
+	}
+	void _addChild(View child, View beforeChild, [Element childNode]) {
 		if (beforeChild !== null) {
 			if (beforeChild.parent !== this)
 				beforeChild = null;
@@ -253,8 +255,12 @@ class View implements Hashable {
 		_ViewImpl.link(this, child, beforeChild);
 
 		if (inDocument) {
-			insertChildToDocument_(child, child._asHTML(), beforeChild);
-			child._enterDocument();
+			if (childNode !== null) {
+				insertChildToDocument_(child, childNode, beforeChild);
+			} else {
+				insertChildToDocument_(child, child._asHTML(), beforeChild);
+				child._enterDocument();
+			}
 		}
 
 		onChildAdded_(child);
@@ -275,7 +281,7 @@ class View implements Hashable {
 	bool removeChild(View child) {
 		_removeChild(child);
 	}
-	bool _removeChild(View child, [bool notifyChild=true]) {
+	bool _removeChild(View child, [bool notifyChild=true, bool exit=true]) {
 		if (child.parent !== this)
 			return false;
 
@@ -285,7 +291,8 @@ class View implements Hashable {
 
 		if (inDocument) {
 			final Element childNode = child.node; //cache first since not callable after _exitDocument 
-			child._exitDocument();
+			if (exit)
+				child._exitDocument();
 			removeChildFromDocument_(child, childNode);
 		}
 		_ViewImpl.unlink(this, child);
@@ -298,42 +305,18 @@ class View implements Hashable {
 
 	/** Cuts this view and the DOM elements from its parent.
 	 * It is the first step of the so-called cut-and-paste feature.
-	 * Unlike [removeChild], the DOM element will be kept in the returned
-	 * object ([ViewCut]). Thus, you can attach both the view and DOM element
-	 * back by use of [paste].
-	 * <p>Since the DOM element is not changed, the performance is better
-	 * then remove-and-add (with [removeChild] and [insertBefore]).
-	 * However, unlike remove-and-remove, you can not modify the view after it
+	 * Unlike [removeChild], the DOM element will be kept intact (though it is
+	 * removed from the document). Then, you can attach both the view and DOM
+	 * element back by use of [ViewCut.pasteTo]. For example,
+	 * <pre><code>view.cut().pasteTo(newParent);</code></pre>
+	 *
+	 * <p>Since the DOM element is kept intact, the performance is better
+	 * then remove-and-add (with [removeChild] and [addChild]).
+	 * However, unlike remove-and-add, you cannot modify the view after it
 	 * is cut (until it is pasted back). Otherwise, the result is unpreditable.
 	 * <p>It can be called even if it is the root view.
 	 */
-	ViewCut cut() {
-		final Element n = node;
-		if (n === null)
-			throw new UIException("Not in document: $this");
-
-		if (parent !== null) {
-			parent.removeChildFromDocument_(this, node);
-			_ViewImpl.unlink(parent, this);
-		} else { //TODO: update activity.rootView
-			n.remove();
-		}
-		return new _ViewCut(this, n);
-	}
-	/** Pastes the view int the given [ViewCut], and makes it as a child of this view.
-	 * <p>Notice that, for each [ViewCut] instance returned by [cut],
-	 * this method can be called only once.
-	 */
-	void paste(ViewCut vcut, [View beforeChild]) {
-		final View child = vcut.view;
-		if (child.parent !== null)
-			throw const UIException("Unable to paste twice");
-		if (beforeChild !== null && beforeChild.parent !== this)
-			beforeChild = null;
-
-		_ViewImpl.link(this, child, beforeChild);
-		insertChildToDocument_(child, vcut.node, beforeChild);
-	}
+	ViewCut cut() => new _ViewCut(this);
 
 	/** Inserts the DOM element of the given [child] view before
 	 * the reference view ([beforeChild]).
