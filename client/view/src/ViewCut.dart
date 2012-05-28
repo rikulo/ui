@@ -52,15 +52,14 @@ class _ViewCut implements ViewCut {
 	final View view;
 
 	_ViewCut(View this.view) {
-		final Element n = view.node; //note: it is cached to View._node
-		if (n === null)
-			throw new UIException("Not in document: $this");
+		if (!view.inDocument) //note: it is cached to View._node
+			throw new UIException("Not in document: $view");
 
 		final View parent = view.parent;
 		if (parent !== null) {
 			parent._removeChild(view, exit: false); //not to exit
-		} else { //TODO: update activity.mainView
-			n.remove();
+		} else {
+			view._removeRoot(exit: false); //not to exit
 		}
 	}
 	void pasteTo(View parent, [View beforeChild]) {

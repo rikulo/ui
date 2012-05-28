@@ -285,11 +285,20 @@ class View implements Hashable {
 		if (parent !== null) {
 			parent._removeChild(this);
 		} else {
-			final Element n = node;
-			if (n !== null) { //TODO: update activity.mainView
+			_removeRoot();
+		}
+	}
+	void _removeRoot([bool exit=true]) {
+		final Element n = node;
+		if (n !== null) {
+			if (exit)
 				_exitDocument();
-				n.remove();
-			}
+			n.remove();
+		}
+		if (this == activity.mainView) {
+			activity.mainView = null;
+		} else {
+			activity.removeDialog(this);
 		}
 	}
 	void _removeChild(View child, [bool notifyChild=true, bool exit=true]) {
@@ -421,15 +430,22 @@ class View implements Hashable {
 	/** Adds this view to the document (i.e., the screen that the user interacts with).
 	 * all of its descendant views are added too.
 	 * <p>You rarely need to invoke this method directly. In most cases,
-	 * you shall invoke [addChild] instead.
+	 * you shall invoke [addChild] instead. If you'd like to add a dialog, you shall
+	 * use [Activity.addDialog] instead. To make a view as the main view, you shall
+	 * use [Activity.mainView] instead.
+	 *
 	 * <p>On the other hand, this method is usually used if you'd like to add
-	 * a view to the content of [WebView].
-	 * Notice that this method can be called only if this view has no parent.
+	 * a view to the content of [TextView] and its derives. For example, you want
+	 * replace a portion of [TextView] with a view (, say, to provide some behavior).
+	 *
+	 * <p>Notice that this method can be called only if this view has no parent.
 	 * If a view has a parent, whether it is attached to the document
 	 * shall be controlled by its parent.
 	 */
 	void addToDocument(Element node,
 	[bool outer=false, bool inner=false, Element before]) {
+		if (parent !== null)
+			throw const UIException("No parent allowed");
 		_exitDocument();
 
 		String html = _asHTML();
@@ -455,16 +471,20 @@ class View implements Hashable {
 	}
 	/** Removes this view from the document.
 	 * All of its descendant views are removed too.
+	 *
 	 * <p>You rarely need to invoke this method directly. In most cases,
 	 * you shall invoke [removeFromParent] instead.
+	 *
 	 * <p>On the other hand, this method is usually used if you'd like to undo
 	 * the attachment made by [addToDocument].
-	 * Notice that this method can be called only if this view has no parent.
+	 *
+	 * <p>Notice that this method can be called only if this view has no parent.
 	 * If a view has a parent, whether it is attached to the document
-	 * shall be controlled by its parent.
-	 * <p>See also [cut].
+	 * shall be controlled by its parent, and you shall use [removeFromParent] instead.
 	 */
 	void removeFromDocument() {
+		if (parent !== null)
+			throw const UIException("No parent allowed");
 		final Element n = node; //store first since _node will be cleared up later
 		_exitDocument();
 		n.remove();
