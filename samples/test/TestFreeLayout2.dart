@@ -10,7 +10,7 @@ class TestFreeLayout2 extends Activity {
 	void onCreate_() {
 		title = "Test 2: Free Layout";
 
-		rootView.style.backgroundColor = "#cca";
+		mainView.style.backgroundColor = "#cca";
 
 		View view = new View();
 		view.style.backgroundColor = "#ddb";
@@ -19,7 +19,7 @@ class TestFreeLayout2 extends Activity {
 		view.profile.location = "center center";
 		view.profile.width = "70%";
 		view.profile.height = "80%";
-		rootView.addChild(view);
+		mainView.addChild(view);
 
 		TextView txt = new TextView("child (right top)");
 		txt.style.border = "1px solid #555";
@@ -40,7 +40,7 @@ class TestFreeLayout2 extends Activity {
 		txt.profile.anchorView = view;
 		txt.profile.location = "left center";
 		txt.profile.width = "flex";
-		rootView.addChild(txt);
+		mainView.addChild(txt);
 	}
 }
 

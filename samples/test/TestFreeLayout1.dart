@@ -10,7 +10,7 @@ class TestFreeLayout1 extends Activity {
 	void onCreate_() {
 		title = "Test 1: Free Layout";
 
-		rootView.style.backgroundColor = "#cca";
+		mainView.style.backgroundColor = "#cca";
 
 		View view = new View();
 		view.style.backgroundColor = "#ddb";
@@ -19,7 +19,7 @@ class TestFreeLayout1 extends Activity {
 		view.profile.location = "center center";
 		view.profile.width = "content"; //must! it forces width being calced
 		view.profile.height = "content"; //must! it forces height being calced
-		rootView.addChild(view);
+		mainView.addChild(view);
 
 		//test if subView will affect its parent's size
 		View subView = new View();

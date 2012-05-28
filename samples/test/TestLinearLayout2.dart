@@ -10,10 +10,10 @@ class TestLinearLayout2 extends Activity {
 	void onCreate_() {
 		title = "Test 4: Vertical Linear Layout";
 
-		rootView.style.backgroundColor = "#cca";
+		mainView.style.backgroundColor = "#cca";
 
-		test1(rootView, 10, 10);
-		test2(rootView, 100, 10);
+		test1(mainView, 10, 10);
+		test2(mainView, 100, 10);
 	}
 	void test1(View parent, int left, int top) {
 	  //case 1: fixed size

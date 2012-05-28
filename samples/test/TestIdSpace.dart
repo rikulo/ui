@@ -9,15 +9,14 @@
 class TestIdSpace extends Activity {
 
 	void onCreate_() {
-		rootView.layout.text = "type: linear;orient: vertical";
+		mainView.layout.text = "type: linear;orient: vertical";
 		Button btn = new Button("Test 1");
 		btn.on.click.add((event) {
 			View view = new View();
 			view.addChild(new View());
-print("before log");
 			log("It shall be empty: ${view.fellows}");
 		});
-		rootView.addChild(btn);
+		mainView.addChild(btn);
 
 		btn = new Button("Test 2");
 		btn.on.click.add((event) {
@@ -30,7 +29,7 @@ print("before log");
 			v1.addChild(v2);
 			log("It shall be [v3, v4]: ${v1.fellows}");
 		});
-		rootView.addChild(btn);
+		mainView.addChild(btn);
 	}
 }
 

@@ -61,7 +61,7 @@ class DOMQuery {
 			ofs.top += el.$dom_offsetTop;
 		} while (el.style.position != "fixed" && (el = el.offsetParent) != null);
 		//Note: no need to add widnow's innerLeft/Top if position is fixed.
-		//reason: we don't allow window-level scrolling (rather, rootView is scrolled)
+		//reason: we don't allow window-level scrolling (rather, mainView is scrolled)
 		return ofs;
 	}
 	/** Returns the final used values of all the CSS properties

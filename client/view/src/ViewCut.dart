@@ -59,7 +59,7 @@ class _ViewCut implements ViewCut {
 		final View parent = view.parent;
 		if (parent !== null) {
 			parent._removeChild(view, exit: false); //not to exit
-		} else { //TODO: update activity.rootView
+		} else { //TODO: update activity.mainView
 			n.remove();
 		}
 	}

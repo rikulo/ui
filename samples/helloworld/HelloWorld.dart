@@ -17,7 +17,7 @@ class HelloWorld extends Activity {
 			event.target.style.border =
 				event.target.style.border.isEmpty() ? "1px solid blue": "";
 		});
-		rootView.addChild(text);
+		mainView.addChild(text);
 	}
 }
 

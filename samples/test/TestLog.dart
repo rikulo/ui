@@ -16,7 +16,7 @@ class TestLog extends Activity {
 		btn.on.click.add((event) {
 			log("Clicked ${++count}");
 		});
-		rootView.addChild(btn);
+		mainView.addChild(btn);
 	}
 }
 

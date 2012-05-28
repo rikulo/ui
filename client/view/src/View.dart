@@ -6,6 +6,10 @@
 Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 */
 
+/** An effect for the given view, such as fade-in and slide-out.
+ */
+typedef void ViewEffect(View view);
+
 /**
  * A view.
  * <p>Notice that if a view implements [IdSpace], it has to override
@@ -282,7 +286,7 @@ class View implements Hashable {
 			parent._removeChild(this);
 		} else {
 			final Element n = node;
-			if (n !== null) { //TODO: update activity.rootView
+			if (n !== null) { //TODO: update activity.mainView
 				_exitDocument();
 				n.remove();
 			}
@@ -809,7 +813,7 @@ class View implements Hashable {
 			ofs.left += view.left;
 			ofs.top += view.top;
 			if (view.style.position == "fixed")
-				break; //done (no need to add innerX/innerY since rootView is full screen)
+				break; //done (no need to add innerX/innerY since mainView is full screen)
 
 			final View p = view.parent;
 			if (p == null) {

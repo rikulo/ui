@@ -10,7 +10,7 @@ class FreeLayoutDemo extends Activity {
 	void onCreate_() {
 		title = "Free Layout Demo";
 
-		rootView.style.backgroundColor = "#cca";
+		mainView.style.backgroundColor = "#cca";
 
 		View view = new View();
 		view.style.backgroundColor = "#ddb";
@@ -18,7 +18,7 @@ class FreeLayoutDemo extends Activity {
 		view.profile.location = "center center";
 		view.profile.width = "70%";
 		view.profile.height = "80%";
-		rootView.addChild(view);
+		mainView.addChild(view);
 
 		//1. first level dependence
 		for (final String loc in [
@@ -33,16 +33,16 @@ class FreeLayoutDemo extends Activity {
 			txt.style.border = "1px solid #555";
 			txt.profile.anchorView = view;
 			txt.profile.location = loc;
-			rootView.addChild(txt);
+			mainView.addChild(txt);
 		}
 
 		//2. second level dependence
 		TextView txt = new TextView("north start");
 		txt.style.border = "1px solid red";
-		txt.profile.anchorView = rootView.lastChild;
+		txt.profile.anchorView = mainView.lastChild;
 		txt.profile.location = "north start";
 		txt.profile.width = "flex";
-		rootView.addChild(txt);
+		mainView.addChild(txt);
 	}
 }
 
