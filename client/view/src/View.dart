@@ -113,11 +113,18 @@ class View implements Hashable {
 		//TODO
 	}
 
-	/** Returns the view of the given ID, or null if not found.
+	/** Returns the view of the given ID in the ID space this view belongs to,
+	 * or null if not found.
 	 * <p>If a view implements [IdSpace] must override [getFellow] and
 	 * [bindFellow_].
 	 */
 	View getFellow(String id) => spaceOwner.getFellow(id);
+	/** Returns a readoly collection of all fellows in the ID space
+	 * that this view belongs to.
+	 * <p>Note: don't modify the returned list. Otherwise, the result is
+	 * unpreditable.
+	 */
+	Collection<View> get fellows() => spaceOwner.fellows;
 	/** Updates the fellow information.
 	 * <p>Default: throw [UnsupportedOperationException].
 	 * <p>If a view implements [IdSpace] must override [getFellow] and
@@ -130,7 +137,7 @@ class View implements Hashable {
 	/** Returns the owner of the ID space that this view belongs to.
 	 * <p>A virtual [IdSpace] is used if this view is a root but is not IdSpace.
 	 */
-	IdSpace get spaceOwner() => _ViewImpl.spaceOwner(this, false); //not to ignore virtual
+	IdSpace get spaceOwner() => _ViewImpl.spaceOwner(this);
 
 	/** Returns if a view is a descendant of this view or
 	 * it is identical to this view.
@@ -1113,5 +1120,5 @@ class View implements Hashable {
 	}
 
 	int hashCode() => uuid.hashCode(); //uuid is immutiable once assigned
-	String toString() => "View($uuid)";
+	String toString() => "View(${id.isEmpty() ? uuid: id})";
 }

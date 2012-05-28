@@ -1,4 +1,4 @@
-//Sample Code: Layout Demostration
+//Sample Code: Test Log
 
 #import('dart:html');
 
