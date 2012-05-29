@@ -36,9 +36,11 @@ class CaptureError {
     static final int CAPTURE_NO_MEDIA_FILES = 3;
     static final int CAPTURE_NOT_SUPPORTED = 20;
 	
-	int code; //error code
+	final int code; //error code
 	
 	CaptureError(this.code);
+	
+	CaptureError.from(Map err) : code = err["code"];
 }
 
 class CaptureAudioOptions {
@@ -48,6 +50,8 @@ class CaptureAudioOptions {
 	int duration;
 	/** The selected audio mode; must be one of supportedAudioModes in Capture */
 	ConfigurationData mode;
+	
+	CaptureAudioOptions.from(Map opts) : limit = opts["limit"], duration = opts["duration"], mode = opts["mode"];
 }
 
 class CaptureImageOptions {
@@ -55,6 +59,8 @@ class CaptureImageOptions {
 	int limit = 1;
 	/** The selected image mode; must be one of supportedImageModes in Capture */
 	ConfigurationData mode;
+	
+	CaptureImageOptions.from(Map opts) : limit = opts["limit"], mode = opts["mode"];
 }
 
 class CaptureVideoOptions {
@@ -64,6 +70,8 @@ class CaptureVideoOptions {
 	int duration;
 	/** The selected video mode; must be one of supportedVideoModes in Capture */
 	ConfigurationData mode;
+
+  CaptureVideoOptions.from(Map opts) : limit = opts["limit"], duration = opts["duration"], mode = opts["mode"];
 }
 
 class ConfigurationData {
@@ -79,4 +87,8 @@ class ConfigurationData {
 	int height;
 	/** the width of the image/video in pixels; for sound clip always 0 */
 	int width;
+	
+	ConfigurationData(this.type, this.height, this.width);
+	
+	ConfigurationData.from(Map data) : this.type = data["type"], this.height = data["height"], this.width = data["width"];
 }

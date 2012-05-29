@@ -7,27 +7,22 @@
  */
 class CordovaCompass extends AbstractCompass {
 	void getCurrentHeading(CompassSuccessCallback onSuccess, CompassErrorCallback onError) {
-		_getCurrentHeading0(_wrapFunction(onSuccess), onError);
+		jsCall("compass.getCurrentCompassHeading", [_wrapFunction(onSuccess), onError]);
 	}
 
-	CompassSuccessCallback _wrapFunction(CompassSuccessCallback fn) {   
-		return ((CompassHeading heading) { //Use CompassHeading to trick frogc to generate proper code
-		  fn(new CompassHeading(heading.magneticHeading, heading.trueHeading, heading.headingAccuracy, heading.timestamp));});
+	CompassSuccessCallback _wrapFunction(CompassSuccessCallback dartFn) {   
+		return (jsHeading) => dartFn(new CompassHeading.from(toDartMap(jsHeading)));
 	}
+	
+  CompassSuccessCallback wrapListener_(CompassHeadingEventListener listener) {   
+    return (jsHeading) => listener(new CompassHeadingEvent(this, new CompassHeading.from(toDartMap(jsHeading))));
+  }
 
 	watchHeading(CompassSuccessCallback onSuccess, CompassErrorCallback onError, [Map options]) {
-		String opts = options === null || options["frequency"] === null ? '{"frequency":100}' : JSON.stringify(options);
-		return _watchHeading0(onSuccess, onError, opts);
+	  return jsCall("compass.watchHeading", [onSuccess, onError, toJSMap(options)]);
 	}
 	
 	void clearWatch(var watchID) {
-		_clearWatch0(watchID);
+		jsCall("compass.clearWatch", [watchID]);
 	}
-	
-	void _getCurrentHeading0(CompassSuccessCallback onSuccess, CompassErrorCallback onError) native
-		"navigator.compass.getCurrentCompassHeading(onSuccess, onError);";
-	_watchHeading0(CompassSuccessCallback onSuccess, CompassErrorCallback onError, String opts) native
-		"return navigator.compass.watchHeading(onSuccess, onError, opts ? JSON.parse(opts) : null);";
-	void _clearWatch0(var watchID) native
-		"navigator.compass.clearWatch(watchID);";
 }

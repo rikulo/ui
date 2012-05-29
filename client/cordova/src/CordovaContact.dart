@@ -6,31 +6,31 @@
  * A Cordova Contact implementation.
  */
 class CordovaContact implements Contact {
-	String get id() native "return this._jsContact.id;"; //global unique identifier
-	String get displayName() native "return this._jsContact.displayName;"; //display name of this Contact
-	String get nickname() native "return this._jsContact.nickname;"; //casual name of this Contact
-	String get note() native "return this._jsContact.note;"; //note about this Contact
+	String get id() => jsCall("get", [_jsContact, "id"]); //global unique identifier
+	String get displayName() => jsCall("get", [_jsContact, "displayName"]); //display name of this Contact
+	String get nickname() => jsCall("get", [_jsContact, "nickname"]); //casual name of this Contact
+	String get note() => jsCall("get", [_jsContact, "note"]); //note about this Contact
 
-	set id(var x) native "this._jsContact.id = x;"; //global unique identifier
-	set displayName(var x) native "this._jsContact.displayName = x;"; //display name of this Contact
-	set nickname(var x) native "this._jsContact.nickname = x;"; //casual name of this Contact
-	set note(var x) native "this._jsContact.note = x;"; //note about this Contact
+	set id(var x) => jsCall("set", [_jsContact, "id", x]); //global unique identifier
+	set displayName(var x) => jsCall("set", [_jsContact, "displayName", x]); //display name of this Contact
+	set nickname(var x) => jsCall("set", [_jsContact, "nickname", x]); //casual name of this Contact
+	set note(var x) => jsCall("set", [_jsContact, "note", x]); //note about this Contact
 	
-	_create() native "navigator.contacts.create({});";
-	_clone0(jsContact) native "return jsContact.clone();";
-	_remove0(jsContact, ContactSuccessCallback onSuccess, ContactErrorCallback onError) native "jsContact.remove(onSuccess, onError);";
-	_save0(jsContact, ContactSuccessCallback onSuccess, ContactErrorCallback onError) native "jsContact.save(onSuccess, onError);";
+	_create() => jsCall("contacts.create");
+	_clone0() => jsCall("contact.clone", [_jsContact]);
+	_remove0(ContactSuccessCallback onSuccess, ContactErrorCallback onError) => jsCall("contact.remove", [_jsContact, onSuccess, onError]);
+	_save0(ContactSuccessCallback onSuccess, ContactErrorCallback onError) => jsCall("contact.save", [_jsContact, onSuccess, onError]);
 
-	_updateJsBirthday(jsContact, int msecs) native "jsContact.birthday = new Date(msecs);";
-	_updateJsName(jsContact, String json) native "jsContact.name = JSON.parse(json);";
-	_updateJsPhoneNumbers(jsContact, String json) native "jsContact.phoneNumbers = JSON.parse(json);";
-	_updateJsEmails(jsContact, String json) native "jsContact.emails = JSON.parse(json);";
-	_updateJsIms(jsContact, String json) native "jsContact.ims = JSON.parse(json);";
-	_updateJsPhotos(jsContact, String json) native "jsContact.photos = JSON.parse(json);";
-	_updateJsCategories(jsContact, String json) native "jsContact.categories = JSON.parse(json);";
-	_updateJsUrls(jsContact, String json) native "jsContact.urls = JSON.parse(json);";
-	_updateJsAddresses(jsContact, String json) native "jsContact.addresses = JSON.parse(json);";
-	_updateJsOrganizations(jsContact, String json) native "jsContact.organizations = JSON.parse(json);";
+	_updateJSBirthday() => jsCall("set", [_jsContact, "birthday", toJSDate(this.birthday)]);
+	_updateJSContactName() => jsCall("set", [_jsContact, "name", _toJSContactName(this.name)]);
+	_updateJSPhoneNumbers() => jsCall("set", [_jsContact, "phoneNumbers", _toJSContactFields(this.phoneNumbers)]);
+	_updateJSEmails() => jsCall("set", [_jsContact, "emails", _toJSContactFields(this.emails)]);
+	_updateJSIms() => jsCall("set", [_jsContact, "ims", _toJSContactFields(this.ims)]);
+	_updateJSPhotos() => jsCall("set", [_jsContact, "photos", _toJSContactFields(this.photos)]);
+	_updateJSCategories() => jsCall("set", [_jsContact, "categories", _toJSContactFields(this.categories)]);
+	_updateJSUrls() => jsCall("set", [_jsContact, "urls", _toJSContactFields(this.urls)]);
+	_updateJSAddresses() => jsCall("set", [_jsContact, "addresses", _toJSContactAddresses(this.addresses)]);
+	_updateJSOrganizations() => jsCall("set", [_jsContact, "organizations", _toJSContactOrganizations(this.organizations)]);
 	
 	ContactName name; //detail name of this Contact
 	List<ContactField> phoneNumbers; //array of phone numbers of this Contact
@@ -58,28 +58,26 @@ class CordovaContact implements Contact {
 	/** Returns a cloned Contact object except its id is set to null.
 	 */
 	Contact clone() {
-		return new CordovaContact.from(_clone0(this._jsContact));
+		return new CordovaContact.from(_clone0());
 	}
 	
 	/** Remove this Contact from the device's contacts list.
 	 */
 	remove(ContactSuccessCallback onSuccess, ContactErrorCallback onError) {
-		_remove0(this._jsContact, _wrapContactFunction(onSuccess), _wrapErrorFunction(onError));
+		_remove0(_wrapContactFunction(onSuccess), _wrapErrorFunction(onError));
 	}
 	/** Saves a new contact to the device contacts list; or updates an existing contact if exists the id.
 	 */
 	save(ContactSuccessCallback onSuccess, ContactErrorCallback onError) {
 		_updateJsContact();
-		_save0(this._jsContact, _wrapContactFunction(onSuccess), _wrapErrorFunction(onError));
+		_save0(_wrapContactFunction(onSuccess), _wrapErrorFunction(onError));
 	}
 
 	_wrapContactFunction(dartFn) {   
-		return ((jsContact) {
-		  dartFn(_initContact0(jsContact));});
+		return (jsContact) => dartFn(_initContact0(jsContact));
 	}
 	_wrapErrorFunction(dartFn) {
-		return ((ContactError err) { //Use ContactError to trick frogc
-			dartFn(new ContactError(err.code));});
+		return (jsErr) => dartFn(new ContactError.from(toDartMap(jsErr)));
 	}
 
 	Contact _initContact0(jsContact) {
@@ -87,118 +85,105 @@ class CordovaContact implements Contact {
 			this._jsContact = jsContact;
 		return this;
 	}
-	
-	_getJsContactFields(List<ContactField> fs) {
-		StringBuffer n0 = new StringBuffer("[");
-		bool first = true;
-		for (ContactField f in fs) {
-			if (!first) 
-				n0.add(",");
-			else 
-				first = false;
-			n0.add("{type:").add(f.type)
-				.add(",value:").add(f.value)
-				.add(",pref:").add(f.pref)
-				.add("}");
-		}
-		n0.add("]");
-		return n0;
+	_toContactFieldMap(ContactField field) {
+	  return {
+	    "type" : field.type, 
+	    "value" : field.value,
+	    "pref" : field.pref
+
+	  };
+	}
+	_toJSContactFields(List<ContactField> fields) {
+	  return toJSArray(fields, (ContactField field) => toJSMap(_toContactFieldMap(field)));
+	}
+
+	_toContactAddressMap(ContactAddress addr) {
+    return {
+      "pref" : addr.pref,
+      "type" : addr.type,
+      "formatted" : addr.formatted,
+      "streetAddress" : addr.streetAddress,
+      "locality" : addr.locality,
+      "region" : addr.region,
+      "postalCode" : addr.postalCode,
+      "country" : addr.country
+    };
+	}
+	_toJSContactAddresses(List<ContactAddress> addrs) {
+	  return toJSArray(addrs, (ContactAddress addr) => toJSMap(_toContactAddressMap(addr)));
 	}
 	
-	_getJsContactAddresses(List<ContactAddress> fs) {
-		StringBuffer n0 = new StringBuffer("[");
-		bool first = true;
-		for (ContactAddress f in fs) {
-			if (!first) 
-				n0.add(",");
-			else 
-				first = false;
-			n0.add("{pref:").add(f.pref)
-				.add(",type:").add(f.type)
-				.add(",formatted:").add(f.formatted)
-				.add(",streetAddress:").add(f.streetAddress)
-				.add(",locality:").add(f.locality)
-				.add(",region:").add(f.region)
-				.add(",postalCode:").add(f.postalCode)
-				.add(",country:").add(f.country)
-				.add("}");
-		}
-		n0.add("]");
-		return n0;
-	}
+  _toContactOrganizationMap(ContactOrganization org) {
+    return {
+      "pref" : org.pref,
+      "type" : org.type,
+      "name" : org.name,
+      "department" : org.department,
+      "title" : org.title
+    };
+  }
+	_toJSContactOrganizations(List<ContactOrganization> orgs) {
+    return toJSArray(addresses, (ContactOrganization org) => toJSMap(_toContactOrganizationMap(org)));
+  }
 	
-	_getJsContactOrganizations(List<ContactOrganization> fs) {
-		StringBuffer n0 = new StringBuffer("[");
-		bool first = true;
-		for (ContactOrganization f in fs) {
-			if (!first) 
-				n0.add(",");
-			else 
-				first = false;
-			n0.add("{pref:").add(f.pref)
-				.add(",type:").add(f.type)
-				.add(",name:").add(f.name)
-				.add(",department:").add(f.department)
-				.add(",title:").add(f.title)
-				.add("}");
-		}
-		n0.add("]");
-		return n0;
+	_toContactNameMap(ContactName name0) {
+	  return {
+	  "formatted:" : name0.formatted,
+    "familyName:" : name0.familyName,
+    "givenName:" : name0.givenName,
+    "middleName:" : name0.middleName,
+    "honorificPrefix:" : name0.honorificPrefix,
+    "honorificSuffix:" : name0.honorificSuffix
+	  };
+	}
+	_toJSContactName(ContactName name0) {
+	  return toJSMap(_toContactNameMap(name0));
 	}
 	
 	_updateJsContact() {
 		//birthday
-		Date d0 = this.birthday;
-		_updateJsBirthday(this._jsContact, d0.value);
+		_updateJSBirthday();
 		
 		//name
-		ContactName val0 = this.name;
-		StringBuffer n0 = new StringBuffer("{formatted:").add(val0.formatted)
-			.add(",familyName:").add(val0.familyName)
-			.add(",givenName:").add(val0.givenName)
-			.add(",middleName:").add(val0.middleName)
-			.add(",honorificPrefix:").add(val0.honorificPrefix)
-			.add(",honorificSuffix:").add(val0.honorificSuffix)
-			.add("}");
-		_updateJsName(this._jsContact, n0.toString());
+		_updateJSContactName();
 		
 		//addresses
-		_updateJsAddresses(this._jsContact, _getJsContactAddresses(this.addresses));
+		_updateJSAddresses();
 		
 		//organizations
-		_updateJsOrganizations(this._jsContact, _getJsContactOrganizations(this.organizations));
+		_updateJSOrganizations();
 				
 		//phoneNumbers
-		_updateJsPhoneNumbers(this._jsContact, _getJsContactFields(this.phoneNumbers));
+		_updateJSPhoneNumbers();
 
 		//emails
-		_updateJsEmails(this._jsContact, _getJsContactFields(this.emails));
+		_updateJSEmails();
 
 		//ims
-		_updateJsIms(this._jsContact, _getJsContactFields(this.ims));
+		_updateJSIms();
 
 		//photos
-		_updateJsPhotos(this._jsContact, _getJsContactFields(this.photos));
+		_updateJSPhotos();
 				
 		//categories
-		_updateJsCategories(this._jsContact, _getJsContactFields(this.categories));
+		_updateJSCategories();
 
 		//urls
-		_updateJsUrls(this._jsContact, _getJsContactFields(this.urls));
+		_updateJSUrls();
 	}
 	
 	void _initDartContact() {
 		Contact jsContact = this._jsContact; //trick frogc
 		//birthday
-		this.birthday = jsDateToDartDate(jsContact.birthday);
+		this.birthday = toDartDate(jsContact.birthday);
 		//name
 		ContactName val0 = jsContact.name;
 		if (val0 !== null)
-			this.name = new ContactName(val0.formatted, val0.familyName, val0.givenName, val0.middleName, val0.honorificPrefix, val0.honorificSuffix);
+			this.name = new ContactName.from(toDartMap(val0));
 		//addresses
-		this.addresses = _newAddressList(jsContact.addresses);
+		this.addresses = toDartList(jsContact.addresses, (jsAddr) => new ContactAddress.from(toDartMap(jsAddr)));
 		//organizations
-		this.organizations = _newOrganizationList(jsContact.organizations);
+		this.organizations = toDartList(jsContact.organizations, (jsOrg) => new ContactOrganization.from(toDartMap(jsOrg)));
 		//phoneNumbers
 		this.phoneNumbers = _newContactFieldList(jsContact.phoneNumbers);
 		//emails
@@ -213,23 +198,7 @@ class CordovaContact implements Contact {
 		this.urls = _newContactFieldList(jsContact.urls);
 	}
 	
-	List<ContactAddress> _newAddressList(jsAddresses) {
-		List<ContactAddress> results = new List<ContactAddress>();
-		jsForEach(jsAddresses, (ContactAddress addr) => 
-			results.add(new ContactAddress(addr.pref, addr.type, addr.formatted, addr.streetAddress, 
-									addr.locality, addr.region, addr.postalCode, addr.country)));
-		return results;
-	}
-	
-	List<ContactOrganization> _newOrganizationList(jsOrgs) {
-		List<ContactOrganization> results = new List<ContactOrganization>();
-		jsForEach(jsOrgs, (ContactOrganization org) => results.add(new ContactOrganization(org.pref, org.type, org.name, org.department, org.title)));
-		return results;
-	}
-
 	List<ContactField> _newContactFieldList(jsFields) {
-		List<ContactField> results = new List<ContactField>();
-		jsForEach(jsFields, (ContactField field) => results.add(new ContactField(field.type, field.value, field.pref)));
-		return results;
+	  return toDartList(jsFields, (jsField) => new ContactField.from(toDartMap(jsField)));
 	}
 }

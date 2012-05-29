@@ -6,7 +6,7 @@ class PositionEvent extends DeviceEvent {
 	PositionEvent(DeviceEventTarget target, Position data) :
 		coords = data.coords, timestamp = data.timestamp;
 	
-	final XCoordinates coords;
+	final Coordinates coords;
 	final int timestamp;
 }
 

@@ -3,7 +3,7 @@
 // Author: henrichen
 
 typedef GeolocationSuccessCallback(Position position);
-typedef GeolocationErrorCallback(XPositionError error);
+typedef GeolocationErrorCallback(PositionError error);
 
 /**
  * Capture device location information in latitude and longitude (generally come from a GPS sensor, etc.)
@@ -18,13 +18,11 @@ interface XGeolocation { //rename to XGeolocation to avoid name confilct with da
   void getCurrentPosition(GeolocationSuccessCallback onSuccess, [GeolocationErrorCallback onError, GeolocationOptions options]);
 }
 
-class XPositionError { //rename to XPositionError to avoid name confilct with dart:html PostionError interface
-	static final int PERMISSION_DENIED = 1;
-	static final int POSITION_UNAVAILABLE = 2;
-	static final int TIMEOUT = 3;
-	
+class PositionErrorImpl implements PositionError {
 	int code;
 	String message;
+	
+	PositionErrorImpl(this.code, this.message);
 }
 
 class GeolocationOptions {

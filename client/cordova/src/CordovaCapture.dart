@@ -6,89 +6,77 @@
  * A Cordova capture implementation.
  */
 class CordovaCapture implements Capture {
+  /** Returns the audio formats supported by this device */
+  List<ConfigurationData> get supportedAudioModes() {
+    return toDartList(jsCall("capture.supportedAudioModes"), (jsData) => _wrapConfigurationData(jsData));
+  }
+  /** Returns the image formats/size supported by this device */
+  List<ConfigurationData> get supportedImageModes() {
+    return toDartList(jsCall("capture.supportedImageModes"), (jsData) => _wrapConfigurationData(jsData));
+  }
+  /** Returns the video formats/resolutions suupported by this device */
+  List<ConfigurationData> get supportedVideoModes() {
+    return toDartList(jsCall("capture.supportedVideoModes"), (jsData) => _wrapConfigurationData(jsData));
+  }
 	void captureAudio(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, [CaptureAudioOptions options]) {
-		_captureAudio(_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), _audioOptionsToJsonString(options));
+	  jsCall("capture.captureAudio", [_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), toJSMap(_audioOptionsToMap(options))]);
 	}
 	void captureImage(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, [CaptureImageOptions options]) {
-		_captureImage(_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), _imageOptionsToJsonString(options));
+    jsCall("capture.captureImage", [_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), toJSMap(_imageOptionsToMap(options))]);
 	}
 	void captureVideo(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, [CaptureVideoOptions options]) {
-		_captureVideo(_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), _videoOptionsToJsonString(options));
+    jsCall("capture.captureVideo", [_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), toJSMap(_videoOptionsToMap(options))]);
 	}
-	_wrapCaptureError(CaptureErrorCallback onError) {
-		return (CaptureError err) => //Use CaptureError to trick frogc
-			onError(new CaptureError(err.code));
+	_wrapCaptureError(CaptureErrorCallback dartFn) {
+		return (jsErr) => dartFn(new CaptureError.from(jsErr));
 	}
-	_wrapCaptureSuccess(CaptureSuccessCallback onSuccess) {
-		return (jsMediaFiles) => onSuccess(_newMediaFiles(jsMediaFiles));
+	_wrapCaptureSuccess(CaptureSuccessCallback dartFn) {
+	  return (jsMediaFiles) => dartFn(toDartList(jsMediaFiles, (jsfile) => new CordovaMediaFile.from(jsfile)));
 	}
-	List<MediaFile> _newMediaFiles(jsMediaFiles) { //trick frogc
-		List<MediaFile> results = new List<MediaFile>();
-		jsForEach(jsMediaFiles, (MediaFile jsFile) => 
-			results.add(new CordovaMediaFile.from(jsFile)));
-		return results;
+	ConfigurationData _wrapConfigurationData(var jsData) {
+	  return new ConfigurationData.from(toDartMap(jsData)); 
 	}
-	String _audioOptionsToJsonString(CaptureAudioOptions options) {
-		if (options !== null) {
-			StringBuffer sb = new StringBuffer();
-			sb.add("{limit:").add(options.limit);
-			if (options.duration !== null) {
-				sb.add(",duration:").add(options.duration);
-			}
-			if (options.mode !== null) {
-				sb.add(",mode:").add(_configurationDateToJsonString(options.mode));
-			}
-			sb.add("}");
-			return sb.toString();
-		} else {
-			return null;
-		}
-	}
-	String _imageOptionsToJsonString(CaptureImageOptions options) {
-		if (options !== null) {
-			StringBuffer sb = new StringBuffer();
-			sb.add("{limit:").add(options.limit);
-			if (options.mode !== null) {
-				sb.add(",mode:").add(_configurationDateToJsonString(options.mode));
-			}
-			sb.add("}");
-			return sb.toString();
-		} else {
-			return null;
-		}
-	}
-	String _videoOptionsToJsonString(CaptureVideoOptions options) {
-		if (options !== null) {
-			StringBuffer sb = new StringBuffer();
-			sb.add("{limit:").add(options.limit);
-			if (options.duration !== null) {
-				sb.add(",duration:").add(options.duration);
-			}
-			if (options.mode !== null) {
-				sb.add(",mode:").add(_configurationDateToJsonString(options.mode));
-			}
-			sb.add("}");
-			return sb.toString();
-		} else {
-			return null;
-		}
-	}
-	String _configurationDateToJsonString(ConfigurationData data) {
-		if (data !== null) {
-			StringBuffer sb = new StringBuffer();
-			sb.add("{type:'").add(data.type).add("'")
-				.add(",height:").add(data.height)
-				.add(",width:").add(data.width)
-				.add("}");
-			return sb.toString();
-		} else {
-			return null;
-		}
-	}
-	_captureAudio(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, String opts) native
-		"navigator.device.capture.captureAudio(onSuccess, onError, opts ? JSON.parse(opts) : null);";		
-	_captureImage(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, String opts) native
-		"navigator.device.capture.captureImage(onSuccess, onError, opts ? JSON.parse(opts) : null);";		
-	_captureVideo(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, String opts) native
-		"navigator.device.capture.captureVideo(onSuccess, onError, opts ? JSON.parse(opts) : null);";		
+  Map _audioOptionsToMap(CaptureAudioOptions options) {
+    if (options !== null) {
+      return {
+        "limit" : options.limit,
+        "duration" : options.duration,
+        "mode" : toJSMap(_configurationDataToMap(options.mode))
+      };
+    } else { //TODO: default setting?
+      return {};
+    }
+  }
+  Map _imageOptionsToMap(CaptureImageOptions options) {
+    if (options !== null) {
+      return {
+        "limit" : options.limit,
+        "mode" : toJSMap(_configurationDataToMap(options.mode))
+      };
+    } else { //TODO: default setting?
+      return {};
+    }
+  }
+  Map _videoOptionsToMap(CaptureVideoOptions options) {
+    if (options !== null) {
+      return {
+        "limit" : options.limit,
+        "duration" : options.duration,
+        "mode" : toJSMap(_configurationDataToMap(options.mode))
+      };
+    } else { //TODO: default setting?
+      return {};
+    }
+  }
+  Map _configurationDataToMap(ConfigurationData data) {
+    if (data !== null) {
+      return {
+        "type" : data.type,
+        "height": data.height,
+        "width" : data.width
+      };
+    } else {
+      return {};
+    }
+  }
 }

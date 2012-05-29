@@ -2,48 +2,94 @@
 //History: Wed, May 16, 2012  02:37:12 PM
 // Author: henrichen
 
-/** Iterate a JavaScript array and execute the specified function for each item.
- * @param jsArray the JavaScript array
- * @param fn the function to be execute for each item in the array; fn(item).
- */
-jsForEach(jsArray, fn) native """
-	if (jsArray) {
-		for(var j = 0; j < jsArray.length; ++j) {
-			fn(jsArray[j]);
-		}
-	}
-""";
-
-/** Iterate a JavaScript map and execute the specified function for each entry.
- * @param jsMap the JavaScript map
- * @param fn the function to be execute for each entry in the map; fn(key, value).
- */
-jsForEachKey(jsMap, fn) native """
-	if (jsMap) {
-		for(var key in jsMap) {
-			fn(key, jsMap[key]);
-		}
-	}
-""";
-
-/** Convert a JavaScript Date to Dart Date 
- * @param jsDate the JavaScript Date
- * @param timezone a Dart TimeZone
- * @return the converted Dart Date
- */
-jsDateToDartDate(jsDate, [TimeZone timezone]) {
-	int msecs = jsDate !== null ? _jsGetTime(jsDate) : null;
-	return msecs !== null ? new Date.fromEpoch(msecs, timezone === null ? new TimeZone.local() : timezone) : null;
-}
-//return time in milliseconds of a Javascript date
-_jsGetTime(jsDate) native "return jsDate.getTime();"; 
-	
+//Utilities to convert Date, List, Map between Dart and JavaScript
 /** Converts a Dart Date to JavaScript Date
- * @param dartDate the dart Date
+ * @param dartdate the dart Date
  * @return the converted JavaScript Date
  */
-DartDateToJSDate(Date date) {
-	int msecs = date !== null ? date.value : null;
-	return msecs != null ? _jsNewDate(msecs) : null;
+toJSDate(Date dartdate) {
+	int msecs = dartdate !== null ? dartdate.value : null;
+	return msecs != null ? jsCall("new Date", [msecs]) : null;
 }
-_jsNewDate(msecs) native "return new Date(msecs);";
+
+/** Convert a JavaScript Date to Dart Date 
+ * @param jsdate the JavaScript Date
+ * @return the converted Dart Date
+ */
+toDartDate(jsdate) {
+	int msecs = jsdate !== null ? jsCall("date.getTime", [jsdate]) : null;
+	return msecs !== null ? new Date.fromEpoch(msecs, new TimeZone.local()) : null;
+}
+	
+/** Convert Dart List to JavaScript array 
+ * @param dartlist the dart List
+ * @return the converted JavaScript Array
+ */
+toJSArray(List dartlist, [Function converter = null]) {
+  if (dartlist !== null) {
+    if (dartlist.length == 0) {
+      return jsCall("[]", []); //return empty JavaScript Array
+    }
+    if (converter === null) { //optimize case: if no need to convert each item, compiled Dart List is a JavaScript Array
+      return dartlist;
+    }
+    var result = [];
+    dartlist.forEach((v) => jsCall("_newItem", [result, converter !== null ? converter(v) : v]));
+    return result[0];
+  }
+	return null;
+}
+
+/** Convert JavaScript array to Dart List
+ * @param jsarray the JavaScript Array
+ * @param converter the converter function that convert the JavaScript Object into Dart Object.
+ * @return the converted Dart List
+ */
+toDartList(var jsarray, [Function converter = null]) {
+	if (jsarray !== null) {
+		List result = new List();
+		jsCall("forEach", [jsarray, (v) => result.add(converter !== null ? converter(v) : v)]);
+		return result;
+	}
+	return null;
+}
+
+/** Convert Dart Map to JavaScript map 
+ * @param dartmap the Dart Map
+ * @return the converted JavaScript map 
+ */
+toJSMap(Map dartmap, [Function converter = null]) {
+	if (dartmap !==  null) {
+		if (dartmap.length == 0) {
+			return jsCall("{}", []); //return empty JavaScript map
+		}
+		var result = [];
+		dartmap.forEach((k,v) => jsCall("_newEntry", [result,k, converter !== null ? converter(v) : v]));
+		return result[0];
+	}
+	return null;
+}
+
+/** Convert JavaScript map to Dart Map 
+ * @param jsmap the JavaScript map
+ * @return the converted Dart Map
+ */
+toDartMap(var jsmap, [Function converter = null]) {
+	if (jsmap !== null) {
+		Map result = new Map();
+		jsCall("forEachKey", [jsmap, (k,v) => result[k] = (converter !== null ? converter(v) : v)]);
+		return result;
+	}
+	return null;
+}
+
+List<Function> jsCall0 = const []; //jump table, would be set by jsutil.js
+checkJSUtil() {
+  if (jsCall0.length == 0) {
+    //TODO, dynamic loading of the jsutil.js?
+    throw const SystemException("jsutil.js must be loaded first");
+  }
+}
+jsCall(String op, [List args = const []]) {
+	return jsCall0[0](op, args); //function table
+}

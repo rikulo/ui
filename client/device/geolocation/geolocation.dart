@@ -4,6 +4,7 @@
 
 #library("rikulo:device:geolocation");
 
+#import("dart:html");
 #import("../../deviceimpl/deviceimpl.dart");
 
 #source("src/Position.dart");

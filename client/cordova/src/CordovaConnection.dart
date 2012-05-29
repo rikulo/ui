@@ -7,8 +7,6 @@
  */
 class CordovaConnection implements Connection {
 	String get type() {
-		_getType();
+		return jsCall("connection.type");
 	}
-	String _getType() native
-		"return navigator.network.connection.type;";
 }
