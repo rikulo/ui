@@ -16,7 +16,7 @@ Button up, down, left, right;
 
 class SnakeCanvas extends Activity {
   final int UPDATE = 100;
-  final int height = 560, width = 560;
+  final int height = 555, width = 555;
   int lastCycle = 0;
   SnakeEnvironment environment;
   TextView topBar;
@@ -100,6 +100,7 @@ class SnakeCanvas extends Activity {
         switch(message) {
           case environment.GAMEOVER:
             ret = false;
+            window.alert('GAME OVER!!');
             break;
           case environment.SCORED:
             score += 1;

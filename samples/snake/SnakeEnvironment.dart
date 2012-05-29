@@ -11,7 +11,7 @@ class SnakeEnvironment {
   final int SCORED=0, GAMEOVER=1, CONTINUE=2;
   
   num height,width;
-  final num adjustment = 10;
+  final num adjustment = 5;
   Snake snake;
   Food food;
   
@@ -35,7 +35,6 @@ class SnakeEnvironment {
     var head = snake.head();
     if((head.x >= width || head.x < 0)
         || (head.y >= height || head.y < 0)) {
-       window.alert('GAME OVER!!');
        return GAMEOVER;
      }
     
