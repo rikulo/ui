@@ -11,7 +11,7 @@ class TestCutPaste extends Activity {
 	void onCreate_() {
 		title = "Cut-and-Paste Test";
 
-		rootView.addChild(new Style.content('''
+		mainView.addChild(new Style.content('''
 .round {
 	border-radius: 6px;
 	border: 5px solid #886;
@@ -23,13 +23,13 @@ class TestCutPaste extends Activity {
 		view1.classes.add('round');
 		view1.profile.text =
 			"anchor: parent; location: left top; width: 100%; height: 45%";
-		rootView.addChild(view1);
+		mainView.addChild(view1);
 
 		View view2 = new View();
 		view2.classes.add('round');
 		view2.profile.text =
 			"anchor: parent; location: left bottom; width: 100%; height: 45%";
-		rootView.addChild(view2);
+		mainView.addChild(view2);
 
 		View subview = newSubview();
 		view1.addChild(subview);
@@ -40,14 +40,14 @@ class TestCutPaste extends Activity {
 			View newparent = view1.firstChild != null ? view2: view1;
 			subview.cut().pasteTo(newparent);
 		});
-		rootView.addChild(button);
+		mainView.addChild(button);
 
 		button = new Button("Remove and Add");
 		button.profile.text = "anchor: parent; location: left center";
 		button.on.click.add((event) {
 			(view1.firstChild != null ? view2: view1).addChild(subview);
 		});
-		rootView.addChild(button);
+		mainView.addChild(button);
 	}
 	View newSubview() {
 		View view = new View();

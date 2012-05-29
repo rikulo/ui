@@ -120,7 +120,7 @@ class _SubviewList extends AbstractList<View> {
 		View child = this[start];
 		while (--length >= 0 && child != null) {
 			final View next = child.nextSibling;
-			_child.removeFromParent();
+			child.removeFromParent();
 			child = next;
 		}
 	}

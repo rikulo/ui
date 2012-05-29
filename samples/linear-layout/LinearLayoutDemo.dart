@@ -8,20 +8,20 @@ class LinearLayoutDemo extends Activity {
 
 	void onCreate_() {
 		title = "Linear Layout Demo";
-		rootView.style.backgroundColor = "#cca";
+		mainView.style.backgroundColor = "#cca";
 
-		//make rootView as vlayout
-		rootView.layout.type = "linear";
-		rootView.layout.orient = "vertical";
-		rootView.profile.width = "flex";
-		rootView.profile.height = "flex";
+		//make mainView as vlayout
+		mainView.layout.type = "linear";
+		mainView.layout.orient = "vertical";
+		mainView.profile.width = "flex";
+		mainView.profile.height = "flex";
 
 		//first hlayout
 		View hlayout = new View();
 		hlayout.layout.type = "linear";
 		hlayout.profile.height = "content";
 		hlayout.profile.width = "flex";
-		rootView.addChild(hlayout);
+		mainView.addChild(hlayout);
 
 		View view = new View();
 		view.style.backgroundColor = "blue";
@@ -45,7 +45,7 @@ class LinearLayoutDemo extends Activity {
 		hlayout.layout.align = "end";
 		hlayout.profile.height = "flex";
 		hlayout.profile.width = "flex";
-		rootView.addChild(hlayout);
+		mainView.addChild(hlayout);
 
 		view = new View();
 		view.style.backgroundColor = "yellow";

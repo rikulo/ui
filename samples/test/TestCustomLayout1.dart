@@ -10,7 +10,7 @@ class TestCustomLayout1 extends Activity {
 	void onCreate_() {
 		title = "Custom Layout Test";
 
-		rootView.style.backgroundColor = "#cca";
+		mainView.style.backgroundColor = "#cca";
 
 		View view = new View();
 		view.style.backgroundColor = "#ddb";
@@ -32,7 +32,7 @@ class TestCustomLayout1 extends Activity {
 			});
 			view.addChild(txt);
 		});
-		rootView.addChild(view);
+		mainView.addChild(view);
 	}
 }
 

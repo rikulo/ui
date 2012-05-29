@@ -80,7 +80,9 @@ class AbstractList<E> implements List<E> {
 		removeRange(0, length);
 	}
 	E removeLast() {
+		final E e = last();
 		removeRange(length - 1, 1);
+		return e;
 	}
 	E last() {
 		return this[length - 1];

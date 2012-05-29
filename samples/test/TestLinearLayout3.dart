@@ -10,8 +10,7 @@ class TestLinearLayout3 extends Activity {
 	void onCreate_() {
 		title = "Test 5: Performance Test";
 
-		rootView.layout.type = "linear";
-		rootView.layout.orient = "vertical";
+		mainView.layout.text = "type: linear; orient: vertical";
 
 		for (int i = 0; i < 50; ++i) {
 			View hlayout = new View();
@@ -19,7 +18,7 @@ class TestLinearLayout3 extends Activity {
 			hlayout.profile.height = "content";
 			hlayout.layout.type = "linear";
 			hlayout.style.border = "1px solid #885";
-			rootView.addChild(hlayout);
+			mainView.addChild(hlayout);
 
 			for (int j = 0; j < 50; ++j) {
 				TextView view = new TextView("$i.$j");

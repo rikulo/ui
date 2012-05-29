@@ -18,7 +18,6 @@
 #source("src/Style.dart");
 #source("src/UIException.dart");
 #source("src/IdSpace.dart");
-#source("src/_VirtualIdSpace.dart");
 #source("src/_SubviewList.dart");
 #source("src/Declaration.dart");
 #source("src/ProfileDeclaration.dart");

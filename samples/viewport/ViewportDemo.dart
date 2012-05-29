@@ -15,7 +15,7 @@ class ViewportDemo extends Activity {
 		viewport.layout.type = "linear";
 		viewport.layout.orient = "vertical";
 		viewport.profile.width = viewport.profile.height = "flex";
-		rootView.addChild(viewport);
+		mainView.addChild(viewport);
 
 		createToolbar(viewport);
 		createChildViews(viewport);

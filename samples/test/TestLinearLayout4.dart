@@ -15,7 +15,7 @@ class TestLinearLayout4 extends Activity {
 		view.layout.type = "linear";
 		view.layout.orient = "vertical";
 		view.profile.width = view.profile.height = "flex";
-		rootView.addChild(view);
+		mainView.addChild(view);
 
 		TextView text = new TextView(html: '<h1 style="margin:0">$title</h1>');
 		_setBorder(text);

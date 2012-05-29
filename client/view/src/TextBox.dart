@@ -45,8 +45,8 @@ class TextBox extends View {
 
 			if (inDocument)
 				if (oldMultiline != _multiline) { //rerender required
-					addToDocument(node, outer: true);
-						//we don't use invalidate since the user might modify other properties later
+					invalidate(true);
+					//immeidate is true, since the user might modify other properties later
 				} else {
 					final InputElement inp = inputNode; //no need to check _multiline since we need to silent compiler only
 					inp.type = type; 

@@ -39,7 +39,7 @@ class CanvasCircle extends Activity {
 
 		canvas = new Canvas();
 		canvas.profile.text = "anchor: parent; width: flex; height: flex";
-		rootView.addChild(canvas);
+		mainView.addChild(canvas);
 
 		balls = [new Ball(50, 2.0, 6, "red"),
 			new Ball(30, 1.3, 6, "blue"),

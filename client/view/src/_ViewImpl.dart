@@ -78,7 +78,7 @@ class _ViewImpl {
 
 	//IdSpace//
 	//-------//
-	static IdSpace spaceOwner(View view, bool ignoreVirtualIS) {
+	static IdSpace spaceOwner(View view) {
 		View top, p = view;
 		do {
 			if (p is IdSpace)
@@ -86,11 +86,9 @@ class _ViewImpl {
 			top = p;
 		} while ((p = p.parent) != null);
 
-		if (!ignoreVirtualIS) {
-			if (top._virtIS === null)
-				top._virtIS = new _VirtualIdSpace(top);
-			return top._virtIS;
-		}
+		if (top._virtIS === null)
+			top._virtIS = new _VirtualIdSpace(top);
+		return top._virtIS;
 	}
 	static _cast(var v) => v; //TODO: remove it when Dart allows to cast to any type, not just downcast
 
@@ -132,9 +130,17 @@ class _ViewImpl {
 		if (id.length > 0)
 			space.bindFellow_(id, view);
 
-		if (view is! IdSpace)
-			for (view = view.firstChild; view != null; view = view.nextSibling)
-				addToIdSpaceDown(view, space);
+		if (view is! IdSpace) {
+			final IdSpace vs = view._virtIS;
+			if (vs !== null) {
+				view._virtIS = null;
+				for (final View child in vs.fellows)
+					space.bindFellow_(child.id, child);
+			} else {
+				for (view = view.firstChild; view != null; view = view.nextSibling)
+					addToIdSpaceDown(view, space);
+			}
+		}
 	}
 	static void removeFromIdSpace(View view, [bool skipFirst=false]) {
 		String id = view.id;
@@ -181,6 +187,26 @@ class _EventListenerInfo {
 	Map<String, EventListener> domListeners;
 }
 
+/** A virtual ID space.
+ */
+class _VirtualIdSpace implements IdSpace {
+	View _owner;
+	Map<String, View> _fellows;
+
+	_VirtualIdSpace(this._owner): _fellows = {};
+	
+	View query(String selector) => _owner.query(selector);
+	List<View> queryAll(String selector) => _owner.queryAll(selector);
+
+	View getFellow(String id) => _fellows[id];
+	void bindFellow_(String id, View fellow) {
+		if (fellow !== null) _fellows[id] = fellow;
+		else _fellows.remove(id);
+	}
+	Collection<View> get fellows() => _fellows.getValues();
+	String toString() => "_VirtualIdSpace($_owner: $_fellows)";
+}
+
 /** The invalidator that handles the invalidated views
  * used in [View].
  */
@@ -189,10 +215,8 @@ class _Invalidator extends RunOnceViewManager {
 	}
 
 	void handle_(View view) {
-		final Element n = view.node;
-		if (n != null) {
-			view.addToDocument(n, outer: true);
-		}
+		if (view.inDocument)
+			view.invalidate(true);
 	}
 }
 
