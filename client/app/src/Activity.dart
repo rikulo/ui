@@ -4,8 +4,10 @@
 
 /** A switching effect for hiding [from] and displaying [to],
  * such as fade-out and slide-in.
+ * <p>[mask] is the element inserted between [from] and [to]. It is used
+ * to block the access of [from].
  */
-typedef void ViewSwitchEffect(View from, View to);
+typedef void ViewSwitchEffect(View from, View to, Element mask);
 
 /**
  * An activity is a UI, aka., a desktop, that the user can interact with.
@@ -14,7 +16,6 @@ typedef void ViewSwitchEffect(View from, View to);
 class Activity {
 	String _title = "";
 	View _mainView;
-	String _containerId;
 	final List<View> _dialogs;
 
 	Activity(): _dialogs = [] {
@@ -36,6 +37,11 @@ class Activity {
 	/** Sets the main view.
 	 */
 	void set mainView(View main) {
+		setMainView(main);
+	}
+	/** Sets the main view with an effect.
+	 */
+	void setMainView(View main, [ViewSwitchEffect effect]) {
 		final View prevroot = _mainView;
 		_mainView = main;
 		if (prevroot != null) {
@@ -45,7 +51,7 @@ class Activity {
 				main.height = prevroot.height;
 
 			if (prevroot.inDocument) {
-				throw const UIException("TODO");
+				//TODO: effect
 			}
 		}
 	}
@@ -75,12 +81,15 @@ class Activity {
 			throw new UIException("Can't be in document: ${dialog}");
 		_dialogs.insertRange(0, 1, dialog);
 
-		Element container = _mainView !== null ? _mainView.node: null;
-		if (container !== null) container = container.parent;
-		if (container === null) container = _containerNode;
+		if (_mainView !== null && _mainView.node !== null) { //dialog might be added in onCreate_()
+			_createDialog(dialog, effect);
+			broadcaster.sendEvent(new PopupEvent(dialog));
+		}
+	}
+	void _createDialog(View dialog, [ViewSwitchEffect effect]) {
 		//TODO: add a mask
-		dialog.addToDocument(container);
-		broadcaster.sendEvent(new PopupEvent(dialog));
+		//TODO: effect
+		dialog.addToDocument(_mainView.node.parent);
 	}
 	/** Removes the topmost dialog or the given dialog.
 	 * If [dialog] is not specified, the topmost one is assumed.
@@ -106,9 +115,11 @@ class Activity {
 			}
 		}
 
-		//TODO: remove a mask
-		dialog.removeFromDocument();
-		broadcaster.sendEvent(new PopupEvent(null));
+		if (dialog.inDocument) {
+			//TODO: remove a mask
+			dialog.removeFromDocument();
+			broadcaster.sendEvent(new PopupEvent(null));
+		}
 		return true;
 	}
 
@@ -127,7 +138,6 @@ class Activity {
 			throw const UIException("Only one activity is allowed");
 
 		activity = this;
-		_containerId = containerId;
 		mount_();
 
 		if (_mainView === null)
@@ -139,15 +149,17 @@ class Activity {
 		application._ready(() {
 			onCreate_();
 
-			if (!_mainView.inDocument) //app might add it to Document manually
-				_mainView.addToDocument(_containerNode);
+			if (!_mainView.inDocument) { //app might add it to Document manually
+				Element container = containerId !== null ? document.query("#$containerId"): null;
+				_mainView.addToDocument(container != null ? container: document.body);
+
+				//the user might add dialog in onCreate_()
+				for (final View dialog in _dialogs)
+					_createDialog(dialog);
+			}
 
 			onEnterDocument_();
 		});
-	}
-	Element get _containerNode() {
-		final Element main = _containerId !== null ? document.query("#$_containerId"): null;
-		return main != null ? main: document.body;
 	}
 	/** Initializes the browser window, such as registering the events.
 	 */

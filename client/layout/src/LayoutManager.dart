@@ -73,6 +73,12 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 		_doLayout(new MeasureContext(), view);
 	}
 	void _doLayout(MeasureContext mctx, View view) {
+		if (view.parent === null) { //root
+			//handle profile since it has no parent to handel for it
+			setWidthByProfile(mctx, view, () => browser.size.width);
+			setHeightByProfile(mctx, view, () => browser.size.height);
+			AnchorRelation._positionRoot(view);
+		}
 		_layoutOfView(view).layout(mctx, view);
 		view.onLayout();
 	}

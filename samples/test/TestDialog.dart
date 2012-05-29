@@ -13,7 +13,7 @@ class TestDialog extends Activity {
 		btn.profile.text = "anchor: parent; location: center center";
 		btn.on.click.add((event) {
 			View dlg = new TextView("Clicked me to close");
-			dlg.profile.text = "location: center center";
+			dlg.profile.text = "location: center center;width:30%;height:20%";
 			dlg.classes.add("v-dialog");
 			dlg.on.click.add((e) {
 				removeDialog();

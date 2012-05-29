@@ -273,7 +273,7 @@ class View implements Hashable {
 	/** Removes this view from its parent.
 	 *
 	 * <p>If this view has no parent, [UIException] will be thrown.
-	 * Rather, if you'd like to remove [Activity.mainView], assign null or another view
+	 * Rather, if you'd like to remove [Activity.mainView], assign another view
 	 * to [Activity.mainView]. If you'd like to remove a dialog, use [Activity.removeDialog]
 	 * instead.
 	 *
