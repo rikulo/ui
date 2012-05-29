@@ -1,21 +1,20 @@
-//Sample Code: Layout Demostration
+//Sample Code: LinearLayout Test Performance 1
 
 #import('dart:html');
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 
-class TestLinearLayout3 extends Activity {
+class TestPerformance1 extends Activity {
 
 	void onCreate_() {
-		title = "Test 5: Performance Test";
+		title = "Test 1: Performance Test";
 
 		mainView.layout.text = "type: linear; orient: vertical";
 
 		for (int i = 0; i < 50; ++i) {
 			View hlayout = new View();
-			hlayout.profile.width = "flex";
-			hlayout.profile.height = "content";
+			hlayout.profile.text = "width: flex; height: content";
 			hlayout.layout.type = "linear";
 			hlayout.style.border = "1px solid #885";
 			mainView.addChild(hlayout);
@@ -25,9 +24,9 @@ class TestLinearLayout3 extends Activity {
 				view.style.backgroundColor = "orange";
 				view.style.padding = "5px";
 				view.style.textAlign = "center";
-				view.width = 50; //equivalent to view.profile.width = "50"
-				view.height = 30; //equivalent to view.profile.height = "30"
-					 //performance is much better if not to use "content" (default)
+				view.profile.text = "width: 50; height: 30";
+					//performance is much better if not to use "content" (default)
+					//note: don't assign to view.width/height directly since it is slower (measureWidth will be called)
 				hlayout.addChild(view);
 			}
 		}
@@ -35,5 +34,5 @@ class TestLinearLayout3 extends Activity {
 }
 
 void main() {
-	new TestLinearLayout3().run();
+	new TestPerformance1().run();
 }

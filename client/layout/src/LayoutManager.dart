@@ -86,9 +86,15 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	/** Set the width of the given view based on its profile.
 	 * It is an utility for implementing a layout.
 	 * <p>[defaultWidth] is used if the profile's width and view's width are not specified. Ignored if null.
+	 * <p>[defaultProfile], if not null, specifies the width that will be used if profile.width
+	 * is not specified.
 	 */
-	void setWidthByProfile(MeasureContext mctx, View view, AsInt width, [AsInt defaultWidth]) {
-		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.width);
+	void setWidthByProfile(MeasureContext mctx, View view, AsInt width,
+	[AsInt defaultWidth, AsString defaultProfile]) {
+		String profile = view.profile.width;
+		if (profile.isEmpty() && defaultProfile !== null)
+			profile = defaultProfile();
+		final LayoutAmountInfo amt = new LayoutAmountInfo(profile);
 		switch (amt.type) {
 			case LayoutAmountType.NONE:
 				//Use defaultWidth only if width is null (so user can assign view.width -- in addition to view.profile.width -- the same)
@@ -114,9 +120,15 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	/** Set the height of the given view based on its profile.
 	 * It is an utility for implementing a layout.
 	 * <p>[defaultHeight] is used if the profile's height and view's height are not specified. Ignored if null.
+	 * <p>[defaultProfile], if not null, specifies the width that will be used if profile.width
+	 * is not specified.
 	 */
-	void setHeightByProfile(MeasureContext mctx, View view, AsInt height, [AsInt defaultHeight]) {
-		final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.height);
+	void setHeightByProfile(MeasureContext mctx, View view, AsInt height,
+	[AsInt defaultHeight, AsString defaultProfile]) {
+		String profile = view.profile.height;
+		if (profile.isEmpty() && defaultProfile !== null)
+			profile = defaultProfile();
+		final LayoutAmountInfo amt = new LayoutAmountInfo(profile);
 		switch (amt.type) {
 			case LayoutAmountType.NONE:
 				//Use defaultHeight only if height is null (so user can assign view.height -- in addition to view.profile.height -- the same)

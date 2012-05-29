@@ -1,4 +1,4 @@
-//Sample Code: Layout Demostration
+//Sample Code: LinearLayout Test 4
 
 #import('dart:html');
 
@@ -9,7 +9,7 @@
 class TestLinearLayout4 extends Activity {
 
 	void onCreate_() {
-		title = "Test 7: hlayout in hlayout";
+		title = "Test 4: hlayout in hlayout";
 		View view = new View();
 		_setBorder(view);
 		view.layout.type = "linear";
