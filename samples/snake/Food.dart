@@ -1,18 +1,25 @@
+#library('rikulo:samples:snake');
+
+#import('dart:html');
+
+#import('SnakePoint.dart');
+#import('SnakeEnvironment.dart');
 
 class Food {
   
-  num _x, _y;
+  int _x, _y;
   bool redraw = true;
+  SnakeEnvironment snakeEnvironment;
   
-  Food(this._x, this._y);
+  Food(this.snakeEnvironment);
   
-  int get x() => _x;
+  num get x() => _x;
   set x(num value) {
     _x = value;
     redraw = true;
   }
   
-  int get y() => _y;
+  num get y() => _y;
   set y(num value) {
     _y = value;
     redraw = true;
@@ -20,8 +27,11 @@ class Food {
   
   relocate(List<SnakePoint> avoid) {
     
-    double suggestedX = Math.random()*39;
-    double suggestedY = Math.random()*39;
+    double suggestedX = Math.random()*((snakeEnvironment.width / snakeEnvironment.adjustment) - 1);
+    double suggestedY = Math.random()*((snakeEnvironment.height / snakeEnvironment.adjustment) - 1);
+    
+    suggestedX = suggestedX.floor() * snakeEnvironment.adjustment;
+    suggestedY = suggestedY.floor() * snakeEnvironment.adjustment;
     
     bool has = false;
     
@@ -33,25 +43,28 @@ class Food {
     if(has)
       return relocate(avoid);
     else {
-      x = suggestedX.floor() * 10;
-      y = suggestedY.floor() * 10;
+      x = suggestedX;
+      y = suggestedY;
+      
+      print("relocated ${this}");
     }
   }
   
   draw(CanvasRenderingContext2D context) {
-    if(redraw) {
-      context.beginPath();
-      context.fillStyle = "red";
-      context.rect(x, y, 10, 10);
-      context.closePath();
-      context.fill();
-      context.closePath();
+    num adjustment = snakeEnvironment.adjustment;
+    
+    print("adjustment: ${adjustment}");
       
-      redraw = false;
-    }
+    context.beginPath();
+    context.fillStyle = "red";
+    context.rect(_x, _y, adjustment, adjustment);
+    context.fill();
+    context.closePath();
+    
+    print("redrawing ${this}");
   }
   
   toString() {
-    return "x: ${_x} y: ${y}";
+    return "x: ${_x} y: ${_y}";
   }
 }

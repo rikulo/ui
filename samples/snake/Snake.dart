@@ -1,28 +1,26 @@
 
+#library('rikulo:samples:snake');
 
-class SnakePoint {
-  num x, y;
-  
-  SnakePoint(this.x, this.y);
-  
-  toString() {
-    return 'x: ${x} y: ${y}';
-  }
-}
+#import('dart:html');
+
+#import('SnakePoint.dart');
+#import('Food.dart');
+#import('SnakeEnvironment.dart');
 
 class Snake {
   final int UP = -2, DOWN = 2, LEFT=-1, RIGHT=1;
   int _direction;
   List<SnakePoint> body;
   bool initial = true;
+  SnakeEnvironment snakeEnvironment;
   
-  Snake() {
+  Snake(this.snakeEnvironment) {
     _direction = RIGHT;
     body = [];
     
-    body.addLast(new SnakePoint(10,10));
-    body.addLast(new SnakePoint(20,10));
-    body.addLast(new SnakePoint(30,10));
+    for(num i =0; i<3; i++) {
+      body.addLast(new SnakePoint(i * snakeEnvironment.adjustment,0));
+    }
   }
   
   int get direction() => _direction;
@@ -34,7 +32,7 @@ class Snake {
   }
   
   length() {
-    return body.length + 1;
+    return body.length;
   }
   
   head() {
@@ -42,24 +40,25 @@ class Snake {
   }
   
   nextMove() {
-    var head = new SnakePoint(body.last().x, body.last().y);
+    var snakeHead = new SnakePoint(head().x, head().y);
+    num adjustment = snakeEnvironment.adjustment;
     
     switch(_direction) {
       case UP:
-        head.y -= 10;
+        snakeHead.y -= adjustment;
         break;
       case DOWN:
-        head.y += 10;
+        snakeHead.y += adjustment;
         break;
       case LEFT:
-        head.x -= 10;
+        snakeHead.x -= adjustment;
         break;
       case RIGHT:
-        head.x += 10;
+        snakeHead.x += adjustment;
         break;
     }
     
-    return head;
+    return snakeHead;
   }
   
   move(SnakePoint to, bool grow) {
@@ -100,15 +99,17 @@ class Snake {
     drawSnake(context, body.last(), removed);
   }
   
-  drawSnake(CanvasRenderingContext2D context, SnakePoint head, SnakePoint removed) {
+  drawSnake(CanvasRenderingContext2D context, SnakePoint point, SnakePoint removed) {
     context.beginPath();
     context.fillStyle = "blue";
     
+    num adjustment = snakeEnvironment.adjustment;
+    
     if(removed != null) {
-      context.clearRect(removed.x, removed.y, 10, 10);
+      context.clearRect(removed.x, removed.y, adjustment, adjustment);
     }
     
-    context.rect(head.x, head.y, 10, 10);
+    context.rect(point.x, point.y, adjustment, adjustment);
     context.closePath();
     context.fill();
     context.closePath();

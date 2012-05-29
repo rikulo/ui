@@ -16,6 +16,7 @@ Button up, down, left, right;
 
 class SnakeCanvas extends Activity {
   final int UPDATE = 100;
+  final int height = 560, width = 560;
   int lastCycle = 0;
   SnakeEnvironment environment;
   TextView topBar;
@@ -30,7 +31,7 @@ class SnakeCanvas extends Activity {
   void onCreate_() {
     title = "Circles";
     
-    environment = new SnakeEnvironment(400,400);
+    environment = new SnakeEnvironment(height,width);
     
     //make rootView as vlayout
     mainView.layout.type = "linear";
@@ -45,7 +46,7 @@ class SnakeCanvas extends Activity {
         
     //canvas
     canvas = new Canvas();
-    canvas.profile.text = "width: 400; height: 400";
+    canvas.profile.text = "width: ${width}; height: ${height}";
     canvas.style.border = "1px solid blue";
     mainView.addChild(canvas);
     
