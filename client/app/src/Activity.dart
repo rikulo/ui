@@ -2,6 +2,11 @@
 //History: Fri, Mar 09, 2012  7:47:30 PM
 // Author: tomyeh
 
+/** A switching effect for hiding [from] and displaying [to],
+ * such as fade-out and slide-in.
+ */
+typedef void ViewSwitchEffect(View from, View to);
+
 /**
  * An activity is a UI, aka., a desktop, that the user can interact with.
  * An activity is identified with an URL.
@@ -56,7 +61,8 @@ class Activity {
 	/** Adds a dialog. The dialog will become the topmost view and obscure
 	 * the other dialogs and [mainView].
 	 *
-	 * <p>If specified, [effect] controls how to make the given dialog visible.
+	 * <p>If specified, [effect] controls how to make the given dialog visible,
+	 * and the previous dialog or [mainView] invisible.
 	 *
 	 * <p>To obscure the dialogs and mainView under it, a semi-transparent mask
 	 * will be inserted on top of them and underneath the given dialog.
@@ -64,7 +70,7 @@ class Activity {
 	 * class with [maskClass]. If you don't want the mask at all, you can specify
 	 * <code>null</code> to [maskClass].
 	 */
-	void addDialog(View dialog, [ViewEffect effect, String maskClass="v-mask"]) {
+	void addDialog(View dialog, [ViewSwitchEffect effect, String maskClass="v-mask"]) {
 		if (dialog.inDocument)
 			throw new UIException("Can't be in document: ${dialog}");
 		_dialogs.insertRange(0, 1, dialog);
@@ -78,10 +84,11 @@ class Activity {
 	}
 	/** Removes the topmost dialog or the given dialog.
 	 * If [dialog] is not specified, the topmost one is assumed.
-	 * <p>If specified, [effect] controls how to make the given dialog invisible.
+	 * <p>If specified, [effect] controls how to make the given dialog invisible,
+	 * and make the previous dialog or [mainView] visible.
 	 * <p>It returns false if the given dialog is not found.
 	 */
-	bool removeDialog([View dialog, ViewEffect effect]) {
+	bool removeDialog([View dialog, ViewSwitchEffect effect]) {
 		if (dialog === null) {
 			dialog = currentDialog;
 			if (dialog === null)

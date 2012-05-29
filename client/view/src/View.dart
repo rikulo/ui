@@ -233,7 +233,7 @@ class View implements Hashable {
 		if (isDescendantOf(child))
 			throw new UIException("$child is an ancestor of $this");
 		if (!isChildable_())
-			throw const UIException("No child allowed in Button");
+			throw new UIException("No child allowed in $this");
 		_addChild(child, beforeChild);
 	}
 	void _addChild(View child, View beforeChild, [Element childNode]) {
@@ -272,6 +272,11 @@ class View implements Hashable {
 
 	/** Removes this view from its parent.
 	 *
+	 * <p>If this view has no parent, [UIException] will be thrown.
+	 * Rather, if you'd like to remove [Activity.mainView], assign null or another view
+	 * to [Activity.mainView]. If you'd like to remove a dialog, use [Activity.removeDialog]
+	 * instead.
+	 *
 	 * <p>If the view is in the document ([inDocument] is true), the DOM
 	 * element will be removed too. Furthermore, if the view is added back
 	 * to the document, a new DOM element will be created to represent the child.
@@ -282,24 +287,9 @@ class View implements Hashable {
 	 * If it is a root view, it will be detached from the document.
 	 */
 	void removeFromParent() {
-		if (parent !== null) {
-			parent._removeChild(this);
-		} else {
-			_removeRoot();
-		}
-	}
-	void _removeRoot([bool exit=true]) {
-		final Element n = node;
-		if (n !== null) {
-			if (exit)
-				_exitDocument();
-			n.remove();
-		}
-		if (this == activity.mainView) {
-			activity.mainView = null;
-		} else {
-			activity.removeDialog(this);
-		}
+		if (parent === null)
+			throw new UIException("Unable to remove a root view, $this");
+		parent._removeChild(this);
 	}
 	void _removeChild(View child, [bool notifyChild=true, bool exit=true]) {
 		if (child.parent !== this)
@@ -323,7 +313,7 @@ class View implements Hashable {
 	}
 
 	/** Cuts this view and the DOM elements from its parent.
-	 * It is the first step of the so-called cut-and-paste feature.
+	 * It is the first step of the so-called cut-and-paste.
 	 * Unlike [removeFromParent], the DOM element will be kept intact (though it is
 	 * removed from the document). Then, you can attach both the view and DOM
 	 * element back by use of [ViewCut.pasteTo]. For example,
@@ -333,7 +323,9 @@ class View implements Hashable {
 	 * then remove-and-add (with [removeFromParent] and [addChild]).
 	 * However, unlike remove-and-add, you cannot modify the view after it
 	 * is cut (until it is pasted back). Otherwise, the result is unpreditable.
-	 * <p>It can be called even if it is the root view.
+	 *
+	 * <p>Notice that, like [removeFromParent], it can't be called if this view
+	 * is a root view (i.e., it has no parent).
 	 */
 	ViewCut cut() => new _ViewCut(this);
 
@@ -428,25 +420,42 @@ class View implements Hashable {
 	}
 
 	/** Adds this view to the document (i.e., the screen that the user interacts with).
-	 * all of its descendant views are added too.
+	 * All of its descendant views are added too.
+	 *
 	 * <p>You rarely need to invoke this method directly. In most cases,
 	 * you shall invoke [addChild] instead. If you'd like to add a dialog, you shall
 	 * use [Activity.addDialog] instead. To make a view as the main view, you shall
-	 * use [Activity.mainView] instead.
+	 * set it to [Activity.mainView] instead.
 	 *
-	 * <p>On the other hand, this method is usually used if you'd like to add
+	 * <p>This method is designed used to mix the use of HTML
+	 * elements and views. For example, you can use it if you'd like to add
 	 * a view to the content of [TextView] and its derives. For example, you want
 	 * replace a portion of [TextView] with a view (, say, to provide some behavior).
 	 *
 	 * <p>Notice that this method can be called only if this view has no parent.
 	 * If a view has a parent, whether it is attached to the document
 	 * shall be controlled by its parent.
+	 *
+	 * <ul>
+	 * <li>If [outer] is true, [node] will be replaced. Furthermore, you can specify
+	 * [keepId] to whether to use node's ID as view's UUID. By default, UUID won't be
+	 * changed. If you specify [keepId] to true, you have to make sure [node]'s ID
+	 * is unique in the whole browser window.</li>
+	 * <li>If [inner] is true, the view will be added as the last child element of [node].</li>
+	 * <li>If neither [outer] nor [inner] is true, you can specify [before] to
+	 * a DOM element that the view will be inserted before.</li></ul>
 	 */
 	void addToDocument(Element node,
-	[bool outer=false, bool inner=false, Element before]) {
-		if (parent !== null)
-			throw const UIException("No parent allowed");
-		_exitDocument();
+	[bool outer=false, bool inner=false, Element before, bool keepId=false]) {
+		if (parent !== null || inDocument)
+			throw new UIException("No parent allowed, nor attached twice: $this");
+
+		_addToDoc(node, outer, inner, before, keepId);
+	}
+	void _addToDoc(Element node,
+	[bool outer=false, bool inner=false, Element before, bool keepId=false]) {
+		if (outer && keepId && node.id)
+			_uuid = node.id;
 
 		String html = _asHTML();
 		Element p, nxt;
@@ -472,19 +481,17 @@ class View implements Hashable {
 	/** Removes this view from the document.
 	 * All of its descendant views are removed too.
 	 *
-	 * <p>You rarely need to invoke this method directly. In most cases,
-	 * you shall invoke [removeFromParent] instead.
-	 *
-	 * <p>On the other hand, this method is usually used if you'd like to undo
+	 * <p>You rarely need to invoke this method directly. This method is used to undo
 	 * the attachment made by [addToDocument].
+	 * Like [addToDocument], this method can be called only if this view has no parent.
 	 *
-	 * <p>Notice that this method can be called only if this view has no parent.
-	 * If a view has a parent, whether it is attached to the document
-	 * shall be controlled by its parent, and you shall use [removeFromParent] instead.
+	 * <p>If you add a child by [addChild] or [Activity.addDialog], you shall
+	 * invoke [removeFromParent] or [Activity.removeDialog] instead.
 	 */
 	void removeFromDocument() {
-		if (parent !== null)
-			throw const UIException("No parent allowed");
+		if (parent !== null || !inDocument)
+			throw new UIException("No parent allowed, nor detached twice: $this");
+
 		final Element n = node; //store first since _node will be cleared up later
 		_exitDocument();
 		n.remove();
@@ -581,14 +588,19 @@ class View implements Hashable {
 	 * It has no effect if it is not attached (i.e., [inDocument] is true).
 	 * <p>Notice that, for better performance, the view won't be redrawn immediately.
 	 * Rather, it is queued and all queued invalidation will be drawn together later.
-	 * If you'd like to draw all queued invalidation immediately, you can
-	 * invoke [ViewUtil.flushInvalidated].
-	 * <p>Also notice that, though not obvious,
-	 * <code>addToDocument(node, outer: true)</code> will cause the view to be
-	 * re-rendered immediately.
+	 * If you'd like to rerender it immediately, you can specify [immediate] to true.
+	 *
+	 * <p>See also [ViewUtil.flushInvalidated], which forces all queued invalidation
+	 * to be handle immediately (but you rarely need to call it).
 	 */
-	void invalidate() {
-		_invalidator.queue(this);
+	void invalidate([bool immediate=false]) {
+		if (!immediate) {
+			_invalidator.queue(this);
+		} else if (inDocument) {
+			final Element n = node; //cache it since _exitDocument will clean _node
+			_exitDocument();
+			_addToDoc(n, outer: true);
+		}
 	}
 
 	/** Called when something has changed and caused that the layout of this
