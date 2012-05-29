@@ -444,9 +444,13 @@ class View implements Hashable {
 	 * <li>If [inner] is true, the view will be added as the last child element of [node].</li>
 	 * <li>If neither [outer] nor [inner] is true, you can specify [before] to
 	 * a DOM element that the view will be inserted before.</li></ul>
+	 *
+	 * <p>Notice: if you specify [before], you don't have to specify [node].
+	 * On the other hand, [node] is required if you don't specify [before].
+	 * It also means you have to specify either [node] or [before].
 	 */
-	void addToDocument(Element node,
-	[bool outer=false, bool inner=false, Element before, bool keepId=false]) {
+	void addToDocument([Element node, bool outer=false, bool inner=false,
+	Element before, bool keepId=false]) {
 		if (parent !== null || inDocument)
 			throw new UIException("No parent allowed, nor attached twice: $this");
 

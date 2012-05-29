@@ -16,9 +16,9 @@ typedef void ViewSwitchEffect(View from, View to, Element mask);
 class Activity {
 	String _title = "";
 	View _mainView;
-	final List<View> _dialogs;
+	final List<_DialogInfo> _dlgInfos;
 
-	Activity(): _dialogs = [] {
+	Activity(): _dlgInfos = [] {
 		_title = application.name; //also force "get application()" to be called
 	}
 
@@ -51,6 +51,8 @@ class Activity {
 				main.height = prevroot.height;
 
 			if (prevroot.inDocument) {
+				main.addToDocument(before: prevroot.node);
+				prevroot.removeFromDocument();
 				//TODO: effect
 			}
 		}
@@ -63,7 +65,7 @@ class Activity {
 	 * any number of dialogs. To add a dialog, please use [addPopup].
 	 * The last added dialog will be on top of the rest, including [mainView].
 	 */
-	View get currentDialog() => _dialogs.isEmpty() ? null: _dialogs[0];
+	View get currentDialog() => _dlgInfos.isEmpty() ? null: _dlgInfos[0].dialog;
 	/** Adds a dialog. The dialog will become the topmost view and obscure
 	 * the other dialogs and [mainView].
 	 *
@@ -79,17 +81,20 @@ class Activity {
 	void addDialog(View dialog, [ViewSwitchEffect effect, String maskClass="v-mask"]) {
 		if (dialog.inDocument)
 			throw new UIException("Can't be in document: ${dialog}");
-		_dialogs.insertRange(0, 1, dialog);
+
+		final _DialogInfo dlgInfo = new _DialogInfo(dialog, maskClass);
+		_dlgInfos.insertRange(0, 1, dlgInfo);
 
 		if (_mainView !== null && _mainView.node !== null) { //dialog might be added in onCreate_()
-			_createDialog(dialog, effect);
+			_createDialog(dlgInfo, effect);
 			broadcaster.sendEvent(new PopupEvent(dialog));
 		}
 	}
-	void _createDialog(View dialog, [ViewSwitchEffect effect]) {
-		//TODO: add a mask
+	void _createDialog(_DialogInfo dlgInfo, [ViewSwitchEffect effect]) {
+		final Element parent = _mainView.node.parent;
+		dlgInfo.createMask(parent);
+		dlgInfo.dialog.addToDocument(parent);
 		//TODO: effect
-		dialog.addToDocument(_mainView.node.parent);
 	}
 	/** Removes the topmost dialog or the given dialog.
 	 * If [dialog] is not specified, the topmost one is assumed.
@@ -98,26 +103,31 @@ class Activity {
 	 * <p>It returns false if the given dialog is not found.
 	 */
 	bool removeDialog([View dialog, ViewSwitchEffect effect]) {
+		DialogInfo dlgInfo;
 		if (dialog === null) {
-			dialog = currentDialog;
-			if (dialog === null)
+			if (_dlgInfos.isEmpty())
 				throw const UIException("No dialog at all");
-			_dialogs.removeRange(0, 1);
+
+			dlgInfo = _dlgInfos[0];
+			_dlgInfos.removeRange(0, 1);
 		} else {
-			int j = _dialogs.length;
+			int j = _dlgInfos.length;
 			for (;;) {
 				if (--j < 0)
 					return false;
-				if (dialog == _dialogs[j]) {
-					_dialogs.removeRange(j, 1);
+
+				dlgInfo = _dlgInfos[j];
+				if (dialog == dlgInfo.dialog) {
+					_dlgInfos.removeRange(j, 1);
 					break;
 				}
 			}
 		}
 
-		if (dialog.inDocument) {
-			//TODO: remove a mask
-			dialog.removeFromDocument();
+		if (dlgInfo.dialog.inDocument) {
+			//TODO: effect
+			dlgInfo.removeMask();
+			dlgInfo.dialog.removeFromDocument();
 			broadcaster.sendEvent(new PopupEvent(null));
 		}
 		return true;
@@ -134,7 +144,7 @@ class Activity {
 	 * screen.
 	 */
 	void run([String containerId="v-main"]) {
-		if (activity !== null) //TODO: switching activity
+		if (activity !== null) //TODO: switching activity (from another activity)
 			throw const UIException("Only one activity is allowed");
 
 		activity = this;
@@ -154,8 +164,8 @@ class Activity {
 				_mainView.addToDocument(container != null ? container: document.body);
 
 				//the user might add dialog in onCreate_()
-				for (final View dialog in _dialogs)
-					_createDialog(dialog);
+				for (final _DialogInfo dlgInfo in _dlgInfos)
+					_createDialog(dlgInfo);
 			}
 
 			onEnterDocument_();
@@ -237,3 +247,29 @@ class Activity {
 }
 /** The current activity. */
 Activity activity;
+
+class _DialogInfo {
+	final View dialog;
+	final String maskClass;
+	Element _maskNode;
+	EventListener _listener;
+
+	_DialogInfo(View this.dialog, String this.maskClass);
+	void createMask(Element parent) {
+		_maskNode = new Element.html(
+			'<div class="v- ${maskClass}" style="width:${browser.size.width}px;height:${browser.size.height}px"></div>');
+		if (!browser.mobile) {
+			window.on.resize.add(_listener = (event) {
+				_maskNode.style.width = CSS.px(browser.size.width);
+				_maskNode.style.height = CSS.px(browser.size.height);
+			});
+		}
+
+		parent.insertAdjacentElement("beforeEnd", _maskNode);
+	}
+	void removeMask() {
+		if (_listener !== null)
+			window.on.resize.remove(_listener);
+		_maskNode.remove();
+	}
+}

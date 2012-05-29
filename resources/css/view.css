@@ -30,3 +30,8 @@ body {
 	padding: 3px 5px;
 	background-color: white;
 }
+.v-mask {
+	position: relative;
+	opacity: .6;
+	background: #E0E1E3;
+}
