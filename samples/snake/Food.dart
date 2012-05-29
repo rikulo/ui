@@ -53,15 +53,11 @@ class Food {
   draw(CanvasRenderingContext2D context) {
     num adjustment = snakeEnvironment.adjustment;
     
-    print("adjustment: ${adjustment}");
-      
     context.beginPath();
     context.fillStyle = "red";
     context.rect(_x, _y, adjustment, adjustment);
     context.fill();
     context.closePath();
-    
-    print("redrawing ${this}");
   }
   
   toString() {
