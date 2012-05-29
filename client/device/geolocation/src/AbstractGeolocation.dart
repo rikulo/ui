@@ -18,21 +18,12 @@
 
 	void addEventListener(String type, PositionEventListener listener, [Map options]) {
 		removeEventListener(type, listener);
-		var watchID = watchPosition(_wrapListener(listener), (XPositionError error) => print("onPositionError: code:"+error.code+", message:"+error.message), options); //TODO: log and forget?
+		var watchID = watchPosition(wrapListener_(listener), (PositionError error) => print("onPositionError: code:"+error.code+", message:"+error.message), options); //TODO: log and forget?
 		_listeners.add(new WatchIDInfo(listener, watchID));
 	}
 	
-	//parameter called back from javascript Cordova would be a {}, must convert paremeter type back to dart Position
-	GeolocationSuccessCallback _wrapListener(PositionEventListener listener) {   
-		return ((Position pos) { //Use Position to trick frogc to generate proper code
-		  listener(new PositionEvent(this, 
-			new Position(new XCoordinates(pos.coords.latitude, pos.coords.longitude, pos.coords.altitude, 
-					pos.coords.accuracy, pos.coords.altitudeAccuracy, pos.coords.heading, pos.coords.speed), pos.timestamp)));});
-	}
-
 	void removeEventListener(String type, PositionEventListener listener) {
 		for(int j = 0; j < _listeners.length; ++j) {
-		  print("AbstractGeolocation.removeEventListener: j:"+j);        
 			if (_listeners[j]._listener == listener) {
 				var watchID = _listeners[j]._watchID;
 				if (watchID !== null) {
@@ -47,6 +38,9 @@
 		return _listeners.isEmpty();
 	}
 	
+	/** Returns the wrapped GeolocationSuccessCallback from the given PositionEventListener */
+	abstract GeolocationSuccessCallback wrapListener_(PositionEventListener listener);
+	
 	/**
 	* Watches for position changes of this device.
 	* The Position is returned via the onSuccess callback function.
@@ -58,4 +52,30 @@
 	* Stop watching the motion Position.
 	*/
 	abstract void clearWatch(var watchID);
+}
+
+
+/** Coordinates */
+class CoordinatesImpl implements Coordinates {
+	/** Latitude in decimal degrees. */
+	double latitude;
+	/** Longitude in decimal degrees. */
+	double longitude;
+	/** Height of the position in meters above the ellipsoid. */
+	double altitude;
+	/** Accuracy level of the latitude and longitude in meters. */
+	double accuracy;
+	/** Accuracy level of altitude in meters. */
+	double altitudeAccuracy;
+	/** Direction of travel in degrees to true north (north is 0 degree, east is 90 degree, south is 180 degree, west is 270 degree) */
+	double heading;
+	/** Ground speed in meters per second */
+	double speed;
+	
+	CoordinatesImpl(this.latitude, this.longitude, this.altitude, 
+		this.accuracy, this.altitudeAccuracy, this.heading, this.speed);
+  CoordinatesImpl.from(Map coords) : this.latitude = coords["latitude"], this.longitude = coords["longitude"],
+      this.altitude = coords["altitude"], this.accuracy = coords["accuracy"], 
+      this.altitudeAccuracy = coords["altitudeAccuracy"], this.heading = coords["heading"],
+      this.speed = coords["speed"];
 }

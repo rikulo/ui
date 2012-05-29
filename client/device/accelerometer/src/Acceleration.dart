@@ -9,4 +9,7 @@ class Acceleration {
   final double z;
   final int timestamp;
   Acceleration(this.x, this.y, this.z, this.timestamp);
+  
+  Acceleration.from(Map accel) : this.x = accel["x"], this.y = accel["y"],
+      this.z = accel["z"], this.timestamp = accel["timestamp"];
 }

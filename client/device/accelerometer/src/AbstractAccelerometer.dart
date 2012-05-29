@@ -18,15 +18,10 @@
 
 	void addEventListener(String type, AccelerationEventListener listener, [Map options]) {
 		removeEventListener(type, listener);
-		var watchID = watchAcceleration(_wrapListener(listener), () => print("onAccelerationError"), options);
+		var watchID = watchAcceleration(wrapListener_(listener), () => print("onAccelerationError"), options);
 		_listeners.add(new WatchIDInfo(listener, watchID));
 	}
-	
-	AccelerometerSuccessCallback _wrapListener(AccelerationEventListener listener) {
-		return ((Acceleration accel) { //Use Acceleration to trick frogc to generate proper code
-		  listener(new AccelerationEvent(this, new Acceleration(accel.x, accel.y, accel.z, accel.timestamp)));});
-	}
-	
+
 	void removeEventListener(String type, AccelerationEventListener listener) {
 		for(int j = 0; j < _listeners.length; ++j) {
 		  print("AbstractAccelerometer.removeEventListener: j:"+j);        
@@ -43,6 +38,9 @@
 	bool isEventListened(String type) {
 		return _listeners.isEmpty();
 	}
+
+	/** Returns the wrapped AccelerometerSuccessCallback from the given AccelerationEventListener */
+	abstract AccelerometerSuccessCallback wrapListener_(AccelerationEventListener listener);
 	
 	/**
 	* Returns the motion Acceleration along x, y, and z axis at a specified(optional) regular interval.

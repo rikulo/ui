@@ -68,6 +68,10 @@ class ContactName {
 	String honorificSuffix;
 	
 	ContactName(this.formatted, this.familyName, this.givenName, this.middleName, this.honorificPrefix, this.honorificSuffix);
+	
+	ContactName.from(Map name) : this.formatted = name["formatted"], this.familyName = name["familyName"],
+	    this.givenName = name["givenName"], this.middleName = name["middleName"], 
+	    this.honorificPrefix = name["honorificPrefix"], this.honorificSuffix = name["honorificSuffix"];
 }
 
 class ContactAddress {
@@ -90,6 +94,11 @@ class ContactAddress {
 	
 	ContactAddress(this.pref, this.type, this.formatted, this.streetAddress, this.locality,
 		this.region, this.postalCode, this.country);
+	
+	ContactAddress.from(Map addr) : this.pref = addr["pref"], this.type = addr["type"], 
+	  this.formatted = addr["formatted"], this.streetAddress = addr["streetAddress"], 
+	  this.locality = addr["locality"], this.region = addr["region"], 
+	  this.postalCode = addr["postalCode"], this.country = addr["country"];
 }
 
 class ContactOrganization {
@@ -105,6 +114,9 @@ class ContactOrganization {
 	String title;
 	
 	ContactOrganization(this.pref, this.type, this.name, this.department, this.title);
+	
+  ContactOrganization.from(Map org) : this.pref = org["pref"], this.type = org["type"], 
+      this.name = org["name"], this.department = org["department"], this.title = org["title"];
 }
 
 class ContactField {
@@ -116,6 +128,8 @@ class ContactField {
 	bool pref;
 	
 	ContactField(this.type, this.value, this.pref);
+
+  ContactField.from(Map field) : this.type = field["type"], this.value = field["value"], this.pref = field["pref"];
 }
 
 class ContactsFindOptions {
@@ -127,6 +141,8 @@ class ContactsFindOptions {
   ContactsFindOptions(String filter, bool multiple) : 
 	this.filter = filter === null ? "" : filter,
 	this.multiple = multiple;
+  
+  ContactsFindOptions.from(Map opts) : this.filter = opts["filter"], this.multiple = opts["multiple"];
 }
 
 class ContactError {
@@ -143,4 +159,6 @@ class ContactError {
 	final int code;
 	
 	ContactError(this.code);
+	
+	ContactError.from(Map err) : code = err["code"];
 }

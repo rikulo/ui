@@ -47,7 +47,6 @@ class DeviceEvents {
 		_listeners = {};
 	}
 	DeviceEventListenerList get_(String type, DeviceEventListenerList listenerList) {
-		print("DeviceEventListenerList._get(): type:"+type);
 		_listeners[type] = listenerList;
 		return listenerList;
 	}
@@ -59,7 +58,7 @@ class DeviceEvents {
 	*/
 	bool isListened(String type) {
 		final p = _listeners[type];
-		return p !== null && !p.isEmpty();
+		return p !== null && p.isEventListened();
 	}
 	
 }
@@ -73,7 +72,6 @@ class _DeviceEventListenerList implements DeviceEventListenerList {
 	_DeviceEventListenerList(this._ptr, this._type);
 
 	DeviceEventListenerList add(Function listener, [Map options]) {
-		print("DeviceEventListenerList, add(): type"+_type);
 		_ptr.addEventListener(_type, listener, options);
 		return this;
 	}

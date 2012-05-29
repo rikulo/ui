@@ -9,4 +9,7 @@ class CompassHeading {
   final double headingAccuracy; //deviation in degrees between reported heading and true heading
   final int timestamp; //the time the heading was determined
   CompassHeading(this.magneticHeading, this.trueHeading, this.headingAccuracy, this.timestamp);
+  CompassHeading.from(Map heading) : this.magneticHeading = heading["magneticHeading"],
+      this.trueHeading = heading["trueHeading"], this.headingAccuracy = heading["headingAccuracy"],
+      this.timestamp = heading["timestamp"];
 }
