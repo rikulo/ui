@@ -31,7 +31,7 @@ body {
 	background-color: white;
 }
 .v-mask {
-	position: relative;
+	position: fixed;
 	opacity: .6;
 	background: #E0E1E3;
 }
