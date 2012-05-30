@@ -2,7 +2,7 @@
 //History: Mon, Apr 02, 2012  6:31:09 PM
 // Author: tomyeh
 
-typedef void _AnchorHandler(int offset, View anchor, View view);
+typedef void _AnchorHandler(int offset, var anchor, View view);
 
 /**
  * The anchor relationship.
@@ -74,8 +74,18 @@ class AnchorRelation {
 			}
 		}
 	}
+	//called by LayoutManager
+	static void _positionRoot(View view) {
+		final String loc = view.profile.location;
+		if (!loc.isEmpty()) { //nothing to do if empty (since no achor at all)
+			final List<int> handlers = _getHandlers(loc);
+			_anchorXHandlers[handlers[0]](0, _anchorOfRoot, view);
+			_anchorYHandlers[handlers[1]](0, _anchorOfRoot, view);
+		}
+	}
+
 	static List<int> _getHandlers(String loc) {
-		if (loc == null || loc.isEmpty())
+		if (loc.isEmpty()) //assume a value if empty since there is an anchor
 			loc = "top left";
 
 		List<int> handlers = _locations[loc];
@@ -112,21 +122,21 @@ final Map<String, List<int>> _locations = const {
 List<_AnchorHandler> get _anchorXHandlers() {
 	if (_cacheXAnchorHandlers == null)
 		_cacheXAnchorHandlers = [
-			(int offset, View anchor, View view) { //outer left
+			(int offset, var anchor, View view) { //outer left
 				view.left = offset - view.outerWidth;
 			},
-			(int offset, View anchor, View view) { //inner left
+			(int offset, var anchor, View view) { //inner left
 				view.left = offset;
 			},
-			(int offset, View anchor, View view) { //center
+			(int offset, var anchor, View view) { //center
 				view.left = offset + (anchor.outerWidth - view.outerWidth) ~/ 2;
 			},
-			(int offset, View anchor, View view) { //inner right
+			(int offset, var anchor, View view) { //inner right
 				view.left = offset
 					+ (anchor === view.parent ? anchor.innerWidth: anchor.outerWidth)
 					- view.outerWidth;
 			},
-			(int offset, View anchor, View view) { //outer right
+			(int offset, var anchor, View view) { //outer right
 				view.left = offset + anchor.outerWidth;
 			}
 		];
@@ -136,24 +146,34 @@ List<_AnchorHandler> _cacheXAnchorHandlers;
 List<_AnchorHandler> get _anchorYHandlers() {
 	if (_cacheYAnchorHandlers == null)
 		_cacheYAnchorHandlers = [
-			(int offset, View anchor, View view) {
+			(int offset, var anchor, View view) {
 				view.top = offset - view.outerHeight;
 			},
-			(int offset, View anchor, View view) {
+			(int offset, var anchor, View view) {
 				view.top = offset;
 			},
-			(int offset, View anchor, View view) {
+			(int offset, var anchor, View view) {
 				view.top = offset + (anchor.outerHeight - view.outerHeight) ~/ 2;
 			},
-			(int offset, View anchor, View view) { //inner bottom
+			(int offset, var anchor, View view) { //inner bottom
 				view.top = offset
 					+ (anchor === view.parent ? anchor.innerHeight: anchor.outerHeight)
 					- view.outerHeight;
 			},
-			(int offset, View anchor, View view) {
+			(int offset, var anchor, View view) {
 				view.top = offset + anchor.outerHeight;
 			}
 		];
 	return _cacheYAnchorHandlers;
 }
 List<_AnchorHandler> _cacheYAnchorHandlers;
+
+//Used by _positionRoot to simulate an achor for root views
+class _AnchorOfRoot {
+	const _AnchorOfRoot();
+	int get outerWidth() => browser.size.width;
+	int get innerWidth() => browser.size.width;
+	int get outerHeight() => browser.size.height;
+	int get innerHeight() => browser.size.height;
+}
+final _anchorOfRoot = const _AnchorOfRoot();

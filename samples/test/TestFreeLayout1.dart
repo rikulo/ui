@@ -1,4 +1,4 @@
-//Sample Code: Layout Demostration
+//Sample Code: FreeLayout Test 1
 
 #import('dart:html');
 

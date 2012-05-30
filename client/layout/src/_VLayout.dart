@@ -95,6 +95,10 @@ class _VLayout implements _RealLinearLayout {
 	void layout(MeasureContext mctx, View view, List<View> children) {
 		//1) size
 		final AsInt innerHeight = () => view.innerHeight;
+		final AsString defaultProfile = () { //default profile.width
+			final String s = view.layout.width;
+			return s.isEmpty() ? "content": s;
+		};
 		final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
 		final Map<View, LayoutSideInfo> childspcinfs = new Map();
 		final List<View> flexViews = new List();
@@ -149,7 +153,7 @@ class _VLayout implements _RealLinearLayout {
 			}
 
 			final AsInt defaultWidth = () => view.innerWidth - si.left - si.right;
-			layoutManager.setWidthByProfile(mctx, child, defaultWidth, defaultWidth);
+			layoutManager.setWidthByProfile(mctx, child, defaultWidth, defaultWidth, defaultProfile);
 		}
 
 		//1a) size flex

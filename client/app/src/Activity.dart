@@ -2,6 +2,13 @@
 //History: Fri, Mar 09, 2012  7:47:30 PM
 // Author: tomyeh
 
+/** A switching effect for hiding [from] and displaying [to],
+ * such as fade-out and slide-in.
+ * <p>[mask] is the element inserted between [from] and [to]. It is used
+ * to block the access of [from].
+ */
+typedef void ViewSwitchEffect(View from, View to, Element mask);
+
 /**
  * An activity is a UI, aka., a desktop, that the user can interact with.
  * An activity is identified with an URL.
@@ -9,10 +16,9 @@
 class Activity {
 	String _title = "";
 	View _mainView;
-	String _containerId;
-	final List<View> _dialogs;
+	final List<_DialogInfo> _dlgInfos;
 
-	Activity(): _dialogs = [] {
+	Activity(): _dlgInfos = [] {
 		_title = application.name; //also force "get application()" to be called
 	}
 
@@ -31,6 +37,11 @@ class Activity {
 	/** Sets the main view.
 	 */
 	void set mainView(View main) {
+		setMainView(main);
+	}
+	/** Sets the main view with an effect.
+	 */
+	void setMainView(View main, [ViewSwitchEffect effect]) {
 		final View prevroot = _mainView;
 		_mainView = main;
 		if (prevroot != null) {
@@ -40,7 +51,9 @@ class Activity {
 				main.height = prevroot.height;
 
 			if (prevroot.inDocument) {
-				throw const UIException("TODO");
+				main.addToDocument(before: prevroot.node);
+				prevroot.removeFromDocument();
+				//TODO: effect
 			}
 		}
 	}
@@ -52,11 +65,12 @@ class Activity {
 	 * any number of dialogs. To add a dialog, please use [addPopup].
 	 * The last added dialog will be on top of the rest, including [mainView].
 	 */
-	View get currentDialog() => _dialogs.isEmpty() ? null: _dialogs[0];
+	View get currentDialog() => _dlgInfos.isEmpty() ? null: _dlgInfos[0].dialog;
 	/** Adds a dialog. The dialog will become the topmost view and obscure
 	 * the other dialogs and [mainView].
 	 *
-	 * <p>If specified, [effect] controls how to make the given dialog visible.
+	 * <p>If specified, [effect] controls how to make the given dialog visible,
+	 * and the previous dialog or [mainView] invisible.
 	 *
 	 * <p>To obscure the dialogs and mainView under it, a semi-transparent mask
 	 * will be inserted on top of them and underneath the given dialog.
@@ -64,44 +78,58 @@ class Activity {
 	 * class with [maskClass]. If you don't want the mask at all, you can specify
 	 * <code>null</code> to [maskClass].
 	 */
-	void addDialog(View dialog, [ViewEffect effect, String maskClass="v-mask"]) {
+	void addDialog(View dialog, [ViewSwitchEffect effect, String maskClass="v-mask"]) {
 		if (dialog.inDocument)
 			throw new UIException("Can't be in document: ${dialog}");
-		_dialogs.insertRange(0, 1, dialog);
 
-		Element container = _mainView !== null ? _mainView.node: null;
-		if (container !== null) container = container.parent;
-		if (container === null) container = _containerNode;
-		//TODO: add a mask
-		dialog.addToDocument(container);
-		broadcaster.sendEvent(new PopupEvent(dialog));
+		final _DialogInfo dlgInfo = new _DialogInfo(dialog, maskClass);
+		_dlgInfos.insertRange(0, 1, dlgInfo);
+
+		if (_mainView !== null && _mainView.node !== null) { //dialog might be added in onCreate_()
+			_createDialog(dlgInfo, effect);
+			broadcaster.sendEvent(new PopupEvent(dialog));
+		}
+	}
+	void _createDialog(_DialogInfo dlgInfo, [ViewSwitchEffect effect]) {
+		final Element parent = _mainView.node.parent;
+		dlgInfo.createMask(parent);
+		dlgInfo.dialog.addToDocument(parent);
+		//TODO: effect
 	}
 	/** Removes the topmost dialog or the given dialog.
 	 * If [dialog] is not specified, the topmost one is assumed.
-	 * <p>If specified, [effect] controls how to make the given dialog invisible.
+	 * <p>If specified, [effect] controls how to make the given dialog invisible,
+	 * and make the previous dialog or [mainView] visible.
 	 * <p>It returns false if the given dialog is not found.
 	 */
-	bool removeDialog([View dialog, ViewEffect effect]) {
+	bool removeDialog([View dialog, ViewSwitchEffect effect]) {
+		DialogInfo dlgInfo;
 		if (dialog === null) {
-			dialog = currentDialog;
-			if (dialog === null)
+			if (_dlgInfos.isEmpty())
 				throw const UIException("No dialog at all");
-			_dialogs.removeRange(0, 1);
+
+			dlgInfo = _dlgInfos[0];
+			_dlgInfos.removeRange(0, 1);
 		} else {
-			int j = _dialogs.length;
+			int j = _dlgInfos.length;
 			for (;;) {
 				if (--j < 0)
 					return false;
-				if (dialog == _dialogs[j]) {
-					_dialogs.removeRange(j, 1);
+
+				dlgInfo = _dlgInfos[j];
+				if (dialog == dlgInfo.dialog) {
+					_dlgInfos.removeRange(j, 1);
 					break;
 				}
 			}
 		}
 
-		//TODO: remove a mask
-		dialog.removeFromDocument();
-		broadcaster.sendEvent(new PopupEvent(null));
+		if (dlgInfo.dialog.inDocument) {
+			//TODO: effect
+			dlgInfo.removeMask();
+			dlgInfo.dialog.removeFromDocument();
+			broadcaster.sendEvent(new PopupEvent(null));
+		}
 		return true;
 	}
 
@@ -116,11 +144,10 @@ class Activity {
 	 * screen.
 	 */
 	void run([String containerId="v-main"]) {
-		if (activity !== null) //TODO: switching activity
+		if (activity !== null) //TODO: switching activity (from another activity)
 			throw const UIException("Only one activity is allowed");
 
 		activity = this;
-		_containerId = containerId;
 		mount_();
 
 		if (_mainView === null)
@@ -132,15 +159,17 @@ class Activity {
 		application._ready(() {
 			onCreate_();
 
-			if (!_mainView.inDocument) //app might add it to Document manually
-				_mainView.addToDocument(_containerNode);
+			if (!_mainView.inDocument) { //app might add it to Document manually
+				Element container = containerId !== null ? document.query("#$containerId"): null;
+				_mainView.addToDocument(container != null ? container: document.body);
+
+				//the user might add dialog in onCreate_()
+				for (final _DialogInfo dlgInfo in _dlgInfos)
+					_createDialog(dlgInfo);
+			}
 
 			onEnterDocument_();
 		});
-	}
-	Element get _containerNode() {
-		final Element main = _containerId !== null ? document.query("#$_containerId"): null;
-		return main != null ? main: document.body;
 	}
 	/** Initializes the browser window, such as registering the events.
 	 */
@@ -218,3 +247,29 @@ class Activity {
 }
 /** The current activity. */
 Activity activity;
+
+class _DialogInfo {
+	final View dialog;
+	final String maskClass;
+	Element _maskNode;
+	EventListener _listener;
+
+	_DialogInfo(View this.dialog, String this.maskClass);
+	void createMask(Element parent) {
+		_maskNode = new Element.html(
+			'<div class="v- ${maskClass}" style="width:${browser.size.width}px;height:${browser.size.height}px"></div>');
+		if (!browser.mobile) {
+			window.on.resize.add(_listener = (event) {
+				_maskNode.style.width = CSS.px(browser.size.width);
+				_maskNode.style.height = CSS.px(browser.size.height);
+			});
+		}
+
+		parent.insertAdjacentElement("beforeEnd", _maskNode);
+	}
+	void removeMask() {
+		if (_listener !== null)
+			window.on.resize.remove(_listener);
+		_maskNode.remove();
+	}
+}

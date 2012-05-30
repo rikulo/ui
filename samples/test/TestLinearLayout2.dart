@@ -1,4 +1,4 @@
-//Sample Code: Layout Demostration
+//Sample Code: LinearLayout Test 2
 
 #import('dart:html');
 
@@ -8,7 +8,7 @@
 class TestLinearLayout2 extends Activity {
 
 	void onCreate_() {
-		title = "Test 4: Vertical Linear Layout";
+		title = "Test 2: Vertical Linear Layout";
 
 		mainView.style.backgroundColor = "#cca";
 
