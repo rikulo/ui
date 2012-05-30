@@ -19,13 +19,24 @@ class ViewEvent {
 	final Event _domEvt;
 	final String _type;
 	final int _stamp;
+	/** The offset relative to [target]'s coordinate.
+	 */
+	Offset offset;
 	bool _propStop = false;
 
-	ViewEvent(View target, String type):
+	/** Constructor.
+	 *
+	 * <p>[target] is the view that this event is targeting.
+	 * [type] is the event type, such as click.
+	 * <p>[pageX] and [pageY] is the mouse pointer relative to the document.
+	 * If this event is constructed from a DOM event, it is
+	 */
+	ViewEvent(View target, String type, [int pageX=0, int pageY=0]):
 	_domEvt = null, _type = type, _stamp = new Date.now().value {
 		if (type == null)
 			throw const UIException("type required");
 		_target = currentTarget = target;
+		_updateOffset(pageX, pageY);
 	}
 	/** Constructs a view event from a DOM event.
 	 * It is rarely called unless you'd like to wrap a DOM event.
@@ -34,6 +45,18 @@ class ViewEvent {
 	_domEvt = domEvent, _type = type != null ? type: domEvent.type,
 	_stamp = domEvent.timeStamp {
 		_target = currentTarget = target;
+		_updateOffset(domEvent.pageX, domEvent.pageY);
+	}
+	void _updateOffset(int pageX, int pageY) {
+		offset = new Offset(pageX, pageY);
+		try {
+			if (pageX != 0 || pageY != 0) {
+				final Offset ofs = new DOMQuery(target).documentOffset;
+				offset.left -= ofs.left;
+				offset.top -= ofs.top;
+			}
+		} catch (final e) {
+		}
 	}
 
 	/** Returns the view that this event is targeting  to.

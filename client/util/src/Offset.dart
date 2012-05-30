@@ -20,6 +20,8 @@ interface Offset default _Offset {
 
 	Offset(int left, int top);
 	bool operator ==(Offset other);
+	Offset operator -(Offset other);
+	Offset operator +(Offset other);
 }
 /**
  * The 3D offset.
@@ -49,6 +51,10 @@ class _Offset implements Offset {
 
 	bool operator ==(Offset other)
 	=> other !== null && left == other.left && top == other.top;
+	Offset operator -(Offset other)
+	=> new Offset(left - other.left, top - other.top);
+	Offset operator +(Offset other)
+	=> new Offset(left + other.left, top + other.top);
 
 	int hashCode() => left + top;
 	String toString() => "($left, $top)";
@@ -66,6 +72,10 @@ class _Offset3d extends _Offset implements Offset3d {
 
 	bool operator ==(Offset3d other)
 	=> other !== null && left == other.left && top == other.top && zIndex == other.zIndex;
+	Offset operator -(Offset other)
+	=> new Offset3d(left - other.left, top - other.top, zIndex - other.zIndex);
+	Offset operator +(Offset other)
+	=> new Offset3d(left + other.left, top + other.top, zIndex + other.zIndex);
 
 	int hashCode() => x + y + z;
 	String toString() => "($x, $y, $z)";

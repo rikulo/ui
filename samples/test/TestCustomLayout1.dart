@@ -1,4 +1,4 @@
-//Sample Code: Layout Demostration
+//Sample Code: Custom Layout Test 1
 
 #import('dart:html');
 
@@ -8,7 +8,7 @@
 class TestCustomLayout1 extends Activity {
 
 	void onCreate_() {
-		title = "Custom Layout Test";
+		title = "Custom Layout Test 1";
 
 		mainView.style.backgroundColor = "#cca";
 

@@ -76,7 +76,8 @@ class Activity {
 	 * will be inserted on top of them and underneath the given dialog.
 	 * You can control the transparent and styles by giving a different CSS
 	 * class with [maskClass]. If you don't want the mask at all, you can specify
-	 * <code>null</code> to [maskClass].
+	 * <code>null</code> to [maskClass]. For example, if the dialog occupies
+	 * the whole screen, you don't have to generate the mask.
 	 */
 	void addDialog(View dialog, [ViewSwitchEffect effect, String maskClass="v-mask"]) {
 		if (dialog.inDocument)
@@ -256,20 +257,24 @@ class _DialogInfo {
 
 	_DialogInfo(View this.dialog, String this.maskClass);
 	void createMask(Element parent) {
-		_maskNode = new Element.html(
-			'<div class="v- ${maskClass}" style="width:${browser.size.width}px;height:${browser.size.height}px"></div>');
-		if (!browser.mobile) {
-			window.on.resize.add(_listener = (event) {
-				_maskNode.style.width = CSS.px(browser.size.width);
-				_maskNode.style.height = CSS.px(browser.size.height);
-			});
-		}
+		if (maskClass !== null) {
+			_maskNode = new Element.html(
+				'<div class="v- ${maskClass}" style="width:${browser.size.width}px;height:${browser.size.height}px"></div>');
+			if (!browser.mobile) {
+				window.on.resize.add(_listener = (event) {
+					_maskNode.style.width = CSS.px(browser.size.width);
+					_maskNode.style.height = CSS.px(browser.size.height);
+				});
+			}
 
-		parent.insertAdjacentElement("beforeEnd", _maskNode);
+			parent.insertAdjacentElement("beforeEnd", _maskNode);
+		}
 	}
 	void removeMask() {
-		if (_listener !== null)
-			window.on.resize.remove(_listener);
-		_maskNode.remove();
+		if (_maskNode !== null) {
+			if (_listener !== null)
+				window.on.resize.remove(_listener);
+			_maskNode.remove();
+		}
 	}
 }

@@ -1,7 +1,5 @@
 //Sample Code: Layout Demostration
 
-#import('dart:html');
-
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 

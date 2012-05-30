@@ -1,6 +1,5 @@
 //Sample Code: Viewport
 
-#import('dart:html');
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 

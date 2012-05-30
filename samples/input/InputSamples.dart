@@ -1,7 +1,5 @@
 //Sample Code: Input Samples
 
-#import('dart:html');
-
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/event/event.dart');

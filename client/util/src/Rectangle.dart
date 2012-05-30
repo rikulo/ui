@@ -43,6 +43,10 @@ class _Rectangle extends _Offset implements Rectangle {
 	bool operator ==(Rectangle other)
 	=> other !== null && left == other.left && top == other.top
 	&& right == other.right && bottom == other.bottom;
+	Offset operator -(Offset other)
+	=> new Rectangle(left - other.left, top - other.top, right - other.right, bottom - other.bottom);
+	Offset operator +(Offset other)
+	=> new Rectangle(left + other.left, top + other.top, right + other.right, bottom + other.bottom);
 
 	int hashCode() => left + top + right + bottom;
 	String toString() => "($left, $top ,$right, $bottom)";
