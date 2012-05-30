@@ -2,7 +2,7 @@
 //History: Fri, May 4, 2012  04:45:33 PM
 // Author: henrichen
 
-/*abstract*/ class AbstractAccelerometer implements Accelerometer, DeviceEventTarget {
+/*abstract*/ class AbstractAccelerometer implements Accelerometer {
 	AccelerationEvents _on;
 	List<WatchIDInfo> _listeners;
 	
@@ -24,7 +24,6 @@
 
 	void removeEventListener(String type, AccelerationEventListener listener) {
 		for(int j = 0; j < _listeners.length; ++j) {
-		  print("AbstractAccelerometer.removeEventListener: j:"+j);        
 			if (_listeners[j]._listener == listener) {
 				var watchID = _listeners[j]._watchID;
 				if (watchID !== null) {

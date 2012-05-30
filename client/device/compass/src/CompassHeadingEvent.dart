@@ -12,6 +12,3 @@ class CompassHeadingEvent extends DeviceEvent {
 	final double headingAccuracy;
 	final int timestamp;
 }
-
-/** CompassHeadingEvent listener function */
-typedef void CompassHeadingEventListener(CompassHeadingEvent event);

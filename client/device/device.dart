@@ -15,6 +15,7 @@
 #import("camera/camera.dart");
 #import("capture/capture.dart");
 #import("compass/compass.dart");
+#import("connection/connection.dart");
 #import("contacts/contacts.dart");
 #import("geolocation/geolocation.dart");
 #import("notification/notification.dart");

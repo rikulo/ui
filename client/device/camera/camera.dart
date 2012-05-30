@@ -5,3 +5,8 @@
 #library("rikulo:device:camera");
 
 #source("src/Camera.dart");
+#source("src/CameraOptions.dart");
+#source("src/DestinationType.dart");
+#source("src/EncodingType.dart");
+#source("src/MediaType.dart");
+#source("src/PictureSourceType.dart");

@@ -5,4 +5,10 @@
 #library("rikulo:device:capture");
 
 #source("src/Capture.dart");
+#source("src/ConfigurationData.dart");
+#source("src/CaptureAudioOptions.dart");
+#source("src/CaptureError.dart");
+#source("src/CaptureImageOptions.dart");
+#source("src/CaptureVideoOptions.dart");
 #source("src/MediaFile.dart");
+#source("src/MediaFileData.dart");

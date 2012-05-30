@@ -83,13 +83,24 @@ toDartMap(var jsmap, [Function converter = null]) {
 	return null;
 }
 
-List<Function> jsCall0 = const []; //jump table, would be set by jsutil.js
-checkJSUtil() {
+List<Function> jsCall0 = const []; //DO NOT change the jump table name. Would be used by jsutil.js
+initJSCall() { //initialize jump table
   if (jsCall0.length == 0) {
-    //TODO, dynamic loading of the jsutil.js?
-    throw const SystemException("jsutil.js must be loaded first");
+    _injectJavaScript("if(window.initJSCall) window.initJSCall();"); //calling JavaScript function
+    if (jsCall0.length == 0) {
+      throw const SystemException("jsutil.js must be loaded first");
+    }
   }
 }
+
+_injectJavaScript(String script) {
+  var s = new Element.tag("script");
+  s.attributes["type"] = "text/javascript";
+  s.text = script;
+  document.body.nodes.add(s);
+  s.remove();
+}
+
 jsCall(String op, [List args = const []]) {
 	return jsCall0[0](op, args); //function table
 }

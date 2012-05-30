@@ -218,19 +218,11 @@ var _natives = {
 
 //bridge for Dart to JavaScript(@see JSUtil.dart)
 function initJSCall() {
-	Isolate.$isolateProperties.jsCall0[0] = {
-		$call$2: function(name, args) { //tricky, follow dart2js
-			return _natives[name].apply(this, args);
-		}
-	};
-}
-if (Isolate && Isolate.$isolateProperties) {
-	initJSCall();
-} else if (typeof window != 'undefined' && typeof document != 'undefined' &&
-    window.addEventListener && document.readyState == 'loading') {
-	window.addEventListener('DOMContentLoaded', function() {
-   		if (Isolate && Isolate.$isolateProperties) {
-			initJSCall();
-		}
-  	});
+	if (window.Isolate && window.Isolate.$isolateProperties) {
+		window.Isolate.$isolateProperties.jsCall0[0] = {
+			$call$2: function(name, args) { //tricky, follow dart2js
+				return _natives[name].apply(this, args);
+			}
+		};
+	}
 }
