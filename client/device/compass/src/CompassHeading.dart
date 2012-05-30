@@ -2,7 +2,6 @@
 //History: Fri, May 11, 2012  10:11:22 AM
 // Author: henrichen
 
-/** Accleration */
 class CompassHeading {
   final double magneticHeading; //0 ~ 359.99 degree
   final double trueHeading; //heading relative to geographic north pole

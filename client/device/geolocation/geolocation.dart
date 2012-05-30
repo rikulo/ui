@@ -7,8 +7,12 @@
 #import("dart:html");
 #import("../../deviceimpl/deviceimpl.dart");
 
-#source("src/Position.dart");
-#source("src/Geolocation.dart");
-#source("src/PositionEvent.dart");
-#source("src/PositionEvents.dart");
+#source("src/GeolocationOptions.dart");
 #source("src/AbstractGeolocation.dart");
+#source("src/Geolocation.dart");
+#source("src/Position.dart");
+#source("src/PositionEvent.dart");
+#source("src/PositionEventListenerList.dart");
+#source("src/PositionEvents.dart");
+#source("src/PositionErrorImpl.dart");
+#source("src/CoordinatesImpl.dart");

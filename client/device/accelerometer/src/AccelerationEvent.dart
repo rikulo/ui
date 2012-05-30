@@ -3,7 +3,7 @@
 // Author: henrichen
 
 class AccelerationEvent extends DeviceEvent {
-	AccelerationEvent(DeviceEventTarget target, Acceleration data) :
+	AccelerationEvent(Accelerometer target, Acceleration data) :
 		x = data.x, y = data.y, z = data.z, timestamp = data.timestamp;
 	
 	final double x;
@@ -11,6 +11,3 @@ class AccelerationEvent extends DeviceEvent {
 	final double z;
 	final int timestamp;
 }
-
-/** AcclerationEvent listener function */
-typedef void AccelerationEventListener(AccelerationEvent event);

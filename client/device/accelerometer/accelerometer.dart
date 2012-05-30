@@ -6,8 +6,10 @@
 
 #import("../../deviceimpl/deviceimpl.dart");
 
-#source("src/Acceleration.dart");
-#source("src/Accelerometer.dart");
-#source("src/AccelerationEvent.dart");
-#source("src/AccelerationEvents.dart");
 #source("src/AbstractAccelerometer.dart");
+#source("src/Acceleration.dart");
+#source("src/AccelerationEvent.dart");
+#source("src/AccelerationEventListenerList.dart");
+#source("src/AccelerationEvents.dart");
+#source("src/Accelerometer.dart");
+#source("src/AccelerometerOptions.dart");

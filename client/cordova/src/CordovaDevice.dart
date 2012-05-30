@@ -33,7 +33,7 @@ class CordovaDevice implements Device {
 		geolocation = new CordovaGeolocation();
 		notification = new CordovaNotification();
 		
-		checkJSUtil(); //check if jsutil.js is loaded
+		initJSCall(); //initialize jsutil.js
 		application.addReadyCallback((then) {
 			if (_ready) {
 				then();
@@ -44,7 +44,6 @@ class CordovaDevice implements Device {
 	}
 	
 	void _doUntilReady(Task then) {
-		var f = _onDeviceReady; //avoid frogc tree shaking
 		readyFunction = () {
 			_ready = true;
 			_registerDeviceEvents();
@@ -56,7 +55,6 @@ class CordovaDevice implements Device {
 	}
 	
 	void _registerDeviceEvents() {
-	  print("_registerDeviceEvents");
 		jsCall("document.addEventListener", ["pause", _onPause, false]);
 		jsCall("document.addEventListener", ["resume", _onResume, false]);
 		jsCall("document.addEventListener", ["online", _onOnline, false]);

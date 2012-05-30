@@ -8,7 +8,7 @@ typedef CompassErrorCallback();
 /**
  * Obtain direction this device is pointing.
  */
-interface Compass {
+interface Compass extends DeviceEventTarget {
   final CompassHeadingEvents on;
 
   /**

@@ -7,5 +7,7 @@
 #import("dart:core");
 
 #source("src/DeviceEvent.dart");
+#source("src/DeviceEventListenerList.dart");
 #source("src/DeviceEvents.dart");
-
+#source("src/DeviceEventTarget.dart");
+#source("src/WatchIDInfo.dart");

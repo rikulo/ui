@@ -6,8 +6,10 @@
 
 #import("../../deviceimpl/deviceimpl.dart");
 
-#source("src/CompassHeading.dart");
-#source("src/Compass.dart");
-#source("src/CompassHeadingEvent.dart");
-#source("src/CompassHeadingEvents.dart");
 #source("src/AbstractCompass.dart");
+#source("src/Compass.dart");
+#source("src/CompassHeading.dart");
+#source("src/CompassHeadingEvent.dart");
+#source("src/CompassHeadingEventListenerList.dart");
+#source("src/CompassHeadingEvents.dart");
+#source("src/CompassOptions.dart");
