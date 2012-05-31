@@ -35,6 +35,12 @@ implements LayoutDeclaration {
 		setProperty("spacing", value);
 	}
 
+	String get gap()
+		=> getPropertyValue("gap");
+	void set gap(String value) {
+		setProperty("gap", value);
+	}
+
 	String get width()
 		=> getPropertyValue("width");
 	void set width(String value) {

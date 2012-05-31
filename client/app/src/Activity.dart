@@ -104,7 +104,7 @@ class Activity {
 	 * <p>It returns false if the given dialog is not found.
 	 */
 	bool removeDialog([View dialog, ViewSwitchEffect effect]) {
-		DialogInfo dlgInfo;
+		_DialogInfo dlgInfo;
 		if (dialog === null) {
 			if (_dlgInfos.isEmpty())
 				throw const UIException("No dialog at all");
@@ -267,7 +267,7 @@ class _DialogInfo {
 				});
 			}
 
-			parent.insertAdjacentElement("beforeEnd", _maskNode);
+			parent.$dom_appendChild(_maskNode);
 		}
 	}
 	void removeMask() {

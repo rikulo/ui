@@ -11,7 +11,7 @@ class LayoutSideInfo {
 
 	static RegExp _reWord = const RegExp(@"(\w+)");
 
-	LayoutSideInfo(String profile, int defaultValue, [LayoutSideInfo defaultInfo]) {
+	LayoutSideInfo(String profile, [int defaultValue, LayoutSideInfo defaultInfo]) {
 		if (profile != null && !profile.isEmpty()) {
 			List<int> wds = [];
 			for (final Match m in _reWord.allMatches(profile)) {
@@ -46,7 +46,7 @@ class LayoutSideInfo {
 			bottom = defaultInfo.bottom;
 			left = defaultInfo.left;
 			right = defaultInfo.right;
-		} else {
+		} else if (defaultValue !== null) {
 			top = bottom = left = right = defaultValue;
 		}
 	}

@@ -340,13 +340,15 @@ class View implements Hashable {
 	 */
 	void insertChildToDocument_(View child, var childInfo, View beforeChild) {
 		if (beforeChild !== null) {
-			if (childInfo is Element)
-				beforeChild.node.insertAdjacentElement("beforeBegin", childInfo);
-			else
+			if (childInfo is Element) {
+				final Element before = beforeChild.node;
+				before.parent.insertBefore(childInfo, before);
+			} else {
 				beforeChild.node.insertAdjacentHTML("beforeBegin", childInfo);
+			}
 		} else {
 			if (childInfo is Element)
-				innerNode.insertAdjacentElement("beforeEnd", childInfo);
+				innerNode.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement
 			else
 				innerNode.insertAdjacentHTML("beforeEnd", childInfo);
 		}

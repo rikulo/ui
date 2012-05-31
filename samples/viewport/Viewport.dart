@@ -83,7 +83,7 @@ class Viewport extends View {
 	void insertChildToDocument_(View child, var childInfo, View beforeChild) {
 		if (child === _toolbar) {
 			if (childInfo is Element)
-				getNode("toolbar").insertAdjacentElement("beforeEnd", childInfo);
+				getNode("toolbar").insertBefore(childInfo, null); //note: Firefox not support insertAdjacentElement
 			else
 				getNode("toolbar").insertAdjacentHTML("beforeEnd", childInfo);
 		} else {

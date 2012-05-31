@@ -26,11 +26,32 @@ default LayoutDeclarationImpl {
 	 * <p>Default: <code>start</code>
 	 */
 	String align;
-	/** The spacing among child views.
+	/** The spacing between two adjacent child views and
+	 * between a child view and the border.
 	 * It can be overriden by child view's [View.profile.spacing].
+	 *
 	 * <p>Syntax: <code>spacing: #n1 [#n2 [#n3 #n4]];</code>
+	 * <p>Default: 2
+	 *
+	 * <p>If the spacing at the left and at the right is different,
+	 * the horizontal spacing of two adjacent views is the maximal value of them.
+	 * Similarily, The vertical spacing is the maximal
+	 * value of the spacing at the top and at the bottom.
+	 * If you prefer a different value, specify it in [gap].
 	 */
 	String spacing;
+	/** The gap between two adjacent child views.
+	 * If not specified, the value specified at [spacing] will be used.
+	 *
+	 * <p>Syntax: <code>gap: #n1 [#n2];</code>
+	 * <p>Default: <i>empty</i> (i.e., dependong on [spacing])
+	 *
+	 * <p>If you prefer to have a value other than [spacing], you can
+	 * specify [gap]. Then, [spacing] controls only the spacing between
+	 * a child view and the border, while [gap] controls the spacing
+	 * between two child views.
+	 */
+	String gap;
 	/** The width of each child view.
 	 * It can be overriden by child view's [View.profile.width].
 	 * <p>Syntax: <code>width: #n | content | flex | flex #n;</code>

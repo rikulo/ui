@@ -72,9 +72,9 @@ class _Offset3d extends _Offset implements Offset3d {
 
 	bool operator ==(Offset3d other)
 	=> other !== null && left == other.left && top == other.top && zIndex == other.zIndex;
-	Offset operator -(Offset other)
+	Offset operator -(Offset3d other)
 	=> new Offset3d(left - other.left, top - other.top, zIndex - other.zIndex);
-	Offset operator +(Offset other)
+	Offset operator +(Offset3d other)
 	=> new Offset3d(left + other.left, top + other.top, zIndex + other.zIndex);
 
 	int hashCode() => x + y + z;
