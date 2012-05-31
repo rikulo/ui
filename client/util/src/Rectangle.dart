@@ -43,9 +43,9 @@ class _Rectangle extends _Offset implements Rectangle {
 	bool operator ==(Rectangle other)
 	=> other !== null && left == other.left && top == other.top
 	&& right == other.right && bottom == other.bottom;
-	Offset operator -(Rectangle other)
+	Rectangle operator -(Rectangle other)
 	=> new Rectangle(left - other.left, top - other.top, right - other.right, bottom - other.bottom);
-	Offset operator +(Rectangle other)
+	Rectangle operator +(Rectangle other)
 	=> new Rectangle(left + other.left, top + other.top, right + other.right, bottom + other.bottom);
 
 	int hashCode() => left + top + right + bottom;
