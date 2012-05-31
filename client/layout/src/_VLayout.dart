@@ -10,16 +10,19 @@ class _VLayout implements _RealLinearLayout {
 		final LayoutAmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.height);
 		final int maxHgh = view.parent !== null ? view.parent.innerHeight: browser.size.height;
 		final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
-		int height = 0, prevSpacingBottom = 0;
+		final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
+		int height = 0, prevSpacing;
 		for (final View child in view.children) {
 			if (!view.shallLayout_(child) || child.profile.anchorView !== null)
 				continue; //ignore anchored
 
 			//add spacing to height
 			final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
-			if ((height += prevSpacingBottom + si.top) >= maxHgh)
+			height += prevSpacing === null ? si.top: //first
+				gapinf.top !== null ? gapinf.top: Math.max(prevSpacing, si.top);
+			if (height >= maxHgh)
 				return maxHgh;
-			prevSpacingBottom = si.bottom;
+			prevSpacing = si.bottom;
 
 			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.height);
 			if (amt.type == LayoutAmountType.NONE) {
@@ -47,7 +50,8 @@ class _VLayout implements _RealLinearLayout {
 			}
 		}
 
-		height += prevSpacingBottom + new DOMQuery(view.node).borderWidth * 2;
+		height += new DOMQuery(view.node).borderWidth * 2
+			+ (prevSpacing !== null ? prevSpacing: spcinf.top + spcinf.bottom);
 		return height >= maxHgh ? maxHgh: height;
 	}
 	int measureWidth(MeasureContext mctx, View view) {
@@ -62,7 +66,7 @@ class _VLayout implements _RealLinearLayout {
 
 			//add spacing to height
 			final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
-			int wd = si.left + si.right + borderWd;
+			int wd = si.left + si.right + borderWd; //spacing of border
 			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.width);
 			if (amt.type == LayoutAmountType.NONE) {
 				if (child.width != null)  {
@@ -100,10 +104,11 @@ class _VLayout implements _RealLinearLayout {
 			return s.isEmpty() ? "content": s;
 		};
 		final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
+		final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
 		final Map<View, LayoutSideInfo> childspcinfs = new Map();
 		final List<View> flexViews = new List();
 		final List<int> flexs = new List();
-		int nflex = 0, assigned = 0, prevSpacingBottom = 0;
+		int nflex = 0, assigned = 0, prevSpacing;
 		for (final View child in children) {
 			if (!view.shallLayout_(child)) {
 				layoutManager.setWidthByProfile(mctx, child, () => view.innerWidth);
@@ -113,8 +118,9 @@ class _VLayout implements _RealLinearLayout {
 
 			final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
 			childspcinfs[child] = si;
-			assigned += prevSpacingBottom + si.top;
-			prevSpacingBottom = si.bottom;
+			assigned += prevSpacing === null ? si.top: //first
+				gapinf.top !== null ? gapinf.top: Math.max(prevSpacing, si.top);
+			prevSpacing = si.bottom;
 
 			final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.height);
 			switch (amt.type) {
@@ -152,13 +158,13 @@ class _VLayout implements _RealLinearLayout {
 					break;
 			}
 
-			final AsInt defaultWidth = () => view.innerWidth - si.left - si.right;
+			final AsInt defaultWidth = () => view.innerWidth - si.left - si.right; //subtract spacing from border
 			layoutManager.setWidthByProfile(mctx, child, defaultWidth, defaultWidth, defaultProfile);
 		}
 
 		//1a) size flex
 		if (nflex > 0) {
-			int space = innerHeight() - assigned - prevSpacingBottom;
+			int space = innerHeight() - assigned - prevSpacing; //prevSpacing must not null
 			double per = space / nflex;
 			for (int j = 0, len = flexs.length - 1;; ++j) {
 				if (j == len) { //last
@@ -173,15 +179,17 @@ class _VLayout implements _RealLinearLayout {
 
 		//2) position
 		final String defAlign = view.layout.align;
-		prevSpacingBottom = assigned = 0;
+		prevSpacing = null;
+		assigned = 0;
 		for (final View child in children) {
 			if (!view.shallLayout_(child))
 				continue;
 
 			final LayoutSideInfo si = childspcinfs[child];
-			child.top = assigned += prevSpacingBottom + si.top;
+			child.top = assigned += prevSpacing === null ? si.top: //first
+				gapinf.top !== null ? gapinf.top: Math.max(prevSpacing, si.top);
 			assigned += child.outerHeight;
-			prevSpacingBottom = si.bottom;
+			prevSpacing = si.bottom;
 
 			String align = child.profile.align;
 			if (align.isEmpty()) align = defAlign;
