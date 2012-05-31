@@ -3,9 +3,10 @@
 // Author: henrichen
 
 class PositionEvent extends DeviceEvent {
-	PositionEvent(DeviceEventTarget target, Position data) :
-		coords = data.coords, timestamp = data.timestamp;
+	PositionEvent(DeviceEventTarget target, Position data, [PositionError error = null]) :
+	  super(target, error === null),	this.error = error, coords = data.coords, timestamp = data.timestamp;
 	
+	final PositionError error;
 	final Coordinates coords;
 	final int timestamp;
 }

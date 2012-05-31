@@ -18,7 +18,7 @@
 
 	void addEventListener(String type, AccelerationEventListener listener, [Map options]) {
 		removeEventListener(type, listener);
-		var watchID = watchAcceleration(wrapListener_(listener), () => print("onAccelerationError"), options);
+		var watchID = watchAcceleration(wrapSuccessListener_(listener), wrapErrorListener_(listener), options);
 		_listeners.add(new WatchIDInfo(listener, watchID));
 	}
 
@@ -39,7 +39,10 @@
 	}
 
 	/** Returns the wrapped AccelerometerSuccessCallback from the given AccelerationEventListener */
-	abstract AccelerometerSuccessCallback wrapListener_(AccelerationEventListener listener);
+	abstract AccelerometerSuccessCallback wrapSuccessListener_(AccelerationEventListener listener);
+	
+  /** Returns the wrapped AccelerometerErrorCallback from the given AccelerationEventListener */
+  abstract AccelerometerErrorCallback wrapErrorListener_(AccelerationEventListener listener);
 	
 	/**
 	* Returns the motion Acceleration along x, y, and z axis at a specified(optional) regular interval.

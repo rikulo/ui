@@ -13,7 +13,6 @@ class CompassHeadingEventListenerList /*implements DeviceEventListenerList*/ {
   }
 
   CompassHeadingEventListenerList add(CompassHeadingEventListener listener, [CompassOptions options]) {
-    print("CompassHeadingEventListenerList.add()");
     _delegate.add(listener, _toMap(options));
     return this;
   }

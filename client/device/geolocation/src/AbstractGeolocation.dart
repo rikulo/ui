@@ -18,7 +18,7 @@
 
 	void addEventListener(String type, PositionEventListener listener, [Map options]) {
 		removeEventListener(type, listener);
-		var watchID = watchPosition(wrapListener_(listener), (PositionError error) => print("onPositionError: code:"+error.code+", message:"+error.message), options); //TODO: log and forget?
+		var watchID = watchPosition(wrapSuccessListener_(listener), wrapErrorListener_(listener), options);
 		_listeners.add(new WatchIDInfo(listener, watchID));
 	}
 	
@@ -39,8 +39,11 @@
 	}
 	
 	/** Returns the wrapped GeolocationSuccessCallback from the given PositionEventListener */
-	abstract GeolocationSuccessCallback wrapListener_(PositionEventListener listener);
-	
+	abstract GeolocationSuccessCallback wrapSuccessListener_(PositionEventListener listener);
+
+  /** Returns the wrapped GeolocationErrorCallback from the given PositionEventListener */
+  abstract GeolocationErrorCallback wrapErrorListener_(PositionEventListener listener);
+
 	/**
 	* Watches for position changes of this device.
 	* The Position is returned via the onSuccess callback function.
