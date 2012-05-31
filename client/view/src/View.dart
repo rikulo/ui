@@ -35,7 +35,7 @@ class View implements Hashable {
 
 	_ChildInfo _childInfo;
 	_EventListenerInfo _evlInfo;
-	Map<String, Object> _attrs;
+	Map<String, Object> _data;
 
 	//the classes; created on demand
 	Set<String> _classes;
@@ -1137,28 +1137,31 @@ class View implements Hashable {
 		}
 	}
 
-	/** Returns the value of the given attribute, or null if not assigned.
+	/** Returns the value of the application-specific data with the given name,
+	 * or null if not assigned.
+	 * The application-specific data is anything that an application would like
+	 * to put into a view.
 	 */
-	Object getAttribute(String name) {
-		return _attrs !== null ? _attrs[name]: null;
+	Object getData(String name) {
+		return _data !== null ? _data[name]: null;
 	}
-	/** Returns if the given attribute has been assigned with a value
-	 * (including null).
+	/** Returns if the application-specific data with given name
+	 * has been assigned with a value (including null).
 	 */
-	bool hasAttribute(String name) {
-		return _attrs !== null && _attrs.containsKey(name);
+	bool hasData(String name) {
+		return _data !== null && _data.containsKey(name);
 	}
-	/** Sets the value to the given attribute.
+	/** Sets the value to the application-specific data with the given name.
 	 */
-	void setAttribute(String name, Object value) {
-		if (_attrs == null)
-			_attrs = new Map();
-		_attrs[name] = value;
+	void setData(String name, Object value) {
+		if (_data == null)
+			_data = new Map();
+		_data[name] = value;
 	}
-	/** Remove the given attribute.
+	/** Remove the application-specific data of the given name.
 	 */
-	void removeAttribute(String name) {
-		if (_attrs !== null) _attrs.remove(name);
+	void removeData(String name) {
+		if (_data !== null) _data.remove(name);
 	}
 
 	int hashCode() => uuid.hashCode(); //uuid is immutiable once assigned
