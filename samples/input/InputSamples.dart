@@ -16,7 +16,10 @@ class InputSamples extends Activity {
 			view.layout.text = "type: linear";
 			mainView.addChild(view);
 
-			view.addChild(new TextView(type));
+			final TextView label = new TextView(type);
+			label.style.textAlign = "right";
+			label.profile.width = "70";
+			view.addChild(label);
 			view.addChild(new TextBox(type: type));
 		}
 	}
