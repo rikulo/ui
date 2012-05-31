@@ -49,7 +49,7 @@ class View implements Hashable {
 	ProfileDeclaration _profile;
 	LayoutDeclaration _layout;
 
-	bool _hidden, _inDoc;
+	bool _hidden = false, _inDoc = false;
 
 	/** Constructor.
 	 */
@@ -458,7 +458,7 @@ class View implements Hashable {
 	}
 	void _addToDoc(Element node,
 	[bool outer=false, bool inner=false, Element before, bool keepId=false]) {
-		if (outer && keepId && node.id)
+		if (outer && keepId && !node.id.isEmpty())
 			_uuid = node.id;
 
 		String html = _asHTML();
