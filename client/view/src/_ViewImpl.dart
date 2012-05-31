@@ -63,7 +63,7 @@ class _ViewImpl {
 			//TODO: handle event better, and handle more DOM events
 			//example: click shall carry mouse position, change shall carry value
 			DOMEventDispatcher disp = (View target) {
-				return (Event event) {
+				return (UIEvent event) {
 					target.sendEvent(new ViewEvent.dom(target, event, type: type));
 				};
 			};

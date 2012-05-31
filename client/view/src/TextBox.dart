@@ -200,7 +200,7 @@ class TextBox extends View {
 	=> type == "change" ? _getChangeDispatcher(): getDOMEventDispatcher_(type);
 	static DOMEventDispatcher _getChangeDispatcher() {
 		if (_changeDispatcher === null)
-			_changeDispatcher = (View target) => (Event  event) {
+			_changeDispatcher = (View target) => (event) {
 				final TextBox t = target;
 				t.sendEvent(new ChangeEvent<String>(t, t.value));
 			};

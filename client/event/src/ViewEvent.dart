@@ -16,7 +16,7 @@ typedef void ViewEventListener(ViewEvent event);
  */
 class ViewEvent {
 	View _target;
-	final Event _domEvt;
+	final UIEvent _domEvt;
 	final String _type;
 	final int _stamp;
 	/** The offset relative to [target]'s coordinate.
@@ -41,7 +41,7 @@ class ViewEvent {
 	/** Constructs a view event from a DOM event.
 	 * It is rarely called unless you'd like to wrap a DOM event.
 	 */
-	ViewEvent.dom(View target, Event domEvent, [String type]) : 
+	ViewEvent.dom(View target, UIEvent domEvent, [String type]) : 
 	_domEvt = domEvent, _type = type != null ? type: domEvent.type,
 	_stamp = domEvent.timeStamp {
 		_target = currentTarget = target;
@@ -68,7 +68,7 @@ class ViewEvent {
 
 	/** The DOM event that causes this view event, or null if not available.
 	 */
-	Event get domEvent() => _domEvt;
+	UIEvent get domEvent() => _domEvt;
 
 	/** Returns the time stamp. */
 	int get timeStamp() => _stamp;
