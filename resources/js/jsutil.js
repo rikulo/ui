@@ -216,13 +216,12 @@ var _natives = {
 	}
 };
 
-//bridge for Dart to JavaScript(@see JSUtil.dart)
-function initJSCall() {
+//bridge for Dart to JavaScript(@see JSUtil.dart#initJSCall)
+function overrideJSCallX() {
 	if (window.Isolate && window.Isolate.$isolateProperties) {
-		window.Isolate.$isolateProperties.jsCall0[0] = {
-			$call$2: function(name, args) { //tricky, follow dart2js
+		window.Isolate.$isolateProperties._JSCallX.prototype.exec$2 = //tricky, follow dart2js 
+			function(name, args) { 
 				return _natives[name].apply(this, args);
-			}
-		};
+			};
 	}
 }
