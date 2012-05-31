@@ -49,7 +49,7 @@ class TextBox extends View {
 					//immeidate is true, since the user might modify other properties later
 				} else {
 					final InputElement inp = inputNode; //no need to check _multiline since we need to silent compiler only
-					inp.type = type; 
+					inp.type = type; //Unlike ButtonElement, it is OK to change directly
 				}
 		}
 	}

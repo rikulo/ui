@@ -2,7 +2,6 @@
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
-#import('../../client/event/event.dart');
 
 class InputSamples extends Activity {
 
@@ -22,7 +21,6 @@ class InputSamples extends Activity {
 		}
 	}
 }
-
 
 void main() {
 	new InputSamples().run();

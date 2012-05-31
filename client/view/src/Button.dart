@@ -23,7 +23,7 @@ class Button extends TextView {
 		_type = type == null || type.isEmpty() ? "button": type;
 		ButtonElement n = node;
 		if (n != null)
-			n.type = _type;
+			n.$dom_setAttribute('type', _type); //Chrome's type can't be assigned directly
 	}
 	/** Returns whether it is disabled.
 	 * <p>Default: false.
