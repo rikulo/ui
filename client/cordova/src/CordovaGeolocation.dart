@@ -18,14 +18,23 @@ class CordovaGeolocation extends AbstractGeolocation {
 	  };
 	}
 	
-  GeolocationSuccessCallback wrapListener_(PositionEventListener listener) {   
+  GeolocationSuccessCallback wrapSuccessListener_(PositionEventListener listener) {   
     return (jsPos) => 
         listener(new PositionEvent(this, new Position(new CoordinatesImpl.from(toDartMap(jsPos.coords)), jsCall("get", [jsPos, "timestamp"]))));
   }
 	
+  GeolocationErrorCallback wrapErrorListener_(PositionEventListener listener) {   
+    return (jsPosErr) => 
+        listener(new PositionEvent(this, null, new PositionErrorImpl.from(toDartMap(jsPosErr))));
+  }
+  
 	GeolocationSuccessCallback _wrapFunction(GeolocationSuccessCallback dartFn) {   
 		return (jsPos) => 
 		    dartFn(new Position(new CoordinatesImpl.from(toDartMap(jsPos.coords)), jsCall("get", [jsPos, "timestamp"])));
+	}
+	
+	GeolocationErrorCallback _wrapErrorFunction(GeolocationErrorCallback dartFn) {
+	  return (jsPosErr) => dartFn(new PositionErrorImpl.from(toDartMap(jsPosErr)));
 	}
 
 	watchPosition(GeolocationSuccessCallback onSuccess, [GeolocationErrorCallback onError, Map options]) {

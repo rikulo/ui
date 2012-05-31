@@ -14,10 +14,14 @@ class CordovaCompass extends AbstractCompass {
 		return (jsHeading) => dartFn(new CompassHeading.from(toDartMap(jsHeading)));
 	}
 	
-  CompassSuccessCallback wrapListener_(CompassHeadingEventListener listener) {   
+  CompassSuccessCallback wrapSuccessListener_(CompassHeadingEventListener listener) {   
     return (jsHeading) => listener(new CompassHeadingEvent(this, new CompassHeading.from(toDartMap(jsHeading))));
   }
 
+  CompassErrorCallback wrapErrorListener_(CompassHeadingEventListener listener) {   
+    return () => listener(new CompassHeadingEvent(this, null, false));
+  }
+  
 	watchHeading(CompassSuccessCallback onSuccess, CompassErrorCallback onError, [Map options]) {
 	  return jsCall("compass.watchHeading", [onSuccess, onError, toJSMap(options)]);
 	}

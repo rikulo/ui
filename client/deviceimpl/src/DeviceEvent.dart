@@ -7,6 +7,8 @@
  */
 class DeviceEvent {
 	bool _propStop;
+	bool success; //indicate whether this is a success event(true) or an error event(false)
+	DeviceEventTarget target;
   
 	/** Returns whether this event's propagation is stopped.
 	 * <p>Default: false.
@@ -20,4 +22,6 @@ class DeviceEvent {
 	void stopPropagation() {
 		_propStop = true;
 	}
+	
+	DeviceEvent(target, success) : this.target = target, this.success = success;
 }

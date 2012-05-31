@@ -11,31 +11,19 @@ class CordovaCamera implements Camera {
 	}
 	
 	Map _toMap(CameraOptions opts) {
+    Map map = new Map();
 	  if (opts !== null) {
-  		return {
-  			/** The picture quality(0 ~ 100) */
-  			"quality" : opts.quality,
-  			/** The picture format(DestinationType) */
-  			"destinationType" : opts.destinationType,
-  			/** The picture source(PictureSourceType). */
-  			"sourceType" : opts.sourceType,
-  			/** Whether allows simple editing before selection */
-  			"allowEdit" : opts.allowEdit,
-  			/** The encoding format(EncodingType) */
-  			"encodingType" : opts.encodingType,
-  			/** Width in pixels (retain scale ratio) */
-  			"targetWidth" : opts.targetWidth,
-  			/** Height in pixels (retain scale ratio) */
-  			"targetHeight" : opts.targetHeight,
-  			/** Media type(MediaType). Only when sourceType == PictureSourceType.PHOTOLIBRARY or sourceType == PictureSourceType.SAVEDPHOTOALBUM */
-  			"mediaType" : opts.mediaType,
-  			/** Whether rotate the image to correct the orientation */
-  			"correctOrientation" : opts.correctOrientation,
-  			/** Whether save the image to photo album after capture */
-  			"saveToPhotoAlbum" : opts.saveToPhotoAlbum
-  		};
-  	} else { //TODO: default setting?
-  	  return {};
+	    if (opts.quality !== null) map["quality"] = opts.quality; //The picture quality(0 ~ 100)
+  		if (opts.destinationType !== null) map["destinationType"] = opts.destinationType; //The picture format(DestinationType)
+  		if (opts.sourceType !== null) map["sourceType"] = opts.sourceType; //The picture source(PictureSourceType).
+  		if (opts.allowEdit !== null) map["allowEdit"] = opts.allowEdit; //Whether allows simple editing before selection
+  		if (opts.encodingType !== null) map["encodingType"] = opts.encodingType; //The encoding format(EncodingType)
+  		if (opts.targetWidth !== null) map["targetWidth"] = opts.targetWidth; //Width in pixels (retain scale ratio)
+  		if (opts.targetHeight !== null) map["targetHeight"] = opts.targetHeight; //Height in pixels (retain scale ratio)
+  		if (opts.mediaType !== null) map["mediaType"] = opts.mediaType; //Media type(MediaType). Only when sourceType is PHOTOLIBRARY or SAVEDPHOTOALBUM 
+  		if (opts.correctOrientation !== null) map["correctOrientation"] = opts.correctOrientation; //Whether rotate the image to correct the orientation
+  		if (opts.saveToPhotoAlbum !== null) map["saveToPhotoAlbum"] = opts.saveToPhotoAlbum; //Whether save the image to photo album after capture
   	}
+    return map;
 	}
 }
