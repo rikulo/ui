@@ -1,17 +1,10 @@
 
-#library('rikulo:samples:snake');
-
-#import('dart:html');
-
-#import('Snake.dart');
-#import('Food.dart');
-
 class SnakeEnvironment {
   
-  final int SCORED=0, GAMEOVER=1, CONTINUE=2;
+  static final int SCORED=0, GAMEOVER=1, CONTINUE=2;
+  static final num adjustment = 10;
   
   num height,width;
-  final num adjustment = 5;
   Snake snake;
   Food food;
   
@@ -28,7 +21,7 @@ class SnakeEnvironment {
     food.relocate(snake.body);
   }
   
-  draw(CanvasRenderingContext2D context) {
+  int draw(CanvasRenderingContext2D context) {
     food.draw(context);
     bool grown = snake.act(context, food);
     

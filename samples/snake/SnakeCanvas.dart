@@ -8,19 +8,24 @@
 #import('../../client/effect/effect.dart');
 #import('../../client/event/event.dart');
 
-#import('SnakeEnvironment.dart');
-
-CanvasRenderingContext2D ctx2d;
-Canvas canvas;
-Button up, down, left, right;
+#source('SnakePoint.dart');
+#source('SnakeEnvironment.dart');
+#source('Food.dart');
+#source('Snake.dart');
 
 class SnakeCanvas extends Activity {
   final int UPDATE = 100;
-  final int height = 555, width = 555;
+  final int height = 400, width = 400;
+  
   int lastCycle = 0;
   SnakeEnvironment environment;
   TextView topBar;
   num _score = 0;
+  
+  //UI elements
+  CanvasRenderingContext2D ctx2d;
+  Canvas canvas;
+  Button up, down, left, right;
   
   num get score() => _score;
   set score(num score) {
@@ -95,14 +100,14 @@ class SnakeCanvas extends Activity {
       bool ret = true;
       
       if(timeSinceCycle > UPDATE) {
-        var message = environment.draw(ctx2d);
+        int message = environment.draw(ctx2d);
         
         switch(message) {
-          case environment.GAMEOVER:
+          case SnakeEnvironment.GAMEOVER:
             ret = false;
-            window.alert('GAME OVER!!');
+            window.alert('GAME OVER!! Your score was ${score}');
             break;
-          case environment.SCORED:
+          case SnakeEnvironment.SCORED:
             score += 1;
             break;
         }

@@ -1,14 +1,7 @@
 
-#library('rikulo:samples:snake');
-
-#import('dart:html');
-
-#import('SnakePoint.dart');
-#import('Food.dart');
-#import('SnakeEnvironment.dart');
-
 class Snake {
   final int UP = -2, DOWN = 2, LEFT=-1, RIGHT=1;
+  
   int _direction;
   List<SnakePoint> body;
   bool initial = true;
@@ -19,7 +12,7 @@ class Snake {
     body = [];
     
     for(num i =0; i<3; i++) {
-      body.addLast(new SnakePoint(i * snakeEnvironment.adjustment,0));
+      body.addLast(new SnakePoint(i * SnakeEnvironment.adjustment,0));
     }
   }
   
@@ -31,17 +24,17 @@ class Snake {
     }
   }
   
-  length() {
+  int length() {
     return body.length;
   }
   
-  head() {
+  SnakePoint head() {
     return body.last();
   }
   
-  nextMove() {
+  SnakePoint nextMove() {
     var snakeHead = new SnakePoint(head().x, head().y);
-    num adjustment = snakeEnvironment.adjustment;
+    num adjustment = SnakeEnvironment.adjustment;
     
     switch(_direction) {
       case UP:
@@ -61,11 +54,11 @@ class Snake {
     return snakeHead;
   }
   
-  move(SnakePoint to, bool grow) {
+  SnakePoint move(SnakePoint to, bool grow) {
     var removed = null; 
     
     if(!grow) {
-      removed = new SnakePoint(body[0].x, body[0].y);
+      removed = body[0];
       body.removeRange(0, 1);
     }
  
@@ -74,20 +67,17 @@ class Snake {
     return removed;
   }
   
-  act(CanvasRenderingContext2D context, Food food) {
+  bool act(CanvasRenderingContext2D context, Food food) {
     
     if(initial) {
       body.forEach((element) => drawSnake(context, element, null));
       initial = false;
-      return;
+      return false;
     }
     
-    bool grow = false;
     SnakePoint moveTo = nextMove();
-    
-    if(moveTo.x == food.x && moveTo.y == food.y) {
-      grow = true;
-    }
+    bool grow = (moveTo.x == food.x && 
+                 moveTo.y == food.y);
     
     var removed = move(moveTo, grow);
     draw(context, removed);
@@ -95,15 +85,15 @@ class Snake {
     return grow;
   }
   
-  draw(CanvasRenderingContext2D context, SnakePoint removed) {    
+  void draw(CanvasRenderingContext2D context, SnakePoint removed) {    
     drawSnake(context, body.last(), removed);
   }
   
-  drawSnake(CanvasRenderingContext2D context, SnakePoint point, SnakePoint removed) {
+  void drawSnake(CanvasRenderingContext2D context, SnakePoint point, SnakePoint removed) {
     context.beginPath();
     context.fillStyle = "blue";
     
-    num adjustment = snakeEnvironment.adjustment;
+    num adjustment = SnakeEnvironment.adjustment;
     
     if(removed != null) {
       context.clearRect(removed.x, removed.y, adjustment, adjustment);

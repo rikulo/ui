@@ -1,12 +1,10 @@
 
-#library('rikulo:samples:snake');
-
 class SnakePoint {
-  num x, y;
+  int x, y;
   
   SnakePoint(this.x, this.y);
   
-  toString() {
-    return 'x: ${x} y: ${y}';
+  String toString() {
+    return "($x, $y)";
   }
 }

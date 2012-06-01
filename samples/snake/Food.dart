@@ -1,9 +1,3 @@
-#library('rikulo:samples:snake');
-
-#import('dart:html');
-
-#import('SnakePoint.dart');
-#import('SnakeEnvironment.dart');
 
 class Food {
   
@@ -13,54 +7,52 @@ class Food {
   
   Food(this.snakeEnvironment);
   
-  num get x() => _x;
-  set x(num value) {
+  int get x() => _x;
+  set x(int value) {
     _x = value;
     redraw = true;
   }
   
-  num get y() => _y;
-  set y(num value) {
+  int get y() => _y;
+  set y(int value) {
     _y = value;
     redraw = true;
   }
   
-  relocate(List<SnakePoint> avoid) {
+  void relocate(List<SnakePoint> avoid) {
     
-    double suggestedX = Math.random()*((snakeEnvironment.width / snakeEnvironment.adjustment) - 1);
-    double suggestedY = Math.random()*((snakeEnvironment.height / snakeEnvironment.adjustment) - 1);
+    double suggestedX = Math.random()*((snakeEnvironment.width / SnakeEnvironment.adjustment) - 1);
+    double suggestedY = Math.random()*((snakeEnvironment.height / SnakeEnvironment.adjustment) - 1);
     
-    suggestedX = suggestedX.floor() * snakeEnvironment.adjustment;
-    suggestedY = suggestedY.floor() * snakeEnvironment.adjustment;
+    suggestedX = suggestedX.floor() * SnakeEnvironment.adjustment;
+    suggestedY = suggestedY.floor() * SnakeEnvironment.adjustment;
     
     bool has = false;
     
     for(final point in avoid) {
-      if(suggestedX == point.x && suggestedY == point.y) 
+      if(suggestedX == point.x && suggestedY == point.y) { 
         has=true;
+        break;
+      }
     }
     
     if(has)
-      return relocate(avoid);
+      relocate(avoid);
     else {
-      x = suggestedX;
-      y = suggestedY;
-      
-      print("relocated ${this}");
+      x = suggestedX.toInt();
+      y = suggestedY.toInt();
     }
   }
   
-  draw(CanvasRenderingContext2D context) {
-    num adjustment = snakeEnvironment.adjustment;
-    
+  void draw(CanvasRenderingContext2D context) {
     context.beginPath();
     context.fillStyle = "red";
-    context.rect(_x, _y, adjustment, adjustment);
+    context.rect(_x, _y, SnakeEnvironment.adjustment, SnakeEnvironment.adjustment);
     context.fill();
     context.closePath();
   }
   
-  toString() {
-    return "x: ${_x} y: ${_y}";
+  String toString() {
+    return "$_x, $_y";
   }
 }
