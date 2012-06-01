@@ -2,15 +2,21 @@
 //History: Mon, May 14, 2012  02:28:13 PM
 // Author: henrichen
 
-class ContactsFindOptions {
+interface ContactsFindOptions default _ContactsFindOptions {
   /** The search string used to filter Contacts; default "" */
   String filter = "";
   /** Whether return multiple Contacts; default false */
   bool multiple = false;
   
-  ContactsFindOptions(String filter, bool multiple) : 
-  this.filter = filter === null ? "" : filter,
-  this.multiple = multiple;
+  ContactsFindOptions([String filter, bool multiple]);
+}
+
+class _ContactsFindOptions implements ContactsFindOptions {
+  /** The search string used to filter Contacts; default "" */
+  String filter = "";
+  /** Whether return multiple Contacts; default false */
+  bool multiple = false;
   
-  ContactsFindOptions.from(Map opts) : this.filter = opts["filter"], this.multiple = opts["multiple"];
+  _ContactsFindOptions([String filter = "", bool multiple = false]) :
+    this.filter = filter, this.multiple = multiple;
 }

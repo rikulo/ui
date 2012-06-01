@@ -8,4 +8,7 @@ class PositionErrorImpl implements PositionError {
   String message;
   
   PositionErrorImpl(this.code, this.message);
+  
+  PositionErrorImpl.from(Map map) :
+    this.code = map["code"], this.message = map["message"];
 }

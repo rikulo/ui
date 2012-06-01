@@ -10,9 +10,13 @@ class CordovaAccelerometer extends AbstractAccelerometer {
 		jsCall("accelerometer.getCurrentAcceleration", [_wrapFunction(onSuccess), onError]);
 	}
 	
-	AccelerometerSuccessCallback wrapListener_(AccelerationEventListener listener) {
+	AccelerometerSuccessCallback wrapSuccessListener_(AccelerationEventListener listener) {
 	  return (jsAccel) => listener(new AccelerationEvent(this, new Acceleration.from(toDartMap(jsAccel))));
 	}
+	
+  AccelerometerErrorCallback wrapErrorListener_(AccelerationEventListener listener) {
+    return () => listener(new AccelerationEvent(this, null, false));
+  }
 
 	_wrapFunction(dartFn) {
 		return (jsAccel) => dartFn(new Acceleration.from(toDartMap(jsAccel)));

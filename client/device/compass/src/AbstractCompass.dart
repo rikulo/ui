@@ -18,7 +18,7 @@
 
 	void addEventListener(String type, CompassHeadingEventListener listener, [Map options]) {
 		removeEventListener(type, listener);
-		var watchID = watchHeading(wrapListener_(listener), () => print("onHeading error!"), options);
+		var watchID = watchHeading(wrapSuccessListener_(listener), wrapErrorListener_(listener), options);
 		_listeners.add(new WatchIDInfo(listener, watchID));
 	}
 	
@@ -39,8 +39,11 @@
 	}
 	
   /** Returns the wrapped CompassSuccessCallback from the given CompassHeadingEventListener */
-	abstract CompassSuccessCallback wrapListener_(CompassHeadingEventListener listener);
-  
+	abstract CompassSuccessCallback wrapSuccessListener_(CompassHeadingEventListener listener);
+
+  /** Returns the wrapped CompassErrorCallback from the given CompassHeadingEventListener */
+  abstract CompassErrorCallback wrapErrorListener_(CompassHeadingEventListener listener);
+
 	/**
 	* Returns the direction this device pointing in degree at a specified(optional) regular interval.
 	* The CompassHeading is returned via the onSuccess callback function at a regular interval.

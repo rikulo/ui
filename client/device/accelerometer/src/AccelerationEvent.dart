@@ -3,8 +3,8 @@
 // Author: henrichen
 
 class AccelerationEvent extends DeviceEvent {
-	AccelerationEvent(Accelerometer target, Acceleration data) :
-		x = data.x, y = data.y, z = data.z, timestamp = data.timestamp;
+	AccelerationEvent(Accelerometer target, Acceleration data, [bool success = true]) : 
+	  super(target, success), x = data.x, y = data.y, z = data.z, timestamp = data.timestamp;
 	
 	final double x;
 	final double y;
