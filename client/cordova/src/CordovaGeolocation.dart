@@ -12,6 +12,7 @@ class CordovaGeolocation extends AbstractGeolocation {
 
 	_toMap(GeolocationOptions options) {
 	  return {
+      "frequency" : options.frequency === null ? 10000 : options.frequency,
 	    "enableHighAccuracy" : options.enableHighAccuracy === null ? true : options.enableHighAccuracy,
       "timeout" : options.timeout === null ? 10000 : options.timeout,
       "maximumAge" : options.maximumAge === null ? 10000 : options.maximumAge

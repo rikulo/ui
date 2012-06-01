@@ -29,12 +29,14 @@ class PositionEventListenerList {
   Map _toMap(GeolocationOptions opts) {
     if (opts === null) {
       return {
+        "frequency" : 10000,
         "enableHighAccuracy" : true,
         "timeout" : 10000,
         "maximumAge" : 10000
       };
     } else {
       Map map = new Map();
+      map["frequency"] = (opts.frequency === null ? 10000 : opts.frequency);
       map["enableHighAccuracy"] = (opts.enableHighAccuracy === null ? true : opts.enableHighAccuracy);
       map["timeout"] = (opts.timeout === null ? 10000 : opts.timeout);
       map["maximumAge"] = (opts.maximumAge === null ? 10000 : opts.maximumAge);

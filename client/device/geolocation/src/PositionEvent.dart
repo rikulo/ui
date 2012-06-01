@@ -4,7 +4,9 @@
 
 class PositionEvent extends DeviceEvent {
 	PositionEvent(DeviceEventTarget target, Position data, [PositionError error = null]) :
-	  super(target, error === null),	this.error = error, coords = data.coords, timestamp = data.timestamp;
+	  super(target, error === null), error = error, 
+	  coords = data === null ? null : data.coords, 
+	  timestamp = data === null ? null : data.timestamp;
 	
 	final PositionError error;
 	final Coordinates coords;

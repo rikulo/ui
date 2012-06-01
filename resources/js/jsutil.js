@@ -187,12 +187,12 @@ var _natives = {
 	//CordovaGeolocation
 	"geolocation.getCurrentPosition" : function(onSuccess, onError, opts) {
 		var fnSuccess = function(pos) {onSuccess.$call$1(pos);},
-			fnError = function() {onError.$call$0();};
+			fnError = function(err) {onError.$call$1(err);};
 		navigator.geolocation.getCurrentPosition(fnSuccess, fnError, opts);
 	},
-	"geolocation.watchPostion" : function(onSuccess, onError, opts) {
+	"geolocation.watchPosition" : function(onSuccess, onError, opts) {
 		var fnSuccess = function(pos) {onSuccess.$call$1(pos);},
-			fnError = function() {onError.$call$0();};
+			fnError = function(err) {onError.$call$1(err);};
 		return navigator.geolocation.watchPosition(fnSuccess, fnError, opts);
 	},
 	"geolocation.clearWatch" : function(watchID) {
