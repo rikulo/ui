@@ -41,7 +41,7 @@ class _HLayout implements _RealLinearLayout {
 						return maxWd;
 					break;
 				case LayoutAmountType.CONTENT:
-					final int wd = child.measureWidth(mctx);
+					final int wd = child.measureWidth_(mctx);
 					if ((width += wd != null ? wd: child.outerWidth) >= maxWd)
 						return maxWd;
 					break;
@@ -83,7 +83,7 @@ class _HLayout implements _RealLinearLayout {
 					hgh += amt.value;
 					break;
 				case LayoutAmountType.CONTENT:
-					final int h = child.measureHeight(mctx);
+					final int h = child.measureHeight_(mctx);
 					hgh += h != null ? h: child.outerHeight;
 					break;
 				default:
@@ -96,7 +96,7 @@ class _HLayout implements _RealLinearLayout {
 		return height;
 	}
 	//children contains only indepedent views
-	void layout(MeasureContext mctx, View view, List<View> children) {
+	void doLayout(MeasureContext mctx, View view, List<View> children) {
 		//1) size
 		final AsInt innerWidth = () => view.innerWidth;
 		final AsString defaultProfile = () { //default profile.height
@@ -150,7 +150,7 @@ class _HLayout implements _RealLinearLayout {
 						//fall through
 					}
 
-					final int wd = child.measureWidth(mctx);
+					final int wd = child.measureWidth_(mctx);
 					if (wd != null)
 						assigned += child.width = wd;
 					else

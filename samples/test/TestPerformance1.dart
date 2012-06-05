@@ -26,7 +26,7 @@ class TestPerformance1 extends Activity {
 				view.style.textAlign = "center";
 				view.profile.text = "width: 50; height: 30";
 					//performance is much better if not to use "content" (default)
-					//note: don't assign to view.width/height directly since it is slower (measureWidth will be called)
+					//note: don't assign to view.width/height directly since it is slower (measureWidth_ will be called)
 				hlayout.addChild(view);
 			}
 		}

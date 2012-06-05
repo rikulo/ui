@@ -14,7 +14,7 @@ class FreeLayout implements Layout {
 		wd = _initSize(view.profile.width, () => view.innerWidth);
 		for (final View child in view.children) {
 			if (view.shallLayout_(child) && child.profile.anchorView == null) {
-				int subsz = child.measureWidth(mctx);
+				int subsz = child.measureWidth_(mctx);
 				subsz = child.left + (subsz !== null ? subsz: 0);
 				if (wd === null || subsz > wd)
 					wd = subsz;
@@ -34,7 +34,7 @@ class FreeLayout implements Layout {
 		hgh = _initSize(view.profile.height, () => view.innerHeight);
 		for (final View child in view.children) {
 			if (view.shallLayout_(child) && child.profile.anchorView == null) {
-				int subsz = child.measureHeight(mctx);
+				int subsz = child.measureHeight_(mctx);
 				subsz = child.top + (subsz !== null ? subsz: 0);
 				if (hgh == null || subsz > hgh)
 					hgh = subsz;
@@ -51,7 +51,7 @@ class FreeLayout implements Layout {
 		final int v = szinf.type == LayoutAmountType.FIXED ? szinf.value: current();
 		return v != null ? v: null;
 	}
-	void layout(MeasureContext mctx, View view) {
+	void doLayout(MeasureContext mctx, View view) {
 		if (view.firstChild !== null) {
 			final AnchorRelation ar = new AnchorRelation(view);
 			final AsInt innerWidth = () => view.innerWidth,
@@ -64,7 +64,7 @@ class FreeLayout implements Layout {
 			ar.layoutAnchored(mctx);
 
 			for (final View child in view.children) {
-				child.doLayout(mctx); //no matter shallLayout_
+				child.doLayout_(mctx); //no matter shallLayout_
 			}
 		}
 	}

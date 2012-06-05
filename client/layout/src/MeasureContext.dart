@@ -7,7 +7,7 @@
  */
 class MeasureContext {
 	/** The widths of measured views. The size is stored to speed up
-	 * the measurement since [View.measureWidth] might be called multiple times
+	 * the measurement since [View.measureWidth_] might be called multiple times
 	 * in one layout run. If the width shall be re-measured, you can
 	 * remove it from this map.
 	 * <p>Note: null indicates the width is up to the system, i.e., no need
@@ -15,7 +15,7 @@ class MeasureContext {
 	 */
 	final Map<View, int> widths;
 	/** The heights of measured views. The size is stored to speed up
-	 * the measurement since [View.measureHeight] might be called multiple times
+	 * the measurement since [View.measureHeight_] might be called multiple times
 	 * in one layout run. If the height shall be re-measured, you can
 	 * remove it from this map.
 	 * <p>Note: null indicates the height is up to the system, i.e., no need

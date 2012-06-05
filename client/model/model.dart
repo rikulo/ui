@@ -3,7 +3,11 @@
 
 #library("rikulo:model");
 
+#import("../util/util.dart");
+
 #source("src/ListModel.dart");
 #source("src/ListDataEvent.dart");
 #source("src/DataEventType.dart");
 #source("src/Selectable.dart");
+#source("src/AbstractListModel.dart");
+#source("src/DefaultListModel.dart");

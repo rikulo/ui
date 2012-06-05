@@ -11,11 +11,11 @@ interface Selectable<E> {
 	 * Returns the current selection.
 	 * It is readonly. Don't modify it directly
 	 */
-	Set<E> getSelection();
+	Set<E> get selection();
 	/**
 	 * Replace the current selection with the given set.
 	 */
-	void setSelection(Collection<E> selection);
+	void set selection(Collection<E> selection);
 	/** Returns whether an object is selected.
 	 */
 	bool isSelected(Object obj);
@@ -44,9 +44,9 @@ interface Selectable<E> {
 	/**
 	 * Sets the selection mode to be multiple.
 	 */
-	void setMultiple(bool multiple);
+	void set multiple(bool multiple);
 	/**
 	 * Returns whether the current selection mode is multiple.
 	 */
-	bool isMultiple();
+	bool get multiple();
 }

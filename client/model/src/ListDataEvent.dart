@@ -71,5 +71,5 @@ class _ListDataEventImpl<E> implements ListDataEvent<E> {
 	 */
 	Set<E> get selectionChanged() => _selChg;
 
-	String toString() => "[$type($index0, $index1)]";
+	String toString() => "$type($index0, $index1)";
 }

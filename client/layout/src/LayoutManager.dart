@@ -10,7 +10,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	final Map<String, Layout> _layouts;
 	final Set<String> _imgWaits;
 
-	LayoutManager(): super(true), _layouts = {}, _imgWaits = new Set() {
+	LayoutManager(): super(null), _layouts = {}, _imgWaits = new Set() {
 		addLayout("linear", new LinearLayout());
 		FreeLayout freeLayout = new FreeLayout();
 		addLayout("none", freeLayout);
@@ -42,22 +42,13 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	int measureHeight(MeasureContext mctx, View view)
 	=> _layoutOfView(view).measureHeight(mctx, view);
 
-	//@Override Layout
-	void layout(MeasureContext mctx, View view) {
-		if (mctx === null) {
-			if (_imgWaits.isEmpty())
-				flush(view);
-			else if (view !== null)
-				queue(view); //do it later
-		} else {
-			_doLayout(mctx, view);
-		}
-	}
 	//@Override
-	void flush([View view=null]) {
+	void flush([View view]) {
 		//ignore flush if not empty (_onImageLoaded will invoke it later)
 		if (_imgWaits.isEmpty())
 			super.flush(view);
+		else if (view !== null)
+			queue(view); //do it later
 	}
 
 	Layout _layoutOfView(View view) {
@@ -70,16 +61,17 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 
 	//@Override RunOnceViewManager
 	void handle_(View view) {
-		_doLayout(new MeasureContext(), view);
+		doLayout(new MeasureContext(), view);
 	}
-	void _doLayout(MeasureContext mctx, View view) {
+	//@Override doLayout
+	void doLayout(MeasureContext mctx, View view) {
 		if (view.parent === null && view.profile.anchorView === null) { //root without anchor
 			//handle profile since it has no parent to handel for it
 			setWidthByProfile(mctx, view, () => browser.size.width);
 			setHeightByProfile(mctx, view, () => browser.size.height);
 			AnchorRelation._positionRoot(view);
 		}
-		_layoutOfView(view).layout(mctx, view);
+		_layoutOfView(view).doLayout(mctx, view);
 		view.onLayout();
 	}
 
@@ -111,7 +103,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 				view.width = (width() * amt.value).round().toInt();
 				break;
 			case LayoutAmountType.CONTENT:
-				final int wd = view.measureWidth(mctx);
+				final int wd = view.measureWidth_(mctx);
 				if (wd != null)
 					view.width = wd;
 				break;
@@ -145,7 +137,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 				view.height = (height() * amt.value).round().toInt();
 				break;
 			case LayoutAmountType.CONTENT:
-				final int hgh = view.measureHeight(mctx);
+				final int hgh = view.measureHeight_(mctx);
 				if (hgh != null)
 					view.height = hgh;
 				break;
@@ -153,7 +145,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 	}
 
 	/** Measures the width based on the view's content.
-	 * It is an utility for implementing a view's [View.measureWidth].
+	 * It is an utility for implementing a view's [View.measureWidth_].
 	 * This method assumes the browser will resize the view automatically,
 	 * so it is applied only to a leaf view with some content, such as [TextView]
 	 * and [Button].
@@ -165,7 +157,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 			_measureByContent(mctx, view, autowidth).width;
 	}
 	/** Measures the height based on the view's content.
-	 * It is an utility for implementing a view's [View.measureHeight].
+	 * It is an utility for implementing a view's [View.measureHeight_].
 	 * This method assumes the browser will resize the view automatically,
 	 * so it is applied only to a leaf view with some content, such as [TextView]
 	 * and [Button].

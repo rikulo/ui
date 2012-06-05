@@ -110,9 +110,7 @@ class _Animator implements Animator {
 		if (_tmpRemoved !== null) {
 			_tmpRemoved.add(animate); //handle it later
 		} else {
-			final int j = _anims.indexOf(animate);
-			if (j >= 0)
-				_anims.removeRange(j, 1);
+			ListUtil.remove(_anims, animate);
 		}
 	}
 	Collection<Animate> get animates() => _anims;	//TODO: readonly

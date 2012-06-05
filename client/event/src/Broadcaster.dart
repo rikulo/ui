@@ -68,16 +68,7 @@ class _BroadcastListeners {
 	 */
 	bool removeEventListener(String type, ViewEventListener listener) {
 		List<ViewEventListener> ls;
-		bool found = false;
-		if ((ls = _listeners[type]) != null) {
-			int j = ls.indexOf(listener);
-			Element n;
-			if (j >= 0) {
-				found = true;
-				ls.removeRange(j, 1);
-			}
-		}
-		return found;
+		return (ls = _listeners[type]) != null && ListUtil.remove(ls, listener);
 	}
 	/** Sends an event to this view.
 	 * <p>Example: <code>view.sendEvent(new PopupEvent(view))</code>.

@@ -207,22 +207,9 @@ class _VirtualIdSpace implements IdSpace {
 	String toString() => "_VirtualIdSpace($_owner: $_fellows)";
 }
 
-/** The invalidator that handles the invalidated views
- * used in [View].
- */
-class _Invalidator extends RunOnceViewManager {
-	_Invalidator(): super(true) {
-	}
-
-	void handle_(View view) {
-		if (view.inDocument)
-			view.invalidate(true);
-	}
-}
-
-_Invalidator get _invalidator() {
+RunOnceViewManager get _invalidator() {
 	if (_$invalidator == null)
-		_$invalidator = new _Invalidator();
+		_$invalidator = new RunOnceViewManager((View view) {view.invalidate(true);});
 	return _$invalidator;
 }
-_Invalidator _$invalidator;
+RunOnceViewManager _$invalidator;

@@ -23,19 +23,19 @@ class LinearLayout implements Layout {
 
 		return mctx.heights[view] = _getRealLayout(view).measureHeight(mctx, view);
 	}
-	void layout(MeasureContext mctx, View view) {
+	void doLayout(MeasureContext mctx, View view) {
 		if (view.firstChild !== null) {
 			final AnchorRelation ar = new AnchorRelation(view);
 
 			//1) layout independents
-			_getRealLayout(view).layout(mctx, view, ar.indeps);
+			_getRealLayout(view).doLayout(mctx, view, ar.indeps);
 
 			//2) do anchored
 			ar.layoutAnchored(mctx);
 
 			//3) pass control to children
 			for (final View child in view.children) {
-				child.doLayout(mctx); //no matter shallLayout_(child)
+				child.doLayout_(mctx); //no matter shallLayout_(child)
 			}
 		}
 	}
@@ -52,5 +52,5 @@ class LinearLayout implements Layout {
 interface _RealLinearLayout {
 	int measureWidth(MeasureContext mctx, View view);
 	int measureHeight(MeasureContext mctx, View view);
-	void layout(MeasureContext mctx, View view, List<View> children);
+	void doLayout(MeasureContext mctx, View view, List<View> children);
 }

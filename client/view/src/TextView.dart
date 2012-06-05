@@ -71,10 +71,10 @@ class TextView extends View {
 	 */
 	bool isChildable_() => false;
 	//@Override
-	int measureWidth(MeasureContext mctx)
+	int measureWidth_(MeasureContext mctx)
 	=> layoutManager.measureWidthByContent(mctx, this, true);
 	//@Override
-	int measureHeight(MeasureContext mctx)
+	int measureHeight_(MeasureContext mctx)
 	=> layoutManager.measureHeightByContent(mctx, this, true);
 	//@Override
 	String toString() => "TextView('$text$html')";

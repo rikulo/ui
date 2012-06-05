@@ -22,11 +22,10 @@ class CustomLayoutDemo extends Activity {
 	void _move(int left, int top) {
 		anchor.left = left - 35;
 		anchor.top = top - 35;
-		anchor.doLayout();
+		anchor.requestLayout();
 	}
 
 	void _createViews() {
-		//TODO: create anchor and others
 		anchor = _createTextView("Anchor", "#0ff");
 		mainView.addChild(anchor);
 

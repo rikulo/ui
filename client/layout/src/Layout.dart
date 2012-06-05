@@ -15,5 +15,5 @@ interface Layout default FreeLayout {
 
 	/** Handles the layout of the given view.
 	 */
-	void layout(MeasureContext ctx, View view);
+	void doLayout(MeasureContext ctx, View view);
 }

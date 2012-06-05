@@ -5,6 +5,7 @@
 #library("rikulo:effect");
 
 #import("dart:html");
+#import("../util/util.dart");
 
 #source("src/Animator.dart");
 #source("src/EffectFunction.dart");

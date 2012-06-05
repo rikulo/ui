@@ -11,6 +11,7 @@
 #import("../viewimpl/viewimpl.dart");
 #import("../html/html.dart");
 #import("../layout/layout.dart");
+#import("../model/model.dart");
 
 #source("src/View.dart");
 #source("src/ViewUtil.dart");

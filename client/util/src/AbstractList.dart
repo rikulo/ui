@@ -105,6 +105,19 @@ class AbstractList<E> implements List<E> {
 		throw const UnsupportedOperationException("Cannot modify");
 	}
 
+	//@Override
+	bool equals(var other) {
+		if (other is Collection && other.length == length) {
+			final Iterator<E> it = iterator();
+			for (final o in other) {
+				if (o != it.next())
+					return false;
+			}
+			return true;
+		}
+		return false;
+	}
+	//@Override
 	String toString() {
 		StringBuffer result = new StringBuffer("[");
 		bool comma;

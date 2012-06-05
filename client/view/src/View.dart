@@ -509,7 +509,7 @@ class View implements Hashable {
 		_afters.addLast([]);
 
 		enterDocument_();
-		doLayout();
+		requestLayout(true); //immediately
 
 		for (final AfterEnterDocument call in _afters.removeLast()) {
 			call(this);
@@ -617,25 +617,31 @@ class View implements Hashable {
 	 * If you'd like to handle all queued layouts, you can invoke
 	 * [ViewUtil.flushRequestedLayouts].
 	 */
-	void requestLayout() {
-		layoutManager.queue(this);
+	void requestLayout([bool immediate=false]) {
+		if (immediate)
+			layoutManager.flush(this);
+		else
+			layoutManager.queue(this);
 	}
 	/** Hanldes the layout of this view.
-	 * <p>Default: have [Layout] to handle it.
+	 * <p>It is called by [LayoutManager].
+	 * <p>Default: forward to [layoutManager] to handle it.
 	 * [onLayout] will be called after the layout of the view has been handled.
 	 */
-	void doLayout([MeasureContext mctx=null]) {
-		layoutManager.layout(mctx, this);
+	void doLayout_(MeasureContext mctx) {
+		layoutManager.doLayout(mctx, this);
 	}
 	/** Measures the width of this view.
-	 * It is called by [doLayout].
+	 * <p>It is called by [LayoutManager].
+	 * <p>Default: forward to [layoutManager] to handle it.
 	 */
-	int measureWidth(MeasureContext mctx)
+	int measureWidth_(MeasureContext mctx)
 	=> layoutManager.measureWidth(mctx, this);
 	/** Measures the height of this view.
-	 * It is called by [doLayout].
+	 * <p>It is called by [LayoutManager].
+	 * <p>Default: forward to [layoutManager] to handle it.
 	 */
-	int measureHeight(MeasureContext mctx)
+	int measureHeight_(MeasureContext mctx)
 	=> layoutManager.measureHeight(mctx, this);
 	/** Returns whether the given child shall be handled by the layout manager.
 	 * <p>Default: return true if the position is absolute.
@@ -648,7 +654,7 @@ class View implements Hashable {
 	 * the child views <i>not</i> in the inner element.
 	 * Please refer to the viewport example for a sample implementation.
 	 * <p>Note that, if this method returns false for a child, the layout
-	 * manager won't adjust its position and dimension. However, the child's [doLayout]
+	 * manager won't adjust its position and dimension. However, the child's [doLayout_]
 	 * will be still called to arrange the layout of the child's child views.
 	 */
 	bool shallLayout_(View child) {
