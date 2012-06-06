@@ -13,36 +13,36 @@
  * has to be closed.
  */
 class PopupEvent extends ViewEvent {
-	final _source;
+  final _source;
 
-	/** Constructor.
-	 * The source parameter is either an instance of [View], a DOM element, or null.
-	 * If null, it means all pop ups shall be closed.
-	 */
-	PopupEvent(var source, [String type="popup"]):
-	super(null, type), _source = source {
-	}
-	/** Returns the UI object triggers this event.
-	 * It is either a view or a DOM element.
-	 */
-	get source() => _source;
+  /** Constructor.
+   * The source parameter is either an instance of [View], a DOM element, or null.
+   * If null, it means all pop ups shall be closed.
+   */
+  PopupEvent(var source, [String type="popup"]):
+  super(null, type), _source = source {
+  }
+  /** Returns the UI object triggers this event.
+   * It is either a view or a DOM element.
+   */
+  get source() => _source;
 
-	/** Whether the given popup shall be closed.
-	 */
-	bool shallClose(popup) {
-		if (source === null)
-			return true;
+  /** Whether the given popup shall be closed.
+   */
+  bool shallClose(popup) {
+    if (source === null)
+      return true;
 
-		var srcNode, popNode;
-		if (source is View) {
-			if (popup is View)
-				return !source.isDescendantOf(popup);
-			srcNode = source.node;
-			popNode = popup;
-		} else {
-			srcNode = source;
-			popNode = popup is View ? popup.node: popup;
-		}
-		return !new DOMQuery(srcNode).isDescendantOf(popNode);
-	}
+    var srcNode, popNode;
+    if (source is View) {
+      if (popup is View)
+        return !source.isDescendantOf(popup);
+      srcNode = source.node;
+      popNode = popup;
+    } else {
+      srcNode = source;
+      popNode = popup is View ? popup.node: popup;
+    }
+    return !new DOMQuery(srcNode).isDescendantOf(popNode);
+  }
 }

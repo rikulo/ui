@@ -15,26 +15,26 @@
  * task will be dropped (and not executed).
  */
 class RunOnceQueue {
-	Map<String, int> _tasks;
+  Map<String, int> _tasks;
 
-	/** schedules a run-once task for execution.
-	 */
-	void add(String key, void task(), [int timeout=0]) {
-		if (_tasks !== null)
-			cancel(key);
-		else
-			_tasks = {};
+  /** schedules a run-once task for execution.
+   */
+  void add(String key, void task(), [int timeout=0]) {
+    if (_tasks !== null)
+      cancel(key);
+    else
+      _tasks = {};
 
-		_tasks[key] = window.setTimeout((){
-			_tasks.remove(key);
-			task();
-		}, timeout);
-	}
-	/** Cancels the scheduled task if it is still pending.
-	 */
-	void cancel(String key) {
-		final int tid = _tasks.remove(key);
-		if (tid !== null)
-			window.clearTimeout(tid);
-	}	
+    _tasks[key] = window.setTimeout((){
+      _tasks.remove(key);
+      task();
+    }, timeout);
+  }
+  /** Cancels the scheduled task if it is still pending.
+   */
+  void cancel(String key) {
+    final int tid = _tasks.remove(key);
+    if (tid !== null)
+      window.clearTimeout(tid);
+  }  
 }

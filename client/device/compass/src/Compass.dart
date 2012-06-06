@@ -20,9 +20,9 @@ interface Compass extends DeviceEventTarget {
 
 /** error code */
 class CompassError {
-	static final int COMPASS_INTERNAL_ERR = 0;
-	static final int COMPASS_NOT_SUPPORTED = 20;
-	int code;
-	
-	CompassError(this.code);
+  static final int COMPASS_INTERNAL_ERR = 0;
+  static final int COMPASS_NOT_SUPPORTED = 20;
+  int code;
+  
+  CompassError(this.code);
 }

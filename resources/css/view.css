@@ -20,18 +20,18 @@ body {
 	overflow: hidden;
 }
 .v-ScrollView-inner {
-	width: 100%; height: 100%;
+  width: 100%; height: 100%;
 }
 
 .v-dialog {
-	border-radius: 3px;
-	border: 2px solid #886;
-	box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-	padding: 3px 5px;
-	background-color: white;
+  border-radius: 3px;
+  border: 2px solid #886;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+  padding: 3px 5px;
+  background-color: white;
 }
 .v-mask {
-	position: fixed;
-	opacity: .6;
-	background: #E0E1E3;
+  position: fixed;
+  opacity: .6;
+  background: #E0E1E3;
 }

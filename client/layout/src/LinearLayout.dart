@@ -6,51 +6,51 @@
  * The linear layout.
  */
 class LinearLayout implements Layout {
-	static _RealLinearLayout _getRealLayout(view) //horizontal is default
-	=> view.layout.orient != "vertical" ? new _HLayout(): new _VLayout();
+  static _RealLinearLayout _getRealLayout(view) //horizontal is default
+  => view.layout.orient != "vertical" ? new _HLayout(): new _VLayout();
 
-	int measureWidth(MeasureContext mctx, View view) {
-		int width = mctx.widths[view];
-		if (width !== null || mctx.widths.containsKey(view))
-			return width;
+  int measureWidth(MeasureContext mctx, View view) {
+    int width = mctx.widths[view];
+    if (width !== null || mctx.widths.containsKey(view))
+      return width;
 
-		return mctx.widths[view] = _getRealLayout(view).measureWidth(mctx, view);
-	}
-	int measureHeight(MeasureContext mctx, View view) {
-		int height = mctx.heights[view];
-		if (height !== null || mctx.heights.containsKey(view))
-			return height;
+    return mctx.widths[view] = _getRealLayout(view).measureWidth(mctx, view);
+  }
+  int measureHeight(MeasureContext mctx, View view) {
+    int height = mctx.heights[view];
+    if (height !== null || mctx.heights.containsKey(view))
+      return height;
 
-		return mctx.heights[view] = _getRealLayout(view).measureHeight(mctx, view);
-	}
-	void doLayout(MeasureContext mctx, View view) {
-		if (view.firstChild !== null) {
-			final AnchorRelation ar = new AnchorRelation(view);
+    return mctx.heights[view] = _getRealLayout(view).measureHeight(mctx, view);
+  }
+  void doLayout(MeasureContext mctx, View view) {
+    if (view.firstChild !== null) {
+      final AnchorRelation ar = new AnchorRelation(view);
 
-			//1) layout independents
-			_getRealLayout(view).doLayout(mctx, view, ar.indeps);
+      //1) layout independents
+      _getRealLayout(view).doLayout(mctx, view, ar.indeps);
 
-			//2) do anchored
-			ar.layoutAnchored(mctx);
+      //2) do anchored
+      ar.layoutAnchored(mctx);
 
-			//3) pass control to children
-			for (final View child in view.children) {
-				child.doLayout_(mctx); //no matter shallLayout_(child)
-			}
-		}
-	}
+      //3) pass control to children
+      for (final View child in view.children) {
+        child.doLayout_(mctx); //no matter shallLayout_(child)
+      }
+    }
+  }
 
-	//Utilities//
-	static final int DEFAULT_SPACING = 2;
-	static LayoutAmountInfo getDefaultAmountInfo(String info) {
-		final LayoutAmountInfo amt = new LayoutAmountInfo(info);
-		if (amt.type == LayoutAmountType.NONE)
-			amt.type = LayoutAmountType.CONTENT;
-		return amt;
-	}
+  //Utilities//
+  static final int DEFAULT_SPACING = 2;
+  static LayoutAmountInfo getDefaultAmountInfo(String info) {
+    final LayoutAmountInfo amt = new LayoutAmountInfo(info);
+    if (amt.type == LayoutAmountType.NONE)
+      amt.type = LayoutAmountType.CONTENT;
+    return amt;
+  }
 }
 interface _RealLinearLayout {
-	int measureWidth(MeasureContext mctx, View view);
-	int measureHeight(MeasureContext mctx, View view);
-	void doLayout(MeasureContext mctx, View view, List<View> children);
+  int measureWidth(MeasureContext mctx, View view);
+  int measureHeight(MeasureContext mctx, View view);
+  void doLayout(MeasureContext mctx, View view, List<View> children);
 }

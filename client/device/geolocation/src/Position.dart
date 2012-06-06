@@ -4,7 +4,7 @@
 
 /** Position */
 class Position {
-	final Coordinates coords;
-	final int timestamp;
-	Position(this.coords, this.timestamp);
+  final Coordinates coords;
+  final int timestamp;
+  Position(this.coords, this.timestamp);
 }

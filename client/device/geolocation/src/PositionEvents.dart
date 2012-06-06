@@ -4,8 +4,8 @@
 
 /** Position events */
 class PositionEvents extends DeviceEvents {
-	PositionEvents(ptr) : super(ptr);
-	PositionEventListenerList get position() 
-		=> get_('position', new PositionEventListenerList(this.getEventTarget_(), 'position'));
+  PositionEvents(ptr) : super(ptr);
+  PositionEventListenerList get position() 
+    => get_('position', new PositionEventListenerList(this.getEventTarget_(), 'position'));
 }
 

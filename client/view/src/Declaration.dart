@@ -6,24 +6,24 @@
  * A declaration of properties.
  */
 interface Declaration default DeclarationImpl {
-	Declaration();
+  Declaration();
 
-	/** The text representation of the declaration block.
-	 * Setting this attribute will reset all properties.
-	 */
-	String text;
-	/** Returns a collection of properties that are assigned with
-	 * a non-empty value.
-	 */
-	Collection<String> getPropertyNames();
-	/** Retrieves the property's value.
-	 */
-	String getPropertyValue(String propertyName);
-	/** Removes the property of the given name.
-	 */
-	String removeProperty(String propertyName);
-	/** Sets the value of the given property.
-	 * If the given value is null or empty, the property will be removed.
-	 */
-	void setProperty(String propertyName, String value);
+  /** The text representation of the declaration block.
+   * Setting this attribute will reset all properties.
+   */
+  String text;
+  /** Returns a collection of properties that are assigned with
+   * a non-empty value.
+   */
+  Collection<String> getPropertyNames();
+  /** Retrieves the property's value.
+   */
+  String getPropertyValue(String propertyName);
+  /** Removes the property of the given name.
+   */
+  String removeProperty(String propertyName);
+  /** Sets the value of the given property.
+   * If the given value is null or empty, the property will be removed.
+   */
+  void setProperty(String propertyName, String value);
 }

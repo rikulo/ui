@@ -10,14 +10,14 @@
 
 class TestRadioGroupModel extends Activity {
 
-	void onCreate_() {
-		final ListModel<String> model = new ListModel(["apple", "orange", "lemon"]);
-		final RadioGroup rg = new RadioGroup(model: model);
-		rg.layout.text = "type: linear";
-		mainView.addChild(rg);
-	}
+  void onCreate_() {
+    final ListModel<String> model = new ListModel(["apple", "orange", "lemon"]);
+    final RadioGroup rg = new RadioGroup(model: model);
+    rg.layout.text = "type: linear";
+    mainView.addChild(rg);
+  }
 }
 
 void main() {
-	new TestRadioGroupModel().run();
+  new TestRadioGroupModel().run();
 }

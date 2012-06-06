@@ -6,27 +6,27 @@
  * Accelerometer implementation for Cordova device.
  */
 class CordovaAccelerometer extends AbstractAccelerometer {
-	void getCurrentAcceleration(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError) {
-		jsCall("accelerometer.getCurrentAcceleration", [_wrapFunction(onSuccess), onError]);
-	}
-	
-	AccelerometerSuccessCallback wrapSuccessListener_(AccelerationEventListener listener) {
-	  return (jsAccel) => listener(new AccelerationEvent(this, new Acceleration.from(toDartMap(jsAccel))));
-	}
-	
+  void getCurrentAcceleration(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError) {
+    jsCall("accelerometer.getCurrentAcceleration", [_wrapFunction(onSuccess), onError]);
+  }
+  
+  AccelerometerSuccessCallback wrapSuccessListener_(AccelerationEventListener listener) {
+    return (jsAccel) => listener(new AccelerationEvent(this, new Acceleration.from(toDartMap(jsAccel))));
+  }
+  
   AccelerometerErrorCallback wrapErrorListener_(AccelerationEventListener listener) {
     return () => listener(new AccelerationEvent(this, null, false));
   }
 
-	_wrapFunction(dartFn) {
-		return (jsAccel) => dartFn(new Acceleration.from(toDartMap(jsAccel)));
-	}
-	
-	watchAcceleration(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError, [Map options]) {
-		return jsCall("accelerometer.watchAcceleration", [onSuccess, onError, toJSMap(options)]);
-	}
-	
-	void clearWatch(var watchID) {
-		jsCall("accelerometer.clearWatch", [watchID]);
-	}
+  _wrapFunction(dartFn) {
+    return (jsAccel) => dartFn(new Acceleration.from(toDartMap(jsAccel)));
+  }
+  
+  watchAcceleration(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError, [Map options]) {
+    return jsCall("accelerometer.watchAcceleration", [onSuccess, onError, toJSMap(options)]);
+  }
+  
+  void clearWatch(var watchID) {
+    jsCall("accelerometer.clearWatch", [watchID]);
+  }
 }

@@ -6,25 +6,25 @@
  * An effect function used with [Effect] to calculate the value over time.
  */
 interface EffectFunction {
-	/** Constructor.
-	 * <p>[endValue] specifies the value when the time runs out,
-	 * while the initial value is assumed to be zero.
-	 * [duration] specifies the duration of time to elapse in milliseconds.
-	 */
-	//EffectFunction(int endValue, int duration);
+  /** Constructor.
+   * <p>[endValue] specifies the value when the time runs out,
+   * while the initial value is assumed to be zero.
+   * [duration] specifies the duration of time to elapse in milliseconds.
+   */
+  //EffectFunction(int endValue, int duration);
 
-	/** Returns the value of the give time point.
-	 */
-	int operator[](int millisec);
+  /** Returns the value of the give time point.
+   */
+  int operator[](int millisec);
 
-	/** Assigns the value for the given time point.
-	 */
-	int operator[]=(int millisec, int value);
+  /** Assigns the value for the given time point.
+   */
+  int operator[]=(int millisec, int value);
 
-	/** Removes the value for the given time point.
-	 */
-	void remove(int millisec, int value);
-	/** Returns all defined time points.
-	 */
-	//Collectin<num> get timePoints(); //CONSIDER whether it is useful
+  /** Removes the value for the given time point.
+   */
+  void remove(int millisec, int value);
+  /** Returns all defined time points.
+   */
+  //Collectin<num> get timePoints(); //CONSIDER whether it is useful
 }

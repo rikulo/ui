@@ -8,8 +8,8 @@
  * @return the converted JavaScript Date
  */
 toJSDate(Date dartdate) {
-	int msecs = dartdate !== null ? dartdate.value : null;
-	return msecs != null ? jsCall("new Date", [msecs]) : null;
+  int msecs = dartdate !== null ? dartdate.value : null;
+  return msecs != null ? jsCall("new Date", [msecs]) : null;
 }
 
 /** Convert a JavaScript Date to Dart Date 
@@ -17,10 +17,10 @@ toJSDate(Date dartdate) {
  * @return the converted Dart Date
  */
 toDartDate(jsdate) {
-	int msecs = jsdate !== null ? jsCall("date.getTime", [jsdate]) : null;
-	return msecs !== null ? new Date.fromEpoch(msecs, false) : null; //use local timezone
+  int msecs = jsdate !== null ? jsCall("date.getTime", [jsdate]) : null;
+  return msecs !== null ? new Date.fromEpoch(msecs, false) : null; //use local timezone
 }
-	
+  
 /** Convert Dart List to JavaScript array 
  * @param dartlist the dart List
  * @return the converted JavaScript Array
@@ -38,7 +38,7 @@ toJSArray(List dartlist, [Function converter = null]) {
       return result[0];
     }
   }
-	return null;
+  return null;
 }
 
 /** Convert JavaScript array to Dart List
@@ -47,15 +47,15 @@ toJSArray(List dartlist, [Function converter = null]) {
  * @return the converted Dart List
  */
 toDartList(var jsarray, [Function converter = null]) {
-	if (jsarray !== null) {
-		List result = new List();
-		if (converter !== null)
-		  jsCall("forEach", [jsarray, (v) => result.add(converter(v))]);
-		else
-		  jsCall("forEach", [jsarray, (v) => result.add(v)]);
-		return result;
-	}
-	return null;
+  if (jsarray !== null) {
+    List result = new List();
+    if (converter !== null)
+      jsCall("forEach", [jsarray, (v) => result.add(converter(v))]);
+    else
+      jsCall("forEach", [jsarray, (v) => result.add(v)]);
+    return result;
+  }
+  return null;
 }
 
 /** Convert Dart Map to JavaScript map(prototype) 
@@ -63,18 +63,18 @@ toDartList(var jsarray, [Function converter = null]) {
  * @return the converted JavaScript map 
  */
 toJSMap(Map dartmap, [Function converter = null]) {
-	if (dartmap !==  null) {
-		if (dartmap.length == 0) {
-			return jsCall("{}"); //return empty JavaScript map
-		}
-		var result = [];
-		if (converter !== null)
-		  dartmap.forEach((k,v) => jsCall("_newEntry", [result, k, converter(v)]));
-		else
-		  dartmap.forEach((k,v) => jsCall("_newEntry", [result, k, v]));
-		return result[0];
-	}
-	return null;
+  if (dartmap !==  null) {
+    if (dartmap.length == 0) {
+      return jsCall("{}"); //return empty JavaScript map
+    }
+    var result = [];
+    if (converter !== null)
+      dartmap.forEach((k,v) => jsCall("_newEntry", [result, k, converter(v)]));
+    else
+      dartmap.forEach((k,v) => jsCall("_newEntry", [result, k, v]));
+    return result[0];
+  }
+  return null;
 }
 
 /** Convert JavaScript map(prototype) to Dart Map 
@@ -82,15 +82,15 @@ toJSMap(Map dartmap, [Function converter = null]) {
  * @return the converted Dart Map
  */
 toDartMap(var jsmap, [Function converter = null]) {
-	if (jsmap !== null) {
-		Map result = new Map();
-		if (converter !== null)
-		  jsCall("forEachKey", [jsmap, (k,v) => result[k] = converter(v)]);
-		else
-		  jsCall("forEachKey", [jsmap, (k,v) => result[k] = v]);
-		return result;
-	}
-	return null;
+  if (jsmap !== null) {
+    Map result = new Map();
+    if (converter !== null)
+      jsCall("forEachKey", [jsmap, (k,v) => result[k] = converter(v)]);
+    else
+      jsCall("forEachKey", [jsmap, (k,v) => result[k] = v]);
+    return result;
+  }
+  return null;
 }
 
 _JSCallX jsCallX;  

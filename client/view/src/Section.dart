@@ -4,22 +4,22 @@
 /** A zone is a view implementing ID space ([IdSpace]).
  */
 class Section extends View implements IdSpace {
-	//The fellows. Used only if this is IdSpace
-	Map<String, View> _fellows;
+  //The fellows. Used only if this is IdSpace
+  Map<String, View> _fellows;
 
-	Section() {
-	  _fellows = {};
-		vclass = "v-Section";
-	}
+  Section() {
+    _fellows = {};
+    vclass = "v-Section";
+  }
 
-	View getFellow(String id) => _fellows[id];
-	void bindFellow_(String id, View fellow) {
-		if (fellow !== null) _fellows[id] = fellow;
-		else _fellows.remove(id);
-	}
+  View getFellow(String id) => _fellows[id];
+  void bindFellow_(String id, View fellow) {
+    if (fellow !== null) _fellows[id] = fellow;
+    else _fellows.remove(id);
+  }
 
-	/** Returns the HTML tag's name representing this widget.
-	 * <p>Default: <code>section</code>.
-	 */
-	String get domTag_() => "section";
+  /** Returns the HTML tag's name representing this widget.
+   * <p>Default: <code>section</code>.
+   */
+  String get domTag_() => "section";
 }

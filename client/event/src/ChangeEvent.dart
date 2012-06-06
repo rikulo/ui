@@ -6,13 +6,13 @@
  * A change event. It is sent with [ViewEvents.change].
  */
 class ChangeEvent<Value> extends ViewEvent {
-	final Value _value;
-	ChangeEvent(View target, Value value, [String type="change"]):
-	super(target, type), _value = value;
+  final Value _value;
+  ChangeEvent(View target, Value value, [String type="change"]):
+  super(target, type), _value = value;
 
-	/** Returns the value.
-	 */
-	Value get value() => _value;	
+  /** Returns the value.
+   */
+  Value get value() => _value;
 
-	String toString() => "ChangeEvent($target,$value)";
+  String toString() => "ChangeEvent($target,$value)";
 }

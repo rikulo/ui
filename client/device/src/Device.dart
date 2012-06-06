@@ -3,20 +3,20 @@
 // Author: henrichen
 
 interface Device {
-	String name; //name of this device
-	String cordovaVersion; //version of Cordove running on the device
-	String platform; //operating system name of this device
-	String version; //operating system version of this device
-	String uuid; //uuid of this device
+  String name; //name of this device
+  String cordovaVersion; //version of Cordove running on the device
+  String platform; //operating system name of this device
+  String version; //operating system version of this device
+  String uuid; //uuid of this device
 
-	Task readyFunction; //function called when the device is ready
-	
-	final Accelerometer accelerometer; //accelerometer of this device
-	final Camera camera; //camera of this device
-	final Compass compass; //compass of this device
-	final Contacts contacts; //contacts of this device
-	final XGeolocation geolocation; //geolocation of this device
-	final XNotification notification; //notification facility of this device
+  Task readyFunction; //function called when the device is ready
+  
+  final Accelerometer accelerometer; //accelerometer of this device
+  final Camera camera; //camera of this device
+  final Compass compass; //compass of this device
+  final Contacts contacts; //contacts of this device
+  final XGeolocation geolocation; //geolocation of this device
+  final XNotification notification; //notification facility of this device
 }
 
 /** Enable the device accesibility.
@@ -31,11 +31,11 @@ interface Device {
  * will be ignored.
  */
 void enableDeviceAccess() {
-	//Initilize Cordova device if not in simulator
-	if (device === null) {
-		if (application.inSimulator)
-			throw const SystemException("enableSimulator() must be called first");
-		device = new CordovaDevice();
-	}
+  //Initilize Cordova device if not in simulator
+  if (device === null) {
+    if (application.inSimulator)
+      throw const SystemException("enableSimulator() must be called first");
+    device = new CordovaDevice();
+  }
 }
 Device device; //singleton device per application

@@ -4,73 +4,73 @@
 /** A button.
  */
 class Button extends TextView {
-	String _type = "button";
-	bool _disabled = false, _autofocus = false;
+  String _type = "button";
+  bool _disabled = false, _autofocus = false;
 
-	Button([String text="", String html=""]):
-	super(text, html) {
-		vclass = "v-Button";
-	}
+  Button([String text="", String html=""]):
+  super(text, html) {
+    vclass = "v-Button";
+  }
 
-	/** Returns the button type.
-	 * <p>Default: "button".
-	 */
-	String get type() => _type;
-	/** Sets the button type.
-	 * <p>[type] can be either "button", "submit" or "reset".
-	 */
-	void set type(String type) {
-		_type = type == null || type.isEmpty() ? "button": type;
-		ButtonElement n = node;
-		if (n != null)
-			n.$dom_setAttribute('type', _type); //Chrome's type can't be assigned directly
-	}
-	/** Returns whether it is disabled.
-	 * <p>Default: false.
-	 */
-	bool get disabled() => _disabled;
-	/** Sets whether it is disabled.
-	 */
-	void set disabled(bool disabled) {
-		_disabled = disabled;
-		ButtonElement n = node;
-		if (n != null)
-			n.disabled = _disabled;
-	}
+  /** Returns the button type.
+   * <p>Default: "button".
+   */
+  String get type() => _type;
+  /** Sets the button type.
+   * <p>[type] can be either "button", "submit" or "reset".
+   */
+  void set type(String type) {
+    _type = type == null || type.isEmpty() ? "button": type;
+    ButtonElement n = node;
+    if (n != null)
+      n.$dom_setAttribute('type', _type); //Chrome's type can't be assigned directly
+  }
+  /** Returns whether it is disabled.
+   * <p>Default: false.
+   */
+  bool get disabled() => _disabled;
+  /** Sets whether it is disabled.
+   */
+  void set disabled(bool disabled) {
+    _disabled = disabled;
+    ButtonElement n = node;
+    if (n != null)
+      n.disabled = _disabled;
+  }
 
-	/** Returns whether this button should automatically get focus.
-	 * <p>Default: false.
-	 */
-	bool get autofocus() => _autofocus;
-	/** Sets whether this button should automatically get focus.
-	 */
-	void set autofocus(bool autofocus) {
-		_autofocus = autofocus;
-		if (autofocus) {
-			ButtonElement n = node;
-			if (n != null)
-				n.focus();
-		}
-	}
+  /** Returns whether this button should automatically get focus.
+   * <p>Default: false.
+   */
+  bool get autofocus() => _autofocus;
+  /** Sets whether this button should automatically get focus.
+   */
+  void set autofocus(bool autofocus) {
+    _autofocus = autofocus;
+    if (autofocus) {
+      ButtonElement n = node;
+      if (n != null)
+        n.focus();
+    }
+  }
 
-	void domAttrs_(StringBuffer out,
-	[bool noId=false, bool noStyle=false, bool noClass=false]) {
-		out.add(' type="').add(type).add('"');
-		if (disabled)
-			out.add(' disabled="disabled"');
-		if (autofocus)
-			out.add(' autofocus="autofocus"');
-		super.domAttrs_(out, noId, noStyle, noClass);
-	}
-	/** Returns the HTML tag's name representing this widget.
-	 * <p>Default: <code>button</code>.
-	 */
-	String get domTag_() => "button";
+  void domAttrs_(StringBuffer out,
+  [bool noId=false, bool noStyle=false, bool noClass=false]) {
+    out.add(' type="').add(type).add('"');
+    if (disabled)
+      out.add(' disabled="disabled"');
+    if (autofocus)
+      out.add(' autofocus="autofocus"');
+    super.domAttrs_(out, noId, noStyle, noClass);
+  }
+  /** Returns the HTML tag's name representing this widget.
+   * <p>Default: <code>button</code>.
+   */
+  String get domTag_() => "button";
 
-	/** Returns whether this view allows any child views.
-	 * <p>Default: false.
-	 */
-	bool isChildable_() => false;
+  /** Returns whether this view allows any child views.
+   * <p>Default: false.
+   */
+  bool isChildable_() => false;
 
-	String toString() => "Button('$text$html')";
+  String toString() => "Button('$text$html')";
 }

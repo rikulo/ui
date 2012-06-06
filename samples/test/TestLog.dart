@@ -8,18 +8,18 @@
 
 class TestLog extends Activity {
 
-	void onCreate_() {
-		log("Started");
-		log(null);
-		int count = 0;
-		Button btn = new Button("Click Me!");
-		btn.on.click.add((event) {
-			log("Clicked ${++count}");
-		});
-		mainView.addChild(btn);
-	}
+  void onCreate_() {
+    log("Started");
+    log(null);
+    int count = 0;
+    Button btn = new Button("Click Me!");
+    btn.on.click.add((event) {
+      log("Clicked ${++count}");
+    });
+    mainView.addChild(btn);
+  }
 }
 
 void main() {
-	new TestLog().run();
+  new TestLog().run();
 }

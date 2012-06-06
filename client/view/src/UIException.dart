@@ -4,8 +4,8 @@
 /** An UI exception.
  */
 class UIException implements Exception {
-	final String message;
+  final String message;
 
-	const UIException(String this.message);
-	String toString() => "UIException($message)";
+  const UIException(String this.message);
+  String toString() => "UIException($message)";
 }

@@ -3,12 +3,12 @@
 // Author: henrichen
 
 class CompassHeadingEvent extends DeviceEvent {
-	CompassHeadingEvent(DeviceEventTarget target, CompassHeading data, [bool success = true]) :
-	  super(target, success), magneticHeading = data.magneticHeading, trueHeading = data.trueHeading,
-	  headingAccuracy = data.headingAccuracy, timestamp = data.timestamp;
+  CompassHeadingEvent(DeviceEventTarget target, CompassHeading data, [bool success = true]) :
+    super(target, success), magneticHeading = data.magneticHeading, trueHeading = data.trueHeading,
+    headingAccuracy = data.headingAccuracy, timestamp = data.timestamp;
 
-	final double magneticHeading;
-	final double trueHeading;
-	final double headingAccuracy;
-	final int timestamp;
+  final double magneticHeading;
+  final double trueHeading;
+  final double headingAccuracy;
+  final int timestamp;
 }

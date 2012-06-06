@@ -12,52 +12,52 @@ CanvasRenderingContext2D ctx2d;
 Canvas canvas;
 
 class Ball {
-	int size, radius;
-	double speed;
-	String color;
+  int size, radius;
+  double speed;
+  String color;
 
-	Ball(int this.radius, double this.speed, int this.size, String this.color);
+  Ball(int this.radius, double this.speed, int this.size, String this.color);
 
-	void updatePosition(int time) {
-		final double degree = time * speed / 1000;
-		ctx2d.beginPath();
-		ctx2d.fillStyle = color;
-		ctx2d.arc(
-			(canvas.width >> 1) + radius * Math.sin(degree),
-			(canvas.height >> 1) + radius * Math.cos(degree), size,
-			0, Math.PI * 2, true);
-		ctx2d.closePath();
-		ctx2d.fill();
-	}
+  void updatePosition(int time) {
+    final double degree = time * speed / 1000;
+    ctx2d.beginPath();
+    ctx2d.fillStyle = color;
+    ctx2d.arc(
+      (canvas.width >> 1) + radius * Math.sin(degree),
+      (canvas.height >> 1) + radius * Math.cos(degree), size,
+      0, Math.PI * 2, true);
+    ctx2d.closePath();
+    ctx2d.fill();
+  }
 }
 
 class CanvasCircle extends Activity {
-	List<Ball> balls;
+  List<Ball> balls;
 
-	void onCreate_() {
-		title = "Circles";
+  void onCreate_() {
+    title = "Circles";
 
-		canvas = new Canvas();
-		canvas.profile.text = "anchor: parent; width: flex; height: flex";
-		mainView.addChild(canvas);
+    canvas = new Canvas();
+    canvas.profile.text = "anchor: parent; width: flex; height: flex";
+    mainView.addChild(canvas);
 
-		balls = [new Ball(50, 2.0, 6, "red"),
-			new Ball(30, 1.3, 6, "blue"),
-			new Ball(70, 1.6, 10, "green"),
-			new Ball(100, 1.0, 13, "yellow"),
-			new Ball(130, 0.8, 8, "#0ff")];
-	}
-	void onEnterDocument_() {
-		ctx2d = canvas.context2D;
-		new Animator().add((int time, int elapsed) {
-			ctx2d.clearRect(0, 0, canvas.width, canvas.height);
-			for (final Ball ball in balls)
-				ball.updatePosition(time);
-			return true;
-		});
-	}
+    balls = [new Ball(50, 2.0, 6, "red"),
+      new Ball(30, 1.3, 6, "blue"),
+      new Ball(70, 1.6, 10, "green"),
+      new Ball(100, 1.0, 13, "yellow"),
+      new Ball(130, 0.8, 8, "#0ff")];
+  }
+  void onEnterDocument_() {
+    ctx2d = canvas.context2D;
+    new Animator().add((int time, int elapsed) {
+      ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+      for (final Ball ball in balls)
+        ball.updatePosition(time);
+      return true;
+    });
+  }
 }
 
 void main() {
-	new CanvasCircle().run();
+  new CanvasCircle().run();
 }

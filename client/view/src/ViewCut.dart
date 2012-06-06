@@ -28,52 +28,52 @@
  *
  */
 interface ViewCut {
-	/** The view being cut.
-	 */
-	View get view();
+  /** The view being cut.
+   */
+  View get view();
 
-	/** Pastes the view kept in this [Viewcut] to the given parent view.
-	 * The view kept in this object will become a child of the given parent view.
-	 * <p>If [beforeChild] is specified, it must be a child of the given parent,
-	 * and the view kept in this object will be inserted before it.
-	 * <p>Notice that this method can be called only once.
-	 */
-	void pasteTo(View parent, [View beforeChild]);
-	/** Drops the cut.
-	 * It will invoke [exitDocument_] and other detaching tasks such
-	 * that your application or utilties depending on the exitDocument event
-	 * can clean up correctly.
-	 * Furthermore, the view can be accessed normall as if the view is removed
-	 * by [View.removeFromParent].
-	 */
-	void drop();
+  /** Pastes the view kept in this [Viewcut] to the given parent view.
+   * The view kept in this object will become a child of the given parent view.
+   * <p>If [beforeChild] is specified, it must be a child of the given parent,
+   * and the view kept in this object will be inserted before it.
+   * <p>Notice that this method can be called only once.
+   */
+  void pasteTo(View parent, [View beforeChild]);
+  /** Drops the cut.
+   * It will invoke [exitDocument_] and other detaching tasks such
+   * that your application or utilties depending on the exitDocument event
+   * can clean up correctly.
+   * Furthermore, the view can be accessed normall as if the view is removed
+   * by [View.removeFromParent].
+   */
+  void drop();
 }
 class _ViewCut implements ViewCut {
-	final View view;
+  final View view;
 
-	_ViewCut(View this.view) {
-		if (!view.inDocument) //note: it is cached to View._node
-			throw new UIException("Not in document: $view");
+  _ViewCut(View this.view) {
+    if (!view.inDocument) //note: it is cached to View._node
+      throw new UIException("Not in document: $view");
 
-		final View parent = view.parent;
-		if (parent === null)
-			throw new UIException("Root not allowed: $view");
+    final View parent = view.parent;
+    if (parent === null)
+      throw new UIException("Root not allowed: $view");
 
-		parent._removeChild(view, exit: false); //not to exit
-	}
-	void pasteTo(View parent, [View beforeChild]) {
-		if (!parent.inDocument)
-			throw new UIException("Not in document: $parent");
-		_check();
+    parent._removeChild(view, exit: false); //not to exit
+  }
+  void pasteTo(View parent, [View beforeChild]) {
+    if (!parent.inDocument)
+      throw new UIException("Not in document: $parent");
+    _check();
 
-		parent._addChild(view, beforeChild, view.node);
-	}
-	void drop() {
-		_check();
-		view._exitDocument();
-	}
-	void _check() {
-		if (view.parent !== null || !view.inDocument)
-			throw const UIException("Unable to paste drop twice");
-	}
+    parent._addChild(view, beforeChild, view.node);
+  }
+  void drop() {
+    _check();
+    view._exitDocument();
+  }
+  void _check() {
+    if (view.parent !== null || !view.inDocument)
+      throw const UIException("Unable to paste drop twice");
+  }
 }

@@ -6,25 +6,25 @@
  * A type of a data event, such as [ListDataEvent].
  */
 class DataEventType {
-	const DataEventType();
+  const DataEventType();
 
-	/** Identifies one or more data are changed.
-	 */
-	static final DataEventType CONTENT_CHANGED = const DataEventType();
+  /** Identifies one or more data are changed.
+   */
+  static final DataEventType CONTENT_CHANGED = const DataEventType();
     /** Identifies the addition of one or more contiguous items to the model.
      */
-	static final DataEventType INTERVAL_ADDED = const DataEventType();
+  static final DataEventType INTERVAL_ADDED = const DataEventType();
     /** Identifies the removal of one or more contiguous items from the model.
      */   
-	static final DataEventType INTERVAL_REMOVED = const DataEventType();
-	/** Identifies the structure of the lists has changed.
-	 */
-	static final DataEventType STRUCTURE_CHANGED = const DataEventType();
-	/** Identifies the selection of the lists has changed.
-	 * Notice that the objects being selected can be found by calling [Selectable].
-	 */
-	static final DataEventType SELECTION_CHANGED = const DataEventType();
-	/** Identified the change of whether the model allows mutiple selection.
-	 */
-	static final DataEventType MULTIPLE_CHANGED = const DataEventType();
+  static final DataEventType INTERVAL_REMOVED = const DataEventType();
+  /** Identifies the structure of the lists has changed.
+   */
+  static final DataEventType STRUCTURE_CHANGED = const DataEventType();
+  /** Identifies the selection of the lists has changed.
+   * Notice that the objects being selected can be found by calling [Selectable].
+   */
+  static final DataEventType SELECTION_CHANGED = const DataEventType();
+  /** Identified the change of whether the model allows mutiple selection.
+   */
+  static final DataEventType MULTIPLE_CHANGED = const DataEventType();
 }

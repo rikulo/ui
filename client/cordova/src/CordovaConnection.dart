@@ -6,7 +6,7 @@
  * A Cordova connection  implementation.
  */
 class CordovaConnection implements Connection {
-	String get type() {
-		return jsCall("connection.type");
-	}
+  String get type() {
+    return jsCall("connection.type");
+  }
 }

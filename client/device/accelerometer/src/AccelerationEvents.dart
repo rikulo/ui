@@ -4,7 +4,7 @@
 
 /** Acceleration events */
 class AccelerationEvents extends DeviceEvents {
-	AccelerationEvents(ptr) : super(ptr);
-	AccelerationEventListenerList get accelerate() =>
-	  get_('accelerate', new AccelerationEventListenerList(this.getEventTarget_(), 'accelerate'));
+  AccelerationEvents(ptr) : super(ptr);
+  AccelerationEventListenerList get accelerate() =>
+    get_('accelerate', new AccelerationEventListenerList(this.getEventTarget_(), 'accelerate'));
 }

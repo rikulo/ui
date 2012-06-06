@@ -8,142 +8,142 @@ typedef bool _BrowserMatch(RegExp regex);
  * The browser.
  */
 class Browser {
-	static final RegExp _rwebkit = const RegExp(@"(webkit)[ /]([\w.]+)"),
-		_rsafari = const RegExp(@"(safari)[ /]([\w.]+)"),
-		_rchrome = const RegExp(@"(chrome)[ /]([\w.]+)"),
-		_rmsie = const RegExp(@"(msie) ([\w.]+)"),
-		_rmozilla = const RegExp(@"(mozilla)(?:.*? rv:([\w.]+))?"),
-		_rios = const RegExp(@"OS[ /]([\w_]+) like Mac OS"),
-		_randroid = const RegExp(@"android[ /]([\w.]+)");
+  static final RegExp _rwebkit = const RegExp(@"(webkit)[ /]([\w.]+)"),
+    _rsafari = const RegExp(@"(safari)[ /]([\w.]+)"),
+    _rchrome = const RegExp(@"(chrome)[ /]([\w.]+)"),
+    _rmsie = const RegExp(@"(msie) ([\w.]+)"),
+    _rmozilla = const RegExp(@"(mozilla)(?:.*? rv:([\w.]+))?"),
+    _rios = const RegExp(@"OS[ /]([\w_]+) like Mac OS"),
+    _randroid = const RegExp(@"android[ /]([\w.]+)");
 
-	/** The browser's name. */
-	String name;
-	/** The browser's version. */
-	double version;
+  /** The browser's name. */
+  String name;
+  /** The browser's version. */
+  double version;
 
-	/** Whether it is Safari. */
-	bool safari = false;
-	/** Whether it is Chrome. */
-	bool chrome = false;
-	/** Whether it is Internet Explorer. */
-	bool msie = false;
-	/** Whether it is Firefox. */
-	bool firefox = false;
-	/** Whether it is WebKit-based. */
-	bool webkit = false;
+  /** Whether it is Safari. */
+  bool safari = false;
+  /** Whether it is Chrome. */
+  bool chrome = false;
+  /** Whether it is Internet Explorer. */
+  bool msie = false;
+  /** Whether it is Firefox. */
+  bool firefox = false;
+  /** Whether it is WebKit-based. */
+  bool webkit = false;
 
-	/** Whether it is running on iOS. */
-	bool ios = false;
-	/** Whether it is running on Android. */
-	bool android = false;
+  /** Whether it is running on iOS. */
+  bool ios = false;
+  /** Whether it is running on Android. */
+  bool android = false;
 
-	/** Whehter it is running on a mobile device.
-	 * By mobile we mean the browser takes the full screen and non-sizable.
-	 * If false, the browser is assumed to run on a desktop and
-	 * it can be resized by the user.
-	 */
-	bool mobile = false;
-	/** Whether it supports the touch events.
-	 */
-	bool touch = false;
+  /** Whehter it is running on a mobile device.
+   * By mobile we mean the browser takes the full screen and non-sizable.
+   * If false, the browser is assumed to run on a desktop and
+   * it can be resized by the user.
+   */
+  bool mobile = false;
+  /** Whether it supports the touch events.
+   */
+  bool touch = false;
 
-	/** The webkit's version if this is a webkit-based browser, or null
-	 * if it is not webkit-based.
-	 */
-	double webkitVersion;
-	/** The version of iOS if it is running on iOS, or null if not.
-	 */
-	double iosVersion;
-	/** The version of Android if it is running on Android, or null if not.
-	 */
-	double androidVersion;
+  /** The webkit's version if this is a webkit-based browser, or null
+   * if it is not webkit-based.
+   */
+  double webkitVersion;
+  /** The version of iOS if it is running on iOS, or null if not.
+   */
+  double iosVersion;
+  /** The version of Android if it is running on Android, or null if not.
+   */
+  double androidVersion;
 
-	/** The screen size. */
-	Size size;
+  /** The screen size. */
+  Size size;
 
-	Browser() {
-		_initBrowserInfo();
-	}
-	/** Returns the URL of this page.
-	 * For example, "http://www.yourserver.com" and "file://".
-	 */
-	String get url() {
-		final Location l = window.location;
-		final StringBuffer sb = new StringBuffer();
-		sb.add(l.protocol).add("//").add(l.hostname);
-		if (l.port != "80" && !l.port.isEmpty())
-			sb.add(':').add(l.port);
-		return sb.toString();
-	}
+  Browser() {
+    _initBrowserInfo();
+  }
+  /** Returns the URL of this page.
+   * For example, "http://www.yourserver.com" and "file://".
+   */
+  String get url() {
+    final Location l = window.location;
+    final StringBuffer sb = new StringBuffer();
+    sb.add(l.protocol).add("//").add(l.hostname);
+    if (l.port != "80" && !l.port.isEmpty())
+      sb.add(':').add(l.port);
+    return sb.toString();
+  }
 
-	String toString() {
-		return "$name(v$version, $size)";
-	}
-	void _initBrowserInfo() {
-		final String ua = window.navigator.userAgent.toLowerCase();
-		final _BrowserMatch bm = (RegExp regex) {
-			Match m = regex.firstMatch(ua);
-			if (m !== null) {
-				name = m.group(1);
-				version = _versionOf(m.group(2));
-				return true;
-			}
-			return false;
-		};
+  String toString() {
+    return "$name(v$version, $size)";
+  }
+  void _initBrowserInfo() {
+    final String ua = window.navigator.userAgent.toLowerCase();
+    final _BrowserMatch bm = (RegExp regex) {
+      Match m = regex.firstMatch(ua);
+      if (m !== null) {
+        name = m.group(1);
+        version = _versionOf(m.group(2));
+        return true;
+      }
+      return false;
+    };
 
-		if (bm(_rwebkit)) {
-			webkit = true;
-			CSS.prefix = "-webkit-";
-			webkitVersion = version;
+    if (bm(_rwebkit)) {
+      webkit = true;
+      CSS.prefix = "-webkit-";
+      webkitVersion = version;
 
-			if (bm(_rchrome)) {
-				chrome = true;
+      if (bm(_rchrome)) {
+        chrome = true;
 
-				Match m = _randroid.firstMatch(ua);
-				if (m !== null) {
-					touch = mobile = android = true;
-					androidVersion = _versionOf(m.group(1));
-				}
-			} else if (bm(_rsafari)) {
-				safari = true;
+        Match m = _randroid.firstMatch(ua);
+        if (m !== null) {
+          touch = mobile = android = true;
+          androidVersion = _versionOf(m.group(1));
+        }
+      } else if (bm(_rsafari)) {
+        safari = true;
 
-				Match m = _rios.firstMatch(ua);
-				if (m !== null) {
-					touch = mobile = ios = true;
-					iosVersion = _versionOf(m.group(1), '_');
-				}
-			}
-		} else if (bm(_rmsie)) {
-			CSS.prefix = "-ms-";
-			msie = true;
-			touch = mobile = ua.indexOf("IEMobile") >= 0;
-		} else if (ua.indexOf("compatible") < 0 && bm(_rmozilla)) {
-			CSS.prefix = "-moz-";
-			name = "firefox";
-			firefox = true;
-		} else {
-			CSS.prefix = "";
-			name = "unknown";
-			version = 1.0;
-		}
+        Match m = _rios.firstMatch(ua);
+        if (m !== null) {
+          touch = mobile = ios = true;
+          iosVersion = _versionOf(m.group(1), '_');
+        }
+      }
+    } else if (bm(_rmsie)) {
+      CSS.prefix = "-ms-";
+      msie = true;
+      touch = mobile = ua.indexOf("IEMobile") >= 0;
+    } else if (ua.indexOf("compatible") < 0 && bm(_rmozilla)) {
+      CSS.prefix = "-moz-";
+      name = "firefox";
+      firefox = true;
+    } else {
+      CSS.prefix = "";
+      name = "unknown";
+      version = 1.0;
+    }
 
-		final Element caveNode = document.query("#v-main");
-		final DOMQuery qcave = new DOMQuery(caveNode !== null ? caveNode: window);
-		size = new Size(qcave.innerWidth, qcave.innerHeight);
-	}
-	static double _versionOf(String version, [String separator='.']) {
-		int j = version.indexOf(separator);
-		if (j >= 0) {
-			j = version.indexOf(separator, j + 1);
-			if (j >= 0)
-				version = version.substring(0, j);
-		}
-		try {
-			return Math.parseDouble(version);
-		} catch (var t) {
-			return 1.0; //ignore it
-		}
-	}
+    final Element caveNode = document.query("#v-main");
+    final DOMQuery qcave = new DOMQuery(caveNode !== null ? caveNode: window);
+    size = new Size(qcave.innerWidth, qcave.innerHeight);
+  }
+  static double _versionOf(String version, [String separator='.']) {
+    int j = version.indexOf(separator);
+    if (j >= 0) {
+      j = version.indexOf(separator, j + 1);
+      if (j >= 0)
+        version = version.substring(0, j);
+    }
+    try {
+      return Math.parseDouble(version);
+    } catch (var t) {
+      return 1.0; //ignore it
+    }
+  }
 }
 
 /** The current browser.

@@ -6,23 +6,23 @@
  * The direction enumeration.
  */
 class Dir {
-	final String _name;
+  final String _name;
 
-	/** Represents the vertical direction.
-	 */
-	static final Dir VERTICAL = const Dir("vertical");
-	/** Represents the horizontal direction.
-	 */
-	static final Dir HORIZONTAL = const Dir("horizontal");
-	/** Represents the both direction.
-	 */
-	static final Dir BOTH = const Dir("both");
+  /** Represents the vertical direction.
+   */
+  static final Dir VERTICAL = const Dir("vertical");
+  /** Represents the horizontal direction.
+   */
+  static final Dir HORIZONTAL = const Dir("horizontal");
+  /** Represents the both direction.
+   */
+  static final Dir BOTH = const Dir("both");
 
-	const Dir(String this._name);
+  const Dir(String this._name);
 
-	/** The name of this direction. */
-	String get name() => _name;
+  /** The name of this direction. */
+  String get name() => _name;
 
-	operator==(other) => this === other;
-	String toString() => _name;
+  operator==(other) => this === other;
+  String toString() => _name;
 }

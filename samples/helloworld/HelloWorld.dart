@@ -6,20 +6,20 @@
 
 class HelloWorld extends Activity {
 
-	void onCreate_() {
-		title = "Hello World!";
+  void onCreate_() {
+    title = "Hello World!";
 
-		TextView text = new TextView("Hello World!");
-		text.profile.text = "anchor:  parent; location: center center";
-		text.on.click.add((ViewEvent event) {
-			event.target.style.border =
-				event.target.style.border.isEmpty() ? "1px solid blue": "";
-		});
-		mainView.addChild(text);
-	}
+    TextView text = new TextView("Hello World!");
+    text.profile.text = "anchor:  parent; location: center center";
+    text.on.click.add((ViewEvent event) {
+      event.target.style.border =
+        event.target.style.border.isEmpty() ? "1px solid blue": "";
+    });
+    mainView.addChild(text);
+  }
 }
 
 
 void main() {
-	new HelloWorld().run();
+  new HelloWorld().run();
 }

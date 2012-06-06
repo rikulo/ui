@@ -5,8 +5,8 @@
 /** A system exception.
  */
 class SystemException implements Exception {
-	final String message;
+  final String message;
 
-	const SystemException(String this.message);
-	String toString() => "SystemException($message)";
+  const SystemException(String this.message);
+  String toString() => "SystemException($message)";
 }

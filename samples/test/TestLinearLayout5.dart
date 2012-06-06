@@ -7,15 +7,15 @@
 
 class TestLinearLayout5 extends Activity {
 
-	void onCreate_() {
-		title = "Test 5: Virtual Linear Layout";
+  void onCreate_() {
+    title = "Test 5: Virtual Linear Layout";
 
-		mainView.layout.text = "type: linear; orient: vertical";
-		mainView.addChild(new Button("The first button"));
-		mainView.addChild(new Button("The second button"));
-	}
+    mainView.layout.text = "type: linear; orient: vertical";
+    mainView.addChild(new Button("The first button"));
+    mainView.addChild(new Button("The second button"));
+  }
 }
 
 void main() {
-	new TestLinearLayout5().run();
+  new TestLinearLayout5().run();
 }

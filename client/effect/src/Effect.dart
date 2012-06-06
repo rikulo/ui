@@ -7,13 +7,13 @@
  * in the given duration.
  */
 interface Effect {
-	/** The target to apply the effect.
-	 */
-	get target();
-	/** The duration to play the effect.
-	 */
-	int duration;
-	/** Stops this effect.
-	 */
-	void stop();
+  /** The target to apply the effect.
+   */
+  get target();
+  /** The duration to play the effect.
+   */
+  int duration;
+  /** Stops this effect.
+   */
+  void stop();
 }
