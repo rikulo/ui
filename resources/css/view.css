@@ -1,23 +1,23 @@
 html, body {
-	overflow: hidden;
-	padding: 0; margin: 0;
+  overflow: hidden;
+  padding: 0; margin: 0;
 }
 body {
-	-webkit-text-size-adjust: none;
-	-moz-text-size-adjust: none;
-	text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 .v- {
-	-webkit-box-sizing: border-box; /* <= iOS4, <= Android 2.3 */
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	position: absolute;
-	margin: 0; /* turn off button and other's margin */
+  -webkit-box-sizing: border-box; /* <= iOS4, <= Android 2.3 */
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: absolute;
+  margin: 0; /* turn off button and other's margin */
 }
 
 .v-ScrollView {
-	overflow: hidden;
+  overflow: hidden;
 }
 .v-ScrollView-inner {
   width: 100%; height: 100%;
