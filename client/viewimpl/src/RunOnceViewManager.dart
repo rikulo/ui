@@ -70,7 +70,10 @@ class RunOnceViewManager {
 	 * all queued views, if the give view is null.
 	 */
 	void flush([View view=null]) {
-		if (view !== null) {
+		if (!_ready(view)) {
+			if (view !== null)
+				_views.add(view);
+		} else if (view !== null) {
 			_flushOne(view);
 		} else {
 			_flushAll();
@@ -87,9 +90,6 @@ class RunOnceViewManager {
 	}
 
 	void _flushAll() {
-		if (!_ready(null))
-			return;
-
 		//remove redundent
 		for (final View view in _views) {
 			if (_ignoreDetached && !view.inDocument) {
@@ -115,9 +115,6 @@ class RunOnceViewManager {
 		}
 	}
 	void _flushOne(View view) {
-		if (!_ready(view))
-			return;
-
 		_views.remove(view);
 		if (!_ignoreDetached || view.inDocument) {
 			for (View v = view; (v = v.parent) !== null;) {
