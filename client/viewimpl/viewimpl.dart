@@ -5,10 +5,11 @@
 
 #import("dart:html");
 
+#import("../util/util.dart");
 #import("../app/app.dart");
 #import("../html/html.dart");
 #import("../view/view.dart");
-#import("../util/util.dart");
+#import("../layout/layout.dart");
 
 #source("src/Functions.dart");
 #source("src/CSSStyleDeclarationImpl.dart");

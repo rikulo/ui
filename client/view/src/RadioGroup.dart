@@ -82,7 +82,7 @@ class RadioGroup<E> extends View {
 			for (int j = 0, len = _model.length; j < len; ++j)
 				renderer(this, _model[j], j);
 
-			requestLayout(true); //immediately
+			requestLayout(true);
 		}
 	}
 	static RadioGroupRenderer _defRenderer() {
