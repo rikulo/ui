@@ -1,10 +1,6 @@
-/* View.dart
-
-  History:
-    Mon Jan  9 13:01:36 TST 2012, Created by tomyeh
-
-Copyright (C) 2012 Potix Corporation. All Rights Reserved.
-*/
+//Copyright (C) 2012 Potix Corporation. All Rights Reserved.
+//History: Mon, Jan 9, 2012 13:01:36
+// Author: tomyeh
 
 /** An effect for the given view, such as fade-in and slide-out.
  */

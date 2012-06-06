@@ -1,13 +1,6 @@
-/* StringUtil.dart
-
-  String utilities.
-
-  Design Note: we don't make them global functions to avoid name pollution.
-  History:
-    Sun Jan 15 11:04:13 TST 2012, Created by tomyeh
-
-Copyright (C) 2012 Potix Corporation. All Rights Reserved.
-*/
+//Copyright (C) 2012 Potix Corporation. All Rights Reserved.
+//History: Sun Jan 15 11:04:13 TST 2012
+// Author: tomyeh
 
 /** String utilities.
  */

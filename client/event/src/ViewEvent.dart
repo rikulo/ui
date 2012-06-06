@@ -1,10 +1,6 @@
-/* ViewEvent.dart
-
-  History:
-    Fri Jan 20 14:42:46 TST 2012, Created by tomyeh
-
-Copyright (C) 2012 Potix Corporation. All Rights Reserved.
-*/
+//Copyright (C) 2012 Potix Corporation. All Rights Reserved.
+//History: Fri Jan 20 14:42:46 TST 2012
+// Author: tomyeh
 
 /** A listener for handling [ViewEvent].
  */
