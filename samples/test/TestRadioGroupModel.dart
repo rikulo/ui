@@ -7,12 +7,18 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/model/model.dart');
+#import('../../client/util/util.dart');
 
 class TestRadioGroupModel extends Activity {
 
   void onCreate_() {
-    final ListModel<String> model = new ListModel(["apple", "orange", "lemon"]);
+    final SelectableListModel<String> model
+      = new SelectableListModel(["apple", "orange", "lemon"]);
+    model.addToSelection("orange");
     final RadioGroup rg = new RadioGroup(model: model);
+    rg.on.check.add((event) {
+      log("Selected: ${model.selection}");
+    });
     rg.layout.text = "type: linear";
     mainView.addChild(rg);
   }

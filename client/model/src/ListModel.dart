@@ -30,3 +30,17 @@ interface ListModel<E> default DefaultListModel<E> {
    */
   void removeListDataListener(ListDataListener listener) ;
 }
+
+/** A data model representing a list of data and it allows the selection.
+ * It is optional since you can implement [ListModel] and [Selectable]
+ * directly. However, it is convenient that you can instantiate an instance
+ * from it and access the methods in both interfaces.
+ */
+interface SelectableListModel<E> extends ListModel<E>, Selectable<E>
+default DefaultListModel<E> {
+  /** Constructor.
+   * <p>Notice that once [data] is assigned to a list model, you shall not
+   * modify the data directly since UI won't update the changes correctly.
+   */
+  SelectableListModel(List<E> data);
+}

@@ -6,7 +6,7 @@
  * The implementaiton shall instantiate a radio button and, optionally, other views.
  * Then add it to [group].
  */
-typedef void RadioGroupRenderer(RadioGroup group, var data, int index);
+typedef RadioButton RadioGroupRenderer(RadioGroup group, var data, bool selected, int index);
 
 /**
  * A radio group.
@@ -17,10 +17,13 @@ typedef void RadioGroupRenderer(RadioGroup group, var data, int index);
  * </ul>
  */
 class RadioGroup<E> extends View {
+  static final String _DATA_MODEL_VALUE = "r.model.value";
+
   RadioButton _selItem;
   ListModel<E> _model;
   ListDataListener _dataListener;
   RadioGroupRenderer _renderer;
+  bool _rendering = false;
 
   RadioGroup([ListModel<E> model]) {
     this.model = model;
@@ -55,6 +58,8 @@ class RadioGroup<E> extends View {
   }
   ListDataListener _initDataListener() {
     if (_dataListener === null) {
+      _dataListener = (ListDataEvent event) {
+      };
     }
     return _dataListener;
   }
@@ -79,18 +84,31 @@ class RadioGroup<E> extends View {
     if (_model !== null) {
 
       children.clear();
+
+      _rendering = true;
       final RadioGroupRenderer renderer =
         _renderer !== null ? _renderer: _defRenderer();
-      for (int j = 0, len = _model.length; j < len; ++j)
-        renderer(this, _model[j], j);
+      try {
+        for (int j = 0, len = _model.length; j < len; ++j) {
+          final obj = _model[j];
+          renderer(this, obj, _cast(_model).isSelected(obj), j)
+            .setData(_DATA_MODEL_VALUE, obj);
+        }
+      } finally {
+        _rendering = false;
+      }
 
       requestLayout(true);
     }
   }
+  static _cast(var v) => v; //TODO: replace with 'as' when Dart supports it
   static RadioGroupRenderer _defRenderer() {
     if (_$defRenderer === null)
-      _$defRenderer = (RadioGroup group, var data, int index) {
-        group.addChild(new RadioButton("$data"));
+      _$defRenderer = (RadioGroup group, var data, bool selected, int index) {
+        final btn = new RadioButton("$data");
+        btn.checked = selected;
+        group.addChild(btn);
+        return btn;
       };
     return _$defRenderer;
   }
@@ -116,6 +134,13 @@ class RadioGroup<E> extends View {
       _selItem = changed;
     } else if (_selItem === changed) {
       _selItem = null;
+    }
+
+    if (!_rendering && _model !== null) {
+      final List<E> sel = new List();
+      if (_selItem !== null)
+          sel.add(_selItem.getData(_DATA_MODEL_VALUE));
+      _cast(_model).selection = sel;
     }
   }
 }

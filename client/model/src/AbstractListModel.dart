@@ -6,7 +6,7 @@
  * A skeletal implementation of [ListModel].
  * It handles the data events ([ListDataEvent]) and the selection ([Selectable]).
  */
-abstract class AbstractListModel<E> implements ListModel<E>, Selectable<E> {
+abstract class AbstractListModel<E> implements SelectableListModel<E> {
   final List<ListDataListener> _listeners;
   Set<E> _selection;
   bool _multiple = false;
