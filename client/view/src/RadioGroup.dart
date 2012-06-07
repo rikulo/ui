@@ -23,7 +23,8 @@ class RadioGroup<E> extends View {
   ListModel<E> _model;
   ListDataListener _dataListener;
   RadioGroupRenderer _renderer;
-  bool _rendering = false;
+  bool _rendering = false, //whether it's rendering model
+    _modelUpdating = false; //whether it's updating model (such as selection)
 
   RadioGroup([ListModel<E> model]) {
     this.model = model;
@@ -59,6 +60,8 @@ class RadioGroup<E> extends View {
   ListDataListener _initDataListener() {
     if (_dataListener === null) {
       _dataListener = (ListDataEvent event) {
+        if (!_modelUpdating)
+          modelRenderer.queue(this);
       };
     }
     return _dataListener;
@@ -140,7 +143,13 @@ class RadioGroup<E> extends View {
       final List<E> sel = new List();
       if (_selItem !== null)
           sel.add(_selItem.getData(_DATA_MODEL_VALUE));
-      _cast(_model).selection = sel;
+
+      _modelUpdating = true;
+      try {
+        _cast(_model).selection = sel;
+      } finally {
+        _modelUpdating = false;
+      }
     }
   }
 }
