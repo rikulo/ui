@@ -19,6 +19,9 @@ typedef void ViewEffect(View view);
  * <li>exitDocument: an instanceof [ViewEvent] indicates this view will be
  * removed from the document.</li>
  * </ul>
+ *
+ * <p>Default [classes]: "v-$className"
+ * (note: "v-" is actually [viewConfig.classPrefix])
  */
 class View implements Hashable {
   String _id = "";
@@ -37,7 +40,6 @@ class View implements Hashable {
   Set<String> _classes;
   //the CSS style; created on demand
   CSSStyleDeclaration _style;
-  String _vclass;
   Element _node;
 
   int _left = 0, _top = 0, _width, _height;
@@ -50,8 +52,14 @@ class View implements Hashable {
   /** Constructor.
    */
   View() {
-    _vclass = "v-View";
+    _classes = new _ClassSet(this);
+    _classes.add("${viewConfig.classPrefix}$className");
   }
+  /** Returns the Dart class name.
+   * The subclass shall override it.
+   * However, it will be removed if Dart supports reflection.
+   */
+  String get className() => "View"; //TODO: replace with reflection if Dart supports it
 
   _ChildInfo _initChildInfo() {
     if (_childInfo === null)
@@ -896,55 +904,9 @@ class View implements Hashable {
     return _style;
   }
 
-  /** Retuns the view class.
+  /** Returns the style classes.
    */
-  String get vclass() => _vclass;
-  /** Sets the view class.
-   * <p>Default: empty, but an implementation usually provides a default
-   * class, such as <code>v-TextView</code>. It is used to provide
-   * the default look for this view. If vclass is changed, all the default
-   * styles are gone.
-   */
-  void set vclass(String newwc) {
-    final String oldwc = _vclass;
-    if (oldwc == newwc)
-      return; //nothing to do
-
-    _vclass = newwc;
-
-    Element n = node;
-    if (n != null) {
-      if (!oldwc.isEmpty())
-        n.classes.remove(oldwc);
-      if (!newwc.isEmpty())
-        n.classes.add(newwc);
-    }
-  }
-  /** Returns a readonly list of the additional style classes.
-   */
-  Set<String> get classes() {
-    if (_classes === null)
-      _classes = new Set();
-    return _classes;
-  }
-  /** Adds the give style class.
-   */
-  void addClass(String className) {
-    classes.add(className);
-    Element n = node;
-    if (n != null)
-      n.classes.add(className);
-  }
-  /** Removes the give style class.
-   */
-  void removeClass(String className) {
-    if (_classes != null) {
-      _classes.remove(className);
-      Element n = node;
-      if (n != null)
-        n.classes.remove(className);
-    }
-  }
+  Set<String> get classes() => _classes;
 
   /** Ouptuts all HTML attributes used for the DOM element of this view
    * to the given output.
@@ -983,17 +945,14 @@ class View implements Hashable {
     }
   }
   /** Outputs a list of the CSS classes for the DOM element of this view
-   * to the given output. If there are multiple CSS classes, seperate them
-   * with a space.
+   * to the given output. If there are multiple CSS classes, they will
+   * be seperated with whitespaces.
    */
-  void domClass_(StringBuffer out, [bool noVclass=false, bool noClass=false]) {
-    out.add("v-");
-    if (!noVclass)
-      out.add(' ').add(vclass);
-    if (!noClass && _classes != null) {
-      for (final String cls in _classes) {
-        out.add(' ').add(cls);
-      }
+  void domClass_(StringBuffer out) {
+    out.add(viewConfig.classPrefix);
+
+    for (final String cls in classes) {
+      out.add(' ').add(cls);
     }
   }
   /** Output the CSS style for the DOM element of this view to the given outout.
@@ -1167,5 +1126,5 @@ class View implements Hashable {
   }
 
   int hashCode() => uuid.hashCode(); //uuid is immutiable once assigned
-  String toString() => "View(${id.isEmpty() ? uuid: id})";
+  String toString() => "$className(${id.isEmpty() ? uuid: id})";
 }

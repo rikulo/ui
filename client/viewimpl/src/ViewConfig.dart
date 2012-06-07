@@ -6,10 +6,10 @@
  * The configuration of views.
  */
 class ViewConfig {
-  /** The prefix used for [View.vclass].
+  /** The prefix used for the default style class of a view.
    * <p>Default: "v-".
    */
-  String vclassPrefix = "v-"; //TODO: built into View when Dart's mirror is done
+  String classPrefix = "v-";
   /** The prefix used for [View.uuid].
    * <p>Default: an unique string in a window to avoid conficts among
    * multiple Rikulo applications in the same page, if any.

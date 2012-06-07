@@ -23,9 +23,11 @@ class RadioGroup<E> extends View {
   RadioGroupRenderer _renderer;
 
   RadioGroup([ListModel<E> model]) {
-    vclass = "v-RadioGroup";
     this.model = model;
   }
+
+  //@Override
+  String get className() => "RadioGroup"; //TODO: replace with reflection if Dart supports it
 
   //Model//
   /** Returns the model.
@@ -116,6 +118,4 @@ class RadioGroup<E> extends View {
       _selItem = null;
     }
   }
-
-  String toString() => "RadioGroup($uuid)";
 }

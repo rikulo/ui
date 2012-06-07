@@ -9,8 +9,10 @@ class ScrollView extends View {
   Scroller _scroller;
 
   ScrollView() {
-    vclass = "v-ScrollView";
   }
+
+  //@Override
+  String get className() => "ScrollView"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the size that the content occupies.
    * In other words, [ScrollView] assumes the content occupies
@@ -46,7 +48,7 @@ class ScrollView extends View {
     final String tag = domTag_;
     out.add('<').add(tag);
     domAttrs_(out);
-    out.add('><div class="v-ScrollView-inner" style="${CSS.$('transform')}:translate3d(0px,0px,0px)" id="')
+    out.add('><div class="v-inner" style="${CSS.$('transform')}:translate3d(0px,0px,0px)" id="')
         //Note: we have to specify translate3d(0,0,0). otherwise, the offset will be wrong in Dartium (seems a bug)
       .add(uuid).add('-inner">');
     domInner_(out);

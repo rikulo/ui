@@ -9,8 +9,10 @@ class Button extends TextView {
 
   Button([String text="", String html=""]):
   super(text, html) {
-    vclass = "v-Button";
   }
+
+  //@Override
+  String get className() => "Button"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the button type.
    * <p>Default: "button".
@@ -71,6 +73,4 @@ class Button extends TextView {
    * <p>Default: false.
    */
   bool isChildable_() => false;
-
-  String toString() => "Button('$text$html')";
 }

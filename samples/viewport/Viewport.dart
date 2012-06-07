@@ -19,8 +19,10 @@ class Viewport extends View {
   Viewport([String title=""]) {
     innerLeft = innerTop = 30;
     _title = title;
-    vclass = "v-Viewport";
   }
+
+  //@Override
+  String get className() => "Viewport"; //TODO: replace with reflection if Dart supports it
 
   String get title() => _title;
   void set title(String title) {

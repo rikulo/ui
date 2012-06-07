@@ -9,8 +9,10 @@ class Section extends View implements IdSpace {
 
   Section() {
     _fellows = {};
-    vclass = "v-Section";
   }
+
+  //@Override
+  String get className() => "Section"; //TODO: replace with reflection if Dart supports it
 
   View getFellow(String id) => _fellows[id];
   void bindFellow_(String id, View fellow) {

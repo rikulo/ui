@@ -14,8 +14,10 @@ class TextBox extends View {
 
   TextBox([String value="", String type="text"]):
   _value = value, _type = type {
-    vclass = "v-TextBox";
   }
+
+  //@Override
+  String get className() => "TextBox"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the type of data being placed in this text box.
    */
@@ -254,5 +256,5 @@ class TextBox extends View {
   int measureHeight_(MeasureContext mctx)
   => layoutManager.measureHeightByContent(mctx, this, true);
   //@Override
-  String toString() => "TextBox('$value')";
+  String toString() => "$className('$value')";
 }

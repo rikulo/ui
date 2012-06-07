@@ -177,6 +177,7 @@ class _ChildInfo {
   int nChild = 0;
   List children;
 }
+
 /** The information of an event listener used in [View].
  */
 class _EventListenerInfo {
@@ -185,6 +186,36 @@ class _EventListenerInfo {
   Map<String, List<ViewEventListener>> listeners;
   //generic DOM event listener
   Map<String, EventListener> domListeners;
+}
+
+/** The classes stored in a view.
+ */
+class _ClassSet extends HashSetImplementation<String> {
+  final View view;
+
+  _ClassSet(View this.view);
+
+  void add(String name) {
+    super.add(name);
+    final Element n = view.node;
+    if (n != null)
+      n.classes.add(name);
+  }
+  bool remove(String name) {
+    final bool removed = super.remove(name);
+    if (removed) {
+      final Element n = view.node;
+      if (n != null)
+        n.classes.remove(name);
+    }
+    return removed;
+  }
+  void clear() {
+    super.clear();
+    final Element n = view.node;
+    if (n != null)
+      n.classes.clear();
+  }
 }
 
 /** A virtual ID space.

@@ -12,11 +12,13 @@ class TextView extends View {
   String _text, _html;
 
   TextView([String text="", String html=""]) {
-    vclass = "v-TextView";
     _text = text != null ? text: "";
     _html = html != null ? html: "";
     //TODO: support image
   }
+
+  //@Override
+  String get className() => "TextView"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the text.
    */
@@ -77,5 +79,5 @@ class TextView extends View {
   int measureHeight_(MeasureContext mctx)
   => layoutManager.measureHeightByContent(mctx, this, true);
   //@Override
-  String toString() => "TextView('$text$html')";
+  String toString() => "$className('$text$html')";
 }

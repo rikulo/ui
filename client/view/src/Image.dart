@@ -9,8 +9,11 @@ class Image extends View {
   String _src;
   Image([String src]) {
     _src = src;
-    vclass = "v-Image";
   }
+
+  //@Override
+  String get className() => "Image"; //TODO: replace with reflection if Dart supports it
+
   /** Returns the source URI of the image, or null if not assigned yet.
    */
   String get src() => _src;
@@ -50,5 +53,5 @@ class Image extends View {
       layoutManager.waitImageLoaded(_src);
   }
 
-  String toString() => "Image('$src')";
+  String toString() => "$className('$src')";
 }

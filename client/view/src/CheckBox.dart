@@ -16,8 +16,6 @@ class CheckBox extends TextView {
 
   CheckBox([String text="", String html="", bool checked=false]):
   super(text, html), _checked = checked {
-    vclass = "v-CheckBox";
-
     _onInputClick = (Event event) {
       final InputElement n = event.srcElement;
       final bool cked = n.checked;
@@ -27,6 +25,9 @@ class CheckBox extends TextView {
       }
     };
   }
+
+  //@Override
+  String get className() => "CheckBox"; //TODO: replace with reflection if Dart supports it
 
   /** Returns whether it is checked.
    * <p>Default: false.
@@ -111,7 +112,7 @@ class CheckBox extends TextView {
     if (_autofocus)
       out.add(' autofocus="autofocus"');
     out.add('/><label for="').add(uuid).add('-inp" class="')
-      .add(vclass).add('-cnt">').add(innerHTML_).add('</label>');
+      .add(viewConfig.classPrefix).add('inner">').add(innerHTML_).add('</label>');
   }
   /** Returns the input's type.
    * <p>Default: checkbox.
@@ -121,5 +122,5 @@ class CheckBox extends TextView {
    * <p>Default: null (means ignored)
    */
   String get domInputName_() => null;
-  String toString() => "CheckBox('$text$html', $checked)";
+  String toString() => "$className('$text$html', $checked)";
 }

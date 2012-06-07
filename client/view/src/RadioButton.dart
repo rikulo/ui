@@ -22,8 +22,10 @@ class RadioButton extends CheckBox {
 
   RadioButton([String text="", String html="", bool checked=false]):
   super(text, html, checked) {
-    vclass = "v-RadioButton";
   }
+
+  //@Override
+  String get className() => "RadioButton"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the radio group that this radio button belongs to.
    * If no radio group is assigned, it assumed to be the nearest
@@ -115,6 +117,4 @@ class RadioButton extends CheckBox {
     final RadioGroup group = radioGroup;
     return group != null ? group.uuid: null;
   }
-  //@Override
-  String toString() => "RadioButton('$text$html', $checked)";
 }

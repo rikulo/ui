@@ -27,6 +27,9 @@ class Style extends View {
     _media = media;
   }
 
+  //@Override
+  String get className() => "Style"; //TODO: replace with reflection if Dart supports it
+
   /** Returns the URL of the CSS file, or null if no CSS file specified.
    */
   String get src() => _src;
@@ -102,5 +105,5 @@ class Style extends View {
   //@Override
   bool isChildable_() => false;
   //@Override
-  String toString() => "Style('${src !== null ? src: content}')";
+  String toString() => "$className('${src !== null ? src: content}')";
 }
