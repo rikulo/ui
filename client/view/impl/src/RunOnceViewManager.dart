@@ -152,7 +152,11 @@ class RunOnceViewManager {
 class _ModelRenderer extends RunOnceViewManager {
   final List<Task> _contTasks;
 
-  _ModelRenderer(): super((view) {view.renderModel_();}, ignoreSubviews: false),
+  factory _ModelRenderer() {
+		//dart2js can't handle closure in super()
+    return new _ModelRenderer._init((view) {view.renderModel_();});
+  }
+  _ModelRenderer._init(RunOnceViewTask task): super(task, ignoreSubviews: false),
   _contTasks = new List() {
     //For better performance (though optional), we make layoutManager to
     //wait until all pending renderers are done
