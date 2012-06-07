@@ -170,27 +170,30 @@ class LayoutManager extends RunOnceViewManager implements Layout {
   }
   Size _measureByContent(MeasureContext mctx, View view, bool autowidth) {
     CSSStyleDeclaration nodestyle;
-    String orgval;
+    String orgspace, orgwd;
     if (autowidth) {
       nodestyle = view.node.style;
-      orgval = nodestyle.position;
-      if (orgval != "fixed" && orgval != "static") {
-        orgval = nodestyle.whiteSpace;
-        if (orgval === null) orgval = ""; //TODO: no need if Dart handles it
+      final String pos = nodestyle.position;
+      if (pos != "fixed" && pos != "static") {
+        orgspace = nodestyle.whiteSpace;
+        if (orgspace === null) orgspace = ""; //TODO: no need if Dart handles it
         nodestyle.whiteSpace = "nowrap";
         //Node: an absolute DIV's width will be limited by its parent's width
         //so we have to unlimit it (by either nowrap or fixed/staic position)
-      } else {
-        orgval = null;
       }
+
+      //we have to reset width since it could be set by layout before and the content is changed
+      orgwd = nodestyle.width;
+      nodestyle.width = "";
     }
 
     final DOMQuery qview = new DOMQuery(view);
     final Size size = new Size(qview.outerWidth, qview.outerHeight);
 
-    if (orgval !== null) {
-      nodestyle.whiteSpace = orgval; //restore
-    }
+    if (orgspace !== null)
+      nodestyle.whiteSpace = orgspace; //restore
+    if (orgwd !== null && !orgwd.isEmpty())
+      nodestyle.width = orgwd;
 
     final AsInt parentInnerWidth =
       () => view.parent !== null ? view.parent.innerWidth: browser.size.width;

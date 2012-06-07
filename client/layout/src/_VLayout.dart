@@ -7,7 +7,7 @@
  */
 class _VLayout implements _RealLinearLayout {
   int measureHeight(MeasureContext mctx, View view) {
-    final LayoutAmountInfo amtDefault = LinearLayout.getDefaultAmountInfo(view.layout.height);
+    final LayoutAmountInfo amtHghDefault = LinearLayout.getDefaultAmountInfo(view.layout.height);
     final int maxHgh = view.parent !== null ? view.parent.innerHeight: browser.size.height;
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
     final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
@@ -24,17 +24,7 @@ class _VLayout implements _RealLinearLayout {
         return maxHgh;
       prevSpacing = si.bottom;
 
-      final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.height);
-      if (amt.type == LayoutAmountType.NONE) {
-        if (child.height != null)  {
-          amt.type = LayoutAmountType.FIXED;
-          amt.value = child.height;
-        } else {
-          amt.type = amtDefault.type;
-          amt.value =  amtDefault.value;
-        }
-      }
-
+      final LayoutAmountInfo amt = LinearLayout.profileHeight(child, amtHghDefault);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           if ((height += amt.value) >= maxHgh)
@@ -55,8 +45,7 @@ class _VLayout implements _RealLinearLayout {
     return height >= maxHgh ? maxHgh: height;
   }
   int measureWidth(MeasureContext mctx, View view) {
-    final LayoutAmountInfo amtDefault =
-      LinearLayout.getDefaultAmountInfo(view.layout.width);
+    final LayoutAmountInfo amtWdDefault = LinearLayout.getDefaultAmountInfo(view.layout.width);
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
     final int borderWd = new DOMQuery(view.node).borderWidth * 2;
     int width;
@@ -67,17 +56,7 @@ class _VLayout implements _RealLinearLayout {
       //add spacing to height
       final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       int wd = si.left + si.right + borderWd; //spacing of border
-      final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.width);
-      if (amt.type == LayoutAmountType.NONE) {
-        if (child.width != null)  {
-          amt.type = LayoutAmountType.FIXED;
-          amt.value = child.width;
-        } else {
-          amt.type = amtDefault.type;
-          amt.value =  amtDefault.value;
-        }
-      }
-
+      final LayoutAmountInfo amt = LinearLayout.profileWidth(child, amtWdDefault);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           wd += amt.value;
@@ -103,6 +82,7 @@ class _VLayout implements _RealLinearLayout {
       final String s = view.layout.width;
       return s.isEmpty() ? "content": s;
     };
+    final LayoutAmountInfo amtHghDefault = LinearLayout.getDefaultAmountInfo(view.layout.height);
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
     final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
     final Map<View, LayoutSideInfo> childspcinfs = new Map();
@@ -122,7 +102,7 @@ class _VLayout implements _RealLinearLayout {
         gapinf.top !== null ? gapinf.top: Math.max(prevSpacing, si.top);
       prevSpacing = si.bottom;
 
-      final LayoutAmountInfo amt = new LayoutAmountInfo(child.profile.height);
+      final LayoutAmountInfo amt = LinearLayout.profileHeight(child, amtHghDefault);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           assigned += child.height = amt.value;
@@ -135,21 +115,7 @@ class _VLayout implements _RealLinearLayout {
         case LayoutAmountType.RATIO:
           assigned += child.height = (innerHeight() * amt.value).round().toInt();
           break;
-        case LayoutAmountType.NONE:
-        case LayoutAmountType.CONTENT:
-          if (amt.type == LayoutAmountType.NONE) {
-            if (child.height != null) {
-              assigned += child.height;
-              break;
-            }
-            final int v = child.outerHeight;
-            if (v != 0) {
-              assigned += v;
-              break;
-            }
-            //fall through
-          }
-
+        default:
           final int hgh = child.measureHeight_(mctx);
           if (hgh != null)
             assigned += child.height = hgh;

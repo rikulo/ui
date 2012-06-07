@@ -48,6 +48,22 @@ class LinearLayout implements Layout {
       amt.type = LayoutAmountType.CONTENT;
     return amt;
   }
+  static LayoutAmountInfo profileWidth(View view, LayoutAmountInfo amtDefault) {
+    final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.width);
+    if (amt.type == LayoutAmountType.NONE) {
+      amt.type = amtDefault.type;
+      amt.value =  amtDefault.value;
+    }
+    return amt;
+  }
+  static LayoutAmountInfo profileHeight(View view, LayoutAmountInfo amtDefault) {
+    final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.height);
+    if (amt.type == LayoutAmountType.NONE) {
+      amt.type = amtDefault.type;
+      amt.value =  amtDefault.value;
+    }
+    return amt;
+  }
 }
 interface _RealLinearLayout {
   int measureWidth(MeasureContext mctx, View view);

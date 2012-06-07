@@ -6,7 +6,7 @@
  * The implementaiton shall instantiate a radio button and, optionally, other views.
  * Then add it to [group].
  */
-typedef  void RadioGroupRenderer(RadioGroup group, var data, int index);
+typedef void RadioGroupRenderer(RadioGroup group, var data, int index);
 
 /**
  * A radio group.

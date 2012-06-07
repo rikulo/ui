@@ -19,7 +19,7 @@ body {
 .v-ScrollView {
   overflow: hidden;
 }
-.v-ScrollView .v-inner {
+.v-ScrollView > .v-inner {
   width: 100%; height: 100%;
 }
 
