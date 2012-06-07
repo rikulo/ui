@@ -20,4 +20,18 @@ class ListUtil {
     }
     return false;
   }
+
+  /** Checks if the given range is allowed in the given list.
+   */
+  static void rangeCheck(List a, int start, int length) {
+    if (length < 0) {
+      throw new IllegalArgumentException("negative length $length");
+    }
+    if (start < 0 || start >= a.length) {
+      throw new IndexOutOfRangeException(start);
+    }
+    if (start + length > a.length) {
+      throw new IndexOutOfRangeException(start + length);
+    }
+  }
 }

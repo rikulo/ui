@@ -12,8 +12,10 @@
 class TestRadioGroupModel extends Activity {
 
   void onCreate_() {
-    final SelectableListModel<String> model
-      = new SelectableListModel(["apple", "orange", "lemon"]);
+    mainView.layout.text = "type: linear; orient: vertical";
+
+    final DefaultListModel<String> model
+      = new DefaultListModel(["apple", "orange", "lemon"]);
     model.addToSelection("orange");
     final RadioGroup rg = new RadioGroup(model: model);
     rg.on.check.add((event) {
@@ -21,6 +23,15 @@ class TestRadioGroupModel extends Activity {
     });
     rg.layout.text = "type: linear";
     mainView.addChild(rg);
+
+    int i = 0;
+    Button btn = new Button("add");
+    btn.on.click.add((event) {
+      if (i > model.length)
+        i = 0;
+      model.insertRange(i++, 1, "New $i");
+    });
+    mainView.addChild(btn);
   }
 }
 

@@ -42,7 +42,7 @@ class AbstractList<E> implements List<E> {
   Iterator<E> iterator() => null; //TODO: remove it when dart2js supports it
 
   E operator[](int index) {
-    rangeCheck(this, index, 1);
+    ListUtil.rangeCheck(this, index, 1);
 
     final Iterator<E> it = iterator();
     while (--index >= 0)
@@ -89,7 +89,7 @@ class AbstractList<E> implements List<E> {
   }
   List<E> getRange(int start, int length) {
     if (length == 0) return [];
-    rangeCheck(this, start, length);
+    ListUtil.rangeCheck(this, start, length);
     List list = new List<E>();
     list.length = length;
     Arrays.copy(this, start, list, 0, length);
@@ -101,7 +101,7 @@ class AbstractList<E> implements List<E> {
   void removeRange(int start, int length) {
     throw const UnsupportedOperationException("Cannot modify");
   }
-  void insertRange(int start, int length, [E initialValue = null]) {
+  void insertRange(int start, int length, [E initialValue]) {
     throw const UnsupportedOperationException("Cannot modify");
   }
 
@@ -127,18 +127,6 @@ class AbstractList<E> implements List<E> {
       result.add(obj != null ? obj.toString(): "null");
     }
     return result.toString();
-  }
-
-  static void rangeCheck(List a, int start, int length) {
-    if (length < 0) {
-      throw new IllegalArgumentException("negative length $length");
-    }
-    if (start < 0 || start >= a.length) {
-      throw new IndexOutOfRangeException(start);
-    }
-    if (start + length > a.length) {
-      throw new IndexOutOfRangeException(start + length);
-    }
   }
 }
 

@@ -57,22 +57,21 @@ class _ViewImpl {
   //Event Handlign//
   //--------------//
   static DOMEventDispatcher getDOMEventDispatcher(String type) {
-    if (_domEvtDisps == null) {
+    if (_domEvtDisps === null) {
       _domEvtDisps = {};
-      
-      //TODO: handle event better, and handle more DOM events
-      //example: click shall carry mouse position, change shall carry value
-      DOMEventDispatcher disp = (View target) {
-        return (UIEvent event) {
-          target.sendEvent(new ViewEvent.dom(target, event, type: type));
-        };
-      };
       for (final String nm in
       const ["click", "blur", "focus", "change", "mouseDown", "mouseUp", "mouseOver", "mouseOut"]) {
-        _domEvtDisps[nm] = disp;
+        _domEvtDisps[nm] = _domEvtDisp(nm);
       }
     }
     return _domEvtDisps[type];
+  }
+  static DOMEventDispatcher _domEvtDisp(String type) {
+    return (View target) {
+      return (Event event) {
+        target.sendEvent(new ViewEvent.dom(target, event, type: type));
+      };
+    };
   }
   static Map<String, DOMEventDispatcher> _domEvtDisps;
 

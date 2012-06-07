@@ -6,7 +6,8 @@
  * A skeletal implementation of [ListModel].
  * It handles the data events ([ListDataEvent]) and the selection ([Selectable]).
  */
-abstract class AbstractListModel<E> implements SelectableListModel<E> {
+//abstract //TODO: if dart supports it
+class AbstractListModel<E> implements SelectableListModel<E> {
   final List<ListDataListener> _listeners;
   Set<E> _selection;
   bool _multiple = false;
@@ -18,13 +19,13 @@ abstract class AbstractListModel<E> implements SelectableListModel<E> {
 
   /** Fires [ListDataEvent] for all registered listener.
    */
-  void fireEvent_(DataEventType type, int index0, int index1) {
+  void sendEvent_(DataEventType type, int index0, int index1) {
     final ListDataEvent evt = new ListDataEvent(type, index0, index1);
     for (final ListDataListener listener in _listeners)
       listener(evt);
   }
-  void _fireSelectionChanged() {
-    fireEvent_(DataEventType.SELECTION_CHANGED, -1, -1);
+  void _sendSelectionChanged() {
+    sendEvent_(DataEventType.SELECTION_CHANGED, 0, -1);
   }
 
   // -- ListModel --//
@@ -48,7 +49,7 @@ abstract class AbstractListModel<E> implements SelectableListModel<E> {
         throw new IllegalArgumentException("Only one selection is allowed, $selection");
       _selection.clear();
       _selection.addAll(selection);
-      _fireSelectionChanged();
+      _sendSelectionChanged();
     }
   }
   bool _isSelectionChanged(Collection<E> selection) {
@@ -82,13 +83,13 @@ abstract class AbstractListModel<E> implements SelectableListModel<E> {
       _selection.clear();
       _selection.add(obj);
     }
-    _fireSelectionChanged();
+    _sendSelectionChanged();
     return true;
   }
   //@Override
   bool removeFromSelection(Object obj) {
     if (_selection.remove(obj)) {
-      fireEvent_(DataEventType.SELECTION_CHANGED, -1, -1);
+      sendEvent_(DataEventType.SELECTION_CHANGED, 0, -1);
       return true;
     }
     return false;
@@ -97,7 +98,7 @@ abstract class AbstractListModel<E> implements SelectableListModel<E> {
   void clearSelection() {
     if (!_selection.isEmpty()) {
       _selection.clear();
-      fireEvent_(DataEventType.SELECTION_CHANGED, -1, -1);
+      sendEvent_(DataEventType.SELECTION_CHANGED, 0, -1);
     }
   }
 
@@ -107,13 +108,13 @@ abstract class AbstractListModel<E> implements SelectableListModel<E> {
   void set multiple(bool multiple) {
     if (_multiple != multiple) {
       _multiple = multiple;
-      fireEvent_(DataEventType.MULTIPLE_CHANGED, -1, -1);
+      sendEvent_(DataEventType.MULTIPLE_CHANGED, 0, -1);
 
       if (!multiple && _selection.length > 1) {
         E v = _selection.iterator().next();
         _selection.clear();
         _selection.add(v);
-        fireEvent_(DataEventType.SELECTION_CHANGED, -1, -1);
+        sendEvent_(DataEventType.SELECTION_CHANGED, 0, -1);
       }
     }
   }

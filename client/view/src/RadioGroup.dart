@@ -85,13 +85,12 @@ class RadioGroup<E> extends View {
    */
   void renderModel_() {
     if (_model !== null) {
-
-      children.clear();
-
       _rendering = true;
-      final RadioGroupRenderer renderer =
-        _renderer !== null ? _renderer: _defRenderer();
       try {
+        children.clear();
+
+        final RadioGroupRenderer renderer =
+          _renderer !== null ? _renderer: _defRenderer();
         for (int j = 0, len = _model.length; j < len; ++j) {
           final obj = _model[j];
           renderer(this, obj, _cast(_model).isSelected(obj), j)
