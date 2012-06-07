@@ -67,7 +67,8 @@ class _Log {
   HoldGestureCallback _gestureAction() {
     return (Element touched, int pageX, int pageY) {
       final Offset ofs = new DOMQuery(_node).documentOffset;
-      (_popup = new _LogPopup(this)).open(pageX - ofs.left, pageY - ofs.top);
+      (_popup = new _LogPopup(this)).open(
+        pageX - ofs.left + _node.$dom_scrollLeft, pageY - ofs.top + _node.$dom_scrollTop);
     };
   }
   HoldGestureCallback _gestureStart() {
