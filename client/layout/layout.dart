@@ -8,7 +8,7 @@
 #import("../view/view.dart");
 #import("../util/util.dart");
 #import("../html/html.dart");
-#import("../viewimpl/viewimpl.dart");
+#import("../view/impl/impl.dart");
 
 #source("src/LayoutManager.dart");
 #source("src/Layout.dart");

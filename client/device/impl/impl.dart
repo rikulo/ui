@@ -2,9 +2,7 @@
 //History: Tue, Apr 17, 2012 12:49:39 PM
 // Author: tomyeh
 
-#library("rikulo:deviceimpl");
-
-#import("dart:core");
+#library("rikulo:device:impl");
 
 #source("src/DeviceEvent.dart");
 #source("src/DeviceEventListenerList.dart");

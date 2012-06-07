@@ -11,7 +11,7 @@
 #import("../app/app.dart");
 #import("../util/util.dart");
 #import("../device/device.dart");
-#import("../deviceimpl/deviceimpl.dart");
+#import("../device/impl/impl.dart");
 #import("../device/accelerometer/accelerometer.dart");
 #import("../device/camera/camera.dart");
 #import("../device/capture/capture.dart");

@@ -4,7 +4,7 @@
 
 #library("rikulo:device:accelerometer");
 
-#import("../../deviceimpl/deviceimpl.dart");
+#import("../../device/impl/impl.dart");
 
 #source("src/AbstractAccelerometer.dart");
 #source("src/Acceleration.dart");

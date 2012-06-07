@@ -4,7 +4,7 @@
 
 #library("rikulo:device:compass");
 
-#import("../../deviceimpl/deviceimpl.dart");
+#import("../../device/impl/impl.dart");
 
 #source("src/AbstractCompass.dart");
 #source("src/Compass.dart");

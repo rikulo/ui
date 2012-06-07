@@ -10,7 +10,7 @@
 #import("../app/app.dart");
 #import("../util/util.dart");
 #import("../cordova/cordova.dart");
-#import("../deviceimpl/deviceimpl.dart");
+#import("../device/impl/impl.dart");
 #import("accelerometer/accelerometer.dart");
 #import("camera/camera.dart");
 #import("capture/capture.dart");
