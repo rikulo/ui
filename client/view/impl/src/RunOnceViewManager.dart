@@ -69,7 +69,7 @@ class RunOnceViewManager {
   /** Hanldes the give view, if not null, or
    * all queued views, if the give view is null.
    */
-  void flush([View view=null]) {
+  void flush([View view]) {
     if (!_ready(view)) {
       if (view !== null)
         _views.add(view);
@@ -168,7 +168,7 @@ class _ModelRenderer extends RunOnceViewManager {
       return false;
     });
   }
-  void flush([View view=null]) {
+  void flush([View view]) {
     super.flush(view);
 
     if (isQueueEmpty()) {

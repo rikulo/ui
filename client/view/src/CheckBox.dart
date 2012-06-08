@@ -10,11 +10,14 @@
  * <li>check: an instance of [CheckEvent] indicates the check state is changed.</li>
  * </ul>
  */
-class CheckBox extends TextView {
+class CheckBox<E> extends TextView {
+  /** The value associated with this view.
+   */
+  E value;
   bool _checked = false, _disabled = false, _autofocus = false;
   EventListener _onInputClick;
 
-  CheckBox([String text="", String html="", bool checked=false]):
+  CheckBox([String text="", String html="", bool checked=false, E this.value]):
   super(text, html), _checked = checked {
     _onInputClick = (Event event) {
       final InputElement n = event.srcElement;

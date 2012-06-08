@@ -17,11 +17,11 @@
  * <li>check: an instance of [CheckEvent] indicates the check state is changed.</li>
  * </ul>
  */
-class RadioButton extends CheckBox {
+class RadioButton<E> extends CheckBox<E> {
   RadioGroup _group;
 
-  RadioButton([String text="", String html="", bool checked=false]):
-  super(text, html, checked) {
+  RadioButton([String text="", String html="", bool checked=false, E value]):
+  super(text, html, checked, value) {
   }
 
   //@Override

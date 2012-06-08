@@ -375,14 +375,14 @@ class View implements Hashable {
    * [removeChildFromDocument_] if they share the same DOM element.
    */
   Element get node()
-  => _node !== null ? _node: _inDoc ? (_node=document.query('#' + uuid)): null;
+  => _node !== null ? _node: _inDoc ? (_node=document.query("#$uuid")): null;
   /** Returns the child element of the given sub-ID.
    * This method assumes the ID of the child element the concatenation of
    * uuid, dash ('-'), and subId.
    */
   Element getNode(String subId) =>
     _inDoc ? document.query(subId != null && subId.length > 0 ?
-           '#' + uuid + '-' + subId: '#' + uuid): null;
+           "#$uuid-$subId": "#$uuid"): null;
   /** Returns if this view has been attached to the document.
    */
   bool get inDocument() => _inDoc;

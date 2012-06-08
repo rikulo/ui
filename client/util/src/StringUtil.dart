@@ -118,7 +118,7 @@ class StringUtil {
       int j = maxlength;
       while (j > 0 && isChar(txt[j - 1], whitespace: true))
         --j;
-      return encodeXML(txt.substring(0, j) + '...', pre:pre, multiline:multiline);
+      return encodeXML("${txt.substring(0, j)}...", pre:pre, multiline:multiline);
     }
 
     final StringBuffer out = new StringBuffer();

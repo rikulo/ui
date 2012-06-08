@@ -33,7 +33,7 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
     return prev;
   }
 
-  void setProperty(String propertyName, String value, [String priority = null]) {
+  void setProperty(String propertyName, String value, [String priority]) {
     _check(propertyName);
     propertyName = CSS.$(propertyName);
 

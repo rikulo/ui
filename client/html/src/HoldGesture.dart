@@ -9,8 +9,7 @@ typedef HoldGestureCallback(Element touched, int pageX, int pageY);
 /**
  * A touch-and-hold gesture handler.
  */
-//abstract //TODO: fix it when dart2js supports it
-class HoldGesture {
+abstract class HoldGesture {
   final Element _owner;
   final int _dur;
   final int _mov;

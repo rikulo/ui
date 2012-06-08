@@ -12,8 +12,7 @@ typedef ScrollerCallback(Element touched, int deltaX, int deltaY);
 /**
  * A custom-scrolling handler.
  */
-//abstract //TODO: fix it when dart2js supports it
-class Scroller {
+abstract class Scroller {
   final Element _owner;
   final Dir _dir;
   final ScrollerCallback _start, _scrollTo, _scrolling;

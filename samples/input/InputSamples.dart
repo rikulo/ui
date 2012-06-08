@@ -16,11 +16,20 @@ class InputSamples extends Activity {
       view.layout.text = "type: linear";
       mainView.addChild(view);
 
-      final TextView label = new TextView(type);
+      TextView label = new TextView(type);
       label.style.textAlign = "right";
       label.profile.width = "70";
       view.addChild(label);
-      view.addChild(new TextBox(type: type));
+
+      TextBox input = new TextBox(type: type);
+      input.on.change.add((event) {
+        input.nextSibling.text = input.value;
+      });
+      view.addChild(input);
+
+      label = new TextView();
+      label.profile.text = "width: flex; height: flex";
+      view.addChild(label);
     }
   }
 }

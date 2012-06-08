@@ -13,9 +13,7 @@
  * <p>For mutable list, you shall override [operator[]=], [set length],
  * [add], [setRange], [insertRange], and [removeRange].
  */
-//abstract //TODO: fix it when dart2js supports it
-class AbstractList<E> implements List<E> {
-
+abstract class AbstractList<E> implements List<E> {
   const AbstractList();
 
   //Collection//
@@ -69,10 +67,10 @@ class AbstractList<E> implements List<E> {
   void sort(int compare(E a, E b)) {
     DualPivotQuicksort.sort(this, compare);
   }
-  int indexOf(E element, [int start = 0]) {
-    return Arrays.indexOf(this, element, start, this.length);
+  int indexOf(E element, [int start]) {
+    return Arrays.indexOf(this, element, start !== null ? start: 0, this.length);
   }
-  int lastIndexOf(E element, [int start = null]) {
+  int lastIndexOf(E element, [int start]) {
     if (start === null) start = length - 1;
     return Arrays.lastIndexOf(this, element, start);
   }
@@ -95,7 +93,7 @@ class AbstractList<E> implements List<E> {
     Arrays.copy(this, start, list, 0, length);
     return list;
   }
-  void setRange(int start, int length, List<E> from, [int startFrom = 0]) {
+  void setRange(int start, int length, List<E> from, [int startFrom]) {
     throw const UnsupportedOperationException("Cannot modify");
   }
   void removeRange(int start, int length) {

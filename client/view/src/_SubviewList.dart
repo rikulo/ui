@@ -65,9 +65,11 @@ class _SubviewList extends AbstractList<View> {
   View last() {
     return _owner.lastChild;
   }
-  void setRange(int start, int length, List<View> from, [int startFrom = 0]) {
+  void setRange(int start, int length, List<View> from, [int startFrom]) {
     if (length <= 0)
       return; //nothing to do
+    if (startFrom === null)
+      startFrom = 0;
 
     if (start > this.length) {
       throw new IndexOutOfRangeException(start);
@@ -124,7 +126,7 @@ class _SubviewList extends AbstractList<View> {
       child = next;
     }
   }
-  void insertRange(int start, int length, [View initialValue = null]) {
+  void insertRange(int start, int length, [View initialValue]) {
     if (length != 1)
       throw const IllegalArgumentException("Allow only one view");
     if (initialValue === null)
