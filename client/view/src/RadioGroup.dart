@@ -4,9 +4,9 @@
 
 /** Renders the given data for the given [RadioButton].
  * The implementaiton shall instantiate a radio button and, optionally, other views.
- * Then add it to [group].
+ * Then add it to [group] and insert it before [before], if any.
  */
-typedef RadioButton RadioGroupRenderer(RadioGroup group, var data, bool selected, int index);
+typedef RadioButton RadioGroupRenderer(RadioGroup group, View before, var data, bool selected, int index);
 
 /**
  * A radio group.
@@ -17,8 +17,6 @@ typedef RadioButton RadioGroupRenderer(RadioGroup group, var data, bool selected
  * </ul>
  */
 class RadioGroup<E> extends View {
-  static final String _DATA_MODEL_VALUE = "r.model.value";
-
   RadioButton _selItem;
   ListModel<E> _model;
   ListDataListener _dataListener;
@@ -93,8 +91,8 @@ class RadioGroup<E> extends View {
           _renderer !== null ? _renderer: _defRenderer();
         for (int j = 0, len = _model.length; j < len; ++j) {
           final obj = _model[j];
-          renderer(this, obj, _cast(_model).isSelected(obj), j)
-            .setData(_DATA_MODEL_VALUE, obj);
+          renderer(this, null, obj, _cast(_model).isSelected(obj), j)
+            .value = obj;
         }
       } finally {
         _rendering = false;
@@ -106,10 +104,10 @@ class RadioGroup<E> extends View {
   static _cast(var v) => v; //TODO: replace with 'as' when Dart supports it
   static RadioGroupRenderer _defRenderer() {
     if (_$defRenderer === null)
-      _$defRenderer = (RadioGroup group, var data, bool selected, int index) {
+      _$defRenderer = (RadioGroup group, View before, var data, bool selected, int index) {
         final btn = new RadioButton("$data");
         btn.checked = selected;
-        group.addChild(btn);
+        group.addChild(btn, before);
         return btn;
       };
     return _$defRenderer;
@@ -141,7 +139,7 @@ class RadioGroup<E> extends View {
     if (!_rendering && _model !== null) {
       final List<E> sel = new List();
       if (_selItem !== null)
-          sel.add(_selItem.getData(_DATA_MODEL_VALUE));
+          sel.add(_selItem.value);
 
       _modelUpdating = true;
       try {
