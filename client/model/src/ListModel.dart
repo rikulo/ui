@@ -33,16 +33,16 @@ interface ListModel<E> default DefaultListModel<E> {
 }
 
 /** A data model representing a list of data and it allows the selection.
- * It is optional since you can implement [ListModel] and [Selectable]
+ * It is optional since you can implement [ListModel] and [Selection]
  * directly. However, it is convenient that you can instantiate an instance
  * from it and access the methods in both interfaces.
  */
-interface SelectableListModel<E> extends ListModel<E>, Selectable<E>
+interface ListSelectionModel<E> extends ListModel<E>, Selection<E>
 default DefaultListModel<E> {
   /** Constructor.
    *
    * Notice that once [data] is assigned to a list model, you shall not
    * modify the data directly since UI won't update the changes correctly.
    */
-  SelectableListModel(List<E> data);
+  ListSelectionModel(List<E> data);
 }

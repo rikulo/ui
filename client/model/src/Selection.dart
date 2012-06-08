@@ -6,7 +6,7 @@
  * Indicates a model that allows selection.
  * It is a supplymental interface used with other models, such as [ListModel].
  */
-interface Selectable<E> {
+interface Selection<E> {
   /**
    * Returns the current selection.
    * It is readonly. Don't modify it directly

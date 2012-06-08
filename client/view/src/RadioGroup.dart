@@ -42,8 +42,8 @@ class RadioGroup<E> extends View {
    */
   void set model(ListModel<E> model) {
     if (model !== null) {
-      if (model is! Selectable)
-        throw new UIException("Selectable required, $model");
+      if (model is! Selection)
+        throw new UIException("Selection required, $model");
 
       if (_model !== model) { //Note: it is not !=
         if (_model !== null)

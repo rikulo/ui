@@ -21,7 +21,7 @@ class DataEventType {
    */
   static final DataEventType STRUCTURE_CHANGED = const DataEventType();
   /** Identifies the selection of the lists has changed.
-   * Notice that the objects being selected can be found by calling [Selectable].
+   * Notice that the objects being selected can be found by calling [Selection].
    */
   static final DataEventType SELECTION_CHANGED = const DataEventType();
   /** Identified the change of whether the model allows mutiple selection.

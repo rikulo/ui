@@ -8,6 +8,6 @@
 #source("src/ListModel.dart");
 #source("src/ListDataEvent.dart");
 #source("src/DataEventType.dart");
-#source("src/Selectable.dart");
+#source("src/Selection.dart");
 #source("src/AbstractListModel.dart");
 #source("src/DefaultListModel.dart");

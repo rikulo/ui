@@ -4,9 +4,9 @@
 
 /**
  * A skeletal implementation of [ListModel].
- * It handles the data events ([ListDataEvent]) and the selection ([Selectable]).
+ * It handles the data events ([ListDataEvent]) and the selection ([Selection]).
  */
-abstract class AbstractListModel<E> implements SelectableListModel<E> {
+abstract class AbstractListModel<E> implements ListSelectionModel<E> {
   final List<ListDataListener> _listeners;
   Set<E> _selection;
   bool _multiple = false;
@@ -37,7 +37,7 @@ abstract class AbstractListModel<E> implements SelectableListModel<E> {
     ListUtil.remove(_listeners, l);
   }
 
-  //Selectable//
+  //Selection//
   //@Override
   Set<E> get selection() => _selection;
 
