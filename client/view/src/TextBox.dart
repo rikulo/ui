@@ -23,19 +23,21 @@ class TextBox extends View {
    */
   String get type() => _type;
   /** Sets the type of data being placed in this text box.
-   * <p>Default: text.
-   * <p>Allowed values:
-   * <ul>
-   * <li>text - plain text</li>
-   * <li>multiline - multiline plain text</li>
-   * <li>password - </li>
-   * <li>number - </li>
-   * <li>color - </li>
-   * <li>range - </li>
-   * <li>date - </li>
-   * <li>url - </li>
-   * <li>tel - </li>
-   * <li>email - </li>
+   *
+   * Default: text.
+   *
+   * Allowed values:
+   * 
+   * + text - plain text
+   * + multiline - multiline plain text
+   * + password - 
+   * + number - 
+   * + color - 
+   * + range - 
+   * + date - 
+   * + url - 
+   * + tel - 
+   * + email - 
    */
   void set type(String type) {
     if (_type != type) {
@@ -66,7 +68,8 @@ class TextBox extends View {
     return inp != null ? inp.value: _value;
   }
   /** Sets the value of this text box.
-   * <p>Default: an empty string.
+   *
+   * Default: an empty string.
    */
   void set value(String value) {
     _value = value;
@@ -76,7 +79,8 @@ class TextBox extends View {
   }
 
   /** Returns whether it is disabled.
-   * <p>Default: false.
+   *
+   * Default: false.
    */
   bool get disabled() => _disabled;
   /** Sets whether it is disabled.
@@ -89,7 +93,8 @@ class TextBox extends View {
   }
 
   /** Returns whether this input should automatically get focus.
-   * <p>Default: false.
+   *
+   * Default: false.
    */
   bool get autofocus() => _autofocus;
   /** Sets whether this input should automatically get focus.
@@ -107,7 +112,8 @@ class TextBox extends View {
    * When a user starts to type in,
    * a list of options will be  displayed to fill the box, based on
    * ealier typed values
-   * <p>Default: true (enabled).
+   *
+   * Default: true (enabled).
    */
   bool get autocomplete() => _autocomplete;
   /** Sets whether to predict the value based on ealier typed value.
@@ -122,11 +128,13 @@ class TextBox extends View {
   /** Returns a short hint that describes this text box.
    * The hint is displayed in the text box when it is empty, and
    * disappears when it gets focus.
-   * <p>Default: an empty string.
+   *
+   * Default: an empty string.
    */
   String get placeholder() => _placeholder;
   /** Returns a short hint that describes this text box.
-   * <p>Default: an empty string.
+   *
+   * Default: an empty string.
    */
   void set placeholder(String placeholder) {
     _placeholder = placeholder;
@@ -136,11 +144,13 @@ class TextBox extends View {
   }
 
   /** Returns the width of this text box in average character width.
-   * <p>Default: 20.
+   *
+   * Default: 20.
    */
   int get cols() => _cols;
   /** Sets the width of this text box in average character width.
-   * <p>Default: 20.
+   *
+   * Default: 20.
    */
   void set cols(int cols) {
     _cols = cols;
@@ -154,13 +164,17 @@ class TextBox extends View {
       }
   }
   /** Returns the height of this text box in number of lines.
-   * <p>Default: 2.
-   * <p>Notice that it is meaningful only if [type] is "multiline".
+   *
+   * Default: 2.
+   *
+   * Notice that it is meaningful only if [type] is "multiline".
    */
   int get rows() => _rows;
   /** Sets the height of this text box in number of lines.
-   * <p>Default: 2.
-   * <p>Notice that it is meaningful only if [type] is "multiline".
+   *
+   * Default: 2.
+   *
+   * Notice that it is meaningful only if [type] is "multiline".
    */
   void set rows(int rows) {
     _rows = rows;
@@ -172,11 +186,13 @@ class TextBox extends View {
   }
 
   /** Returns the maximal allowed number of characters.
-   * <p>Default: -1 (no limitation).
+   *
+   * Default: -1 (no limitation).
    */
   int get maxLength() => _maxLength;
   /** Sets the maximal allowed number of characters.
-   * <p>Default: 0 (no limitation).
+   *
+   * Default: 0 (no limitation).
    */
   void set maxLength(int maxLength) {
     _maxLength = maxLength;
@@ -212,7 +228,8 @@ class TextBox extends View {
 
   //@Override
   /** Returns the HTML tag's name representing this view.
-   * <p>Default: <code>input</code> or <code>textarea</code> if [mulitline].
+   *
+   * Default: `input` or `textarea` if [mulitline].
    */
   String get domTag_() => _multiline ? "textarea": "input";
   //@Override
@@ -246,7 +263,8 @@ class TextBox extends View {
   }
   //@Override
   /** Returns whether this view allows any child views.
-   * <p>Default: false.
+   *
+   * Default: false.
    */
   bool isChildable_() => false;
   //@Override

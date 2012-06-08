@@ -7,20 +7,24 @@
  * [View.cut]. It is used to implement the so-called 'cut-and-paste' feature.
  * Cut-and-paste is used to speed up the detachment and attachment
  * of a view.
- * <p>Use: to cut and paste a view, you can invoke [View.cut] first, and then
- * invoke [pasteTo] to paste it to a parent view you like. For example,
- * <pre><code>view.cut().pasteTo(newParent);</code></pre>
  *
- * <p>The reason that cut-and-paste is more efficiently is the view's DOM elements
+ * ##Use##
+ *
+ * To cut and paste a view, you can invoke [View.cut] first, and then
+ * invoke [pasteTo] to paste it to a parent view you like. For example,
+ *
+ *     view.cut().pasteTo(newParent);
+ *
+ * The reason that cut-and-paste is more efficiently is the view's DOM elements
  * won't be removed, so [View.exitDocument_], [View.enterDocument_] and
  * other detaching and attaching tasks have no need to take place.
  *
- * <p>If you decide not to paste it to another place, it is better to invoke
+ * If you decide not to paste it to another place, it is better to invoke
  * [drop] to remove DOM elements. It will invoke [View.exitDocument_] such that
  * your application or utility can clean up if necessary. After dropped, the view
  * can be used normally as if they are removed normally (with [View.removeFromParent]).
  *
- * <p>Notice that there is one limitation:
+ * Notice that there is one limitation:
  * the view being cut (i.e., [view]) cannot be modified until
  * [pasteTo] or [drop] is called.
  * Furthermore, once [pasteTo] or [drop] is called, the [ViewCut] object can't be used
@@ -34,9 +38,11 @@ interface ViewCut {
 
   /** Pastes the view kept in this [Viewcut] to the given parent view.
    * The view kept in this object will become a child of the given parent view.
-   * <p>If [beforeChild] is specified, it must be a child of the given parent,
+   *
+   * If [beforeChild] is specified, it must be a child of the given parent,
    * and the view kept in this object will be inserted before it.
-   * <p>Notice that this method can be called only once.
+   *
+   * Notice that this method can be called only once.
    */
   void pasteTo(View parent, [View beforeChild]);
   /** Drops the cut.

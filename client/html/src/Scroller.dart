@@ -3,12 +3,14 @@
 // Author: tomyeh
 
 /** The scroller callback.
- * <p>Notice that for [start], [delaX] and [deltaY] are actually pageX and pageY
+ *
+ * Notice that for [start], [delaX] and [deltaY] are actually pageX and pageY
  * (offset to document's origin).
  * On the hand, it is the number of pixels that a user has scrolled for
  * [scrollTo] and [scrolling] (that is why it is called deltaX and deltaY).
  */
 typedef ScrollerCallback(Element touched, int deltaX, int deltaY);
+
 /**
  * A custom-scrolling handler.
  */
@@ -23,7 +25,8 @@ abstract class Scroller {
   Offset3d _initOfs;
 
   /** Constructor.
-   * <p>[start] is the callback before starting scrolling.
+   *
+   * + [start] is the callback before starting scrolling.
    * If it returns false, the scrolling won't be activated.
    */
   factory Scroller(Element owner, [Dir dir=Dir.BOTH,

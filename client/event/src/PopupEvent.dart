@@ -8,7 +8,8 @@
  * By popup we mean a UI object that is shown up
  * only in short period of time, and dismissed as soon as the user takes an action.
  * Typical examples include a popup menu and an information bubble.
- * <p>A popup shall listen to this event by registering the listener to [broadcaster].
+ *
+ * A popup shall listen to this event by registering the listener to [broadcaster].
  * When the listener is called, it shall invoke [shallClose] to check if the popup
  * has to be closed.
  */

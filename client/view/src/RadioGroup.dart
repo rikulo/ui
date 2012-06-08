@@ -5,16 +5,19 @@
 /** Renders the given data for the given [RadioButton].
  * The implementaiton shall instantiate a radio button and, optionally, other views.
  * Then add it to [group] and insert it before [before], if any.
+ *
+ * Notice that the value of the radio button ([ButtonRadio.value]) will be
+ * assigned with [data]. Thus, the application shall not change it.
  */
 typedef RadioButton RadioGroupRenderer(RadioGroup group, View before, var data, bool selected, int index);
 
 /**
  * A radio group.
- * <h3>Events</h3>
- * <ul>
- * <li>check: an instance of [CheckEvent] indicates the check state is changed.
- * Notice that [CheckEvent.target] is an instance of [RadioButton] that has been checked.</li>
- * </ul>
+ *
+ * ##Events##
+ *
+ * + check: an instance of [CheckEvent] indicates the check state is changed.
+ * Notice that [CheckEvent.target] is an instance of [RadioButton] that has been checked.
  */
 class RadioGroup<E> extends View {
   RadioButton _selItem;
@@ -66,7 +69,8 @@ class RadioGroup<E> extends View {
   }
   /** Returns the renderer used to render the given model ([model]), or null
    * if the default implementation is preferred.
-   * <p>The default implementation instantiates an instance of [RadioButton]
+   *
+   * The default implementation instantiates an instance of [RadioButton]
    * and assign the text by converting the given data to a string.
    */
   RadioGroupRenderer get renderer() => _renderer;

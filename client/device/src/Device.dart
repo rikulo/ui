@@ -21,13 +21,14 @@ interface Device {
 
 /** Enable the device accesibility.
  *
- * <p>Notice that this method will instantiate the default application if
+ * Notice that this method will instantiate the default application if
  * the application is not instantiated. Thus, if you subclass the application,
  * you shall instantiate it before invoking this method, such as
- * <pre><code>new FooApplication();
- *initSimulator();</code></pre>
  *
- * <p>This method can be called multiple times, but the second invocation
+ *     new FooApplication();
+ *     initSimulator();
+ *
+ * This method can be called multiple times, but the second invocation
  * will be ignored.
  */
 void enableDeviceAccess() {

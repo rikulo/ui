@@ -9,13 +9,13 @@
  * handle the check event for the radio group. You don't need to handle
  * radio buttons seperately since the check event ([CheckEvent]) will be forwarded to the radio
  * group.
- * <p>To associate a radio button, you can make a radio button as a descendant
+ *
+ * To associate a radio button, you can make a radio button as a descendant
  * of a radio group, or you can assign it explicitly with [radioGroup].
  * 
- * <h3>Events</h3>
- * <ul>
- * <li>check: an instance of [CheckEvent] indicates the check state is changed.</li>
- * </ul>
+ * ##Events##
+ *
+ * + check: an instance of [CheckEvent] indicates the check state is changed.
  */
 class RadioButton<E> extends CheckBox<E> {
   RadioGroup _group;

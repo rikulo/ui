@@ -19,7 +19,8 @@ abstract class HoldGesture {
   int _timer;
 
   /** Constructor.
-   * <p>[start] is the callback before starting monitoring the touch-and-hold
+   *
+   * + [start] is the callback before starting monitoring the touch-and-hold
    * gesture. If it returns false, the monitoring will be cancelled.
    */
   factory HoldGesture(Element owner, HoldGestureCallback action,

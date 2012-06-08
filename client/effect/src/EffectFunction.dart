@@ -7,9 +7,10 @@
  */
 interface EffectFunction {
   /** Constructor.
-   * <p>[endValue] specifies the value when the time runs out,
+   *
+   * + [endValue] specifies the value when the time runs out,
    * while the initial value is assumed to be zero.
-   * [duration] specifies the duration of time to elapse in milliseconds.
+   * + [duration] specifies the duration of time to elapse in milliseconds.
    */
   //EffectFunction(int endValue, int duration);
 

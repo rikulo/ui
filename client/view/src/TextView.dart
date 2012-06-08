@@ -4,7 +4,8 @@
 
 /**
  * Displays plain text or a fragment of HTML content to the user.
- * <p>Notice that there are two kinds of text: plain text and HTML fragment.
+ *
+ * Notice that there are two kinds of text: plain text and HTML fragment.
  * You can specify the normal text with [text], and the HTML fragment with [html].
  * If both are specified, [text] will be shown in front of [html].
  */
@@ -41,7 +42,8 @@ class TextView extends View {
 
   /** Called to update the DOM element, when the content of this view
    * is changed.
-   * <p>Default: invoke [innerHTML_] to retrieve the content
+   *
+   * Default: invoke [innerHTML_] to retrieve the content
    * and then update [node]'s innerHTML.
    */
   void updateInner_() {
@@ -50,18 +52,21 @@ class TextView extends View {
       n.innerHTML = innerHTML_;
   }
   /** Returns the HTML content.
-   * <p>Default: it is the concatenation of [encodedText] and [html].
+   *
+   * Default: it is the concatenation of [encodedText] and [html].
    */
   String get innerHTML_() {
     return "$encodedText$html";
   }
   /** Returns the encodes the text ([text]).
-   * <p>Default: it encodes [text] by replacing linefeed with &lt;br/&gt;, if any.
+   *
+   * Default: it encodes [text] by replacing linefeed with <br/>, if any.
    */
   String get encodedText() => StringUtil.encodeXML(text, multiline:true);
 
   /** Outputs the inner content of this widget. It is everything
-   * <p>Default: output [innerHTML_].
+   *
+   * Default: output [innerHTML_].
    */
   void domInner_(StringBuffer out) {
     out.add(innerHTML_);
@@ -69,7 +74,8 @@ class TextView extends View {
 
   //@Override
   /** Returns whether this view allows any child views.
-   * <p>Default: false.
+   *
+   * Default: false.
    */
   bool isChildable_() => false;
   //@Override

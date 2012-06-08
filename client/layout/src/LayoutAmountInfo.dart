@@ -35,7 +35,8 @@ class LayoutAmountType {
 
 /**
  * The dimension information specified in layout and profile.
- * <p>Format: <code>#n | content | flex | flex #n | #n %</code>
+ *
+ * Format: `#n | content | flex | flex #n | #n %`
  */
 class LayoutAmountInfo {
   LayoutAmountType type;

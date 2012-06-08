@@ -38,15 +38,16 @@ class Application {
   /** Adds a ready callback which will be invoked to start the activity.
    * It is useful if you want the activity to run until some criteria
    * is satisfied.
-   * <p>A typical implementation of the callback:
-   *<pre><code>
-(Task then) {
-  if (_ready) {
-    then(); //do it immediately
-  } else {
-    _doUntilReady(then); //queue then and call it when it is ready.
-  }
-}</code></pre>
+   *
+   * A typical implementation of the callback:
+   *
+   *     (Task then) {
+   *       if (_ready) {
+   *         then(); //do it immediately
+   *       } else {
+   *         _doUntilReady(then); //queue then and call it when it is ready.
+   *       }
+   *     }
    */
   void addReadyCallback(ReadyCallback callback) {
     if (_readyCB === null) {
@@ -94,9 +95,11 @@ class Application {
   String toString() => "Application($name, ${_uuid})";
 }
 /** The application.
- * If you extend [Application], you can initialize it as follows:<br/>
- * <code>application = new MyApp()</code>
- * <p>Notice that you must initialize your custom appliction, before instantiating
+ * If you extend [Application], you can initialize it as follows:
+ *
+ *     application = new MyApp();
+ *
+ * Notice that you must initialize your custom appliction, before instantiating
  * your first activity.
  */
 Application get application() { //initialized by Activity

@@ -7,12 +7,14 @@
  */
 interface Rectangle extends Offset, Size default _Rectangle {
   /** The X coordinate of the right side (excluded).
-   * <p>Note: its meaning is different from CSS's right property
+   *
+   * Note: its meaning is different from CSS's right property
    * (which is the distance to the right edge)
    */
   int right;
   /** The Y coordinate of the bottom side (excluded).
-   * <p>Note: its meaning is different from CSS's bottom property
+   *
+   * Note: its meaning is different from CSS's bottom property
    * (which is the distance to the bottom edge)
    */
   int bottom;

@@ -9,7 +9,8 @@ typedef void ListDataListener(ListDataEvent event);
  */
 interface ListModel<E> default DefaultListModel<E> {
   /** Constructor.
-   * <p>Notice that once [data] is assigned to a list model, you shall not
+   *
+   * Notice that once [data] is assigned to a list model, you shall not
    * modify the data directly since UI won't update the changes correctly.
    */
   ListModel(List<E> data);
@@ -39,7 +40,8 @@ interface ListModel<E> default DefaultListModel<E> {
 interface SelectableListModel<E> extends ListModel<E>, Selectable<E>
 default DefaultListModel<E> {
   /** Constructor.
-   * <p>Notice that once [data] is assigned to a list model, you shall not
+   *
+   * Notice that once [data] is assigned to a list model, you shall not
    * modify the data directly since UI won't update the changes correctly.
    */
   SelectableListModel(List<E> data);

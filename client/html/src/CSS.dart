@@ -7,10 +7,11 @@
  */
 class CSS {
   /** The prefix used for non-standard CSS property.
-   * For example, it is <code>-webkit-</code> for a Webkit-based browser.
+   * For example, it is `-webkit-` for a Webkit-based browser.
    * If you're not sure whether to prefix a CSS property, please use
    * [name] instead.
-   * <p>Notice that it is intialized after [Browser] is ready.
+   *
+   * Notice that it is intialized after [Browser] is ready.
    */
   static String prefix;
 
@@ -28,7 +29,7 @@ class CSS {
       "#${StringUtil.toHexString(red,2)}${StringUtil.toHexString(green,2)}${StringUtil.toHexString(blue,2)}";
   }
 
-  /** Converts a CSS value presenting <code>translate3d</code> for the property called <code>transform</code>.
+  /** Converts a CSS value presenting `translate3d` for the property called `transform`.
    */
   static String translate3d(int x, int y, [int z])
   => "translate3d(${x}px,${y}px,${z !== null ? z: 0}px)";
@@ -67,9 +68,10 @@ class CSS {
   static final RegExp _reNum = const RegExp(@"([-]?[0-9]+)");
 
   /** Returns the corrected name for the given CSS property name.
-   * For example, <code>css('text-size-adjust')</code> will return
-   * <code>'-webkit-text-size-adjust'</code> if the browser is Webkit-based.
-   * <p>Notice that the prefix is defined in [prefix].
+   * For example, `css('text-size-adjust')` will return
+   * `'-webkit-text-size-adjust'` if the browser is Webkit-based.
+   *
+   * Notice that the prefix is defined in [prefix].
    */
   static String $(String propertyName) {
     if (_nsnms === null) {

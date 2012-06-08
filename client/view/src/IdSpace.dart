@@ -16,7 +16,8 @@ interface IdSpace {
    */
   View getFellow(String id);
   /** Returns a readoly collection of all fellows in this ID space.
-   * <p>Note: don't modify the returned list. Otherwise, the result is
+   *
+   * Note: don't modify the returned list. Otherwise, the result is
    * unpreditable.
    */
   Collection<View> get fellows();

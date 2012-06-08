@@ -8,7 +8,7 @@
  * In other words, the result is the same no matter how many
  * times they are executed.
  *
- * <p>If a run-once task takes long to execute, you can create an instance
+ * If a run-once task takes long to execute, you can create an instance
  * of [RunOnceQueue], and schedule the task by invoking [add].
  * Then, the second invocation of [add] with the same key will replace
  * the previous task if it is not executed yet. In other words, the previous

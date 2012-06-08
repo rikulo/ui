@@ -16,7 +16,8 @@ class StringUtil {
   }
 
   /** Return a string representation of the integer argument in base 16.
-   * <p>[digits] specifies how many digits to generate at least.
+   *
+   * [digits] specifies how many digits to generate at least.
    * If non-positive, it is ignored (i.e., any number is OK).
    */
   static String toHexString(num value, [int digits=0]) {
@@ -38,37 +39,14 @@ class StringUtil {
   }
 
   /**
-   * Returns whether the character is according to its opts.
-   * <p>[cc] is the character to test.
-  <table border="1" cellspacing="0" width="100%">
-  <caption> Allowed Options
-  </caption>
-  <tr>
-  <th> Name
-  </th><th> Description
-  </th></tr>
-  <tr>
-  <td> [digit]
-  </td><td> Specifies the character is digit only.
-  </td></tr>
-  <tr>
-  <td> [upper]
-  </td><td> Specifies the character is upper case only.
-  </td></tr>
-  <tr>
-  <td> [lower]
-  </td><td> true, false
-  </td><td> Specifies the character is lower case only.
-  </td></tr>
-  <tr>
-  <td> [whitespace]
-  </td><td> Specifies the character is whitespace only.
-  </td></tr>
-  <tr>
-  <td> [match]
-  </td><td> Specifies a string of characters that is allowed.
-  </td></tr>
-  </table>
+   * Returns whether the character matches the specified conditions.
+   *
+   * + [cc] is the character to test.
+   * + [digit] specifies if it matches digit.
+   * + [upper] specifies if it matches upper case.
+   * + [lower] specifies if it matches lower case.
+   * + [whitespace] specifies if it matches whitespace.
+   * + [match] specifies a string of characters that are matched.
    */
   static bool isChar(String cc, [bool digit=false, bool upper=false, bool lower=false,
   bool whitespace=false, String match=null]) {
@@ -100,12 +78,11 @@ class StringUtil {
     _encs = const {'<': 'lt', '>': 'gt', '&': 'amp', '"': 'quot'};
 
   /** Encodes the string to a valid XML string.
-   * <p>[txt] is the text to encode.
-   * <ul>
-   * <li>[pre] - whether to replace whitespace with &amp;nbsp;</li>
-   * <li>[multiline] - whether to replace linefeed with &lt;br/&gt;</li>
-   * <li>[maxlength] - the maximal allowed length of the text</li>
-   * </ul>
+   *
+   * + [txt] is the text to encode.
+   * + [pre] - whether to replace whitespace with &nbsp;
+   * + [multiline] - whether to replace linefeed with <br/>
+   * + [maxlength] - the maximal allowed length of the text
    */
   static String encodeXML(String txt,
   [bool multiline=false, int maxlength=0, bool pre=false]) {
@@ -158,8 +135,9 @@ class StringUtil {
   }
 
   /** Decodes the XML string into a normal string.
-   * For example, &amp;lt; is convert to &lt;
-   * <p>[txt] is the text to decode.
+   * For example, `&lt;` is convert to `<`.
+   *
+   * + [txt] is the text to decode.
    */
   static String decodeXML(String txt) {
     if (txt == null) return null; //as it is

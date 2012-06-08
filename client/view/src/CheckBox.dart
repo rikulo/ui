@@ -5,13 +5,17 @@
 /**
  * A check box is a two-state button.
  *
- * <h3>Events</h3>
- * <ul>
- * <li>check: an instance of [CheckEvent] indicates the check state is changed.</li>
- * </ul>
+ * ##Events##
+ *
+ * + check: an instance of [CheckEvent] indicates the check state is changed.
  */
 class CheckBox<E> extends TextView {
   /** The value associated with this view.
+   *
+   * If it is used with a model (such as [RadioGroup.model]), the value is
+   * assigned with the data from the model. Furthermore, you can't change it.
+   *
+   * If it is *not* used with a model, you can assign any value you like.
    */
   E value;
   bool _checked = false, _disabled = false, _autofocus = false;
@@ -33,7 +37,8 @@ class CheckBox<E> extends TextView {
   String get className() => "CheckBox"; //TODO: replace with reflection if Dart supports it
 
   /** Returns whether it is checked.
-   * <p>Default: false.
+   *
+   * Default: false.
    */
   bool get checked() => _checked;
   /** Sets whether it is checked.
@@ -46,7 +51,8 @@ class CheckBox<E> extends TextView {
   }
 
   /** Returns whether it is disabled.
-   * <p>Default: false.
+   *
+   * Default: false.
    */
   bool get disabled() => _disabled;
   /** Sets whether it is disabled.
@@ -59,7 +65,8 @@ class CheckBox<E> extends TextView {
   }
 
   /** Returns whether this button should automatically get focus.
-   * <p>Default: false.
+   *
+   * Default: false.
    */
   bool get autofocus() => _autofocus;
   /** Sets whether this button should automatically get focus.
@@ -118,11 +125,13 @@ class CheckBox<E> extends TextView {
       .add(viewConfig.classPrefix).add('inner">').add(innerHTML_).add('</label>');
   }
   /** Returns the input's type.
-   * <p>Default: checkbox.
+   *
+   * Default: checkbox.
    */
   String get domInputType_() => "checkbox";
   /** Returns the input's name.
-   * <p>Default: null (means ignored)
+   *
+   * Default: null (means ignored)
    */
   String get domInputName_() => null;
   String toString() => "$className('$text$html', $checked)";

@@ -21,7 +21,8 @@ class Section extends View implements IdSpace {
   }
 
   /** Returns the HTML tag's name representing this widget.
-   * <p>Default: <code>section</code>.
+   *
+   * Default: `section`.
    */
   String get domTag_() => "section";
 }

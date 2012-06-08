@@ -7,20 +7,32 @@
 typedef void ViewEffect(View view);
 
 /**
- * A view.
- * <p>Notice that if a view implements [IdSpace], it has to override
- * [getFellow] and [bindFellow_]. Please refer to [Section] for sample code.
- * <h3>Eventss</h3>
- * <ul>
- * <li>layout: an instance of [ViewEvent] indicates the layout of this view has been
- * handled.</li>
- * <li>enterDocument: an instanceof [ViewEvent] indicates this view has been
- * added to the document.</li>
- * <li>exitDocument: an instanceof [ViewEvent] indicates this view will be
- * removed from the document.</li>
- * </ul>
+ * A view represents the basic building block for user interface.
+ * A view defines a rectangular area on the screen and the
+ * interfaces for managing the content and event handling in the area.
  *
- * <p>Default [classes]: "v-$className"
+ * ##ID Space##
+ *
+ * If a view implements [IdSpace], it and its descendants are considered
+ * as a ID space. And, the topmost view is the owner.
+ * The ID ([id]) of a view in the given ID space must be unique.
+ * On the other hand, views in different ID spaces can have the same ID.
+ *
+ * Notice that if a view implements [IdSpace], it has to override
+ * [getFellow] and [bindFellow_]. Please refer to [Section] for sample code.
+ *
+ * ##Eventss##
+ *
+ * + layout: an instance of [ViewEvent] indicates the layout of this view has been
+ * handled.
+ * + enterDocument: an instanceof [ViewEvent] indicates this view has been
+ * added to the document.
+ * + exitDocument: an instanceof [ViewEvent] indicates this view will be
+ * removed from the document.
+ *
+ #---
+ #
+ * Default [classes]: "v-$className"
  * (note: "v-" is actually [viewConfig.classPrefix])
  */
 class View implements Hashable {
@@ -99,9 +111,11 @@ class View implements Hashable {
     }
   }
   /** Searches and returns the first view that matches the given selector.
-   * <p>Notice that, in additions to CSS selector, it also supports
+   *
+   * Notice that, in additions to CSS selector, it also supports
    * "parent" for identifying the parent, "spaceOwner" for the space owner.
-   * <p>It returns null if selector is null or empty.
+   *
+   * It returns null if selector is null or empty.
    */
   View query(String selector) {
     switch (selector) {
@@ -123,27 +137,33 @@ class View implements Hashable {
 
   /** Returns the view of the given ID in the ID space this view belongs to,
    * or null if not found.
-   * <p>If a view implements [IdSpace] must override [getFellow] and
+   *
+   * If a view implements [IdSpace] must override [getFellow] and
    * [bindFellow_].
    */
   View getFellow(String id) => spaceOwner.getFellow(id);
   /** Returns a readoly collection of all fellows in the ID space
    * that this view belongs to.
-   * <p>Note: don't modify the returned list. Otherwise, the result is
+   *
+   * Note: don't modify the returned list. Otherwise, the result is
    * unpreditable.
    */
   Collection<View> get fellows() => spaceOwner.fellows;
   /** Updates the fellow information.
-   * <p>Default: throw [UnsupportedOperationException].
-   * <p>If a view implements [IdSpace] must override [getFellow] and
+   *
+   * Default: throw [UnsupportedOperationException].
+   *
+   * If a view implements [IdSpace] must override [getFellow] and
    * [bindFellow_].
-   * <p>If fellow is null, it means to remove the binding.
+   *
+   * If fellow is null, it means to remove the binding.
    */
   void bindFellow_(String id, View fellow) {
     throw const UnsupportedOperationException ("Not IdSpace");
   }
   /** Returns the owner of the ID space that this view belongs to.
-   * <p>A virtual [IdSpace] is used if this view is a root but is not IdSpace.
+   *
+   * A virtual [IdSpace] is used if this view is a root but is not IdSpace.
    */
   IdSpace get spaceOwner() => _ViewImpl.spaceOwner(this);
 
@@ -197,15 +217,18 @@ class View implements Hashable {
   int get childCount() => _childInfo != null ? _childInfo.nChild: 0;
 
   /** Callback AFTER a child has been added.
-   * <p>Default: does nothing.
+   *
+   * Default: does nothing.
    */
   void onChildAdded_(View child) {}
   /** Callback when a child is going to be removed.
-   * <p>Default: does nothing.
+   *
+   * Default: does nothing.
    */
   void beforeChildRemoved_(View child) {}
   /** Callback after a child has been removed.
-   * <p>Default: does nothing.
+   *
+   * Default: does nothing.
    */
   void onChildRemoved_(View child) {}
   /** Callback after this view's parent has been changed.
@@ -215,16 +238,19 @@ class View implements Hashable {
    */
   void beforeParentChanged_(View newParent) {}
   /** Called after the layout of this view has been handled.
-   * <p>Default: does nothing but fire a [ViewEvent] to itself.
-   * The application can listen <code>layout</code> for this event.
+   *
+   * Default: does nothing but fire a [ViewEvent] to itself.
+   * The application can listen `layout` for this event.
    */
   void onLayout() {
     sendEvent(new ViewEvent(this, "layout"));
   }
 
   /** Returns whether this view allows any child views.
-   * <p>Default: true.
-   * <p>The deriving class shall override this method
+   *
+   * Default: true.
+   *
+   * The deriving class shall override this method
    * to return false if it doesn't allow any child views.
    */
   bool isChildable_() => true;
@@ -276,16 +302,16 @@ class View implements Hashable {
 
   /** Removes this view from its parent.
    *
-   * <p>If this view has no parent, [UIException] will be thrown.
+   * If this view has no parent, [UIException] will be thrown.
    * Rather, if you'd like to remove [Activity.mainView], assign another view
    * to [Activity.mainView]. If you'd like to remove a dialog, use [Activity.removeDialog]
    * instead.
    *
-   * <p>If the view is in the document ([inDocument] is true), the DOM
+   * If the view is in the document ([inDocument] is true), the DOM
    * element will be removed too. Furthermore, if the view is added back
    * to the document, a new DOM element will be created to represent the child.
    *
-   * <p>If you just want to move the child, you can use the so-called
+   * If you just want to move the child, you can use the so-called
    * cut-and-paste. It won't re-create the DOM element, so the performance
    * is better. Please refer to [cut] for more information.
    * If it is a root view, it will be detached from the document.
@@ -321,14 +347,15 @@ class View implements Hashable {
    * Unlike [removeFromParent], the DOM element will be kept intact (though it is
    * removed from the document). Then, you can attach both the view and DOM
    * element back by use of [ViewCut.pasteTo]. For example,
-   * <pre><code>view.cut().pasteTo(newParent);</code></pre>
    *
-   * <p>Since the DOM element is kept intact, the performance is better
+   *     view.cut().pasteTo(newParent);
+   *
+   * Since the DOM element is kept intact, the performance is better
    * then remove-and-add (with [removeFromParent] and [addChild]).
    * However, unlike remove-and-add, you cannot modify the view after it
    * is cut (until it is pasted back). Otherwise, the result is unpreditable.
    *
-   * <p>Notice that, like [removeFromParent], it can't be called if this view
+   * Notice that, like [removeFromParent], it can't be called if this view
    * is a root view (i.e., it has no parent).
    */
   ViewCut cut() => new _ViewCut(this);
@@ -336,10 +363,12 @@ class View implements Hashable {
   /** Inserts the DOM element of the given [child] view before
    * the reference view ([beforeChild]).
    * It is called by {@link #addChild} to attach the DOM elements to the document.
-   * <p>Deriving classes might override this method to modify the HTML content,
+   *
+   * Deriving classes might override this method to modify the HTML content,
    * such as enclosing with TD, or to insert the HTML content to a different
    * position.
-   * <p>Notice: if [childInfo] is either a HTML fragment (String) or
+   *
+   * Notice: if [childInfo] is either a HTML fragment (String) or
    * a DOM element.
    */
   void insertChildToDocument_(View child, var childInfo, View beforeChild) {
@@ -367,10 +396,10 @@ class View implements Hashable {
   /** Returns the DOM element associated with this view.
    * This method returns null if this view is not bound the DOM, i.e.,
    * [inDocument] is false.
-   * <p>To retrieve a child element, use the [getNode] method instead.
-   * <p>Notice that the parent view can have the same DOM element as
-   * its child. In other words, you might consider one of them is
-   * <i>virtual</i>. Furthermore, depending on your implementation,
+   *
+   * To retrieve a child element, use the [getNode] method instead.
+   *
+   * Depending on your implementation,
    * you might have to override [insertChildToDocument_] and/or
    * [removeChildFromDocument_] if they share the same DOM element.
    */
@@ -389,10 +418,13 @@ class View implements Hashable {
 
   /** Returns the element representing the inner element.
    * If there is no inner element, this method is the same as [node].
-   * <p>Default: [node].
-   * <p>The inner element is used to place the child views and provide a coordinate
+   *
+   * Default: [node].
+   *
+   * The inner element is used to place the child views and provide a coordinate
    * system originating at [innerLeft] and [innerTop] rather than (0, 0).
-   * <p>To support the inner element, the deriving class has to override this method.
+   *
+   * To support the inner element, the deriving class has to override this method.
    * And, optionally, override [innerSpacing_] if there is some spacing at the right
    * or at the bottom. If not all child views are in the inner element, it has to
    * override [shallLayout_] too.
@@ -400,8 +432,10 @@ class View implements Hashable {
    */
   Element get innerNode() => node;
   /** Adjusts the left, top, width, and/or height of the innerNode.
-   * <p>Default: adjust it based [innerWidth], [innerHeight], and [innerSpacing_].
-   * <p>If the subclass uses the static position and percentage to let the
+   *
+   * Default: adjust it based [innerWidth], [innerHeight], and [innerSpacing_].
+   *
+   * If the subclass uses the static position and percentage to let the
    * browser adjust the offset and dimensions automatically, it can
    * override this method to do nothing (for better performance).
    * [ScrollView] is a typical example.
@@ -428,30 +462,29 @@ class View implements Hashable {
   /** Adds this view to the document (i.e., the screen that the user interacts with).
    * All of its descendant views are added too.
    *
-   * <p>You rarely need to invoke this method directly. In most cases,
+   * You rarely need to invoke this method directly. In most cases,
    * you shall invoke [addChild] instead. If you'd like to add a dialog, you shall
    * use [Activity.addDialog] instead. To make a view as the main view, you shall
    * set it to [Activity.mainView] instead.
    *
-   * <p>This method is designed used to mix the use of HTML
+   * This method is designed used to mix the use of HTML
    * elements and views. For example, you can use it if you'd like to add
    * a view to the content of [TextView] and its derives. For example, you want
    * replace a portion of [TextView] with a view (, say, to provide some behavior).
    *
-   * <p>Notice that this method can be called only if this view has no parent.
+   * Notice that this method can be called only if this view has no parent.
    * If a view has a parent, whether it is attached to the document
    * shall be controlled by its parent.
    *
-   * <ul>
-   * <li>If [outer] is true, [node] will be replaced. Furthermore, you can specify
+   * + If [outer] is true, [node] will be replaced. Furthermore, you can specify
    * [keepId] to whether to use node's ID as view's UUID. By default, UUID won't be
    * changed. If you specify [keepId] to true, you have to make sure [node]'s ID
-   * is unique in the whole browser window.</li>
-   * <li>If [inner] is true, the view will be added as the last child element of [node].</li>
-   * <li>If neither [outer] nor [inner] is true, you can specify [before] to
-   * a DOM element that the view will be inserted before.</li></ul>
+   * is unique in the whole browser window.
+   * + If [inner] is true, the view will be added as the last child element of [node].
+   * + If neither [outer] nor [inner] is true, you can specify [before] to
+   * a DOM element that the view will be inserted before.
    *
-   * <p>Notice: if you specify [before], you don't have to specify [node].
+   * Notice: if you specify [before], you don't have to specify [node].
    * On the other hand, [node] is required if you don't specify [before].
    * It also means you have to specify either [node] or [before].
    */
@@ -491,11 +524,11 @@ class View implements Hashable {
   /** Removes this view from the document.
    * All of its descendant views are removed too.
    *
-   * <p>You rarely need to invoke this method directly. This method is used to undo
+   * You rarely need to invoke this method directly. This method is used to undo
    * the attachment made by [addToDocument].
    * Like [addToDocument], this method can be called only if this view has no parent.
    *
-   * <p>If you add a child by [addChild] or [Activity.addDialog], you shall
+   * If you add a child by [addChild] or [Activity.addDialog], you shall
    * invoke [removeFromParent] or [Activity.removeDialog] instead.
    */
   void removeFromDocument() {
@@ -520,10 +553,12 @@ class View implements Hashable {
     }
   }
   /** Adds a task to be executed after all [enterDocument_] are called.
-   * <p>Notice that this method can be called only in [enterDocument_].
+   *
+   * Notice that this method can be called only in [enterDocument_].
    * Furthermore, all tasks scheduled with this method will be queued
    * and executed righter [enterDocument_] of all views are called.
-   * @exception NullPointerException if this method is not called in [enterDocument_]
+   *
+   * This method throws [NullPointerException] if not called in [enterDocument_]
    */
   static void afterEnterDocument_(AfterEnterDocument after) {
     _afters.last().add(after);
@@ -537,12 +572,16 @@ class View implements Hashable {
       exitDocument_();
   }
   /** Callback when this view is attached to the document.
-   * <p>Default: invoke [enterDocument_] for each child.
-   * <p>Subclass shall call back this method if it overrides this method. 
-   * <p>If the deriving class would like some tasks to be executed
+   *
+   * Default: invoke [enterDocument_] for each child.
+   *
+   * Subclass shall call back this method if it overrides this method. 
+   *
+   * If the deriving class would like some tasks to be executed
    * after [enterDocument_] of all new-attached views are called, it can
    * invoke [afterEnterDocument_] to queue the task.
-   * <p>See also [inDocument] and [invalidate].
+   *
+   * See also [inDocument] and [invalidate].
    */
   void enterDocument_() {
     _inDoc = true;
@@ -568,8 +607,10 @@ class View implements Hashable {
     sendEvent(new ViewEvent(this, "enterDocument"));
   }
   /** Callback when this view is detached from the document.
-   * <p>Default: invoke [exitDocument_] for each child.
-   * <p>Subclass shall call back this method if it overrides this method. 
+   *
+   * Default: invoke [exitDocument_] for each child.
+   *
+   * Subclass shall call back this method if it overrides this method. 
    */
   void exitDocument_() {
     sendEvent(new ViewEvent(this, "exitDocument"));
@@ -596,11 +637,12 @@ class View implements Hashable {
   /** Called when something has changed and caused that the display of this
    * view has to draw.
    * It has no effect if it is not attached (i.e., [inDocument] is true).
-   * <p>Notice that, for better performance, the view won't be redrawn immediately.
+   *
+   * Notice that, for better performance, the view won't be redrawn immediately.
    * Rather, it is queued and all queued invalidation will be drawn together later.
    * If you'd like to rerender it immediately, you can specify [immediate] to true.
    *
-   * <p>See also [ViewUtil.flushInvalidated], which forces all queued invalidation
+   * See also [ViewUtil.flushInvalidated], which forces all queued invalidation
    * to be handle immediately (but you rarely need to call it).
    */
   void invalidate([bool immediate=false]) {
@@ -615,9 +657,11 @@ class View implements Hashable {
 
   /** Called when something has changed and caused that the layout of this
    * view is changed.
-   *<p>Notice that, for better performance, the layout will be taken place
+   *
+   * Notice that, for better performance, the layout will be taken place
    *immediately. Rather, it is queued and all queued views are handled
    * together later.
+   *
    * If you'd like to handle all queued layouts, you can invoke
    * [ViewUtil.flushRequestedLayouts].
    */
@@ -628,36 +672,42 @@ class View implements Hashable {
       layoutManager.queue(this);
   }
   /** Hanldes the layout of this view.
-   * <p>It is called by [LayoutManager].
-   * <p>Default: forward to [layoutManager] to handle it.
+   * It is called by [LayoutManager].
+   *
+   * Default: forward to [layoutManager] to handle it.
    * [onLayout] will be called after the layout of the view has been handled.
    */
   void doLayout_(MeasureContext mctx) {
     layoutManager.doLayout(mctx, this);
   }
   /** Measures the width of this view.
-   * <p>It is called by [LayoutManager].
-   * <p>Default: forward to [layoutManager] to handle it.
+   * It is called by [LayoutManager].
+   *
+   * Default: forward to [layoutManager] to handle it.
    */
   int measureWidth_(MeasureContext mctx)
   => layoutManager.measureWidth(mctx, this);
   /** Measures the height of this view.
-   * <p>It is called by [LayoutManager].
-   * <p>Default: forward to [layoutManager] to handle it.
+   * It is called by [LayoutManager].
+   *
+   * Default: forward to [layoutManager] to handle it.
    */
   int measureHeight_(MeasureContext mctx)
   => layoutManager.measureHeight(mctx, this);
   /** Returns whether the given child shall be handled by the layout manager.
-   * <p>Default: return true if the position is absolute.
+   *
+   * Default: return true if the position is absolute.
    * Notice that, for better performance, it checks only [View.style], and
    * assumes the position defined in
-   * CSS rules (aka., classes) is <code>absolute</code>.
-   * <p>The deriving class shall override this method if
+   * CSS rules (aka., classes) is `absolute`.
+   *
+   * The deriving class shall override this method if
    * the deriving class supports an inner element and not all child
    * elements in the inner element, it shall override this method to skip
-   * the child views <i>not</i> in the inner element.
+   * the child views *not* in the inner element.
    * Please refer to the viewport example for a sample implementation.
-   * <p>Note that, if this method returns false for a child, the layout
+   *
+   * Note that, if this method returns false for a child, the layout
    * manager won't adjust its position and dimension. However, the child's [doLayout_]
    * will be still called to arrange the layout of the child's child views.
    */
@@ -668,7 +718,8 @@ class View implements Hashable {
 
   /** Generates the HTML fragment for this view and its descendants
    * to the given string buffer.
-   * <p>See also [invalidate].
+   *
+   * + See also [invalidate].
    */
   void draw(StringBuffer out) {
     final String tag = domTag_;
@@ -681,7 +732,8 @@ class View implements Hashable {
   /** Returns the HTML tag's name representing this widget.
    * It is called by [draw]. If you override draw and don't call
    * back super.draw, this method has no effect.
-   * <p>Default: <code>div</code>.
+   *
+   * Default: `div`.
    */
   String get domTag_() => "div";
 
@@ -706,7 +758,8 @@ class View implements Hashable {
   }
 
   /** Returns the left position of this view relative to its parent.
-   * <p>Default: 0
+   *
+   * Default: 0
    */
   int get left() => _left;
   /** Sets the left position of this view relative to its parent.
@@ -719,7 +772,8 @@ class View implements Hashable {
       n.style.left = CSS.px(left);
   }
   /** Returns the top position of this view relative to its parent.
-   * <p>Default: 0
+   *
+   * Default: 0
    */
   int get top() => _top;
   /** Sets the top position of this view relative to its parent.
@@ -733,8 +787,10 @@ class View implements Hashable {
   }
 
   /** Returns the width of this view.
-   * <p>Default: null (up to the system).
-   * <p>To get the real width on the document, use [outerWidth].
+   *
+   * Default: null (up to the system).
+   *
+   * + To get the real width on the document, use [outerWidth].
    */
   int get width() => _width;
   /** Sets the width of this view.
@@ -750,8 +806,10 @@ class View implements Hashable {
     }
   }
   /** Returns the height of this view.
-   * <p>Default: null (up to the system)
-   * <p>To get the real height on the document, use [outerWidth].
+   *
+   * Default: null (up to the system)
+   *
+   * + To get the real height on the document, use [outerWidth].
    */
   int get height() => _height;
   /** Sets the height of this view.
@@ -768,16 +826,20 @@ class View implements Hashable {
   }
 
   /** Returns the left offset of the origin of the child's coordinate system.
-   * <p>Default: 0.
+   *
+   * Default: 0.
    */
   int get innerLeft() => _innerofs !== null ? _innerofs.left: 0;
   /** Returns the top offset of the origin of the child's coordinate system.
-   * <p>Default: 0.
+   *
+   * Default: 0.
    */
   int get innerTop() => _innerofs !== null ? _innerofs.top: 0;
   /** Returns the left offset of the origin of the child's coordinate system.
-   * <p>Default: 0.
-   * <p>Whether a view allows the developer to change the origin is up to the view's
+   *
+   * Default: 0.
+   *
+   * Whether a view allows the developer to change the origin is up to the view's
    * spec. By default, it is not supported.
    * To support it, the view usually introduces an additional DIV to provide
    * the origin for the child views, and overrides [innerNode] to return it.
@@ -790,8 +852,10 @@ class View implements Hashable {
     adjustInnerNode_(bLeft: true);
   }
   /** Returns the top offset of the origin of the child's coordinate system.
-   * <p>Default: throws [UIException].
-   * <p>Whether a view allows the developer to change the origin is up to the view's
+   *
+   * Default: throws [UIException].
+   *
+   * Whether a view allows the developer to change the origin is up to the view's
    * spec. By default, it is not supported.
    * To support it, the view usually introduces an additional DIV to provide
    * the origin for the child views, and overrides [innerNode] to return it.
@@ -804,15 +868,17 @@ class View implements Hashable {
     adjustInnerNode_(bTop: true);
   }
   /** Returns the spacing between the inner element and the border.
-   * <p>Default: <code>new Size(innerLeft, innerTop)</code>
-   * <p>Notice: instead of overriding [width] and [height], you
+   *
+   * Default: `new Size(innerLeft, innerTop)`
+   *
+   * Notice: instead of overriding [width] and [height], you
    * shall override this method if the spacing is more than
    * [innerLeft] and [innerTop].
    */
   Size get innerSpacing_() => new Size(innerLeft, innerTop);
 
   /** Returns the real width of this view shown on the document (never null).
-   * <p>Notice that the performance of this method is not good, if
+   * Notice that the performance of this method is not good, if
    * [width] is null.
    */
   int get outerWidth()
@@ -820,7 +886,7 @@ class View implements Hashable {
     //for better performance, we don't need to get the outer width if _width is
     //assigned (because we use box-sizing: border-box)
   /** Returns the real height of this view shown on the document (never null).
-   * <p>Notice that the performance of this method is not good, if
+   * Notice that the performance of this method is not good, if
    * [height] is null.
    */
   int get outerHeight()
@@ -829,7 +895,8 @@ class View implements Hashable {
     //assigned (because we use box-sizing: border-box)
   /** Returns the viewable width of this view, excluding the borders, margins
    * and scrollbars.
-   * <p>Note: this method returns [width] if [inDocument] is false and [width] is not null.
+   *
+   * Note: this method returns [width] if [inDocument] is false and [width] is not null.
    * In other words, it doesn't exclude the border's width if not attached to the document
    * (for performance reason). However, we might change it in the future, so it is better
    * not to call this method if the view is not attached.
@@ -841,7 +908,8 @@ class View implements Hashable {
   }
   /** Returns the viewable height of this view, excluding the borders, margins
    * and scrollbars.
-   * <p>Note: this method returns [height] if [inDocument] is false and [height] is not null.
+   *
+   * Note: this method returns [height] if [inDocument] is false and [height] is not null.
    * In other words, it doesn't exclude the border's height if not attached to the document
    * (for performance reason). However, we might change it in the future, so it is better
    * not to call this method if the view is not attached.
@@ -876,7 +944,8 @@ class View implements Hashable {
     return ofs;
   }
   /** Returns the layout instruction of this view.
-   * <p>[layout] intructs how a view shall layout the child views.
+   *
+   * [layout] intructs how a view shall layout the child views.
    * In additions, you can specify addition information in individual child
    * view's [profile].
    */
@@ -888,7 +957,8 @@ class View implements Hashable {
   /** Returns the profile, i.e., the layouot requirement, of this view.
    * It provides additional information for the parent view to
    * layout this view.
-   * <p>See also [layout].
+   *
+   * + See also [layout].
    */
   ProfileDeclaration get profile() {
     if (_profile == null)
@@ -937,7 +1007,8 @@ class View implements Hashable {
    * It is called by [draw], and the deriving class can override it to
    * provide the content it wants. Of course, if you override [draw]
    * directly, you can decide whether to call this method.
-   * <p>Default: invoke each child view's [draw] sequentially.
+   *
+   * Default: invoke each child view's [draw] sequentially.
    */
   void domInner_(StringBuffer out) {
     for (View child = firstChild; child !== null; child = child.nextSibling) {
@@ -984,8 +1055,8 @@ class View implements Hashable {
     return ei.on;
   }
   /** Adds an event listener.
-   * <code>addEventListener("click", listener)</code> is the same as
-   * <code>on.click.add(listener)</code>.
+   * `addEventListener("click", listener)` is the same as
+   * `on.click.add(listener)`.
    */
   void addEventListener(String type, ViewEventListener listener) {
     if (listener == null)
@@ -1009,8 +1080,8 @@ class View implements Hashable {
   }
 
   /** Removes an event listener.
-   * <code>addEventListener("click", listener)</code> is the same as
-   * <code>on.click.remove(listener)</code>.
+   * `addEventListener("click", listener)` is the same as
+   * `on.click.remove(listener)`.
    */
   bool removeEventListener(String type, ViewEventListener listener) {
     List<ViewEventListener> ls;
@@ -1031,9 +1102,11 @@ class View implements Hashable {
     return found;
   }
   /** Sends an event to this view.
-   * <p>Example: <code>view.sendEvent(new ViewEvent(target, "click"))</code>.
+   *
+   * Example: `view.sendEvent(new ViewEvent(target, "click"))</code>.
    * If the type parameter is not specified, it is assumed to be [ViewEvent.type].
-   * <p>To broadcast an event, please use [broadcaster] instead.
+   *
+   * To broadcast an event, please use [broadcaster] instead.
    */
   bool sendEvent(ViewEvent event, [String type]) {
     if (type == null)

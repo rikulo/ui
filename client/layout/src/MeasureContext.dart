@@ -10,7 +10,8 @@ class MeasureContext {
    * the measurement since [View.measureWidth_] might be called multiple times
    * in one layout run. If the width shall be re-measured, you can
    * remove it from this map.
-   * <p>Note: null indicates the width is up to the system, i.e., no need
+   *
+   * Note: null indicates the width is up to the system, i.e., no need
    * to set the width.
    */
   final Map<View, int> widths;
@@ -18,7 +19,8 @@ class MeasureContext {
    * the measurement since [View.measureHeight_] might be called multiple times
    * in one layout run. If the height shall be re-measured, you can
    * remove it from this map.
-   * <p>Note: null indicates the height is up to the system, i.e., no need
+   *
+   * Note: null indicates the height is up to the system, i.e., no need
    * to set the height.
    */
   final Map<View, int> heights;

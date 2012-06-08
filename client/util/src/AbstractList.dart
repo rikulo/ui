@@ -4,13 +4,17 @@
 
 /**
  * A skeletal implementation of List.
- * <p>For unmodifiable sequential list, you need only to implement
+ *
+ * For unmodifiable sequential list, you need only to implement
  * [iterator] and [length].
- * <p>If it is not a equential list, you shall override [operator[]]
+ *
+ * If it is not a equential list, you shall override [operator[]]
  * for better performance.
- * <p>If you don't override [operator[]], you shall consider to override
+ *
+ * If you don't override [operator[]], you shall consider to override
  * [last] for better performance.
- * <p>For mutable list, you shall override [operator[]=], [set length],
+ *
+ * For mutable list, you shall override [operator[]=], [set length],
  * [add], [setRange], [insertRange], and [removeRange].
  */
 abstract class AbstractList<E> implements List<E> {

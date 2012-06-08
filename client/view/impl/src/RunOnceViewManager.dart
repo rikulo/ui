@@ -12,7 +12,7 @@ typedef void RunOnceViewTask(View view);
  * callbacks. If one returns false, it won't do anything. Therefore, you can make
  * the manager depends on some external conditions.
  *
- * <p>The call that returns false shall invoke [continueTask] if it is OK to proceed later.
+ * The call that returns false shall invoke [continueTask] if it is OK to proceed later.
  * In other words, it is the callback's job to resume the handling if it returns false.
  */
 typedef bool RunOnceReadyCheck(View view, Task continueTask);
@@ -21,18 +21,18 @@ typedef bool RunOnceReadyCheck(View view, Task continueTask);
  * A run-once view manager is used to manage the view-handling task in
  * a way that the task will be executed only once for each view .
  *
- * <p>To use it, first you assign the view-handling task ([RunOnceViewTask])
+ * To use it, first you assign the view-handling task ([RunOnceViewTask])
  * in the constructor.
  * Then, you can invoke [queue] to put a view into the queue. The view won't be handled
  * immediately. Rather it will be handled later automatically.
  * Moreover, if the view is queued multiple times before it was handled, the task
  * is invoked only once for the given view. That is why it is called run-once.
  *
- * <p>In additions, you can control whether to ignore the view, if the view
+ * In additions, you can control whether to ignore the view, if the view
  * is not attached to the document. Or, to ignore the view if one of its ancestor is
  * also queued.
  *
- * <p>To enforce the views queued in this manager to be handled immediately, you can invoke
+ * To enforce the views queued in this manager to be handled immediately, you can invoke
  * [flush].
  */
 class RunOnceViewManager {
@@ -44,11 +44,12 @@ class RunOnceViewManager {
   final bool _ignoreSubviews;
 
   /** Constructor.
-   * <p>[_task] is the view-handling task. Notice that if you pass null here, you have
+   *
+   * + [task] is the view-handling task. Notice that if you pass null here, you have
    * override [handle_] to handle it.
-   * <p>[ignoreDetached] specifies whether to ignore the views that are not attached
+   * + [ignoreDetached] specifies whether to ignore the views that are not attached
    * to the docuemnt (ie.., ignore views if [View.inDocument] is false).
-   * <p>[ignoreSubviews] specifies whether to ignore the sub views. In other words,
+   * + [ignoreSubviews] specifies whether to ignore the sub views. In other words,
    * a view is ignored, if one of its ancestor has been queued for handling too.
    */
   RunOnceViewManager(RunOnceViewTask task, [bool ignoreDetached=true, bool ignoreSubviews=true]):
@@ -82,8 +83,10 @@ class RunOnceViewManager {
   /** Handles the given view.
    * Don't call this method directly. It is called automatically
    * when a view is required to handle.
-   * <p>Default: invoke the task that was assigned in the constructor.
-   * <p>You can override this method if you don't pass a task in the constructor.
+   *
+   * Default: invoke the task that was assigned in the constructor.
+   *
+   * You can override this method if you don't pass a task in the constructor.
    */
   void handle_(View view) {
     _task(view);

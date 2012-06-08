@@ -7,13 +7,14 @@
  * By connecting this bridge to a message queue (by use of [connect]),
  * the messages can be sent to, or received from another applications,
  * as long as they also connect to a bridge with the same name.
- * <p>Message queues connecting the same bridge are considered
+   *
+ * Message queues connecting the same bridge are considered
  * as the same group. They are distinquished by [name].
  *
- * <p>The implementation is based on the browser's cross-window messaging.
+ * The implementation is based on the browser's cross-window messaging.
  * It means the applications can reside even on different browser windows.
  *
- * <p>Notice: the message will be converted to a JSON string, so
+ * Notice: the message will be converted to a JSON string, so
  * the message must be null, double, String, bool, list (recursively)
  * and map (recursively). Also notice that num will be converted to
  * double.
@@ -31,11 +32,11 @@ class InterApplicationBridge<Message> {
    * The bridges with the same name ([name]) are considered as the same group.
    * The messages will be forwarded among bridges within the same group.
    *
-   * <p>[origin] specifies the origin of the other window to communicate with.
+   * + [origin] specifies the origin of the other window to communicate with.
    * It is either as the literal string "*" (indicating no preference), as "self"
    * (indicating the same window) or as a URI.
    * Please refer to <a href="https://developer.mozilla.org/en/DOM/window.postMessage">DOM API</a>
-   * for detailed description (so called <code>targetOrigin</code>).
+   * for detailed description (so called `targetOrigin`).
    * For better security, "*" is not suggested.
    */
   factory InterApplicationBridge(String name, [String origin="self"]) {
@@ -93,10 +94,11 @@ class InterApplicationBridge<Message> {
    * be forward to/from another applications if they also connect
    * to a bridge with the same name.
    *
-   * <p>If [receive] is true, this bridge will receive the messages from
+   * If [receive] is true, this bridge will receive the messages from
    * the given message queue. In other words, the message will be forwarded
    * to other browser windows and/or other Dart applications.
-   * <p>If [send] is true, this bridde will send the messages to
+   *
+   * If [send] is true, this bridde will send the messages to
    * the given message queue. In other words, this bridge will subscribe a listener
    * to the browser window, and then forward the message received from
    * other windows to the message queue.

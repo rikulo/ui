@@ -37,7 +37,8 @@ class DOMQuery {
   /** Returns the closest ancestor elemento in the DOM hierachy from
    * which the position of the current element is calculated, or null
    * if it is the topmost element.
-   * <p>Use [offsetLeft] and [offsetTop] to retrieve the position of
+   *
+   * Use [offsetLeft] and [offsetTop] to retrieve the position of
    * the top-left corner of an object relative to the top-left corner
    * of its offset parent object.
    */

@@ -4,7 +4,8 @@
 
 /**
  * The side information specified in layout.
- * <p>Format: <code>#n1 [#n2 [#n3 #n4]]</code>.
+ *
+ * Format: `#n1 [#n2 [#n3 #n4]]`
  */
 class LayoutSideInfo {
   int top, bottom, left, right;

@@ -6,13 +6,13 @@
  * To start an animation, you can add a callback to [Animator], such that
  * the callback will be called periodically until the callback returns false.
  *
- * <p>To add an animation, please invoke [Animator.add]. If the callback
+ * To add an animation, please invoke [Animator.add]. If the callback
  * returns false, it will be removed from the animator automatially.
  * If you'd like, you can remove it manually by use of [Animator.remove].
  *
- * <p>[time] is the milliseconds from 1970-01-01 (UTC).
- * In other words, it is the same as <code>new Date.now().value</code>.
- * [elapsed] is the number of milliseconds elapsed since the previous
+ * + [time] is the milliseconds from 1970-01-01 (UTC).
+ * In other words, it is the same as `new Date.now().value`.
+ * + [elapsed] is the number of milliseconds elapsed since the previous
  * invocation.
  */
 typedef bool Animate(int time, int elapsed);
@@ -28,7 +28,8 @@ interface Animator default _Animator {
    */
   void add(Animate animate);
   /** Removes this animation callback.
-   * <p>It is called automatically, if the callback returns false.
+   *
+   * It is called automatically, if the callback returns false.
    */
   void remove(Animate animate);
   /** Returns a readonly collection of all animation callbacks.

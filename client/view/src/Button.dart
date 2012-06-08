@@ -15,11 +15,13 @@ class Button extends TextView {
   String get className() => "Button"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the button type.
-   * <p>Default: "button".
+   *
+   * Default: "button".
    */
   String get type() => _type;
   /** Sets the button type.
-   * <p>[type] can be either "button", "submit" or "reset".
+   *
+   * + [type] can be either `button`, `submit` or `reset`.
    */
   void set type(String type) {
     _type = type == null || type.isEmpty() ? "button": type;
@@ -28,7 +30,8 @@ class Button extends TextView {
       n.$dom_setAttribute('type', _type); //Chrome's type can't be assigned directly
   }
   /** Returns whether it is disabled.
-   * <p>Default: false.
+   *
+   * Default: false.
    */
   bool get disabled() => _disabled;
   /** Sets whether it is disabled.
@@ -41,7 +44,8 @@ class Button extends TextView {
   }
 
   /** Returns whether this button should automatically get focus.
-   * <p>Default: false.
+   *
+   * Default: false.
    */
   bool get autofocus() => _autofocus;
   /** Sets whether this button should automatically get focus.
@@ -65,12 +69,14 @@ class Button extends TextView {
     super.domAttrs_(out, noId, noStyle, noClass);
   }
   /** Returns the HTML tag's name representing this widget.
-   * <p>Default: <code>button</code>.
+   *
+   * Default: `button`.
    */
   String get domTag_() => "button";
 
   /** Returns whether this view allows any child views.
-   * <p>Default: false.
+   *
+   * Default: false.
    */
   bool isChildable_() => false;
 }

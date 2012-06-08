@@ -9,7 +9,8 @@ class DefaultListModel<E> extends AbstractListModel<E> {
   final List<E> _data;
 
   /** Constructor.
-   * <p>Notice that once [data] is assigned to a list model, you shall not
+   *
+   * Notice that once [data] is assigned to a list model, you shall not
    * modify the data directly. Rather, you shall invoke the methods of this
    * model, such as [add]. Otherwise, UI won't update the changes correctly.
    */

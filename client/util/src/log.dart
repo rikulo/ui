@@ -3,9 +3,11 @@
 // Author: tomyeh
 
 /** Logs the information to the screen rather than console.
- * <p>Since it prints the time between two consecutive logs,
+ *
+ * Since it prints the time between two consecutive logs,
  * you can use it measure the performance of particular functions.
- * <p>[log] queues the message and displays it later, so there won't be
+ *
+ * + [log] queues the message and displays it later, so there won't be
  * much performance overhead.
  */
 void log(var msg) {

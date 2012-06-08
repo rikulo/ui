@@ -33,11 +33,13 @@ class Image extends View {
     super.domAttrs_(out, noId, noStyle, noClass);
   }
   /** Returns the HTML tag's name representing this widget.
-   * <p>Default: <code>img</code>.
+   *
+   * Default: `img`.
    */
   String get domTag_() => "img";
   /** Returns whether this view allows any child views.
-   * <p>Default: false.
+   *
+   * Default: false.
    */
   bool isChildable_() => false;
 

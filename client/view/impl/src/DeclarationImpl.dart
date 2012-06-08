@@ -55,7 +55,8 @@ class DeclarationImpl implements Declaration {
   }
   /** Sets the value of the given property.
    * If the given value is null or empty, the property will be removed.
-   * <p>Notice: the value will be trimmed before saving.
+   *
+   * Notice: the value will be trimmed before saving.
    */
   void setProperty(String propertyName, String value) {
     if (value === null || value.isEmpty())

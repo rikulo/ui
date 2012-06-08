@@ -46,7 +46,8 @@ class Style extends View {
   }
 
   /** Returns the CSS content, or null if no content specified.
-   * <p>Notice that this method returns the value returned of the
+   *
+   * Notice that this method returns the value returned of the
    * previous invocation of [set content]. It returns null
    * if the previous invocation is [set src].
    */
@@ -64,7 +65,8 @@ class Style extends View {
   }
 
   /** Returns the CSS media, or null if no media specified.
-   * <p>Default: null (no media).
+   *
+   * Default: null (no media).
    */
   String get media() => _media;
   /** Sets the CSS media.

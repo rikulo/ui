@@ -4,7 +4,8 @@
 
 /** A switching effect for hiding [from] and displaying [to],
  * such as fade-out and slide-in.
- * <p>[mask] is the element inserted between [from] and [to]. It is used
+ *
+ * + [mask] is the element inserted between [from] and [to]. It is used
  * to block the access of [from].
  */
 typedef void ViewSwitchEffect(View from, View to, Element mask);
@@ -28,7 +29,7 @@ class Activity {
    * is called. You can change it to any view you like at any time by
    * calling [set mainView].
    *
-   * <p>The main view is a root view, i.e., it doesn't have any parent.
+   * The main view is a root view, i.e., it doesn't have any parent.
    * In additions, its size has been adjusted to cover the whole screen
    * (or the whole DOM element specified in the containerId parameter of [run] if
    * there is one).
@@ -61,7 +62,8 @@ class Activity {
   /** Returns the topmost dialog, or null if no dialog at all.
    * A dialog is a view sitting on top of [mainView].
    * A dialog is also a root view, i.e., it has no parent.
-   * <p>An activity has at most one [mainView], while it might have
+   *
+   * An activity has at most one [mainView], while it might have
    * any number of dialogs. To add a dialog, please use [addPopup].
    * The last added dialog will be on top of the rest, including [mainView].
    */
@@ -69,14 +71,14 @@ class Activity {
   /** Adds a dialog. The dialog will become the topmost view and obscure
    * the other dialogs and [mainView].
    *
-   * <p>If specified, [effect] controls how to make the given dialog visible,
+   * If specified, [effect] controls how to make the given dialog visible,
    * and the previous dialog or [mainView] invisible.
    *
-   * <p>To obscure the dialogs and mainView under it, a semi-transparent mask
+   * To obscure the dialogs and mainView under it, a semi-transparent mask
    * will be inserted on top of them and underneath the given dialog.
    * You can control the transparent and styles by giving a different CSS
    * class with [maskClass]. If you don't want the mask at all, you can specify
-   * <code>null</code> to [maskClass]. For example, if the dialog occupies
+   * `null` to [maskClass]. For example, if the dialog occupies
    * the whole screen, you don't have to generate the mask.
    */
   void addDialog(View dialog, [ViewSwitchEffect effect, String maskClass="v-mask"]) {
@@ -99,9 +101,10 @@ class Activity {
   }
   /** Removes the topmost dialog or the given dialog.
    * If [dialog] is not specified, the topmost one is assumed.
-   * <p>If specified, [effect] controls how to make the given dialog invisible,
+   * If specified, [effect] controls how to make the given dialog invisible,
    * and make the previous dialog or [mainView] visible.
-   * <p>It returns false if the given dialog is not found.
+   *
+   * It returns false if the given dialog is not found.
    */
   bool removeDialog([View dialog, ViewSwitchEffect effect]) {
     _DialogInfo dlgInfo;
@@ -135,10 +138,10 @@ class Activity {
   }
 
   /** Starts the activity.
-   * <p>By default, it creates [mainView] (if it was not created yet)
+   * By default, it creates [mainView] (if it was not created yet)
    * and has it to occupies the whole screen.
    *
-   * <p>If the DOM element specified in [containerId] is found, [mainView]
+   * If the DOM element specified in [containerId] is found, [mainView]
    * will only occupy the DOM element. It is useful if you'd like
    * to have multiple activities (i.e., Dart applications) running
    * at the same time and each of them handles only a portion of the
@@ -219,16 +222,17 @@ class Activity {
    * If you'd really like to attach it earlier, you can
    * invoke [View.addToDocument] manually.
    *
-   * <p>If you prefer to instantiate a different main view, you can
+   * If you prefer to instantiate a different main view, you can
    * create an instance and then assign to [mainView] directly.
    *
-   * <p>See also [run].
+   * + See also [run].
    */
   void onCreate_() {
   }
   /**Called after [onCreate_] is called and [mainView] has been
    * added to the document.
-   *<p>Tasks that depends on DOM elements can be done in this method.
+   *
+   *Tasks that depends on DOM elements can be done in this method.
    */
   void onEnterDocument_() {
   }

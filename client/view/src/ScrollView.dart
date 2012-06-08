@@ -18,7 +18,8 @@ class ScrollView extends View {
    * In other words, [ScrollView] assumes the content occupies
    * from the left-top corner of [innerNode] and up to the size
    * returned by this method.
-   * <p>Default: it iterates through all child views to calculate
+   *
+   * Default: it iterates through all child views to calculate
    * the size. It could be slow if there are a lot of children.
    * However, depending on the application, it is usually to
    * calculate the content's size without iterating all children.

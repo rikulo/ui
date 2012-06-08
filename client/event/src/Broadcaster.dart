@@ -63,15 +63,17 @@ class _BroadcastListeners {
   }
 
   /** Removes an event listener.
-   * <code>addEventListener("click", listener)</code> is the same as
-   * <code>on.click.remove(listener)</code>.
+   *
+   * `addEventListener("click", listener)` is the same as
+   * `on.click.remove(listener)`.
    */
   bool removeEventListener(String type, ViewEventListener listener) {
     List<ViewEventListener> ls;
     return (ls = _listeners[type]) != null && ListUtil.remove(ls, listener);
   }
   /** Sends an event to this view.
-   * <p>Example: <code>view.sendEvent(new PopupEvent(view))</code>.
+   *
+   * Example: `view.sendEvent(new PopupEvent(view))`.
    * If the type parameter is not specified, it is assumed to be [ViewEvent.type].
    */
   bool sendEvent(ViewEvent event, [String type]) {

@@ -21,11 +21,11 @@ class ViewEvent {
 
   /** Constructor.
    *
-   * <p>[target] is the view that this event is targeting.
+   * + [target] is the view that this event is targeting.
    * [type] is the event type, such as click.
-   * <p>[pageX] and [pageY] are the mouse pointer relative to the document.
+   * + [pageX] and [pageY] are the mouse pointer relative to the document.
    * They are ignored if not specified.
-   * <p>[offsetX] and [offsetY] are the mouse pointer relative to [target]'s
+   * + [offsetX] and [offsetY] are the mouse pointer relative to [target]'s
    * left-top corner.
    * They are ignored if [pageX] and [pageY] are specified.
    * If both [offsetX] and [pageX] are not specified, 0 is assumed.
@@ -97,8 +97,10 @@ class ViewEvent {
   String get type() => _type;
 
   /** Returns whether this event's propagation is stopped.
-   * <p>Default: false.
-   * <p>It becomes true if {@link #stopPropagation} is called,
+   *
+   * Default: false.
+   *
+   * It becomes true if {@link #stopPropagation} is called,
    * and then all remaining event listeners are ignored.
    */
   bool get propagationStopped() => _propStop;
