@@ -9,7 +9,7 @@
  */
 toJSDate(Date dartdate) {
   int msecs = dartdate !== null ? dartdate.value : null;
-  return msecs != null ? jsCall("new Date", [msecs]) : null;
+  return msecs != null ? jsCall("newDate", [msecs]) : null;
 }
 
 /** Convert a JavaScript Date to Dart Date 
@@ -17,7 +17,7 @@ toJSDate(Date dartdate) {
  * @return the converted Dart Date
  */
 toDartDate(jsdate) {
-  int msecs = jsdate !== null ? jsCall("date.getTime", [jsdate]) : null;
+  int msecs = jsdate !== null ? jsCall("getTime", [jsdate]) : null;
   return msecs !== null ? new Date.fromEpoch(msecs, false) : null; //use local timezone
 }
   
@@ -93,24 +93,87 @@ toDartMap(var jsmap, [Function converter = null]) {
   return null;
 }
 
-_JSCallX jsCallX;  
+_JSCallX jsCallX; //bridge class
 jsCall(String op, [List args = const []]) {
   return jsCallX.exec(op, args);
 }
 
-typedef JSCallFunction(String op, List args);
-class _JSCallX {JSCallFunction exec;} //DO NOT change class and field name; couple to JavaScript code
-initJSCall() { //bridge jsCallX to javaScript jump table
-  if (jsCallX === null) {
-    _injectJavaScript("if(window.overrideJSCallX) window.overrideJSCallX();"); //calling JavaScript function
-    jsCallX = new _JSCallX();
-    if (jsCall("[]") === null) {
-      throw const SystemException("jsutil.js must be loaded first");
-    }
-  }
+newJSFunction(String name, List<String> args, String body) {
+  jsCall("newFn", [name, args, body]);
 }
 
-_injectJavaScript(String script) {
+initJSCall() {
+  if (jsCallX === null) {
+    final String newFn = '''  
+      var _natives = {
+        "newFn" : function(nm, args, body) {
+          var fnbody = "return new Function(" + (args && args.length > 0 ? "'"+args.join("','")+"',body);" : "body);");
+          _natives[nm] = new Function("body", fnbody)(body);
+        },
+        "get" : function(obj, attr) {
+          return obj[attr];
+        },
+        "set" : function(obj, attr, val) {
+          obj[attr] = val;
+        },
+        "forEach" : function(jslist, fn) {
+          if (jslist) {
+            for(var j = 0; j < jslist.length; ++j) {
+              fn.\$call\$1(jslist[j]);
+            }
+          }
+        },
+        "forEachKey" : function(jsmap, fn) {
+          if (jsmap) {
+            for(var key in jsmap) {
+              fn.\$call\$2(key, jsmap[key]);
+            }
+          }
+        },
+        "_newItem" : function(result, item) {
+          if (result.length == 0) result[0] = [];
+          result[0].push(item);
+        },
+        "_newEntry" : function(result, k, v) {
+          if (result.length == 0) result[0] = {};
+          result[0][k] = v;
+        },
+        "getTime" : function(jsdate) {
+          return jsdate ? jsdate.getTime() : null;
+        },
+        "newDate" : function(msecs) {
+          return msecs != null ? new Date(msecs) : null;
+        },
+        "{}" : function() { //empty map
+          return {};
+        },
+        "[]" : function() { //empty array
+          return [];
+        }
+      };
+      if (window.Isolate && window.Isolate.\$isolateProperties) {
+        console.log("init _JSCallX");
+        window.Isolate.\$isolateProperties._JSCallX.prototype.exec\$2 =  
+          function(name, args) {
+            if (!_natives[name])
+              console.log("Cannot find jsCall:"+name);
+            else
+              return _natives[name].apply(this, args);
+          };
+      };
+    ''';
+    
+    injectJavaScript(newFn); //initialize JavaScript function table
+    jsCallX = new _JSCallX(); //connect jsCall to JavaScript function table
+  }
+}
+injectJavaScriptSrc(String uri) {
+  var s = new Element.tag("script");
+  s.attributes["type"] = "text/javascript";
+  s.attributes["src"] = uri;
+  document.body.nodes.add(s);  
+}
+injectJavaScript(String script) {
   var s = new Element.tag("script");
   s.attributes["type"] = "text/javascript";
   s.text = script;
@@ -118,3 +181,5 @@ _injectJavaScript(String script) {
   s.remove();
 }
 
+typedef JSCallFunction(String op, List args);
+class _JSCallX {JSCallFunction exec;} //change NEITHER class name NOR field name; couple to JavaScript code
