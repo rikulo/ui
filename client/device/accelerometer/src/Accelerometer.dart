@@ -2,7 +2,7 @@
 //History: Fri, Apr 27, 2012  10:26:33 AM
 // Author: henrichen
 
-typedef AccelerometerSuccessCallback(Acceleration);
+typedef AccelerometerSuccessCallback(Acceleration accel);
 typedef AccelerometerErrorCallback();
 
 /**

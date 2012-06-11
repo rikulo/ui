@@ -2,7 +2,7 @@
 //History: Fri, May 11, 2012  08:35:26 AM
 // Author: henrichen
 
-typedef CompassSuccessCallback(CompassHeading);
+typedef CompassSuccessCallback(CompassHeading heading);
 typedef CompassErrorCallback();
 
 /**

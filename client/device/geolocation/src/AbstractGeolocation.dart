@@ -2,7 +2,7 @@
 //History: Fri, May 18, 2012  09:17:04 AM
 // Author: henrichen
 
-/*abstract*/ class AbstractGeolocation implements XGeolocation {
+abstract class AbstractGeolocation implements XGeolocation {
   PositionEvents _on;
   List<WatchIDInfo> _listeners;
   

@@ -2,7 +2,7 @@
 //History: Fri, May 11, 2012  06:03:45 PM
 // Author: henrichen
 
-/*abstract*/ class AbstractCompass implements Compass {
+abstract class AbstractCompass implements Compass {
   CompassHeadingEvents _on;
   List<WatchIDInfo> _listeners;
   

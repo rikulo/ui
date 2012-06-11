@@ -2,7 +2,7 @@
 //History: Fri, May 4, 2012  04:45:33 PM
 // Author: henrichen
 
-/*abstract*/ class AbstractAccelerometer implements Accelerometer {
+abstract class AbstractAccelerometer implements Accelerometer {
   AccelerationEvents _on;
   List<WatchIDInfo> _listeners;
   
