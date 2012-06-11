@@ -14,7 +14,7 @@ class DeviceEvent {
    *
    * Default: false.
    *
-   * It becomes true if {@link #stopPropagation} is called,
+   * It becomes true if {[stopPropagation] is called,
    * and then all remaining event listeners are ignored.
    */
   bool get propagationStopped() => _propStop;

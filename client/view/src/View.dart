@@ -362,7 +362,7 @@ class View implements Hashable {
 
   /** Inserts the DOM element of the given [child] view before
    * the reference view ([beforeChild]).
-   * It is called by {@link #addChild} to attach the DOM elements to the document.
+   * It is called by [addChild] to attach the DOM elements to the document.
    *
    * Deriving classes might override this method to modify the HTML content,
    * such as enclosing with TD, or to insert the HTML content to a different
