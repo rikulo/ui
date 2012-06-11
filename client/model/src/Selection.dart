@@ -9,7 +9,8 @@
 interface Selection<E> {
   /**
    * Returns the current selection.
-   * It is readonly. Don't modify it directly
+   * It is readonly. Don't modify it directly. Otherwise, UI won't be
+   * updated correctly.
    */
   Set<E> get selection();
   /**

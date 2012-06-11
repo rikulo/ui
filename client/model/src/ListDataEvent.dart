@@ -3,17 +3,17 @@
 // Author: tomyeh
 
 /**
- * An event used to notify the listeners of a modle ([ListModel])
- * that the model is changed.
+ * An event used to notify the listeners of a list model ([ListModel])
+ * that the model has been changed.
  */
-interface ListDataEvent<E> default _ListDataEventImpl<E> {
+interface ListDataEvent default _ListDataEvent {
   /** Constructor for [DataEventType.CONTENT_CHANGED], [DataEventType.INTERVAL_ADDED],
    * and [DataEventType.INTERVAL_REMOVED].
    */
   ListDataEvent(DataEventType type, int index, int length);
   ListDataEvent.multipleChanged();
   ListDataEvent.structureChanged();
-  ListDataEvent.selectionChanged(Set<E> selectionChanged);
+  ListDataEvent.selectionChanged();
 
   /** Returns the type of the event.
    */
@@ -29,49 +29,23 @@ interface ListDataEvent<E> default _ListDataEventImpl<E> {
    * [DataEventType.INTERVAL_ADDED], or [DataEventType.INTERVAL_REMOVED].
    */
   int get length();
-
-  /** Returns a collection of objects whose selection have been changed.
-   * It is available only if [type] is [DataEventType.SELECTIOIN_CHANGED].
-   */
-  Set<E> get selectionChanged();
-
-  String toString();
 }
 
-class _ListDataEventImpl<E> implements ListDataEvent<E> {
+class _ListDataEvent implements ListDataEvent {
   final DataEventType _type;
   final int _index, _length;
-  final Set<E> _selChg;
 
-  _ListDataEventImpl(this._type, this._index, this._length):
-    this._selChg = null;
-
-  _ListDataEventImpl.structureChanged():
+  _ListDataEvent(this._type, this._index, this._length);
+  _ListDataEvent.structureChanged():
     this(DataEventType.STRUCTURE_CHANGED, 0, -1);
-  _ListDataEventImpl.multipleChanged():
+  _ListDataEvent.multipleChanged():
     this(DataEventType.MULTIPLE_CHANGED, 0, -1);
-  _ListDataEventImpl.selectionChanged(this._selChg):
-    _type = DataEventType.SELECTION_CHANGED, _index = 0, _length = -1;
+  _ListDataEvent.selectionChanged():
+    this(DataEventType.SELECTION_CHANGED, 0, -1);
 
-  /** Returns the type of the event.
-   */
-  DataEventType get type() => this._type;
-  /** Returns the lower index of the change range (nonnegative).
-   * It is available only if [type] is [DataEventType.CONTENT_CHANGED],
-   * [DataEventType.INTERVAL_ADDED], or [DataEventType.INTERVAL_REMOVED].
-   */
-  int get index() => this._index;
-  /** Returns the total number of items of the change range.
-   * If -1, it means all items starting at [index].
-   * It is available only if [type] is [DataEventType.CONTENT_CHANGED],
-   * [DataEventType.INTERVAL_ADDED], or [DataEventType.INTERVAL_REMOVED].
-   */
-  int get length() => this._length;
-
-  /** Returns a collection of objects whose selection have been changed.
-   * It is available only if [type] is [DataEventType.SELECTION_CHANGED].
-   */
-  Set<E> get selectionChanged() => _selChg;
+  DataEventType get type() => _type;
+  int get index() => _index;
+  int get length() => _length;
 
   String toString() => "$type($index, $length)";
 }

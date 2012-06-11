@@ -27,4 +27,8 @@ class DataEventType {
   /** Identified the change of whether the model allows mutiple selection.
    */
   static final DataEventType MULTIPLE_CHANGED = const DataEventType();
+  /** Identifies the change of the open paths.
+   * It is applicable only to [TreeModel].
+   */
+  static final DataEventType OPEN_PATHS_CHANGED = const DataEventType();
 }

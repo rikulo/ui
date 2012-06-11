@@ -14,15 +14,15 @@ class TestRadioGroupModel extends Activity {
   void onCreate_() {
     mainView.layout.text = "type: linear; orient: vertical";
 
+    //prepare data
     final DefaultListModel<String> model
       = new DefaultListModel(["apple", "orange", "lemon"]);
     model.addToSelection("orange");
-    final RadioGroup rg = new RadioGroup(model: model);
-    rg.on.check.add((event) {
+
+    //create first radio group
+    createRadioGroup(model).on.check.add((event) {
       log("Selected: ${model.selection}");
     });
-    rg.layout.text = "type: linear";
-    mainView.addChild(rg);
 
     int i = 0;
     Button btn = new Button("add");
@@ -32,6 +32,15 @@ class TestRadioGroupModel extends Activity {
       model.insertRange(i++, 1, "New $i");
     });
     mainView.addChild(btn);
+
+    //Add the 2nd radio group that share the same model
+    createRadioGroup(model);
+  }
+  RadioGroup createRadioGroup(ListModel<String> model) {
+    final RadioGroup rg = new RadioGroup(model: model);
+    rg.layout.text = "type: linear";
+    mainView.addChild(rg);
+    return rg;
   }
 }
 

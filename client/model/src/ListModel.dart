@@ -2,6 +2,8 @@
 //History: Thu Feb 16 14:52:22 TST 2012
 // Author: tomyeh
 
+/** The listener for [ListDataEvent]
+ */
 typedef void ListDataListener(ListDataEvent event);
 
 /**
@@ -32,7 +34,9 @@ interface ListModel<E> default DefaultListModel<E> {
   void removeListDataListener(ListDataListener listener) ;
 }
 
-/** A data model representing a list of data and it allows the selection.
+/** A data model representing a list of data and it allows the user
+ * to select any data of it.
+ *
  * It is optional since you can implement [ListModel] and [Selection]
  * directly. However, it is convenient that you can instantiate an instance
  * from it and access the methods in both interfaces.

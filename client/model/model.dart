@@ -11,3 +11,12 @@
 #source("src/Selection.dart");
 #source("src/AbstractListModel.dart");
 #source("src/DefaultListModel.dart");
+
+#source("src/TreeModel.dart");
+#source("src/TreeDataEvent.dart");
+#source("src/AbstractTreeModel.dart");
+#source("src/DefaultTreeModel.dart");
+#source("src/TreeNode.dart");
+#source("src/DefaultTreeNode.dart");
+
+#source("src/ModelException.dart");

@@ -18,13 +18,12 @@ abstract class AbstractListModel<E> implements ListSelectionModel<E> {
 
   /** Fires [ListDataEvent] for all registered listener.
    */
-  void sendEvent_(DataEventType type, int index0, int index1) {
-    final ListDataEvent evt = new ListDataEvent(type, index0, index1);
+  void sendEvent_(ListDataEvent event) {
     for (final ListDataListener listener in _listeners)
-      listener(evt);
+      listener(event);
   }
   void _sendSelectionChanged() {
-    sendEvent_(DataEventType.SELECTION_CHANGED, 0, -1);
+    sendEvent_(new ListDataEvent.selectionChanged());
   }
 
   // -- ListModel --//
@@ -62,15 +61,9 @@ abstract class AbstractListModel<E> implements ListSelectionModel<E> {
   }
 
   //@Override
-  bool isSelected(Object obj) {
-    return !isSelectionEmpty()
-        && (_selection.length == 1 ? _selection.iterator().next() == obj
-             : _selection.contains(obj));
-  }
+  bool isSelected(Object obj)  => _selection.contains(obj);
   //@Override
-  bool isSelectionEmpty() {
-    return _selection.isEmpty();
-  }
+  bool isSelectionEmpty() => _selection.isEmpty();
 
   //@Override
   bool addToSelection(E obj) {
@@ -88,7 +81,7 @@ abstract class AbstractListModel<E> implements ListSelectionModel<E> {
   //@Override
   bool removeFromSelection(Object obj) {
     if (_selection.remove(obj)) {
-      sendEvent_(DataEventType.SELECTION_CHANGED, 0, -1);
+      _sendSelectionChanged();
       return true;
     }
     return false;
@@ -97,7 +90,7 @@ abstract class AbstractListModel<E> implements ListSelectionModel<E> {
   void clearSelection() {
     if (!_selection.isEmpty()) {
       _selection.clear();
-      sendEvent_(DataEventType.SELECTION_CHANGED, 0, -1);
+      _sendSelectionChanged();
     }
   }
 
@@ -107,13 +100,13 @@ abstract class AbstractListModel<E> implements ListSelectionModel<E> {
   void set multiple(bool multiple) {
     if (_multiple != multiple) {
       _multiple = multiple;
-      sendEvent_(DataEventType.MULTIPLE_CHANGED, 0, -1);
+      sendEvent_(new ListDataEvent.multipleChanged());
 
       if (!multiple && _selection.length > 1) {
-        E v = _selection.iterator().next();
+        final E v = _selection.iterator().next();
         _selection.clear();
         _selection.add(v);
-        sendEvent_(DataEventType.SELECTION_CHANGED, 0, -1);
+        _sendSelectionChanged();
       }
     }
   }

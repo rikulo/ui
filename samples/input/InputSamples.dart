@@ -23,7 +23,8 @@ class InputSamples extends Activity {
 
       TextBox input = new TextBox(type: type);
       input.on.change.add((event) {
-        input.nextSibling.text = input.value;
+        TextView inf = input.nextSibling;
+        inf.text = input.value;
       });
       view.addChild(input);
 
