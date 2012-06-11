@@ -6,6 +6,9 @@
  * Accelerometer implementation for Cordova device.
  */
 class CordovaAccelerometer extends AbstractAccelerometer {
+  CordovaAccelerometer() {
+    _initJSFunctions();
+  }
   void getCurrentAcceleration(AccelerometerSuccessCallback onSuccess, AccelerometerErrorCallback onError) {
     jsCall("accelerometer.getCurrentAcceleration", [_wrapFunction(onSuccess), onError]);
   }
@@ -28,5 +31,19 @@ class CordovaAccelerometer extends AbstractAccelerometer {
   
   void clearWatch(var watchID) {
     jsCall("accelerometer.clearWatch", [watchID]);
+  }
+  
+  void _initJSFunctions() {
+      newJSFunction("accelerometer.getCurrentAcceleration", ["onSuccess", "onError"], ''' 
+        var fnSuccess = function(accel) {onSuccess.\$call\$1(accel);},
+            fnError = function() {onError.\$call\$0();};
+        navigator.accelerometer.getCurrentAcceleration(fnSuccess, fnError);
+      ''');
+      newJSFunction("accelerometer.watchAcceleration", ["onSuccess", "onError", "opts"], '''
+        var fnSuccess = function(accel) {onSuccess.\$call\$1(accel);},
+            fnError = function() {onError.\$call\$0();};
+        return navigator.accelerometer.watchAcceleration(fnSuccess, fnError, opts);
+      ''');
+      newJSFunction("accelerometer.clearWatch", ["watchID"], "navigator.accelerometer.clearWatch(watchID);");
   }
 }

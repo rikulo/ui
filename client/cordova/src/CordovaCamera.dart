@@ -6,6 +6,10 @@
  * A Cordova camera implementation.
  */
 class CordovaCamera implements Camera {
+  CordovaCamera() {
+    _initJSFunctions();
+  }
+  
   void getPicture(CameraSuccessCallback onSuccess, CameraErrorCallback onError, [CameraOptions options]) {
     jsCall("camera.getPicture", [onSuccess, onError, toJSMap(_toMap(options))]);
   }
@@ -25,5 +29,13 @@ class CordovaCamera implements Camera {
       if (opts.saveToPhotoAlbum !== null) map["saveToPhotoAlbum"] = opts.saveToPhotoAlbum; //Whether save the image to photo album after capture
     }
     return map;
+  }
+  
+  void _initJSFunctions() {
+    newJSFunction("camera.getPicture", ["onSuccess", "onError", "opts"], '''
+      var fnSuccess = function(data) {onSuccess.\$call\$1(data);},
+          fnError = function(meg) {onError.\$call\$1(msg);};
+      navigator.camera.getPicture(fnSuccess, fnError, opts);
+    ''');
   }
 }

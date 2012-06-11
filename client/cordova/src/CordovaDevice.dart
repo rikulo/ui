@@ -13,27 +13,41 @@ class CordovaDevice implements Device {
   String get uuid() => jsCall("device.uuid"); //uuid of this device
 
   Task readyFunction;
+  Map<String, Object> services; //services
   
   bool _ready; //indicate whether the device is ready for access
 
-  Accelerometer accelerometer;
-  Camera camera;
-  Capture capture;
-  Compass compass;
-  Contacts contacts;
-  XGeolocation geolocation;
-  XNotification notification;
+  Accelerometer get accelerometer() => services["accelerometer"];
+  Camera get camera() => services["camera"];
+  Capture get capture() => services["capture"];
+  Compass get compass() => services["compass"];
+  Connection get connection() => services["connection"];
+  Contacts get contacts() => services["contacts"];
+  XGeolocation get geolocation() => services["geolocation"];
+  XNotification get notification() => services["notification"];
   
-  CordovaDevice() {
-    accelerometer = new CordovaAccelerometer();
-    camera = new CordovaCamera();
-    capture = new CordovaCapture();
-    compass = new CordovaCompass();
-    contacts = new CordovaContacts();
-    geolocation = new CordovaGeolocation();
-    notification = new CordovaNotification();
+  CordovaDevice([String serviceURI = "cordova.js", 
+                List<String> serviceNames = const ["accelerometer", "camera", "capture", "compass", "connection", "contacts", "geolocation", "notification"]]) {
+    initJSCall();
+    _initJSFunctions();
+    _initCordova(serviceURI);
     
-    initJSCall(); //initialize jsutil.js
+    if (serviceNames !== null) {
+      services = new Map();
+      for(String sname in serviceNames) {
+        switch(sname) {
+          case "accelerometer": services[sname] = new CordovaAccelerometer(); break;
+          case "camera": services[sname] = new CordovaCamera(); break;
+          case "capture": services[sname] = new CordovaCapture(); break;
+          case "compass": services[sname] = new CordovaCompass(); break;
+          case "connection": services[sname] = new CordovaConnection(); break;
+          case "contacts": services[sname] = new CordovaContacts(); break;
+          case "geolocation": services[sname] = new CordovaGeolocation(); break;
+          case "notification": services[sname] = new CordovaNotification(); break;
+        }
+      }
+    }
+    
     application.addReadyCallback((then) {
       if (_ready) {
         then();
@@ -43,15 +57,27 @@ class CordovaDevice implements Device {
     });
   }
   
+  void addService(String name, var service) {
+    services[name] = service;
+  }
+  
   void _doUntilReady(Task then) {
     readyFunction = () {
       _ready = true;
       _registerDeviceEvents();
       then();
-
     };
     //init cordova
-    jsCall("document.addEventListener", ["deviceready", _onDeviceReady, false]);
+    waitCordovaLoaded(() => jsCall("document.addEventListener", ["deviceready", _onDeviceReady, false]), 10);
+  }
+  
+  void waitCordovaLoaded(Function fn, int timeout) {
+    window.setTimeout(() {
+      if (jsCall("initCordova") !== null) //until window.cordova exists (@see cordova.js)
+        fn(); 
+      else
+        waitCordovaLoaded(fn, timeout);
+    }, timeout);
   }
   
   void _registerDeviceEvents() {
@@ -135,5 +161,34 @@ class CordovaDevice implements Device {
   
   void _onVolumeUpButton() {
     //TODO
+  }
+  
+  void _initCordova(String uri) {
+    if (jsCall("initCordova") === null) {
+      injectJavaScriptSrc(uri); //load asynchronously
+    }
+  }
+  
+  void _initJSFunctions() {
+    newJSFunction("initCordova", null, '''
+      if (window.cordova) {
+        if(window.cordova.require) {
+          var channel = window.cordova.require("cordova/channel");
+          if (!channel.onDOMContentLoaded.fired) {
+            channel.onDOMContentLoaded.fire();
+          }
+        }
+      }
+      return window.cordova;
+    ''');
+    newJSFunction("document.addEventListener", ["evtname", "listener", "bubble"], '''
+      var fn = function() {listener.\$call\$0();};
+      document.addEventListener(evtname, fn, bubble);
+    ''');
+    newJSFunction("device.name", null, "return device.name;"); //name of this device
+    newJSFunction("device.cordova", null, "return device.cordova;"); //version of Cordova running on the device
+    newJSFunction("device.platform", null, "return device.plaform;"); //operating system name of this device
+    newJSFunction("device.version", null, "return device.version;"); //operating system version of this device
+    newJSFunction("device.uuid", null, "return device.uuid;"); //uuid of this device 
   }
 }

@@ -6,6 +6,9 @@
  * A Cordova Contacts implementation.
  */
 class CordovaContacts implements Contacts {
+  CordovaContacts() {
+    _initJSFunctions();
+  }
   void find(List<String> fields, ContactsSuccessCallback onSuccess, ContactsErrorCallback onError, ContactsFindOptions contactOptions) {
     jsCall("contacts.find", [toJSArray(fields), _wrapContactsFunction(onSuccess), _wrapErrorFunction(onError), toJSMap(_toMap(contactOptions))]);
   }
@@ -26,6 +29,26 @@ class CordovaContacts implements Contacts {
     
   _wrapErrorFunction(dartFn) {
     return (jsErr) => dartFn(new ContactError.from(toDartMap(jsErr)));
+  }
+  
+  void _initJSFunctions() {
+    newJSFunction("contacts.create",  null, "return navigator.contacts.create({});");
+    newJSFunction("contacts.find", ["fields", "onSuccess", "onError", "opts"], '''
+      var fnSuccess = function(contacts) {onSuccess.\$call\$1(contacts);},
+          fnError = function(err) {onError.\$call\$1(err);};
+      navigator.contacts.find(fields, fnSuccess, fnError, opts);
+    ''');
+    newJSFunction("contact.clone", ["contact"], "return contact.clone();");
+    newJSFunction("contact.remove", ["contact", "onSuccess", "onError"], '''
+      var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
+          fnError = function(err) {onError.\$call\$1(err);};
+      contact.remove(fnSuccess, fnError);
+    ''');
+    newJSFunction("contact.save", ["contact", "onSuccess", "onError"], '''
+      var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
+          fnError = function(err) {onError.\$call\$1(err);};
+      contact.save(fnSuccess, fnError);
+    ''');
   }
 }
 

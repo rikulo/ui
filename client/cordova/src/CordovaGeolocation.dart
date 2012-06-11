@@ -6,6 +6,9 @@
  * Geolocation implementation for Cordova device.
  */
 class CordovaGeolocation extends AbstractGeolocation {
+  CordovaGeolocation() {
+    _initJSFunctions();
+  }
   void getCurrentPosition(GeolocationSuccessCallback onSuccess, [GeolocationErrorCallback onError, GeolocationOptions options]) {
     jsCall("geolocation.getCurrentPosition", [_wrapFunction(onSuccess), onError, toJSMap(_toMap(options))]);
   }
@@ -44,5 +47,19 @@ class CordovaGeolocation extends AbstractGeolocation {
   
   void clearWatch(var watchID) {
     jsCall("geolocation.clearWatch", [watchID]);
+  }
+  
+  void _initJSFunctions() {
+    newJSFunction("geolocation.getCurrentPosition", ["onSuccess", "onError", "opts"], '''
+      var fnSuccess = function(pos) {onSuccess.\$call\$1(pos);},
+          fnError = function(err) {onError.\$call\$1(err);};
+      navigator.geolocation.getCurrentPosition(fnSuccess, fnError, opts);
+    ''');
+    newJSFunction("geolocation.watchPosition", ["onSuccess", "onError", "opts"], '''
+      var fnSuccess = function(pos) {onSuccess.\$call\$1(pos);},
+        fnError = function(err) {onError.\$call\$1(err);};
+      return navigator.geolocation.watchPosition(fnSuccess, fnError, opts);
+    ''');
+    newJSFunction("geolocation.clearWatch", ["watchID"], "navigator.geolocation.clearWatch(watchID);");
   }
 }

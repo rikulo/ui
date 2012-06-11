@@ -6,6 +6,9 @@
  * Compass implementation for Cordova device.
  */
 class CordovaCompass extends AbstractCompass {
+  CordovaCompass() {
+    _initJSFunctions();
+  }
   void getCurrentHeading(CompassSuccessCallback onSuccess, CompassErrorCallback onError) {
     jsCall("compass.getCurrentCompassHeading", [_wrapFunction(onSuccess), onError]);
   }
@@ -28,5 +31,19 @@ class CordovaCompass extends AbstractCompass {
   
   void clearWatch(var watchID) {
     jsCall("compass.clearWatch", [watchID]);
+  }
+  
+  void _initJSFunctions() {
+    newJSFunction("compass.getCurrentCompassHeading", ["onSuccess", "onError"], '''
+      var fnSuccess = function(heading) {onSuccess.\$call\$1(heading);},
+          fnError = function() {onError.\$call\$0();};
+      navigator.compass.getCurrentCompassHeading(fnSuccess, fnError);
+    ''');
+    newJSFunction("compass.watchHeading", ["onSuccess", "onError", "opts"], '''
+      var fnSuccess = function(heading) {onSuccess.\$call\$1(heading);},
+          fnError = function() {onError.\$call\$0();};
+      return navigator.compass.watchHeading(fnSuccess, fnError, opts);
+    ''');
+    newJSFunction("compass.clearWatch", ["watchID"], "navigator.compass.clearWatch(watchID);");
   }
 }
