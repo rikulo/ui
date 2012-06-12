@@ -18,8 +18,9 @@
  * node.
  */
 class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
-  DefaultTreeModel(TreeNode<E> root, [Set<List<int>> selection, Set<List<int>> open, bool multiple=false]):
-  super(root, selection, open, multiple) {
+  DefaultTreeModel(TreeNode<E> root,
+  [Set<TreeNode<E>> selection, Set<TreeNode<E>> opens, bool multiple=false]):
+  super(root, selection, opens, multiple) {
     final TreeNode<E> p = root.parent;
     if (p !== null)
       throw new ModelException("Only root node is allowed, not ${root}");
@@ -37,8 +38,11 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
   int getIndexOfChild(TreeNode<E> parent, TreeNode<E> child)
   => parent === child.parent ? child.index: -1;
 
-  //optional but provided for better performance
-  List<int> getPath(TreeNode<E> child) {
+	/**
+	 * Returns the path from the given child, where the path indicates the child is
+	 * placed in the whole tree.
+	 */
+  List<int> getPath(TreeNode<E> child) { //optional but provided for better performance
     List<int> path = new List();
     for (;;) {
       final TreeNode<E> parent = child.parent;

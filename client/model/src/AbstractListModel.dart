@@ -70,11 +70,9 @@ abstract class AbstractListModel<E> implements ListSelectionModel<E> {
     if (_selection.contains(obj))
       return false;
 
-    _selection.add(obj);
-    if (!_multiple) {
+    if (!_multiple)
       _selection.clear();
-      _selection.add(obj);
-    }
+    _selection.add(obj);
     _sendSelectionChanged();
     return true;
   }
@@ -115,7 +113,10 @@ abstract class AbstractListModel<E> implements ListSelectionModel<E> {
   /**Removes the selection of the given collection.
    */
   void removeAllSelection(Collection<Dynamic> c) {
+    final int oldlen = _selection.length;
     _selection.removeAll(c);
+    if (oldlen != _selection.length)
+      _sendSelectionChanged();
   }
 
   bool equals(var other) {

@@ -10,14 +10,13 @@
 abstract class AbstractTreeModel<E> implements TreeSelectionModel<E> {
   E _root;
   final List<TreeDataListener> _listeners;
-  Set<List<int>> _selection, _openPaths;
+  Set<E> _selection, _opens;
   bool _multiple = false;
 
-  AbstractTreeModel(E root,
-  [Set<List<int>> selection, Set<List<int>> openPaths, bool multiple=false]):
+  AbstractTreeModel(E root, [Set<E> selection, Set<E> opens, bool multiple=false]):
   _root = root, _listeners = new List() {
     _selection = selection != null ? selection: new Set();
-    _openPaths = openPaths != null ? openPaths: new Set();
+    _opens = opens != null ? opens: new Set();
     _multiple = multiple;
   }
 
@@ -30,11 +29,11 @@ abstract class AbstractTreeModel<E> implements TreeSelectionModel<E> {
   void _sendSelectionChanged() {
     sendEvent_(new TreeDataEvent.selectionChanged());
   }
-  void _sendOpenPathsChanged() {
-    sendEvent_(new TreeDataEvent.openPathsChanged());
+  void _sendOpensChanged() {
+    sendEvent_(new TreeDataEvent.opensChanged());
   }
 
-  //ListModel//
+  //TreeModel//
 	void addTreeDataListener(TreeDataListener l) {
 		_listeners.add(l);
 	}
@@ -76,6 +75,13 @@ abstract class AbstractTreeModel<E> implements TreeSelectionModel<E> {
     }
     return node;
   }
+	/**
+	 * Returns the path from the given child, where the path indicates the child is
+	 * placed in the whole tree.
+	 *
+	 * The performance of the default implementation is not good because of deep-first-search.
+	 * It is suggested to override it if you have a better algorithm
+	 */
   List<int> getPath(E child) {
 		final List<int> path = new List();
 		_dfSearch(path, root, child);
@@ -95,45 +101,45 @@ abstract class AbstractTreeModel<E> implements TreeSelectionModel<E> {
   int _childCount(E parent) => isLeaf(parent) ? 0: getChildCount(parent);
 
   //Open//
-  Set<List<int>> get openPaths() => _openPaths;
-  void set openPaths(Collection<List<int>> openPaths) {
-    if (_openPaths != openPaths) {
-      _openPaths.clear();
-      _openPaths.addAll(openPaths);
-      _sendOpenPathsChanged();
+  Set<E> get opens() => _opens;
+  void set opens(Collection<E> opens) {
+    if (_opens != opens) {
+      _opens.clear();
+      _opens.addAll(opens);
+      _sendOpensChanged();
     }
   }
 
-  bool isPathOpened(List<int> path) => _openPaths.contains(path);
-  bool isOpenPathsEmpty() => _openPaths.isEmpty();
+  bool isOpened(E node) => _opens.contains(node);
+  bool isOpensEmpty() => _opens.isEmpty();
 
-  bool addToOpenPaths(List<int> path) {
-    if (_openPaths.contains(path))
+  bool addToOpens(E node) {
+    if (_opens.contains(node))
       return false;
 
-    _openPaths.add(path);
-     _sendOpenPathsChanged();
+    _opens.add(node);
+     _sendOpensChanged();
     return true;
   }
-  bool removeFromOpenPaths(List<int> path) {
-    if (_openPaths.remove(path)) {
-      _sendOpenPathsChanged();
+  bool removeFromOpens(E node) {
+    if (_opens.remove(node)) {
+      _sendOpensChanged();
       return true;
     }
     return false;
   }
-  void clearOpenPaths() {
-    if (!_openPaths.isEmpty()) {
-      _openPaths.clear();
-      _sendOpenPathsChanged();
+  void clearOpens() {
+    if (!_opens.isEmpty()) {
+      _opens.clear();
+      _sendOpensChanged();
     }
   }
 
   //Selection//
   //@Override
-  Set<List<int>> get selection() => _selection;
+  Set<E> get selection() => _selection;
   //@Override
-  void set selection(Collection<List<int>> selection) {
+  void set selection(Collection<E> selection) {
     if (_isSelectionChanged(selection)) {
       if (!_multiple && selection.length > 1)
         throw new IllegalArgumentException("Only one selection is allowed, $selection");
@@ -142,11 +148,11 @@ abstract class AbstractTreeModel<E> implements TreeSelectionModel<E> {
       _sendSelectionChanged();
     }
   }
-  bool _isSelectionChanged(Collection<List<int>> selection) {
+  bool _isSelectionChanged(Collection<E> selection) {
     if (_selection.length != selection.length)
       return true;
 
-    for (final List<int> e in selection)
+    for (final E e in selection)
       if (!_selection.contains(e))
         return true;
     return false;
@@ -158,15 +164,13 @@ abstract class AbstractTreeModel<E> implements TreeSelectionModel<E> {
   bool isSelectionEmpty() => _selection.isEmpty();
 
   //@Override
-  bool addToSelection(List<int> obj) {
-    if (_selection.contains(obj))
+  bool addToSelection(E node) {
+    if (_selection.contains(node))
       return false;
 
-    _selection.add(obj);
-    if (!_multiple) {
+    if (!_multiple)
       _selection.clear();
-      _selection.add(obj);
-    }
+    _selection.add(node);
     _sendSelectionChanged();
     return true;
   }
@@ -195,9 +199,9 @@ abstract class AbstractTreeModel<E> implements TreeSelectionModel<E> {
       sendEvent_(new TreeDataEvent.multipleChanged());
 
       if (!multiple && _selection.length > 1) {
-        final List<int> v = _selection.iterator().next();
+        final E node = _selection.iterator().next();
         _selection.clear();
-        _selection.add(v);
+        _selection.add(node);
         _sendSelectionChanged();
       }
     }
@@ -207,11 +211,14 @@ abstract class AbstractTreeModel<E> implements TreeSelectionModel<E> {
   /**Removes the selection of the given collection.
    */
   void removeAllSelection(Collection<Dynamic> c) {
+    final int oldlen = _selection.length;
     _selection.removeAll(c);
+    if (oldlen != _selection.length)
+      _sendSelectionChanged();
   }
 
   bool equals(var other) {
-    return (other is AbstractListModel) && multiple == other.multiple
-      && _selection == other._selection && _openPaths == other._openPaths;
+    return (other is AbstractTreeModel) && multiple == other.multiple
+      && _selection == other._selection && _opens == other._opens;
   }
 }

@@ -6,60 +6,44 @@
  * An event used to notify the listeners of a tree model ([TreeModel])
  * that the model has been changed.
  */
-interface TreeDataEvent default _TreeDataEvent {
+interface TreeDataEvent<E> default _TreeDataEvent<E> {
   /** Constructor for [DataEventType.CONTENT_CHANGED], [DataEventType.INTERVAL_ADDED],
    * and [DataEventType.INTERVAL_REMOVED].
    */
-  TreeDataEvent(DataEventType type, List<int> path, int length);
+  TreeDataEvent(DataEventType type, E node);
   TreeDataEvent.multipleChanged();
   TreeDataEvent.structureChanged();
   TreeDataEvent.selectionChanged();
-  TreeDataEvent.openPathsChanged();
+  TreeDataEvent.opensChanged();
 
   /** Returns the type of the event.
    */
   DataEventType get type();
 
-  /** Returns the path of the first affected node, or null if it indicates the root.
+  /** Returns the first affected node.
    *
    * It is available only if [type] is [DataEventType.CONTENT_CHANGED],
    * [DataEventType.INTERVAL_ADDED], or [DataEventType.INTERVAL_REMOVED].
    */
-  List<int> get path();
-
-  /** Returns the total number of items of the change range.
-   * If -1, it means all following sibling items start from [path].
-   *
-   * For example, if [path] is [0, 2] and [length] 2, then it means
-   * both [0, 2] and [0, 3] are changed.
-   *
-   * Notice that an instance of [TreeDataEvent] can represent only the items
-   * with the same parent.
-   *
-   * It is available only if [type] is [DataEventType.CONTENT_CHANGED],
-   * [DataEventType.INTERVAL_ADDED], or [DataEventType.INTERVAL_REMOVED]
-   */
-  int get length();
+  E get node();
 }
 
-class _TreeDataEvent implements TreeDataEvent {
+class _TreeDataEvent<E> implements TreeDataEvent<E> {
   final DataEventType _type;
-  final List<int> _path;
-  final int _length;
+  final E _node;
 
-  _TreeDataEvent(this._type, this._path, this._length);
+  _TreeDataEvent(this._type, this._node);
   _TreeDataEvent.structureChanged():
-    this(DataEventType.STRUCTURE_CHANGED, null, -1);
+    this(DataEventType.STRUCTURE_CHANGED, null);
   _TreeDataEvent.multipleChanged():
-    this(DataEventType.MULTIPLE_CHANGED, null, -1);
+    this(DataEventType.MULTIPLE_CHANGED, null);
   _TreeDataEvent.selectionChanged():
-    this(DataEventType.SELECTION_CHANGED, null, -1);
-  _TreeDataEvent.openPathsChanged():
-    this(DataEventType.OPEN_PATHS_CHANGED, null, -1);
+    this(DataEventType.SELECTION_CHANGED, null);
+  _TreeDataEvent.opensChanged():
+    this(DataEventType.OPENS_CHANGED, null);
 
   DataEventType get type() => _type;
-  List<int> get path() => _path;
-  int get length() => _length;
+  E get node() => _node;
 
-  String toString() => "$type($path, $length)";
+  String toString() => "$type($node)";
 }

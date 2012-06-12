@@ -44,7 +44,7 @@ typedef void TreeDataListener(TreeDataEvent event);
  * ##Selection##
  *
  * If you'd like to use [TreeModel] with a UI object that allows the user to select the data,
- * such as [SelectView] and [TreeView]. You have to implement `Selection<List<int>>`.
+ * such as [SelectView] and [TreeView]. You have to implement `Selection<E>`.
  * Both [DefaultTreeModel] and [AbstractTreeModel] implements it, so you need to implement
  * it only if you implement [TreeModel] from scratch.
  */
@@ -98,31 +98,31 @@ interface TreeModel<E> {
 	List<int> getPath(E child);
 
   /**
-   * Returns the current list of open paths.
+   * Returns the current list of nodes that are opened.
    * It is readonly. Don't modify it directly. Otherwise, UI won't be
    * updated correctly.
    */
-  Set<List<int>> get openPaths();
+  Set<E> get opens();
   /**
-   * Replace the current selection with the given set.
+   * Replace the current list of node that are opened with the given set.
    */
-  void set openPaths(Collection<List<int>> openPaths);
-  /** Adds the path to the list of open paths.
+  void set opens(Collection<E> opens);
+  /** Adds the given node to the list of open nodes.
    */
-  bool addToOpenPaths(List<int> path);
-  /** Removes the path from the list of open paths.
+  bool addToOpens(E node);
+  /** Removes the given node from the list of open nodes.
    */
-  bool removeFromOpenPaths(List<int> path);
-  /** Returns true if the tree node at [path] shall be opened, i.e., the child views
-   * shall be visible.
+  bool removeFromOpens(E node);
+  /** Returns true if the node shall be opened.
+   * That is, it tests if the given node is in the list of open nodes.
    */
-  bool isPathOpened(List<int> path);
-  /** Returns true if the list of open paths is empty.
+  bool isOpened(E node);
+  /** Returns true if the list of open nodes is empty.
    */
-  bool isOpenPathsEmpty();
-  /** Empties the lsit of open paths.
+  bool isOpensEmpty();
+  /** Empties the list of open nodes.
    */
-  void clearOpenPaths();
+  void clearOpens();
 
 	/**
 	 * Add a listener to the tree that's notified each time a change to the data model occurs
@@ -140,5 +140,5 @@ interface TreeModel<E> {
  * directly. However, it is convenient that you can instantiate an instance
  * from it and access the methods in both interfaces.
  */
-interface TreeSelectionModel<E> extends TreeModel<E>, Selection<List<int>> {
+interface TreeSelectionModel<E> extends TreeModel<E>, Selection<E> {
 }
