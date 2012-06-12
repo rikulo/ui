@@ -36,21 +36,21 @@ class DefaultListModel<E> extends AbstractListModel<E> {
    */
   void add(E value) {
     _data.add(value);
-    sendEvent_(new ListDataEvent(DataEventType.INTERVAL_ADDED, length - 1, 1));
+    sendEvent_(new ListDataEvent(DataEventType.DATA_ADDED, length - 1, 1));
   }
   /** Removes the last value.
    */
   E removeLast() {
     final E value = _data.removeLast();
     _selection.remove(value); //no need to fire SELECTION_CHANGED
-    sendEvent_(new ListDataEvent(DataEventType.INTERVAL_REMOVED, length, 1));
+    sendEvent_(new ListDataEvent(DataEventType.DATA_REMOVED, length, 1));
     return value;
   }
   /** Inserts a range of values to the given index.
    */
   void insertRange(int start, int length, [E value]) {
     _data.insertRange(start, length, value);
-    sendEvent_(new ListDataEvent(DataEventType.INTERVAL_ADDED, start, length));
+    sendEvent_(new ListDataEvent(DataEventType.DATA_ADDED, start, length));
   }
   /** Removes a range of values starting at the given index.
    */
@@ -58,7 +58,7 @@ class DefaultListModel<E> extends AbstractListModel<E> {
     for (int i = start, len = length; --len >= 0;)
       _selection.remove(_data[i++]); //no need to fire SELECTION_CHANGED
     _data.removeRange(start, length);
-    sendEvent_(new ListDataEvent(DataEventType.INTERVAL_REMOVED, start, length));
+    sendEvent_(new ListDataEvent(DataEventType.DATA_REMOVED, start, length));
   }
   void clear() {
     if (!_data.isEmpty()) {

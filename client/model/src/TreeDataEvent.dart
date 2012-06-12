@@ -7,8 +7,8 @@
  * that the model has been changed.
  */
 interface TreeDataEvent<E> default _TreeDataEvent<E> {
-  /** Constructor for [DataEventType.CONTENT_CHANGED], [DataEventType.INTERVAL_ADDED],
-   * and [DataEventType.INTERVAL_REMOVED].
+  /** Constructor for [DataEventType.CONTENT_CHANGED], [DataEventType.DATA_ADDED],
+   * and [DataEventType.DATA_REMOVED].
    */
   TreeDataEvent(DataEventType type, E node);
   TreeDataEvent.multipleChanged();
@@ -23,7 +23,7 @@ interface TreeDataEvent<E> default _TreeDataEvent<E> {
   /** Returns the first affected node.
    *
    * It is available only if [type] is [DataEventType.CONTENT_CHANGED],
-   * [DataEventType.INTERVAL_ADDED], or [DataEventType.INTERVAL_REMOVED].
+   * [DataEventType.DATA_ADDED], or [DataEventType.DATA_REMOVED].
    */
   E get node();
 }

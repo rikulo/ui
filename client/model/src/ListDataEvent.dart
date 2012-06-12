@@ -7,8 +7,8 @@
  * that the model has been changed.
  */
 interface ListDataEvent default _ListDataEvent {
-  /** Constructor for [DataEventType.CONTENT_CHANGED], [DataEventType.INTERVAL_ADDED],
-   * and [DataEventType.INTERVAL_REMOVED].
+  /** Constructor for [DataEventType.CONTENT_CHANGED], [DataEventType.DATA_ADDED],
+   * and [DataEventType.DATA_REMOVED].
    */
   ListDataEvent(DataEventType type, int index, int length);
   ListDataEvent.multipleChanged();
@@ -20,13 +20,13 @@ interface ListDataEvent default _ListDataEvent {
   DataEventType get type();
   /** Returns the starting index of the change range (nonnegative).
    * It is available only if [type] is [DataEventType.CONTENT_CHANGED],
-   * [DataEventType.INTERVAL_ADDED], or [DataEventType.INTERVAL_REMOVED].
+   * [DataEventType.DATA_ADDED], or [DataEventType.DATA_REMOVED].
    */
   int get index();
   /** Returns the total number of items of the change range.
    * If -1, it means all items starting at [index].
    * It is available only if [type] is [DataEventType.CONTENT_CHANGED],
-   * [DataEventType.INTERVAL_ADDED], or [DataEventType.INTERVAL_REMOVED].
+   * [DataEventType.DATA_ADDED], or [DataEventType.DATA_REMOVED].
    */
   int get length();
 }

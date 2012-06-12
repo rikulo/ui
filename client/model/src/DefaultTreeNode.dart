@@ -83,7 +83,7 @@ class DefaultTreeNode<E> implements TreeNode<E> {
 
     final DefaultTreeModel<E> m = model;
     if (m !== null)
-      m.sendEvent_(new TreeDataEvent(DataEventType.INTERVAL_ADDED, child));
+      m.sendEvent_(new TreeDataEvent(DataEventType.DATA_ADDED, child));
   }
   TreeNode<E> remove(int index) {
     _init();
@@ -91,7 +91,7 @@ class DefaultTreeNode<E> implements TreeNode<E> {
     TreeNode<E> child = getChildAt(index);
 
     if (m !== null) {
-      //no need to fire event (since it is convered by INTERVAL_REMOVED)
+      //no need to fire event (since it is convered by DATA_REMOVED)
       m._selection.remove(child);
       m._opens.remove(child);
     }
@@ -104,7 +104,7 @@ class DefaultTreeNode<E> implements TreeNode<E> {
     }
 
     if (m !== null)
-      m.sendEvent_(new TreeDataEvent(DataEventType.INTERVAL_REMOVED, child));
+      m.sendEvent_(new TreeDataEvent(DataEventType.DATA_REMOVED, child));
     return child;
   }
 

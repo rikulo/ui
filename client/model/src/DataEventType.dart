@@ -13,10 +13,10 @@ class DataEventType {
   static final DataEventType CONTENT_CHANGED = const DataEventType();
     /** Identifies the addition of one or more contiguous items to the model.
      */
-  static final DataEventType INTERVAL_ADDED = const DataEventType();
+  static final DataEventType DATA_ADDED = const DataEventType();
     /** Identifies the removal of one or more contiguous items from the model.
      */   
-  static final DataEventType INTERVAL_REMOVED = const DataEventType();
+  static final DataEventType DATA_REMOVED = const DataEventType();
   /** Identifies the structure of the lists has changed.
    */
   static final DataEventType STRUCTURE_CHANGED = const DataEventType();
