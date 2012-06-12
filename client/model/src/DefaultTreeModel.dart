@@ -13,9 +13,8 @@
  * Lazy loading is a characteristic of an application when the actual loading and
  * instantiation of a class is delayed until the point just before the instance is actually used.
  *
- * To implement Lazy Loading, you shall override both [getChild] and [getChildCount],
- * and initialize the child tree nodes when one of these two methods is called for a given
- * node.
+ * To implement Lazy Loading, you can implement a tree node by extending [DefaultTreeNode]
+ * and then override [DefaultTreeNode.loadLazily_] to return the initial child nodes.
  */
 class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
   DefaultTreeModel(TreeNode<E> root,

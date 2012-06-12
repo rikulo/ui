@@ -136,9 +136,9 @@ abstract class AbstractTreeModel<E> implements TreeSelectionModel<E> {
   }
 
   //Selection//
-  //@Override
+  E get firstSelection() => _selection.isEmpty() ? null: _selection.iterator().next();
   Set<E> get selection() => _selection;
-  //@Override
+
   void set selection(Collection<E> selection) {
     if (_isSelectionChanged(selection)) {
       if (!_multiple && selection.length > 1)
