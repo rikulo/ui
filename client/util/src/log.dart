@@ -47,7 +47,7 @@ class _Log {
       document.body.insertAdjacentHTML("afterBegin", '''
 <style>
 .v-logView-x {
- ${CSS.$('box-sizing')}: border-box;
+ ${CSS.name('box-sizing')}: border-box;
  width:40%; height:30%; border:1px solid #332; background-color:#eec;
  overflow:auto; padding:3px; white-space:pre-wrap;
  font-size:11px; position:absolute; right:0; bottom:0;

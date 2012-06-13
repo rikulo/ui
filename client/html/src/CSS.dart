@@ -73,7 +73,7 @@ class CSS {
    *
    * Notice that the prefix is defined in [prefix].
    */
-  static String $(String propertyName) {
+  static String name(String propertyName) {
     if (_nsnms === null) {
       _nsnms = new Set();
       //TODO: no need to check null when Dart can compare null with number
