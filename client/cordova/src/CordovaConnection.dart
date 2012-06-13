@@ -6,13 +6,14 @@
  * A Cordova connection  implementation.
  */
 class CordovaConnection implements Connection {
+  static final String _TYPE = "connection.type";
   CordovaConnection() {
     _initJSFunctions();
   }
   String get type() {
-    return jsCall("connection.type");
+    return jsCall(_TYPE);
   }
   void _initJSFunctions() {
-    newJSFunction("connection.type", null, "return navigator.network.connection.type;");
+    newJSFunction(_TYPE, null, "return navigator.network.connection.type;");
   }
 }

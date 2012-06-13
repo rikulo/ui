@@ -7,9 +7,9 @@ interface DeviceEventListenerList default _DeviceEventListenerList {
   /** Default constructor */
   DeviceEventListenerList(DeviceEventTarget ptr, String Type);
   
-  /** Register event listener into this event listener list.
+  /** Register event listener and errEvent listener into this event listener list.
   */
-  DeviceEventListenerList add(Function listener, [Object options]);
+  DeviceEventListenerList add(Function listener, [Function errListener, Object options]);
 
   /** Unregister event listener from this event listener list.
   */
@@ -28,8 +28,8 @@ class _DeviceEventListenerList implements DeviceEventListenerList {
 
   _DeviceEventListenerList(this._ptr, this._type);
 
-  DeviceEventListenerList add(Function listener, [Map options]) {
-    _ptr.addEventListener(_type, listener, options);
+  DeviceEventListenerList add(Function listener, [Function errListener, Map options]) {
+    _ptr.addEventListener(_type, listener, errListener, options);
     return this;
   }
   DeviceEventListenerList remove(Function listener) {

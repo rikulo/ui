@@ -9,9 +9,8 @@ class PositionEventListenerList {
     _delegate = new DeviceEventListenerList(ptr, type);
   }
 
-  PositionEventListenerList add(PositionEventListener listener, [GeolocationOptions options]) {
-    print("PositionEventListenerList.add()");
-    _delegate.add(listener, _toMap(options));
+  PositionEventListenerList add(PositionEventListener listener, [PositionErrorEventListener errListener, GeolocationOptions options]) {
+    _delegate.add(listener, errListener, _toMap(options));
     return this;
   }
   

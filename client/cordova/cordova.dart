@@ -21,7 +21,6 @@
 #import("../device/geolocation/geolocation.dart");
 #import("../device/notification/notification.dart");
 
-#source("src/JSUtil.dart");
 #source("src/CordovaDevice.dart");
 #source("src/CordovaAccelerometer.dart");
 #source("src/CordovaCamera.dart");

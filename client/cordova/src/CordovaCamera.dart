@@ -6,12 +6,13 @@
  * A Cordova camera implementation.
  */
 class CordovaCamera implements Camera {
+  static final String _GET_PICTURE = "camera.getPicture";
   CordovaCamera() {
     _initJSFunctions();
   }
   
   void getPicture(CameraSuccessCallback onSuccess, CameraErrorCallback onError, [CameraOptions options]) {
-    jsCall("camera.getPicture", [onSuccess, onError, toJSMap(_toMap(options))]);
+    jsCall(_GET_PICTURE, [onSuccess, onError, toJSMap(_toMap(options))]);
   }
   
   Map _toMap(CameraOptions opts) {
@@ -32,7 +33,7 @@ class CordovaCamera implements Camera {
   }
   
   void _initJSFunctions() {
-    newJSFunction("camera.getPicture", ["onSuccess", "onError", "opts"], '''
+    newJSFunction(_GET_PICTURE, ["onSuccess", "onError", "opts"], '''
       var fnSuccess = function(data) {onSuccess.\$call\$1(data);},
           fnError = function(meg) {onError.\$call\$1(msg);};
       navigator.camera.getPicture(fnSuccess, fnError, opts);

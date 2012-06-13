@@ -6,11 +6,19 @@
  * A Cordova device implementation.
  */
 class CordovaDevice implements Device {
-  String get name() => jsCall("device.name"); //name of this device
-  String get cordovaVersion() => jsCall("device.cordova"); //version of Cordova running on the device
-  String get platform() => jsCall("device.platform"); //operating system name of this device
-  String get version() => jsCall("device.version"); //operating system version of this device
-  String get uuid() => jsCall("device.uuid"); //uuid of this device
+  static final String _NAME = "device.name";
+  static final String _CORDOVA = "device.cordova";
+  static final String _PLATFORM = "device.platform";
+  static final String _VERSION = "device.version";
+  static final String _UUID = "device.uuid";
+  static final String _ADD_EVENT_LISTENER = "document.addEventListener";
+  static final String _INIT_CORDOVA = "initCordova";
+  
+  String get name() => jsCall(_NAME); //name of this device
+  String get cordovaVersion() => jsCall(_CORDOVA); //version of Cordova running on the device
+  String get platform() => jsCall(_PLATFORM); //operating system name of this device
+  String get version() => jsCall(_VERSION); //operating system version of this device
+  String get uuid() => jsCall(_UUID); //uuid of this device
 
   Task readyFunction;
   Map<String, Object> services; //services
@@ -28,7 +36,6 @@ class CordovaDevice implements Device {
   
   CordovaDevice([String serviceURI = "cordova.js", 
                 List<String> serviceNames = const ["accelerometer", "camera", "capture", "compass", "connection", "contacts", "geolocation", "notification"]]) {
-    initJSCall();
     _initJSFunctions();
     _initCordova(serviceURI);
     
@@ -52,7 +59,7 @@ class CordovaDevice implements Device {
       if (_ready) {
         then();
       } else {
-        _doUntilReady(then);
+        _doWhenDeviceReady(then);
       }
     });
   }
@@ -61,40 +68,34 @@ class CordovaDevice implements Device {
     services[name] = service;
   }
   
-  void _doUntilReady(Task then) {
+  void _doWhenDeviceReady(Task then) {
     readyFunction = () {
       _ready = true;
       _registerDeviceEvents();
       then();
     };
     //init cordova
-    waitCordovaLoaded(() => jsCall("document.addEventListener", ["deviceready", _onDeviceReady, false]), 10);
-  }
-  
-  void waitCordovaLoaded(Function fn, int timeout) {
-    window.setTimeout(() {
-      if (jsCall("initCordova") !== null) //until window.cordova exists (@see cordova.js)
-        fn(); 
-      else
-        waitCordovaLoaded(fn, timeout);
-    }, timeout);
+    doWhenReady(() => jsCall(_ADD_EVENT_LISTENER, ["deviceready", _onDeviceReady, false]), 
+        () => jsCall(_INIT_CORDOVA) !== null, //until window.cordova exists (@see cordova.js)
+        (int msec) {if(msec == 0) log("Fail to load cordova.js!");},
+        10, 60000); //try every 10 ms, try total 60 seconds. 
   }
   
   void _registerDeviceEvents() {
-    jsCall("document.addEventListener", ["pause", _onPause, false]);
-    jsCall("document.addEventListener", ["resume", _onResume, false]);
-    jsCall("document.addEventListener", ["online", _onOnline, false]);
-    jsCall("document.addEventListener", ["offline", _onOffline, false]);
-    jsCall("document.addEventListener", ["backbutton", _onBackButton, false]);
-    jsCall("document.addEventListener", ["batterycritical", _onBatteryCritical, false]);
-    jsCall("document.addEventListener", ["batterylow", _onBatteryLow, false]);
-    jsCall("document.addEventListener", ["batterystatus", _onBatteryStatus, false]);
-    jsCall("document.addEventListener", ["menubutton", _onMenuButton, false]);
-    jsCall("document.addEventListener", ["searchbutton", _onSearchButton, false]);
-    jsCall("document.addEventListener", ["startcallbutton", _onStartCallButton, false]);
-    jsCall("document.addEventListener", ["endcallbutton", _onEndCallButton, false]);
-    jsCall("document.addEventListener", ["volumedownbutton", _onVolumeDownButton, false]);
-    jsCall("document.addEventListener", ["volumeupbutton", _onVolumeUpButton, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["pause", _onPause, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["resume", _onResume, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["online", _onOnline, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["offline", _onOffline, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["backbutton", _onBackButton, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["batterycritical", _onBatteryCritical, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["batterylow", _onBatteryLow, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["batterystatus", _onBatteryStatus, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["menubutton", _onMenuButton, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["searchbutton", _onSearchButton, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["startcallbutton", _onStartCallButton, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["endcallbutton", _onEndCallButton, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["volumedownbutton", _onVolumeDownButton, false]);
+    jsCall(_ADD_EVENT_LISTENER, ["volumeupbutton", _onVolumeUpButton, false]);
   }
   
   void _onDeviceReady() {
@@ -164,13 +165,13 @@ class CordovaDevice implements Device {
   }
   
   void _initCordova(String uri) {
-    if (jsCall("initCordova") === null) {
+    if (jsCall(_INIT_CORDOVA) === null) {
       injectJavaScriptSrc(uri); //load asynchronously
     }
   }
   
   void _initJSFunctions() {
-    newJSFunction("initCordova", null, '''
+    newJSFunction(_INIT_CORDOVA, null, '''
       if (window.cordova) {
         if(window.cordova.require) {
           var channel = window.cordova.require("cordova/channel");
@@ -181,14 +182,14 @@ class CordovaDevice implements Device {
       }
       return window.cordova;
     ''');
-    newJSFunction("document.addEventListener", ["evtname", "listener", "bubble"], '''
+    newJSFunction(_ADD_EVENT_LISTENER, ["evtname", "listener", "bubble"], '''
       var fn = function() {listener.\$call\$0();};
       document.addEventListener(evtname, fn, bubble);
     ''');
-    newJSFunction("device.name", null, "return device.name;"); //name of this device
-    newJSFunction("device.cordova", null, "return device.cordova;"); //version of Cordova running on the device
-    newJSFunction("device.platform", null, "return device.plaform;"); //operating system name of this device
-    newJSFunction("device.version", null, "return device.version;"); //operating system version of this device
-    newJSFunction("device.uuid", null, "return device.uuid;"); //uuid of this device 
+    newJSFunction(_NAME, null, "return device.name;"); //name of this device
+    newJSFunction(_CORDOVA, null, "return device.cordova;"); //version of Cordova running on the device
+    newJSFunction(_PLATFORM, null, "return device.plaform;"); //operating system name of this device
+    newJSFunction(_VERSION, null, "return device.version;"); //operating system version of this device
+    newJSFunction(_UUID, null, "return device.uuid;"); //uuid of this device 
   }
 }

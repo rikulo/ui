@@ -12,6 +12,7 @@
 #source("src/Geolocation.dart");
 #source("src/GeolocationOptions.dart");
 #source("src/Position.dart");
+#source("src/PositionErrorEvent.dart");
 #source("src/PositionErrorImpl.dart");
 #source("src/PositionEvent.dart");
 #source("src/PositionEventListenerList.dart");

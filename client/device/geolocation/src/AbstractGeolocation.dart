@@ -16,9 +16,9 @@ abstract class AbstractGeolocation implements XGeolocation {
     return _on;
   }
 
-  void addEventListener(String type, PositionEventListener listener, [Map options]) {
+  void addEventListener(String type, PositionEventListener listener, [PositionErrorEventListener errListener, Map options]) {
     removeEventListener(type, listener);
-    var watchID = watchPosition(wrapSuccessListener_(listener), wrapErrorListener_(listener), options);
+    var watchID = watchPosition(wrapSuccessListener_(listener), wrapErrorListener_(errListener), options);
     _listeners.add(new WatchIDInfo(listener, watchID));
   }
   
@@ -42,7 +42,7 @@ abstract class AbstractGeolocation implements XGeolocation {
   abstract GeolocationSuccessCallback wrapSuccessListener_(PositionEventListener listener);
 
   /** Returns the wrapped GeolocationErrorCallback from the given PositionEventListener */
-  abstract GeolocationErrorCallback wrapErrorListener_(PositionEventListener listener);
+  abstract GeolocationErrorCallback wrapErrorListener_(PositionErrorEventListener listener);
 
   /**
   * Watches for position changes of this device.

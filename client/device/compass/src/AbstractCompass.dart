@@ -16,9 +16,9 @@ abstract class AbstractCompass implements Compass {
     return _on;
   }
 
-  void addEventListener(String type, CompassHeadingEventListener listener, [Map options]) {
+  void addEventListener(String type, CompassHeadingEventListener listener, [CompassHeadingErrorEventListener errListener, Map options]) {
     removeEventListener(type, listener);
-    var watchID = watchHeading(wrapSuccessListener_(listener), wrapErrorListener_(listener), options);
+    var watchID = watchHeading(wrapSuccessListener_(listener), wrapErrorListener_(errListener), options);
     _listeners.add(new WatchIDInfo(listener, watchID));
   }
   
@@ -42,7 +42,7 @@ abstract class AbstractCompass implements Compass {
   abstract CompassSuccessCallback wrapSuccessListener_(CompassHeadingEventListener listener);
 
   /** Returns the wrapped CompassErrorCallback from the given CompassHeadingEventListener */
-  abstract CompassErrorCallback wrapErrorListener_(CompassHeadingEventListener listener);
+  abstract CompassErrorCallback wrapErrorListener_(CompassHeadingErrorEventListener listener);
 
   /**
   * Returns the direction this device pointing in degree at a specified(optional) regular interval.

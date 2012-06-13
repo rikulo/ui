@@ -2,9 +2,6 @@
 //History: Thu, May 3, 2012  11:22:40 AM
 // Author: henrichen
 
-/** AcclerationEvent listener function */
-typedef void AccelerationEventListener(AccelerationEvent event);
-
 /** AccelerationEvent listener list */
 class AccelerationEventListenerList {
   DeviceEventListenerList _delegate;
@@ -12,8 +9,8 @@ class AccelerationEventListenerList {
     _delegate = new DeviceEventListenerList(ptr, type);
   }
 
-  AccelerationEventListenerList add(AccelerationEventListener listener, [AccelerometerOptions options]) {
-    _delegate.add(listener, _toMap(options));
+  AccelerationEventListenerList add(AccelerationEventListener listener, [AccelerationErrorEventListener errListener, AccelerometerOptions options]) {
+    _delegate.add(listener, errListener, _toMap(options));
     return this;
   }
   AccelerationEventListenerList remove(AccelerationEventListener listener) {

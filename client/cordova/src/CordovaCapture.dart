@@ -6,29 +6,35 @@
  * A Cordova capture implementation.
  */
 class CordovaCapture implements Capture {
+  static final String _SUPPORTED_AUDIO_MODES = "capture.supportedAudioModes";
+  static final String _SUPPORTED_IMAGE_MODES = "capture.supportedImageModes";
+  static final String _SUPPORTED_VIDEO_MODES = "capture.supportedVideoModes";
+  static final String _CAPTURE_AUDIO = "capture.captureAudio";
+  static final String _CAPTURE_IMAGE = "capture.captureImage";
+  static final String _CAPTURE_VIDEO = "capture.captureVideo";
   CordovaCapture() {
     _initJSFunctions();
   }
   /** Returns the audio formats supported by this device */
   List<ConfigurationData> get supportedAudioModes() {
-    return toDartList(jsCall("capture.supportedAudioModes"), (jsData) => _wrapConfigurationData(jsData));
+    return toDartList(jsCall(_SUPPORTED_AUDIO_MODES), (jsData) => _wrapConfigurationData(jsData));
   }
   /** Returns the image formats/size supported by this device */
   List<ConfigurationData> get supportedImageModes() {
-    return toDartList(jsCall("capture.supportedImageModes"), (jsData) => _wrapConfigurationData(jsData));
+    return toDartList(jsCall(_SUPPORTED_IMAGE_MODES), (jsData) => _wrapConfigurationData(jsData));
   }
   /** Returns the video formats/resolutions suupported by this device */
   List<ConfigurationData> get supportedVideoModes() {
-    return toDartList(jsCall("capture.supportedVideoModes"), (jsData) => _wrapConfigurationData(jsData));
+    return toDartList(jsCall(_SUPPORTED_VIDEO_MODES), (jsData) => _wrapConfigurationData(jsData));
   }
   void captureAudio(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, [CaptureAudioOptions options]) {
-    jsCall("capture.captureAudio", [_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), toJSMap(_audioOptionsToMap(options))]);
+    jsCall(_CAPTURE_AUDIO, [_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), toJSMap(_audioOptionsToMap(options))]);
   }
   void captureImage(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, [CaptureImageOptions options]) {
-    jsCall("capture.captureImage", [_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), toJSMap(_imageOptionsToMap(options))]);
+    jsCall(_CAPTURE_IMAGE, [_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), toJSMap(_imageOptionsToMap(options))]);
   }
   void captureVideo(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, [CaptureVideoOptions options]) {
-    jsCall("capture.captureVideo", [_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), toJSMap(_videoOptionsToMap(options))]);
+    jsCall(_CAPTURE_VIDEO, [_wrapCaptureSuccess(onSuccess), _wrapCaptureError(onError), toJSMap(_videoOptionsToMap(options))]);
   }
   _wrapCaptureError(CaptureErrorCallback dartFn) {
     return (jsErr) => dartFn(new CaptureError.from(jsErr));
@@ -84,28 +90,23 @@ class CordovaCapture implements Capture {
   }
   
   void _initJSFunctions() {
-    newJSFunction("capture.supportedAudioModes", null, "return navigator.device.capture.supportedAudioModes;");
-    newJSFunction("capture.supportedImageModes", null, "return navigator.device.capture.supportedImageModes;");
-    newJSFunction("capture.supportedVideoModes", null, "return navigator.device.capture.supportedVideoModes;");
-    newJSFunction("capture.captureAudio", ["onSuccess", "onError", "opts"], '''
+    newJSFunction(_SUPPORTED_AUDIO_MODES, null, "return navigator.device.capture.supportedAudioModes;");
+    newJSFunction(_SUPPORTED_IMAGE_MODES, null, "return navigator.device.capture.supportedImageModes;");
+    newJSFunction(_SUPPORTED_VIDEO_MODES, null, "return navigator.device.capture.supportedVideoModes;");
+    newJSFunction(_CAPTURE_AUDIO, ["onSuccess", "onError", "opts"], '''
       var fnSuccess = function(files) {onSuccess.\$call\$1(files);},
           fnError = function(err) {onError.\$call\$1(err);};
       navigator.device.capture.captureAudio(fnSuccess, fnError, opts);
     ''');
-    newJSFunction("capture.captureImage", ["onSuccess", "onError", "opts"], '''
+    newJSFunction(_CAPTURE_IMAGE, ["onSuccess", "onError", "opts"], '''
       var fnSuccess = function(files) {onSuccess.\$call\$1(files);},
           fnError = function(err) {onError.\$call\$1(err);};
       navigator.device.capture.captureImage(fnSuccess, fnError, opts);
     ''');
-    newJSFunction("capture.captureVideo", ["onSuccess", "onError", "opts"], '''
+    newJSFunction(_CAPTURE_VIDEO, ["onSuccess", "onError", "opts"], '''
       var fnSuccess = function(files) {onSuccess.\$call\$1(files);},
           fnError = function(err) {onError.\$call\$1(err);};
       navigator.device.capture.captureVideo(fnSuccess, fnError, opts);
-    ''');
-    newJSFunction("MediaFile.getFormatData", ["mediaFile", "onSuccess", "onError"], '''
-      var fnSuccess = function(data) {onSuccess.\$call\$1(data);},
-          fnError = function() {onError.\$call\$0();};
-      mediaFile.getFormatData(fnSuccess, fnError);
     ''');
   }
 }

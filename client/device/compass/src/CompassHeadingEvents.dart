@@ -7,7 +7,5 @@ class CompassHeadingEvents extends DeviceEvents {
   CompassHeadingEvents(ptr) : super(ptr);
   CompassHeadingEventListenerList get heading() 
     => get_('heading', new CompassHeadingEventListenerList(this.getEventTarget_(), 'heading'));
-  CompassHeadingEventListenerList get headingFilter() 
-    => get_('headingFilter', new CompassHeadingEventListenerList(this.getEventTarget_(), 'headingFilter'));
 }
 
