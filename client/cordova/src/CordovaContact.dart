@@ -6,6 +6,11 @@
  * A Cordova Contact implementation.
  */
 class CordovaContact implements Contact {
+  static final String _CREATE = "contacts.create";
+  static final String _CLONE = "contact.clone";
+  static final String _REMOVE = "contact.remove";
+  static final String _SAVE = "contact.save";
+  
   String get id() => jsCall("get", [_jsContact, "id"]); //global unique identifier
   String get displayName() => jsCall("get", [_jsContact, "displayName"]); //display name of this Contact
   String get nickname() => jsCall("get", [_jsContact, "nickname"]); //casual name of this Contact
@@ -16,10 +21,10 @@ class CordovaContact implements Contact {
   set nickname(var x) => jsCall("set", [_jsContact, "nickname", x]); //casual name of this Contact
   set note(var x) => jsCall("set", [_jsContact, "note", x]); //note about this Contact
   
-  _create() => jsCall("contacts.create");
-  _clone0() => jsCall("contact.clone", [_jsContact]);
-  _remove0(ContactSuccessCallback onSuccess, ContactErrorCallback onError) => jsCall("contact.remove", [_jsContact, onSuccess, onError]);
-  _save0(ContactSuccessCallback onSuccess, ContactErrorCallback onError) => jsCall("contact.save", [_jsContact, onSuccess, onError]);
+  _create() => jsCall(_CREATE);
+  _clone0() => jsCall(_CLONE, [_jsContact]);
+  _remove0(ContactSuccessCallback onSuccess, ContactErrorCallback onError) => jsCall(_REMOVE, [_jsContact, onSuccess, onError]);
+  _save0(ContactSuccessCallback onSuccess, ContactErrorCallback onError) => jsCall(_SAVE, [_jsContact, onSuccess, onError]);
 
   _updateJSBirthday() => jsCall("set", [_jsContact, "birthday", toJSDate(this.birthday)]);
   _updateJSContactName() => jsCall("set", [_jsContact, "name", _toJSContactName(this.name)]);
@@ -46,11 +51,13 @@ class CordovaContact implements Contact {
   var _jsContact; //associated javascript Contact
   
   CordovaContact() {
+    _initJSFunctions();
     this._jsContact = _create();
     _initDartContact();
   }
   
   CordovaContact.from(var jsContact) {
+    _initJSFunctions();
     this._jsContact = jsContact;
     _initDartContact();
   }
@@ -58,6 +65,7 @@ class CordovaContact implements Contact {
   /** Returns a cloned Contact object except its id is set to null.
    */
   Contact clone() {
+    _initJSFunctions();
     return new CordovaContact.from(_clone0());
   }
   
@@ -173,32 +181,50 @@ class CordovaContact implements Contact {
   }
   
   void _initDartContact() {
-    Contact jsContact = this._jsContact; //trick frogc
     //birthday
-    this.birthday = toDartDate(jsContact.birthday);
+    this.birthday = toDartDate(jsCall("get", [_jsContact, "birthday"]));
     //name
-    ContactName val0 = jsContact.name;
+    ContactName val0 = jsCall("get", [_jsContact, "name"]);
     if (val0 !== null)
       this.name = new ContactName.from(toDartMap(val0));
     //addresses
-    this.addresses = toDartList(jsContact.addresses, (jsAddr) => new ContactAddress.from(toDartMap(jsAddr)));
+    this.addresses = toDartList(jsCall("get", [_jsContact, "addresses"]), (jsAddr) => new ContactAddress.from(toDartMap(jsAddr)));
     //organizations
-    this.organizations = toDartList(jsContact.organizations, (jsOrg) => new ContactOrganization.from(toDartMap(jsOrg)));
+    this.organizations = toDartList(jsCall("get", [_jsContact, "organizations"]), (jsOrg) => new ContactOrganization.from(toDartMap(jsOrg)));
     //phoneNumbers
-    this.phoneNumbers = _newContactFieldList(jsContact.phoneNumbers);
+    this.phoneNumbers = _newContactFieldList(jsCall("get", [_jsContact, "phoneNumbers"]));
     //emails
-    this.emails = _newContactFieldList(jsContact.emails);
+    this.emails = _newContactFieldList(jsCall("get", [_jsContact, "emails"]));
     //ims
-    this.ims = _newContactFieldList(jsContact.ims);
+    this.ims = _newContactFieldList(jsCall("get", [_jsContact, "ims"]));
     //photos
-    this.photos = _newContactFieldList(jsContact.photos);
+    this.photos = _newContactFieldList(jsCall("get", [_jsContact, "photos"]));
     //categories
-    this.categories = _newContactFieldList(jsContact.categories);
+    this.categories = _newContactFieldList(jsCall("get", [_jsContact, "categories"]));
     //urls
-    this.urls = _newContactFieldList(jsContact.urls);
+    this.urls = _newContactFieldList(jsCall("get", [_jsContact, "urls"]));
   }
   
   List<ContactField> _newContactFieldList(jsFields) {
     return toDartList(jsFields, (jsField) => new ContactField.from(toDartMap(jsField)));
+  }
+  
+  static bool _doneInit = false;
+  void _initJSFunctions() {
+    if (!_doneInit) {
+      newJSFunction(_CREATE,  null, "return navigator.contacts.create({});");
+      newJSFunction(_CLONE, ["contact"], "return contact.clone();");
+      newJSFunction(_REMOVE, ["contact", "onSuccess", "onError"], '''
+        var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
+            fnError = function(err) {onError.\$call\$1(err);};
+        contact.remove(fnSuccess, fnError);
+      ''');
+      newJSFunction(_SAVE, ["contact", "onSuccess", "onError"], '''
+        var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
+            fnError = function(err) {onError.\$call\$1(err);};
+        contact.save(fnSuccess, fnError);
+      ''');
+      _doneInit = true;
+    }
   }
 }

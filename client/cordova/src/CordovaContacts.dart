@@ -32,22 +32,10 @@ class CordovaContacts implements Contacts {
   }
   
   void _initJSFunctions() {
-    newJSFunction("contacts.create",  null, "return navigator.contacts.create({});");
     newJSFunction("contacts.find", ["fields", "onSuccess", "onError", "opts"], '''
       var fnSuccess = function(contacts) {onSuccess.\$call\$1(contacts);},
           fnError = function(err) {onError.\$call\$1(err);};
       navigator.contacts.find(fields, fnSuccess, fnError, opts);
-    ''');
-    newJSFunction("contact.clone", ["contact"], "return contact.clone();");
-    newJSFunction("contact.remove", ["contact", "onSuccess", "onError"], '''
-      var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
-          fnError = function(err) {onError.\$call\$1(err);};
-      contact.remove(fnSuccess, fnError);
-    ''');
-    newJSFunction("contact.save", ["contact", "onSuccess", "onError"], '''
-      var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
-          fnError = function(err) {onError.\$call\$1(err);};
-      contact.save(fnSuccess, fnError);
     ''');
   }
 }

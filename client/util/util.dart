@@ -18,3 +18,4 @@
 #source("src/Size.dart");
 #source("src/Rectangle.dart");
 #source("src/Functions.dart");
+#source("src/JSUtil.dart");

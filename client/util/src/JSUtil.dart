@@ -8,6 +8,7 @@
  * @return the converted JavaScript Date
  */
 toJSDate(Date dartdate) {
+  _initJSCall();
   int msecs = dartdate !== null ? dartdate.value : null;
   return msecs != null ? jsCall("newDate", [msecs]) : null;
 }
@@ -17,6 +18,7 @@ toJSDate(Date dartdate) {
  * @return the converted Dart Date
  */
 toDartDate(jsdate) {
+  _initJSCall();
   int msecs = jsdate !== null ? jsCall("getTime", [jsdate]) : null;
   return msecs !== null ? new Date.fromEpoch(msecs, false) : null; //use local timezone
 }
@@ -26,6 +28,7 @@ toDartDate(jsdate) {
  * @return the converted JavaScript Array
  */
 toJSArray(List dartlist, [Function converter = null]) {
+  _initJSCall();
   if (dartlist !== null) {
     if (dartlist.length == 0) {
       return jsCall("[]"); //return empty JavaScript Array
@@ -47,6 +50,7 @@ toJSArray(List dartlist, [Function converter = null]) {
  * @return the converted Dart List
  */
 toDartList(var jsarray, [Function converter = null]) {
+  _initJSCall();
   if (jsarray !== null) {
     List result = new List();
     if (converter !== null)
@@ -63,6 +67,7 @@ toDartList(var jsarray, [Function converter = null]) {
  * @return the converted JavaScript map 
  */
 toJSMap(Map dartmap, [Function converter = null]) {
+  _initJSCall();
   if (dartmap !==  null) {
     if (dartmap.length == 0) {
       return jsCall("{}"); //return empty JavaScript map
@@ -82,6 +87,7 @@ toJSMap(Map dartmap, [Function converter = null]) {
  * @return the converted Dart Map
  */
 toDartMap(var jsmap, [Function converter = null]) {
+  _initJSCall();
   if (jsmap !== null) {
     Map result = new Map();
     if (converter !== null)
@@ -94,21 +100,37 @@ toDartMap(var jsmap, [Function converter = null]) {
 }
 
 _JSCallX jsCallX; //bridge class
-jsCall(String op, [List args = const []]) {
-  return jsCallX.exec(op, args);
+/** Dart bridge method to call into JavaScript function registered with #newJSFunction.
+ * @param name JavaScript function name
+ * @param args arguments to be passed into JavaScript function
+ * @see #newJSFunction
+ */ 
+jsCall(String name, [List args = const []]) {
+  return jsCallX.exec(name, args);
 }
 
+/** Create and register a new JavaScript function; can be called from Dart later via #jsCall function.
+ * @param name function name
+ * @param args argument names
+ * @param body the function definition body
+ * @see #jsCall
+ */
 newJSFunction(String name, List<String> args, String body) {
+  _initJSCall();
   jsCall("newFn", [name, args, body]);
 }
 
-initJSCall() {
+/** Initialization of the JavaScript utilities; can be called 
+ * multiple times but only the first call works.
+ */
+_initJSCall() {
   if (jsCallX === null) {
     final String newFn = '''  
       var _natives = {
         "newFn" : function(nm, args, body) {
-          var fnbody = "return new Function(" + (args && args.length > 0 ? "'"+args.join("','")+"',body);" : "body);");
-          _natives[nm] = new Function("body", fnbody)(body);
+          var fnbody = "return new Function(" + (args && args.length > 0 ? "'"+args.join("','")+"',body);" : "body);"),
+              fn = new Function("body", fnbody)(body);
+          return (_natives[nm] = fn);  
         },
         "get" : function(obj, attr) {
           return obj[attr];
@@ -167,18 +189,60 @@ initJSCall() {
     jsCallX = new _JSCallX(); //connect jsCall to JavaScript function table
   }
 }
+
+/**
+ * Inject JavaScript src file.
+ * @param uri the JavaScript file uri
+ */
 injectJavaScriptSrc(String uri) {
-  var s = new Element.tag("script");
+  var s = new ScriptElement();
   s.attributes["type"] = "text/javascript";
   s.attributes["src"] = uri;
-  document.body.nodes.add(s);  
+  document.head.nodes.add(s);  
 }
-injectJavaScript(String script) {
-  var s = new Element.tag("script");
+
+/**
+ * Inject JavaScript code and run directly.
+ * @param script the JavaScript codes
+ * @param remove whether remove the script after running; default true.
+ */  
+injectJavaScript(String script, [bool remove = true]) {
+  var s = new ScriptElement();
   s.attributes["type"] = "text/javascript";
   s.text = script;
-  document.body.nodes.add(s);
-  s.remove();
+  document.head.nodes.add(s);
+  if (remove) s.remove();
+}
+
+/**
+ * Execute the specified function when the specified ready function returns true. 
+ * @param fn the function to be executed
+ * @param ready the function to check if it meets some preset condition
+ * @param progress the {@link Progress} callback function to report how many time left in milliseconds before timeout (-1 means forever)
+ * @param freq the retry frequency in milliseconds
+ * @param timeout the timeout time in milliseconds to give up; -1 means forever.  
+ */
+bool doWhenReady(Function fn, Function ready, Function progress, int freq, int timeout) {
+  final int end = timeout < 0 ? timeout : new Date.now().value + timeout;
+  _doWhen0(fn, ready, progress, freq, end);
+}
+/** Progress callback function to show the time left in milliseconds before timeout */
+typedef Progress(int msec);
+
+void _doWhen0(Function fn, Function ready, Progress progress, int freq, final int end) {
+  window.setTimeout(() {
+    if (ready()) {
+      fn();
+    } else {
+      int diff = end - new Date.now().value;
+      if (end < 0 || diff > 0) { //still have time to try it
+        progress(end < 0 ? -1 : diff); //try again
+        _doWhen0(fn, ready, progress, freq, end);
+      } else {
+        progress(0); //timout. fail!
+      }
+    }
+  }, freq);
 }
 
 typedef JSCallFunction(String op, List args);

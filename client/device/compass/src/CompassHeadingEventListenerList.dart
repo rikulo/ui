@@ -2,9 +2,6 @@
 //History: Fri, May 11, 2012  11:22:40 AM
 // Author: henrichen
 
-/** CompassHeadingEvent listener function */
-typedef void CompassHeadingEventListener(CompassHeadingEvent event);
-
 /** CompassHeadingEvent listener list */
 class CompassHeadingEventListenerList /*implements DeviceEventListenerList*/ {
   DeviceEventListenerList _delegate;
@@ -12,8 +9,8 @@ class CompassHeadingEventListenerList /*implements DeviceEventListenerList*/ {
     _delegate = new DeviceEventListenerList(ptr, type);
   }
 
-  CompassHeadingEventListenerList add(CompassHeadingEventListener listener, [CompassOptions options]) {
-    _delegate.add(listener, _toMap(options));
+  CompassHeadingEventListenerList add(CompassHeadingEventListener listener, [CompassHeadingErrorEventListener errListener, CompassOptions options]) {
+    _delegate.add(listener, errListener, _toMap(options));
     return this;
   }
   CompassHeadingEventListenerList remove(CompassHeadingEventListener listener) {

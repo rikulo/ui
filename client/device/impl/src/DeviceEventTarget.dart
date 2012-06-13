@@ -6,7 +6,7 @@
 interface DeviceEventTarget {
   /** Register event listener into this event target.
   */
-  void addEventListener(String type, Function listener, [Map options]);
+  void addEventListener(String type, Function listener, [Function errListener, Map options]);
 
   /** Unregister event listener from this event target.
   */
