@@ -47,6 +47,8 @@ abstract class AbstractTreeModel<E> implements TreeSelectionModel<E> {
   void set root(E root) {
     if (_root !== root) {
       _root = root;
+      _selection.clear();
+      _opens.clear();
       sendEvent_(new TreeDataEvent.structureChanged());
     }
   }

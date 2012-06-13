@@ -90,11 +90,8 @@ class DefaultTreeNode<E> implements TreeNode<E> {
     final DefaultTreeModel<E> m = model;
     TreeNode<E> child = getChildAt(index);
 
-    if (m !== null) {
-      //no need to fire event (since it is convered by DATA_REMOVED)
-      m._selection.remove(child);
-      m._opens.remove(child);
-    }
+    if (m !== null)
+      _clearDown(m, child);
 
     _children.removeRange(index, 1);
 
@@ -107,7 +104,33 @@ class DefaultTreeNode<E> implements TreeNode<E> {
       m.sendEvent_(new TreeDataEvent(DataEventType.DATA_REMOVED, child));
     return child;
   }
+  static void _clearDown(DefaultTreeModel m, TreeNode child) {
+    //no need to fire event (since it is convered by DATA_REMOVED)
+    m._selection.remove(child);
+    m._opens.remove(child);
 
+    if (!child.isLeaf()) {
+      for (int i = 0, len = child.childCount; i < len; ++i)
+        _clearDown(m, child.getChildAt(i));
+    }
+  }
+  void clear() {
+    _init();
+    if (_children !== null && !_children.isEmpty()) {
+      final DefaultTreeModel<E> m = model;
+      if (m !== null) {
+        for (final TreeNode<E> child in _children)
+          _clearDown(m, child);
+      }
+
+      _children = null;
+
+      if (m !== null) {
+        m.sendEvent_(new TreeDataEvent(DataEventType.CONTENT_CHANGED, this));
+      }
+    }
+  }
+ 
   void _init() {
     if (!_loaded) {
       _loaded = true;

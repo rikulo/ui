@@ -67,4 +67,7 @@ interface TreeNode<E> default DefaultTreeNode<E> {
    * This method returns the tree node being removed.
    */
   TreeNode<E> remove(int index);
+  /** Removes all children nodes.
+   */
+  void clear();
 }
