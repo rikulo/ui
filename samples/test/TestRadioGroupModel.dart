@@ -35,12 +35,20 @@ class TestRadioGroupModel extends Activity {
 
     //Add the 2nd radio group that share the same model
     createRadioGroup(model);
+
+    //Add the drop-down list that share the same model
+    createDropDownList(model);
   }
   RadioGroup createRadioGroup(ListModel<String> model) {
     final RadioGroup rg = new RadioGroup(model: model);
     rg.layout.text = "type: linear";
     mainView.addChild(rg);
     return rg;
+  }
+  DropDownList createDropDownList(ListModel<String> model) {
+    final DropDownList ddlist = new DropDownList(model: model);
+    mainView.addChild(ddlist);
+    return ddlist;
   }
 }
 

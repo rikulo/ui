@@ -32,3 +32,11 @@ class DataEventType {
    */
   static final DataEventType OPENS_CHANGED = const DataEventType();
 }
+
+/** A data event.
+ */
+interface DataEvent {
+  /** Returns the type of the event.
+   */
+  DataEventType get type();
+}

@@ -6,7 +6,7 @@
  * An event used to notify the listeners of a tree model ([TreeModel])
  * that the model has been changed.
  */
-interface TreeDataEvent<E> default _TreeDataEvent<E> {
+interface TreeDataEvent<E> extends DataEvent default _TreeDataEvent<E> {
   /** Constructor for [DataEventType.CONTENT_CHANGED], [DataEventType.DATA_ADDED],
    * and [DataEventType.DATA_REMOVED].
    */
@@ -15,10 +15,6 @@ interface TreeDataEvent<E> default _TreeDataEvent<E> {
   TreeDataEvent.structureChanged();
   TreeDataEvent.selectionChanged();
   TreeDataEvent.opensChanged();
-
-  /** Returns the type of the event.
-   */
-  DataEventType get type();
 
   /** Returns the first affected node.
    *

@@ -585,7 +585,7 @@ class View implements Hashable {
    */
   void enterDocument_() {
     _inDoc = true;
-//    ViewUtil._views[uuid] = this;
+//    ViewUtil._views[uuid] = this; //not worth to maintain it
 
     adjustInnerNode_(true, true, true, true);
 
@@ -1122,7 +1122,7 @@ class View implements Hashable {
       for (final ViewEventListener listener in new List.from(ls)) {
         dispatched = true;
         listener(event);
-        if (event.propagationStopped)
+        if (event.isPropagationStopped())
           return true; //done
       }
     }

@@ -38,7 +38,7 @@ class Button extends TextView {
    */
   void set disabled(bool disabled) {
     _disabled = disabled;
-    ButtonElement n = node;
+    final ButtonElement n = node;
     if (n != null)
       n.disabled = _disabled;
   }
@@ -53,7 +53,7 @@ class Button extends TextView {
   void set autofocus(bool autofocus) {
     _autofocus = autofocus;
     if (autofocus) {
-      ButtonElement n = node;
+      final ButtonElement n = node;
       if (n != null)
         n.focus();
     }

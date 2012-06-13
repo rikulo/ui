@@ -103,7 +103,7 @@ class ViewEvent {
    * It becomes true if [stopPropagation] is called,
    * and then all remaining event listeners are ignored.
    */
-  bool get propagationStopped() => _propStop;
+  bool isPropagationStopped() => _propStop;
   /** Stops the propagation.
    *Once called, all remaining event listeners, if any, are ignored.
    */

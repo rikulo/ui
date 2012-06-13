@@ -2,8 +2,9 @@
 //History: Mon, Apr 23, 2012  6:02:46 PM
 // Author: tomyeh
 
-/** Renders the given data for the given [RadioButton].
- * The implementaiton shall instantiate a radio button and, optionally, other views.
+/** Renders the given data for the given [RadioGroup].
+ * The implementaiton shall instantiate a radio button ([RadioButton])
+ * and, optionally, other views.
  * Then add it to [group] and insert it before [before], if any.
  *
  * Notice that the value of the radio button ([ButtonRadio.value]) will be
@@ -55,6 +56,7 @@ class RadioGroup<E> extends View {
       modelRenderer.queue(this); //queue for later operation (=> renderModel_)
     } else if (_model !== null) {
       _model.removeListDataListener(_dataListener);
+      _model = null;
       children.clear();
     }
   }
@@ -80,7 +82,8 @@ class RadioGroup<E> extends View {
   void set renderer(RadioGroupRenderer renderer) {
     if (_renderer !== renderer) {
       _renderer = renderer;
-      modelRenderer.queue(this);
+      if (_model !== null)
+        modelRenderer.queue(this);
     }
   }
   /** callback by [modelRenderer] to render the model into views.

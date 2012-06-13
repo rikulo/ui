@@ -20,7 +20,7 @@ interface EffectFunction {
 
   /** Assigns the value for the given time point.
    */
-  int operator[]=(int millisec, int value);
+  void operator[]=(int millisec, int value);
 
   /** Removes the value for the given time point.
    */

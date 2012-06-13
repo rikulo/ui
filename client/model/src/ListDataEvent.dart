@@ -6,7 +6,7 @@
  * An event used to notify the listeners of a list model ([ListModel])
  * that the model has been changed.
  */
-interface ListDataEvent default _ListDataEvent {
+interface ListDataEvent extends DataEvent default _ListDataEvent {
   /** Constructor for [DataEventType.CONTENT_CHANGED], [DataEventType.DATA_ADDED],
    * and [DataEventType.DATA_REMOVED].
    */
@@ -15,9 +15,6 @@ interface ListDataEvent default _ListDataEvent {
   ListDataEvent.structureChanged();
   ListDataEvent.selectionChanged();
 
-  /** Returns the type of the event.
-   */
-  DataEventType get type();
   /** Returns the starting index of the change range (nonnegative).
    * It is available only if [type] is [DataEventType.CONTENT_CHANGED],
    * [DataEventType.DATA_ADDED], or [DataEventType.DATA_REMOVED].
