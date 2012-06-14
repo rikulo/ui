@@ -219,20 +219,22 @@ class Activity {
    * Before calling this method, [mainView] will be instantiated, but
    * it won't be attached to the document until this method has returned
    * (for better performaance).
-   * If you'd really like to attach it earlier, you can
-   * invoke [View.addToDocument] manually.
+   *
+   * It means you can't access [Element.node] (such as adding a listener),
+   * or any methods that depends on the DOM elements of the view.
+   * To access the DOM elements of the view, you have to do it in [onEnterDocument_].
    *
    * If you prefer to instantiate a different main view, you can
    * create an instance and then assign to [mainView] directly.
    *
-   * + See also [run].
+   * + See also [run] and [onEnterDocument_].
    */
   void onCreate_() {
   }
   /**Called after [onCreate_] is called and [mainView] has been
    * added to the document.
    *
-   *Tasks that depends on DOM elements can be done in this method.
+   * Tasks that depends on DOM elements can be done in this method.
    */
   void onEnterDocument_() {
   }

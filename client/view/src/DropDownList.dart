@@ -4,20 +4,23 @@
 
 /** Renders the given data for the given [DropDownList].
  */
-typedef String DropDownListRenderer(DropDownList ddlist, var data, bool selected, int index);
+typedef String DropDownListRenderer(
+  DropDownList ddlist, var data, bool selected, bool disabled, int index);
 
 /**
  * Represents a view that allows the user to select a single item
  * from a drop-down list.
  */
 class DropDownList<E> extends View {
-  var _model, _dataListener;
+  DataModel _model;
+  DataEventListener _dataListener;
   DropDownListRenderer _renderer;
   bool _rendering = false, //whether it's rendering model
     _modelUpdating = false; //whether it's updating model (such as selection)
   bool _disabled = false, _autofocus = false;
 
-  DropDownList([var model]) {
+  DropDownList([DataModel model, DropDownListRenderer renderer]) {
+    _renderer = renderer;
     this.model = model;
   }
 
@@ -56,46 +59,44 @@ class DropDownList<E> extends View {
 
   /** Returns the model.
    */
-  get model() => _model;
+  DataModel get model() => _model;
   /** Sets the model.
    * The model must be an instance of [ListModel] or [TreeModel].
    */
-  void set model(var model) {
-    if (model !== null && model is! Selection)
-      throw new UIException("Selection required, $model");
+  void set model(DataModel model) {
+    if (model !== null) {
+      if (model is! Selection)
+        throw new UIException("Selection required, $model");
+      if (model is! ListModel && model is! TreeModel)
+        throw new UIException("Only ListModel or TreeModel allowed, not $model");
+    }
 
     if (_model !== model) { //Note: it is not !=
-      if (_model is ListModel)
-        _model.removeListDataListener(_dataListener);
-      else if (_model is TreeModel)
-        _model.removeTreeDataListener(_dataListener);
+      if (_model !== null)
+        _model.on.all.remove(_dataListener);
 
       _model = model;
 
       if (_model !== null) {
-        _initDataListener();
-        if (_model is ListModel)
-          _model.addListDataListener(_dataListener);
-        else if (_model is TreeModel)
-          _model.addTreeDataListener(_dataListener);
-        else
-          throw new UIException("Only ListModel or TreeModel allowed, not $_model");
+        _model.on.all.add(_initDataListener());
 
         final SelectElement n = node;
         if (n !== null)
-          n.multiple = _model.multiple;
+          n.multiple = _cast(_model).multiple;
       }
 
       modelRenderer.queue(this); //queue even if _model is null (since cleanup is a bit tricky)
     }
   }
-  void _initDataListener() {
+  static _cast(var v) => v; //TODO: replace with 'as' when Dart supports it
+  DataEventListener _initDataListener() {
     if (_dataListener === null) {
-      _dataListener = (ListDataEvent event) {
+      _dataListener = (event) {
         if (!_modelUpdating)
           modelRenderer.queue(this);
       };
     }
+    return _dataListener;
   }
 
   /** Returns the renderer used to render the given model ([model]), or null
@@ -135,7 +136,7 @@ class DropDownList<E> extends View {
   }
   static DropDownListRenderer _defRenderer() {
     if (_$defRenderer === null)
-      _$defRenderer = (DropDownList ddlist, var data, bool selected, int index) => "$data";
+      _$defRenderer = (DropDownList ddlist, var data, bool selected, bool disabled, int index) => "$data";
     return _$defRenderer;
   }
   static DropDownListRenderer _$defRenderer;
@@ -161,7 +162,7 @@ class DropDownList<E> extends View {
 
         _modelUpdating = true;
         try {
-          _model.selection = sel;
+          _cast(_model).selection = sel;
         } finally {
           _modelUpdating = false;
         }
@@ -171,7 +172,7 @@ class DropDownList<E> extends View {
      _fixIndex();
   }
   void _fixIndex() { //it assumes inDocument
-    if (_model !== null && _model.isSelectionEmpty()) {
+    if (_model !== null && _cast(_model).isSelectionEmpty()) {
       final SelectElement n = node;
       n.selectedIndex = -1;
     }
@@ -184,7 +185,7 @@ class DropDownList<E> extends View {
       out.add(' disabled="disabled"');
     if (autofocus)
       out.add(' autofocus="autofocus"');
-    if (_model !== null && _model.multiple)
+    if (_model !== null && _cast(_model).multiple)
       out.add(' multiple="multiple"');
     super.domAttrs_(out, noId, noStyle, noClass);
   }
@@ -200,11 +201,14 @@ class DropDownList<E> extends View {
       for (int j = 0, len = model.length; j < len; ++j) {
         out.add('<option');
         final obj = model[j];
-        final bool selected = _model.isSelected(obj);
+        final bool selected = _cast(_model).isSelected(obj);
         if (selected)
           out.add(' selected="selected"');
+        final bool disabled = _model is Disables && _cast(_model).isDisabled(obj);
+        if (disabled)
+          out.add(' disabled="disabled"');
         out.add('>')
-         .add(StringUtil.encodeXML(renderer(this, obj, selected, j)))
+         .add(StringUtil.encodeXML(renderer(this, obj, selected, disabled, j)))
          .add('</option>');
          //Note: Firefox doesn't support <option label="xx">
       }

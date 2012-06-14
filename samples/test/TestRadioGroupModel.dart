@@ -16,13 +16,15 @@ class TestRadioGroupModel extends Activity {
 
     //prepare data
     final DefaultListModel<String> model
-      = new DefaultListModel(["apple", "orange", "lemon"]);
+      = new DefaultListModel(["apple", "orange", "lemon", "juice"]);
     model.addToSelection("orange");
-
-    //create first radio group
-    createRadioGroup(model).on.check.add((event) {
+    model.addToDisables("juice");
+    model.on.select.add((event) {
       log("Selected: ${model.selection}");
     });
+
+    //create first radio group
+    createRadioGroup(model);
 
     int i = 0;
     Button btn = new Button("add");

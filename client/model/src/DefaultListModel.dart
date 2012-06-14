@@ -13,8 +13,15 @@ class DefaultListModel<E> extends AbstractListModel<E> {
    * Notice that once [data] is assigned to a list model, you shall not
    * modify the data directly. Rather, you shall invoke the methods of this
    * model, such as [add]. Otherwise, UI won't update the changes correctly.
+   *
+   * + [selection]: if not null, it will be used to hold the selection.
+   * Unlike [set selection], it won't make a copy.
+   * + [disables]: if not null, it will be used to hold the list of disabled items.
+   * Unlike [set disables], it won't make a copy.
    */
-  DefaultListModel(List<E> data): _data = data;
+  DefaultListModel(List<E> data,
+  [Set<E> selection, Set<E> disables, bool multiple]):
+  super(selection, disables, multiple !== null && multiple), _data = data;
 
   //@Override
   /** Returns the object of the given index.
@@ -30,41 +37,42 @@ class DefaultListModel<E> extends AbstractListModel<E> {
    */
   void operator[]=(int index, E value) {
     _data[index] = value;
-    sendEvent_(new ListDataEvent(DataEventType.CONTENT_CHANGED, index, 1));
+    sendEvent(new ListDataEvent(this, 'change', index, 1));
   }
   /** Adds a value to the end of the list.
    */
   void add(E value) {
     _data.add(value);
-    sendEvent_(new ListDataEvent(DataEventType.DATA_ADDED, length - 1, 1));
+    sendEvent(new ListDataEvent(this, 'add', length - 1, 1));
   }
   /** Removes the last value.
    */
   E removeLast() {
     final E value = _data.removeLast();
-    _selection.remove(value); //no need to fire SELECTION_CHANGED
-    sendEvent_(new ListDataEvent(DataEventType.DATA_REMOVED, length, 1));
+    _selection.remove(value); //no need to fire select
+    sendEvent(new ListDataEvent(this, 'remove', length, 1));
     return value;
   }
   /** Inserts a range of values to the given index.
    */
   void insertRange(int start, int length, [E value]) {
     _data.insertRange(start, length, value);
-    sendEvent_(new ListDataEvent(DataEventType.DATA_ADDED, start, length));
+    sendEvent(new ListDataEvent(this, 'add', start, length));
   }
   /** Removes a range of values starting at the given index.
    */
   void removeRange(int start, int length) {
     for (int i = start, len = length; --len >= 0;)
-      _selection.remove(_data[i++]); //no need to fire SELECTION_CHANGED
+      _selection.remove(_data[i++]); //no need to fire select
     _data.removeRange(start, length);
-    sendEvent_(new ListDataEvent(DataEventType.DATA_REMOVED, start, length));
+    sendEvent(new ListDataEvent(this, 'remove', start, length));
   }
   void clear() {
-    if (!_data.isEmpty()) {
-      selection = new List(); //no need to fire SELECTION_CHANGED
+    final int len = _data.length;
+    if (len > 0) {
+      _selection.clear(); //no need to fire select
       _data.clear();
-      sendEvent_(new ListDataEvent(DataEventType.CONTENT_CHANGED, 0, -1));
+      sendEvent(new ListDataEvent(this, 'remove', 0, len));
     }
   }
 

@@ -2,10 +2,6 @@
 //History: Mon, Jun 11, 2012 12:37:37 PM
 // Author: tomyeh
 
-/** The listener for [TreeDataEvent]
- */
-typedef void TreeDataListener(TreeDataEvent event);
-
 /**
  * A data model representing a tree of data.
  * Each node of the tree can be anything and represented with the generic type, `E`.
@@ -30,25 +26,26 @@ typedef void TreeDataListener(TreeDataEvent event);
  *
  * ##Path##
  *
- * A node of the tree model can be presented by an integer array called `path`.
+ * A node of the tree model can be presented by an integer array called `path`
+ * (see also [getPath]).
  * For example, [0, 1, 2] represents a node at the third level since
  * there are three elements. Furthermore, it is the root's the first child's
  * the second child's third child.
  *
- * ##Open Paths##
- *
- * A tree model maintains a list of open paths. If the path of a tree node matches
- * one of the open paths, the tree node will be opened, i.e., the child views
- * will be visible to the user.
- *
  * ##Selection##
  *
  * If you'd like to use [TreeModel] with a UI object that allows the user to select the data,
- * such as [SelectView] and [TreeView]. You have to implement `Selection<E>`.
+ * such as [DropDownList] and [TreeView]. You have to implement `Selection<E>`.
  * Both [DefaultTreeModel] and [AbstractTreeModel] implements it, so you need to implement
  * it only if you implement [TreeModel] from scratch.
+ *
+ * ##Opens##
+ *
+ * A tree model maintains a list of opened nodes ([Opens]). If a tree node matches
+ * one of the open nodes, the tree node will be opened, i.e., the child views
+ * will be visible to the user.
  */
-interface TreeModel<E> {
+interface TreeModel<E> extends DataModel {
 	/**
 	 * Returns the root of the tree model.
 	 */
@@ -96,42 +93,6 @@ interface TreeModel<E> {
 	 * placed in the whole tree.
 	 */
 	List<int> getPath(E child);
-
-  /**
-   * Returns the current list of nodes that are opened.
-   * It is readonly. Don't modify it directly. Otherwise, UI won't be
-   * updated correctly.
-   */
-  Set<E> get opens();
-  /**
-   * Replace the current list of node that are opened with the given set.
-   */
-  void set opens(Collection<E> opens);
-  /** Adds the given node to the list of open nodes.
-   */
-  bool addToOpens(E node);
-  /** Removes the given node from the list of open nodes.
-   */
-  bool removeFromOpens(E node);
-  /** Returns true if the node shall be opened.
-   * That is, it tests if the given node is in the list of open nodes.
-   */
-  bool isOpened(E node);
-  /** Returns true if the list of open nodes is empty.
-   */
-  bool isOpensEmpty();
-  /** Empties the list of open nodes.
-   */
-  void clearOpens();
-
-	/**
-	 * Add a listener to the tree that's notified each time a change to the data model occurs
-	 */
-	void addTreeDataListener(TreeDataListener l);
-	/**
-	 * Remove a listener to the tree that's notified each time a change to the data model occurs
-	 */
-	void removeTreeDataListener(TreeDataListener l);
 }
 
 /** A data model representing a tree of data and it allows the user to select any data of it.
@@ -140,5 +101,5 @@ interface TreeModel<E> {
  * directly. However, it is convenient that you can instantiate an instance
  * from it and access the methods in both interfaces.
  */
-interface TreeSelectionModel<E> extends TreeModel<E>, Selection<E> {
+interface TreeSelectionModel<E> extends TreeModel<E>, Selection<E>, Disables<E>, Opens<E> {
 }

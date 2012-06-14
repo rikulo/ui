@@ -7,38 +7,23 @@
  * that the model has been changed.
  */
 interface TreeDataEvent<E> extends DataEvent default _TreeDataEvent<E> {
-  /** Constructor for [DataEventType.CONTENT_CHANGED], [DataEventType.DATA_ADDED],
-   * and [DataEventType.DATA_REMOVED].
+  /** Constructor.
+   *
+   * + [type]: `change`, `add` or `remove`.
    */
-  TreeDataEvent(DataEventType type, E node);
-  TreeDataEvent.multipleChanged();
-  TreeDataEvent.structureChanged();
-  TreeDataEvent.selectionChanged();
-  TreeDataEvent.opensChanged();
+  TreeDataEvent(TreeModel<E> model, String type, E node);
 
   /** Returns the first affected node.
-   *
-   * It is available only if [type] is [DataEventType.CONTENT_CHANGED],
-   * [DataEventType.DATA_ADDED], or [DataEventType.DATA_REMOVED].
    */
   E get node();
 }
 
-class _TreeDataEvent<E> implements TreeDataEvent<E> {
-  final DataEventType _type;
+class _TreeDataEvent<E> extends _DataEvent implements TreeDataEvent<E> {
   final E _node;
 
-  _TreeDataEvent(this._type, this._node);
-  _TreeDataEvent.structureChanged():
-    this(DataEventType.STRUCTURE_CHANGED, null);
-  _TreeDataEvent.multipleChanged():
-    this(DataEventType.MULTIPLE_CHANGED, null);
-  _TreeDataEvent.selectionChanged():
-    this(DataEventType.SELECTION_CHANGED, null);
-  _TreeDataEvent.opensChanged():
-    this(DataEventType.OPENS_CHANGED, null);
+  _TreeDataEvent(TreeModel<E> model, String type, this._node):
+  super(model, type);
 
-  DataEventType get type() => _type;
   E get node() => _node;
 
   String toString() => "$type($node)";

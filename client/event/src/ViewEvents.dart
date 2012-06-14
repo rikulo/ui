@@ -50,10 +50,31 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
   ViewEventListenerList get mouseWheel();
   ViewEventListenerList get scroll();
 
+  /** Indicates the check state of a view is changed.
+   *
+   * The event is an instance of [CheckEvent].
+   */
   ViewEventListenerList get check();
+  /** Indicates the selection state of a view is changed.
+   *
+   * The event is an instance of [SelectEvent].
+   */
+  ViewEventListenerList get select();
 
+  /** Indicates the layout of a view is changed.
+   *
+   * The event is an instance of [Event].
+   */
   ViewEventListenerList get layout();
+  /** Indicates a view has been attached to a document.
+   *
+   * The event is an instance of [Event].
+   */
   ViewEventListenerList get enterDocument();
+  /** Indicates a view has been detached from a document.
+   *
+   * The event is an instance of [Event].
+   */
   ViewEventListenerList get exitDocument();
 }
 
@@ -127,4 +148,5 @@ class _ViewEvents extends _ViewEventListenerMap implements ViewEvents {
   ViewEventListenerList get exitDocument() => _get("exitDocument");
 
   ViewEventListenerList get check() => _get("check");
+  ViewEventListenerList get select() => _get("select");
 }

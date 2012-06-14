@@ -10,7 +10,8 @@
  * Notice that the value of the radio button ([ButtonRadio.value]) will be
  * assigned with [data]. Thus, the application shall not change it.
  */
-typedef RadioButton RadioGroupRenderer(RadioGroup group, View before, var data, bool selected, int index);
+typedef RadioButton RadioGroupRenderer(
+  RadioGroup group, View before, var data, bool selected, bool disabled, int index);
 
 /**
  * A radio group.
@@ -23,12 +24,13 @@ typedef RadioButton RadioGroupRenderer(RadioGroup group, View before, var data, 
 class RadioGroup<E> extends View {
   RadioButton _selItem;
   ListModel<E> _model;
-  ListDataListener _dataListener;
+  DataEventListener _dataListener;
   RadioGroupRenderer _renderer;
   bool _rendering = false, //whether it's rendering model
     _modelUpdating = false; //whether it's updating model (such as selection)
 
-  RadioGroup([ListModel<E> model]) {
+  RadioGroup([ListModel<E> model, RadioGroupRenderer renderer]) {
+    _renderer = renderer;
     this.model = model;
   }
 
@@ -48,21 +50,21 @@ class RadioGroup<E> extends View {
 
       if (_model !== model) { //Note: it is not !=
         if (_model !== null)
-          _model.removeListDataListener(_dataListener);
+          _model.on.all.remove(_dataListener);
 
         _model = model;
-        _model.addListDataListener(_initDataListener());
+        _model.on.all.add(_initDataListener());
       }
       modelRenderer.queue(this); //queue for later operation (=> renderModel_)
     } else if (_model !== null) {
-      _model.removeListDataListener(_dataListener);
+      _model.on.all.remove(_dataListener);
       _model = null;
       children.clear();
     }
   }
-  ListDataListener _initDataListener() {
+  DataEventListener _initDataListener() {
     if (_dataListener === null) {
-      _dataListener = (ListDataEvent event) {
+      _dataListener = (event) {
         if (!_modelUpdating)
           modelRenderer.queue(this);
       };
@@ -98,7 +100,9 @@ class RadioGroup<E> extends View {
           _renderer !== null ? _renderer: _defRenderer();
         for (int j = 0, len = _model.length; j < len; ++j) {
           final obj = _model[j];
-          renderer(this, null, obj, _cast(_model).isSelected(obj), j)
+          final model = _cast(_model);
+          renderer(this, null, obj, model.isSelected(obj),
+            model is Disables && model.isDisabled(obj), j)
             .value = obj;
         }
       } finally {
@@ -111,9 +115,10 @@ class RadioGroup<E> extends View {
   static _cast(var v) => v; //TODO: replace with 'as' when Dart supports it
   static RadioGroupRenderer _defRenderer() {
     if (_$defRenderer === null)
-      _$defRenderer = (RadioGroup group, View before, var data, bool selected, int index) {
+      _$defRenderer = (RadioGroup group, View before, var data, bool selected, bool disabled, int index) {
         final btn = new RadioButton("$data");
         btn.checked = selected;
+        btn.disabled = disabled;
         group.addChild(btn, before);
         return btn;
       };

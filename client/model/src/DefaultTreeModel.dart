@@ -17,9 +17,20 @@
  * and then override [DefaultTreeNode.loadLazily_] to return the initial child nodes.
  */
 class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
-  DefaultTreeModel(TreeNode<E> root,
-  [Set<TreeNode<E>> selection, Set<TreeNode<E>> opens, bool multiple=false]):
-  super(root, selection, opens, multiple) {
+  /** Constructor.
+   *
+   * Notice that a tree node ([TreeNode]) can't be shared in two tree model.
+   *
+   * + [selection]: if not null, it will be used to hold the selection.
+   * Unlike [set selection], it won't make a copy.
+   * + [disables]: if not null, it will be used to hold the list of disabled items.
+   * Unlike [set disables], it won't make a copy.
+   * + [opens]: if not null, it will be used to hold the list of opened items.
+   * Unlike [set opens], it won't make a copy.
+   */
+  DefaultTreeModel(TreeNode<E> root, [Set<TreeNode<E>> selection,
+  Set<TreeNode<E>> disables, Set<TreeNode<E>> opens, bool multiple=false]):
+  super(root, selection, disables, opens, multiple) {
     final TreeNode<E> p = root.parent;
     if (p !== null)
       throw new ModelException("Only root node is allowed, not ${root}");

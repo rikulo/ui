@@ -19,6 +19,9 @@ interface Selection<E> {
   Set<E> get selection();
   /**
    * Replace the current selection with the given set.
+   *
+   * Notice this method copies the content of [selection], so it is OK
+   * to use it after the invocation.
    */
   void set selection(Collection<E> selection);
   /** Returns whether an object is selected.
@@ -38,7 +41,7 @@ interface Selection<E> {
   /**
    * Remove the specified object from selection.
    * It returns whether it is removed successfully.
-   * Returns false if is not selected.
+   * Returns false if it is not selected.
    */
   bool removeFromSelection(Object obj);
   /**

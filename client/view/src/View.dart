@@ -1080,7 +1080,7 @@ class View implements Hashable {
   }
 
   /** Removes an event listener.
-   * `addEventListener("click", listener)` is the same as
+   * `removeEventListener("click", listener)` is the same as
    * `on.click.remove(listener)`.
    */
   bool removeEventListener(String type, ViewEventListener listener) {

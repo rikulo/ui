@@ -2,20 +2,27 @@
 //History: Thu Feb 16 14:52:22 TST 2012
 // Author: tomyeh
 
-/** The listener for [ListDataEvent]
- */
-typedef void ListDataListener(ListDataEvent event);
-
 /**
  * A data model representing a list of data.
+ *
+ * Instead of implementing this interface from scratch, it is suggested
+ * to extend from [AbstractListModel] or [AbstractDataModel].
+ *
+ * Notice the default implementation is [DefaultListModel] that implements
+ * [ListModel], [Selection] and [Disables].
  */
-interface ListModel<E> default DefaultListModel<E> {
+interface ListModel<E> extends DataModel default DefaultListModel<E> {
   /** Constructor.
    *
    * Notice that once [data] is assigned to a list model, you shall not
    * modify the data directly since UI won't update the changes correctly.
+   *
+   * + [selection]: if not null, it will be used to hold the selection.
+   * Unlike [set selection], it won't make a copy.
+   * + [disables]: if not null, it will be used to hold the list of disabled items.
+   * Unlike [set disables], it won't make a copy.
    */
-  ListModel(List<E> data);
+  ListModel(List<E> data, [Set<E> selection, Set<E> disables, bool multiple]);
 
   /** Returns the value at the specified index.
    */
@@ -23,15 +30,6 @@ interface ListModel<E> default DefaultListModel<E> {
   /** Returns the length of the list.
    */
   int get length();
-
-  /** Adds a listener to the list that's notified each time a change
-   * to the data model occurs. 
-   */
-  void addListDataListener(ListDataListener listener);
-  /** Removes a listener from the list that's notified each time
-   * a change to the data model occurs. 
-   */
-  void removeListDataListener(ListDataListener listener) ;
 }
 
 /** A data model representing a list of data and it allows the user
@@ -41,12 +39,17 @@ interface ListModel<E> default DefaultListModel<E> {
  * directly. However, it is convenient that you can instantiate an instance
  * from it and access the methods in both interfaces.
  */
-interface ListSelectionModel<E> extends ListModel<E>, Selection<E>
+interface ListSelectionModel<E> extends ListModel<E>, Selection<E>, Disables<E>
 default DefaultListModel<E> {
   /** Constructor.
    *
    * Notice that once [data] is assigned to a list model, you shall not
    * modify the data directly since UI won't update the changes correctly.
+   *
+   * + [selection]: if not null, it will be used to hold the selection.
+   * Unlike [set selection], it won't make a copy.
+   * + [disables]: if not null, it will be used to hold the list of disabled items.
+   * Unlike [set disables], it won't make a copy.
    */
-  ListSelectionModel(List<E> data);
+  ListSelectionModel(List<E> data, [Set<E> selection, Set<E> disables, bool multiple]);
 }

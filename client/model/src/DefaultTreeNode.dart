@@ -36,7 +36,7 @@ class DefaultTreeNode<E> implements TreeNode<E> {
 
       final DefaultTreeModel<E> m = model;
       if (m !== null)
-        m.sendEvent_(new TreeDataEvent(DataEventType.CONTENT_CHANGED, this));
+        m.sendEvent(new TreeDataEvent(model, 'change', this));
     }
   }
 
@@ -83,7 +83,7 @@ class DefaultTreeNode<E> implements TreeNode<E> {
 
     final DefaultTreeModel<E> m = model;
     if (m !== null)
-      m.sendEvent_(new TreeDataEvent(DataEventType.DATA_ADDED, child));
+      m.sendEvent(new TreeDataEvent(model, 'add', child));
   }
   TreeNode<E> remove(int index) {
     _init();
@@ -101,7 +101,7 @@ class DefaultTreeNode<E> implements TreeNode<E> {
     }
 
     if (m !== null)
-      m.sendEvent_(new TreeDataEvent(DataEventType.DATA_REMOVED, child));
+      m.sendEvent(new TreeDataEvent(model, 'remove', child));
     return child;
   }
   static void _cleanSelOpen(DefaultTreeModel m, TreeNode child) {
@@ -126,7 +126,7 @@ class DefaultTreeNode<E> implements TreeNode<E> {
       _children = null;
 
       if (m !== null) {
-        m.sendEvent_(new TreeDataEvent(DataEventType.CONTENT_CHANGED, this));
+        m.sendEvent(new TreeDataEvent(model, 'change', this));
       }
     }
   }
