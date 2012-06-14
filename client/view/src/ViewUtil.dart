@@ -2,6 +2,63 @@
 //History: Fri, May 11, 2012  6:16:53 PM
 // Author: tomyeh
 
+/** An UI exception.
+ */
+class UIException implements Exception {
+  final String message;
+
+  const UIException(String this.message);
+  String toString() => "UIException($message)";
+}
+
+/**
+ * An ID space.
+ */
+interface IdSpace {
+  /** Searches and returns the first view that matches the given selector,
+   * or null if not found.
+   */
+  View query(String selector);
+  /** Searches and returns all views that matches the selector (never null).
+   */
+  List<View> queryAll(String selector);
+  /** Returns the view of the given ID, or null if not found.
+   */
+  View getFellow(String id);
+  /** Returns a readoly collection of all fellows in this ID space.
+   *
+   * Note: don't modify the returned list. Otherwise, the result is
+   * unpreditable.
+   */
+  Collection<View> get fellows();
+}
+
+/**
+ * A declaration of properties.
+ */
+interface Declaration default DeclarationImpl {
+  Declaration();
+
+  /** The text representation of the declaration block.
+   * Setting this attribute will reset all properties.
+   */
+  String text;
+  /** Returns a collection of properties that are assigned with
+   * a non-empty value.
+   */
+  Collection<String> getPropertyNames();
+  /** Retrieves the property's value.
+   */
+  String getPropertyValue(String propertyName);
+  /** Removes the property of the given name.
+   */
+  String removeProperty(String propertyName);
+  /** Sets the value of the given property.
+   * If the given value is null or empty, the property will be removed.
+   */
+  void setProperty(String propertyName, String value);
+}
+
 /**
  * A collection of [View] utitiles.
  */
