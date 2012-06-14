@@ -24,6 +24,7 @@ implements TreeSelectionModel<E> {
   AbstractTreeModel(E root, [Set<E> selection, Set<E> disables,
   Set<E> opens, bool multiple=false]):
   super(selection, disables, multiple) {
+    _root = root;
     _opens = opens !== null ? opens: new Set();
   }
 

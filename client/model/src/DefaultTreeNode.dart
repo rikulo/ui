@@ -20,10 +20,14 @@ class DefaultTreeNode<E> implements TreeNode<E> {
   List<TreeNode<E>> _children;
   E _data;
   bool _leaf, _loaded = false;
+  int _uuid;
 
-  DefaultTreeNode([bool leaf]) {
+  DefaultTreeNode([E data, bool leaf]) {
+    _data = data;
     _leaf = leaf;
+    _uuid = _$uuid++;
   }
+  static int _$uuid = 0;
   DefaultTreeModel<E> get model() => _parent !== null ? _parent.model: _model;
   void set model(DefaultTreeModel<E> model) {
     _model = model;
@@ -45,7 +49,7 @@ class DefaultTreeNode<E> implements TreeNode<E> {
   TreeNode<E> getChildAt(int childIndex) {
     _init();
     if (_children === null)
-      throw const IndexOutOfRangeException(childIndex);
+      throw new IndexOutOfRangeException(childIndex);
     return _children[childIndex];
   }
   int get childCount() {
@@ -84,6 +88,12 @@ class DefaultTreeNode<E> implements TreeNode<E> {
     final DefaultTreeModel<E> m = model;
     if (m !== null)
       m.sendEvent(new TreeDataEvent(model, 'add', child));
+  }
+  void addAll(Collection<TreeNode<E>> children, [int index]) {
+    if (index === null)
+      index = _children !== null ? _children.length: 0;
+    for (final TreeNode<E> child in children)
+      add(child, index++);
   }
   TreeNode<E> remove(int index) {
     _init();
@@ -155,4 +165,8 @@ class DefaultTreeNode<E> implements TreeNode<E> {
    */
   Collection<TreeNode<E>> loadLazily_() => null;
   String toString() => "DefaultTreeNode($data)";
+
+  int hashCode() {
+    return _uuid;
+  }
 }

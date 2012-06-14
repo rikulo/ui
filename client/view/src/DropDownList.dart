@@ -69,6 +69,13 @@ class DropDownList<E> extends View {
   DataModel get model() => _model;
   /** Sets the model.
    * The model must be an instance of [ListModel] or [TreeModel].
+   *
+   * ##Note of Using [TreeModel]##
+   *
+   * + The non-leaf node ([TreeModel.isLeaf] is false) can't be selected.
+   * + [TreeModel.root] won't be rendered (so it can be anything)
+   * + Only `root`'s children and grand-children nodes will be rendered.
+   * In other words, it renders only two levels of nodes.
    */
   void set model(DataModel model) {
     if (model !== null) {
@@ -142,12 +149,20 @@ class DropDownList<E> extends View {
       _rendering = false;
     }
   }
-  static DropDownListRenderer _defRenderer() {
-    if (_$defRenderer === null)
-      _$defRenderer = (DropDownList ddlist, var data, bool selected, bool disabled, int index) => "$data";
-    return _$defRenderer;
+  static DropDownListRenderer _defListRenderer() {
+    if (_$defListRenderer === null)
+      _$defListRenderer = (DropDownList ddlist, var data, bool selected, bool disabled, int index)
+        => "$data";
+    return _$defListRenderer;
   }
-  static DropDownListRenderer _$defRenderer;
+  static DropDownListRenderer _$defListRenderer;
+  static DropDownListRenderer _defTreeRenderer() {
+    if (_$defTreeRenderer === null)
+      _$defTreeRenderer = (DropDownList ddlist, var data, bool selected, bool disabled, int index)
+        => data is TreeNode ? "${data.data}": "$data";
+    return _$defTreeRenderer;
+  }
+  static DropDownListRenderer _$defTreeRenderer;
 
   //@Override
   void enterDocument_() {
@@ -158,17 +173,13 @@ class DropDownList<E> extends View {
       if (_model !== null) {
         final SelectElement n = node;
         if (_cast(_model).multiple) {
-          int i = 0;
-          for (OptionElement opt in n.options) {
-            if (opt.selected)
-              if (_model is ListModel) {
-                final ListModel model = _model;
-                selValues.add(model[i]);
-              } else {
-                final TreeModel model = _model;
-                //TODO
-              }
-            ++i;
+          for (OptionElement opt in n.selectedOptions) {
+            if (_model is ListModel) {
+              final ListModel model = _model;
+              selValues.add(model[opt.index]);
+            } else {
+              selValues.add(_treeValueOf(opt));
+            }
           }
         } else {
           final int i = n.selectedIndex;
@@ -177,8 +188,7 @@ class DropDownList<E> extends View {
               final ListModel model = _model;
               selValues.add(model[i]);
             } else {
-              final TreeModel model = _model;
-              //TODO
+              selValues.add(_treeValueOf(n.options[i]));
             }
           }
         }
@@ -211,7 +221,7 @@ class DropDownList<E> extends View {
     if (autofocus)
       out.add(' autofocus="autofocus"');
     if (_model !== null && _cast(_model).multiple)
-      out.add(' multiple="multiple"');
+      out.add(' multiple="multiple" size="1"');
     super.domAttrs_(out, noId, noStyle, noClass);
   }
   //@Override
@@ -219,28 +229,71 @@ class DropDownList<E> extends View {
     if (_model === null)
       return; //nothing to do
 
-    final DropDownListRenderer renderer =
-      _renderer !== null ? _renderer: _defRenderer();
     if (_model is ListModel) {
+      final DropDownListRenderer renderer =
+        _renderer !== null ? _renderer: _defListRenderer();
       final ListModel model = _model;
       for (int j = 0, len = model.length; j < len; ++j) {
-        out.add('<option');
         final obj = model[j];
         final bool selected = _cast(_model).isSelected(obj);
-        if (selected)
-          out.add(' selected="selected"');
         final bool disabled = _model is Disables && _cast(_model).isDisabled(obj);
-        if (disabled)
-          out.add(' disabled="disabled"');
+        out.add('<option');
+        _renderAttrs(out, selected, disabled);
         out.add('>')
-         .add(StringUtil.encodeXML(renderer(this, obj, selected, disabled, j)))
-         .add('</option>');
-         //Note: Firefox doesn't support <option label="xx">
+          .add(StringUtil.encodeXML(renderer(this, obj, selected, disabled, j)))
+          .add('</option>');
+        //Note: Firefox doesn't support <option label="xx">
       }
     } else {
       final TreeModel model = _model;
-      //TODO
+      _renderTree(out, model,
+        _renderer !== null ? _renderer: _defTreeRenderer(), model.root, -1);
     }
+  }
+  void _renderTree(StringBuffer out, TreeModel<E> model,
+  DropDownListRenderer renderer, var node, int parentIndex) {
+    for (int j = 0, len = model.getChildCount(node); j < len; ++j) {
+      final E child = model.getChild(node, j);
+      final bool selected = _cast(_model).isSelected(child);
+      final bool disabled = _model is Disables && _cast(_model).isDisabled(child);
+      final String label =
+        StringUtil.encodeXML(renderer(this, child, selected, disabled, j));
+      if (model.isLeaf(child)) {
+        out.add('<option');
+        _renderAttrs(out, selected, disabled);
+
+        //store the path in value
+        out.add(' value="');
+        if (parentIndex >= 0)
+          out.add(parentIndex).add('.');
+        out.add(j).add('">').add(label).add('</option>');
+      } else {
+        if (parentIndex >= 0)
+          throw new UIException("Only two levels allowed, $model");
+
+        out.add('<optgroup');
+        _renderAttrs(out, selected, disabled);
+        out.add(' label="').add(label).add('">');
+
+        _renderTree(out, model, renderer, child, j);
+
+        out.add('</optgroup>');
+      }
+    }
+  }
+  E _treeValueOf(OptionElement option) {
+    final List<int> path = new List();
+    for (final String v in option.value.split('.'))
+      path.add(Math.parseInt(v));
+
+    final TreeModel<E> model = _model;
+    return model.getChildAt(path);
+  }
+  static void _renderAttrs(StringBuffer out, bool selected, bool disabled) {
+    if (selected)
+      out.add(' selected="selected"');
+    if (disabled)
+      out.add(' disabled="disabled"');
   }
 
   //@Override
