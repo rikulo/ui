@@ -4,11 +4,15 @@
 
 /**
  * A radio button.
+ *
  * To group a collection of radio buttons, you have to create an instance of [RadioGroup]
- * to represent then group and then
- * handle the check event for the radio group. You don't need to handle
- * radio buttons seperately since the check event ([CheckEvent]) will be forwarded to the radio
- * group.
+ * to represent then group and then handle the select event, [SelectEvent],
+ * for the radio group (note: not the check event).
+ * You don't need to handle radio buttons seperately.
+ *
+ *     radioGroup.on.select.add((SelectEvent event) {
+ *       ...
+ *     });
  *
  * To associate a radio button, you can make a radio button as a descendant
  * of a radio group, or you can assign it explicitly with [radioGroup].
@@ -71,12 +75,19 @@ class RadioButton<E> extends CheckBox<E> {
 
     final RadioGroup group = radioGroup;
     if (group !== null) {
-      final RadioButton oldradio = group.selectedItem;
+      RadioButton selItem = group.selectedItem;
       group._updateSelected(this, _checked);
 
-      if (oldradio !== null)
-        oldradio.sendEvent(new CheckEvent(oldradio, !_checked));
-      group.sendEvent(event);
+      if (selItem !== null) //notify the previous radio button
+        selItem.sendEvent(new CheckEvent(selItem, !_checked));
+
+      final Set<RadioButton> selItems = new Set();
+      final Set<E> selValues = new Set();
+      if ((selItem = group.selectedItem) !== null) {
+        selItems.add(selItem);
+        selValues.add(selItem.value);
+      }
+      group.sendEvent(new SelectEvent(group, selItems, selValues));
     }
   }
   //@Override

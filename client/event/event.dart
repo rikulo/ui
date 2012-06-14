@@ -12,7 +12,7 @@
 #source("src/ViewEvent.dart");
 #source("src/ViewEvents.dart");
 #source("src/Broadcaster.dart");
-#source("src/BroadcastEvents.dart");
 #source("src/PopupEvent.dart");
 #source("src/CheckEvent.dart");
 #source("src/ChangeEvent.dart");
+#source("src/SelectEvent.dart");

@@ -10,6 +10,12 @@ typedef String DropDownListRenderer(
 /**
  * Represents a view that allows the user to select a single item
  * from a drop-down list.
+ *
+ * ##Events##
+ *
+ * + select: an instance of [SelectEvent] indicates the selected item has been changed.
+ * Notice that [SelectEvent.selectedItems] is always null. Use [SelectEvent.selectedValues]
+ * instead.
  */
 class DropDownList<E> extends View {
   DataModel _model;
@@ -146,27 +152,44 @@ class DropDownList<E> extends View {
     super.enterDocument_();
 
     node.on.change.add((e) {
+      final Set<E> selValues = new Set();
       if (_model !== null) {
-        final List<E> sel = new List();
         final SelectElement n = node;
-        final int i = n.selectedIndex;
-        if (i >= 0) {
-          if (_model is ListModel) {
-            final ListModel model = _model;
-            sel.add( model[i]);
-          } else {
-            final TreeModel model = _model;
-            //TODO
+        if (_cast(_model).multiple) {
+          int i = 0;
+          for (OptionElement opt in n.options) {
+            if (opt.selected)
+              if (_model is ListModel) {
+                final ListModel model = _model;
+                selValues.add(model[i]);
+              } else {
+                final TreeModel model = _model;
+                //TODO
+              }
+            ++i;
+          }
+        } else {
+          final int i = n.selectedIndex;
+          if (i >= 0) {
+            if (_model is ListModel) {
+              final ListModel model = _model;
+              selValues.add(model[i]);
+            } else {
+              final TreeModel model = _model;
+              //TODO
+            }
           }
         }
 
         _modelUpdating = true;
         try {
-          _cast(_model).selection = sel;
+          _cast(_model).selection = selValues;
         } finally {
           _modelUpdating = false;
         }
       }
+
+      sendEvent(new SelectEvent(this, null, selValues));
     });
 
      _fixIndex();

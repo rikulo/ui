@@ -18,8 +18,7 @@ typedef RadioButton RadioGroupRenderer(
  *
  * ##Events##
  *
- * + check: an instance of [CheckEvent] indicates the check state is changed.
- * Notice that [CheckEvent.target] is an instance of [RadioButton] that has been checked.
+ * + select: an instance of [SelectEvent] indicates the selected item has been changed.
  */
 class RadioGroup<E> extends View {
   RadioButton _selItem;

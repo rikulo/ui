@@ -34,4 +34,9 @@ class ListUtil {
       throw new IndexOutOfRangeException(start + length);
     }
   }
+
+  /** Returns the first element of the given collection, or null.
+   */
+  static first(Collection col)
+  => col.isEmpty() ? null: col.iterator().next();
 }

@@ -31,7 +31,7 @@ implements Selection<E>, Disables<E> {
   }
 
   //Selection//
-  E get firstSelection() => _selection.isEmpty() ? null: _selection.iterator().next();
+  E get firstSelection() => ListUtil.first(_selection);
   Set<E> get selection() => _selection;
 
   void set selection(Collection<E> selection) {

@@ -2,11 +2,10 @@
 //History: Fri, May 25, 2012  5:00:33 PM
 // Author: tomyeh
 
-#import('dart:html');
-
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/model/model.dart');
+#import('../../client/event/event.dart');
 #import('../../client/util/util.dart');
 
 class TestRadioGroupModel extends Activity {
@@ -24,7 +23,10 @@ class TestRadioGroupModel extends Activity {
     });
 
     //create first radio group
-    createRadioGroup(model);
+    createRadioGroup(model)
+    .on.select.add((SelectEvent<RadioButton, String> event) {
+      log("RG) $event, ${event.selectedValues}");
+    });
 
     int i = 0;
     Button btn = new Button("add");
@@ -39,7 +41,10 @@ class TestRadioGroupModel extends Activity {
     createRadioGroup(model);
 
     //Add the drop-down list that share the same model
-    createDropDownList(model);
+    createDropDownList(model)
+    .on.select.add((SelectEvent<View, String> event) {
+      log("DD) $event");
+    });;
   }
   RadioGroup createRadioGroup(ListModel<String> model) {
     final RadioGroup rg = new RadioGroup(model: model);
