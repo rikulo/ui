@@ -27,9 +27,8 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
     propertyName = CSS.name(propertyName);
 
     final String prev = _pcss !== null ? _pcss.removeProperty(propertyName): "";
-    Element node;
-    if (_view !== null && (node = _view.node) !== null)
-      node.style.removeProperty(propertyName);
+    if (_view !== null && _view.inDocument)
+      _view.node.style.removeProperty(propertyName);
     return prev;
   }
 
@@ -40,15 +39,13 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
     if (priority === null) {
       _css.setProperty(propertyName, value);
 
-      Element node;
-      if (_view !== null && (node = _view.node) !== null)
-        node.style.setProperty(propertyName, value);
+      if (_view !== null && _view.inDocument)
+        _view.node.style.setProperty(propertyName, value);
     } else {
       _css.setProperty(propertyName, value, priority);
 
-      Element node;
-      if (_view !== null && (node = _view.node) !== null)
-        node.style.setProperty(propertyName, value, priority);
+      if (_view !== null && _view.inDocument)
+        _view.node.style.setProperty(propertyName, value, priority);
     }
   }
 
@@ -57,9 +54,8 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
     if (_pcss !== null || (value !== null && !value.isEmpty()))
       _css.cssText = value;
 
-    Element node;
-    if (_view !== null && (node = _view.node) !== null)
-      node.style.cssText = value;
+    if (_view !== null && _view.inDocument)
+      _view.node.style.cssText = value;
   }
 
   int get length() => _pcss !== null ? _pcss.length: 0;

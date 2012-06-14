@@ -393,9 +393,11 @@ class View implements Hashable {
     childNode.remove();
   }
 
-  /** Returns the DOM element associated with this view.
-   * This method returns null if this view is not bound the DOM, i.e.,
-   * [inDocument] is false.
+  /** Returns the DOM element associated with this view (never null).
+   *
+   * This method throws an exception if this view is attached to the document yet
+   * (i.e., [inDocument] is false). Notice that when [Activity.onCreate_]
+   * is called, [Activity.mainView] is not attached to the document yet.
    *
    * To retrieve a child element, use the [getNode] method instead.
    *
@@ -403,15 +405,20 @@ class View implements Hashable {
    * you might have to override [insertChildToDocument_] and/or
    * [removeChildFromDocument_] if they share the same DOM element.
    */
-  Element get node()
-  => _node !== null ? _node: _inDoc ? (_node=document.query("#$uuid")): null;
-  /** Returns the child element of the given sub-ID.
+  Element get node() => _node !== null ? _node: getNode(null);
+  /** Returns the child element of the given sub-ID, or null if not found.
    * This method assumes the ID of the child element the concatenation of
    * uuid, dash ('-'), and subId.
+   *
+   * This method throws an exception if this view is attached to the document yet
+   * (i.e., [inDocument] is false). Notice that when [Activity.onCreate_]
+   * is called, [Activity.mainView] is not attached to the document yet.
    */
-  Element getNode(String subId) =>
-    _inDoc ? document.query(subId != null && subId.length > 0 ?
-           "#$uuid-$subId": "#$uuid"): null;
+  Element getNode(String subId) {
+    if (!_inDoc)
+      throw new UIException("Not in document, $this. Don't access node in Activity.onCreate_().");
+    return document.query(subId != null && subId.length > 0 ? "#$uuid-$subId": "#$uuid");
+  }
   /** Returns if this view has been attached to the document.
    */
   bool get inDocument() => _inDoc;
@@ -441,6 +448,9 @@ class View implements Hashable {
    * [ScrollView] is a typical example.
    */
   void adjustInnerNode_([bool bLeft=false, bool bTop=false, bool bWidth=false, bool bHeight=false]) {
+    if (!_inDoc)
+      return; //nothing to do
+
     final Element n = node, inner = innerNode;
     if (inner !== n) {
       //sync innerNode's positon and size
@@ -752,9 +762,8 @@ class View implements Hashable {
   void set hidden(bool hidden) {
     _hidden = hidden;
 
-    final Element n = node;
-    if (n !== null)
-      n.hidden = hidden;
+    if (_inDoc)
+      node.hidden = hidden;
   }
 
   /** Returns the left position of this view relative to its parent.
@@ -767,9 +776,8 @@ class View implements Hashable {
   void set left(int left) {
     _left = left;
 
-    final Element n = node;
-    if (n !== null)
-      n.style.left = CSS.px(left);
+    if (_inDoc)
+      node.style.left = CSS.px(left);
   }
   /** Returns the top position of this view relative to its parent.
    *
@@ -781,9 +789,8 @@ class View implements Hashable {
   void set top(int top) {
     _top = top;
 
-    final Element n = node;
-    if (n !== null)
-      n.style.top = CSS.px(top);
+    if (_inDoc)
+      node.style.top = CSS.px(top);
   }
 
   /** Returns the width of this view.
@@ -798,10 +805,8 @@ class View implements Hashable {
   void set width(int width) {
     _width = width;
 
-    final Element n = node;
-    if (n !== null) {
-      n.style.width = CSS.px(width);
-
+    if (_inDoc) {
+      node.style.width = CSS.px(width);
       adjustInnerNode_(bWidth: true);
     }
   }
@@ -817,10 +822,8 @@ class View implements Hashable {
   void set height(int height) {
     _height = height;
 
-    final Element n = node;
-    if (n !== null) {
-      n.style.height = CSS.px(height);
-
+    if (_inDoc) {
+      node.style.height = CSS.px(height);
       adjustInnerNode_(bHeight: true);
     }
   }
@@ -1072,11 +1075,9 @@ class View implements Hashable {
       return [];
     }).add(listener);
 
-    Element n;
     DOMEventDispatcher disp;
-    if (first && (n = node) != null
-    && (disp = getDOMEventDispatcher_(type)) != null)
-      domListen_(n, type, disp);
+    if (first && _inDoc && (disp = getDOMEventDispatcher_(type)) != null)
+      domListen_(node, type, disp);
   }
 
   /** Removes an event listener.
@@ -1089,14 +1090,12 @@ class View implements Hashable {
     if (_evlInfo !== null && _evlInfo.listeners !== null
     && (ls = _evlInfo.listeners[type]) != null) {
       int j = ls.indexOf(listener);
-      Element n;
       if (j >= 0) {
         found = true;
 
         ls.removeRange(j, 1);
-        if (ls.isEmpty() && (n = node) != null
-        && getDOMEventDispatcher_(type) != null)
-          domUnlisten_(n, type);
+        if (ls.isEmpty() && _inDoc && getDOMEventDispatcher_(type) != null)
+          domUnlisten_(node, type);
       }
     }
     return found;

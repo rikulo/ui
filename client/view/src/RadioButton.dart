@@ -115,9 +115,9 @@ class RadioButton<E> extends CheckBox<E> {
         else
           newgroup._updateSelected(this, true);
       }
-      final InputElement n = inputNode;
-      if (n !== null)
-        n.name = newgroup !== null ? newgroup.uuid: "";
+
+      if (inDocument)
+        inputNode.name = newgroup !== null ? newgroup.uuid: "";
     }
   }
 

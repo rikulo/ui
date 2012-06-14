@@ -39,9 +39,11 @@ class DropDownList<E> extends View {
    */
   void set disabled(bool disabled) {
     _disabled = disabled;
-    final SelectElement n = node;
-    if (n != null)
+
+    if (inDocument) {
+      final SelectElement n = node;
       n.disabled = _disabled;
+    }
   }
 
   /** Returns whether this button should automatically get focus.
@@ -53,10 +55,9 @@ class DropDownList<E> extends View {
    */
   void set autofocus(bool autofocus) {
     _autofocus = autofocus;
-    if (autofocus) {
+    if (autofocus && inDocument) {
       final SelectElement n = node;
-      if (n != null)
-        n.focus();
+      n.focus();
     }
   }
 
@@ -86,9 +87,10 @@ class DropDownList<E> extends View {
       if (_model !== null) {
         _model.on.all.add(_initDataListener());
 
-        final SelectElement n = node;
-        if (n !== null)
+        if (inDocument) {
+          final SelectElement n = node;
           n.multiple = _cast(_model).multiple;
+        }
       }
 
       modelRenderer.queue(this); //queue even if _model is null (since cleanup is a bit tricky)

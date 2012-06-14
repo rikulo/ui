@@ -196,24 +196,19 @@ class _ClassSet extends HashSetImplementation<String> {
 
   void add(String name) {
     super.add(name);
-    final Element n = view.node;
-    if (n != null)
-      n.classes.add(name);
+    if (view.inDocument)
+      view.node.classes.add(name);
   }
   bool remove(String name) {
     final bool removed = super.remove(name);
-    if (removed) {
-      final Element n = view.node;
-      if (n != null)
-        n.classes.remove(name);
-    }
+    if (removed && view.inDocument)
+      view.node.classes.remove(name);
     return removed;
   }
   void clear() {
     super.clear();
-    final Element n = view.node;
-    if (n != null)
-      n.classes.clear();
+    if (view.inDocument)
+      view.node.classes.clear();
   }
 }
 

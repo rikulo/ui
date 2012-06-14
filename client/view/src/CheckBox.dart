@@ -45,9 +45,9 @@ class CheckBox<E> extends TextView {
    */
   void set checked(bool checked) {
     _checked = checked;
-    InputElement n = inputNode;
-    if (n != null)
-      n.checked = _checked;
+
+    if (inDocument)
+      inputNode.checked = _checked;
   }
 
   /** Returns whether it is disabled.
@@ -59,9 +59,9 @@ class CheckBox<E> extends TextView {
    */
   void set disabled(bool disabled) {
     _disabled = disabled;
-    InputElement n = inputNode;
-    if (n != null)
-      n.disabled = _disabled;
+
+    if (inDocument)
+      inputNode.disabled = _disabled;
   }
 
   /** Returns whether this button should automatically get focus.
@@ -73,11 +73,8 @@ class CheckBox<E> extends TextView {
    */
   void set autofocus(bool autofocus) {
     _autofocus = autofocus;
-    if (autofocus) {
-      InputElement n = inputNode;
-      if (n != null)
-        n.focus();
-    }
+    if (autofocus && inDocument)
+      inputNode.focus();
   }
   /** Returns the INPUT element in this view.
    */

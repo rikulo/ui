@@ -47,9 +47,8 @@ class TextView extends View {
    * and then update [node]'s innerHTML.
    */
   void updateInner_() {
-    final Element n = node;
-    if (n != null)
-      n.innerHTML = innerHTML_;
+    if (inDocument)
+      node.innerHTML = innerHTML_;
   }
   /** Returns the HTML content.
    *

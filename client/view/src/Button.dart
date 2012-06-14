@@ -25,9 +25,11 @@ class Button extends TextView {
    */
   void set type(String type) {
     _type = type == null || type.isEmpty() ? "button": type;
-    ButtonElement n = node;
-    if (n != null)
+
+    if (inDocument) {
+      ButtonElement n = node;
       n.$dom_setAttribute('type', _type); //Chrome's type can't be assigned directly
+    }
   }
   /** Returns whether it is disabled.
    *
@@ -38,9 +40,11 @@ class Button extends TextView {
    */
   void set disabled(bool disabled) {
     _disabled = disabled;
-    final ButtonElement n = node;
-    if (n != null)
+
+    if (inDocument) {
+      final ButtonElement n = node;
       n.disabled = _disabled;
+    }
   }
 
   /** Returns whether this button should automatically get focus.
@@ -52,10 +56,9 @@ class Button extends TextView {
    */
   void set autofocus(bool autofocus) {
     _autofocus = autofocus;
-    if (autofocus) {
+    if (autofocus && inDocument) {
       final ButtonElement n = node;
-      if (n != null)
-        n.focus();
+      n.focus();
     }
   }
 
