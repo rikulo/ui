@@ -11,11 +11,9 @@
 #source("src/DataEvent.dart");
 #source("src/DataModel.dart");
 #source("src/AbstractSelectionModel.dart");
-#source("src/ModelException.dart");
 
 #source("src/ListModel.dart");
 #source("src/ListDataEvent.dart");
-#source("src/AbstractListModel.dart");
 #source("src/DefaultListModel.dart");
 
 #source("src/TreeModel.dart");

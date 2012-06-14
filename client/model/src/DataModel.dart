@@ -26,6 +26,15 @@ interface DataModel {
   bool sendEvent(DataEvent event);
 }
 
+/** A model exception.
+ */
+class ModelException implements Exception {
+  final String message;
+
+  const ModelException(String this.message);
+  String toString() => "ModelException($message)";
+}
+
 /**
  * A skeletal implementation of [DataModel], [Selection] and [Disables].
  */
