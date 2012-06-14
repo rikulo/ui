@@ -2,6 +2,41 @@
 //History: Fri, May 11, 2012  6:16:53 PM
 // Author: tomyeh
 
+/** An UI exception.
+ */
+class UIException implements Exception {
+  final String message;
+
+  const UIException(String this.message);
+  String toString() => "UIException($message)";
+}
+
+/**
+ * A declaration of properties.
+ */
+interface Declaration default DeclarationImpl {
+  Declaration();
+
+  /** The text representation of the declaration block.
+   * Setting this attribute will reset all properties.
+   */
+  String text;
+  /** Returns a collection of properties that are assigned with
+   * a non-empty value.
+   */
+  Collection<String> getPropertyNames();
+  /** Retrieves the property's value.
+   */
+  String getPropertyValue(String propertyName);
+  /** Removes the property of the given name.
+   */
+  String removeProperty(String propertyName);
+  /** Sets the value of the given property.
+   * If the given value is null or empty, the property will be removed.
+   */
+  void setProperty(String propertyName, String value);
+}
+
 /**
  * A collection of [View] utitiles.
  */
