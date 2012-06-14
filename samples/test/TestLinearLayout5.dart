@@ -1,7 +1,5 @@
 //Sample Code: LinearLayout Test 5
 
-#import('dart:html');
-
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 

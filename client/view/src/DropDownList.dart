@@ -152,7 +152,7 @@ class DropDownList<E> extends View {
     super.enterDocument_();
 
     node.on.change.add((e) {
-      final Set<E> selValues = new Set();
+      final List<E> selValues = new List();
       if (_model !== null) {
         final SelectElement n = node;
         if (_cast(_model).multiple) {

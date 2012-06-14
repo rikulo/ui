@@ -2,8 +2,6 @@
 //History: Fri, May 25, 2012  5:00:33 PM
 // Author: tomyeh
 
-#import('dart:html');
-
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 

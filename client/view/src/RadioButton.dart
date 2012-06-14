@@ -81,8 +81,10 @@ class RadioButton<E> extends CheckBox<E> {
       if (selItem !== null) //notify the previous radio button
         selItem.sendEvent(new CheckEvent(selItem, !_checked));
 
-      final Set<RadioButton> selItems = new Set();
-      final Set<E> selValues = new Set();
+      //note: we have to use List rather than Set since 1) value might be null,
+      //2) the order might be different
+      final List<RadioButton> selItems = new List();
+      final List<E> selValues = new List();
       if ((selItem = group.selectedItem) !== null) {
         selItems.add(selItem);
         selValues.add(selItem.value);

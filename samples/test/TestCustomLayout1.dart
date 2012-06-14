@@ -1,7 +1,5 @@
 //Sample Code: Custom Layout Test 1
 
-#import('dart:html');
-
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 

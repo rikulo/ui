@@ -1,7 +1,5 @@
 //Sample Code: Cut-and-Paste
 
-#import('dart:html');
-
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/html/html.dart');

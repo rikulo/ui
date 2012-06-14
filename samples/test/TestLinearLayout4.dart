@@ -1,7 +1,5 @@
 //Sample Code: LinearLayout Test 4
 
-#import('dart:html');
-
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/event/event.dart');
@@ -48,11 +46,10 @@ class TestLinearLayout4 extends Activity {
     view.addChild(ckbox);
 
     RadioGroup group = new RadioGroup();
-      group.on.check.add((CheckEvent event) {
-        final RadioButton target = event.target;
-        target.text = 'checked: ${++clickCount}';
-        target.parent.requestLayout();
-      });
+    group.on.select.add((SelectEvent<RadioButton, String> event) {
+      event.firstSelectedItem.text = 'checked: ${++clickCount}';
+      group.requestLayout();
+    });
     _setHLayout(group);
     _setBorder(group);
     group.layout.spacing = "0 5";

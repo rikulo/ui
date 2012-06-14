@@ -1,7 +1,5 @@
 //Sample Code: Test Log
 
-#import('dart:html');
-
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/util/util.dart');
