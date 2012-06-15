@@ -61,6 +61,9 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
 	 * If either parent or child is null, returns -1.
 	 * If either parent or child don't belong to this tree model, returns -1. 
 	 *
+	 * This method is designed for use in application. The impelmentation of a view
+	 * shall access API available in [TreeModel]
+	 *
 	 * + [parent] is a node in the tree, obtained from [root] or [getChild].
 	 * + [child] the node we are interested in 
 	 */
@@ -70,6 +73,9 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
 	/**
 	 * Returns the path from the given child, where the path indicates the child is
 	 * placed in the whole tree.
+	 *
+	 * This method is designed for use in application. The impelmentation of a view
+	 * shall access API available in [TreeModel]
 	 */
   List<int> getPath(TreeNode<E> child) { //optional but provided for better performance
     List<int> path = new List();

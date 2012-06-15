@@ -61,7 +61,7 @@ class DefaultTreeNode<E> implements TreeNode<E> {
   TreeNode<E> get parent() => _parent;
 
   /**
-   * Returns the child ([TreeNode]) at the given index.
+   * Returns the index of this child ([TreeNode]).
    *
    * The implementation uses `List.indexOf` to retrieve the index, so the
    * performance might not be good if the list is big.

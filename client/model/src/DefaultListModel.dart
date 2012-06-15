@@ -33,6 +33,17 @@ class DefaultListModel<E> extends AbstractListModel<E> {
   int get length() => _data.length;
 
   //additional interface//
+  /** Returns the index of the given data, or -1 if not found.
+   *
+   * The implementation uses `List.indexOf` to retrieve the index, so the
+   * performance might not be good if the list is big.
+   * If the list is sorted, you can override this method to utilize it.
+	 *
+	 * This method is designed for use in application. The impelmentation of a view
+	 * shall access API available in [TreeModel].
+	 */
+	int indexOf(E value) => _data.indexOf(value);
+
   /** Assigns a value to the given index.
    */
   void operator[]=(int index, E value) {
