@@ -6,6 +6,16 @@
  * The default implementation of [TreeModel].
  * It assumes each node of the tree is an instance of [TreeNode].
  *
+ * Example,
+ *
+    DefaultTreeModel<String> model = new DefaultTreeModel();
+    model.root.addAll([
+      "Wonderland",
+      new TreeNode("Australia",
+        ["Sydney", "Melbourne", "Port Hedland"]),
+      new TreeNode("New Zealand",
+        ["Cromwell", "Queenstown"])]);
+ *
  * ##Big Tree##
  *
  * To implement a big tree, it is better to load the children only when they
@@ -21,6 +31,7 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
    *
    * Notice that a tree node ([TreeNode]) can't be shared in two tree model.
    *
+   * + [root]: the root. If not specified, a default tree node will be instantiated.
    * + [selection]: if not null, it will be used to hold the selection.
    * Unlike [set selection], it won't make a copy.
    * + [disables]: if not null, it will be used to hold the list of disabled items.
@@ -28,23 +39,28 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
    * + [opens]: if not null, it will be used to hold the list of opened items.
    * Unlike [set opens], it won't make a copy.
    */
-  DefaultTreeModel(TreeNode<E> root, [Set<TreeNode<E>> selection,
+  DefaultTreeModel([TreeNode<E> root, Set<TreeNode<E>> selection,
   Set<TreeNode<E>> disables, Set<TreeNode<E>> opens, bool multiple=false]):
-  super(root, selection, disables, opens, multiple) {
+  super(root !== null ? root: (root = new TreeNode()), selection, disables, opens, multiple) {
     final TreeNode<E> p = root.parent;
     if (p !== null)
       throw new ModelException("Only root node is allowed, not ${root}");
     root.model = this;
   }
 
-  TreeNode<E> getChild(TreeNode<E> parent, int index)
-  => parent.getChildAt(index);
-  int getChildCount(TreeNode<E> parent)
-  => parent.childCount;
-  bool isLeaf(TreeNode<E> node)
-  => node.isLeaf();
+  TreeNode<E> getChild(TreeNode<E> parent, int index) => parent[index];
+  int getChildCount(TreeNode<E> parent) => parent.length;
+  bool isLeaf(TreeNode<E> node) => node.isLeaf();
 
-  //optional but provided for better performance
+  //Additional API//
+	/**
+	 * Returns the index of the given child in the given parent.
+	 * If either parent or child is null, returns -1.
+	 * If either parent or child don't belong to this tree model, returns -1. 
+	 *
+	 * + [parent] is a node in the tree, obtained from [root] or [getChild].
+	 * + [child] the node we are interested in 
+	 */
   int getIndexOfChild(TreeNode<E> parent, TreeNode<E> child)
   => parent === child.parent ? child.index: -1;
 

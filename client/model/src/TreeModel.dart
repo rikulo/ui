@@ -26,11 +26,19 @@
  *
  * ##Path##
  *
- * A node of the tree model can be presented by an integer array called `path`
- * (see also [getPath]).
- * For example, [0, 1, 2] represents a node at the third level since
+ * A node of the tree model can be presented by an integer array called `path`.
+ * For example, [0, 2, 1] represents a node at the third level (excluding root) since
  * there are three elements. Furthermore, it is the root's the first child's
- * the second child's third child.
+ * the third child's second child. YOu can retrieve it as follows
+ *
+ *     model.getChildAt([0, 2, 1]);
+ *
+ * [TreeModel] doesn't not provide API to retrieve the path of a given node
+ * (since sometimes it is hard to get). Thus, the view that supports [TreeModel]
+ * shall store the path, if necessary, when rendering.
+ *
+ * On the other hand, [DefaultTreeModel] and [TreeNode] do
+ * provide `getPath()` to retrieve the path of any given node.
  *
  * ##Selection##
  *
@@ -72,15 +80,6 @@ interface TreeModel<E> extends DataModel {
 	bool isLeaf(E node);
 
 	/**
-	 * Returns the index of the given child in the given parent.
-	 * If either parent or child is null, returns -1.
-	 * If either parent or child don't belong to this tree model, returns -1. 
-	 *
-	 * + [parent] is a node in the tree, obtained from [root] or [getChild].
-	 * + [child] the node we are interested in 
-	 */
-	int getIndexOfChild(E parent, E child);
-	/**
 	 * Returns the child at the given path where the path indicates the child is
 	 * placed in the whole tree.
 	 *
@@ -88,11 +87,6 @@ interface TreeModel<E> extends DataModel {
 	 * represents the first child's the second child's third child.
 	 */
 	E getChildAt(List<int> path);
-	/**
-	 * Returns the path from the given child, where the path indicates the child is
-	 * placed in the whole tree.
-	 */
-	List<int> getPath(E child);
 }
 
 /** A data model representing a tree of data and it allows the user to select any data of it.

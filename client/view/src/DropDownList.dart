@@ -149,20 +149,13 @@ class DropDownList<E> extends View {
       _rendering = false;
     }
   }
-  static DropDownListRenderer _defListRenderer() {
-    if (_$defListRenderer === null)
-      _$defListRenderer = (DropDownList ddlist, var data, bool selected, bool disabled, int index)
-        => "$data";
-    return _$defListRenderer;
-  }
-  static DropDownListRenderer _$defListRenderer;
-  static DropDownListRenderer _defTreeRenderer() {
-    if (_$defTreeRenderer === null)
-      _$defTreeRenderer = (DropDownList ddlist, var data, bool selected, bool disabled, int index)
+  static DropDownListRenderer _defRenderer() {
+    if (_$defRenderer === null)
+      _$defRenderer = (DropDownList ddlist, var data, bool selected, bool disabled, int index)
         => data is TreeNode ? "${data.data}": "$data";
-    return _$defTreeRenderer;
+    return _$defRenderer;
   }
-  static DropDownListRenderer _$defTreeRenderer;
+  static DropDownListRenderer _$defRenderer;
 
   //@Override
   void enterDocument_() {
@@ -231,7 +224,7 @@ class DropDownList<E> extends View {
 
     if (_model is ListModel) {
       final DropDownListRenderer renderer =
-        _renderer !== null ? _renderer: _defListRenderer();
+        _renderer !== null ? _renderer: _defRenderer();
       final ListModel model = _model;
       for (int j = 0, len = model.length; j < len; ++j) {
         final obj = model[j];
@@ -247,7 +240,7 @@ class DropDownList<E> extends View {
     } else {
       final TreeModel model = _model;
       _renderTree(out, model,
-        _renderer !== null ? _renderer: _defTreeRenderer(), model.root, -1);
+        _renderer !== null ? _renderer: _defRenderer(), model.root, -1);
     }
   }
   void _renderTree(StringBuffer out, TreeModel<E> model,

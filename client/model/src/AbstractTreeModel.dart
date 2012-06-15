@@ -45,13 +45,6 @@ implements TreeSelectionModel<E> {
     }
   }
 
-  int getIndexOfChild(E parent, E child) {
-    final int cnt = _childCount(parent);
-    for (int j = 0; j < cnt; ++j)
-      if (child == getChild(parent, j))
-        return j;
-    return -1;
-  }
   E getChildAt(List<int> path) {
     if (path === null || path.length == 0)
       return root;
@@ -69,29 +62,6 @@ implements TreeSelectionModel<E> {
     }
     return node;
   }
-	/**
-	 * Returns the path from the given child, where the path indicates the child is
-	 * placed in the whole tree.
-	 *
-	 * The performance of the default implementation is not good because of deep-first-search.
-	 * It is suggested to override it if you have a better algorithm
-	 */
-  List<int> getPath(E child) {
-		final List<int> path = new List();
-		_dfSearch(path, root, child);
-		return path;
-	}
-	bool _dfSearch(List<int> path, E node, E target){
-		if (node == target)
-			return true;
-
-		for (int i = 0, size = _childCount(node); i< size; i++)
-			if (_dfSearch(path, getChild(node, i), target)){
-				path.insertRange(0, 1, i);
-				return true;
-			}
-		return false;
-	}
   int _childCount(E parent) => isLeaf(parent) ? 0: getChildCount(parent);
 
   //Open//

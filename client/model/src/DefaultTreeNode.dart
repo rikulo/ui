@@ -22,10 +22,12 @@ class DefaultTreeNode<E> implements TreeNode<E> {
   bool _leaf, _loaded = false;
   int _uuid;
 
-  DefaultTreeNode([E data, bool leaf]) {
+  DefaultTreeNode([E data, Collection children, bool leaf]) {
     _data = data;
     _leaf = leaf;
     _uuid = _$uuid++;
+    if (children !== null)
+      addAll(children);
   }
   static int _$uuid = 0;
   DefaultTreeModel<E> get model() => _parent !== null ? _parent.model: _model;
@@ -46,18 +48,25 @@ class DefaultTreeNode<E> implements TreeNode<E> {
 
   bool isLeaf() => _leaf !== null ? _leaf: _children === null || _children.isEmpty();
 
-  TreeNode<E> getChildAt(int childIndex) {
+  TreeNode<E> operator[](int childIndex) {
     _init();
     if (_children === null)
       throw new IndexOutOfRangeException(childIndex);
     return _children[childIndex];
   }
-  int get childCount() {
+  int get length() {
      _init();
     return _children !== null ? _children.length: 0;
   }
   TreeNode<E> get parent() => _parent;
 
+  /**
+   * Returns the child ([TreeNode]) at the given index.
+   *
+   * The implementation uses `List.indexOf` to retrieve the index, so the
+   * performance might not be good if the list is big.
+   * If the list is sorted, you can override this method to utilize it.
+   */
   int get index() {
     if (_parent === null)
       return 0;
@@ -90,15 +99,17 @@ class DefaultTreeNode<E> implements TreeNode<E> {
       m.sendEvent(new TreeDataEvent(model, 'add', child));
   }
   void addAll(Collection<TreeNode<E>> children, [int index]) {
+    _init();
     if (index === null)
       index = _children !== null ? _children.length: 0;
-    for (final TreeNode<E> child in children)
-      add(child, index++);
+
+    for (final child in children)
+      add(child is TreeNode ? child: new TreeNode(child), index++);
   }
   TreeNode<E> remove(int index) {
     _init();
     final DefaultTreeModel<E> m = model;
-    TreeNode<E> child = getChildAt(index);
+    TreeNode<E> child = this[index];
 
     if (m !== null)
       _cleanSelOpen(m, child);
@@ -120,8 +131,8 @@ class DefaultTreeNode<E> implements TreeNode<E> {
     m._opens.remove(child);
 
     if (!child.isLeaf()) {
-      for (int i = 0, len = child.childCount; i < len; ++i)
-        _cleanSelOpen(m, child.getChildAt(i));
+      for (int i = 0, len = child.length; i < len; ++i)
+        _cleanSelOpen(m, child[i]);
     }
   }
   void clear() {
