@@ -24,9 +24,19 @@
 class RadioButton<E> extends CheckBox<E> {
   RadioGroup _group;
 
-  RadioButton([String text="", String html="", bool checked=false, E value]):
-  super(text, html, checked, value) {
-  }
+  /** Instantaites with a plain text.
+   * The text will be encoded to make sure it is valid HTML text.
+   */
+  RadioButton([String text, bool checked, E value]):
+  super(text, checked, value);
+  /** Instantiates with a HTML fragment.
+   *
+   * + [html] specifies a HTML fragment.
+   * Notie it must be a valid HTML fragment. Otherwise, the result is
+   * unpreditable.
+   */
+  RadioButton.html(String html, [bool checked, E value]):
+  super.html(html, checked, value);
 
   //@Override
   String get className() => "RadioButton"; //TODO: replace with reflection if Dart supports it

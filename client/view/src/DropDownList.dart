@@ -239,8 +239,9 @@ class DropDownList<E> extends View {
       }
     } else {
       final TreeModel model = _model;
-      _renderTree(out, model,
-        _renderer !== null ? _renderer: _defRenderer(), model.root, -1);
+      if (model.root !== null)
+        _renderTree(out, model,
+          _renderer !== null ? _renderer: _defRenderer(), model.root, -1);
     }
   }
   void _renderTree(StringBuffer out, TreeModel<E> model,

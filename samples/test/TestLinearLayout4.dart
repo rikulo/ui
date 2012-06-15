@@ -15,7 +15,7 @@ class TestLinearLayout4 extends Activity {
     view.profile.width = view.profile.height = "flex";
     mainView.addChild(view);
 
-    TextView text = new TextView(html: '<h1 style="margin:0">$title</h1>');
+    TextView text = new TextView.html('<h1 style="margin:0">$title</h1>');
     _setBorder(text);
     view.addChild(text);
 
@@ -72,7 +72,7 @@ class TestLinearLayout4 extends Activity {
     logView.profile.width = logView.profile.height = "flex";
     logView.style.backgroundColor = "#cca";
     _setBorder(logView);
-    TextView text = new TextView(html: '<h2 style="margin:0">Log View</h2>');
+    TextView text = new TextView.html('<h2 style="margin:0">Log View</h2>');
     _setBorder(text);
     logView.addChild(text);
 

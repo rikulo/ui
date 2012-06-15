@@ -12,10 +12,22 @@
 class TextView extends View {
   String _text, _html;
 
-  TextView([String text="", String html=""]) {
+  /** Instantaites with a plain text.
+   * The text will be encoded to make sure it is valid HTML text.
+   */
+  TextView([String text]) {
     _text = text != null ? text: "";
+    _html = "";
+  }
+  /** Instantiates with a HTML fragment.
+   *
+   * + [html] specifies a HTML fragment.
+   * Notie it must be a valid HTML fragment. Otherwise, the result is
+   * unpreditable.
+   */
+  TextView.html(String html) {
     _html = html != null ? html: "";
-    //TODO: support image
+    _text = "";
   }
 
   //@Override

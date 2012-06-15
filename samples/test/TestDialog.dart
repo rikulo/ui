@@ -11,6 +11,7 @@ class TestDialog extends Activity {
     btn.profile.text = "anchor: parent; location: center left";
     btn.on.click.add((event) {
       View dlg = new TextView("Clicked me to close");
+      dlg.style.cssText = "text-align: center; padding-top: 20px";
       dlg.profile.text = "location: center center;width:30%;height:20%";
       dlg.classes.add("v-dialog");
       dlg.on.click.add((e) {
@@ -23,7 +24,7 @@ class TestDialog extends Activity {
     btn = new Button("Replace the main View");
     btn.profile.text = "anchor: parent; location: center right";
     btn.on.click.add((event) {
-      mainView = new TextView(html: "<h1>New Main View</h1>");
+      mainView = new TextView.html("<h1>New Main View</h1><p>The main view has been replaced</p>");
     });
     mainView.addChild(btn);
   }

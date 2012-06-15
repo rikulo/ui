@@ -21,8 +21,26 @@ class CheckBox<E> extends TextView {
   bool _checked = false, _disabled = false, _autofocus = false;
   EventListener _onInputClick;
 
-  CheckBox([String text="", String html="", bool checked=false, E this.value]):
-  super(text, html), _checked = checked {
+  /** Instantaites with a plain text.
+   * The text will be encoded to make sure it is valid HTML text.
+   */
+  CheckBox([String text, bool checked, E this.value]): super(text) {
+    _init(checked);
+  }
+  /** Instantiates with a HTML fragment.
+   *
+   * + [html] specifies a HTML fragment.
+   * Notie it must be a valid HTML fragment. Otherwise, the result is
+   * unpreditable.
+   */
+  CheckBox.html(String html, [bool checked, E this.value]): super.html(html) {
+    _init(checked);
+  }
+  void _init(bool checked) {
+    _checked = checked !== null && checked;
+    _initCallback();
+  }
+  void _initCallback() {
     _onInputClick = (Event event) {
       final InputElement n = event.srcElement;
       final bool cked = n.checked;

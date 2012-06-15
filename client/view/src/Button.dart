@@ -7,9 +7,17 @@ class Button extends TextView {
   String _type = "button";
   bool _disabled = false, _autofocus = false;
 
-  Button([String text="", String html=""]):
-  super(text, html) {
-  }
+  /** Instantaites with a plain text.
+   * The text will be encoded to make sure it is valid HTML text.
+   */
+  Button([String text]): super(text);
+  /** Instantiates with a HTML fragment.
+   *
+   * + [html] specifies a HTML fragment.
+   * Notie it must be a valid HTML fragment. Otherwise, the result is
+   * unpreditable.
+   */
+  Button.html(String html): super.html(html);
 
   //@Override
   String get className() => "Button"; //TODO: replace with reflection if Dart supports it
