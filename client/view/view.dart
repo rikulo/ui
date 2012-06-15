@@ -22,6 +22,7 @@
 #source("src/ProfileDeclaration.dart");
 #source("src/LayoutDeclaration.dart");
 #source("src/_ViewImpl.dart");
+#source("src/HTMLFragment.dart");
 #source("src/Section.dart");
 #source("src/TextView.dart");
 #source("src/Button.dart");

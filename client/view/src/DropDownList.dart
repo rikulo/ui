@@ -152,7 +152,7 @@ class DropDownList<E> extends View {
   static DropDownListRenderer _defRenderer() {
     if (_$defRenderer === null)
       _$defRenderer = (DropDownList ddlist, var data, bool selected, bool disabled, int index)
-        => data is TreeNode ? "${data.data}": "$data";
+        => HTMLFragment.getHTML(data, false); //handles TreeNode/Map
     return _$defRenderer;
   }
   static DropDownListRenderer _$defRenderer;
