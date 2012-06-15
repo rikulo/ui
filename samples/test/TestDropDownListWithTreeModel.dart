@@ -33,14 +33,12 @@ class TestDropDownListWithTreeModel extends Activity {
     createDropDownList(model);
   }
   DefaultTreeModel<String> createTreeModel() {
-    final DefaultTreeModel<String> model = new DefaultTreeModel();
-    model.root.addAll([
+    return new DefaultTreeModel<String>(nodes: [
       "Wonderland",
       new TreeNode("Australia",
         ["Sydney", "Melbourne", "Port Hedland"]),
       new TreeNode("New Zealand",
         ["Cromwell", "Queenstown"])]);
-    return model;
   }
   DropDownList createDropDownList(DefaultTreeModel<String> model) {
     final DropDownList ddlist = new DropDownList(model: model);

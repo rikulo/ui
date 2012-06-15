@@ -9,13 +9,13 @@
 interface TreeNode<E> extends Hashable default DefaultTreeNode<E> {
   /** Constructor.
    *
-   * + [children] is a collection of children to add. Any element of it can
+   * + [nodes] is a collection of nodes to add. Any element of it can
    * be [TreeNode] or the data. Refer to [addAll] for more information.
    * + [leaf] specifies whether this node is a leaf node.
    * If null, whether this node is a leaf node is decided automatically
    * based on whether it has no child at all.
    */
-  TreeNode([E data, Collection children, bool leaf]);
+  TreeNode([E data, Collection nodes, bool leaf]);
 
   /** Returns the tree model this node belongs to.
    */
@@ -66,18 +66,18 @@ interface TreeNode<E> extends Hashable default DefaultTreeNode<E> {
   void add(TreeNode<E> child, [int index]);
   /** Adds a collection of children nodes.
    *
-   * Each element of the given children can be an instance of [TreeNode]
+   * Each element of the given [nodes] can be an instance of [TreeNode]
    * or the data. For example,
    *
    *     node.addAll(["apple", "orange"]);
    *     node.addAll([new TreeNode("group", ["item1", "item2"])]);
    *
-   * + [children] is a collection of children to add. Any element of it can
+   * + [nodes] is a collection of nodes to add. Any element of it can
    * be [TreeNode] or the data.
    * + [index] is the index that [child] will be added at.
    * If null, [child] will be added to the end.
    */
-  void addAll(Collection children, [int index]);
+  void addAll(Collection nodes, [int index]);
   /** Removes the child at index from this node.
    *
    * This method returns the tree node being removed.

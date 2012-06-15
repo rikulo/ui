@@ -8,8 +8,7 @@
  *
  * Example,
  *
-    DefaultTreeModel<String> model = new DefaultTreeModel();
-    model.root.addAll([
+    new DefaultTreeModel<String>(nodes: [
       "Wonderland",
       new TreeNode("Australia",
         ["Sydney", "Melbourne", "Port Hedland"]),
@@ -32,6 +31,8 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
    * Notice that a tree node ([TreeNode]) can't be shared in two tree model.
    *
    * + [root]: the root. If not specified, a default tree node will be instantiated.
+   * + [nodes] is a collection of nodes to add. Any element of it can
+   * be [TreeNode] or the data.
    * + [selection]: if not null, it will be used to hold the selection.
    * Unlike [set selection], it won't make a copy.
    * + [disables]: if not null, it will be used to hold the list of disabled items.
@@ -39,13 +40,15 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
    * + [opens]: if not null, it will be used to hold the list of opened items.
    * Unlike [set opens], it won't make a copy.
    */
-  DefaultTreeModel([TreeNode<E> root, Set<TreeNode<E>> selection,
+  DefaultTreeModel([TreeNode<E> root, Collection nodes, Set<TreeNode<E>> selection,
   Set<TreeNode<E>> disables, Set<TreeNode<E>> opens, bool multiple=false]):
   super(root !== null ? root: (root = new TreeNode()), selection, disables, opens, multiple) {
     final TreeNode<E> p = root.parent;
     if (p !== null)
       throw new ModelException("Only root node is allowed, not ${root}");
     root.model = this;
+    if (nodes !== null)
+      root.addAll(nodes);
   }
 
   TreeNode<E> getChild(TreeNode<E> parent, int index) => parent[index];

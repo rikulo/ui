@@ -22,12 +22,12 @@ class DefaultTreeNode<E> implements TreeNode<E> {
   bool _leaf, _loaded = false;
   int _uuid;
 
-  DefaultTreeNode([E data, Collection children, bool leaf]) {
+  DefaultTreeNode([E data, Collection nodes, bool leaf]) {
     _data = data;
     _leaf = leaf;
     _uuid = _$uuid++;
-    if (children !== null)
-      addAll(children);
+    if (nodes !== null)
+      addAll(nodes);
   }
   static int _$uuid = 0;
   DefaultTreeModel<E> get model() => _parent !== null ? _parent.model: _model;
@@ -98,13 +98,13 @@ class DefaultTreeNode<E> implements TreeNode<E> {
     if (m !== null)
       m.sendEvent(new TreeDataEvent(model, 'add', child));
   }
-  void addAll(Collection<TreeNode<E>> children, [int index]) {
+  void addAll(Collection nodes, [int index]) {
     _init();
     if (index === null)
       index = _children !== null ? _children.length: 0;
 
-    for (final child in children)
-      add(child is TreeNode ? child: new TreeNode(child), index++);
+    for (final node in nodes)
+      add(node is TreeNode ? node: new TreeNode(node), index++);
   }
   TreeNode<E> remove(int index) {
     _init();
