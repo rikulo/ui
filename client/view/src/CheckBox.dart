@@ -124,12 +124,8 @@ class CheckBox<E> extends TextView {
   }
   //@Override
   void domInner_(StringBuffer out) {
-    out.add('<input type="').add(domInputType_)
-      .add('" id="').add(uuid).add('-inp"');
+    out.add('<input type="checkbox" id="').add(uuid).add('-inp"');
 
-    String s = domInputName_;
-    if (s != null)
-      out.add(' name="').add(s).add('"');
     if (_checked)
       out.add(' checked="checked"');
     if (_disabled)
@@ -139,15 +135,5 @@ class CheckBox<E> extends TextView {
     out.add('/><label for="').add(uuid).add('-inp" class="')
       .add(viewConfig.classPrefix).add('inner">').add(innerHTML_).add('</label>');
   }
-  /** Returns the input's type.
-   *
-   * Default: checkbox.
-   */
-  String get domInputType_() => "checkbox";
-  /** Returns the input's name.
-   *
-   * Default: null (means ignored)
-   */
-  String get domInputName_() => null;
   String toString() => "$className('$text$html', $checked)";
 }

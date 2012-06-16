@@ -5,36 +5,31 @@
 /**
  * A select event. It is sent with [ViewEvents.select].
  */
-class SelectEvent<Item extends View, E> extends ViewEvent {
-  final Collection<Item> _selectedItems;
+class SelectEvent<E> extends ViewEvent {
   final Collection<E> _selectedValues;
+  final int _selectedIndex;
 
   /** Constructor.
    *
-   * + [selectedItems] is the set of selected items. It is null if the selected values
-   * are not associated with any view.
-   * + [selectedValues] is the set of selected values. It cannot be null.
+   * + [selectedValues] is the set of selected values. It can't be null.
+   * + [selectedIndex] is the index of the first selected value, or -1
+   * if [selectedValues] is empty.
    */
-  SelectEvent(Item target, Collection<Item> selectedItems, Collection<E> selectedValues, [String type="select"]):
-  super(target, type), _selectedItems = selectedItems, _selectedValues = selectedValues;
-
-  /** Returns the selected items (aka., [View]), or null if it is not associated
-   * with any views.
-   *
-   * Note, unlike [selectedValues], this method might return null. It indicates
-   * the selected values are not associated with any views.
-   */
-  Collection<Item> get selectedItems() => _selectedItems;
-  /** Returns the first selected item, or null if no selected item.
-   */
-  Item get firstSelectedItem() => ListUtil.first(_selectedItems);
+  SelectEvent(View target, Collection<E> selectedValues, int selectedIndex, [String type="select"]):
+  super(target, type), _selectedValues = selectedValues, _selectedIndex = selectedIndex;
 
   /** Returns the selected values.
    */
   Collection<E> get selectedValues() => _selectedValues;
   /** Returns the first selected value, or null if no selected value.
    */
-  E get firstSelectedValue() => ListUtil.first(_selectedValues);
+  E get selectedValue() => ListUtil.first(_selectedValues);
 
-  String toString() => "SelectEvent($target, ${selectedItems !== null ? selectedItems: selectedValues})";
+  /** Returns the first selected index, or -1 if none is selected.
+   *
+   * Notice that [selectedIndex] is meaningless for [TreeModel].
+   */
+  int get selectedIndex() => _selectedIndex;
+
+  String toString() => "SelectEvent($target, $selectedValues, $selectedIndex)";
 }

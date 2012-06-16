@@ -25,7 +25,7 @@ class TestDropDownListWithTreeModel extends Activity {
 
     //create a drop-down list
     createDropDownList(model)
-    .on.select.add((SelectEvent<View, String> event) {
+    .on.select.add((SelectEvent<String> event) {
       log("DD) $event");
     });;
 

@@ -5,7 +5,7 @@
 /** Renders the given data for the given [DropDownList].
  */
 typedef String DropDownListRenderer(
-  DropDownList ddlist, var data, bool selected, bool disabled, int index);
+  DropDownList dlist, var data, bool selected, bool disabled, int index);
 
 /**
  * Represents a view that allows the user to select a single item
@@ -21,6 +21,7 @@ class DropDownList<E> extends View {
   DataModel _model;
   DataEventListener _dataListener;
   DropDownListRenderer _renderer;
+  int _rows = 1;
   bool _rendering = false, //whether it's rendering model
     _modelUpdating = false; //whether it's updating model (such as selection)
   bool _disabled = false, _autofocus = false;
@@ -43,6 +44,22 @@ class DropDownList<E> extends View {
     if (inDocument) {
       final SelectElement n = node;
       n.disabled = _disabled;
+    }
+  }
+
+  /** Returns the number of visible rows.
+   *
+   * Default: 1
+   */
+  int get rows() => _rows;
+  /** Sets the number of visible rows.
+   */
+  void set rows(int rows) {
+    _rows = rows;
+
+    if (inDocument) {
+      final SelectElement n = node;
+      n.size = _rows;
     }
   }
 
@@ -107,8 +124,14 @@ class DropDownList<E> extends View {
   DataEventListener _initDataListener() {
     if (_dataListener === null) {
       _dataListener = (event) {
-        if (!_modelUpdating)
+        if (!_modelUpdating) {
+          if (event.type == 'multiple') {
+            final SelectElement n = node;
+            n.multiple = _cast(_model).multiple;
+            return; //no need to rerender
+          }
           modelRenderer.queue(this);
+        }
       };
     }
     return _dataListener;
@@ -144,6 +167,9 @@ class DropDownList<E> extends View {
         domInner_(out);
         node.innerHTML = out.toString();
         _fixIndex();
+
+        if (parent !== null)
+          parent.requestLayout();
       }
     } finally {
       _rendering = false;
@@ -151,8 +177,8 @@ class DropDownList<E> extends View {
   }
   static DropDownListRenderer _defRenderer() {
     if (_$defRenderer === null)
-      _$defRenderer = (DropDownList ddlist, var data, bool selected, bool disabled, int index)
-        => HTMLFragment.getHTML(data, false); //handles TreeNode/Map
+      _$defRenderer = (DropDownList dlist, var data, bool selected, bool disabled, int index)
+        => HTMLFragment.getHTML(data, false); //handles TreeNode/Map; don't encode
     return _$defRenderer;
   }
   static DropDownListRenderer _$defRenderer;
@@ -163,10 +189,13 @@ class DropDownList<E> extends View {
 
     node.on.change.add((e) {
       final List<E> selValues = new List();
+      int selIndex = -1;
       if (_model !== null) {
         final SelectElement n = node;
         if (_cast(_model).multiple) {
           for (OptionElement opt in n.selectedOptions) {
+            if (selIndex < 0)
+              selIndex = opt.index; //the first selected index
             if (_model is ListModel) {
               final ListModel model = _model;
               selValues.add(model[opt.index]);
@@ -175,13 +204,13 @@ class DropDownList<E> extends View {
             }
           }
         } else {
-          final int i = n.selectedIndex;
-          if (i >= 0) {
+          selIndex = n.selectedIndex;
+          if (selIndex >= 0) {
             if (_model is ListModel) {
               final ListModel model = _model;
-              selValues.add(model[i]);
+              selValues.add(model[selIndex]);
             } else {
-              selValues.add(_treeValueOf(n.options[i]));
+              selValues.add(_treeValueOf(n.options[selIndex]));
             }
           }
         }
@@ -194,7 +223,7 @@ class DropDownList<E> extends View {
         }
       }
 
-      sendEvent(new SelectEvent(this, null, selValues));
+      sendEvent(new SelectEvent(this, selValues, selIndex));
     });
 
      _fixIndex();
@@ -209,12 +238,13 @@ class DropDownList<E> extends View {
   //@Override
   void domAttrs_(StringBuffer out,
   [bool noId=false, bool noStyle=false, bool noClass=false]) {
+    out.add(' size="').add(rows).add('"');
     if (disabled)
       out.add(' disabled="disabled"');
     if (autofocus)
       out.add(' autofocus="autofocus"');
     if (_model !== null && _cast(_model).multiple)
-      out.add(' multiple="multiple" size="1"');
+      out.add(' multiple="multiple"');
     super.domAttrs_(out, noId, noStyle, noClass);
   }
   //@Override
@@ -225,7 +255,7 @@ class DropDownList<E> extends View {
     if (_model is ListModel) {
       final DropDownListRenderer renderer =
         _renderer !== null ? _renderer: _defRenderer();
-      final ListModel model = _model;
+      final ListModel<E> model = _model;
       for (int j = 0, len = model.length; j < len; ++j) {
         final obj = model[j];
         final bool selected = _cast(_model).isSelected(obj);

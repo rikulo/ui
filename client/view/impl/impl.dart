@@ -11,7 +11,6 @@
 #import("../../view/view.dart");
 #import("../../layout/layout.dart");
 
-#source("src/Functions.dart");
 #source("src/CSSStyleDeclarationImpl.dart");
 #source("src/DeclarationImpl.dart");
 #source("src/LayoutDeclarationImpl.dart");

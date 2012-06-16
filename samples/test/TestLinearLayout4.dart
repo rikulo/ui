@@ -3,6 +3,7 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/event/event.dart');
+#import('../../client/model/model.dart');
 
 class TestLinearLayout4 extends Activity {
 
@@ -45,22 +46,21 @@ class TestLinearLayout4 extends Activity {
     });
     view.addChild(ckbox);
 
-    RadioGroup group = new RadioGroup();
-    group.on.select.add((SelectEvent<RadioButton, String> event) {
-      event.firstSelectedItem.text = 'checked: ${++clickCount}';
+    RadioGroup group = new RadioGroup(
+      new ListModel(["horizontal radio", "vertical radio"]));
+    group.on.select.add((SelectEvent<String> event) {
+      final DefaultListModel<String> model = group.model;
+      for (int i = 0; i < model.length; ++i)
+        if (model.isSelected(model[i])) {
+          model.selection = [model[i] = 'checked: ${++clickCount}'];
+          break;
+        }
       group.requestLayout();
     });
     _setHLayout(group);
     _setBorder(group);
     group.layout.spacing = "0 5";
     view.addChild(group);
-
-    RadioButton horz = new RadioButton("horizontal radio");
-    _setBorder(horz);
-    group.addChild(horz);
-    RadioButton vert = new RadioButton("vertical radio");
-    _setBorder(vert);
-    group.addChild(vert);
 
     _addTextWithMaxWidth(view, 150);
   }

@@ -24,12 +24,24 @@ class TestRadioGroupModel extends Activity {
 
     //create first radio group
     createRadioGroup(model)
-    .on.select.add((SelectEvent<RadioButton, String> event) {
-      log("RG) $event, ${event.selectedValues}");
+    .on.select.add((SelectEvent<String> event) {
+      log("RG) $event");
     });
 
+    Button btn = new Button("toggle multiple");
+    btn.on.click.add((event) {
+      model.multiple = !model.multiple;
+    });
+    mainView.addChild(btn);
+
+    btn = new Button("invalidate");
+    btn.on.click.add((event) {
+      mainView.invalidate();
+    });
+    mainView.addChild(btn);
+
     int i = 0;
-    Button btn = new Button("add");
+    btn = new Button("add");
     btn.on.click.add((event) {
       if (i > model.length)
         i = 0;
@@ -42,13 +54,12 @@ class TestRadioGroupModel extends Activity {
 
     //Add the drop-down list that share the same model
     createDropDownList(model)
-    .on.select.add((SelectEvent<View, String> event) {
+    .on.select.add((SelectEvent<String> event) {
       log("DD) $event");
     });;
   }
   RadioGroup createRadioGroup(ListModel<String> model) {
     final RadioGroup rg = new RadioGroup(model: model);
-    rg.layout.text = "type: linear";
     mainView.addChild(rg);
     return rg;
   }

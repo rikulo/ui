@@ -2,6 +2,11 @@
 //History: Thu, Apr 26, 2012  6:20:13 PM
 // Author: tomyeh
 
+/** Returns a DOM-level event listener that converts a DOM event to a view event
+ * ([ViewEvent]) and dispatch to the right target.
+ */
+typedef EventListener DOMEventDispatcher(View target);
+
 /**
  * The configuration of views.
  */

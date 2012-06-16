@@ -6,6 +6,11 @@
  */
 typedef void ViewEffect(View view);
 
+/** Called after views are added to the document, and
+ * all [View.enterDocument_] methods are called.
+ */ 
+typedef void AfterEnterDocument(View view);
+
 /**
  * A view represents the basic building block for user interface.
  * A view defines a rectangular area on the screen and the
@@ -552,28 +557,49 @@ class View implements Hashable {
   /** Binds the view.
    */
   void _enterDocument() {
-    if (_afters == null) _afters = []; //TODO: when Dart supports, initialize it directly in the declaration
-    _afters.addLast([]);
+    ++_enterDocCnt;
+    try {
+      enterDocument_();
+      requestLayout();
+    } finally {
+      --_enterDocCnt;
+    }
 
-    enterDocument_();
-    requestLayout(true); //immediately
+    if (_enterDocCnt == 0) {
+      if (_afters !== null && !_afters.isEmpty()) {
+        final List<List> afters = new List.from(_afters); //to avoid one of callbacks mounts again
+        _afters.clear();
+        for (final List after in afters) {
+          View view = after[0];
+          if (view.inDocument) {
+            AfterEnterDocument call = after[1];
+            call(view);
+          }
+        }
+      }
 
-    for (final AfterEnterDocument call in _afters.removeLast()) {
-      call(this);
+      if (_enterDocCnt == 0)
+        layoutManager.flush(); //for better responsive, do it immediately
     }
   }
   /** Adds a task to be executed after all [enterDocument_] are called.
    *
-   * Notice that this method can be called only in [enterDocument_].
-   * Furthermore, all tasks scheduled with this method will be queued
+   * Notice that all tasks scheduled with this method will be queued
    * and executed righter [enterDocument_] of all views are called.
    *
-   * This method throws [NullPointerException] if not called in [enterDocument_]
+   * It is OK to invoke this method even if [inDocument] is false.
+   * However, when it is time to invoke the queued [after], it will check if
+   * this view is attached to the document. If not, [after] won't be called.
    */
-  static void afterEnterDocument_(AfterEnterDocument after) {
-    _afters.last().add(after);
+  void afterEnterDocument_(AfterEnterDocument after) {
+    if (after === null)
+      throw const UIException("after required");
+    if (_afters === null)
+      _afters = new List();
+    _afters.add([this, after]);
   }
-  static List<List<AfterEnterDocument>> _afters;
+  static List<List> _afters;
+  static int _enterDocCnt = 0;
   
   /** Unbinds the view.
    */

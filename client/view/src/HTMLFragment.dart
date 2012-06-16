@@ -2,13 +2,12 @@
 //History: Fri, Jun 15, 2012  5:26:05 PM
 // Author: tomyeh
 
-typedef void EnterDocument(Element node);
-
 /**
  * Represents a HTML fragment.
  */
 class HTMLFragment {
   final String _html;
+  final bool _complete;
 
   /** Constructs with a plain text. For example,
    *
@@ -21,11 +20,11 @@ class HTMLFragment {
    * ++ If it is [TreeNode], the data field will be used.
    * ++ If it is [Map] and it contains an entry named `"text"`, the entry
    * will be used.
-   * + [enterDocument], if specified, will be invoked after the text
+   * + [enterDocument], if specified, will be invoked after the fragment
    * has been added to the document.
    */
-  HTMLFragment(var text, [EnterDocument this.enterDocument]):
-  _html = getHTML(text);
+  HTMLFragment(var text, [AfterEnterDocument this.enterDocument]):
+  _html = getHTML(text), _complete = false;
   /** Constructs with a HTML fragment. For example
    *
    *    new HTMLFragment(any_data); //any_data will be encoded to a string
@@ -35,17 +34,27 @@ class HTMLFragment {
    * Notice that it must be a valid HTML fragment. Otherwise, the result
    * is unpredictable.
    * ++ If it is null, it is encoded as an empty string.
-   * + [enterDocument], if specified, will be invoked after the html
+   * + [enterDocument], if specified, will be invoked after the fragment
    * has been added to the document.
+   * + [complete] specifies whether this fragment contains all information.
+   * The use depends on the receiver. However, it usually means that
+   * the receiver doesn't have to wrap with additional HTML tags.
    */
-  HTMLFragment.html(String html, [EnterDocument this.enterDocument]):
-  _html = html !== null ? html: "";
+  HTMLFragment.html(String html, [AfterEnterDocument this.enterDocument, bool complete]):
+  _html = html !== null ? html: "", _complete = complete !== null && complete;
 
-  final EnterDocument enterDocument;
+  final AfterEnterDocument enterDocument;
 
   /** Returns the HTML fragment stored in this object.
    */
   String get html() => _html;
+
+  /** Returns whether this fragment contains all information.
+   * The use depends on the receiver. However, it usually means that
+   * the receiver doesn't have to wrap with additional HTML tags.
+   */
+  bool isComplete() => _complete;
+
   String toString() => _html;
 
   /** Converts the given object to valid HTML text.

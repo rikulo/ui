@@ -12,8 +12,9 @@ class TextBox extends View {
   int _maxLength = -1, _cols = 20, _rows = 2;
   bool _disabled = false, _autofocus = false, _autocomplete = true;
 
-  TextBox([String value="", String type="text"]):
-  _value = value, _type = type {
+  TextBox([String value, String type]) {
+    _value = value !== null ? value: "";
+    _type = type !== null ? type: "text";
   }
 
   //@Override

@@ -10,7 +10,7 @@ interface Selection<E> {
   /**
    * Returns the first selected value, or null if none is selected.
    */
-  E get firstSelection();
+  E get selectedValue();
   /**
    * Returns the current selection.
    * It is readonly. Don't modify it directly. Otherwise, UI won't be
