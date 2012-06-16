@@ -65,8 +65,11 @@ class TextBox extends View {
   /** Returns the value of this text box.
    */
   String get value() {
-    final InputElement inp = inputNode;
-    return inp != null ? inp.value: _value;
+    if (inDocument) {
+      final InputElement inp = inputNode;
+      return inp.value;
+    }
+    return _value;
   }
   /** Sets the value of this text box.
    *
