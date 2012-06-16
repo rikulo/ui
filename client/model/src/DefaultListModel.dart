@@ -47,7 +47,19 @@ class DefaultListModel<E> extends AbstractListModel<E> {
   /** Assigns a value to the given index.
    */
   void operator[]=(int index, E value) {
+    final E old = _data[index];
     _data[index] = value;
+
+    //Note: no need to send 'select' since 1) 'change' will update UI
+    //2) if app modifies model in 'select', a dead loop happens (if we send 'select')
+    if (_selection.contains(old)) {
+      _selection.remove(old);
+      _selection.add(value);
+    }
+    if (_disables.contains(old)) {
+      _disables.remove(old);
+      _disables.add(value);
+    }
     sendEvent(new ListDataEvent(this, 'change', index, 1));
   }
   /** Adds a value to the end of the list.

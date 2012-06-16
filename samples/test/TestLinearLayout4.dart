@@ -46,16 +46,12 @@ class TestLinearLayout4 extends Activity {
     });
     view.addChild(ckbox);
 
-    RadioGroup group = new RadioGroup(
-      new ListModel(["horizontal radio", "vertical radio"]));
-    group.on.select.add((SelectEvent<String> event) {
-      final DefaultListModel<String> model = group.model;
-      for (int i = 0; i < model.length; ++i)
-        if (model.isSelected(model[i])) {
-          model.selection = [model[i] = 'checked: ${++clickCount}'];
-          break;
-        }
-      group.requestLayout();
+    final DefaultListModel<String> model =
+      new ListModel(["horizontal radio", "vertical radio"]);
+    model.addToSelection(model[0]);
+    RadioGroup group = new RadioGroup(model);
+    model.on.select.add((event) {
+      model[model.indexOf(model.selectedValue)] = 'checked: ${++clickCount}';
     });
     _setHLayout(group);
     _setBorder(group);

@@ -29,7 +29,7 @@ class RadioGroup<E> extends View {
   DataEventListener _dataListener;
   RadioGroupRenderer _renderer;
   bool _rendering = false, //whether it's rendering model
-    _modelUpdating = false; //whether it's updating model (such as selection)
+    _updModelSel = false; //whether it's updating model's selection
 
   RadioGroup([ListModel<E> model, RadioGroupRenderer renderer]) {
     _renderer = renderer;
@@ -67,7 +67,7 @@ class RadioGroup<E> extends View {
   DataEventListener _initDataListener() {
     if (_dataListener === null) {
       _dataListener = (event) {
-        if (!_modelUpdating)
+        if (!_updModelSel || event.type != 'select')
           modelRenderer.queue(this);
       };
     }
@@ -168,29 +168,27 @@ class RadioGroup<E> extends View {
   }
   static RadioGroupRenderer _$defRenderer;
   void _onCheck(int index, bool checked) {
-    _modelUpdating = true;
     final Selection<E> model = _cast(_model);
+    _updModelSel = true;
     try {
-      final obj = _model[index];
       if (checked)
         model.addToSelection(_model[index]);
       else
         model.removeFromSelection(_model[index]);
-
-      if (model.multiple || !checked) {
-        if (model.isSelectionEmpty()) {
-          index = -1;
-        } else if (!checked || model.selection.length > 1) {
-          index = 0;
-          for (int len = _model.length; index < len; ++index)
-            if (model.isSelected(_model[index]))
-              break; //found
-        }
-      }
     } finally {
-      _modelUpdating = false;
+      _updModelSel = false;
     }
 
+    if (model.multiple || !checked) {
+      if (model.isSelectionEmpty()) {
+        index = -1;
+      } else if (!checked || model.selection.length > 1) {
+        index = 0;
+        for (int len = _model.length; index < len; ++index)
+          if (model.isSelected(_model[index]))
+            break; //found
+      }
+    }
     sendEvent(new SelectEvent(this, model.selection, index));
   }
   void _initRadios() {

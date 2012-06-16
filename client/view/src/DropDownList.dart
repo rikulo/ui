@@ -23,7 +23,7 @@ class DropDownList<E> extends View {
   DropDownListRenderer _renderer;
   int _rows = 1;
   bool _rendering = false, //whether it's rendering model
-    _modelUpdating = false; //whether it's updating model (such as selection)
+    _updModelSel = false; //whether it's updating model's selection
   bool _disabled = false, _autofocus = false;
 
   DropDownList([DataModel model, DropDownListRenderer renderer]) {
@@ -124,7 +124,7 @@ class DropDownList<E> extends View {
   DataEventListener _initDataListener() {
     if (_dataListener === null) {
       _dataListener = (event) {
-        if (!_modelUpdating) {
+        if (!_updModelSel || event.type != 'select') {
           if (event.type == 'multiple') {
             final SelectElement n = node;
             n.multiple = _cast(_model).multiple;
@@ -215,11 +215,11 @@ class DropDownList<E> extends View {
           }
         }
 
-        _modelUpdating = true;
+        _updModelSel = true;
         try {
           _cast(_model).selection = selValues;
         } finally {
-          _modelUpdating = false;
+          _updModelSel = false;
         }
       }
 
