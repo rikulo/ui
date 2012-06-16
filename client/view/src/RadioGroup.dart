@@ -156,7 +156,7 @@ class RadioGroup<E> extends View {
       out.add(hf.html);
 
       if (!complete)
-        out.add('</label>');
+        out.add('</label> ');
     }
   }
   static _cast(var v) => v; //TODO: replace with 'as' when Dart supports it
