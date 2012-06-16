@@ -174,7 +174,7 @@ class LayoutManager extends RunOnceViewManager implements Layout {
   }
   Size _measureByContent(MeasureContext mctx, View view, bool autowidth) {
     CSSStyleDeclaration nodestyle;
-    String orgspace, orgwd;
+    String orgspace, orgwd, orghgh;
     if (autowidth) {
       nodestyle = view.node.style;
       final String pos = nodestyle.position;
@@ -188,7 +188,9 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 
       //we have to reset width since it could be set by layout before and the content is changed
       orgwd = nodestyle.width;
+      orghgh = nodestyle.height;
       nodestyle.width = "";
+      nodestyle.height = "";
     }
 
     final DOMQuery qview = new DOMQuery(view);
@@ -198,6 +200,8 @@ class LayoutManager extends RunOnceViewManager implements Layout {
       nodestyle.whiteSpace = orgspace; //restore
     if (orgwd !== null && !orgwd.isEmpty())
       nodestyle.width = orgwd;
+    if (orghgh !== null && !orghgh.isEmpty())
+      nodestyle.height = orghgh;
 
     final AsInt parentInnerWidth =
       () => view.parent !== null ? view.parent.innerWidth: browser.size.width;
