@@ -22,8 +22,7 @@ class DropDownList<E> extends View {
   DataEventListener _dataListener;
   DropDownListRenderer _renderer;
   int _rows = 1;
-  bool _rendering = false, //whether it's rendering model
-    _updModelSel = false; //whether it's updating model's selection
+  bool _updModelSel = false; //whether it's updating model's selection
   bool _disabled = false, _autofocus = false;
 
   DropDownList([DataModel model, DropDownListRenderer renderer]) {
@@ -158,21 +157,16 @@ class DropDownList<E> extends View {
    */
   void renderModel_() {
     //Note: when this method is called, _model might be null
-    _rendering = true;
-    try {
-      if (browser.msie) { //IE/FF doesn't handle innerHTML well
-        invalidate(true);
-      } else {
-        final StringBuffer out = new StringBuffer();
-        domInner_(out);
-        node.innerHTML = out.toString();
-        _fixIndex();
+    if (browser.msie) { //IE/FF doesn't handle innerHTML well
+      invalidate(true);
+    } else {
+      final StringBuffer out = new StringBuffer();
+      domInner_(out);
+      node.innerHTML = out.toString();
+      _fixIndex();
 
-        if (parent !== null)
-          parent.requestLayout();
-      }
-    } finally {
-      _rendering = false;
+      if (parent !== null)
+        parent.requestLayout();
     }
   }
   static DropDownListRenderer _defRenderer() {

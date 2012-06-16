@@ -28,8 +28,7 @@ class RadioGroup<E> extends View {
   ListModel<E> _model;
   DataEventListener _dataListener;
   RadioGroupRenderer _renderer;
-  bool _rendering = false, //whether it's rendering model
-    _updModelSel = false; //whether it's updating model's selection
+  bool _updModelSel = false; //whether it's updating model's selection
 
   RadioGroup([ListModel<E> model, RadioGroupRenderer renderer]) {
     _renderer = renderer;
@@ -94,23 +93,18 @@ class RadioGroup<E> extends View {
   /** callback by [modelRenderer] to render the model into views.
    */
   void renderModel_() {
-    _rendering = true;
-    try {
-      final StringBuffer out = new StringBuffer();
-      final List<AfterEnterDocument> callbacks = new List();
-      _renderInner(out,  callbacks);
+    final StringBuffer out = new StringBuffer();
+    final List<AfterEnterDocument> callbacks = new List();
+    _renderInner(out,  callbacks);
 
-      node.innerHTML = out.toString();
-      _initRadios();
+    node.innerHTML = out.toString();
+    _initRadios();
 
-      for (final AfterEnterDocument callback in callbacks)
-        callback(this);
+    for (final AfterEnterDocument callback in callbacks)
+      callback(this);
 
-      if (parent !== null)
-        parent.requestLayout();
-    } finally {
-      _rendering = false;
-    }
+    if (parent !== null)
+      parent.requestLayout();
   }
 
   //@override
