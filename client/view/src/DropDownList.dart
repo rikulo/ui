@@ -22,7 +22,7 @@ class DropDownList<E> extends View {
   DataEventListener _dataListener;
   DropDownListRenderer _renderer;
   int _rows = 1;
-  bool _updModelSel = false; //whether it's updating model's selection
+  bool _modelSelUpdating = false; //whether it's updating model's selection
   bool _disabled = false, _autofocus = false;
 
   DropDownList([DataModel model, DropDownListRenderer renderer]) {
@@ -123,14 +123,29 @@ class DropDownList<E> extends View {
   DataEventListener _initDataListener() {
     if (_dataListener === null) {
       _dataListener = (event) {
-        if (!_updModelSel || event.type != 'select') {
-          if (event.type == 'multiple') {
+        switch (event.type) {
+          case 'multiple':
             final SelectElement n = node;
             n.multiple = _cast(_model).multiple;
             return; //no need to rerender
-          }
-          modelRenderer.queue(this);
+          case 'select':
+            if (_modelSelUpdating)
+              return;
+            if (_model is ListModel) { //not easy/worth to optimize handling of TreeModel
+              final HTMLOptionsCollection options = _cast(node).options;
+              final ListModel<E> model = _cast(_model);
+              final Selection<E> selmodel = _cast(_model);
+              final bool multiple = selmodel.multiple;
+              for (int i = 0, len = model.length; i < len; ++i) {
+                final bool seled = _cast(options[i]).selected = selmodel.isSelected(model[i]);
+                if (!multiple && seled)
+                  return; //done
+              }
+              return;
+            }
         }
+
+        modelRenderer.queue(this);
       };
     }
     return _dataListener;
@@ -209,11 +224,11 @@ class DropDownList<E> extends View {
           }
         }
 
-        _updModelSel = true;
+        _modelSelUpdating = true;
         try {
           _cast(_model).selection = selValues;
         } finally {
-          _updModelSel = false;
+          _modelSelUpdating = false;
         }
       }
 
@@ -250,14 +265,14 @@ class DropDownList<E> extends View {
       final DropDownListRenderer renderer =
         _renderer !== null ? _renderer: _defRenderer();
       final ListModel<E> model = _model;
-      for (int j = 0, len = model.length; j < len; ++j) {
-        final obj = model[j];
+      for (int i = 0, len = model.length; i < len; ++i) {
+        final obj = model[i];
         final bool selected = _cast(_model).isSelected(obj);
         final bool disabled = _model is Disables && _cast(_model).isDisabled(obj);
         out.add('<option');
         _renderAttrs(out, selected, disabled);
         out.add('>')
-          .add(StringUtil.encodeXML(renderer(this, obj, selected, disabled, j)))
+          .add(StringUtil.encodeXML(renderer(this, obj, selected, disabled, i)))
           .add('</option>');
         //Note: Firefox doesn't support <option label="xx">
       }
@@ -270,12 +285,12 @@ class DropDownList<E> extends View {
   }
   void _renderTree(StringBuffer out, TreeModel<E> model,
   DropDownListRenderer renderer, var node, int parentIndex) {
-    for (int j = 0, len = model.getChildCount(node); j < len; ++j) {
-      final E child = model.getChild(node, j);
+    for (int i = 0, len = model.getChildCount(node); i < len; ++i) {
+      final E child = model.getChild(node, i);
       final bool selected = _cast(_model).isSelected(child);
       final bool disabled = _model is Disables && _cast(_model).isDisabled(child);
       final String label =
-        StringUtil.encodeXML(renderer(this, child, selected, disabled, j));
+        StringUtil.encodeXML(renderer(this, child, selected, disabled, i));
       if (model.isLeaf(child)) {
         out.add('<option');
         _renderAttrs(out, selected, disabled);
@@ -284,7 +299,7 @@ class DropDownList<E> extends View {
         out.add(' value="');
         if (parentIndex >= 0)
           out.add(parentIndex).add('.');
-        out.add(j).add('">').add(label).add('</option>');
+        out.add(i).add('">').add(label).add('</option>');
       } else {
         if (parentIndex >= 0)
           throw new UIException("Only two levels allowed, $model");
@@ -293,7 +308,7 @@ class DropDownList<E> extends View {
         _renderAttrs(out, selected, disabled);
         out.add(' label="').add(label).add('">');
 
-        _renderTree(out, model, renderer, child, j);
+        _renderTree(out, model, renderer, child, i);
 
         out.add('</optgroup>');
       }

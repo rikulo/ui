@@ -28,7 +28,7 @@ class RadioGroup<E> extends View {
   ListModel<E> _model;
   DataEventListener _dataListener;
   RadioGroupRenderer _renderer;
-  bool _updModelSel = false; //whether it's updating model's selection
+  bool _modelSelUpdating = false; //whether it's updating model's selection
 
   RadioGroup([ListModel<E> model, RadioGroupRenderer renderer]) {
     _renderer = renderer;
@@ -66,8 +66,26 @@ class RadioGroup<E> extends View {
   DataEventListener _initDataListener() {
     if (_dataListener === null) {
       _dataListener = (event) {
-        if (!_updModelSel || event.type != 'select')
-          modelRenderer.queue(this);
+        if (event.type == 'select') {
+          if (!_modelSelUpdating) {
+            final String idPrefix = "$uuid-";
+            final Selection<E> selmodel = _cast(_model);
+            final bool multiple = selmodel.multiple;
+            int i = 0, len = _model.length;
+            for (final InputElement inp in node.queryAll("input")) {
+              if (i >= len)
+                return; //done
+              if (inp.id.startsWith(idPrefix)) {
+                final bool seled = inp.checked = selmodel.isSelected(_model[i++]);
+                if (!multiple && seled)
+                  return; //done
+              }
+            }
+          }
+          return;
+        }
+
+        modelRenderer.queue(this);
       };
     }
     return _dataListener;
@@ -121,11 +139,11 @@ class RadioGroup<E> extends View {
     final model = _cast(_model);
     final bool multiple = model.multiple;
     final String type = multiple ? "checkbox": "radio";
-    for (int j = 0, len = _model.length; j < len; ++j) {
-      final obj = _model[j];
+    for (int i = 0, len = _model.length; i < len; ++i) {
+      final obj = _model[i];
       final bool selected = model.isSelected(obj);
       final bool disabled = model is Disables && model.isDisabled(obj);
-      final HTMLFragment hf = renderer(this, obj, multiple, selected, disabled, j);
+      final HTMLFragment hf = renderer(this, obj, multiple, selected, disabled, i);
 
       final AfterEnterDocument callback = hf.enterDocument;
       if (callback !== null) {
@@ -137,7 +155,7 @@ class RadioGroup<E> extends View {
 
       final bool complete = hf.isComplete();
       if (!complete) {
-        final String inpId = "$uuid-$j";;
+        final String inpId = "$uuid-$i";;
         out.add('<input type="').add(type).add('" name="').add(uuid)
           .add('" id="').add(inpId).add('"');
         if (selected)
@@ -162,35 +180,35 @@ class RadioGroup<E> extends View {
   }
   static RadioGroupRenderer _$defRenderer;
   void _onCheck(int index, bool checked) {
-    final Selection<E> model = _cast(_model);
-    _updModelSel = true;
+    final Selection<E> selmodel = _cast(_model);
+    _modelSelUpdating = true;
     try {
       if (checked)
-        model.addToSelection(_model[index]);
+        selmodel.addToSelection(_model[index]);
       else
-        model.removeFromSelection(_model[index]);
+        selmodel.removeFromSelection(_model[index]);
     } finally {
-      _updModelSel = false;
+      _modelSelUpdating = false;
     }
 
-    if (model.multiple || !checked) {
-      if (model.isSelectionEmpty()) {
+    if (selmodel.multiple || !checked) {
+      if (selmodel.isSelectionEmpty()) {
         index = -1;
-      } else if (!checked || model.selection.length > 1) {
+      } else if (!checked || selmodel.selection.length > 1) {
         index = 0;
         for (int len = _model.length; index < len; ++index)
-          if (model.isSelected(_model[index]))
+          if (selmodel.isSelected(_model[index]))
             break; //found
       }
     }
-    sendEvent(new SelectEvent(this, model.selection, index));
+    sendEvent(new SelectEvent(this, selmodel.selection, index));
   }
   void _initRadios() {
     EventListener onClick = (Event event) {
       final InputElement n = event.srcElement;
       final String id = n.id;
-      final int j = id.lastIndexOf('-');
-      _onCheck(Math.parseInt(id.substring(j + 1)), n.checked);
+      final int i = id.lastIndexOf('-');
+      _onCheck(Math.parseInt(id.substring(i + 1)), n.checked);
     };
 
     final String idPrefix = "$uuid-";
