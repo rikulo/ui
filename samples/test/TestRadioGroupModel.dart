@@ -60,6 +60,9 @@ class TestRadioGroupModel extends Activity {
     dlist.on.select.add((SelectEvent<String> event) {
       log("DD) $event");
     });;
+    dlist.on.render.add((event) {
+      dlist.parent.requestLayout(); //the change of multiple affects the look
+    });
     TextBox box = new TextBox("1", type: "number");
     box.on.change.add((event) {
       dlist.rows = Math.parseInt(box.value);

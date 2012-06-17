@@ -60,6 +60,19 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
    * The event is an instance of [SelectEvent].
    */
   ViewEventListenerList get select();
+  /** Indicates a view has re-rendered itself because
+   * its data model has been changed.
+   * It is used with views that support the data model, such as
+   * [DropDownList] and [RadioGroup].
+   *
+   * The event is an instance of [ViewRevent].
+   *
+   * Application usually listens to this event to invoke [View.requestLayout],
+   * if the re-rending of a data model might change the layout.
+   * For example, the height of [DropDownList] will be changed if
+   * the multiple state is changed.
+   */
+  ViewEventListenerList get render();
 
   /** Indicates the layout of a view is changed.
    *
@@ -149,4 +162,5 @@ class _ViewEvents extends _ViewEventListenerMap implements ViewEvents {
 
   ViewEventListenerList get check() => _get("check");
   ViewEventListenerList get select() => _get("select");
+  ViewEventListenerList get render() => _get("render");
 }

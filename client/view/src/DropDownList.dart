@@ -127,6 +127,7 @@ class DropDownList<E> extends View {
           case 'multiple':
             final SelectElement n = node;
             n.multiple = _cast(_model).multiple;
+            sendEvent(new ViewEvent(this, "render")); //send it since the look might be changed
             return; //no need to rerender
           case 'select':
             if (_modelSelUpdating)
@@ -180,8 +181,7 @@ class DropDownList<E> extends View {
       node.innerHTML = out.toString();
       _fixIndex();
 
-      if (parent !== null)
-        parent.requestLayout();
+      sendEvent(new ViewEvent(this, "render"));
     }
   }
   static DropDownListRenderer _defRenderer() {

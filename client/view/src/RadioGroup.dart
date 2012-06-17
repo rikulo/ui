@@ -121,8 +121,7 @@ class RadioGroup<E> extends View {
     for (final AfterEnterDocument callback in callbacks)
       callback(this);
 
-    if (parent !== null)
-      parent.requestLayout();
+    sendEvent(new ViewEvent(this, "render"));
   }
 
   //@override
