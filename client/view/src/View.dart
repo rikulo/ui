@@ -130,16 +130,14 @@ class View implements Hashable {
         var so = spaceOwner;
         return so is View ? so: null;
     }
-    //TODO: support CSS selector
-    if (selector.startsWith('#'))
-      return getFellow(selector.substring(1));
+    Iterator<View> iter = queryAll(selector).iterator();
+    return iter.hasNext() ? iter.next() : null;;
   }
   /** Searches and returns all views that matches the selector.
    */
   Iterable<View> queryAll(String selector) {
-    //TODO
+    return new ViewIterable(this, selector);
   }
-
   /** Returns the view of the given ID in the ID space this view belongs to,
    * or null if not found.
    *
