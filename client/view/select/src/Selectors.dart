@@ -76,6 +76,7 @@ class Selectors {
         case STATE_POST_PSDOCLS_PARAM:
           if (t.type != Token.TYPE_CLOSE_PAREN)
             throw new SelectorParseException.unexpectedToken(source, t);
+          state = STATE_IN_SLCT;
           continue;
       }
       

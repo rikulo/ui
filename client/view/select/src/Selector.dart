@@ -26,7 +26,7 @@ class Selector {
   String toString() {
     String s = "";
     for (SimpleSelectorSequence seq in seqs)
-      s += seq.toString() + seq.printCombinator() + " ";
+      s += "$seq${seq.printCombinator()} ";
     return s.trim();
   }
   
