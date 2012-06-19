@@ -70,7 +70,7 @@ class Switch extends View {
     node.on.click.remove(_clickListener);
     super.exitDocument_();
   }
-  void _initClickListener() {
+  EventListener _initClickListener() {
     if (_clickListener === null)
       _clickListener = (event) {
         checked = !checked; //TODO: animation
