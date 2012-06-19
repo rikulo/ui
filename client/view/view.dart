@@ -28,6 +28,7 @@
 #source("src/TextView.dart");
 #source("src/Button.dart");
 #source("src/Image.dart");
+#source("src/Switch.dart");
 #source("src/CheckBox.dart");
 #source("src/RadioGroup.dart");
 #source("src/DropDownList.dart");

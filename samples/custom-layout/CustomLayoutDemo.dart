@@ -46,7 +46,7 @@ class CustomLayoutDemo extends Activity {
   TextView _createTextView(String label, String color)  {
     final TextView text = new TextView(label);
     text.width = text.height = 70;
-    text.style.cssText = "background: $color; border: 1px solid black; text-align: center; padding-top: 22px";
+    text.style.cssText = "background: $color; border: 1px solid black; text-align: center; line-height: 68px";
     return text;
   }
 }

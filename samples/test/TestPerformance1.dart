@@ -20,7 +20,7 @@ class TestPerformance1 extends Activity {
       for (int j = 0; j < 50; ++j) {
         TextView view = new TextView("$i.$j");
         view.style.backgroundColor = "orange";
-        view.style.padding = "5px";
+        view.style.lineHeight = "30px";
         view.style.textAlign = "center";
         view.profile.text = "width: 50; height: 30";
           //performance is much better if not to use "content" (default)

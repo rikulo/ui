@@ -21,6 +21,48 @@ body {
 }
 .v-ScrollView > .v-inner {
   width: 100%; height: 100%;
+  -webkit-transform: translate3d(0,0,0);
+  -moz-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+}
+
+.v-Switch {
+  overflow: hidden;
+  width: 72px; height: 22px;
+  border-radius: 5px;
+  border: 1px solid #999;
+  box-shadow: inset 0 2px 2px 0 rgba(0,0,0,0.3);
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+.v-Switch > .v-inner {
+  width: 115px; height: 20px;
+}
+.v-Switch > .v-inner > .v-text-on, .v-Switch > .v-inner > .v-text-off {
+  position: absolute;
+  width: 48px; height: 20px;
+  font-size: 12px; line-height: 20px;
+  text-align: center; color: white; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+}
+.v-Switch > .v-inner > .v-text-on {
+  left: -1px;
+  border-radius: 5px;
+  background: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0, #d9d9d9), color-stop(0.5, #e8e8e8)) 6em 0 no-repeat #3074e7;
+  background: -moz-linear-gradient(top, #d9d9d9, #eee 50%) 6em 0 no-repeat #3074e7;
+  background: linear-gradient(top, #d9d9d9, #eee 50%) 6em 0 no-repeat #3074e7;
+}
+.v-Switch > .v-inner > .v-text-off {
+  left: 68px;
+  color: #7f7f7f;
+}
+.v-Switch > .v-inner > .v-knot {
+  position: absolute; left: 43px; top: -1px;
+  width: 26px; height: 20px;
+  border-radius: 5px;
+  border: 1px solid #969696;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
+  background: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0, white), color-stop(0.05, #d7d7d7), color-stop(1, white));
+  background: -moz-linear-gradient(top, white, #d7d7d7 5%, white);
+  background: linear-gradient(top, white, #d7d7d7 5%, white);
 }
 
 .v-dialog {

@@ -39,9 +39,7 @@ class Image extends View {
    * Default: `img`.
    */
   String get domTag_() => "img";
-  /** Returns whether this view allows any child views.
-   *
-   * Default: false.
+  /** Returns false to indicate this view doesn't allow any child views.
    */
   bool isChildable_() => false;
 
