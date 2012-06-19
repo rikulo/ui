@@ -336,9 +336,7 @@ class DropDownList<E> extends View {
    */
   String get domTag_() => "select";
   //@Override
-  /** Returns whether this view allows any child views.
-   *
-   * Default: false.
+  /** Returns false to indicate this view doesn't allow any child views.
    */
   bool isChildable_() => false;
   //@Override

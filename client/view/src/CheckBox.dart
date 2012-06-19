@@ -9,22 +9,14 @@
  *
  * + check: an instance of [CheckEvent] indicates the check state is changed.
  */
-class CheckBox<E> extends TextView {
-  /** The value associated with this view.
-   *
-   * If it is used with a model (such as [RadioGroup.model]), the value is
-   * assigned with the data from the model. Furthermore, you can't change it.
-   *
-   * If it is *not* used with a model, you can assign any value you like.
-   */
-  E value;
+class CheckBox extends TextView {
   bool _checked = false, _disabled = false, _autofocus = false;
   EventListener _onInputClick;
 
   /** Instantaites with a plain text.
    * The text will be encoded to make sure it is valid HTML text.
    */
-  CheckBox([String text, bool checked, E this.value]): super(text) {
+  CheckBox([String text, bool checked]): super(text) {
     _init(checked);
   }
   /** Instantiates with a HTML fragment.
@@ -33,7 +25,7 @@ class CheckBox<E> extends TextView {
    * Notie it must be a valid HTML fragment. Otherwise, the result is
    * unpreditable.
    */
-  CheckBox.html(String html, [bool checked, E this.value]): super.html(html) {
+  CheckBox.html(String html, [bool checked]): super.html(html) {
     _init(checked);
   }
   void _init(bool checked) {
