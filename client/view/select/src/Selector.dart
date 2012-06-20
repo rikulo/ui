@@ -24,10 +24,10 @@ class Selector {
   }
   
   String toString() {
-    String s = "";
+    StringBuffer sb = new StringBuffer();
     for (SimpleSelectorSequence seq in seqs)
-      s += "$seq${seq.printCombinator()} ";
-    return s.trim();
+      sb.add("$seq${seq.printCombinator()} ");
+    return sb.toString().trim();
   }
   
 }

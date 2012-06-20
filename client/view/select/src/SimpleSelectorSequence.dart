@@ -57,16 +57,16 @@ class SimpleSelectorSequence {
   }
   
   String toString() {
-    String s = "";
+    StringBuffer sb = new StringBuffer();
     if (type != null)
-      s += type;
+      sb.add(type);
     if (id != null)
-      s += "#" + id;
+      sb.add("#${id}");
     for (String c in classes)
-      s += "." + c;
+      sb.add(".${c}");
     for (PseudoClass p in pseudoClasses)
-      s += p;
-    return s.isEmpty() ? "*" : s;
+      sb.add("${p}");
+    return sb.isEmpty() ? "*" : sb.toString();
   }
   
 }

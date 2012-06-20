@@ -65,7 +65,7 @@ class Token {
    */
   int extend() => this.end++;
   
-  String toString() => "" + this.type;
+  String toString() => "${this.type}";
   
   // TODO: maybe shall align with char code
   // selector body //

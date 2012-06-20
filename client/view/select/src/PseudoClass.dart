@@ -9,7 +9,12 @@ class PseudoClass {
   
   PseudoClass(this.name);
   
-  String toString() => ":" + name + (parameter == null ? "" : ("(" + parameter + ")"));
+  String toString() {
+    StringBuffer sb = new StringBuffer(":${name}");
+    if (parameter != null)
+      sb.add("(${parameter})");
+    return sb.toString();
+  }
   
   // built-in implementations //
   static Function getDefinition(String name) {
