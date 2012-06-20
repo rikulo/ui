@@ -10,7 +10,7 @@ class ViewIterator implements Iterator<View> {
   bool _allIds;
   
   View _offsetRoot;
-  ViewMatchCtx _currCtx;
+  ViewMatchContext _currCtx;
   
   bool _ready = false;
   View _next;
@@ -55,7 +55,7 @@ class ViewIterator implements Iterator<View> {
     return null;
   }
   
-  ViewMatchCtx _buildRootCtx() {
+  ViewMatchContext _buildRootCtx() {
     View rt = _root;
     
     if (_posOffset > 0) {
@@ -68,10 +68,10 @@ class ViewIterator implements Iterator<View> {
           return null;
         
         // match local properties
-        if (!ViewMatchCtx.matchType(rt2, seq.type) || 
-            !ViewMatchCtx.matchClasses(rt2, seq.classes) ||
+        if (!ViewMatchContext.matchType(rt2, seq.type) || 
+            !ViewMatchContext.matchClasses(rt2, seq.classes) ||
             //!ComponentLocalProperties.matchAttributes(rt2, seq.attributes) ||
-            !new ViewMatchCtx(rt2).matchPseudoClasses(seq.pseudoClasses))
+            !new ViewMatchContext(rt2).matchPseudoClasses(seq.pseudoClasses))
           return null;
         
         // check combinator for second and later jumps
@@ -100,7 +100,7 @@ class ViewIterator implements Iterator<View> {
       _offsetRoot = rt.parent;
     }
     
-    ViewMatchCtx ctx = new ViewMatchCtx.root(rt, _selectors);
+    ViewMatchContext ctx = new ViewMatchContext.root(rt, _selectors);
     
     if (_posOffset > 0)
       for (Selector selector in _selectors)
@@ -111,7 +111,7 @@ class ViewIterator implements Iterator<View> {
     return ctx;
   }
   
-  ViewMatchCtx _buildNextCtx() {
+  ViewMatchContext _buildNextCtx() {
     
     if (_allIds)
       return null;
@@ -131,9 +131,9 @@ class ViewIterator implements Iterator<View> {
     return _buildNextSiblingCtx(_currCtx);
   }
   
-  ViewMatchCtx _buildFirstChildCtx(ViewMatchCtx parent) {
+  ViewMatchContext _buildFirstChildCtx(ViewMatchContext parent) {
     
-    ViewMatchCtx ctx = new ViewMatchCtx.child(parent.view.firstChild, parent);
+    ViewMatchContext ctx = new ViewMatchContext.child(parent.view.firstChild, parent);
     
     if (_posOffset == 0)
       matchLevel0(ctx);
@@ -161,7 +161,7 @@ class ViewIterator implements Iterator<View> {
     return ctx;
   }
   
-  ViewMatchCtx _buildNextSiblingCtx(ViewMatchCtx ctx) {
+  ViewMatchContext _buildNextSiblingCtx(ViewMatchContext ctx) {
     
     ctx.moveToNextSibling();
     
@@ -175,7 +175,7 @@ class ViewIterator implements Iterator<View> {
       
       for (int j = len - 2; j >= posEnd; j--) {
         int cb = selector.getCombinator(j);
-        ViewMatchCtx parent = ctx.parent;
+        ViewMatchContext parent = ctx.parent;
         
         switch (cb) {
         case SimpleSelectorSequence.COMB_DESCENDANT:
@@ -207,7 +207,7 @@ class ViewIterator implements Iterator<View> {
     return ctx;
   }
   
-  static bool checkIdSpace(Selector selector, int index, ViewMatchCtx ctx) {
+  static bool checkIdSpace(Selector selector, int index, ViewMatchContext ctx) {
     return !selector.requiresIdSpace(index) || !(ctx.view is IdSpace);
   }
   
@@ -232,13 +232,13 @@ class ViewIterator implements Iterator<View> {
     return false;
   }
   
-  void matchLevel0(ViewMatchCtx ctx) {
+  void matchLevel0(ViewMatchContext ctx) {
     for (Selector selector in _selectors)
       if (match(selector, ctx, 0))
         ctx.qualify(selector.selectorIndex, 0);
   }
   
-  bool match(Selector selector, ViewMatchCtx ctx, int index) {
+  bool match(Selector selector, ViewMatchContext ctx, int index) {
     return ctx.match(selector.seqs[index]);
   }
   

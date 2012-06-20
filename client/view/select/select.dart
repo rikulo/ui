@@ -7,7 +7,7 @@
 #import("../view.dart");
 
 #source("src/Token.dart");
-#source("src/ViewMatchCtx.dart");
+#source("src/ViewMatchContext.dart");
 #source("src/Attribute.dart");
 #source("src/PseudoClass.dart");
 #source("src/SimpleSelectorSequence.dart");

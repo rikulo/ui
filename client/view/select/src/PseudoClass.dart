@@ -20,22 +20,22 @@ class PseudoClass {
   static Function getDefinition(String name) {
     switch (name) {
       case "first-child":
-        return (ViewMatchCtx ctx, String param) => 
+        return (ViewMatchContext ctx, String param) => 
             param == null && ctx.view.previousSibling == null;
       case "last-child":
-        return (ViewMatchCtx ctx, String param) => 
+        return (ViewMatchContext ctx, String param) => 
             param == null && ctx.view.nextSibling == null;
       case "only-child":
-        return (ViewMatchCtx ctx, String param) => 
+        return (ViewMatchContext ctx, String param) => 
             param == null && ctx.view.previousSibling == null 
             && ctx.view.nextSibling == null;
       case "empty":
-        return (ViewMatchCtx ctx, String param) => 
+        return (ViewMatchContext ctx, String param) => 
             param == null && ctx.view.childCount == 0;
       case "nth-child":
-        return (ViewMatchCtx ctx, String param) => param != null; // TODO
+        return (ViewMatchContext ctx, String param) => param != null; // TODO
       case "last-nth-child":
-        return (ViewMatchCtx ctx, String param) => param != null; // TODO
+        return (ViewMatchContext ctx, String param) => param != null; // TODO
       default:
         return null;
     }

@@ -2,26 +2,26 @@
 //History: Wed, Jun 06, 2012  12:30:14 AM
 // Author: simonpai
 
-class ViewMatchCtx {
+class ViewMatchContext {
   
-  final ViewMatchCtx parent;
+  final ViewMatchContext parent;
   View view;
   int viewChildIndex = 0;
   final List<List<bool>> _qualified;
   
   // TODO: cache view sibling size?
   
-  ViewMatchCtx(this.view) : 
+  ViewMatchContext(this.view) : 
       parent = null, _qualified = new List<List<bool>>() {
     viewChildIndex = computeViewChildIndex(this.view);
   }
   
-  ViewMatchCtx.root(this.view, List<Selector> selectors) : parent = null, 
+  ViewMatchContext.root(this.view, List<Selector> selectors) : parent = null, 
       _qualified = _initBoolList(selectors) {
     viewChildIndex = computeViewChildIndex(this.view);
   }
   
-  ViewMatchCtx.child(this.view, ViewMatchCtx parent) : this.parent = parent,
+  ViewMatchContext.child(this.view, ViewMatchContext parent) : this.parent = parent,
     _qualified = _initBoolListFromParent(parent);
   
   
@@ -81,13 +81,13 @@ class ViewMatchCtx {
    */
   bool match(SimpleSelectorSequence seq) {
     return matchType(this.view, seq.type) 
-        && _matchID(this.view, seq.id) 
+        && matchID(this.view, seq.id) 
         && matchClasses(this.view, seq.classes) 
         //&& matchAttributes(this.view, seq.getAttributes()) 
         && matchPseudoClasses(seq.pseudoClasses);
   }
   
-  static bool _matchID(View view, String id) {
+  static bool matchID(View view, String id) {
     return id == null || id == view.id;
   }
   
@@ -110,7 +110,7 @@ class ViewMatchCtx {
     for (PseudoClass pc in pseudoClasses) {
       Function accept = PseudoClass.getDefinition(pc.name);
       if (accept == null)
-        throw new Exception("Pseudo class definition not found: " + pc.name);
+        throw new Exception("Pseudo class definition not found: ${pc.name}");
       if (!accept(this, pc.parameter)) 
         return false;
     }
@@ -120,10 +120,10 @@ class ViewMatchCtx {
   
   
   String toString() {
-    String s = "";
+    StringBuffer sb = new StringBuffer();
     for (List<bool> qs in _qualified)
-      s += qs;
-    return s + " @" + view;
+      sb.add(qs);
+    return sb.add(" @${view}").toString();
   }
   
   // helper //
@@ -147,7 +147,7 @@ class ViewMatchCtx {
     return list;
   }
   
-  static List<List<bool>> _initBoolListFromParent(ViewMatchCtx parent) {
+  static List<List<bool>> _initBoolListFromParent(ViewMatchContext parent) {
     List<List<bool>> plist = parent._qualified;
     List<List<bool>> list = new List<List<bool>>();
     List<bool> sublist;
