@@ -65,7 +65,7 @@ class TestQuery extends Activity {
   }
   
   void assertIdentical(String src) {
-    assertLegal(src, "[" + src + "]");
+    assertLegal(src, "[${src}]");
   }
   
   void assertLegal(String src, [String result]) {
@@ -74,17 +74,17 @@ class TestQuery extends Activity {
       if (result != null) {
         String r = selectors.toString();
         if (r != result)
-          logMsg("* Unexpected parse result: " + r + " (expecting " + result + ")");
+          logMsg("* Unexpected parse result: ${r} (expecting ${result})");
       }
     } catch (SelectorParseException e) {
-      logMsg("* Should be legal: " + src);
+      logMsg("* Should be legal: ${src}");
     }
   }
   
   void assertIllegal(String src) {
     try {
       List<Selector> selectors = Selectors.parse(src);
-      logMsg("* Should be illegal: " + src);
+      logMsg("* Should be illegal: ${src}");
     } catch (SelectorParseException e) {}
   }
   

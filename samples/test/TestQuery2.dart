@@ -60,7 +60,7 @@ class TestQuery2 extends Activity {
   void assertQueryCount(View v, String query, int count) {
     int c = countQuery(v, query);
     if (c != count)
-      logMsg(query + ": " + c + " (expecting " + count + ")");
+      logMsg("${query}: ${c} (expecting ${count})");
   }
   
   void logMsg(String msg) {
