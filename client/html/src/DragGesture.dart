@@ -54,6 +54,13 @@ interface DragGesture default _DragGesture {
   /** The element that owns this scroller.
    */
   Element get owner();
+  /** The element that the user can drag, or null if [owner] is assumed.
+   */
+  Element get handle();
+  /** The element that the scrolling starts with, or null if the scrolling
+   * is not taking place.
+   */
+  Element get touched();
 
   /** Returns the callback to call when the user starts dragging,
    * or null if not specified.
