@@ -131,7 +131,7 @@ class View implements Hashable {
         return so is View ? so: null;
     }
     Iterator<View> iter = queryAll(selector).iterator();
-    return iter.hasNext() ? iter.next() : null;;
+    return iter.hasNext() ? iter.next() : null;
   }
   /** Searches and returns all views that matches the selector.
    */

@@ -65,7 +65,7 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
    * It is used with views that support the data model, such as
    * [DropDownList] and [RadioGroup].
    *
-   * The event is an instance of [ViewRevent].
+   * The event is an instance of [ViewEvent].
    *
    * Application usually listens to this event to invoke [View.requestLayout],
    * if the re-rending of a data model might change the layout.
