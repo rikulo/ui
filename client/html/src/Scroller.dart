@@ -4,72 +4,104 @@
 
 /** The scroller callback.
  *
- * Notice that for [start], [delaX] and [deltaY] are actually pageX and pageY
- * (offset to document's origin).
- * On the hand, it is the number of pixels that a user has scrolled for
- * [scrollTo] and [scrolling] (that is why it is called deltaX and deltaY).
+ * ##Signature of possible callbacks##
+ *
+ * `bool start(int ofsX, int ofsY)`
+ *
+ * The callback when [Scroller] tries to start the scrolling.
+ * If it returns false, the scroller won't be activated (i.e., ignored).
+ * The ofsX and ofsY arguments provide the offset to the left-top corner
+ * of the owner element.
+ *
+ * `void scrolling(int deltaX, int deltaY;)`
+ *
+ * The callback used to indicate the user is scrolling (i.e., moving his
+ * finger).
+ * The deltaX and deltaY arguments provides the number of pixels
+ * that a user has scrolled (since `start` was called).
+ *
+ * `void end(int deltaX, int deltaY;)`
+ *
+ * The callback used to indicate the user finishes the scrolling (i.e.,
+ * leaving his finger off the screen).
+ * The deltaX and deltaY arguments provides the number of pixels
+ * that a user has scrolled (since `start` was called).
  */
 typedef ScrollerCallback(Element touched, int deltaX, int deltaY);
 
+interface Scroller default _Scroller {
+  /** Constructor.
+   *
+   * + [start] is the callback before starting scrolling.
+   * If it returns false, the scrolling won't be activated.
+   * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
+   */
+  Scroller(Element owner, [Dir dir, AsSize totalSize, AsSize viewSize,
+  ScrollerCallback start, ScrollerCallback end, ScrollerCallback scrolling]);
+
+  /** Destroys the scroller.
+   * It shall be called to clean up the scroller, if it is no longer used.
+   */
+  void destroy();
+
+  /** The element that owns this scroller.
+   */
+  Element get owner();
+  /** Returns the direction that the scrolling is allowed.
+   */
+  Dir get dir();
+
+  /** Returns the callback to call when the user starts scrolling,
+   * or null if not specified.
+   */
+  ScrollerCallback get start();
+  /** Returns the callback that will be called when the scrolling is ended,
+   * or null if not specified.
+   */
+  ScrollerCallback get end();
+  /** Returns the callback that will be called when the user is scrolling
+   * the content, or null if not specified.
+   */
+  ScrollerCallback get scrolling();
+}
 /**
  * A custom-scrolling handler.
  */
-abstract class Scroller {
+abstract class _Scroller implements Scroller {
   final Element _owner;
   final Dir _dir;
-  final ScrollerCallback _start, _scrollTo, _scrolling;
+  final ScrollerCallback _start, _end, _scrolling;
   final AsSize _fnTotalSize, _fnViewSize;
   Size _totalSize; //cached size
   Element _touched;
   int _pageX, _pageY;
   Offset3d _initOfs;
 
-  /** Constructor.
-   *
-   * + [start] is the callback before starting scrolling.
-   * If it returns false, the scrolling won't be activated.
-   */
-  factory Scroller(Element owner, [Dir dir=Dir.BOTH,
-  AsSize totalSize, AsSize viewSize,
-  ScrollerCallback start, ScrollerCallback scrollTo, ScrollerCallback scrolling]) {
+  factory _Scroller(Element owner, [Dir dir, AsSize totalSize, AsSize viewSize,
+  ScrollerCallback start, ScrollerCallback end, ScrollerCallback scrolling]) {
     return browser.touch ?
-      new _TouchScroller(owner, dir, totalSize, viewSize, start, scrollTo, scrolling):
-      new _MouseScroller(owner, dir, totalSize, viewSize, start, scrollTo, scrolling);
+      new _TouchScroller(owner, dir, totalSize, viewSize, start, end, scrolling):
+      new _MouseScroller(owner, dir, totalSize, viewSize, start, end, scrolling);
       //TODO: support desktop - if not in simulator, mousewheel/draggable scrollbar
   }
-  Scroller._init(Element this._owner, Dir this._dir,
+  _Scroller._init(Element this._owner, Dir dir,
   AsSize this._fnTotalSize, AsSize this._fnViewSize,
-  ScrollerCallback this._start, ScrollerCallback this._scrollTo,
-  ScrollerCallback this._scrolling) {
+  ScrollerCallback this._start, ScrollerCallback this._end,
+  ScrollerCallback this._scrolling):
+  _dir = dir !== null ? dir: Dir.BOTH {
     _listen();
   }
 
-  /** Destroys the scroller.
-   * It shall be called to clean up the scroller, if it is no longer used.
-   */
   void destroy() {
     _stop();
     _unlisten();
   }
 
-  /** The element that owns this scroller.
-   */
   Element get owner() => _owner;
-  /** Returns the direction that the scrolling is allowed.
-   */
   Dir get dir() => _dir;
 
-  /** Returns the callback to call when the user starts scrolling,
-   * or null if not specified.
-   */
   ScrollerCallback get start() => _start;
-  /** Returns the callback that will be called when the scrolling is ended,
-   * or null if not specified.
-   */
-  ScrollerCallback get scrollTo() => _scrollTo;
-  /** Returns the callback that will be called when the user is scrolling
-   * the content, or null if not specified.
-   */
+  ScrollerCallback get end() => _end;
   ScrollerCallback get scrolling() => _scrolling;
 
   abstract void _listen();
@@ -82,7 +114,8 @@ abstract class Scroller {
     _stop();
 
     if (_start !== null) {
-      bool c = _start(touched, pageX, pageY); //not deltaX/deltaY
+      final Offset ofs = new DOMQuery(_owner).documentOffset;
+      bool c = _start(touched, pageX - ofs.left, pageY - ofs.top); //not deltaX/deltaY
       if (c !== null && !c)
         return false; //don't start it
     }
@@ -100,7 +133,7 @@ abstract class Scroller {
   }
   void _touchEnd(int pageX, int pageY) {
     if (_touched !== null) {
-      _moveBy(pageX - _pageX, pageY - _pageY, _scrollTo); 
+      _moveBy(pageX - _pageX, pageY - _pageY, _end); 
       _stop();
     }
   }
@@ -143,12 +176,12 @@ abstract class Scroller {
 
 /** The scroller for touch devices.
  */
-class _TouchScroller extends Scroller {
+class _TouchScroller extends _Scroller {
   EventListener _elStart, _elMove, _elEnd;
 
   _TouchScroller(Element owner, Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerCallback start, ScrollerCallback scrollTo, ScrollerCallback scrolling)
-  : super._init(owner, dir, totalSize, viewSize, start, scrollTo, scrolling) {
+  ScrollerCallback start, ScrollerCallback end, ScrollerCallback scrolling)
+  : super._init(owner, dir, totalSize, viewSize, start, end, scrolling) {
   }
 
   void _listen() {
@@ -176,13 +209,13 @@ class _TouchScroller extends Scroller {
 
 /** The scroller for mouse-based devices.
  */
-class _MouseScroller extends Scroller {
+class _MouseScroller extends _Scroller {
   EventListener _elStart, _elMove, _elEnd;
   bool _captured = false;
 
   _MouseScroller(Element owner, Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerCallback start, ScrollerCallback scrollTo, ScrollerCallback scrolling)
-  : super._init(owner, dir, totalSize, viewSize, start, scrollTo, scrolling) {
+  ScrollerCallback start, ScrollerCallback end, ScrollerCallback scrolling)
+  : super._init(owner, dir, totalSize, viewSize, start, end, scrolling) {
   }
 
   //@Override
