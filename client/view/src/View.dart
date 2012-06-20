@@ -123,14 +123,17 @@ class View implements Hashable {
    * It returns null if selector is null or empty.
    */
   View query(String selector) {
+    if (selector === null)
+      return null;
     switch (selector) {
-      case null: case "": return null;
+      case "": return null;
       case "parent": return parent;
       case "spaceOwner":
         var so = spaceOwner;
         return so is View ? so: null;
     }
-    Iterator<View> iter = queryAll(selector).iterator();
+
+    final Iterator<View> iter = queryAll(selector).iterator();
     return iter.hasNext() ? iter.next() : null;
   }
   /** Searches and returns all views that matches the selector.

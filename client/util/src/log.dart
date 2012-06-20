@@ -67,15 +67,15 @@ class _Log {
     return true;
   }
   HoldGestureCallback _gestureAction() {
-    return (Element touched, int pageX, int pageY) {
+    return (HoldGesture gesture, int pageX, int pageY) {
       final Offset ofs = new DOMQuery(_node).documentOffset;
       (_popup = new _LogPopup(this)).open(
         pageX - ofs.left + _node.$dom_scrollLeft, pageY - ofs.top + _node.$dom_scrollTop);
     };
   }
   HoldGestureCallback _gestureStart() {
-    return (Element touched, int pageX, int pageY)
-      => _popup === null || !new DOMQuery(touched).isDescendantOf(_popup._node);
+    return (HoldGesture gesture, int pageX, int pageY)
+      => _popup === null || !new DOMQuery(gesture.touched).isDescendantOf(_popup._node);
   }
 
   void _defer() {

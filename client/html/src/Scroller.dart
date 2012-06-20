@@ -6,28 +6,28 @@
  *
  * ##Signature of possible callbacks##
  *
- * `bool start(int ofsX, int ofsY)`
+ * `bool start(Scroller scroller, int ofsX, int ofsY)`
  *
  * The callback when [Scroller] tries to start the scrolling.
  * If it returns false, the scroller won't be activated (i.e., ignored).
  * The ofsX and ofsY arguments provide the offset to the left-top corner
  * of the owner element.
  *
- * `void scrolling(int deltaX, int deltaY;)`
+ * `void moving(Scroller scroller, int deltaX, int deltaY;)`
  *
  * The callback used to indicate the user is scrolling (i.e., moving his
  * finger).
  * The deltaX and deltaY arguments provides the number of pixels
  * that a user has scrolled (since `start` was called).
  *
- * `void end(int deltaX, int deltaY;)`
+ * `void end(Scroller scroller, int deltaX, int deltaY);`
  *
  * The callback used to indicate the user finishes the scrolling (i.e.,
  * leaving his finger off the screen).
  * The deltaX and deltaY arguments provides the number of pixels
  * that a user has scrolled (since `start` was called).
  */
-typedef ScrollerCallback(Element touched, int deltaX, int deltaY);
+typedef ScrollerCallback(Scroller scroller, int deltaX, int deltaY);
 
 interface Scroller default _Scroller {
   /** Constructor.
@@ -37,7 +37,7 @@ interface Scroller default _Scroller {
    * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
    */
   Scroller(Element owner, [Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerCallback start, ScrollerCallback end, ScrollerCallback scrolling]);
+  ScrollerCallback start, ScrollerCallback end, ScrollerCallback moving]);
 
   /** Destroys the scroller.
    * It shall be called to clean up the scroller, if it is no longer used.
@@ -47,6 +47,11 @@ interface Scroller default _Scroller {
   /** The element that owns this scroller.
    */
   Element get owner();
+  /** The element that the scrolling starts with, or null if the scrolling
+   * is not taking place.
+   */
+  Element get touched();
+
   /** Returns the direction that the scrolling is allowed.
    */
   Dir get dir();
@@ -62,7 +67,7 @@ interface Scroller default _Scroller {
   /** Returns the callback that will be called when the user is scrolling
    * the content, or null if not specified.
    */
-  ScrollerCallback get scrolling();
+  ScrollerCallback get moving();
 }
 /**
  * A custom-scrolling handler.
@@ -70,7 +75,7 @@ interface Scroller default _Scroller {
 abstract class _Scroller implements Scroller {
   final Element _owner;
   final Dir _dir;
-  final ScrollerCallback _start, _end, _scrolling;
+  final ScrollerCallback _start, _end, _moving;
   final AsSize _fnTotalSize, _fnViewSize;
   Size _totalSize; //cached size
   Element _touched;
@@ -78,16 +83,15 @@ abstract class _Scroller implements Scroller {
   Offset3d _initOfs;
 
   factory _Scroller(Element owner, [Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerCallback start, ScrollerCallback end, ScrollerCallback scrolling]) {
-    return browser.touch ?
-      new _TouchScroller(owner, dir, totalSize, viewSize, start, end, scrolling):
-      new _MouseScroller(owner, dir, totalSize, viewSize, start, end, scrolling);
+  ScrollerCallback start, ScrollerCallback end, ScrollerCallback moving])
+  => browser.touch ?
+      new _TouchScroller(owner, dir, totalSize, viewSize, start, end, moving):
+      new _MouseScroller(owner, dir, totalSize, viewSize, start, end, moving);
       //TODO: support desktop - if not in simulator, mousewheel/draggable scrollbar
-  }
   _Scroller._init(Element this._owner, Dir dir,
   AsSize this._fnTotalSize, AsSize this._fnViewSize,
   ScrollerCallback this._start, ScrollerCallback this._end,
-  ScrollerCallback this._scrolling):
+  ScrollerCallback this._moving):
   _dir = dir !== null ? dir: Dir.BOTH {
     _listen();
   }
@@ -98,11 +102,12 @@ abstract class _Scroller implements Scroller {
   }
 
   Element get owner() => _owner;
+  Element get touched() => _touched;
   Dir get dir() => _dir;
 
   ScrollerCallback get start() => _start;
   ScrollerCallback get end() => _end;
-  ScrollerCallback get scrolling() => _scrolling;
+  ScrollerCallback get moving() => _moving;
 
   abstract void _listen();
   abstract void _unlisten();
@@ -113,22 +118,24 @@ abstract class _Scroller implements Scroller {
   bool _touchStart(Element touched, int pageX, int pageY) {
     _stop();
 
+    _touched = touched;
     if (_start !== null) {
       final Offset ofs = new DOMQuery(_owner).documentOffset;
-      bool c = _start(touched, pageX - ofs.left, pageY - ofs.top); //not deltaX/deltaY
-      if (c !== null && !c)
+      bool c = _start(this, pageX - ofs.left, pageY - ofs.top); //not deltaX/deltaY
+      if (c !== null && !c) {
+        _touched = null; //not started
         return false; //don't start it
+      }
     }
 
     _initOfs = CSS.offset3dOf(owner.style.transform);
     _pageX = pageX;
     _pageY = pageY;
-    _touched = touched;
     return true;
   }
   void _touchMove(int pageX, int pageY) {
     if (_touched !== null) {
-      _moveBy(pageX - _pageX, pageY - _pageY, _scrolling); 
+      _moveBy(pageX - _pageX, pageY - _pageY, _moving); 
     }
   }
   void _touchEnd(int pageX, int pageY) {
@@ -142,7 +149,7 @@ abstract class _Scroller implements Scroller {
     _owner.style.transform = CSS.translate3d(move.x, move.y);
 
     if (callback !== null)
-      callback(_touched, move.x, move.y);
+      callback(this, move.x, move.y);
   }
   Offset _constraint(int x, int y) {
     if (_totalSize === null)
@@ -180,9 +187,8 @@ class _TouchScroller extends _Scroller {
   EventListener _elStart, _elMove, _elEnd;
 
   _TouchScroller(Element owner, Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerCallback start, ScrollerCallback end, ScrollerCallback scrolling)
-  : super._init(owner, dir, totalSize, viewSize, start, end, scrolling) {
-  }
+  ScrollerCallback start, ScrollerCallback end, ScrollerCallback moving)
+  : super._init(owner, dir, totalSize, viewSize, start, end, moving);
 
   void _listen() {
     final ElementEvents on = owner.on;
@@ -214,9 +220,8 @@ class _MouseScroller extends _Scroller {
   bool _captured = false;
 
   _MouseScroller(Element owner, Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerCallback start, ScrollerCallback end, ScrollerCallback scrolling)
-  : super._init(owner, dir, totalSize, viewSize, start, end, scrolling) {
-  }
+  ScrollerCallback start, ScrollerCallback end, ScrollerCallback moving)
+  : super._init(owner, dir, totalSize, viewSize, start, end, moving);
 
   //@Override
   void _stop() {

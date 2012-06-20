@@ -4,12 +4,54 @@
 
 /** The action for the touch-and-hold gesture.
  */
-typedef HoldGestureCallback(Element touched, int pageX, int pageY);
+typedef HoldGestureCallback(HoldGesture gesture, int pageX, int pageY);
 
 /**
  * A touch-and-hold gesture handler.
  */
-abstract class HoldGesture {
+interface HoldGesture default _HoldGesture {
+  /** Constructor.
+   *
+   * + [start] is the callback before starting monitoring the touch-and-hold
+   * gesture. If it returns false, the monitoring will be cancelled.
+   * + [duration] is the duration that a user has to hold before calling the action.
+   * Default: 1000 (unit: milliseconds)
+   * + [movement] is the allowed movement to consider if a user is holding a touch.
+   * Default: 3 (unit: pixels)
+   */
+  HoldGesture(Element owner, HoldGestureCallback action,
+  [HoldGestureCallback start, int duration, int movement]);
+
+  /** Destroys the handler.
+   * It shall be called to clean up the handler, if it is no longer used.
+   */
+  void destroy();
+
+  /** The element that owns this handler.
+   */
+  Element get owner();
+  /** The element that the scrolling starts with, or null if the scrolling
+   * is not taking place.
+   */
+  Element get touched();
+  /** Returns the duration that a user has to hold before calling the action
+   * ([action]).
+   */
+  int get duration();
+  /** Returns the allowed movement to consider if a user is holding a touch.
+   * In other words, if the user moves more than the movement, it won't consider a hold.
+   */
+  int get movement();
+  /** Returns the callback to call when the touch-and-hold gesture is detected.
+   */
+  HoldGestureCallback get action();
+  /** Returns the callback to call when the user starts a potential gesture,
+   * or null if not specified.
+   */
+  HoldGestureCallback get start();
+}
+
+abstract class _HoldGesture implements HoldGesture {
   final Element _owner;
   final int _dur;
   final int _mov;
@@ -18,46 +60,27 @@ abstract class HoldGesture {
   int _pageX, _pageY;
   int _timer;
 
-  /** Constructor.
-   *
-   * + [start] is the callback before starting monitoring the touch-and-hold
-   * gesture. If it returns false, the monitoring will be cancelled.
-   */
-  factory HoldGesture(Element owner, HoldGestureCallback action,
+  factory _HoldGesture(Element owner, HoldGestureCallback action,
   [HoldGestureCallback start, int duration=1000, int movement=3]) {
     return browser.touch ?
       new _TouchHoldGesture(owner, action, start, duration, movement):
       new _MouseHoldGesture(owner, action, start, duration, movement);
   }
-  HoldGesture._init(Element this._owner, HoldGestureCallback this._action,
+  _HoldGesture._init(Element this._owner, HoldGestureCallback this._action,
   HoldGestureCallback this._start, int this._dur, int this._mov) {
     _listen();
   }
 
-  /** Destroys the handler.
-   * It shall be called to clean up the handler, if it is no longer used.
-   */
   void destroy() {
     _stop();
     _unlisten();
   }
 
-  /** The element that owns this handler.
-   */
   Element get owner() => _owner;
-  /** Returns the duration that a user has to hold before calling the action ([action]).
-   */
+  Element get touched() => _touched;
   int get duration() => _dur;
-  /** Returns the allowed movement to consider if a user is holding a touch.
-   * In other words, if the user moves more than the movement, it won't consider a hold.
-   */
   int get movement() => _mov;
-  /** Returns the callback to call when the touch-and-hold gesture is detected.
-   */
   HoldGestureCallback get action() => _action;
-  /** Returns the callback to call when the user starts a potential gesture,
-   * or null if not specified.
-   */
   HoldGestureCallback get start() => _start;
 
   abstract void _listen();
@@ -66,15 +89,17 @@ abstract class HoldGesture {
   bool _touchStart(Element touched, int pageX, int pageY) {
     _stop();
 
+    _touched = touched;
     if (_start !== null) {
-      bool c = _start(touched, pageX, pageY);
-      if (c !== null && !c)
+      bool c = _start(this, pageX, pageY);
+      if (c !== null && !c) {
+        _touched = null; //not started
         return false; //don't start it
+      }
     }
 
     _pageX = pageX;
     _pageY = pageY;
-    _touched = touched;
     _timer = window.setTimeout(_call, duration);
     return true; //started
   }
@@ -89,7 +114,7 @@ abstract class HoldGesture {
   }
   void _call() {
     _stop();
-    _action(_touched, _pageX, _pageY);
+    _action(this, _pageX, _pageY);
   }
   void _stop() {
     if (_timer !== null) {
@@ -102,7 +127,7 @@ abstract class HoldGesture {
 
 /** The touch-and-hold handler for touch devices.
  */
-class _TouchHoldGesture extends HoldGesture {
+class _TouchHoldGesture extends _HoldGesture {
   EventListener _elStart, _elMove, _elEnd;
 
   _TouchHoldGesture(Element owner, HoldGestureCallback action,
@@ -134,7 +159,7 @@ class _TouchHoldGesture extends HoldGesture {
 }
 /** The touch-and-hold handler for mouse-based devices.
  */
-class _MouseHoldGesture extends HoldGesture {
+class _MouseHoldGesture extends _HoldGesture {
   EventListener _elStart, _elMove, _elEnd;
 
   _MouseHoldGesture(Element owner, HoldGestureCallback action,

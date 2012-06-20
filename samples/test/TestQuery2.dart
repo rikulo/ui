@@ -57,10 +57,10 @@ class TestQuery2 extends Activity {
     
   }
   
-  void assertQueryCount(View v, String query, int count) {
-    int c = countQuery(v, query);
+  void assertQueryCount(View v, String selector, int count) {
+    int c = countQuery(v, selector);
     if (c != count)
-      logMsg("${query}: ${c} (expecting ${count})");
+      logMsg("${selector}: ${c} (expecting ${count})");
   }
   
   void logMsg(String msg) {
@@ -77,9 +77,9 @@ View apply(View v, [String id, List<String> cls]) {
   return v;
 }
 
-int countQuery(View v, String query) {
+int countQuery(View v, String selector) {
   int s = 0;
-  for (View q in v.queryAll(query))
+  for (View q in v.queryAll(selector))
     s++;
   return s;
 }

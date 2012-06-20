@@ -13,4 +13,5 @@
 #source("src/CSS.dart");
 #source("src/DOMQuery.dart");
 #source("src/HoldGesture.dart");
+#source("src/DragGesture.dart");
 #source("src/Scroller.dart");
