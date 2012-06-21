@@ -622,7 +622,6 @@ class View implements Hashable {
    */
   void enterDocument_() {
     _inDoc = true;
-//    ViewUtil._views[uuid] = this; //not worth to maintain it
 
     adjustInnerNode_(true, true, true, true);
 
@@ -666,7 +665,6 @@ class View implements Hashable {
       child.exitDocument_();
     }
 
-//    ViewUtil._views.remove(uuid);
     _inDoc = false;
     _node = null; //as the last step since node might be called in exitDocument_
   }

@@ -84,21 +84,6 @@ class DOMQuery {
     }
     return false;
   }
-  /** Returns the nearest view containing this element.
-   */
-  /** View.getView(uuid) not supported yet (because of memory overhead)
-  View get view() {
-    for (Element n = node; n !== null && n !== document.body
-    && n !== document; n = n.parent) {
-      final String id = n.id;
-      if (id !== null && !id.isEmpty()) {
-        final View view = View.getView(id);
-        if (view !== null)
-          return view;
-      }
-    }
-    return null;
-  }*/
 
   /** Returns the width of the border.
    */
@@ -120,14 +105,14 @@ class DOMQuery {
 class _WindowQuery extends DOMQuery {
   _WindowQuery._init(var v): super._init(v) {}
 
-  //@Override
   int get innerWidth() => node.innerWidth;
-  //@Override
   int get innerHeight() => node.innerHeight;
-  //@Override
   int get outerWidth() => node.outerWidth;
-  //@Override
   int get outerHeight() => node.outerHeight;
-  //@Override
   Element get offsetParent() => null;
+  int get offsetLeft() => 0;
+  int get offsetTop() => 0;
+  Offset get offset() => new Offset(0, 0);
+  Offset get documentOffset() => offset;
+  bool isDescendantOf(Element parent) => false;
 }

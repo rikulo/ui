@@ -77,14 +77,4 @@ class ViewUtil {
     }
     return r;
   }
-
-  /** Returns the view of the given UUID.
-   *
-   * Notice that, if a view is not attached to the document, it won't
-   * be returned
-   * (i.e., it is considered as not found and `null` is returned).
-   */
-//  static View getView(String uuid) => _views[uuid];
-//  static Map<String, View> _views = new Map();
-//Note supported because the memory overhead to maintain _views
 }
