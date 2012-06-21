@@ -1,6 +1,6 @@
 
 class Snake {
-  final int UP = -2, DOWN = 2, LEFT=-1, RIGHT=1;
+  static final int UP = -2, DOWN = 2, LEFT=-1, RIGHT=1;
   
   int _direction;
   List<SnakePoint> body;
