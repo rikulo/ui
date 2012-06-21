@@ -47,10 +47,14 @@ class DOMQuery {
    * its [offsetParent] element.
    */
   int get offsetLeft() => node.$dom_offsetLeft;
-  /** Returns the left position of this element relative to the top side of
+  /** Returns the top position of this element relative to the top side of
    * its [offsetParent] element.
    */
   int get offsetTop() => node.$dom_offsetTop;
+  /** Returns the left-top position of this element relative to the top side of
+   * its [offsetParent] element.
+   */
+  Offset get offset() => new Offset(node.$dom_offsetLeft, node.$dom_offsetTop);
 
   /** Returns the offset of this node related to the document.
    */

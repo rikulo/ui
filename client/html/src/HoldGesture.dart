@@ -34,40 +34,27 @@ interface HoldGesture default _HoldGesture {
    * is not taking place.
    */
   Element get touched();
-  /** Returns the duration that a user has to hold before calling the action
-   * ([action]).
-   */
-  int get duration();
-  /** Returns the allowed movement to consider if a user is holding a touch.
-   * In other words, if the user moves more than the movement, it won't consider a hold.
-   */
-  int get movement();
-  /** Returns the callback to call when the touch-and-hold gesture is detected.
-   */
-  HoldGestureCallback get action();
-  /** Returns the callback to call when the user starts a potential gesture,
-   * or null if not specified.
-   */
-  HoldGestureCallback get start();
 }
 
 abstract class _HoldGesture implements HoldGesture {
   final Element _owner;
-  final int _dur;
-  final int _mov;
+  final int _duration;
+  final int _movement;
   final HoldGestureCallback _start, _action;
   Element _touched;
   int _pageX, _pageY;
   int _timer;
 
   factory _HoldGesture(Element owner, HoldGestureCallback action,
-  [HoldGestureCallback start, int duration=1000, int movement=3]) {
+  [HoldGestureCallback start, int duration, int movement]) {
+    if (duration === null) duration = 1000;
+    if (movement === null) movement = 3;
     return browser.touch ?
       new _TouchHoldGesture(owner, action, start, duration, movement):
       new _MouseHoldGesture(owner, action, start, duration, movement);
   }
   _HoldGesture._init(Element this._owner, HoldGestureCallback this._action,
-  HoldGestureCallback this._start, int this._dur, int this._mov) {
+  HoldGestureCallback this._start, int this._duration, int this._movement) {
     _listen();
   }
 
@@ -78,10 +65,6 @@ abstract class _HoldGesture implements HoldGesture {
 
   Element get owner() => _owner;
   Element get touched() => _touched;
-  int get duration() => _dur;
-  int get movement() => _mov;
-  HoldGestureCallback get action() => _action;
-  HoldGestureCallback get start() => _start;
 
   abstract void _listen();
   abstract void _unlisten();
@@ -100,12 +83,12 @@ abstract class _HoldGesture implements HoldGesture {
 
     _pageX = pageX;
     _pageY = pageY;
-    _timer = window.setTimeout(_call, duration);
+    _timer = window.setTimeout(_call, _duration);
     return true; //started
   }
   void _touchMove(int pageX, int pageY) {
     if (_touched !== null
-    && (pageX - _pageX > movement || pageY - _pageY > movement))
+    && (pageX - _pageX > _movement || pageY - _pageY > _movement))
       _stop();
   }
   void _touchEnd() {

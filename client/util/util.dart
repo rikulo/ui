@@ -13,9 +13,7 @@
 #source("src/ListUtil.dart");
 #source("src/AbstractList.dart");
 #source("src/RunOnceQueue.dart");
-#source("src/Dir.dart");
 #source("src/Offset.dart");
 #source("src/Size.dart");
-#source("src/Rectangle.dart");
 #source("src/Functions.dart");
 #source("src/JSUtil.dart");

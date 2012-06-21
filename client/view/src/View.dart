@@ -35,8 +35,8 @@ typedef void AfterEnterDocument(View view);
  * + exitDocument: an instanceof [ViewEvent] indicates this view will be
  * removed from the document.
  *
- #---
- #
+ *---
+ *
  * Default [classes]: "v-$className"
  * (note: "v-" is actually [viewConfig.classPrefix])
  */

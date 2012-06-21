@@ -2,32 +2,25 @@
 //History: Thu, May 03, 2012  1:06:33 PM
 // Author: tomyeh
 
-/** The scroller callback.
- *
- * ##Signature of possible callbacks##
- *
- * `bool start(Scroller scroller, int ofsX, int ofsY)`
- *
+/**
  * The callback when [Scroller] tries to start the scrolling.
  * If it returns false, the scroller won't be activated (i.e., ignored).
- * The ofsX and ofsY arguments provide the offset to the left-top corner
- * of the owner element.
  *
- * `void moving(Scroller scroller, int deltaX, int deltaY;)`
+ * [ofsX] and [ofsY] provide the touch point's offset relative to
+ * the left-top corner of the owner element (right before scrolling).
+ */
+typedef bool ScrollerStart(Scroller scroller, int ofsX, int ofsY);
+/** The callback that [Scroller] uses to indicate the user is scrolling,
+ * or the user ends the scrolling (i.e., releases the finger).
  *
- * The callback used to indicate the user is scrolling (i.e., moving his
- * finger).
- * The deltaX and deltaY arguments provides the number of pixels
- * that a user has scrolled (since `start` was called).
+ * [ofsX] and [ofsY] provide the touch point's offset relative to
+ * the left-top corner of the owner element (right before scrolling).
  *
- * `void end(Scroller scroller, int deltaX, int deltaY);`
- *
- * The callback used to indicate the user finishes the scrolling (i.e.,
- * leaving his finger off the screen).
- * The deltaX and deltaY arguments provides the number of pixels
+ * [deltaX] and [deltaY] provide the number of pixels
  * that a user has scrolled (since `start` was called).
  */
-typedef ScrollerCallback(Scroller scroller, int deltaX, int deltaY);
+typedef void ScrollerMove(Scroller scroller,
+  int ofsX, int ofsY, int deltaX, int deltaY);
 
 interface Scroller default _Scroller {
   /** Constructor.
@@ -37,7 +30,7 @@ interface Scroller default _Scroller {
    * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
    */
   Scroller(Element owner, [Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerCallback start, ScrollerCallback end, ScrollerCallback moving]);
+  ScrollerStart start, ScrollerMove end, ScrollerMove moving]);
 
   /** Destroys the scroller.
    * It shall be called to clean up the scroller, if it is no longer used.
@@ -48,26 +41,13 @@ interface Scroller default _Scroller {
    */
   Element get owner();
   /** The element that the scrolling starts with, or null if the scrolling
-   * is not taking place.
+   * is not started.
    */
   Element get touched();
 
   /** Returns the direction that the scrolling is allowed.
    */
   Dir get dir();
-
-  /** Returns the callback to call when the user starts scrolling,
-   * or null if not specified.
-   */
-  ScrollerCallback get start();
-  /** Returns the callback that will be called when the scrolling is ended,
-   * or null if not specified.
-   */
-  ScrollerCallback get end();
-  /** Returns the callback that will be called when the user is scrolling
-   * the content, or null if not specified.
-   */
-  ScrollerCallback get moving();
 }
 /**
  * A custom-scrolling handler.
@@ -75,24 +55,25 @@ interface Scroller default _Scroller {
 abstract class _Scroller implements Scroller {
   final Element _owner;
   final Dir _dir;
-  final ScrollerCallback _start, _end, _moving;
+  final ScrollerStart _start;
+  final ScrollerMove _end, _moving;
   final AsSize _fnTotalSize, _fnViewSize;
   Size _totalSize; //cached size
   Element _touched;
-  int _pageX, _pageY;
-  Offset3d _initOfs;
+  Offset _ownerOfs, _initPgOfs, _initTxOfs;
 
   factory _Scroller(Element owner, [Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerCallback start, ScrollerCallback end, ScrollerCallback moving])
-  => browser.touch ?
+    ScrollerStart start, ScrollerMove end, ScrollerMove moving]) {
+    if (dir === null) dir = Dir.BOTH;
+    return browser.touch ?
       new _TouchScroller(owner, dir, totalSize, viewSize, start, end, moving):
       new _MouseScroller(owner, dir, totalSize, viewSize, start, end, moving);
       //TODO: support desktop - if not in simulator, mousewheel/draggable scrollbar
-  _Scroller._init(Element this._owner, Dir dir,
-  AsSize this._fnTotalSize, AsSize this._fnViewSize,
-  ScrollerCallback this._start, ScrollerCallback this._end,
-  ScrollerCallback this._moving):
-  _dir = dir !== null ? dir: Dir.BOTH {
+  }
+  _Scroller._init(Element this._owner, Dir this._dir,
+    AsSize this._fnTotalSize, AsSize this._fnViewSize,
+    ScrollerStart this._start, ScrollerMove this._end,
+    ScrollerMove this._moving) {
     _listen();
   }
 
@@ -105,51 +86,50 @@ abstract class _Scroller implements Scroller {
   Element get touched() => _touched;
   Dir get dir() => _dir;
 
-  ScrollerCallback get start() => _start;
-  ScrollerCallback get end() => _end;
-  ScrollerCallback get moving() => _moving;
-
   abstract void _listen();
   abstract void _unlisten();
 
   void _stop() {
     _touched = null;
+    _totalSize = null; //force recalculation
   }
   bool _touchStart(Element touched, int pageX, int pageY) {
     _stop();
 
     _touched = touched;
+    _ownerOfs = new DOMQuery(owner).documentOffset;
     if (_start !== null) {
-      final Offset ofs = new DOMQuery(_owner).documentOffset;
-      bool c = _start(this, pageX - ofs.left, pageY - ofs.top); //not deltaX/deltaY
+      bool c = _start(this, pageX - _ownerOfs.x, pageY - _ownerOfs.y);
       if (c !== null && !c) {
         _touched = null; //not started
         return false; //don't start it
       }
     }
 
-    _initOfs = CSS.offset3dOf(owner.style.transform);
-    _pageX = pageX;
-    _pageY = pageY;
+    _initTxOfs = CSS.offset3dOf(owner.style.transform);
+    _initPgOfs = new Offset(pageX, pageY);
     return true;
   }
   void _touchMove(int pageX, int pageY) {
     if (_touched !== null) {
-      _moveBy(pageX - _pageX, pageY - _pageY, _moving); 
+      _moveBy(pageX - _ownerOfs.x, pageY - _ownerOfs.y,
+        pageX - _initPgOfs.x, pageY - _initPgOfs.y, _moving); 
     }
   }
   void _touchEnd(int pageX, int pageY) {
     if (_touched !== null) {
-      _moveBy(pageX - _pageX, pageY - _pageY, _end); 
+      _moveBy(pageX - _ownerOfs.x, pageY - _ownerOfs.y,
+        pageX - _initPgOfs.x, pageY - _initPgOfs.y, _end); 
       _stop();
     }
   }
-  void _moveBy(int deltaX, int deltaY, [ScrollerCallback callback]) {
-    final Offset move = _constraint(deltaX + _initOfs.x, deltaY + _initOfs.y);
+  void _moveBy(int ofsX, int ofsY, int deltaX, int deltaY,
+    ScrollerMove callback) {
+    final Offset move = _constraint(deltaX + _initTxOfs.x, deltaY + _initTxOfs.y);
     _owner.style.transform = CSS.translate3d(move.x, move.y);
 
     if (callback !== null)
-      callback(this, move.x, move.y);
+      callback(this, ofsX, ofsY, deltaX, deltaY);
   }
   Offset _constraint(int x, int y) {
     if (_totalSize === null)
@@ -163,14 +143,14 @@ abstract class _Scroller implements Scroller {
       viewSize = new Size(q.outerWidth, q.outerHeight);
     }
 
-    if (x >= 0) {
+    if (dir == Dir.VERTICAL || x >= 0) {
       x = 0;
     } else {
       final int right = viewSize.width - _totalSize.width;
       if (right >= 0) x = 0;
       else if (x < right) x = right;
     }
-    if (y >= 0) {
+    if (dir == Dir.HORIZONTAL || y >= 0) {
       y = 0;
     } else {
       final int bottom = viewSize.height - _totalSize.height;
@@ -187,7 +167,7 @@ class _TouchScroller extends _Scroller {
   EventListener _elStart, _elMove, _elEnd;
 
   _TouchScroller(Element owner, Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerCallback start, ScrollerCallback end, ScrollerCallback moving)
+  ScrollerStart start, ScrollerMove end, ScrollerMove moving)
   : super._init(owner, dir, totalSize, viewSize, start, end, moving);
 
   void _listen() {
@@ -220,7 +200,7 @@ class _MouseScroller extends _Scroller {
   bool _captured = false;
 
   _MouseScroller(Element owner, Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerCallback start, ScrollerCallback end, ScrollerCallback moving)
+  ScrollerStart start, ScrollerMove end, ScrollerMove moving)
   : super._init(owner, dir, totalSize, viewSize, start, end, moving);
 
   //@Override
@@ -236,7 +216,6 @@ class _MouseScroller extends _Scroller {
     super._stop();
   }
   void _capture() {
-    //TO capture, we have to register to document
     _captured = true;
     final ElementEvents on = document.on;
     on.mouseMove.add(_elMove = (MouseEvent event) {

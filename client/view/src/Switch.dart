@@ -33,7 +33,7 @@ class Switch extends View {
     _checked = checked;
 
     if (inDocument) {
-      node.query('.v-inner').style.setProperty(CSS.name('transform'),
+      innerNode.style.setProperty(CSS.name('transform'),
         CSS.translate3d(_checked ? 0: _X_OFF, 0));
     }
   }
@@ -61,6 +61,7 @@ class Switch extends View {
    */
   String get offLabel() => _offLabel;
 
+  Element get innerNode() => getNode('inner');
   void enterDocument_() {
     super.enterDocument_();
     //TODO: handle touch/drag
@@ -81,7 +82,8 @@ class Switch extends View {
   void domInner_(StringBuffer out) {
     out.add('<div class="v-inner" style="')
       .add(CSS.name('transform')).add(':')
-      .add(CSS.translate3d(_checked ? 0: _X_OFF, 0)).add('"')
+      .add(CSS.translate3d(_checked ? 0: _X_OFF, 0)).add('" id="')
+      .add(uuid).add('-inner"')
       .add('><div class="v-text-on">')
       .add(onLabel).add('</div><div class="v-text-off">')
       .add(offLabel).add('</div><div class="v-knot"></div></div>');
