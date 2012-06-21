@@ -66,16 +66,17 @@ class _Log {
     }
     return true;
   }
-  HoldGestureCallback _gestureAction() {
-    return (HoldGesture gesture, int pageX, int pageY) {
-      final Offset ofs = new DOMQuery(_node).documentOffset;
+  HoldGestureAction _gestureAction() {
+    return (HoldGestureState state) {
       (_popup = new _LogPopup(this)).open(
-        pageX - ofs.left + _node.$dom_scrollLeft, pageY - ofs.top + _node.$dom_scrollTop);
+        state.offset.x + _node.$dom_scrollLeft,
+        state.offset.y + _node.$dom_scrollTop);
     };
   }
-  HoldGestureCallback _gestureStart() {
-    return (HoldGesture gesture, int pageX, int pageY)
-      => _popup === null || !new DOMQuery(gesture.touched).isDescendantOf(_popup._node);
+  HoldGestureStart _gestureStart() {
+    return (HoldGestureState state)
+      => _popup === null
+      || !new DOMQuery(state.gesture.touched).isDescendantOf(_popup._node);
   }
 
   void _defer() {
