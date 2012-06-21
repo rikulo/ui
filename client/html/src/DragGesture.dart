@@ -11,26 +11,34 @@
  * [DragGesture]'s `owner`. If you prefer to move a 'ghosted' element,
  * you can make a copy or create a different element depending on your
  * requirement.
- *
- * [ofsX] and [ofsY] provide the touch point's offset relative to
- * the left-top corner of the owner element (right before dragging).
  */
-typedef Element DragGestureStart(DragGesture gesture, int ofsX, int ofsY);
+typedef Element DragGestureStart(DragGestureState state);
 /** The callback that [DragGesture] uses to indicate the user is dragging,
  * or the user ends the dragging (i.e., releases the finger).
- *
- * [ofsX] and [ofsY] provide the touch point's offset relative to
- * the left-top corner of the owner element (right before dragging).
- *
- * [deltaX] and [deltaY] provide the number of pixels
- * that a user has dragged (since `start` was called).
  *
  * If this method returns true, [DragGesture] won't move any element.
  * It is useful if you'd like use [DragGesture] to trigger something
  * rather than moving.
  */
-typedef bool DragGestureMove(DragGesture gesture,
-  int ofsX, int ofsY, int deltaX, int deltaY);
+typedef bool DragGestureMove(DragGestureState state);
+
+/** The state of dragging.
+ */
+interface DragGestureState default _DragGestureState {
+  DragGestureState(DragGesture gesture, Offset offset, Offset delta);
+
+  /** Returns [DragGesture].
+   */
+  DragGesture get gesture();
+  /** The touch point's offset relative to
+   * the left-top corner of the owner element (right before dragging).
+   */
+  Offset get offset();
+  /** The number of pixels
+   * that a user has dragged (since `start` was called).
+   */
+  Offset get delta();
+}
 
 /**
  * A touch-and-drag gesture handler
@@ -67,8 +75,8 @@ interface DragGesture default _DragGesture {
     AsRectangle range, int movement,
     DragGestureStart start, DragGestureMove end, DragGestureMove moving]);
 
-  /** Destroys the scroller.
-   * It shall be called to clean up the scroller, if it is no longer used.
+  /** Destroys this [DragGesture].
+   * It shall be called to clean up the gesture, if it is no longer used.
    */
   void destroy();
 
@@ -88,6 +96,17 @@ interface DragGesture default _DragGesture {
    * It is either [handle] or one of its descendant elements.
    */
   Element get touched();
+}
+
+class _DragGestureState implements DragGestureState {
+  final DragGesture _gesture;
+  final Offset _ofs, _delta;
+
+  _DragGestureState(DragGesture this._gesture, Offset this._ofs, Offset this._delta);
+
+  DragGesture get gesture() => _gesture;
+  Offset get offset() => _ofs;
+  Offset get delta() => _delta;
 }
 
 abstract class _DragGesture implements DragGesture {
@@ -150,8 +169,9 @@ abstract class _DragGesture implements DragGesture {
     _pendingDrag = null;
     _ownerOfs = new DOMQuery(owner).documentOffset;
     if (_start !== null) {
-      _dragged = _start(this,
-        _initPgOfs.x - _ownerOfs.x, _initPgOfs.y - _ownerOfs.y);
+      _dragged = _start(new DragGestureState(this,
+        new Offset(_initPgOfs.x - _ownerOfs.x, _initPgOfs.y - _ownerOfs.y),
+        new Offset(0, 0)));
       if (_dragged === null) { //not allowed
         _stop();
         return;
@@ -191,7 +211,8 @@ abstract class _DragGesture implements DragGesture {
       ofsX, ofsY, deltaX + _initTxOfs.x, deltaY + _initTxOfs.y);
 
     if (callback !== null) {
-      bool done = callback(this, ofsX, ofsY, deltaX, deltaY);
+      bool done = callback(new DragGestureState(this,
+        new Offset(ofsX, ofsY), new Offset(deltaX, deltaY)));
       if (done !== null && done)
         return; //no need to move
     }

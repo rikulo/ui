@@ -5,23 +5,32 @@
 /**
  * The callback when [Scroller] tries to start the scrolling.
  * If it returns false, the scroller won't be activated (i.e., ignored).
- *
- * [ofsX] and [ofsY] provide the touch point's offset relative to
- * the left-top corner of the owner element (right before scrolling).
  */
-typedef bool ScrollerStart(Scroller scroller, int ofsX, int ofsY);
+typedef bool ScrollerStart(ScrollerState state);
 /** The callback that [Scroller] uses to indicate the user is scrolling,
  * or the user ends the scrolling (i.e., releases the finger).
- *
- * [ofsX] and [ofsY] provide the touch point's offset relative to
- * the left-top corner of the owner element (right before scrolling).
- *
- * [deltaX] and [deltaY] provide the number of pixels
- * that a user has scrolled (since `start` was called).
  */
-typedef void ScrollerMove(Scroller scroller,
-  int ofsX, int ofsY, int deltaX, int deltaY);
+typedef void ScrollerMove(ScrollerState state);
 
+/** The state of scroller.
+ */
+interface ScrollerState default _ScrollerState {
+  ScrollerState(Scroller scroller, Offset offset, Offset delta);
+
+  Scroller get scroller();
+  /** The touch point's offset relative to
+   * the left-top corner of the owner element (right before scrolling).
+   */
+  Offset get offset();
+  /** The number of pixels
+   * that a user has scrolled (since `start` was called).
+   */
+  Offset get delta();
+}
+
+/** The scroller used to scroll an element by use of its style's
+ * transform property.
+ */
 interface Scroller default _Scroller {
   /** Constructor.
    *
@@ -48,6 +57,17 @@ interface Scroller default _Scroller {
   /** Returns the direction that the scrolling is allowed.
    */
   Dir get dir();
+}
+
+class _ScrollerState implements ScrollerState {
+  final Scroller _scroller;
+  final Offset _ofs, _delta;
+
+  _ScrollerState(Scroller this._scroller, Offset this._ofs, Offset this._delta);
+
+  Scroller get scroller() => _scroller;
+  Offset get offset() => _ofs;
+  Offset get delta() => _delta;
 }
 /**
  * A custom-scrolling handler.
@@ -99,7 +119,8 @@ abstract class _Scroller implements Scroller {
     _touched = touched;
     _ownerOfs = new DOMQuery(owner).documentOffset;
     if (_start !== null) {
-      bool c = _start(this, pageX - _ownerOfs.x, pageY - _ownerOfs.y);
+      bool c = _start(new ScrollerState(this,
+          new Offset(pageX - _ownerOfs.x, pageY - _ownerOfs.y), new Offset(0,0)));
       if (c !== null && !c) {
         _touched = null; //not started
         return false; //don't start it
@@ -129,7 +150,8 @@ abstract class _Scroller implements Scroller {
     _owner.style.transform = CSS.translate3d(move.x, move.y);
 
     if (callback !== null)
-      callback(this, ofsX, ofsY, deltaX, deltaY);
+      callback(new ScrollerState(this, new Offset(ofsX, ofsY),
+        new Offset(deltaX, deltaY)));
   }
   Offset _constraint(int x, int y) {
     if (_totalSize === null)
