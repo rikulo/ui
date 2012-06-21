@@ -224,6 +224,14 @@ abstract class _DragGesture implements DragGesture {
     }
   }
   Offset _constraint(int ofsX, int ofsY, int moveX, int moveY) {
+    if (_fnRange !== null) {
+      if (_range == null)
+        _range = _fnRange();
+      if (moveX < _range.x) moveX = _range.x;
+      else if (moveX > _range.right) moveX = _range.right;
+      if (moveY < _range.y) moveY = _range.y;
+      else if (moveY > _range.bottom) moveY = _range.bottom;
+    }
     return new Offset(moveX, moveY);
   }
 }

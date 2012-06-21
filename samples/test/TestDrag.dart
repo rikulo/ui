@@ -3,6 +3,7 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/html/html.dart');
+#import('../../client/util/util.dart');
 
 class TestDrag extends Activity {
 
@@ -26,7 +27,12 @@ class TestDrag extends Activity {
 
     View view = _createDragView(box, "Boxed Drag");
     view.on.enterDocument.add((event) {
-      new DragGesture(view.node);
+      final DOMQuery qbox = new DOMQuery(box),
+        qview = new DOMQuery(view);
+      new DragGesture(view.node,
+        range: () => new Rectangle(0, 0,
+          qbox.innerWidth - qview.outerWidth,
+          qbox.innerHeight - qview.outerHeight));
     });
     return box;
   }
