@@ -37,6 +37,10 @@ interface MovementState {
   /** The element that the users touches at the beginning.
    */
   Element get touched();
+
+  /** Any data that the caller stores.
+   */
+  var data;
 }
 
 /** The state of dragging.
@@ -112,6 +116,7 @@ class _DragGestureState implements DragGestureState {
   Offset _ofs, _delta, _initTxOfs;
   Rectangle _range;
   Element _dragged, _touched, _pending;
+  var data;
 
   _DragGestureState(DragGesture gesture, int pageX, int pageY):
   _gesture = gesture,
@@ -149,6 +154,7 @@ abstract class _DragGesture implements DragGesture {
     DragGestureMove moving]) {
     if (handle === null) handle = owner;
     if (movement === null) movement = -1;
+    if (transform === null) transform = false;
     return browser.touch ?
       new _TouchDragGesture(owner, handle, transform, range, movement,
         start, end, moving):
@@ -221,11 +227,12 @@ abstract class _DragGesture implements DragGesture {
   }
   void _moveBy(int ofsX, int ofsY, int deltaX, int deltaY,
     DragGestureMove callback) {
-    final Offset move = _constraint(ofsX, ofsY, deltaX, deltaY);
+    final Offset initofs = _state._initTxOfs,
+      move = _constraint(deltaX + initofs.x, deltaY + initofs.y);
 
     if (callback !== null) {
       _state._ofs = new Offset(ofsX, ofsY);
-      _state._delta = new Offset(deltaX, deltaY);
+      _state._delta = new Offset(move.x - initofs.x, move.y - initofs.y);
       bool done = callback(_state);
       if (done !== null && done)
         return; //no need to move
@@ -237,31 +244,28 @@ abstract class _DragGesture implements DragGesture {
       _state._dragged.style.top = CSS.px(move.y);
     }
   }
-  Offset _constraint(int ofsX, int ofsY, int deltaX, int deltaY) {
-    final Offset initofs = _state._initTxOfs;
-    int moveX = deltaX + initofs.x,
-      moveY = deltaY + initofs.y;
+  Offset _constraint(int x, y) {
     final Rectangle range = _state.range;
     if (range !== null) {
-      if (range.width == 0) moveX = initofs.x;
+      if (range.width == 0) x = _state._initTxOfs.x;
       else if (_transform) { //if transform, width is negative
-        if (moveX > range.x) moveX = range.x;
-        else if (moveX < range.right) moveX = range.right;
+        if (x > range.x) x = range.x;
+        else if (x < range.right) x = range.right;
       } else {
-        if (moveX < range.x) moveX = range.x;
-        else if (moveX > range.right) moveX = range.right;
+        if (x < range.x) x = range.x;
+        else if (x > range.right) x = range.right;
       }
 
-      if (range.height == 0) moveY = initofs.y;
+      if (range.height == 0) y = _state._initTxOfs.y;
       else if (_transform) {
-        if (moveY > range.y) moveY = range.y;
-        else if (moveY < range.bottom) moveY = range.bottom;
+        if (y > range.y) y = range.y;
+        else if (y < range.bottom) y = range.bottom;
       } else {
-        if (moveY < range.y) moveY = range.y;
-        else if (moveY > range.bottom) moveY = range.bottom;
+        if (y < range.y) y = range.y;
+        else if (y > range.bottom) y = range.bottom;
       }
     }
-    return new Offset(moveX, moveY);
+    return new Offset(x, y);
   }
 }
 

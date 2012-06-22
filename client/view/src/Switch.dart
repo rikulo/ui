@@ -10,7 +10,8 @@ class Switch extends View {
   DragGesture _dg;
   bool _checked = false, _disabled = false;
 
-  static final int _X_OFF = -44;
+  static final int _X_OFF = -44,
+    _X_OFF_EX = -10; //to cover half of the knot
 
   /** Instantaites a switch.
    */
@@ -32,10 +33,8 @@ class Switch extends View {
   void set checked(bool checked) {
     _checked = checked;
 
-    if (inDocument) {
-      innerNode.style.setProperty(CSS.name('transform'),
-        CSS.translate3d(_checked ? 0: _X_OFF, 0));
-    }
+    if (inDocument)
+      _updateDoc();
   }
 
   /** Returns whether it is disabled.
@@ -61,11 +60,35 @@ class Switch extends View {
    */
   String get offLabel() => _offLabel;
 
-  Element get innerNode() => getNode('inner');
+  Element get _sdNode() => getNode('sd');
+  Element get _bgNode() => getNode('bg');
+  void _updateDoc([bool animate=false]) {
+    _sdNode.style.setProperty(CSS.name('transform'),
+      CSS.translate3d(_checked ? 0: _X_OFF, 0));
+    _updateBg(_checked ? 0: _X_OFF);
+  }
+  void _updateBg(int delta) {
+    _bgNode.style.marginLeft = CSS.px(delta + _X_OFF_EX);
+  }
+
   void enterDocument_() {
     super.enterDocument_();
-    _dg = new DragGesture(innerNode, transform: true,
-      range: () => new Rectangle(0, 0, _X_OFF, 0));
+
+    _updateDoc();
+    _dg = new DragGesture(_sdNode, transform: true,
+      range: () => new Rectangle(0, 0, _X_OFF, 0),
+      start: (state) {
+        state.data = CSS.intOf(_bgNode.style.marginLeft) - _X_OFF_EX;
+        return state.gesture.owner;
+      },
+      moving: (state) {
+        _updateBg(state.delta.x + state.data);
+        return false;
+      },
+      end: (state) {
+        _updateBg(state.delta.x + state.data);
+        return false;
+      });
   }
   void exitDocument_() {
     _dg.destroy();
@@ -73,11 +96,9 @@ class Switch extends View {
   }
 
   void domInner_(StringBuffer out) {
-    out.add('<div class="v-inner" style="')
-      .add(CSS.name('transform')).add(':')
-      .add(CSS.translate3d(_checked ? 0: _X_OFF, 0)).add('" id="')
-      .add(uuid).add('-inner"')
-      .add('><div class="v-text-on">')
+    out.add('<div class="v-bg"><div class="v-bgi" id="')
+      .add(uuid).add('-bg"></div></div><div class="v-slide" id="')
+      .add(uuid).add('-sd"><div class="v-text-on">')
       .add(onLabel).add('</div><div class="v-text-off">')
       .add(offLabel).add('</div><div class="v-knot"></div></div>');
   }

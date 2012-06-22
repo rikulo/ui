@@ -26,6 +26,10 @@ interface HoldGestureState {
   /** The touch point's offset relative to the whole document.
    */
   Offset get documentOffset();
+
+  /** Any data that the caller stores.
+   */
+  var data;
 }
 
 /**
@@ -60,6 +64,7 @@ class _HoldGestureState implements HoldGestureState {
   final Element _touched;
   Offset _ofs, _docOfs;
   int _timer;
+  var data;
 
   _HoldGestureState(_HoldGesture this._gesture,
     Element this._touched, int pageX, int pageY) {

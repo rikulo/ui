@@ -55,6 +55,7 @@ class _ScrollerState implements ScrollerState {
   final Offset _ownerOfs, _initPgOfs;
   Offset _ofs, _delta, _initTxOfs;
   Size _totalSize; //cached size
+  var data;
 
   _ScrollerState(_Scroller scroller, Element this._touched, int pageX, int pageY):
   _scroller = scroller,
@@ -146,12 +147,12 @@ abstract class _Scroller implements Scroller {
   }
   void _moveBy(int ofsX, int ofsY, int deltaX, int deltaY,
     ScrollerMove callback) {
-    final Offset move = _constraint(
-      deltaX + _state._initTxOfs.x, deltaY + _state._initTxOfs.y);
+    final Offset initofs = _state._initTxOfs,
+      move = _constraint(deltaX + initofs.x, deltaY + initofs.y);
 
     if (callback !== null) {
       _state._ofs = new Offset(ofsX, ofsY);
-      _state._delta = new Offset(deltaX, deltaY);
+      _state._delta = new Offset(move.x - initofs.x, move.y - initofs.y);
       callback(_state);
     }
 
