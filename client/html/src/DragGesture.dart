@@ -22,22 +22,40 @@ typedef Element DragGestureStart(DragGestureState state);
  */
 typedef bool DragGestureMove(DragGestureState state);
 
+/** The state of movement.
+ */
+interface MovementState {
+  /** The touch point's offset relative to
+   * the left-top corner of the owner element (right before moving).
+   */
+  Offset get offset();
+  /** The number of pixels that a user has moved his finger
+   * (since `start` was called).
+   */
+  Offset get delta();
+}
+
 /** The state of dragging.
  */
-interface DragGestureState default _DragGestureState {
-  DragGestureState(DragGesture gesture, Offset offset, Offset delta);
-
+interface DragGestureState extends MovementState {
   /** Returns [DragGesture].
    */
   DragGesture get gesture();
-  /** The touch point's offset relative to
-   * the left-top corner of the owner element (right before dragging).
+
+  /** The element that was dragged, or null if the dragging is not started.
+   * It is the element returned by [start], if specified.
    */
-  Offset get offset();
-  /** The number of pixels
-   * that a user has dragged (since `start` was called).
+  Element get dragged();
+  /** The element that the dragging starts with, or null if the dragging
+   * is not started.
+   *
+   * It is either [handle] or one of its descendant elements.
    */
-  Offset get delta();
+  Element get touched();
+  /** The range that the user is allowed to drag, or null if there
+   * is no limitation.
+   */
+  Rectangle get range();
 }
 
 /**
@@ -57,6 +75,8 @@ interface DragGesture default _DragGesture {
    * If you'd like to limit the dragging to a shape other than rectangle,
    * you have to specify [moving] and move the dragged element in the shape
    * you want (and return true to ignore the default move).
+   * Notice that if [transform] is true, the range's width and height shall
+   * be negative (since the direction is opposite).
    * + [transform] specifies whether to move [owner] by adjusting the CSS style's
    * transform property (of [dragged]).
    * If not specified (false), it changes the owner's position directly.
@@ -86,27 +106,34 @@ interface DragGesture default _DragGesture {
   /** The element that the user can drag (never null).
    */
   Element get handle();
-  /** The element that was dragged, or null if the dragging is not started.
-   * It is the element returned by [start], if specified.
-   */
-  Element get dragged();
-  /** The element that the dragging starts with, or null if the dragging
-   * is not started.
-   *
-   * It is either [handle] or one of its descendant elements.
-   */
-  Element get touched();
 }
 
 class _DragGestureState implements DragGestureState {
-  final DragGesture _gesture;
-  final Offset _ofs, _delta;
+  final _DragGesture _gesture;
+  final Offset _ownerOfs, _initPgOfs;
+  Offset _ofs, _delta, _initTxOfs;
+  Rectangle _range;
+  Element _dragged, _touched, _pending;
 
-  _DragGestureState(DragGesture this._gesture, Offset this._ofs, Offset this._delta);
+  _DragGestureState(DragGesture gesture, int pageX, int pageY):
+  _gesture = gesture,
+  _initPgOfs = new Offset(pageX, pageY),
+  _ownerOfs = new DOMQuery(gesture.owner).documentOffset {
+    _ofs = _initPgOfs - _ownerOfs;
+    _delta = new Offset(0, 0);
+  }
 
   DragGesture get gesture() => _gesture;
   Offset get offset() => _ofs;
   Offset get delta() => _delta;
+
+  Element get dragged() => _dragged;
+  Element get touched() => _touched;
+  Rectangle get range() {
+    if (_range === null && _gesture._fnRange !== null)
+      _range = _gesture._fnRange();
+    return _range;
+  }
 }
 
 abstract class _DragGesture implements DragGesture {
@@ -115,10 +142,8 @@ abstract class _DragGesture implements DragGesture {
   final DragGestureMove _end, _moving;
   final AsRectangle _fnRange;
   final int _movement;
-  Rectangle _range;
-  Element _dragged, _touched, _pendingDrag;
-  Offset _ownerOfs, _initPgOfs, _initTxOfs;
-  bool _transform;
+  _DragGestureState _state;
+  final bool _transform;
 
   factory _DragGesture(Element owner, [Element handle,
     bool transform, AsRectangle range, int movement,
@@ -146,91 +171,97 @@ abstract class _DragGesture implements DragGesture {
 
   Element get owner() => _owner;
   Element get handle() => _handle;
-  Element get dragged() => _dragged;
-  Element get touched() => _touched;
 
   abstract void _listen();
   abstract void _unlisten();
 
   void _stop() {
-    _touched = _dragged = _pendingDrag = null;
-    _range = null; //force recalculation
+    _state = null;
   }
   void _touchStart(Element touched, int pageX, int pageY) {
     _stop();
 
-    _initPgOfs = new Offset(pageX, pageY);
-    _pendingDrag = touched;
+    _state = new _DragGestureState(this, pageX, pageY);
+    _state._pending = touched;
     if (_movement < 0)
       _activate();
   }
   void _activate() {
-    _touched = _pendingDrag;
-    _pendingDrag = null;
-    _ownerOfs = new DOMQuery(owner).documentOffset;
-    if (_start !== null) {
-      _dragged = _start(new DragGestureState(this,
-        new Offset(_initPgOfs.x - _ownerOfs.x, _initPgOfs.y - _ownerOfs.y),
-        new Offset(0, 0)));
-      if (_dragged === null) { //not allowed
-        _stop();
-        return;
-      }
-    } else {
-      _dragged = owner;
+    _state._touched = _state._pending;
+    _state._pending = null;
+    final Element dragged =
+      _state._dragged = _start !== null ?  _start(_state): owner;
+    if (dragged === null) { //not allowed
+      _stop();
+      return;
     }
 
-    if (_transform) {
-      _initTxOfs = CSS.offset3dOf(dragged.style.transform);
-    } else {
-      _initTxOfs = new DOMQuery(dragged).offset;
-    }
+    _state._initTxOfs = _transform ? 
+      CSS.offset3dOf(dragged.style.transform): new DOMQuery(dragged).offset;
   }
   void _touchMove(int pageX, int pageY) {
-    if (_pendingDrag !== null) {
-      int v;
-      if ((v = pageX - _initPgOfs.x) > _movement || v < -_movement
-      || (v = pageY - _initPgOfs.y) > _movement || v < -_movement)
-        _activate();
-    }
-    if (_touched !== null) {
-      _moveBy(pageX - _ownerOfs.x, pageY - _ownerOfs.y,
-        pageX - _initPgOfs.x, pageY - _initPgOfs.y, _moving); 
+    if (_state !== null) {
+      final Offset initPgOfs = _state._initPgOfs;
+      if (_state._pending !== null) {
+        int v;
+        if ((v = pageX - initPgOfs.x) > _movement || v < -_movement
+        || (v = pageY - initPgOfs.y) > _movement || v < -_movement)
+          _activate();
+      }
+      if (_state._touched !== null) {
+        _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
+          pageX - initPgOfs.x, pageY - initPgOfs.y, _moving); 
+      }
     }
   }
   void _touchEnd(int pageX, int pageY) {
-    if (_touched !== null) {
-      _moveBy(pageX - _ownerOfs.x, pageY - _ownerOfs.y,
-        pageX - _initPgOfs.x, pageY - _initPgOfs.y, _end); 
+    if (_state !== null && _state._touched !== null) {
+      _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
+        pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, _end); 
     }
     _stop();
   }
   void _moveBy(int ofsX, int ofsY, int deltaX, int deltaY,
     DragGestureMove callback) {
-    final Offset move = _constraint(
-      ofsX, ofsY, deltaX + _initTxOfs.x, deltaY + _initTxOfs.y);
+    final Offset move = _constraint(ofsX, ofsY, deltaX, deltaY);
 
     if (callback !== null) {
-      bool done = callback(new DragGestureState(this,
-        new Offset(ofsX, ofsY), new Offset(deltaX, deltaY)));
+      _state._ofs = new Offset(ofsX, ofsY);
+      _state._delta = new Offset(deltaX, deltaY);
+      bool done = callback(_state);
       if (done !== null && done)
         return; //no need to move
     }
     if (_transform) {
-      _dragged.style.transform = CSS.translate3d(move.x, move.y);
+      _state._dragged.style.transform = CSS.translate3d(move.x, move.y);
     } else {
-      _dragged.style.left = CSS.px(move.x);
-      _dragged.style.top = CSS.px(move.y);
+      _state._dragged.style.left = CSS.px(move.x);
+      _state._dragged.style.top = CSS.px(move.y);
     }
   }
-  Offset _constraint(int ofsX, int ofsY, int moveX, int moveY) {
-    if (_fnRange !== null) {
-      if (_range == null)
-        _range = _fnRange();
-      if (moveX < _range.x) moveX = _range.x;
-      else if (moveX > _range.right) moveX = _range.right;
-      if (moveY < _range.y) moveY = _range.y;
-      else if (moveY > _range.bottom) moveY = _range.bottom;
+  Offset _constraint(int ofsX, int ofsY, int deltaX, int deltaY) {
+    final Offset initofs = _state._initTxOfs;
+    int moveX = deltaX + initofs.x,
+      moveY = deltaY + initofs.y;
+    final Rectangle range = _state.range;
+    if (range !== null) {
+      if (range.width == 0) moveX = initofs.x;
+      else if (_transform) { //if transform, width is negative
+        if (moveX > range.x) moveX = range.x;
+        else if (moveX < range.right) moveX = range.right;
+      } else {
+        if (moveX < range.x) moveX = range.x;
+        else if (moveX > range.right) moveX = range.right;
+      }
+
+      if (range.height == 0) moveY = initofs.y;
+      else if (_transform) {
+        if (moveY > range.y) moveY = range.y;
+        else if (moveY < range.bottom) moveY = range.bottom;
+      } else {
+        if (moveY < range.y) moveY = range.y;
+        else if (moveY > range.bottom) moveY = range.bottom;
+      }
     }
     return new Offset(moveX, moveY);
   }
