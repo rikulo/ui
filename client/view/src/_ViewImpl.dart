@@ -60,7 +60,7 @@ class _ViewImpl {
     if (_domEvtDisps === null) {
       _domEvtDisps = {};
       for (final String nm in
-      const ["click", "blur", "focus", "change", "mouseDown", "mouseUp", "mouseOver", "mouseOut"]) {
+      const ["click", "blur", "focus", "change", "mouseDown", "mouseUp", "mouseMove", "mouseOver", "mouseOut", "mouseWheel"]) {
         _domEvtDisps[nm] = _domEvtDisp(nm);
       }
     }
