@@ -29,9 +29,8 @@ class Viewport extends View {
     if (title == null) title = "";
     _title = title;
 
-    final Element n = getNode("title");
-    if (n != null)
-      n.innerHTML = title;
+    if (inDocument)
+      getNode("title").innerHTML = title;
   }
 
   View get toolbar() => _toolbar;
@@ -47,9 +46,8 @@ class Viewport extends View {
     }
   }
   void _syncToolbar() {
-    final Element tbar = getNode("toolbar");
-    if (tbar != null) {
-      final DOMQuery qtbar = new DOMQuery(tbar);
+    if (inDocument) {
+      final DOMQuery qtbar = new DOMQuery(getNode("toolbar"));
       _toolbar.left = qtbar.offsetLeft;
       _toolbar.top = qtbar.offsetTop;
     }

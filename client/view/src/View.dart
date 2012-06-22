@@ -446,7 +446,8 @@ class View implements Hashable {
   Element get innerNode() => node;
   /** Adjusts the left, top, width, and/or height of the innerNode.
    *
-   * Default: adjust it based [innerWidth], [innerHeight], and [innerSpacing_].
+   * Default: adjust [innerNode] based on [innerWidth], [innerHeight], and
+   * [innerSpacing_], if [innerNode] is not the same as [node].
    *
    * If the subclass uses the static position and percentage to let the
    * browser adjust the offset and dimensions automatically, it can

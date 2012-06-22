@@ -129,7 +129,7 @@ abstract class _HoldGesture implements HoldGesture {
     _stop();
   }
   void _call() {
-    final HoldGestureStart state = _state;
+    final HoldGestureState state = _state;
     _stop();
     _action(state);
   }
