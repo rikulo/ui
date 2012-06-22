@@ -33,6 +33,10 @@ interface MovementState {
    * (since `start` was called).
    */
   Offset get delta();
+
+  /** The element that the users touches at the beginning.
+   */
+  Element get touched();
 }
 
 /** The state of dragging.
@@ -46,12 +50,6 @@ interface DragGestureState extends MovementState {
    * It is the element returned by [start], if specified.
    */
   Element get dragged();
-  /** The element that the dragging starts with, or null if the dragging
-   * is not started.
-   *
-   * It is either [handle] or one of its descendant elements.
-   */
-  Element get touched();
   /** The range that the user is allowed to drag, or null if there
    * is no limitation.
    */

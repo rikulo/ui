@@ -76,7 +76,7 @@ class _Log {
   HoldGestureStart _gestureStart() {
     return (HoldGestureState state)
       => _popup === null
-      || !new DOMQuery(state.gesture.touched).isDescendantOf(_popup._node);
+      || !new DOMQuery(state.touched).isDescendantOf(_popup._node);
   }
 
   void _defer() {

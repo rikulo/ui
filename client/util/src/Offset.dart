@@ -19,6 +19,7 @@ interface Offset default _Offset {
   int y;
 
   Offset(int left, int top);
+
   bool operator ==(Offset other);
   Offset operator -(Offset other);
   Offset operator +(Offset other);

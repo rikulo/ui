@@ -13,10 +13,12 @@ typedef void HoldGestureAction(HoldGestureState state);
 
 /** The state of [HoldGesture].
  */
-interface HoldGestureState default _HoldGestureState {
-  HoldGestureState(HoldGesture gesture, Offset offset, Offset documentOffset);
-
+interface HoldGestureState {
   HoldGesture get gesture();
+  /** The element that the user touches at the beginning.
+   */
+  Element get touched();
+
   /** The touch point's offset relative to
    * the left-top corner of the owner element.
    */
@@ -51,19 +53,22 @@ interface HoldGesture default _HoldGesture {
   /** The element that owns this handler.
    */
   Element get owner();
-  /** The element that the scrolling starts with, or null if the scrolling
-   * is not taking place.
-   */
-  Element get touched();
 }
 
 class _HoldGestureState implements HoldGestureState {
-  final HoldGesture _gesture;
-  final Offset _ofs, _docOfs;
+  final _HoldGesture _gesture;
+  final Element _touched;
+  Offset _ofs, _docOfs;
+  int _timer;
 
-  _HoldGestureState(HoldGesture this._gesture, Offset this._ofs, Offset this._docOfs);
+  _HoldGestureState(_HoldGesture this._gesture,
+    Element this._touched, int pageX, int pageY) {
+    _docOfs = new Offset(pageX, pageY);
+    _ofs = _docOfs - new DOMQuery(gesture.owner).documentOffset;
+  }
 
   HoldGesture get gesture() => _gesture;
+  Element get touched() => _touched;
   Offset get offset() => _ofs;
   Offset get documentOffset() => _docOfs;
 }
@@ -74,9 +79,7 @@ abstract class _HoldGesture implements HoldGesture {
   final int _movement;
   final HoldGestureStart _start;
   final HoldGestureAction _action;
-  Element _touched;
-  Offset _ownerOfs, _pgOfs;
-  int _timer;
+  _HoldGestureState _state;
 
   factory _HoldGesture(Element owner, HoldGestureAction action,
   [HoldGestureStart start, int duration, int movement]) {
@@ -97,7 +100,6 @@ abstract class _HoldGesture implements HoldGesture {
   }
 
   Element get owner() => _owner;
-  Element get touched() => _touched;
 
   abstract void _listen();
   abstract void _unlisten();
@@ -105,39 +107,40 @@ abstract class _HoldGesture implements HoldGesture {
   bool _touchStart(Element touched, int pageX, int pageY) {
     _stop();
 
-    _touched = touched;
-    _pgOfs = new Offset(pageX, pageY);
-    _ownerOfs = new DOMQuery(owner).documentOffset;
+    _state = new _HoldGestureState(this, touched, pageX, pageY);
     if (_start !== null) {
-      bool c = _start(new HoldGestureState(this, _pgOfs - _ownerOfs, _pgOfs));
+      final bool c = _start(_state);
       if (c !== null && !c) {
-        _touched = null; //not started
+        _stop();
         return false; //don't start it
       }
     }
 
-    _timer = window.setTimeout(_call, _duration);
+    _state._timer = window.setTimeout(_call, _duration);
     return true; //started
   }
   void _touchMove(int pageX, int pageY) {
-    if (_touched !== null
-    && (pageX - _pgOfs.x > _movement || pageY - _pgOfs.y > _movement))
+    if (_state !== null
+    && (pageX - _state._docOfs.x > _movement
+    ||  pageY - _state._docOfs.y > _movement))
       _stop();
   }
   void _touchEnd() {
-    if (_touched !== null)
-      _stop();
+    _stop();
   }
   void _call() {
+    final HoldGestureStart state = _state;
     _stop();
-    _action(new HoldGestureState(this, _pgOfs - _ownerOfs, _pgOfs));
+    _action(state);
   }
   void _stop() {
-    if (_timer !== null) {
-      window.clearTimeout(_timer);
-      _timer = null;
+    if (_state !== null) {
+      if (_state._timer !== null) {
+        window.clearTimeout(_state._timer);
+        _state._timer = null;
+      }
+      _state = null;
     }
-    _touched = null;
   }
 }
 

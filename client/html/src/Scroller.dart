@@ -14,18 +14,12 @@ typedef void ScrollerMove(ScrollerState state);
 
 /** The state of scroller.
  */
-interface ScrollerState default _ScrollerState {
-  ScrollerState(Scroller scroller, Offset offset, Offset delta);
-
+interface ScrollerState extends MovementState {
   Scroller get scroller();
-  /** The touch point's offset relative to
-   * the left-top corner of the owner element (right before scrolling).
+
+  /** Returns the total size that can be scrolled.
    */
-  Offset get offset();
-  /** The number of pixels
-   * that a user has scrolled (since `start` was called).
-   */
-  Offset get delta();
+  Size get totalSize();
 }
 
 /** The scroller used to scroll an element by use of its style's
@@ -49,10 +43,6 @@ interface Scroller default _Scroller {
   /** The element that owns this scroller.
    */
   Element get owner();
-  /** The element that the scrolling starts with, or null if the scrolling
-   * is not started.
-   */
-  Element get touched();
 
   /** Returns the direction that the scrolling is allowed.
    */
@@ -60,15 +50,32 @@ interface Scroller default _Scroller {
 }
 
 class _ScrollerState implements ScrollerState {
-  final Scroller _scroller;
-  final Offset _ofs, _delta;
+  final _Scroller _scroller;
+  final Element _touched;
+  final Offset _ownerOfs, _initPgOfs;
+  Offset _ofs, _delta, _initTxOfs;
+  Size _totalSize; //cached size
 
-  _ScrollerState(Scroller this._scroller, Offset this._ofs, Offset this._delta);
+  _ScrollerState(_Scroller scroller, Element this._touched, int pageX, int pageY):
+  _scroller = scroller,
+  _initPgOfs = new Offset(pageX, pageY),
+  _ownerOfs = new DOMQuery(scroller.owner).documentOffset {
+    _ofs = _initPgOfs - _ownerOfs;
+    _delta = new Offset(0, 0);
+  }
 
   Scroller get scroller() => _scroller;
   Offset get offset() => _ofs;
   Offset get delta() => _delta;
+  Element get touched() => _touched;
+
+  Size get totalSize() {
+    if (_totalSize === null)
+      _totalSize = _scroller._fnTotalSize();
+    return _totalSize;
+  }
 }
+
 /**
  * A custom-scrolling handler.
  */
@@ -78,9 +85,7 @@ abstract class _Scroller implements Scroller {
   final ScrollerStart _start;
   final ScrollerMove _end, _moving;
   final AsSize _fnTotalSize, _fnViewSize;
-  Size _totalSize; //cached size
-  Element _touched;
-  Offset _ownerOfs, _initPgOfs, _initTxOfs;
+  _ScrollerState _state;
 
   factory _Scroller(Element owner, [Dir dir, AsSize totalSize, AsSize viewSize,
     ScrollerStart start, ScrollerMove end, ScrollerMove moving]) {
@@ -103,60 +108,56 @@ abstract class _Scroller implements Scroller {
   }
 
   Element get owner() => _owner;
-  Element get touched() => _touched;
   Dir get dir() => _dir;
 
   abstract void _listen();
   abstract void _unlisten();
 
   void _stop() {
-    _touched = null;
-    _totalSize = null; //force recalculation
+    _state = null;
   }
   bool _touchStart(Element touched, int pageX, int pageY) {
     _stop();
 
-    _touched = touched;
-    _ownerOfs = new DOMQuery(owner).documentOffset;
+    _state = new _ScrollerState(this, touched, pageX, pageY);
     if (_start !== null) {
-      bool c = _start(new ScrollerState(this,
-          new Offset(pageX - _ownerOfs.x, pageY - _ownerOfs.y), new Offset(0,0)));
+      final bool c = _start(_state);
       if (c !== null && !c) {
-        _touched = null; //not started
-        return false; //don't start it
+        _stop();
+        return false;
       }
     }
 
-    _initTxOfs = CSS.offset3dOf(owner.style.transform);
-    _initPgOfs = new Offset(pageX, pageY);
+    _state._initTxOfs = CSS.offset3dOf(owner.style.transform);
     return true;
   }
   void _touchMove(int pageX, int pageY) {
-    if (_touched !== null) {
-      _moveBy(pageX - _ownerOfs.x, pageY - _ownerOfs.y,
-        pageX - _initPgOfs.x, pageY - _initPgOfs.y, _moving); 
+    if (_state !== null) {
+      _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
+        pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, _moving); 
     }
   }
   void _touchEnd(int pageX, int pageY) {
-    if (_touched !== null) {
-      _moveBy(pageX - _ownerOfs.x, pageY - _ownerOfs.y,
-        pageX - _initPgOfs.x, pageY - _initPgOfs.y, _end); 
+    if (_state !== null) {
+      _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
+        pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, _end); 
       _stop();
     }
   }
   void _moveBy(int ofsX, int ofsY, int deltaX, int deltaY,
     ScrollerMove callback) {
-    final Offset move = _constraint(deltaX + _initTxOfs.x, deltaY + _initTxOfs.y);
-    _owner.style.transform = CSS.translate3d(move.x, move.y);
+    final Offset move = _constraint(
+      deltaX + _state._initTxOfs.x, deltaY + _state._initTxOfs.y);
 
-    if (callback !== null)
-      callback(new ScrollerState(this, new Offset(ofsX, ofsY),
-        new Offset(deltaX, deltaY)));
+    if (callback !== null) {
+      _state._ofs = new Offset(ofsX, ofsY);
+      _state._delta = new Offset(deltaX, deltaY);
+      callback(_state);
+    }
+
+    _owner.style.transform = CSS.translate3d(move.x, move.y);
   }
   Offset _constraint(int x, int y) {
-    if (_totalSize === null)
-      _totalSize = _fnTotalSize();
-
     Size viewSize;
     if (_fnViewSize !== null) {
       viewSize = _fnViewSize();
@@ -168,14 +169,14 @@ abstract class _Scroller implements Scroller {
     if (dir == Dir.VERTICAL || x >= 0) {
       x = 0;
     } else {
-      final int right = viewSize.width - _totalSize.width;
+      final int right = viewSize.width - _state.totalSize.width;
       if (right >= 0) x = 0;
       else if (x < right) x = right;
     }
     if (dir == Dir.HORIZONTAL || y >= 0) {
       y = 0;
     } else {
-      final int bottom = viewSize.height - _totalSize.height;
+      final int bottom = viewSize.height - _state.totalSize.height;
       if (bottom >= 0) y = 0;
       else if (y < bottom) y = bottom;
     }

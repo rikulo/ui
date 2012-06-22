@@ -7,7 +7,7 @@
  */
 class Switch extends View {
   String _onLabel, _offLabel;
-  EventListener _clickListener;
+  DragGesture _dg;
   bool _checked = false, _disabled = false;
 
   static final int _X_OFF = -44;
@@ -64,19 +64,12 @@ class Switch extends View {
   Element get innerNode() => getNode('inner');
   void enterDocument_() {
     super.enterDocument_();
-    //TODO: handle touch/drag
-    node.on.click.add(_initClickListener());
+    _dg = new DragGesture(innerNode, transform: true,
+      range: () => new Rectangle(0, 0, _X_OFF, 0));
   }
   void exitDocument_() {
-    node.on.click.remove(_clickListener);
+    _dg.destroy();
     super.exitDocument_();
-  }
-  EventListener _initClickListener() {
-    if (_clickListener === null)
-      _clickListener = (event) {
-        checked = !checked; //TODO: animation
-      };
-    return _clickListener;
   }
 
   void domInner_(StringBuffer out) {
