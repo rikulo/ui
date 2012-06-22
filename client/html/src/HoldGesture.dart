@@ -87,9 +87,7 @@ abstract class _HoldGesture implements HoldGesture {
   _HoldGestureState _state;
 
   factory _HoldGesture(Element owner, HoldGestureAction action,
-  [HoldGestureStart start, int duration, int movement]) {
-    if (duration === null) duration = 1000;
-    if (movement === null) movement = 3;
+  [HoldGestureStart start, int duration=1000, int movement=3]) {
     return browser.touch ?
       new _TouchHoldGesture(owner, action, start, duration, movement):
       new _MouseHoldGesture(owner, action, start, duration, movement);

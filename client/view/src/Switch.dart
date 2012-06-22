@@ -31,10 +31,7 @@ class Switch extends View {
   /** Sets whether it is checked (i.e., the switch is ON).
    */
   void set checked(bool checked) {
-    _checked = checked;
-
-    if (inDocument)
-      _updateDoc();
+    _setChecked(checked);
   }
 
   /** Returns whether it is disabled.
@@ -62,10 +59,17 @@ class Switch extends View {
 
   Element get _sdNode() => getNode('sd');
   Element get _bgNode() => getNode('bg');
-  void _updateDoc([bool animate=false]) {
-    _sdNode.style.setProperty(CSS.name('transform'),
-      CSS.translate3d(_checked ? 0: _X_OFF, 0));
-    _updateBg(_checked ? 0: _X_OFF);
+  void _setChecked(bool checked, [bool bAnimate=false, bool bSendEvent=false]) {
+    final bool bChanged = _checked != checked;
+    _checked = checked;
+    if (inDocument) {
+      //TODO: handle animation
+      _sdNode.style.setProperty(CSS.name('transform'),
+        CSS.translate3d(_checked ? 0: _X_OFF, 0));
+      _updateBg(_checked ? 0: _X_OFF);
+    }
+    if (bSendEvent && bChanged)
+      sendEvent(new CheckEvent(this, _checked));
   }
   void _updateBg(int delta) {
     _bgNode.style.marginLeft = CSS.px(delta + _X_OFF_EX);
@@ -74,7 +78,7 @@ class Switch extends View {
   void enterDocument_() {
     super.enterDocument_();
 
-    _updateDoc();
+    _setChecked(_checked);
     _dg = new DragGesture(_sdNode, transform: true,
       range: () => new Rectangle(0, 0, _X_OFF, 0),
       start: (state) {
@@ -86,8 +90,10 @@ class Switch extends View {
         return false;
       },
       end: (state) {
-        _updateBg(state.delta.x + state.data);
-        return false;
+        _setChecked(state.moved ?
+					(state.delta.x + state.data) > (_X_OFF>>1): !_checked,
+					true, true);
+        return true; //no more move
       });
   }
   void exitDocument_() {

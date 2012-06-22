@@ -13,8 +13,15 @@ class TestSwitch extends Activity {
   void onCreate_() {
     mainView.layout.text = "type: linear; orient: vertical";
 
-    mainView.addChild(new Switch(true));
-    mainView.addChild(new Switch());
+    mainView.addChild(createSwitch(true));
+    mainView.addChild(createSwitch(false));
+  }
+  Switch createSwitch(bool checked) {
+    Switch view = new Switch(checked);
+    view.on.check.add((event){
+      log("Switch${view.uuid}: ${view.checked}");
+    });
+    return view;
   }
 }
 

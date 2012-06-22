@@ -52,28 +52,37 @@ interface Scroller default _Scroller {
 class _ScrollerState implements ScrollerState {
   final _Scroller _scroller;
   final Element _touched;
-  final Offset _ownerOfs, _initPgOfs;
-  Offset _ofs, _delta, _initTxOfs;
+  final Offset _ownerOfs, _initPgOfs, _delta;
+  Offset _ofs, _initTxOfs;
   Size _totalSize; //cached size
   var data;
+  bool _moved = false;
 
   _ScrollerState(_Scroller scroller, Element this._touched, int pageX, int pageY):
-  _scroller = scroller,
+  _scroller = scroller, _delta = new Offset(0, 0),
   _initPgOfs = new Offset(pageX, pageY),
   _ownerOfs = new DOMQuery(scroller.owner).documentOffset {
     _ofs = _initPgOfs - _ownerOfs;
-    _delta = new Offset(0, 0);
   }
 
   Scroller get scroller() => _scroller;
   Offset get offset() => _ofs;
   Offset get delta() => _delta;
   Element get touched() => _touched;
+  bool get moved() => _moved;
 
   Size get totalSize() {
     if (_totalSize === null)
       _totalSize = _scroller._fnTotalSize();
     return _totalSize;
+  }
+  void _setOfs(int x, int y) {
+    _ofs.x = x;
+    _ofs.y = y;
+  }
+  void _setDelta(int x, int y) {
+    _delta.x = x;
+    _delta.y = y;
   }
 }
 
@@ -88,9 +97,9 @@ abstract class _Scroller implements Scroller {
   final AsSize _fnTotalSize, _fnViewSize;
   _ScrollerState _state;
 
-  factory _Scroller(Element owner, [Dir dir, AsSize totalSize, AsSize viewSize,
+  factory _Scroller(Element owner, [Dir dir=Dir.BOTH,
+    AsSize totalSize, AsSize viewSize,
     ScrollerStart start, ScrollerMove end, ScrollerMove moving]) {
-    if (dir === null) dir = Dir.BOTH;
     return browser.touch ?
       new _TouchScroller(owner, dir, totalSize, viewSize, start, end, moving):
       new _MouseScroller(owner, dir, totalSize, viewSize, start, end, moving);
@@ -151,8 +160,9 @@ abstract class _Scroller implements Scroller {
       move = _constraint(deltaX + initofs.x, deltaY + initofs.y);
 
     if (callback !== null) {
-      _state._ofs = new Offset(ofsX, ofsY);
-      _state._delta = new Offset(move.x - initofs.x, move.y - initofs.y);
+      _state._setOfs(ofsX, ofsY);
+      _state._setDelta(move.x - initofs.x, move.y - initofs.y);
+      _state._moved = _state._moved || deltaX != 0 || deltaY != 0;
       callback(_state);
     }
 

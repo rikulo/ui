@@ -38,6 +38,9 @@ interface MovementState {
    */
   Element get touched();
 
+  /** Returns whether the user ever moved his finger.
+   */
+  bool get moved();
   /** Any data that the caller stores.
    */
   var data;
@@ -112,23 +115,24 @@ interface DragGesture default _DragGesture {
 
 class _DragGestureState implements DragGestureState {
   final _DragGesture _gesture;
-  final Offset _ownerOfs, _initPgOfs;
-  Offset _ofs, _delta, _initTxOfs;
+  final Offset _ownerOfs, _initPgOfs, _delta;
+  Offset _ofs, _initTxOfs;
   Rectangle _range;
   Element _dragged, _touched, _pending;
   var data;
+  bool _moved = false;
 
   _DragGestureState(DragGesture gesture, int pageX, int pageY):
-  _gesture = gesture,
+  _gesture = gesture, _delta = new Offset(0, 0),
   _initPgOfs = new Offset(pageX, pageY),
   _ownerOfs = new DOMQuery(gesture.owner).documentOffset {
     _ofs = _initPgOfs - _ownerOfs;
-    _delta = new Offset(0, 0);
   }
 
   DragGesture get gesture() => _gesture;
   Offset get offset() => _ofs;
   Offset get delta() => _delta;
+  bool get moved() => _moved;
 
   Element get dragged() => _dragged;
   Element get touched() => _touched;
@@ -136,6 +140,14 @@ class _DragGestureState implements DragGestureState {
     if (_range === null && _gesture._fnRange !== null)
       _range = _gesture._fnRange();
     return _range;
+  }
+  void _setOfs(int x, int y) {
+    _ofs.x = x;
+    _ofs.y = y;
+  }
+  void _setDelta(int x, int y) {
+    _delta.x = x;
+    _delta.y = y;
   }
 }
 
@@ -149,12 +161,10 @@ abstract class _DragGesture implements DragGesture {
   final bool _transform;
 
   factory _DragGesture(Element owner, [Element handle,
-    bool transform, AsRectangle range, int movement,
+    bool transform=false, AsRectangle range, int movement=-1,
     DragGestureStart start, DragGestureMove end,
     DragGestureMove moving]) {
     if (handle === null) handle = owner;
-    if (movement === null) movement = -1;
-    if (transform === null) transform = false;
     return browser.touch ?
       new _TouchDragGesture(owner, handle, transform, range, movement,
         start, end, moving):
@@ -231,8 +241,9 @@ abstract class _DragGesture implements DragGesture {
       move = _constraint(deltaX + initofs.x, deltaY + initofs.y);
 
     if (callback !== null) {
-      _state._ofs = new Offset(ofsX, ofsY);
-      _state._delta = new Offset(move.x - initofs.x, move.y - initofs.y);
+      _state._setOfs(ofsX, ofsY);
+      _state._setDelta(move.x - initofs.x, move.y - initofs.y);
+      _state._moved = _state._moved || deltaX != 0 || deltaY != 0;
       bool done = callback(_state);
       if (done !== null && done)
         return; //no need to move
