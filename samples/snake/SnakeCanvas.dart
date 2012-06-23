@@ -61,40 +61,41 @@ class SnakeCanvas extends Activity {
     hlayout.profile.height = "content";
     hlayout.profile.width = "flex";
     mainView.addChild(hlayout);
-    
-    
-    up = new Button("Up");
-    up.profile.text = "anchor:  canvas;";
-    up.on.click.add((ViewEvent event) {
-      environment.snake.direction = environment.snake.UP;
-    });
-    
-    down = new Button("Down");
-    down.profile.text = "anchor:  canvas;";
-    down.on.click.add((ViewEvent event) {
-      environment.snake.direction = environment.snake.DOWN;
-    });
-    
-    left = new Button("Left");
-    left.profile.text = "anchor:  canvas;";
-    left.on.click.add((ViewEvent event) {
-      environment.snake.direction = environment.snake.LEFT;
-    });
-    
-    right = new Button("Right");
-    right.profile.text = "anchor:  canvas;";
-    right.on.click.add((ViewEvent event) {
-      environment.snake.direction = environment.snake.RIGHT;
-    });
-    
-    hlayout.addChild(up);
-    hlayout.addChild(down);
-    hlayout.addChild(left);
-    hlayout.addChild(right);
+  }
+
+  DragGestureMove _gestureMove() {
+    return (DragGestureState state) {
+      return true;
+    };
+  }
+
+  DragGestureMove _gestureEnd() {
+    return (DragGestureState state) {
+      if(state.delta.x.abs() > state.delta.y.abs()) {
+        //horizontal swipe
+        state.delta.x > 0 ? 
+          environment.snake.direction = Snake.RIGHT :
+          environment.snake.direction = Snake.LEFT;
+
+      } else {
+        //vertical swipe
+        state.delta.y > 0 ?
+          environment.snake.direction = Snake.DOWN :
+          environment.snake.direction = Snake.UP;
+
+      }
+
+      return true;
+    };
   }
   
   void onEnterDocument_() {
     ctx2d = canvas.context2D;
+
+    new DragGesture(this.canvas.node, moving: _gestureMove(), end: _gestureEnd());
+    
+    document.on.keyDown.add(onKeyDown);
+
     new Animator().add((int time, int elapsed) {
       int timeSinceCycle = time - lastCycle;
       bool ret = true;
@@ -117,6 +118,17 @@ class SnakeCanvas extends Activity {
       
       return ret;
     });
+  }
+
+  void onKeyDown(KeyboardEvent event) {
+    if(event.keyCode == 37)
+      environment.snake.direction = Snake.LEFT;
+    else if(event.keyCode == 39)
+      environment.snake.direction = Snake.RIGHT;
+    else if(event.keyCode == 38)
+      environment.snake.direction = Snake.UP;
+    else if(event.keyCode == 40)
+      environment.snake.direction = Snake.DOWN;
   }
 }
 
