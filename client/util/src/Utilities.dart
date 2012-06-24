@@ -29,3 +29,11 @@ typedef Size AsSize();
 /** A function that returns a [Rectangle].
  */
 typedef Rectangle AsRectangle();
+
+/**
+ * Represents an input that store a value.
+ */
+interface Input<E> {
+  /** The value. */
+  E value;
+}

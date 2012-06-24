@@ -15,11 +15,13 @@ class TestSwitch extends Activity {
 
     mainView.addChild(createSwitch(true));
     mainView.addChild(createSwitch(false));
+    mainView.addChild(createSwitch(true, "Yes", "No"));
+    mainView.addChild(createSwitch(false, "True", "False"));
   }
-  Switch createSwitch(bool checked) {
-    Switch view = new Switch(checked);
-    view.on.check.add((event){
-      log("Switch${view.uuid}: ${view.checked}");
+  Switch createSwitch(bool value, [String onLabel, String offLabel]) {
+    Switch view = new Switch(value, onLabel, offLabel);
+    view.on.change.add((event){
+      log("Switch${view.uuid}: ${view.value}");
     });
     return view;
   }

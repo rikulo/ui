@@ -50,11 +50,6 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
   ViewEventListenerList get mouseWheel();
   ViewEventListenerList get scroll();
 
-  /** Indicates the check state of a view is changed.
-   *
-   * The event is an instance of [CheckEvent].
-   */
-  ViewEventListenerList get check();
   /** Indicates the selection state of a view is changed.
    *
    * The event is an instance of [SelectEvent].

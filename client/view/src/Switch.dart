@@ -4,34 +4,38 @@
 
 /**
  * A switch button.
+ *
+ * ##Events##
+ *
+ * + change: an instance of [ChangeEvent] indicates the check state is changed.
  */
-class Switch extends View {
+class Switch extends View implements Input<bool> {
   String _onLabel, _offLabel;
   DragGesture _dg;
-  bool _checked = false, _disabled = false;
+  bool _value = false, _disabled = false;
 
   static final int _X_OFF = -44,
     _X_OFF_EX = -10; //to cover half of the knot
 
   /** Instantaites a switch.
    */
-  Switch([bool checked, String onLabel, String offLabel]) {
-    _checked = checked !== null && checked;
+  Switch([bool value, String onLabel, String offLabel]) {
+    _value = value !== null && value;
     _onLabel = onLabel !== null ? onLabel: "ON";
     _offLabel = offLabel !== null ? offLabel: "OFF";
   }
   //@Override
   String get className() => "Switch"; //TODO: replace with reflection if Dart supports it
 
-  /** Returns whether it is checked (i.e., the switch is ON).
+  /** Returns whether it is value (i.e., the switch is ON).
    *
    * Default: false.
    */
-  bool get checked() => _checked;
-  /** Sets whether it is checked (i.e., the switch is ON).
+  bool get value() => _value;
+  /** Sets whether it is value (i.e., the switch is ON).
    */
-  void set checked(bool checked) {
-    _setChecked(checked);
+  void set value(bool value) {
+    _setValue(value);
   }
 
   /** Returns whether it is disabled.
@@ -59,17 +63,17 @@ class Switch extends View {
 
   Element get _sdNode() => getNode('sd');
   Element get _bgNode() => getNode('bg');
-  void _setChecked(bool checked, [bool bAnimate=false, bool bSendEvent=false]) {
-    final bool bChanged = _checked != checked;
-    _checked = checked;
+  void _setValue(bool value, [bool bAnimate=false, bool bSendEvent=false]) {
+    final bool bChanged = _value != value;
+    _value = value;
     if (inDocument) {
       //TODO: handle animation
       _sdNode.style.setProperty(CSS.name('transform'),
-        CSS.translate3d(_checked ? 0: _X_OFF, 0));
-      _updateBg(_checked ? 0: _X_OFF);
+        CSS.translate3d(_value ? 0: _X_OFF, 0));
+      _updateBg(_value ? 0: _X_OFF);
     }
     if (bSendEvent && bChanged)
-      sendEvent(new CheckEvent(this, _checked));
+      sendEvent(new ChangeEvent(this, _value));
   }
   void _updateBg(int delta) {
     _bgNode.style.marginLeft = CSS.px(delta + _X_OFF_EX);
@@ -78,7 +82,7 @@ class Switch extends View {
   void enterDocument_() {
     super.enterDocument_();
 
-    _setChecked(_checked);
+    _setValue(_value);
     _dg = new DragGesture(_sdNode, transform: true,
       range: () => new Rectangle(0, 0, _X_OFF, 0),
       start: (state) {
@@ -90,8 +94,8 @@ class Switch extends View {
         return false;
       },
       end: (state) {
-        _setChecked(state.moved ?
-					(state.delta.x + state.data) > (_X_OFF>>1): !_checked,
+        _setValue(state.moved ?
+					(state.delta.x + state.data) > (_X_OFF>>1): !_value,
 					true, true);
         return true; //no more move
       });
@@ -112,5 +116,5 @@ class Switch extends View {
   /** Returns false to indicate this view doesn't allow any child views.
    */
   bool isChildable_() => false;
-  String toString() => "$className($checked)";
+  String toString() => "$className($value)";
 }

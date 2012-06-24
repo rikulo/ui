@@ -7,17 +7,17 @@
  *
  * ##Events##
  *
- * + check: an instance of [CheckEvent] indicates the check state is changed.
+ * + change: an instance of [ChangeEvent] indicates the check state is changed.
  */
-class CheckBox extends TextView {
-  bool _checked = false, _disabled = false, _autofocus = false;
+class CheckBox extends TextView implements Input<bool> {
+  bool _value = false, _disabled = false, _autofocus = false;
   EventListener _onInputClick;
 
   /** Instantaites with a plain text.
    * The text will be encoded to make sure it is valid HTML text.
    */
-  CheckBox([String text, bool checked]): super(text) {
-    _init(checked);
+  CheckBox([String text, bool value]): super(text) {
+    _init(value);
   }
   /** Instantiates with a HTML fragment.
    *
@@ -25,20 +25,20 @@ class CheckBox extends TextView {
    * Notie it must be a valid HTML fragment. Otherwise, the result is
    * unpreditable.
    */
-  CheckBox.html(String html, [bool checked]): super.html(html) {
-    _init(checked);
+  CheckBox.html(String html, [bool value]): super.html(html) {
+    _init(value);
   }
-  void _init(bool checked) {
-    _checked = checked !== null && checked;
+  void _init(bool value) {
+    _value = value !== null && value;
     _initCallback();
   }
   void _initCallback() {
     _onInputClick = (Event event) {
       final InputElement n = event.srcElement;
       final bool cked = n.checked;
-      if (_checked != cked) {
-        _checked = cked;
-        onCheck_();
+      if (_value != cked) {
+        _value = cked;
+        onChange_();
       }
     };
   }
@@ -46,18 +46,18 @@ class CheckBox extends TextView {
   //@Override
   String get className() => "CheckBox"; //TODO: replace with reflection if Dart supports it
 
-  /** Returns whether it is checked.
+  /** Returns whether it is value.
    *
    * Default: false.
    */
-  bool get checked() => _checked;
-  /** Sets whether it is checked.
+  bool get value() => _value;
+  /** Sets whether it is value.
    */
-  void set checked(bool checked) {
-    _checked = checked;
+  void set value(bool value) {
+    _value = value;
 
     if (inDocument)
-      inputNode.checked = _checked;
+      inputNode.checked = _value;
   }
 
   /** Returns whether it is disabled.
@@ -90,10 +90,10 @@ class CheckBox extends TextView {
    */
   InputElement get inputNode() => getNode("inp");
 
-  /** Callback when user's click changes [checked].
+  /** Callback when the user changes [value].
    */
-  void onCheck_() {
-    sendEvent(new CheckEvent(this, _checked));
+  void onChange_() {
+    sendEvent(new ChangeEvent(this, _value));
   }
 
   //@Override
@@ -118,7 +118,7 @@ class CheckBox extends TextView {
   void domInner_(StringBuffer out) {
     out.add('<input type="checkbox" id="').add(uuid).add('-inp"');
 
-    if (_checked)
+    if (_value)
       out.add(' checked="checked"');
     if (_disabled)
       out.add(' disabled="disabled"');
@@ -127,5 +127,5 @@ class CheckBox extends TextView {
     out.add('/><label for="').add(uuid).add('-inp" class="')
       .add(viewConfig.classPrefix).add('inner">').add(innerHTML_).add('</label>');
   }
-  String toString() => "$className('$text$html', $checked)";
+  String toString() => "$className('$text$html', $value)";
 }

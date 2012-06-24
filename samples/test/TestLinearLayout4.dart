@@ -40,8 +40,8 @@ class TestLinearLayout4 extends Activity {
     CheckBox ckbox = new CheckBox("checkbox sample");
     _setBorder(ckbox);
     int clickCount = 0;
-    ckbox.on.check.add((CheckEvent event) {
-      ckbox.text = 'checked: ${event.checked} ${++clickCount}';
+    ckbox.on.change.add((ChangeEvent<bool> event) {
+      ckbox.text = 'value: ${event.value} ${++clickCount}';
       ckbox.parent.requestLayout();
     });
     view.addChild(ckbox);

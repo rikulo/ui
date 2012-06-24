@@ -5,7 +5,7 @@
 /**
  * A text box to get input from the user or to to display text.
  */
-class TextBox extends View {
+class TextBox extends View implements Input<String> {
   String _value;
   String _type;
   String _placeholder = "";
