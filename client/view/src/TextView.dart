@@ -86,13 +86,7 @@ class TextView extends View {
   //@Override
   /** Returns false to indicate this view doesn't allow any child views.
    */
-  bool isChildable_() => false;
-  //@Override
-  int measureWidth_(MeasureContext mctx)
-  => layoutManager.measureWidthByContent(mctx, this, true);
-  //@Override
-  int measureHeight_(MeasureContext mctx)
-  => layoutManager.measureHeightByContent(mctx, this, true);
+  bool isViewGroup() => false;
   //@Override
   String toString() => "$className('$text$html')";
 }

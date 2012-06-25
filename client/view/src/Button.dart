@@ -84,8 +84,4 @@ class Button extends TextView {
    * Default: `button`.
    */
   String get domTag_() => "button";
-
-  /** Returns false to indicate this view doesn't allow any child views.
-   */
-  bool isChildable_() => false;
 }

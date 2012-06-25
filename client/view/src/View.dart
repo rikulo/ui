@@ -252,27 +252,30 @@ class View implements Hashable {
     sendEvent(new ViewEvent(this, "layout"));
   }
 
-  /** Returns whether this view allows any child views.
+  /** Returns whether this view is a vie group.
+   * By view group we mean a view that a user can add child views
+   * to it (by use of [addChild]).
    *
    * Default: true.
    *
    * The deriving class shall override this method
    * to return false if it doesn't allow any child views.
    */
-  bool isChildable_() => true;
+  bool isViewGroup() => true;
 
   /** Adds a child.
    * If [beforeChild] is specified, the child will be inserted before it.
    * Otherwise, it will be added to the end.
    */
   void addChild(View child, [View beforeChild]) {
-    if (isDescendantOf(child))
-      throw new UIException("$child is an ancestor of $this");
-    if (!isChildable_())
-      throw new UIException("No child allowed in $this");
     _addChild(child, beforeChild);
   }
   void _addChild(View child, View beforeChild, [Element childNode]) {
+    if (isDescendantOf(child))
+      throw new UIException("$child is an ancestor of $this");
+    if (!isViewGroup())
+      throw new UIException("No child allowed in $this");
+
     if (beforeChild !== null) {
       if (beforeChild.parent !== this)
         beforeChild = null;
@@ -720,16 +723,22 @@ class View implements Hashable {
    * It is called by [LayoutManager].
    *
    * Default: forward to [layoutManager] to handle it.
+   * If [isViewGroup] is true, `measureWidth(mctx, this)` is called.
+   * If false, `measureWidthByContent(mctx, this, true) is called.
    */
   int measureWidth_(MeasureContext mctx)
-  => layoutManager.measureWidth(mctx, this);
+  => isViewGroup() ? layoutManager.measureWidth(mctx, this):
+    layoutManager.measureWidthByContent(mctx, this, true);
   /** Measures the height of this view.
    * It is called by [LayoutManager].
    *
    * Default: forward to [layoutManager] to handle it.
+   * If [isViewGroup] is true, `measureHeight(mctx, this)` is called.
+   * If false, `measureHeightByContent(mctx, this, true) is called.
    */
   int measureHeight_(MeasureContext mctx)
-  => layoutManager.measureHeight(mctx, this);
+  => isViewGroup() ? layoutManager.measureHeight(mctx, this):
+    layoutManager.measureHeightByContent(mctx, this, true);
   /** Returns whether the given child shall be handled by the layout manager.
    *
    * Default: return true if the position is absolute.

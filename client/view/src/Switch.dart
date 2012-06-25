@@ -115,6 +115,6 @@ class Switch extends View implements Input<bool> {
 
   /** Returns false to indicate this view doesn't allow any child views.
    */
-  bool isChildable_() => false;
+  bool isViewGroup() => false;
   String toString() => "$className($value)";
 }

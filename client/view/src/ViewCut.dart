@@ -80,6 +80,6 @@ class _ViewCut implements ViewCut {
   }
   void _check() {
     if (view.parent !== null || !view.inDocument)
-      throw const UIException("Unable to paste drop twice");
+      throw const UIException("Unable to paste or drop twice");
   }
 }

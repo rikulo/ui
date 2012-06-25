@@ -41,12 +41,12 @@ class Image extends View {
   String get domTag_() => "img";
   /** Returns false to indicate this view doesn't allow any child views.
    */
-  bool isChildable_() => false;
+  bool isViewGroup() => false;
 
   int measureWidth_(MeasureContext mctx)
-  => layoutManager.measureWidthByContent(mctx, this, false);
+  => layoutManager.measureWidthByContent(mctx, this, false); //no need to autowidth
   int measureHeight_(MeasureContext mctx)
-  => layoutManager.measureHeightByContent(mctx, this, false);
+  => layoutManager.measureHeightByContent(mctx, this, false); //no need to autowidth
 
   void enterDocument_() {
     super.enterDocument_();
