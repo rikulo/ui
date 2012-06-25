@@ -7,14 +7,14 @@
  * Each node of the tree can be anything and represented with the generic type, `E`.
  *
  * Instead of implementing this interface from scratch, it is suggested:
- 
+ *
  * 1. Use [DefaultTreeModel] if you'd like to represent the tree with a tree of [TreeNode].
  * In other words, each node of the tree is represented with an instance of [TreeNode], and
  * the data can be retrieved by [TreeNode.data].
  * 2. Extends from [AbstractTreeModel]. [AbstractTreeModel] provides the implementation
  * of handling of data listeners, maintaining the open states and the selection.
  *
- * ##How Data Retrieved##
+ * ##How Data Retrieved
  *
  * To retrieve the data in the data model,
  *
@@ -24,7 +24,7 @@
  * 4. Then, [getChild] is called to retrieve each child
  * 5. Repeat  2-4
  *
- * ##Path##
+ * ##Path
  *
  * A node of the tree model can be presented by an integer array called `path`.
  * For example, [0, 2, 1] represents a node at the third level (excluding root) since
@@ -40,14 +40,14 @@
  * On the other hand, [DefaultTreeModel] and [TreeNode] do
  * provide `getPath()` to retrieve the path of any given node.
  *
- * ##Selection##
+ * ##Selection
  *
  * If you'd like to use [TreeModel] with a UI object that allows the user to select the data,
  * such as [DropDownList] and [TreeView]. You have to implement `Selection<E>`.
  * Both [DefaultTreeModel] and [AbstractTreeModel] implements it, so you need to implement
  * it only if you implement [TreeModel] from scratch.
  *
- * ##Opens##
+ * ##Opens
  *
  * A tree model maintains a list of opened nodes ([Opens]). If a tree node matches
  * one of the open nodes, the tree node will be opened, i.e., the child views

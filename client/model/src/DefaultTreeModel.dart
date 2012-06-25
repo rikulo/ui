@@ -8,14 +8,14 @@
  *
  * Example,
  *
-    new DefaultTreeModel<String>(nodes: [
-      "Wonderland",
-      new TreeNode("Australia",
-        ["Sydney", "Melbourne", "Port Hedland"]),
-      new TreeNode("New Zealand",
-        ["Cromwell", "Queenstown"])]);
+ *   new DefaultTreeModel<String>(nodes: [
+ *     "Wonderland",
+ *     new TreeNode("Australia",
+ *       ["Sydney", "Melbourne", "Port Hedland"]),
+ *     new TreeNode("New Zealand",
+ *       ["Cromwell", "Queenstown"])]);
  *
- * ##Big Tree##
+ * ##Big Tree
  *
  * To implement a big tree, it is better to load the children only when they
  * are required. It is called Lazy Loading.

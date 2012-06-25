@@ -20,7 +20,7 @@ typedef HTMLFragment RadioGroupRenderer(
 /**
  * A radio group.
  *
- * ##Events##
+ * ##Events
  *
  * + select: an instance of [SelectEvent] indicates the selected item has been changed.
  */

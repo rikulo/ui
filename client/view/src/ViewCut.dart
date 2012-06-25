@@ -8,7 +8,7 @@
  * Cut-and-paste is used to speed up the detachment and attachment
  * of a view.
  *
- * ##Use##
+ * ##Use
  *
  * To cut and paste a view, you can invoke [View.cut] first, and then
  * invoke [pasteTo] to paste it to a parent view you like. For example,

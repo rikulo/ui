@@ -9,7 +9,7 @@
  * In other words, you can use any implementation of [TreeNode]
  * with [DefaultTreeModel].
  *
- * ##Load Children Lazily##
+ * ##Load Children Lazily
  *
  * If you'd like to load children lazily (i.e., load the children nodes when it is used),
  * you can override [loadLazily_] and load the children nodes in the method.

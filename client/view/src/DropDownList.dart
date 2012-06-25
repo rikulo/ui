@@ -11,7 +11,7 @@ typedef String DropDownListRenderer(
  * Represents a view that allows the user to select a single item
  * from a drop-down list.
  *
- * ##Events##
+ * ##Events
  *
  * + select: an instance of [SelectEvent] indicates the selected item has been changed.
  * Notice that [SelectEvent.selectedItems] is always null. Use [SelectEvent.selectedValues]
@@ -86,7 +86,7 @@ class DropDownList<E> extends View {
   /** Sets the model.
    * The model must be an instance of [ListModel] or [TreeModel].
    *
-   * ##Note of Using [TreeModel]##
+   * ##Note of Using [TreeModel]
    *
    * + The non-leaf node ([TreeModel.isLeaf] is false) can't be selected.
    * + [TreeModel.root] won't be rendered (so it can be anything)

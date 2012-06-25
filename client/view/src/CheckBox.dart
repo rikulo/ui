@@ -5,7 +5,7 @@
 /**
  * A check box is a two-state button.
  *
- * ##Events##
+ * ##Events
  *
  * + change: an instance of [ChangeEvent] indicates the check state is changed.
  */

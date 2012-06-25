@@ -16,7 +16,7 @@ typedef void AfterEnterDocument(View view);
  * A view defines a rectangular area on the screen and the
  * interfaces for managing the content and event handling in the area.
  *
- * ##ID Space##
+ * ##ID Space
  *
  * If a view implements [IdSpace], it and its descendants are considered
  * as a ID space. And, the topmost view is the owner.
@@ -26,7 +26,7 @@ typedef void AfterEnterDocument(View view);
  * Notice that if a view implements [IdSpace], it has to override
  * [getFellow] and [bindFellow_]. Please refer to [Section] for sample code.
  *
- * ##Eventss##
+ * ##Events
  *
  * + layout: an instance of [ViewEvent] indicates the layout of this view has been
  * handled.

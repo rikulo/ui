@@ -5,7 +5,7 @@
 /**
  * A switch button.
  *
- * ##Events##
+ * ##Events
  *
  * + change: an instance of [ChangeEvent] indicates the check state is changed.
  */
