@@ -12,6 +12,7 @@ class Style extends View {
   /** Constructs an empty style.
    */
   Style([String media]) {
+    _hidden = true; //so shallLayout_ will ignore it
     _media = media;
   }
   /** Constructs a style from the given CSS content.

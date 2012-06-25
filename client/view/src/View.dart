@@ -741,7 +741,8 @@ class View implements Hashable {
     layoutManager.measureHeightByContent(mctx, this, true);
   /** Returns whether the given child shall be handled by the layout manager.
    *
-   * Default: return true if the position is absolute.
+   * Default: return true if the child is visble and its position
+   * is absolute.
    * Notice that, for better performance, it checks only [View.style], and
    * assumes the position defined in
    * CSS rules (aka., classes) is `absolute`.
@@ -757,6 +758,8 @@ class View implements Hashable {
    * will be still called to arrange the layout of the child's child views.
    */
   bool shallLayout_(View child) {
+    if (child.hidden)
+      return false;
     final String v = child.style.position;
     return v.isEmpty() || v == "absolute";
   }
