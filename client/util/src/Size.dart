@@ -37,6 +37,8 @@ interface Size default _Size {
   int height;
 
   Size(int width, int height);
+  Size.from(Size other);
+
   bool operator ==(Size other);
 }
 
@@ -44,6 +46,7 @@ class _Size implements Size {
   int width, height;
 
   _Size(int this.width, int this.height);
+  _Size.from(Size other): this(other.width, other.height);
 
   bool operator ==(Size other)
   => other !== null && width == other.width && height == other.height;
@@ -76,6 +79,7 @@ interface Rectangle extends Offset, Size default _Rectangle {
   int height;
 
   Rectangle(int left, int top, int right, int bottom);
+  Rectangle.from(Rectangle other);
 }
 
 class _Rectangle extends _Offset implements Rectangle {
@@ -83,6 +87,8 @@ class _Rectangle extends _Offset implements Rectangle {
 
   _Rectangle(int left, int top, int this.right, int this.bottom)
   : super(left, top);
+  _Rectangle.from(Rectangle other)
+  : this(other.left, other.top, other.right, other.bottom);
 
   int get width() => right - left;
   void set width(int width) {

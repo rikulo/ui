@@ -19,6 +19,7 @@ interface Offset default _Offset {
   int y;
 
   Offset(int left, int top);
+  Offset.from(Offset other);
 
   bool operator ==(Offset other);
   Offset operator -(Offset other);
@@ -34,12 +35,14 @@ interface Offset3d extends Offset default _Offset3d {
   int z;
 
   Offset3d(int x, int y, int z);
+  Offset3d.from(Offset3d other);
 }
 
 class _Offset implements Offset {
   int left, top;
 
   _Offset(int this.left, int this.top);
+  _Offset.from(Offset other): this(other.left, other.top);
 
   int get x() => left;
   void set x(int x) {
@@ -65,6 +68,7 @@ class _Offset3d extends _Offset implements Offset3d {
   int zIndex;
 
   _Offset3d(int x, int y, int z): super(x, y), zIndex = z;
+  _Offset3d.from(Offset3d other): this(other.x, other.y, other.z);
 
   int get z() => zIndex;
   void set z(int z) {

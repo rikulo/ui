@@ -189,6 +189,8 @@ class Activity {
     Set<String> clses = document.body.classes;
     clses.add("rikulo");
     clses.add(browser.name);
+    if (browser.ios) clses.add("ios");
+    else if (browser.android) clses.add("android");
   }
   /** Handles resizing, including device's orientation is changed.
    * It is called automatically, so the application rarely need to call it.
