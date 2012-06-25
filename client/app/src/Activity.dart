@@ -186,6 +186,9 @@ class Activity {
       (event) { //DOM event
         broadcaster.sendEvent(new PopupEvent(event.target));
       });
+    Set<String> clses = document.body.classes;
+    clses.add("rikulo");
+    clses.add(browser.name);
   }
   /** Handles resizing, including device's orientation is changed.
    * It is called automatically, so the application rarely need to call it.
