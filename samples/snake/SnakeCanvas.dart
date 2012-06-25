@@ -65,19 +65,19 @@ class SnakeCanvas extends Activity {
 
   DragGestureMove _gestureMove() {
     return (DragGestureState state) {
-      return true;
-    };
-  }
 
-  DragGestureMove _gestureEnd() {
-    return (DragGestureState state) {
-      if(state.delta.x.abs() > state.delta.y.abs()) {
+      final int MINIMUM_DRAG_LENGTH = 5;
+
+      print("${state.delta.x}, ${state.delta.x}");
+
+      if(state.delta.x.abs() > state.delta.y.abs() && 
+         state.delta.x.abs() > MINIMUM_DRAG_LENGTH) {
         //horizontal swipe
         state.delta.x > 0 ? 
           environment.snake.direction = Snake.RIGHT :
           environment.snake.direction = Snake.LEFT;
 
-      } else {
+      } else if(state.delta.y.abs() > MINIMUM_DRAG_LENGTH) {
         //vertical swipe
         state.delta.y > 0 ?
           environment.snake.direction = Snake.DOWN :
@@ -85,6 +85,12 @@ class SnakeCanvas extends Activity {
 
       }
 
+      return true;
+    };
+  }
+
+  DragGestureMove _gestureEnd() {
+    return (DragGestureState state) {
       return true;
     };
   }
