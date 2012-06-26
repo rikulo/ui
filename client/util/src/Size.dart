@@ -32,20 +32,20 @@ class Dir {
  */
 interface Size default _Size {
   /** The width. */
-  int width;
+  num width;
   /** The height. */
-  int height;
+  num height;
 
-  Size(int width, int height);
+  Size(num width, num height);
   Size.from(Size other);
 
   bool operator ==(Size other);
 }
 
 class _Size implements Size {
-  int width, height;
+  num width, height;
 
-  _Size(int this.width, int this.height);
+  _Size(num this.width, num this.height);
   _Size.from(Size other): this(other.width, other.height);
 
   bool operator ==(Size other)
@@ -64,38 +64,38 @@ interface Rectangle extends Offset, Size default _Rectangle {
    * Note: its meaning is different from CSS's right property
    * (which is the distance to the right edge)
    */
-  int right;
+  num right;
   /** The Y coordinate of the bottom side (excluded).
    *
    * Note: its meaning is different from CSS's bottom property
    * (which is the distance to the bottom edge)
    */
-  int bottom;
+  num bottom;
   /** The width.
    */
-  int width;
+  num width;
   /** The height.
    */
-  int height;
+  num height;
 
-  Rectangle(int left, int top, int right, int bottom);
+  Rectangle(num left, num top, num right, num bottom);
   Rectangle.from(Rectangle other);
 }
 
 class _Rectangle extends _Offset implements Rectangle {
-  int right, bottom;
+  num right, bottom;
 
-  _Rectangle(int left, int top, int this.right, int this.bottom)
+  _Rectangle(num left, num top, num this.right, num this.bottom)
   : super(left, top);
   _Rectangle.from(Rectangle other)
   : this(other.left, other.top, other.right, other.bottom);
 
-  int get width() => right - left;
-  void set width(int width) {
+  num get width() => right - left;
+  void set width(num width) {
     right = left + width;
   }
-  int get height() => bottom - top;
-  void set height(int height) {
+  num get height() => bottom - top;
+  void set height(num height) {
     bottom = top + height;
   }
   bool operator ==(Rectangle other)

@@ -7,18 +7,18 @@
  */
 interface Offset default _Offset {
   /** The left offset. */
-  int left;
+  num left;
   /** The top offset. */
-  int top;
+  num top;
 
   /** The left offset (the same as [left], i.e., an alias).
    */
-  int x;
+  num x;
   /** The top offset (the same as [top], i.e., an alias).
    */
-  int y;
+  num y;
 
-  Offset(int left, int top);
+  Offset(num left, num top);
   Offset.from(Offset other);
 
   bool operator ==(Offset other);
@@ -30,26 +30,26 @@ interface Offset default _Offset {
  */
 interface Offset3d extends Offset default _Offset3d {
   /** The Z index. */
-  int zIndex;
+  num zIndex;
   /** The Z index (the same as [zIndex], i.e., an alias). */
-  int z;
+  num z;
 
-  Offset3d(int x, int y, int z);
+  Offset3d(num x, num y, num z);
   Offset3d.from(Offset3d other);
 }
 
 class _Offset implements Offset {
-  int left, top;
+  num left, top;
 
-  _Offset(int this.left, int this.top);
+  _Offset(num this.left, num this.top);
   _Offset.from(Offset other): this(other.left, other.top);
 
-  int get x() => left;
-  void set x(int x) {
+  num get x() => left;
+  void set x(num x) {
     left = x;
   }
-  int get y() => top;
-  void set y(int y) {
+  num get y() => top;
+  void set y(num y) {
     top = y;
   }
 
@@ -65,13 +65,13 @@ class _Offset implements Offset {
 }
 
 class _Offset3d extends _Offset implements Offset3d {
-  int zIndex;
+  num zIndex;
 
-  _Offset3d(int x, int y, int z): super(x, y), zIndex = z;
+  _Offset3d(num x, num y, num z): super(x, y), zIndex = z;
   _Offset3d.from(Offset3d other): this(other.x, other.y, other.z);
 
-  int get z() => zIndex;
-  void set z(int z) {
+  num get z() => zIndex;
+  void set z(num z) {
     zIndex = z;
   }
 
