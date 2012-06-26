@@ -60,7 +60,7 @@ class _Offset implements Offset {
   Offset operator +(Offset other)
   => new Offset(left + other.left, top + other.top);
 
-  int hashCode() => left + top;
+  int hashCode() => (left + top).toInt();
   String toString() => "($left, $top)";
 }
 
@@ -82,6 +82,6 @@ class _Offset3d extends _Offset implements Offset3d {
   Offset3d operator +(Offset3d other)
   => new Offset3d(left + other.left, top + other.top, zIndex + other.zIndex);
 
-  int hashCode() => x + y + z;
+  int hashCode() => (x + y + z).toInt();
   String toString() => "($x, $y, $z)";
 }
