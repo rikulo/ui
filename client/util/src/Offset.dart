@@ -5,7 +5,7 @@
 /**
  * The offset (aka., position).
  */
-interface Offset default _Offset {
+interface Offset extends Hashable default _Offset {
   /** The left offset. */
   num left;
   /** The top offset. */
