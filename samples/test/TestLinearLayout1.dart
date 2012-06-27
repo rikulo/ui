@@ -1,4 +1,4 @@
-//Sample Code: Linear Layout Test 1
+//Test Code: TestLinearLayout1
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');

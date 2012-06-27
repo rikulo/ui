@@ -8,7 +8,9 @@
 class _HLayout implements _RealLinearLayout {
   int measureWidth(MeasureContext mctx, View view) {
     final LayoutAmountInfo amtWdDefault = LinearLayout.getDefaultAmountInfo(view.layout.width);
-    final int maxWd = view.parent !== null ? view.parent.innerWidth: browser.size.width;
+    final int maxWd = browser.size.width;
+      //Note: it can't count on parent.innerWidth since it might be sized yet
+      //It happens when profile=content is specified (TestLinearLayout3)
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
     final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
     int width = 0, prevSpacing;

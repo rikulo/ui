@@ -1,4 +1,4 @@
-//Sample Code: FreeLayout Test 2
+//Test Code: TestFreeLayout1
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');

@@ -8,7 +8,9 @@
 class _VLayout implements _RealLinearLayout {
   int measureHeight(MeasureContext mctx, View view) {
     final LayoutAmountInfo amtHghDefault = LinearLayout.getDefaultAmountInfo(view.layout.height);
-    final int maxHgh = view.parent !== null ? view.parent.innerHeight: browser.size.height;
+    final int maxHgh = browser.size.height;
+      //Note: it can't count on parent.innerHeight since it might be sized yet
+      //It happens when profile=content is specified (TestLinearLayout3)
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
     final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
     int height = 0, prevSpacing;

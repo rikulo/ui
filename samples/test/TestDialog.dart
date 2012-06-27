@@ -1,4 +1,4 @@
-//Sample Code: Test Dialog
+//Test Code: TestDialog
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
