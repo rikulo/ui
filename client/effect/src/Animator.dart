@@ -116,5 +116,5 @@ class _Animator implements Animator {
   }
   Collection<Animate> get animates() => _anims;  //TODO: readonly
 
-  static int _now() => new Date.now().value;
+  static int _now() => new Date.now().millisecondsSinceEpoch;
 }

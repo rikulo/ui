@@ -33,7 +33,7 @@ class ViewEvent {
    * it is UIEvent.pageX and UIEvent.pageY.
    */
   ViewEvent(View target, String type, [int pageX, int pageY, int offsetX, int offsetY]):
-  _domEvt = null, _type = type, _stamp = new Date.now().value {
+  _domEvt = null, _type = type, _stamp = new Date.now().millisecondsSinceEpoch {
     if (type == null)
       throw const UIException("type required");
     _target = currentTarget = target;
