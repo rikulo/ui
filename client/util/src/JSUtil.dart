@@ -9,7 +9,7 @@
  */
 toJSDate(Date dartdate) {
   _initJSCall();
-  int msecs = dartdate !== null ? dartdate.value : null;
+  int msecs = dartdate !== null ? dartdate.millisecondsSinceEpoch : null;
   return msecs != null ? jsCall("newDate", [msecs]) : null;
 }
 
@@ -20,7 +20,7 @@ toJSDate(Date dartdate) {
 toDartDate(jsdate) {
   _initJSCall();
   int msecs = jsdate !== null ? jsCall("getTime", [jsdate]) : null;
-  return msecs !== null ? new Date.fromEpoch(msecs, false) : null; //use local timezone
+  return msecs !== null ? new Date.fromMillisecondsSinceEpoch(msecs, false) : null; //use local timezone
 }
   
 /** Convert Dart List to JavaScript array 
@@ -223,7 +223,7 @@ injectJavaScript(String script, [bool remove = true]) {
  * @param timeout the timeout time in milliseconds to give up; -1 means forever.  
  */
 bool doWhenReady(Function fn, Function ready, Function progress, int freq, int timeout) {
-  final int end = timeout < 0 ? timeout : new Date.now().value + timeout;
+  final int end = timeout < 0 ? timeout : new Date.now().millisecondsSinceEpoch + timeout;
   _doWhen0(fn, ready, progress, freq, end);
 }
 /** Progress callback function to show the time left in milliseconds before timeout */
@@ -234,7 +234,7 @@ void _doWhen0(Function fn, Function ready, Progress progress, int freq, final in
     if (ready()) {
       fn();
     } else {
-      int diff = end - new Date.now().value;
+      int diff = end - new Date.now().millisecondsSinceEpoch;
       if (end < 0 || diff > 0) { //still have time to try it
         progress(end < 0 ? -1 : diff); //try again
         _doWhen0(fn, ready, progress, freq, end);
