@@ -95,7 +95,7 @@ class SnakeCanvas extends Activity {
     };
   }
   
-  void onEnterDocument_() {
+  void onMount_() {
     ctx2d = canvas.context2D;
 
     new DragGesture(this.canvas.node, moving: _gestureMove(), end: _gestureEnd());

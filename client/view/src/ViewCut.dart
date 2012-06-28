@@ -16,11 +16,11 @@
  *     view.cut().pasteTo(newParent);
  *
  * The reason that cut-and-paste is more efficiently is the view's DOM elements
- * won't be removed, so [View.exitDocument_], [View.enterDocument_] and
+ * won't be removed, so [View.unmount_], [View.mount_] and
  * other detaching and attaching tasks have no need to take place.
  *
  * If you decide not to paste it to another place, it is better to invoke
- * [drop] to remove DOM elements. It will invoke [View.exitDocument_] such that
+ * [drop] to remove DOM elements. It will invoke [View.unmount_] such that
  * your application or utility can clean up if necessary. After dropped, the view
  * can be used normally as if they are removed normally (with [View.removeFromParent]).
  *
@@ -46,8 +46,8 @@ interface ViewCut {
    */
   void pasteTo(View parent, [View beforeChild]);
   /** Drops the cut.
-   * It will invoke [exitDocument_] and other detaching tasks such
-   * that your application or utilties depending on the exitDocument event
+   * It will invoke [unmount_] and other detaching tasks such
+   * that your application or utilties depending on the unmount event
    * can clean up correctly.
    * Furthermore, the view can be accessed normall as if the view is removed
    * by [View.removeFromParent].
@@ -76,7 +76,7 @@ class _ViewCut implements ViewCut {
   }
   void drop() {
     _check();
-    view._exitDocument();
+    view._unmount();
   }
   void _check() {
     if (view.parent !== null || !view.inDocument)

@@ -13,7 +13,7 @@ class TestDrag extends Activity {
   }
   View _createSimpleDrag(View parent) {
     View view = _createDragView(parent, "Simple Drag");
-    view.on.enterDocument.add((event) {
+    view.on.mount.add((event) {
       new DragGesture(view.node);
     });
     return view;
@@ -26,7 +26,7 @@ class TestDrag extends Activity {
     parent.addChild(box);
 
     View view = _createDragView(box, "Boxed Drag");
-    view.on.enterDocument.add((event) {
+    view.on.mount.add((event) {
       final DOMQuery qbox = new DOMQuery(box),
         qview = new DOMQuery(view);
       new DragGesture(view.node,

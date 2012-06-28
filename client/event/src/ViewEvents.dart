@@ -71,19 +71,19 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
 
   /** Indicates the layout of a view is changed.
    *
-   * The event is an instance of [Event].
+   * The event is an instance of [ViewEvent].
    */
   ViewEventListenerList get layout();
   /** Indicates a view has been attached to a document.
    *
-   * The event is an instance of [Event].
+   * The event is an instance of [ViewEvent].
    */
-  ViewEventListenerList get enterDocument();
+  ViewEventListenerList get mount();
   /** Indicates a view has been detached from a document.
    *
-   * The event is an instance of [Event].
+   * The event is an instance of [ViewEvent].
    */
-  ViewEventListenerList get exitDocument();
+  ViewEventListenerList get unmount();
 }
 
 /** An implementation of [ViewEventListenerList].
@@ -152,8 +152,8 @@ class _ViewEvents extends _ViewEventListenerMap implements ViewEvents {
   ViewEventListenerList get scroll() => _get('scroll');
 
   ViewEventListenerList get layout() => _get("layout");
-  ViewEventListenerList get enterDocument() => _get("enterDocument");
-  ViewEventListenerList get exitDocument() => _get("exitDocument");
+  ViewEventListenerList get mount() => _get("mount");
+  ViewEventListenerList get unmount() => _get("unmount");
 
   ViewEventListenerList get check() => _get("check");
   ViewEventListenerList get select() => _get("select");

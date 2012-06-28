@@ -48,8 +48,8 @@ class Image extends View {
   int measureHeight_(MeasureContext mctx)
   => layoutManager.measureHeightByContent(mctx, this, false); //no need to autowidth
 
-  void enterDocument_() {
-    super.enterDocument_();
+  void mount_() {
+    super.mount_();
 
     if (_src != null && (width === null || height === null))
       layoutManager.waitImageLoaded(_src);

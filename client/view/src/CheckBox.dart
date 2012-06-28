@@ -97,16 +97,16 @@ class CheckBox extends TextView implements Input<bool> {
   }
 
   //@Override
-  void enterDocument_() {
-    super.enterDocument_();
+  void mount_() {
+    super.mount_();
 
     inputNode.on.click.add(_onInputClick);
   }
   //@Override
-  void exitDocument_() {
+  void unmount_() {
     inputNode.on.click.remove(_onInputClick);
 
-    super.exitDocument_();
+    super.unmount_();
   }
   //@Override
   void updateInner_() {

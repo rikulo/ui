@@ -20,10 +20,10 @@ class HTMLFragment {
    * ++ If it is [TreeNode], the data field will be used.
    * ++ If it is [Map] and it contains an entry named `"text"`, the entry
    * will be used.
-   * + [enterDocument], if specified, will be invoked after the fragment
+   * + [mount], if specified, will be invoked after the fragment
    * has been added to the document.
    */
-  HTMLFragment(var text, [AfterEnterDocument this.enterDocument]):
+  HTMLFragment(var text, [AfterMount this.mount]):
   _html = getHTML(text), _complete = false;
   /** Constructs with a HTML fragment. For example
    *
@@ -34,16 +34,16 @@ class HTMLFragment {
    * Notice that it must be a valid HTML fragment. Otherwise, the result
    * is unpredictable.
    * ++ If it is null, it is encoded as an empty string.
-   * + [enterDocument], if specified, will be invoked after the fragment
+   * + [mount], if specified, will be invoked after the fragment
    * has been added to the document.
    * + [complete] specifies whether this fragment contains all information.
    * The use depends on the receiver. However, it usually means that
    * the receiver doesn't have to wrap with additional HTML tags.
    */
-  HTMLFragment.html(String html, [AfterEnterDocument this.enterDocument, bool complete]):
+  HTMLFragment.html(String html, [AfterMount this.mount, bool complete]):
   _html = html !== null ? html: "", _complete = complete !== null && complete;
 
-  final AfterEnterDocument enterDocument;
+  final AfterMount mount;
 
   /** Returns the HTML fragment stored in this object.
    */

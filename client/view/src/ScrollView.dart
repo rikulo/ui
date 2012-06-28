@@ -34,15 +34,15 @@ class ScrollView extends View {
   Scroller newScroller_() => new Scroller(innerNode, totalSize: () => contentSize);
 
   //@Override
-  void enterDocument_() {
-    super.enterDocument_();
+  void mount_() {
+    super.mount_();
     _scroller = newScroller_();
   }
   //@Override
-  void exitDocument_() {
+  void unmount_() {
     _scroller.destroy();
     _scroller = null;
-    super.enterDocument_();
+    super.mount_();
   }
   //@Override
   void draw(StringBuffer out) {

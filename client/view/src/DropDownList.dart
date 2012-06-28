@@ -193,8 +193,8 @@ class DropDownList<E> extends View {
   static DropDownListRenderer _$defRenderer;
 
   //@Override
-  void enterDocument_() {
-    super.enterDocument_();
+  void mount_() {
+    super.mount_();
 
     node.on.change.add((e) {
       final List<E> selValues = new List();

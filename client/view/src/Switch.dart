@@ -79,8 +79,8 @@ class Switch extends View implements Input<bool> {
     _bgNode.style.marginLeft = CSS.px(delta + _X_OFF_EX);
   }
 
-  void enterDocument_() {
-    super.enterDocument_();
+  void mount_() {
+    super.mount_();
 
     _setValue(_value);
     _dg = new DragGesture(_sdNode, transform: true,
@@ -100,9 +100,9 @@ class Switch extends View implements Input<bool> {
         return true; //no more move
       });
   }
-  void exitDocument_() {
+  void unmount_() {
     _dg.destroy();
-    super.exitDocument_();
+    super.unmount_();
   }
 
   void domInner_(StringBuffer out) {

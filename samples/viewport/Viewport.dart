@@ -91,8 +91,8 @@ class Viewport extends View {
         beforeChild === _toolbar ? null: beforeChild);
     }
   }
-  void enterDocument_() {
-    super.enterDocument_();
+  void mount_() {
+    super.mount_();
 
     if (_toolbar != null)
       _syncToolbar();

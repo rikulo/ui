@@ -152,7 +152,7 @@ class Activity {
       throw const UIException("Only one activity is allowed");
 
     activity = this;
-    mount_();
+    _init();
 
     if (_mainView === null)
       _mainView = new Section();
@@ -172,12 +172,12 @@ class Activity {
           _createDialog(dlgInfo);
       }
 
-      onEnterDocument_();
+      onMount_();
     });
   }
   /** Initializes the browser window, such as registering the events.
    */
-  void mount_() {
+  void _init() {
     window.on[browser.mobile || application.inSimulator ? 'deviceOrientation': 'resize'].add(
       (event) { //DOM event
         updateSize();
@@ -227,12 +227,12 @@ class Activity {
    *
    * It means you can't access [Element.node] (such as adding a listener),
    * or any methods that depends on the DOM elements of the view.
-   * To access the DOM elements of the view, you have to do it in [onEnterDocument_].
+   * To access the DOM elements of the view, you have to do it in [onMount_].
    *
    * If you prefer to instantiate a different main view, you can
    * create an instance and then assign to [mainView] directly.
    *
-   * + See also [run] and [onEnterDocument_].
+   * + See also [run] and [onMount_].
    */
   void onCreate_() {
   }
@@ -241,7 +241,7 @@ class Activity {
    *
    * Tasks that depends on DOM elements can be done in this method.
    */
-  void onEnterDocument_() {
+  void onMount_() {
   }
   /** Called when the activity is going into background.
    */

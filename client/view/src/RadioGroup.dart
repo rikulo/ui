@@ -112,13 +112,13 @@ class RadioGroup<E> extends View {
    */
   void renderModel_() {
     final StringBuffer out = new StringBuffer();
-    final List<AfterEnterDocument> callbacks = new List();
+    final List<AfterMount> callbacks = new List();
     _renderInner(out,  callbacks);
 
     node.innerHTML = out.toString();
     _initRadios();
 
-    for (final AfterEnterDocument callback in callbacks)
+    for (final AfterMount callback in callbacks)
       callback(this);
 
     sendEvent(new ViewEvent(this, "render"));
@@ -129,7 +129,7 @@ class RadioGroup<E> extends View {
     _renderInner(out, null);
   }  
 
-  void _renderInner(StringBuffer out, List<AfterEnterDocument> callbacks) {
+  void _renderInner(StringBuffer out, List<AfterMount> callbacks) {
     if (_model === null)
       return; //nothing to do
 
@@ -144,12 +144,12 @@ class RadioGroup<E> extends View {
       final bool disabled = model is Disables && model.isDisabled(obj);
       final HTMLFragment hf = renderer(this, obj, multiple, selected, disabled, i);
 
-      final AfterEnterDocument callback = hf.enterDocument;
+      final AfterMount callback = hf.mount;
       if (callback !== null) {
         if (callbacks !== null)
           callbacks.add(callback);
         else
-          afterEnterDocument_(callback); //called by domInner_
+          afterMount_(callback); //called by domInner_
       }
 
       final bool complete = hf.isComplete();

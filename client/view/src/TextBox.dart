@@ -211,11 +211,11 @@ class TextBox extends View implements Input<String> {
   Element get inputNode() => node;
 
   //@Override
-  void exitDocument_() {
+  void unmount_() {
     final InputElement inp = inputNode;
     _value = inp.value; //store back
 
-    super.exitDocument_();
+    super.unmount_();
   }
   //@Override
   DOMEventDispatcher getDOMEventDispatcher_(String type)

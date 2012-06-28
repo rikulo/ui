@@ -7,9 +7,9 @@
 typedef void ViewEffect(View view);
 
 /** Called after views are added to the document, and
- * all [View.enterDocument_] methods are called.
+ * all [View.mount_] methods are called.
  */ 
-typedef void AfterEnterDocument(View view);
+typedef void AfterMount(View view);
 
 /**
  * A view represents the basic building block for user interface.
@@ -30,9 +30,9 @@ typedef void AfterEnterDocument(View view);
  *
  * + layout: an instance of [ViewEvent] indicates the layout of this view has been
  * handled.
- * + enterDocument: an instanceof [ViewEvent] indicates this view has been
+ * + mount: an instanceof [ViewEvent] indicates this view has been
  * added to the document.
- * + exitDocument: an instanceof [ViewEvent] indicates this view will be
+ * + unmount: an instanceof [ViewEvent] indicates this view will be
  * removed from the document.
  *
  *---
@@ -300,7 +300,7 @@ class View implements Hashable {
         insertChildToDocument_(child, childNode, beforeChild);
       } else {
         insertChildToDocument_(child, child._asHTML(), beforeChild);
-        child._enterDocument();
+        child._mount();
       }
     }
 
@@ -339,9 +339,9 @@ class View implements Hashable {
       child.beforeParentChanged_(null);
 
     if (inDocument) {
-      final Element childNode = child.node; //cache first since not callable after _exitDocument 
+      final Element childNode = child.node; //cache first since not callable after _unmount 
       if (exit)
-        child._exitDocument();
+        child._unmount();
       removeChildFromDocument_(child, childNode);
     }
     _ViewImpl.unlink(this, child);
@@ -539,7 +539,7 @@ class View implements Hashable {
     else if (p !== null)
       p.insertAdjacentHTML("beforeEnd", html);
 
-    _enterDocument();
+    _mount();
   }
   /** Removes this view from the document.
    * All of its descendant views are removed too.
@@ -556,47 +556,47 @@ class View implements Hashable {
       throw new UIException("No parent allowed, nor detached twice: $this");
 
     final Element n = node; //store first since _node will be cleared up later
-    _exitDocument();
+    _unmount();
     n.remove();
   }
   /** Binds the view.
    */
-  void _enterDocument() {
-    ++_enterDocCnt;
+  void _mount() {
+    ++_mountCnt;
     try {
-      enterDocument_();
+      mount_();
       requestLayout();
     } finally {
-      --_enterDocCnt;
+      --_mountCnt;
     }
 
-    if (_enterDocCnt == 0) {
+    if (_mountCnt == 0) {
       if (_afters !== null && !_afters.isEmpty()) {
         final List<List> afters = new List.from(_afters); //to avoid one of callbacks mounts again
         _afters.clear();
         for (final List after in afters) {
           View view = after[0];
           if (view.inDocument) {
-            AfterEnterDocument call = after[1];
+            AfterMount call = after[1];
             call(view);
           }
         }
       }
 
-      if (_enterDocCnt == 0)
+      if (_mountCnt == 0)
         layoutManager.flush(); //for better responsive, do it immediately
     }
   }
-  /** Adds a task to be executed after all [enterDocument_] are called.
+  /** Adds a task to be executed after all [mount_] are called.
    *
    * Notice that all tasks scheduled with this method will be queued
-   * and executed righter [enterDocument_] of all views are called.
+   * and executed righter [mount_] of all views are called.
    *
    * It is OK to invoke this method even if [inDocument] is false.
    * However, when it is time to invoke the queued [after], it will check if
    * this view is attached to the document. If not, [after] won't be called.
    */
-  void afterEnterDocument_(AfterEnterDocument after) {
+  void afterMount_(AfterMount after) {
     if (after === null)
       throw const UIException("after required");
     if (_afters === null)
@@ -604,33 +604,33 @@ class View implements Hashable {
     _afters.add([this, after]);
   }
   static List<List> _afters;
-  static int _enterDocCnt = 0;
+  static int _mountCnt = 0;
   
   /** Unbinds the view.
    */
-  void _exitDocument() {
+  void _unmount() {
     if (inDocument)
-      exitDocument_();
+      unmount_();
   }
   /** Callback when this view is attached to the document.
    *
-   * Default: invoke [enterDocument_] for each child.
+   * Default: invoke [mount_] for each child.
    *
    * Subclass shall call back this method if it overrides this method. 
    *
    * If the deriving class would like some tasks to be executed
-   * after [enterDocument_] of all new-attached views are called, it can
-   * invoke [afterEnterDocument_] to queue the task.
+   * after [mount_] of all new-attached views are called, it can
+   * invoke [afterMount_] to queue the task.
    *
    * See also [inDocument] and [invalidate].
    */
-  void enterDocument_() {
+  void mount_() {
     _inDoc = true;
 
     adjustInnerNode_(true, true, true, true);
 
     for (View child = firstChild; child != null; child = child.nextSibling) {
-      child.enterDocument_();
+      child.mount_();
     }
 
     //Listen the DOM element if necessary
@@ -644,16 +644,16 @@ class View implements Hashable {
       }
     }
 
-    sendEvent(new ViewEvent(this, "enterDocument"));
+    sendEvent(new ViewEvent(this, "mount"));
   }
   /** Callback when this view is detached from the document.
    *
-   * Default: invoke [exitDocument_] for each child.
+   * Default: invoke [unmount_] for each child.
    *
    * Subclass shall call back this method if it overrides this method. 
    */
-  void exitDocument_() {
-    sendEvent(new ViewEvent(this, "exitDocument"));
+  void unmount_() {
+    sendEvent(new ViewEvent(this, "unmount"));
 
     //Unlisten the DOM element if necessary
     final Element n = node;
@@ -666,11 +666,11 @@ class View implements Hashable {
     }
 
     for (View child = firstChild; child != null; child = child.nextSibling) {
-      child.exitDocument_();
+      child.unmount_();
     }
 
     _inDoc = false;
-    _node = null; //as the last step since node might be called in exitDocument_
+    _node = null; //as the last step since node might be called in unmount_
   }
 
   /** Called when something has changed and caused that the display of this
@@ -688,8 +688,8 @@ class View implements Hashable {
     if (!immediate) {
       _invalidator.queue(this);
     } else if (inDocument) {
-      final Element n = node; //cache it since _exitDocument will clean _node
-      _exitDocument();
+      final Element n = node; //cache it since _unmount will clean _node
+      _unmount();
       _addToDoc(n, outer: true);
     }
   }
