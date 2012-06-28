@@ -1085,7 +1085,7 @@ class View implements Hashable {
       out.add("display:none;");
     String s;
     if (!noStyle && _style !== null && !(s = _style.cssText).isEmpty())
-      out.add(s);
+      out.add(StringUtil.encodeXML(s));
   }
 
   /** Returns [ViewEvents] for adding or removing event listeners.
