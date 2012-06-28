@@ -9,6 +9,7 @@
 class LayoutManager extends RunOnceViewManager implements Layout {
   final Map<String, Layout> _layouts;
   final Set<String> _imgWaits;
+  int _inLayout = 0;
 
   LayoutManager(): super(null), _layouts = {}, _imgWaits = new Set() {
     addLayout("linear", new LinearLayout());
@@ -33,6 +34,53 @@ class LayoutManager extends RunOnceViewManager implements Layout {
    */
   Layout getLayout(String name) {
     return _layouts[name];
+  }
+
+  /** Called by [View], when it changed the width.
+   */
+  void syncWidth(View view, int width) {
+    //Note: we have to store the width in view since it is required if requestLayout
+    //is called again (while _borderWds shall be dropped after layouted)
+    if (_inLayout > 0)
+      view.dataAttributes['rk.width'] = width;
+  }
+  /** Called by [View], when it changed the height.
+   */
+  void syncHeight(View view, int height) {
+    if (_inLayout > 0)
+      view.dataAttributes['rk.height'] = height;
+  }
+  /** Returns the width is set by the application, or null if not.
+   * It is designed to be called by [MeasureContext].
+   */
+  int _getWidthSetByApp(View view) {
+    final LayoutAmountInfo amtInf = new LayoutAmountInfo(view.profile.width);
+    switch (amtInf.type) {
+      case LayoutAmountType.FIXED:
+        return amtInf.value;
+      case LayoutAmountType.NONE:
+        return _getSetByApp(view, view.width, 'rk.width');
+    }
+  }
+  /** Returns the height is set by the application, or null if not.
+   * It is designed to be called by [MeasureContext].
+   */
+  int _getHeightSetByApp(View view) {
+    final LayoutAmountInfo amtInf = new LayoutAmountInfo(view.profile.height);
+    switch (amtInf.type) {
+      case LayoutAmountType.FIXED:
+        return amtInf.value;
+      case LayoutAmountType.NONE:
+        return _getSetByApp(view, view.height, 'rk.height');
+    }
+  }
+  int _getSetByApp(View view, int v1, String nm) {
+    int v2;
+    if (v1 !== null && v1 != (v2 = view.dataAttributes[nm])) {
+      if (v2 !== null)
+        view.dataAttributes.remove(nm);
+      return v1;
+    }
   }
 
   //@Override Layout
@@ -61,7 +109,12 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 
   //@Override RunOnceViewManager
   void handle_(View view) {
-    doLayout(new MeasureContext(), view);
+    ++_inLayout;
+    try {
+      doLayout(new MeasureContext(), view);
+    } finally {
+      --_inLayout;
+    }
   }
   //@Override doLayout
   void doLayout(MeasureContext mctx, View view) {
@@ -93,15 +146,11 @@ class LayoutManager extends RunOnceViewManager implements Layout {
       case LayoutAmountType.NONE:
       case LayoutAmountType.CONTENT:
         //Note: if NONE and app doesn't set width, it means content
-        final bool bNONE = amt.type == LayoutAmountType.NONE;
-        if (bNONE && _isWidthSet(view))
+        if (amt.type == LayoutAmountType.NONE && mctx.getWidthSetByApp(view) !== null)
           break;
         final int wd = view.measureWidth_(mctx);
-        if (wd != null) {
+        if (wd != null)
           view.width = wd;
-          if (bNONE)
-            _updWidthSet(view, wd);
-        }
         break;
     }
   }
@@ -123,35 +172,13 @@ class LayoutManager extends RunOnceViewManager implements Layout {
       case LayoutAmountType.NONE:
       case LayoutAmountType.CONTENT:
         //Note: if NONE and app doesn't set height, it means content
-        final bool bNONE = amt.type == LayoutAmountType.NONE;
-        if (bNONE && _isHeightSet(view))
+        if (amt.type == LayoutAmountType.NONE && mctx.getHeightSetByApp(view) !== null)
           break;
         final int hgh = view.measureHeight_(mctx);
-        if (hgh != null) {
+        if (hgh != null)
           view.height = hgh;
-          if (bNONE)
-            _updHeightSet(view, hgh);
-        }
         break;
     }
-  }
-  /** Returns whether width has been set by the applicaiton. */
-  bool _isWidthSet(View view) => _isWHSet(view, view.width, 'rk.width');
-  /** Returns whether height has been set by the applicaiton. */
-  bool _isHeightSet(View view) => _isWHSet(view, view.height, 'rk.height');
-  bool _isWHSet(View view, int v1, String nm) {
-    int v2;
-    if (v1 === null || v1 == (v2 = view.dataAttributes[nm]))
-      return false;
-    if (v2 !== null)
-      view.dataAttributes.remove(nm);
-    return true;
-  }
-  void _updWidthSet(View view, int width) {
-    view.dataAttributes['rk.width'] = width;
-  }
-  void _updHeightSet(View view, int height) {
-    view.dataAttributes['rk.height'] = height;
   }
 
   /** Measures the width based on the view's content.

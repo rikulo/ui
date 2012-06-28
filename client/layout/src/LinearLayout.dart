@@ -42,12 +42,6 @@ class LinearLayout implements Layout {
 
   //Utilities//
   static final int DEFAULT_SPACING = 2;
-  static LayoutAmountInfo getDefaultAmountInfo(String info) {
-    final LayoutAmountInfo amt = new LayoutAmountInfo(info);
-    if (amt.type == LayoutAmountType.NONE)
-      amt.type = LayoutAmountType.CONTENT;
-    return amt;
-  }
   static LayoutAmountInfo profileWidth(View view, LayoutAmountInfo amtDefault) {
     final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.width);
     if (amt.type == LayoutAmountType.NONE) {

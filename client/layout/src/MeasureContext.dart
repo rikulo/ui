@@ -24,7 +24,26 @@ class MeasureContext {
    * to set the height.
    */
   final Map<View, int> heights;
+  final Map<View, int> _borderWds;
 
-  MeasureContext(): widths = new Map(), heights = new Map() {
+  MeasureContext(): widths = new Map(), heights = new Map(),
+  _borderWds = new Map() {
   }
+  /** Returns the border's width.
+   */
+  int getBorderWidth(View view) {
+    int v = _borderWds[view];
+    if (v === null)
+      _borderWds[view] = v = new DOMQuery(view.node).borderWidth;
+    return v;
+  }
+
+  /** Returns the width set by the applicaiton, or null if it is not set yet or set
+   * by a layout.
+   */
+  int getWidthSetByApp(View view) => layoutManager._getWidthSetByApp(view);
+  /** Returns the height set by the applicaiton, or null if it is not set yet or set
+   * by a layout.
+   */
+  int getHeightSetByApp(View view) => layoutManager._getHeightSetByApp(view);
 }

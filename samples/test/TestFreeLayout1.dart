@@ -10,13 +10,14 @@ class TestFreeLayout1 extends Activity {
 
     mainView.style.backgroundColor = "#cca";
 
+    test1();
+}
+void test1() {
     View view = new View();
     view.style.backgroundColor = "#ddb";
     view.style.border = "1px solid white";
     view.profile.anchor = "parent";
     view.profile.location = "center center";
-    view.profile.width = "content"; //must! it forces width being calced
-    view.profile.height = "content"; //must! it forces height being calced
     mainView.addChild(view);
 
     //test if subView will affect its parent's size

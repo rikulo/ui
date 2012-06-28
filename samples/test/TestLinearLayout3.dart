@@ -29,7 +29,6 @@ class TestLinearLayout3 extends Activity {
     View hlayout = new View();
     hlayout.style.backgroundColor = "#ddb";
     hlayout.layout.type = "linear";
-    hlayout.profile.width = hlayout.profile.height = "content";
     parent.addChild(hlayout);
 
     TextView view = new TextView("Cyan");

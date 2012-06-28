@@ -11,18 +11,20 @@ class FreeLayout implements Layout {
     if (wd !== null || mctx.widths.containsKey(view))
       return wd;
 
-    wd = _initSize(view.profile.width, () => view.innerWidth);
-    for (final View child in view.children) {
-      if (view.shallLayout_(child) && child.profile.anchorView == null) {
-        int subsz = child.measureWidth_(mctx);
-        subsz = child.left + (subsz !== null ? subsz: 0);
-        if (wd === null || subsz > wd)
-          wd = subsz;
+    if ((wd = mctx.getWidthSetByApp(view)) === null) {
+      wd = view.innerWidth;
+      for (final View child in view.children) {
+        if (view.shallLayout_(child) && child.profile.anchorView == null) {
+          int subsz = child.measureWidth_(mctx);
+          subsz = child.left + (subsz !== null ? subsz: 0);
+          if (wd === null || subsz > wd)
+            wd = subsz;
+        }
       }
-    }
 
-    if (wd !== null)
-      wd += new DOMQuery(view.node).borderWidth * 2;
+      if (wd !== null)
+        wd += mctx.getBorderWidth(view) << 1;
+    }
     mctx.widths[view] = wd;
     return wd;
   }
@@ -31,25 +33,22 @@ class FreeLayout implements Layout {
     if (hgh !== null || mctx.heights.containsKey(view))
       return hgh;
 
-    hgh = _initSize(view.profile.height, () => view.innerHeight);
-    for (final View child in view.children) {
-      if (view.shallLayout_(child) && child.profile.anchorView == null) {
-        int subsz = child.measureHeight_(mctx);
-        subsz = child.top + (subsz !== null ? subsz: 0);
-        if (hgh == null || subsz > hgh)
-          hgh = subsz;
+    if ((hgh = mctx.getHeightSetByApp(view)) === null) {
+      hgh = view.innerHeight;
+      for (final View child in view.children) {
+        if (view.shallLayout_(child) && child.profile.anchorView == null) {
+          int subsz = child.measureHeight_(mctx);
+          subsz = child.top + (subsz !== null ? subsz: 0);
+          if (hgh == null || subsz > hgh)
+            hgh = subsz;
+        }
       }
-    }
 
-    if (hgh !== null)
-      hgh += new DOMQuery(view.node).borderWidth * 2;
+      if (hgh !== null)
+        hgh += mctx.getBorderWidth(view) << 1;
+    }
     mctx.heights[view] = hgh;
     return hgh;
-  }
-  static int _initSize(String profile, AsInt current) {
-    final LayoutAmountInfo szinf = new LayoutAmountInfo(profile);
-    final int v = szinf.type == LayoutAmountType.FIXED ? szinf.value: current();
-    return v != null ? v: null;
   }
   void doLayout(MeasureContext mctx, View view) {
     if (view.firstChild !== null) {

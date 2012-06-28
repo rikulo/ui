@@ -7,7 +7,11 @@
  */
 class _VLayout implements _RealLinearLayout {
   int measureHeight(MeasureContext mctx, View view) {
-    final LayoutAmountInfo amtHghDefault = LinearLayout.getDefaultAmountInfo(view.layout.height);
+    final int va = mctx.getHeightSetByApp(view);
+    if (va !== null)
+      return va;
+
+    final LayoutAmountInfo amtHghDefault = new LayoutAmountInfo(view.layout.height);
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
     final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
     int height = 0, prevSpacing;
@@ -26,6 +30,7 @@ class _VLayout implements _RealLinearLayout {
         case LayoutAmountType.FIXED:
           height += amt.value;
           break;
+        case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           final int hgh = child.measureHeight_(mctx);
           height += hgh != null ? hgh: child.outerHeight;
@@ -34,14 +39,18 @@ class _VLayout implements _RealLinearLayout {
       }
     }
 
-    height += new DOMQuery(view.node).borderWidth * 2
+    height += mctx.getBorderWidth(view) * 2
       + (prevSpacing !== null ? prevSpacing: spcinf.top + spcinf.bottom);
     return height;
   }
   int measureWidth(MeasureContext mctx, View view) {
-    final LayoutAmountInfo amtWdDefault = LinearLayout.getDefaultAmountInfo(view.layout.width);
+    final int va = mctx.getWidthSetByApp(view);
+    if (va !== null)
+      return va;
+
+    final LayoutAmountInfo amtWdDefault = new LayoutAmountInfo(view.layout.width);
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
-    final int borderWd = new DOMQuery(view.node).borderWidth * 2;
+    final int borderWd = mctx.getBorderWidth(view) << 1;
     int width;
     for (final View child in view.children) {
       if (!view.shallLayout_(child) || child.profile.anchorView !== null)
@@ -55,6 +64,7 @@ class _VLayout implements _RealLinearLayout {
         case LayoutAmountType.FIXED:
           wd += amt.value;
           break;
+        case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           final int w = child.measureWidth_(mctx);
           wd += w != null ? w: child.outerWidth;
@@ -72,7 +82,7 @@ class _VLayout implements _RealLinearLayout {
   void doLayout(MeasureContext mctx, View view, List<View> children) {
     //1) size
     final AsInt innerHeight = () => view.innerHeight;
-    final LayoutAmountInfo amtHghDefault = LinearLayout.getDefaultAmountInfo(view.layout.height);
+    final LayoutAmountInfo amtHghDefault = new LayoutAmountInfo(view.layout.height);
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
     final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
     final Map<View, LayoutSideInfo> childspcinfs = new Map();
