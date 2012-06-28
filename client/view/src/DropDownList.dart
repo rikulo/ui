@@ -201,22 +201,21 @@ class DropDownList<E> extends View {
       int selIndex = -1;
       if (_model !== null) {
         final SelectElement n = node;
+        selIndex = n.selectedIndex;
+        final ListModel model = _model is ListModel ? _model: null;
         if (_cast(_model).multiple) {
-          for (OptionElement opt in n.selectedOptions) {
-            if (selIndex < 0)
-              selIndex = opt.index; //the first selected index
-            if (_model is ListModel) {
-              final ListModel model = _model;
-              selValues.add(model[opt.index]);
-            } else {
-              selValues.add(_treeValueOf(opt));
+          for (OptionElement opt in n.options) {
+            if (opt.selected) {
+              if (model !== null) {
+                selValues.add(model[opt.index]);
+              } else {
+                selValues.add(_treeValueOf(opt));
+              }
             }
           }
         } else {
-          selIndex = n.selectedIndex;
           if (selIndex >= 0) {
-            if (_model is ListModel) {
-              final ListModel model = _model;
+            if (model !== null) {
               selValues.add(model[selIndex]);
             } else {
               selValues.add(_treeValueOf(n.options[selIndex]));
