@@ -1212,6 +1212,9 @@ class View implements Hashable {
   /**
    * Returns a map of the application-specific data.
    *
+   * Note: the name of the attribute can't start with "rk.", which is reserved
+   * for internal use.
+   *
    * See also [mountAttributes].
    */
   Map<String, Object> get dataAttributes()
@@ -1223,6 +1226,9 @@ class View implements Hashable {
    * Notice that you can store any value here any time like [dataAttributes]
    * does. However, the data stored here will be cleaned up when
    * the view is detached from the document.
+   *
+   * Note: the name of the attribute can't start with "rk.", which is reserved
+   * for internal use.
    *
    * See also [dataAttributes].
    */

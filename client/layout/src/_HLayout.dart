@@ -72,10 +72,6 @@ class _HLayout implements _RealLinearLayout {
   void doLayout(MeasureContext mctx, View view, List<View> children) {
     //1) size
     final AsInt innerWidth = () => view.innerWidth;
-    final AsString defaultProfile = () { //default profile.height
-      final String s = view.layout.height;
-      return s.isEmpty() ? "content": s;
-    };
     final LayoutAmountInfo amtWdDefault = LinearLayout.getDefaultAmountInfo(view.layout.width);
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
     final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
@@ -119,7 +115,7 @@ class _HLayout implements _RealLinearLayout {
       }
 
       final AsInt defaultHeight = () => view.innerHeight - si.top - si.bottom; //subtract spacing from borders
-      layoutManager.setHeightByProfile(mctx, child, defaultHeight, defaultHeight, defaultProfile);
+      layoutManager.setHeightByProfile(mctx, child, defaultHeight);
     }
 
     //1a) size flex

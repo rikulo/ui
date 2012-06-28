@@ -77,23 +77,10 @@ class LayoutManager extends RunOnceViewManager implements Layout {
 
   /** Set the width of the given view based on its profile.
    * It is an utility for implementing a layout.
-   *
-   * + [defaultWidth] is used if the profile's width and view's width are not specified. Ignored if null.
-   * + [defaultProfile], if not null, specifies the width that will be used if profile.width
-   * is not specified.
    */
-  void setWidthByProfile(MeasureContext mctx, View view, AsInt width,
-  [AsInt defaultWidth, AsString defaultProfile]) {
-    String profile = view.profile.width;
-    if (profile.isEmpty() && defaultProfile !== null)
-      profile = defaultProfile();
-    final LayoutAmountInfo amt = new LayoutAmountInfo(profile);
+  void setWidthByProfile(MeasureContext mctx, View view, AsInt width) {
+    final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.width);
     switch (amt.type) {
-      case LayoutAmountType.NONE:
-        //Use defaultWidth only if width is null (so user can assign view.width -- in addition to view.profile.width -- the same)
-        if (view.width === null && defaultWidth !== null)
-          view.width = defaultWidth();
-        break;
       case LayoutAmountType.FIXED:
         view.width = amt.value;
         break;
@@ -103,32 +90,27 @@ class LayoutManager extends RunOnceViewManager implements Layout {
       case LayoutAmountType.RATIO:
         view.width = (width() * amt.value).round().toInt();
         break;
+      case LayoutAmountType.NONE:
       case LayoutAmountType.CONTENT:
+        //Note: if NONE and app doesn't set width, it means content
+        final bool bNONE = amt.type == LayoutAmountType.NONE;
+        if (bNONE && _isWidthSet(view))
+          break;
         final int wd = view.measureWidth_(mctx);
-        if (wd != null)
+        if (wd != null) {
           view.width = wd;
+          if (bNONE)
+            _updWidthSet(view, wd);
+        }
         break;
     }
   }
   /** Set the height of the given view based on its profile.
    * It is an utility for implementing a layout.
-   *
-   * + [defaultHeight] is used if the profile's height and view's height are not specified. Ignored if null.
-   * + [defaultProfile], if not null, specifies the width that will be used if profile.width
-   * is not specified.
    */
-  void setHeightByProfile(MeasureContext mctx, View view, AsInt height,
-  [AsInt defaultHeight, AsString defaultProfile]) {
-    String profile = view.profile.height;
-    if (profile.isEmpty() && defaultProfile !== null)
-      profile = defaultProfile();
-    final LayoutAmountInfo amt = new LayoutAmountInfo(profile);
+  void setHeightByProfile(MeasureContext mctx, View view, AsInt height) {
+    final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.height);
     switch (amt.type) {
-      case LayoutAmountType.NONE:
-        //Use defaultHeight only if height is null (so user can assign view.height -- in addition to view.profile.height -- the same)
-        if (view.height === null && defaultHeight !== null)
-          view.height = defaultHeight();
-        break;
       case LayoutAmountType.FIXED:
         view.height = amt.value;
         break;
@@ -138,12 +120,38 @@ class LayoutManager extends RunOnceViewManager implements Layout {
       case LayoutAmountType.RATIO:
         view.height = (height() * amt.value).round().toInt();
         break;
+      case LayoutAmountType.NONE:
       case LayoutAmountType.CONTENT:
+        //Note: if NONE and app doesn't set height, it means content
+        final bool bNONE = amt.type == LayoutAmountType.NONE;
+        if (bNONE && _isHeightSet(view))
+          break;
         final int hgh = view.measureHeight_(mctx);
-        if (hgh != null)
+        if (hgh != null) {
           view.height = hgh;
+          if (bNONE)
+            _updHeightSet(view, hgh);
+        }
         break;
     }
+  }
+  /** Returns whether width has been set by the applicaiton. */
+  bool _isWidthSet(View view) => _isWHSet(view, view.width, 'rk.width');
+  /** Returns whether height has been set by the applicaiton. */
+  bool _isHeightSet(View view) => _isWHSet(view, view.height, 'rk.height');
+  bool _isWHSet(View view, int v1, String nm) {
+    int v2;
+    if (v1 === null || v1 == (v2 = view.dataAttributes[nm]))
+      return false;
+    if (v2 !== null)
+      view.dataAttributes.remove(nm);
+    return true;
+  }
+  void _updWidthSet(View view, int width) {
+    view.dataAttributes['rk.width'] = width;
+  }
+  void _updHeightSet(View view, int height) {
+    view.dataAttributes['rk.height'] = height;
   }
 
   /** Measures the width based on the view's content.

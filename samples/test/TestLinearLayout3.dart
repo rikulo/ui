@@ -13,10 +13,17 @@ class TestLinearLayout3 extends Activity {
     View vlayout = new View();
     vlayout.layout.text = "type: linear; orient: vertical";
     vlayout.style.backgroundColor = "white";
-    vlayout.profile.text = "width: content; height: content";
     mainView.addChild(vlayout);
     test1(vlayout);
     test1(vlayout);
+
+    Button btn = new Button("Change text");
+    btn.on.click.add((event) {
+      for (TextView v in vlayout.queryAll("TextView"))
+        v.text = "${v.text} click";
+      mainView.requestLayout();
+    });
+    vlayout.addChild(btn);
   }
   void test1(View parent) {
     View hlayout = new View();
