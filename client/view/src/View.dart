@@ -51,7 +51,7 @@ class View implements Hashable {
 
   _ChildInfo _childInfo;
   _EventListenerInfo _evlInfo;
-  Map<String, Object> _data;
+  Map<String, Object> _dataAttrs, _mntAttrs;
 
   //the classes; created on demand
   Set<String> _classes;
@@ -562,15 +562,15 @@ class View implements Hashable {
   /** Binds the view.
    */
   void _mount() {
-    ++_mountCnt;
+    ++_mntCnt;
     try {
       mount_();
       requestLayout();
     } finally {
-      --_mountCnt;
+      --_mntCnt;
     }
 
-    if (_mountCnt == 0) {
+    if (_mntCnt == 0) {
       if (_afters !== null && !_afters.isEmpty()) {
         final List<List> afters = new List.from(_afters); //to avoid one of callbacks mounts again
         _afters.clear();
@@ -583,7 +583,7 @@ class View implements Hashable {
         }
       }
 
-      if (_mountCnt == 0)
+      if (_mntCnt == 0)
         layoutManager.flush(); //for better responsive, do it immediately
     }
   }
@@ -604,7 +604,7 @@ class View implements Hashable {
     _afters.add([this, after]);
   }
   static List<List> _afters;
-  static int _mountCnt = 0;
+  static int _mntCnt = 0;
   
   /** Unbinds the view.
    */
@@ -669,6 +669,7 @@ class View implements Hashable {
       child.unmount_();
     }
 
+    _mntAttrs = null; //clean up
     _inDoc = false;
     _node = null; //as the last step since node might be called in unmount_
   }
@@ -1208,32 +1209,25 @@ class View implements Hashable {
     }
   }
 
-  /** Returns the value of the application-specific data with the given name,
-   * or null if not assigned.
-   * The application-specific data is anything that an application would like
-   * to put into a view.
+  /**
+   * Returns a map of the application-specific data.
+   *
+   * See also [mountAttributes].
    */
-  Object getData(String name) {
-    return _data !== null ? _data[name]: null;
-  }
-  /** Returns if the application-specific data with given name
-   * has been assigned with a value (including null).
+  Map<String, Object> get dataAttributes()
+  => _dataAttrs !== null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
+  /**
+   * Returns a map of the application-specific data that exist only
+   * if the view is attached to the document.
+   *
+   * Notice that you can store any value here any time like [dataAttributes]
+   * does. However, the data stored here will be cleaned up when
+   * the view is detached from the document.
+   *
+   * See also [dataAttributes].
    */
-  bool hasData(String name) {
-    return _data !== null && _data.containsKey(name);
-  }
-  /** Sets the value to the application-specific data with the given name.
-   */
-  void setData(String name, Object value) {
-    if (_data == null)
-      _data = new Map();
-    _data[name] = value;
-  }
-  /** Remove the application-specific data of the given name.
-   */
-  void removeData(String name) {
-    if (_data !== null) _data.remove(name);
-  }
+  Map<String, Object> get mountAttributes()
+  => _mntAttrs !== null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new Map());
 
   int hashCode() => uuid.hashCode(); //uuid is immutiable once assigned
   String toString() => "$className(${id.isEmpty() ? uuid: id})";

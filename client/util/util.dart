@@ -11,6 +11,7 @@
 #source("src/log.dart");
 #source("src/StringUtil.dart");
 #source("src/ListUtil.dart");
+#source("src/MapUtil.dart");
 #source("src/AbstractList.dart");
 #source("src/RunOnceQueue.dart");
 #source("src/Offset.dart");

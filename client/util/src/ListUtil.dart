@@ -39,4 +39,32 @@ class ListUtil {
    */
   static first(Collection col)
   => col.isEmpty() ? null: col.iterator().next();
+
+  /** A readonly and empty collection.
+   */
+  static final Collection emptyCollection = const _EmptyColl();
+  /** A readonly and empty iterator.
+   */
+  static final Iterator emptyIterator = const _EmptyIter();
+}
+
+class _EmptyColl<E> implements Collection<E> {
+  const _EmptyColl();
+
+  Iterator<E> iterator() => ListUtil.emptyIterator;
+  void forEach(void f(E element)) {}
+  Collection map(f(E element)) => ListUtil.emptyCollection;
+  Collection<E> filter(bool f(E element)) => ListUtil.emptyCollection;
+  bool every(bool f(E element)) => false;
+  bool some(bool f(E element)) => false;
+  bool isEmpty() => true;
+  int get length() => 0;
+}
+class _EmptyIter<E> implements Iterator<E> {
+  const _EmptyIter();
+
+  E next() {
+    throw const NoMoreElementsException();
+  }
+  bool hasNext() => false;
 }
