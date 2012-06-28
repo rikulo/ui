@@ -46,7 +46,7 @@ class LayoutAmountInfo {
   /** Constructor.
    */
   LayoutAmountInfo(String profile) {
-    if (profile == null || profile.isEmpty()) {
+    if (profile == null || profile.isEmpty()) { //no need to trim since it was trimmed
       type = LayoutAmountType.NONE;
     } else if (profile == "content") {
       type = LayoutAmountType.CONTENT;
@@ -59,7 +59,9 @@ class LayoutAmountInfo {
       value= Math.parseDouble(profile.substring(0, profile.length - 1).trim()) / 100;
     } else {
       type = LayoutAmountType.FIXED;
-      value = Math.parseInt(profile);
+      value = CSS.intOf(profile, true); //report error if no number at all
+        //since it is common to end the number with px (because of CSS),
+        //we retrieve only the number (and ignore the text following it).
     }
   }
   String toString() {
