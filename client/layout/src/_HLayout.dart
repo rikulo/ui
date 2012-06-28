@@ -8,9 +8,6 @@
 class _HLayout implements _RealLinearLayout {
   int measureWidth(MeasureContext mctx, View view) {
     final LayoutAmountInfo amtWdDefault = LinearLayout.getDefaultAmountInfo(view.layout.width);
-    final int maxWd = browser.size.width;
-      //Note: it can't count on parent.innerWidth since it might be sized yet
-      //It happens when profile=content is specified (TestLinearLayout3)
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
     final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
     int width = 0, prevSpacing;
@@ -22,29 +19,24 @@ class _HLayout implements _RealLinearLayout {
       final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       width += prevSpacing === null ? si.left: //first
         gapinf.left !== null ? gapinf.left: Math.max(prevSpacing, si.left);
-      if (width >= maxWd)
-        return maxWd;
       prevSpacing = si.right;
 
       final LayoutAmountInfo amt = LinearLayout.profileWidth(child, amtWdDefault);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
-          if ((width += amt.value) >= maxWd)
-            return maxWd;
+          width += amt.value;
           break;
         case LayoutAmountType.CONTENT:
           final int wd = child.measureWidth_(mctx);
-          if ((width += wd != null ? wd: child.outerWidth) >= maxWd)
-            return maxWd;
+          width += wd != null ? wd: child.outerWidth;
           break;
-        default:
-          return maxWd; //fulfill the parent if flex or ratio is used
+        //default: if flex/%, don't count
       }
     }
 
     width += new DOMQuery(view.node).borderWidth * 2
       + (prevSpacing !== null ? prevSpacing: spcinf.left + spcinf.right);
-    return width >= maxWd ? maxWd: width;
+    return width;
   }
   int measureHeight(MeasureContext mctx, View view) {
     final LayoutAmountInfo amtHghDefault = LinearLayout.getDefaultAmountInfo(view.layout.height);

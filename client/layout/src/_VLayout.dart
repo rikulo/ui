@@ -8,9 +8,6 @@
 class _VLayout implements _RealLinearLayout {
   int measureHeight(MeasureContext mctx, View view) {
     final LayoutAmountInfo amtHghDefault = LinearLayout.getDefaultAmountInfo(view.layout.height);
-    final int maxHgh = browser.size.height;
-      //Note: it can't count on parent.innerHeight since it might be sized yet
-      //It happens when profile=content is specified (TestLinearLayout3)
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
     final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
     int height = 0, prevSpacing;
@@ -22,29 +19,24 @@ class _VLayout implements _RealLinearLayout {
       final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       height += prevSpacing === null ? si.top: //first
         gapinf.top !== null ? gapinf.top: Math.max(prevSpacing, si.top);
-      if (height >= maxHgh)
-        return maxHgh;
       prevSpacing = si.bottom;
 
       final LayoutAmountInfo amt = LinearLayout.profileHeight(child, amtHghDefault);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
-          if ((height += amt.value) >= maxHgh)
-            return maxHgh;
+          height += amt.value;
           break;
         case LayoutAmountType.CONTENT:
           final int hgh = child.measureHeight_(mctx);
-          if ((height += hgh != null ? hgh: child.outerHeight) >= maxHgh)
-            return maxHgh;
+          height += hgh != null ? hgh: child.outerHeight;
           break;
-        default:
-          return maxHgh; //fulfill the parent if flex or ratio is used
+        //default: if flex/%, don't count
       }
     }
 
     height += new DOMQuery(view.node).borderWidth * 2
       + (prevSpacing !== null ? prevSpacing: spcinf.top + spcinf.bottom);
-    return height >= maxHgh ? maxHgh: height;
+    return height;
   }
   int measureWidth(MeasureContext mctx, View view) {
     final LayoutAmountInfo amtWdDefault = LinearLayout.getDefaultAmountInfo(view.layout.width);
