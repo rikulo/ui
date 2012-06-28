@@ -802,7 +802,7 @@ class View implements Hashable {
     _hidden = hidden;
 
     if (_inDoc)
-      node.hidden = hidden;
+      node.style.display = hidden ? "none": "";
   }
 
   /** Returns the left position of this view relative to its parent.
