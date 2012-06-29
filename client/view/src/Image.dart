@@ -44,9 +44,9 @@ class Image extends View {
   bool isViewGroup() => false;
 
   int measureWidth_(MeasureContext mctx)
-  => layoutManager.measureWidthByContent(mctx, this, false); //no need to autowidth
+  => mctx.measureWidthByContent(this, false); //no need to autowidth
   int measureHeight_(MeasureContext mctx)
-  => layoutManager.measureHeightByContent(mctx, this, false); //no need to autowidth
+  => mctx.measureHeightByContent(this, false); //no need to autowidth
 
   void mount_() {
     super.mount_();

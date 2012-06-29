@@ -57,9 +57,9 @@ class AnchorRelation {
 
       for (final View view in views) {
         //1) size
-        layoutManager.setWidthByProfile(mctx, view,
+        mctx.setWidthByProfile(view,
           anchor === view.parent ? anchorInnerWidth: anchorOuterWidth);
-        layoutManager.setHeightByProfile(mctx, view,
+        mctx.setHeightByProfile(view,
           anchor === view.parent ? anchorInnerHeight: anchorOuterHeight);
 
         //2) position

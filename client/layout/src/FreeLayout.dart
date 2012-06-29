@@ -50,14 +50,15 @@ class FreeLayout implements Layout {
     mctx.heights[view] = hgh;
     return hgh;
   }
+  bool isProfileInherited() => false;
   void doLayout(MeasureContext mctx, View view) {
     if (view.firstChild !== null) {
       final AnchorRelation ar = new AnchorRelation(view);
       final AsInt innerWidth = () => view.innerWidth,
         innerHeight = () => view.innerHeight; //future: introduce cache
       for (final View child in ar.indeps) {
-        layoutManager.setWidthByProfile(mctx, child, innerWidth);
-        layoutManager.setHeightByProfile(mctx, child, innerHeight);
+        mctx.setWidthByProfile(child, innerWidth);
+        mctx.setHeightByProfile(child, innerHeight);
       }
 
       ar.layoutAnchored(mctx);

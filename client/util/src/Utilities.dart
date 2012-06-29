@@ -30,6 +30,13 @@ typedef Size AsSize();
  */
 typedef Rectangle AsRectangle();
 
+/** A function that returns a map.
+ */
+typedef Map AsMap();
+/** A function that returns a list.
+ */
+typedef List AsList();
+
 /**
  * Represents an input that store a value.
  */

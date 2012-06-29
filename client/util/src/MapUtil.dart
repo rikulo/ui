@@ -2,8 +2,6 @@
 //History: Thu, Jun 28, 2012 10:30:47 AM
 // Author: tomyeh
 
-typedef Map MapCreator();
-
 /**
  * A collection of Map related utilities.
  */
@@ -18,17 +16,17 @@ class MapUtil {
    * anything in most case.
    *
    * Notice you don't have to keep the object being returned by this method,
-   * since it is just a proxy to the real map, if [MapCreator] you provided
-   * creates it. Refer to [View.dataAttributes] for a sample implementation.
+   * since it is just a proxy to the real map.
+   * Refer to [View.dataAttributes] for a sample implementation.
    */
-  static Map onDemand(MapCreator creator) => new _OnDemandMap(creator);
+  static Map onDemand(AsMap creator) => new _OnDemandMap(creator);
 }
 
 class _OnDemandMap<K, V> implements Map<K,V> {
-  final MapCreator _creator;
+  final AsMap _creator;
   Map<K, V> _map;
 
-  _OnDemandMap(MapCreator this._creator);
+  _OnDemandMap(AsMap this._creator);
 
   Map _init() => _map !== null ? _map: (_map = _creator());
 

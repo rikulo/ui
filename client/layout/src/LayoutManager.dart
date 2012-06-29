@@ -6,7 +6,7 @@
  * The layout mananger that manages the layout controllers ([Layout]).
  * There is exactly one layout manager per application.
  */
-class LayoutManager extends RunOnceViewManager implements Layout {
+class LayoutManager extends RunOnceViewManager {
   final Map<String, Layout> _layouts;
   final Set<String> _imgWaits;
   int _inLayout = 0;
@@ -35,60 +35,28 @@ class LayoutManager extends RunOnceViewManager implements Layout {
   Layout getLayout(String name) {
     return _layouts[name];
   }
-
-  /** Called by [View], when it changed the width.
+  /** Returns the layout of the given view (never null).
    */
-  void syncWidth(View view, int width) {
+  Layout getLayoutOfView(View view) {
+    final String name = view.layout.type;
+    final Layout clayout = getLayout(name);
+    if (clayout == null)
+      throw new UIException("Unknown layout, ${name}");
+    return clayout;
+  }
+
+
+  /** Called by [View], when it changed the width or height.
+   */
+  void sizeUpdated(View view, int value, bool horizontal) {
     //Note: we have to store the width in view since it is required if requestLayout
     //is called again (while _borderWds shall be dropped after layouted)
+    final String nm = horizontal ? 'rk.layout.w': 'rk.layout.h'; //see also MeasureContext._getSetByApp
     if (_inLayout > 0)
-      view.dataAttributes['rk.width'] = width;
+      view.dataAttributes[nm] = value;
+    else
+      view.dataAttributes.remove(nm);
   }
-  /** Called by [View], when it changed the height.
-   */
-  void syncHeight(View view, int height) {
-    if (_inLayout > 0)
-      view.dataAttributes['rk.height'] = height;
-  }
-  /** Returns the width is set by the application, or null if not.
-   * It is designed to be called by [MeasureContext].
-   */
-  int _getWidthSetByApp(View view) {
-    final LayoutAmountInfo amtInf = new LayoutAmountInfo(view.profile.width);
-    switch (amtInf.type) {
-      case LayoutAmountType.FIXED:
-        return amtInf.value;
-      case LayoutAmountType.NONE:
-        return _getSetByApp(view, view.width, 'rk.width');
-    }
-  }
-  /** Returns the height is set by the application, or null if not.
-   * It is designed to be called by [MeasureContext].
-   */
-  int _getHeightSetByApp(View view) {
-    final LayoutAmountInfo amtInf = new LayoutAmountInfo(view.profile.height);
-    switch (amtInf.type) {
-      case LayoutAmountType.FIXED:
-        return amtInf.value;
-      case LayoutAmountType.NONE:
-        return _getSetByApp(view, view.height, 'rk.height');
-    }
-  }
-  int _getSetByApp(View view, int v1, String nm) {
-    int v2;
-    if (v1 !== null && v1 != (v2 = view.dataAttributes[nm])) {
-      if (v2 !== null)
-        view.dataAttributes.remove(nm);
-      return v1;
-    }
-  }
-
-  //@Override Layout
-  int measureWidth(MeasureContext mctx, View view)
-  => _layoutOfView(view).measureWidth(mctx, view);
-  //@Override Layout
-  int measureHeight(MeasureContext mctx, View view)
-  => _layoutOfView(view).measureHeight(mctx, view);
 
   //@Override
   void flush([View view]) {
@@ -97,14 +65,6 @@ class LayoutManager extends RunOnceViewManager implements Layout {
       super.flush(view);
     else if (view !== null)
       queue(view); //do it later
-  }
-
-  Layout _layoutOfView(View view) {
-    final String name = view.layout.type;
-    final Layout clayout = getLayout(name);
-    if (clayout == null)
-      throw new UIException("Unknown layout, ${name}");
-    return clayout;
   }
 
   //@Override RunOnceViewManager
@@ -116,172 +76,19 @@ class LayoutManager extends RunOnceViewManager implements Layout {
       --_inLayout;
     }
   }
-  //@Override doLayout
+  /** Handles the layout of the given view.
+   */
   void doLayout(MeasureContext mctx, View view) {
     if (view.parent === null && view.profile.anchorView === null) { //root without anchor
       //handle profile since it has no parent to handel for it
-      setWidthByProfile(mctx, view, () => browser.size.width);
-      setHeightByProfile(mctx, view, () => browser.size.height);
+      mctx.setWidthByProfile(view, () => browser.size.width);
+      mctx.setHeightByProfile(view, () => browser.size.height);
       AnchorRelation._positionRoot(view);
     }
-    _layoutOfView(view).doLayout(mctx, view);
+    getLayoutOfView(view).doLayout(mctx, view);
     view.onLayout();
   }
 
-  /** Set the width of the given view based on its profile.
-   * It is an utility for implementing a layout.
-   */
-  void setWidthByProfile(MeasureContext mctx, View view, AsInt width) {
-    final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.width);
-    switch (amt.type) {
-      case LayoutAmountType.FIXED:
-        view.width = amt.value;
-        break;
-      case LayoutAmountType.FLEX:
-        view.width = width();
-        break;
-      case LayoutAmountType.RATIO:
-        view.width = (width() * amt.value).round().toInt();
-        break;
-      case LayoutAmountType.NONE:
-      case LayoutAmountType.CONTENT:
-        //Note: if NONE and app doesn't set width, it means content
-        if (amt.type == LayoutAmountType.NONE && mctx.getWidthSetByApp(view) !== null)
-          break;
-        final int wd = view.measureWidth_(mctx);
-        if (wd != null)
-          view.width = wd;
-        break;
-    }
-  }
-  /** Set the height of the given view based on its profile.
-   * It is an utility for implementing a layout.
-   */
-  void setHeightByProfile(MeasureContext mctx, View view, AsInt height) {
-    final LayoutAmountInfo amt = new LayoutAmountInfo(view.profile.height);
-    switch (amt.type) {
-      case LayoutAmountType.FIXED:
-        view.height = amt.value;
-        break;
-      case LayoutAmountType.FLEX:
-        view.height = height();
-        break;
-      case LayoutAmountType.RATIO:
-        view.height = (height() * amt.value).round().toInt();
-        break;
-      case LayoutAmountType.NONE:
-      case LayoutAmountType.CONTENT:
-        //Note: if NONE and app doesn't set height, it means content
-        if (amt.type == LayoutAmountType.NONE && mctx.getHeightSetByApp(view) !== null)
-          break;
-        final int hgh = view.measureHeight_(mctx);
-        if (hgh != null)
-          view.height = hgh;
-        break;
-    }
-  }
-
-  /** Measures the width based on the view's content.
-   * It is an utility for implementing a view's [View.measureWidth_].
-   * This method assumes the browser will resize the view automatically,
-   * so it is applied only to a leaf view with some content, such as [TextView]
-   * and [Button].
-   *
-   * + [autowidth] specifies whether to adjust the width automatically.
-   */
-  int measureWidthByContent(MeasureContext mctx, View view, bool autowidth) {
-    int wd = mctx.widths[view];
-    return wd !== null || mctx.widths.containsKey(view) ? wd:
-      _measureByContent(mctx, view, autowidth).width;
-  }
-  /** Measures the height based on the view's content.
-   * It is an utility for implementing a view's [View.measureHeight_].
-   * This method assumes the browser will resize the view automatically,
-   * so it is applied only to a leaf view with some content, such as [TextView]
-   * and [Button].
-   *
-   * + [autowidth] specifies whether to adjust the width automatically.
-   */
-  int measureHeightByContent(MeasureContext mctx, View view, bool autowidth) {
-    int hgh = mctx.heights[view];
-    return hgh !== null || mctx.heights.containsKey(view) ? hgh:
-      _measureByContent(mctx, view, autowidth).height;
-  }
-  Size _measureByContent(MeasureContext mctx, View view, bool autowidth) {
-    CSSStyleDeclaration nodestyle;
-    String orgspace, orgwd, orghgh;
-    if (autowidth) {
-      nodestyle = view.node.style;
-      final String pos = nodestyle.position;
-      if (pos != "fixed" && pos != "static") {
-        orgspace = nodestyle.whiteSpace;
-        if (orgspace === null) orgspace = ""; //TODO: no need if Dart handles it
-        nodestyle.whiteSpace = "nowrap";
-        //Node: an absolute DIV's width will be limited by its parent's width
-        //so we have to unlimit it (by either nowrap or fixed/staic position)
-      }
-
-      //we have to reset width since it could be set by layout before and the content is changed
-      orgwd = nodestyle.width;
-      orghgh = nodestyle.height;
-      nodestyle.width = "";
-      nodestyle.height = "";
-    }
-
-    final DOMQuery qview = new DOMQuery(view);
-    final Size size = new Size(qview.outerWidth, qview.outerHeight);
-
-    if (orgspace !== null)
-      nodestyle.whiteSpace = orgspace; //restore
-    if (orgwd !== null && !orgwd.isEmpty())
-      nodestyle.width = orgwd;
-    if (orghgh !== null && !orghgh.isEmpty())
-      nodestyle.height = orghgh;
-
-    final AsInt parentInnerWidth =
-      () => view.parent !== null ? view.parent.innerWidth: browser.size.width;
-    final AsInt parentInnerHeight =
-      () => view.parent !== null ? view.parent.innerHeight: browser.size.height;
-
-    int limit = _amountOf(view.profile.maxWidth, parentInnerWidth);
-    if ((autowidth && size.width > browser.size.width)
-    || (limit !== null && size.width > limit)) {
-      nodestyle.width = CSS.px(limit != null ? limit: browser.size.width);
-
-      size.width = qview.outerWidth;
-      size.height = qview.outerHeight;
-      //Note: we don't restore the width such that browser will really limit the width
-    }
-
-    if ((limit = _amountOf(view.profile.maxHeight, parentInnerHeight)) !== null
-    && size.height > limit) {
-      size.height = limit;
-    }
-    if ((limit = _amountOf(view.profile.minWidth, parentInnerWidth)) !== null
-    && size.width < limit) {
-      size.width = limit;
-    }
-    if ((limit = _amountOf(view.profile.minHeight, parentInnerHeight)) !== null
-    && size.height < limit) {
-      size.height = limit;
-    }
-
-    mctx.widths[view] = size.width;
-    mctx.heights[view] = size.height;
-    return size;
-  }
-  static int _amountOf(String profile, AsInt parentInner) {
-    final LayoutAmountInfo ai = new LayoutAmountInfo(profile);
-    switch (ai.type) {
-      case LayoutAmountType.FIXED:
-        return ai.value;
-      case LayoutAmountType.FLEX:
-        return parentInner();
-      case LayoutAmountType.RATIO:
-        return (parentInner() * ai.value).round().toInt();
-    }
-    return null;
-  }
 
   /** Wait until the given image is loaded.
    * If the width and height of the image is not known in advance, this method
