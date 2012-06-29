@@ -14,9 +14,6 @@ class Switch extends View implements Input<bool> {
   DragGesture _dg;
   bool _value = false, _disabled = false;
 
-  static final int _X_OFF = -44,
-    _X_OFF_EX = -10; //to cover half of the knot
-
   /** Instantaites a switch.
    */
   Switch([bool value, String onLabel, String offLabel]) {
@@ -63,20 +60,23 @@ class Switch extends View implements Input<bool> {
 
   Element get _sdNode() => getNode('sd');
   Element get _bgNode() => getNode('bg');
+  int get _marginDiff() => 1 - (outerHeight >> 1); //-(radius - 1) (border)
+  /** X offset for the OFF label. */
+  int get _x_off() => outerHeight - outerWidth; //-(width - 2 * radius)
   void _setValue(bool value, [bool bAnimate=false, bool bSendEvent=false]) {
     final bool bChanged = _value != value;
     _value = value;
     if (inDocument) {
       //TODO: handle animation
-      _sdNode.style.setProperty(CSS.name('transform'),
-        CSS.translate3d(_value ? 0: _X_OFF, 0));
-      _updateBg(_value ? 0: _X_OFF);
+      final int ofs = _value ? 0: _x_off;
+      _sdNode.style.setProperty(CSS.name('transform'), CSS.translate3d(ofs, 0));
+      _updateBg(ofs);
     }
     if (bSendEvent && bChanged)
       sendEvent(new ChangeEvent(this, _value));
   }
   void _updateBg(int delta) {
-    _bgNode.style.marginLeft = CSS.px(delta + _X_OFF_EX);
+    _bgNode.style.marginLeft = CSS.px(delta + _marginDiff);
   }
 
   void mount_() {
@@ -84,9 +84,9 @@ class Switch extends View implements Input<bool> {
 
     _setValue(_value);
     _dg = new DragGesture(_sdNode, transform: true,
-      range: () => new Rectangle(0, 0, _X_OFF, 0),
+      range: () => new Rectangle(0, 0, _x_off, 0),
       start: (state) {
-        state.data = CSS.intOf(_bgNode.style.marginLeft) - _X_OFF_EX;
+        state.data = CSS.intOf(_bgNode.style.marginLeft) - _marginDiff;
         return state.gesture.owner;
       },
       moving: (state) {
@@ -95,7 +95,7 @@ class Switch extends View implements Input<bool> {
       },
       end: (state) {
         _setValue(state.moved ?
-					(state.delta.x + state.data) > (_X_OFF>>1): !_value,
+					(state.delta.x + state.data) > (_x_off>>1): !_value,
 					true, true);
         return true; //no more move
       });
@@ -108,8 +108,8 @@ class Switch extends View implements Input<bool> {
   void domInner_(StringBuffer out) {
     out.add('<div class="v-bg"><div class="v-bgi" id="')
       .add(uuid).add('-bg"></div></div><div class="v-slide" id="')
-      .add(uuid).add('-sd"><div class="v-text-on">')
-      .add(onLabel).add('</div><div class="v-text-off">')
+      .add(uuid).add('-sd"><div class="v-text-on v-button">')
+      .add(onLabel).add('</div><div class="v-text-off v-button">')
       .add(offLabel).add('</div><div class="v-knot"></div></div>');
   }
 
