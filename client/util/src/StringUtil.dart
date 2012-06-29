@@ -181,4 +181,36 @@ class StringUtil {
     } while ((v ~/= 37) >= 1);
     return sb.toString();
   }
+
+  /** Returns a String that filter out from a "source" String any characters specified in "exclude" String. 
+   * e.g.
+   * filterOut("aabbccdd", "bd") will return "aacc"; "b" and "c" character are filter out.
+   * + [source] - the source String.
+   * + [exclude] - the characters to be excluded.
+   */ 
+  static String filterOut(String source, String exclude) {
+    StringBuffer sb = new StringBuffer();
+    for (int j = 0, len = source.length; j < len; ++j) {
+      final String ch = source[j];
+      if (!exclude.contains(ch))
+        sb.add(ch);
+    }
+    return sb.toString();
+  }
+  
+  /** Returns a String that filter out from a "source" String any characters not specified in "include" String. 
+   * e.g.
+   * filterIn("aabbccdd", "bd") will return "bbdd"; "b" and "c" character are filter in.
+   * + [source] - the source String.
+   * + [include] - the characters to be included.
+   */ 
+  static String filterIn(String source, String include) {
+    StringBuffer sb = new StringBuffer();
+    for (int j = 0, len = source.length; j < len; ++j) {
+      final String ch = source[j];
+      if (include.contains(ch))
+        sb.add(ch);
+    }
+    return sb.toString();
+  }
 }

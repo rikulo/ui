@@ -6,36 +6,36 @@
  * A Cordova Contact implementation.
  */
 class CordovaContact implements Contact {
-  static final String _CREATE = "contacts.create";
-  static final String _CLONE = "contact.clone";
-  static final String _REMOVE = "contact.remove";
-  static final String _SAVE = "contact.save";
+  static final String _CREATE = "cont.1";
+  static final String _CLONE = "cont.2";
+  static final String _REMOVE = "cont.3";
+  static final String _SAVE = "cont.4";
   
-  String get id() => jsCall("get", [_jsContact, "id"]); //global unique identifier
-  String get displayName() => jsCall("get", [_jsContact, "displayName"]); //display name of this Contact
-  String get nickname() => jsCall("get", [_jsContact, "nickname"]); //casual name of this Contact
-  String get note() => jsCall("get", [_jsContact, "note"]); //note about this Contact
+  String get id() => jsutil.getJSValue(_jsContact, "id"); //global unique identifier
+  String get displayName() => jsutil.getJSValue(_jsContact, "displayName"); //display name of this Contact
+  String get nickname() => jsutil.getJSValue(_jsContact, "nickname"); //casual name of this Contact
+  String get note() => jsutil.getJSValue(_jsContact, "note"); //note about this Contact
 
-  set id(var x) => jsCall("set", [_jsContact, "id", x]); //global unique identifier
-  set displayName(var x) => jsCall("set", [_jsContact, "displayName", x]); //display name of this Contact
-  set nickname(var x) => jsCall("set", [_jsContact, "nickname", x]); //casual name of this Contact
-  set note(var x) => jsCall("set", [_jsContact, "note", x]); //note about this Contact
+  set id(var x) => jsutil.setJSValue(_jsContact, "id", x); //global unique identifier
+  set displayName(var x) => jsutil.setJSValue(_jsContact, "displayName", x); //display name of this Contact
+  set nickname(var x) => jsutil.setJSValue(_jsContact, "nickname", x); //casual name of this Contact
+  set note(var x) => jsutil.setJSValue(_jsContact, "note", x); //note about this Contact
   
-  _create() => jsCall(_CREATE);
-  _clone0() => jsCall(_CLONE, [_jsContact]);
-  _remove0(ContactSuccessCallback onSuccess, ContactErrorCallback onError) => jsCall(_REMOVE, [_jsContact, onSuccess, onError]);
-  _save0(ContactSuccessCallback onSuccess, ContactErrorCallback onError) => jsCall(_SAVE, [_jsContact, onSuccess, onError]);
+  _create() => jsutil.jsCall(_CREATE);
+  _clone0() => jsutil.jsCall(_CLONE, [_jsContact]);
+  _remove0(ContactSuccessCallback onSuccess, ContactErrorCallback onError) => jsutil.jsCall(_REMOVE, [_jsContact, onSuccess, onError]);
+  _save0(ContactSuccessCallback onSuccess, ContactErrorCallback onError) => jsutil.jsCall(_SAVE, [_jsContact, onSuccess, onError]);
 
-  _updateJSBirthday() => jsCall("set", [_jsContact, "birthday", toJSDate(this.birthday)]);
-  _updateJSContactName() => jsCall("set", [_jsContact, "name", _toJSContactName(this.name)]);
-  _updateJSPhoneNumbers() => jsCall("set", [_jsContact, "phoneNumbers", _toJSContactFields(this.phoneNumbers)]);
-  _updateJSEmails() => jsCall("set", [_jsContact, "emails", _toJSContactFields(this.emails)]);
-  _updateJSIms() => jsCall("set", [_jsContact, "ims", _toJSContactFields(this.ims)]);
-  _updateJSPhotos() => jsCall("set", [_jsContact, "photos", _toJSContactFields(this.photos)]);
-  _updateJSCategories() => jsCall("set", [_jsContact, "categories", _toJSContactFields(this.categories)]);
-  _updateJSUrls() => jsCall("set", [_jsContact, "urls", _toJSContactFields(this.urls)]);
-  _updateJSAddresses() => jsCall("set", [_jsContact, "addresses", _toJSContactAddresses(this.addresses)]);
-  _updateJSOrganizations() => jsCall("set", [_jsContact, "organizations", _toJSContactOrganizations(this.organizations)]);
+  _updateJSBirthday() => jsutil.setJSValue(_jsContact, "birthday", jsutil.toJSDate(this.birthday));
+  _updateJSContactName() => jsutil.setJSValue(_jsContact, "name", _toJSContactName(this.name));
+  _updateJSPhoneNumbers() => jsutil.setJSValue(_jsContact, "phoneNumbers", _toJSContactFields(this.phoneNumbers));
+  _updateJSEmails() => jsutil.setJSValue(_jsContact, "emails", _toJSContactFields(this.emails));
+  _updateJSIms() => jsutil.setJSValue(_jsContact, "ims", _toJSContactFields(this.ims));
+  _updateJSPhotos() => jsutil.setJSValue(_jsContact, "photos", _toJSContactFields(this.photos));
+  _updateJSCategories() => jsutil.setJSValue(_jsContact, "categories", _toJSContactFields(this.categories));
+  _updateJSUrls() => jsutil.setJSValue(_jsContact, "urls", _toJSContactFields(this.urls));
+  _updateJSAddresses() => jsutil.setJSValue(_jsContact, "addresses", _toJSContactAddresses(this.addresses));
+  _updateJSOrganizations() => jsutil.setJSValue(_jsContact, "organizations", _toJSContactOrganizations(this.organizations));
   
   ContactName name; //detail name of this Contact
   List<ContactField> phoneNumbers; //array of phone numbers of this Contact
@@ -85,7 +85,7 @@ class CordovaContact implements Contact {
     return (jsContact) => dartFn(_initContact0(jsContact));
   }
   _wrapErrorFunction(dartFn) {
-    return (jsErr) => dartFn(new ContactError.from(toDartMap(jsErr)));
+    return (jsErr) => dartFn(new ContactError.from(jsutil.toDartMap(jsErr)));
   }
 
   Contact _initContact0(jsContact) {
@@ -102,7 +102,7 @@ class CordovaContact implements Contact {
     };
   }
   _toJSContactFields(List<ContactField> fields) {
-    return toJSArray(fields, (ContactField field) => toJSMap(_toContactFieldMap(field)));
+    return jsutil.toJSArray(fields, (ContactField field) => jsutil.toJSMap(_toContactFieldMap(field)));
   }
 
   _toContactAddressMap(ContactAddress addr) {
@@ -118,7 +118,7 @@ class CordovaContact implements Contact {
     };
   }
   _toJSContactAddresses(List<ContactAddress> addrs) {
-    return toJSArray(addrs, (ContactAddress addr) => toJSMap(_toContactAddressMap(addr)));
+    return jsutil.toJSArray(addrs, (ContactAddress addr) => jsutil.toJSMap(_toContactAddressMap(addr)));
   }
   
   _toContactOrganizationMap(ContactOrganization org) {
@@ -131,7 +131,7 @@ class CordovaContact implements Contact {
     };
   }
   _toJSContactOrganizations(List<ContactOrganization> orgs) {
-    return toJSArray(addresses, (ContactOrganization org) => toJSMap(_toContactOrganizationMap(org)));
+    return jsutil.toJSArray(addresses, (ContactOrganization org) => jsutil.toJSMap(_toContactOrganizationMap(org)));
   }
   
   _toContactNameMap(ContactName name0) {
@@ -145,7 +145,7 @@ class CordovaContact implements Contact {
     };
   }
   _toJSContactName(ContactName name0) {
-    return toJSMap(_toContactNameMap(name0));
+    return jsutil.toJSMap(_toContactNameMap(name0));
   }
   
   _updateJsContact() {
@@ -182,44 +182,44 @@ class CordovaContact implements Contact {
   
   void _initDartContact() {
     //birthday
-    this.birthday = toDartDate(jsCall("get", [_jsContact, "birthday"]));
+    this.birthday = jsutil.toDartDate(jsutil.getJSValue(_jsContact, "birthday"));
     //name
-    ContactName val0 = jsCall("get", [_jsContact, "name"]);
+    ContactName val0 = jsutil.getJSValue(_jsContact, "name");
     if (val0 !== null)
-      this.name = new ContactName.from(toDartMap(val0));
+      this.name = new ContactName.from(jsutil.toDartMap(val0));
     //addresses
-    this.addresses = toDartList(jsCall("get", [_jsContact, "addresses"]), (jsAddr) => new ContactAddress.from(toDartMap(jsAddr)));
+    this.addresses = jsutil.toDartList(jsutil.getJSValue(_jsContact, "addresses"), (jsAddr) => new ContactAddress.from(jsutil.toDartMap(jsAddr)));
     //organizations
-    this.organizations = toDartList(jsCall("get", [_jsContact, "organizations"]), (jsOrg) => new ContactOrganization.from(toDartMap(jsOrg)));
+    this.organizations = jsutil.toDartList(jsutil.getJSValue(_jsContact, "organizations"), (jsOrg) => new ContactOrganization.from(jsutil.toDartMap(jsOrg)));
     //phoneNumbers
-    this.phoneNumbers = _newContactFieldList(jsCall("get", [_jsContact, "phoneNumbers"]));
+    this.phoneNumbers = _newContactFieldList(jsutil.getJSValue(_jsContact, "phoneNumbers"));
     //emails
-    this.emails = _newContactFieldList(jsCall("get", [_jsContact, "emails"]));
+    this.emails = _newContactFieldList(jsutil.getJSValue(_jsContact, "emails"));
     //ims
-    this.ims = _newContactFieldList(jsCall("get", [_jsContact, "ims"]));
+    this.ims = _newContactFieldList(jsutil.getJSValue(_jsContact, "ims"));
     //photos
-    this.photos = _newContactFieldList(jsCall("get", [_jsContact, "photos"]));
+    this.photos = _newContactFieldList(jsutil.getJSValue(_jsContact, "photos"));
     //categories
-    this.categories = _newContactFieldList(jsCall("get", [_jsContact, "categories"]));
+    this.categories = _newContactFieldList(jsutil.getJSValue(_jsContact, "categories"));
     //urls
-    this.urls = _newContactFieldList(jsCall("get", [_jsContact, "urls"]));
+    this.urls = _newContactFieldList(jsutil.getJSValue(_jsContact, "urls"));
   }
   
   List<ContactField> _newContactFieldList(jsFields) {
-    return toDartList(jsFields, (jsField) => new ContactField.from(toDartMap(jsField)));
+    return jsutil.toDartList(jsFields, (jsField) => new ContactField.from(jsutil.toDartMap(jsField)));
   }
   
   static bool _doneInit = false;
   void _initJSFunctions() {
     if (!_doneInit) {
-      newJSFunction(_CREATE,  null, "return navigator.contacts.create({});");
-      newJSFunction(_CLONE, ["contact"], "return contact.clone();");
-      newJSFunction(_REMOVE, ["contact", "onSuccess", "onError"], '''
+      jsutil.newJSFunction(_CREATE,  null, "return navigator.contacts.create({});");
+      jsutil.newJSFunction(_CLONE, ["contact"], "return contact.clone();");
+      jsutil.newJSFunction(_REMOVE, ["contact", "onSuccess", "onError"], '''
         var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
             fnError = function(err) {onError.\$call\$1(err);};
         contact.remove(fnSuccess, fnError);
       ''');
-      newJSFunction(_SAVE, ["contact", "onSuccess", "onError"], '''
+      jsutil.newJSFunction(_SAVE, ["contact", "onSuccess", "onError"], '''
         var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
             fnError = function(err) {onError.\$call\$1(err);};
         contact.save(fnSuccess, fnError);

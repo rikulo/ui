@@ -22,4 +22,3 @@
 #import("notification/notification.dart");
 
 #source("src/Device.dart");
-

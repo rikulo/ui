@@ -7,5 +7,5 @@
  */
 class DeviceEvent {
   DeviceEventTarget target;
-  DeviceEvent(target) : this.target = target;
+  DeviceEvent(this.target);
 }

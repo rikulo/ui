@@ -11,6 +11,7 @@ class Issue1 extends Activity {
     hlayout.layout.type = "linear";
     hlayout.layout.orient = "horizontal";
     hlayout.profile.width = "100%";
+
     mainView.addChild(hlayout);
 
     //left text
