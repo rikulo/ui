@@ -24,6 +24,8 @@ interface Offset extends Hashable default _Offset {
   bool operator ==(Offset other);
   Offset operator -(Offset other);
   Offset operator +(Offset other);
+  Offset operator *(num scalar);
+  Offset operator /(num scalar);
 }
 /**
  * The 3D offset.
@@ -59,6 +61,10 @@ class _Offset implements Offset {
   => new Offset(left - other.left, top - other.top);
   Offset operator +(Offset other)
   => new Offset(left + other.left, top + other.top);
+  Offset operator *(num scalar)
+  => new Offset(left * scalar, top * scalar);
+  Offset operator /(num scalar)
+  => new Offset(left / scalar, top / scalar);
 
   int hashCode() => (left + top).toInt();
   String toString() => "($left, $top)";
@@ -81,6 +87,10 @@ class _Offset3d extends _Offset implements Offset3d {
   => new Offset3d(left - other.left, top - other.top, zIndex - other.zIndex);
   Offset3d operator +(Offset3d other)
   => new Offset3d(left + other.left, top + other.top, zIndex + other.zIndex);
+  Offset3d operator *(num scalar)
+  => new Offset3d(left * scalar, top * scalar, zIndex * scalar);
+  Offset3d operator /(num scalar)
+  => new Offset3d(left / scalar, top / scalar, zIndex / scalar);
 
   int hashCode() => (x + y + z).toInt();
   String toString() => "($x, $y, $z)";
