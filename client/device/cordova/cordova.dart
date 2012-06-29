@@ -4,22 +4,21 @@
 
 #library("rikulo:cordova");
 
-#import("dart:core");
 #import("dart:html");
 #import("dart:json");
 
-#import("../app/app.dart");
-#import("../util/util.dart");
-#import("../device/device.dart");
-#import("../device/impl/impl.dart");
-#import("../device/accelerometer/accelerometer.dart");
-#import("../device/camera/camera.dart");
-#import("../device/capture/capture.dart");
-#import("../device/compass/compass.dart");
-#import("../device/connection/connection.dart");
-#import("../device/contacts/contacts.dart");
-#import("../device/geolocation/geolocation.dart");
-#import("../device/notification/notification.dart");
+#import("../../app/app.dart");
+#import("../../util/util.dart");
+#import("../device.dart");
+#import("../impl/impl.dart");
+#import("../accelerometer/accelerometer.dart");
+#import("../camera/camera.dart");
+#import("../capture/capture.dart");
+#import("../compass/compass.dart");
+#import("../connection/connection.dart");
+#import("../contacts/contacts.dart");
+#import("../geolocation/geolocation.dart");
+#import("../notification/notification.dart");
 
 #source("src/CordovaDevice.dart");
 #source("src/CordovaAccelerometer.dart");

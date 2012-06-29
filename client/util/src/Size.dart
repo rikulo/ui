@@ -77,6 +77,12 @@ interface Rectangle extends Offset, Size default _Rectangle {
 
   Rectangle(num left, num top, num right, num bottom);
   Rectangle.from(Rectangle other);
+  
+  /** Return true if offset is contained in the Rectangle. */
+  bool contains(Offset offset);
+  
+  /** Return the closest Offset contained in the Rectangle. */
+  Offset snap(Offset offset);
 }
 
 class _Size implements Size {
@@ -130,6 +136,17 @@ class _Rectangle extends _Offset implements Rectangle {
   Rectangle operator +(Rectangle other)
   => new Rectangle(left + other.left, top + other.top, right + other.right, bottom + other.bottom);
 
+  bool contains(Offset offset) => 
+      (left == null || left <= offset.left) && 
+      (right == null || right > offset.left) && 
+      (top == null || top <= offset.top) && 
+      (bottom == null || bottom > offset.top);
+  
+  Offset snap(Offset offset) => 
+      new Offset(
+        Math.min(Math.max(offset.left, left), right), 
+        Math.min(Math.max(offset.top, top), bottom));
+  
   int hashCode() => (left + top + right + bottom).toInt();
   String toString() => "($left, $top ,$right, $bottom)";
 }
