@@ -8,11 +8,11 @@
 #import("../util/util.dart");
 #import("../app/app.dart");
 #import("../event/event.dart");
-#import("../view/impl/impl.dart");
-#import("../view/select/select.dart");
 #import("../html/html.dart");
 #import("../layout/layout.dart");
 #import("../model/model.dart");
+#import("impl/impl.dart");
+#import("select/select.dart");
 
 #source("src/View.dart");
 #source("src/ViewUtil.dart");

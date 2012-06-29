@@ -8,5 +8,3 @@
 #import("../util/util.dart");
 
 #source("src/Animator.dart");
-#source("src/EffectFunction.dart");
-#source("src/Effect.dart");
