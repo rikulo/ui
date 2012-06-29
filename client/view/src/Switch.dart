@@ -8,6 +8,12 @@
  * ##Events
  *
  * + change: an instance of [ChangeEvent] indicates the check state is changed.
+ *
+ * ##Styles
+ *
+ * To create a smaller switch, you can assign `"v-small"` to it. For example,
+ *
+ *     new Switch().classes.add("v-small");
  */
 class Switch extends View implements Input<bool> {
   String _onLabel, _offLabel;
