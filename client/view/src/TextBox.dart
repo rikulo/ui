@@ -219,7 +219,7 @@ class TextBox extends View implements Input<String> {
   }
   //@Override
   DOMEventDispatcher getDOMEventDispatcher_(String type)
-  => type == "change" ? _getChangeDispatcher(): getDOMEventDispatcher_(type);
+  => type == "change" ? _getChangeDispatcher(): super.getDOMEventDispatcher_(type);
   static DOMEventDispatcher _getChangeDispatcher() {
     if (_changeDispatcher === null)
       _changeDispatcher = (View target) => (event) {

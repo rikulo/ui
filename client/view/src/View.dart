@@ -728,8 +728,7 @@ class View implements Hashable {
    * If false, `measureWidthByContent(mctx, this, true) is called.
    */
   int measureWidth_(MeasureContext mctx)
-  => isViewGroup() ? layoutManager.measureWidth(mctx, this):
-    layoutManager.measureWidthByContent(mctx, this, true);
+  => isViewGroup() ? mctx.measureWidth(this): mctx.measureWidthByContent(this, true);
   /** Measures the height of this view.
    * It is called by [LayoutManager].
    *
@@ -738,8 +737,7 @@ class View implements Hashable {
    * If false, `measureHeightByContent(mctx, this, true) is called.
    */
   int measureHeight_(MeasureContext mctx)
-  => isViewGroup() ? layoutManager.measureHeight(mctx, this):
-    layoutManager.measureHeightByContent(mctx, this, true);
+  => isViewGroup() ? mctx.measureHeight(this): mctx.measureHeightByContent(this, true);
   /** Returns whether the given child shall be handled by the layout manager.
    *
    * Default: return true if the child is visble and its position
@@ -847,6 +845,7 @@ class View implements Hashable {
     if (_inDoc) {
       node.style.width = CSS.px(width);
       adjustInnerNode_(bWidth: true);
+      layoutManager.sizeUpdated(this, width, true);
     }
   }
   /** Returns the height of this view.
@@ -864,6 +863,7 @@ class View implements Hashable {
     if (_inDoc) {
       node.style.height = CSS.px(height);
       adjustInnerNode_(bHeight: true);
+      layoutManager.sizeUpdated(this, height, false);
     }
   }
 
@@ -1085,7 +1085,7 @@ class View implements Hashable {
       out.add("display:none;");
     String s;
     if (!noStyle && _style !== null && !(s = _style.cssText).isEmpty())
-      out.add(s);
+      out.add(StringUtil.encodeXML(s));
   }
 
   /** Returns [ViewEvents] for adding or removing event listeners.

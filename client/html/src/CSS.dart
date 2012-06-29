@@ -53,8 +53,11 @@ class CSS {
   }
   /** Converts a string of a CSS value to an integer.
    * It returns 0 if value is null, empty, or failed to parse.
+	 *
+	 * By default, it returns 0 if it failed to parse the given value.
+	 * If you prefer to throw an exception, specify [reportError] to true.
    */
-  static int intOf(String value) {
+  static int intOf(String value, [bool reportError]) {
     try {
       if (value !== null && !value.isEmpty()) {
         final Match m = _reNum.firstMatch(value);
@@ -62,6 +65,8 @@ class CSS {
           return Math.parseInt(m.group(0));
       }
     } catch (var e) {
+      if (reportError !== null && reportError)
+        throw e;
     }
     return 0;
   }
