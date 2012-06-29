@@ -60,10 +60,14 @@ class _ViewImpl {
     if (_domEvtDisps === null) {
       _domEvtDisps = {};
       for (final String nm in
-      const ["click", "blur", "focus", "mouseDown", "mouseUp", "mouseMove", "mouseOver", "mouseOut", "mouseWheel"]) {
+      const ["blur", "click", "focus",
+      "mouseDown", "mouseMove", "mouseOut", "mouseOver", "mouseUp", "mouseWheel",
+      "scroll"]) {
       //Note: not including "change", since it shall be handled by View to use ChangeEvent instead
         _domEvtDisps[nm] = _domEvtDisp(nm);
       }
+      //TODO: handle keyDown/keyPress/keyUp with KeyEvent
+      //TODO: handle mouseXxx with MouseEvent
     }
     return _domEvtDisps[type];
   }
@@ -181,11 +185,104 @@ class _ChildInfo {
 /** The information of an event listener used in [View].
  */
 class _EventListenerInfo {
+  final View _owner;
   ViewEvents on;
   //the registered event listeners; created on demand
-  Map<String, List<ViewEventListener>> listeners;
+  Map<String, List<ViewEventListener>> _listeners;
   //generic DOM event listener
   Map<String, EventListener> domListeners;
+
+  _EventListenerInfo(View this._owner) {
+    on = new ViewEvents(this);
+  }
+
+  /** Returns if there is any event listener registered to the given type.
+   */
+  bool isEventListened(String type) {
+    List<ViewEventListener> ls;
+    return _listeners != null && (ls = _listeners[type]) != null && !ls.isEmpty();
+  }
+  /** Adds an event listener.
+   */
+  void addEventListener(String type, ViewEventListener listener) {
+    if (listener === null)
+      throw const UIException("listener required");
+
+    if (_listeners === null)
+      _listeners = {};
+
+    bool first = false;
+    _listeners.putIfAbsent(type, () {
+      first = true;
+      return [];
+    }).add(listener);
+
+    DOMEventDispatcher disp;
+    if (first && _owner.inDocument
+    && (disp = _owner.getDOMEventDispatcher_(type)) !== null)
+      _owner.domListen_(_owner.node, type, disp);
+  }
+  /** Removes an event listener.
+   */
+  bool removeEventListener(String type, ViewEventListener listener) {
+    List<ViewEventListener> ls;
+    bool found = false;
+    if (_listeners !== null && (ls = _listeners[type]) !== null) {
+      int j = ls.indexOf(listener);
+      if (j >= 0) {
+        found = true;
+
+        ls.removeRange(j, 1);
+        if (ls.isEmpty() && _owner.inDocument
+        && _owner.getDOMEventDispatcher_(type) !== null)
+          _owner.domUnlisten_(_owner.node, type);
+      }
+    }
+    return found;
+  }
+  /** Sends an event.
+   */
+  bool sendEvent(ViewEvent event, [String type]) {
+    if (type == null)
+      type = event.type;
+
+    List<ViewEventListener> ls;
+    bool dispatched = false;
+    if (_listeners != null && (ls = _listeners[type]) != null) {
+      event.currentTarget = _owner;
+      //Note: we make a copy of ls since listener might remove other listeners
+      //It means the removing and adding of listeners won't take effect until next event
+      for (final ViewEventListener listener in new List.from(ls)) {
+        dispatched = true;
+        listener(event);
+        if (event.isPropagationStopped())
+          return true; //done
+      }
+    }
+    return dispatched;
+  }
+  /** Called when _owner is mounted. */
+  void mount() {
+    //Listen the DOM element if necessary
+    if (_listeners !== null) {
+      final Element n = _owner.node;
+      for (final String type in _listeners.getKeys()) {
+        final DOMEventDispatcher disp = _owner.getDOMEventDispatcher_(type);
+        if (disp != null && !_listeners[type].isEmpty())
+          _owner.domListen_(n, type, disp);
+      }
+    }
+  }
+  void unmount() {
+    //Unlisten the DOM element if necessary
+    if (_listeners !== null) {
+      final Element n = _owner.node;
+      for (final String type in _listeners.getKeys()) {
+        if (_owner.getDOMEventDispatcher_(type) != null && !_listeners[type].isEmpty())
+          _owner.domUnlisten_(n, type);
+      }
+    }
+  }
 }
 
 /** The classes stored in a view.

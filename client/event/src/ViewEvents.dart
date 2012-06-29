@@ -13,7 +13,7 @@ interface ViewEventListenerList default _ViewEventListenerList {
   /** Dispatches the event to the listeners in this list.
    */
   bool dispatch(ViewEvent event);
-  /** Tests if any event listener is registered.
+  /** Tests if no event listener is registered.
    */
   bool isEmpty();
 }
@@ -103,7 +103,7 @@ class _ViewEventListenerList implements ViewEventListenerList {
     return this;
   }
   bool dispatch(ViewEvent event) {
-    return _ptr.sendEvent(event, type: _type);
+    return _ptr.sendEvent(event, _type);
   }
   bool isEmpty() {
     return _ptr.isEventListened(_type);
@@ -116,8 +116,7 @@ class _ViewEventListenerMap implements ViewEventListenerMap {
   final _ptr;
   final Map<String, ViewEventListenerList> _lnlist;
 
-  _ViewEventListenerMap(this._ptr): _lnlist = new Map() {
-  }
+  _ViewEventListenerMap(this._ptr): _lnlist = {};
 
   ViewEventListenerList operator [](String type) => _get(type); 
   _ViewEventListenerList _get(String type) {

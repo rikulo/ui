@@ -85,7 +85,7 @@ class View implements Hashable {
   }
   _EventListenerInfo _initEventListenerInfo() {
     if (_evlInfo === null)
-      _evlInfo = new _EventListenerInfo();
+      _evlInfo = new _EventListenerInfo(this);
     return _evlInfo;
   }
 
@@ -633,16 +633,8 @@ class View implements Hashable {
       child.mount_();
     }
 
-    //Listen the DOM element if necessary
-    final Element n = node;
-    if (_evlInfo !== null && _evlInfo.listeners !== null) {
-      final Map<String, List<ViewEventListener>> listeners = _evlInfo.listeners;
-      for (final String type in listeners.getKeys()) {
-        final DOMEventDispatcher disp = getDOMEventDispatcher_(type);
-        if (disp != null && !listeners[type].isEmpty())
-          domListen_(n, type, disp);
-      }
-    }
+    if (_evlInfo !== null)
+      _evlInfo.mount();
 
     sendEvent(new ViewEvent(this, "mount"));
   }
@@ -655,15 +647,8 @@ class View implements Hashable {
   void unmount_() {
     sendEvent(new ViewEvent(this, "unmount"));
 
-    //Unlisten the DOM element if necessary
-    final Element n = node;
-    if (_evlInfo !== null && _evlInfo.listeners !== null) {
-      final Map<String, List<ViewEventListener>> listeners = _evlInfo.listeners;
-      for (final String type in listeners.getKeys()) {
-        if (getDOMEventDispatcher_(type) != null && !listeners[type].isEmpty())
-          domUnlisten_(n, type);
-      }
-    }
+    if (_evlInfo !== null)
+      _evlInfo.unmount();
 
     for (View child = firstChild; child != null; child = child.nextSibling) {
       child.unmount_();
@@ -1090,55 +1075,8 @@ class View implements Hashable {
 
   /** Returns [ViewEvents] for adding or removing event listeners.
    */
-  ViewEvents get on() {
-    final _EventListenerInfo ei = _initEventListenerInfo();
-    if (ei.on === null)
-      ei.on = new ViewEvents(this);
-    return ei.on;
-  }
-  /** Adds an event listener.
-   * `addEventListener("click", listener)` is the same as
-   * `on.click.add(listener)`.
-   */
-  void addEventListener(String type, ViewEventListener listener) {
-    if (listener == null)
-      throw const UIException("listener required");
+  ViewEvents get on() => _initEventListenerInfo().on;
 
-    final _EventListenerInfo ei = _initEventListenerInfo();
-    if (ei.listeners == null)
-      ei.listeners = {};
-
-    bool first = false;
-    ei.listeners.putIfAbsent(type, () {
-      first = true;
-      return [];
-    }).add(listener);
-
-    DOMEventDispatcher disp;
-    if (first && _inDoc && (disp = getDOMEventDispatcher_(type)) != null)
-      domListen_(node, type, disp);
-  }
-
-  /** Removes an event listener.
-   * `removeEventListener("click", listener)` is the same as
-   * `on.click.remove(listener)`.
-   */
-  bool removeEventListener(String type, ViewEventListener listener) {
-    List<ViewEventListener> ls;
-    bool found = false;
-    if (_evlInfo !== null && _evlInfo.listeners !== null
-    && (ls = _evlInfo.listeners[type]) != null) {
-      int j = ls.indexOf(listener);
-      if (j >= 0) {
-        found = true;
-
-        ls.removeRange(j, 1);
-        if (ls.isEmpty() && _inDoc && getDOMEventDispatcher_(type) != null)
-          domUnlisten_(node, type);
-      }
-    }
-    return found;
-  }
   /** Sends an event to this view.
    *
    * Example: `view.sendEvent(new ViewEvent(target, "click"))</code>.
@@ -1146,26 +1084,8 @@ class View implements Hashable {
    *
    * To broadcast an event, please use [broadcaster] instead.
    */
-  bool sendEvent(ViewEvent event, [String type]) {
-    if (type == null)
-      type = event.type;
-
-    List<ViewEventListener> ls;
-    bool dispatched = false;
-    if (_evlInfo !== null && _evlInfo.listeners != null
-    && (ls = _evlInfo.listeners[type]) != null) {
-      event.currentTarget = this;
-      //Note: we make a copy of ls since listener might remove other listeners
-      //It means the removing and adding of listeners won't take effect until next event
-      for (final ViewEventListener listener in new List.from(ls)) {
-        dispatched = true;
-        listener(event);
-        if (event.isPropagationStopped())
-          return true; //done
-      }
-    }
-    return dispatched;
-  }
+  bool sendEvent(ViewEvent event, [String type])
+  => _evlInfo !== null && _evlInfo.sendEvent(event, type);
   /** Posts an event to this view.
    * Unlike [sendEvent], [postEvent] puts the event in a queue and returns
    * immediately. The event will be handled later.
@@ -1176,13 +1096,6 @@ class View implements Hashable {
       //CONSIDER if it is better to have a queue shared by views/message queues/broadcaster
   }
 
-  /** Returns if there is any event listener registered to the given type.
-   */
-  bool isEventListened(String type) {
-    List<ViewEventListener> ls;
-    return _evlInfo !== null && _evlInfo.listeners != null
-      && (ls = _evlInfo.listeners[type]) != null && !ls.isEmpty();
-  }
   /** Returns if the given event type is a DOM event.
    * If true, [domListen_] will be invoked to register the DOM event.
    */
