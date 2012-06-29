@@ -42,17 +42,14 @@ interface Size default _Size {
   bool operator ==(Size other);
 }
 
-class _Size implements Size {
-  num width, height;
+/** The 3d size.
+ */
+interface Size3d extends Size default _Size3d {
+  /** The depth. */
+  num depth;
 
-  _Size(num this.width, num this.height);
-  _Size.from(Size other): this(other.width, other.height);
-
-  bool operator ==(Size other)
-  => other !== null && width == other.width && height == other.height;
-
-  int hashCode() => (width + height).toInt();
-  String toString() => "($width, $height)";
+  Size3d(num width, num height, num depth);
+  Size3d.from(Size3d otehr);
 }
 
 /**
@@ -82,6 +79,33 @@ interface Rectangle extends Offset, Size default _Rectangle {
   Rectangle.from(Rectangle other);
 }
 
+class _Size implements Size {
+  num width, height;
+
+  _Size(num this.width, num this.height);
+  _Size.from(Size other): this(other.width, other.height);
+
+  bool operator ==(Size other)
+  => other is Size && width == other.width && height == other.height;
+
+  int hashCode() => (width + height).toInt();
+  String toString() => "($width, $height)";
+}
+
+class _Size3d extends _Size implements Size3d {
+  num depth;
+
+  _Size3d(num width, num height, num this.depth): super(width, height);
+  _Size3d.from(Size3d other): this(other.width, other.height, other.depth);
+
+  bool operator ==(Size3d other)
+  => other is Size3d && width == other.width && height == other.height
+  && depth == other.depth;
+
+  int hashCode() => (width + height + depth).toInt();
+  String toString() => "($width, $height, $depth)";
+}
+
 class _Rectangle extends _Offset implements Rectangle {
   num right, bottom;
 
@@ -99,7 +123,7 @@ class _Rectangle extends _Offset implements Rectangle {
     bottom = top + height;
   }
   bool operator ==(Rectangle other)
-  => other !== null && left == other.left && top == other.top
+  => other is Rectangle && left == other.left && top == other.top
   && right == other.right && bottom == other.bottom;
   Rectangle operator -(Rectangle other)
   => new Rectangle(left - other.left, top - other.top, right - other.right, bottom - other.bottom);
