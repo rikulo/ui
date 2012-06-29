@@ -17,9 +17,13 @@ class TestSwitch extends Activity {
     mainView.addChild(createSwitch(false));
     mainView.addChild(createSwitch(true, "Yes", "No"));
     mainView.addChild(createSwitch(false, "True", "False"));
+    mainView.addChild(createSwitch(true, small: true));
+    mainView.addChild(createSwitch(false, small: true));
   }
-  Switch createSwitch(bool value, [String onLabel, String offLabel]) {
+  Switch createSwitch(bool value, [String onLabel, String offLabel, bool small=false]) {
     Switch view = new Switch(value, onLabel, offLabel);
+    if (small)
+      view.classes.add("v-small");
     view.on.change.add((event){
       log("Switch${view.uuid}: ${view.value}");
     });

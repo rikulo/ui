@@ -54,7 +54,7 @@ class _Offset implements Offset {
   }
 
   bool operator ==(Offset other)
-  => other !== null && left == other.left && top == other.top;
+  => other is Offset && left == other.left && top == other.top;
   Offset operator -(Offset other)
   => new Offset(left - other.left, top - other.top);
   Offset operator +(Offset other)
@@ -76,7 +76,7 @@ class _Offset3d extends _Offset implements Offset3d {
   }
 
   bool operator ==(Offset3d other)
-  => other !== null && left == other.left && top == other.top && zIndex == other.zIndex;
+  => other is Offset3d && left == other.left && top == other.top && zIndex == other.zIndex;
   Offset3d operator -(Offset3d other)
   => new Offset3d(left - other.left, top - other.top, zIndex - other.zIndex);
   Offset3d operator +(Offset3d other)
