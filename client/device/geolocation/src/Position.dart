@@ -3,8 +3,16 @@
 // Author: henrichen
 
 /** Position */
-class Position {
-  final Coordinates coords;
-  final int timestamp;
-  Position(this.coords, this.timestamp);
+interface Position default _Position {
+  final Coordinates coordinates;
+  final int timeStamp;
+
+  Position(Coordinates coordinates, int timeStamp);
+}
+class _Position implements Position {
+  final Coordinates coordinates;
+  final int timeStamp;
+
+  _Position(Coordinates this.coordinates, int this.timeStamp);
+  String toString() => "($timeStamp: $coordinates)";
 }

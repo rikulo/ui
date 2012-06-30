@@ -13,5 +13,5 @@ interface Camera {
   * Takes a photo using the camera or retrieves a photo from the device's album based on the cameraOptoins paremeter. 
   * Returns the image as a base64 encoded String or as the URI of an image file.
   */
-  void getPicture(CameraSuccessCallback onSuccess, CameraErrorCallback onError, [CameraOptions options]);
+  void getPicture(CameraSuccessCallback success, CameraErrorCallback error, [CameraOptions options]);
 }

@@ -8,6 +8,7 @@ interface AccelerometerOptions default _AccelerometerOptions {
   
   AccelerometerOptions([int frequency]);
 }
+
 class _AccelerometerOptions implements AccelerometerOptions {
   /** interval in milliseconds to retrieve Accleration back; default to 3000 */
   int frequency;

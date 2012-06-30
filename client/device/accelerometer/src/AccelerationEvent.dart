@@ -2,15 +2,22 @@
 //History: Thu, May 3, 2012  11:22:40 AM
 // Author: henrichen
 
-class AccelerationEvent extends DeviceEvent {
-  AccelerationEvent(Accelerometer target, Acceleration data) : 
-    super(target), x = data.x, y = data.y, z = data.z, timestamp = data.timestamp;
+class AccelerationEvent {
+  AccelerationEvent(Accelerometer this.target, Acceleration this.acceleration);
   
-  final double x;
-  final double y;
-  final double z;
-  final int timestamp;
+  final Accelerometer target;
+  final Acceleration acceleration;
+  /** Returns the time stamp. */
+  int get timeStamp() => acceleration.timeStamp;
 }
 
-/** AcclerationEvent listener function */
+class AccelerationErrorEvent {
+  AccelerationErrorEvent(Accelerometer this.target);
+
+  final Accelerometer target;
+}
+
+/** [AcclerationEvent] listener function */
 typedef void AccelerationEventListener(AccelerationEvent event);
+/** [AccelerationErrorEvent] listener function */
+typedef void AccelerationErrorEventListener(AccelerationErrorEvent event);

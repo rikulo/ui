@@ -2,13 +2,29 @@
 //History: Fri, May 11, 2012  10:11:22 AM
 // Author: henrichen
 
-class CompassHeading {
+interface CompassHeading default _CompassHeading {
   final double magneticHeading; //0 ~ 359.99 degree
   final double trueHeading; //heading relative to geographic north pole
   final double headingAccuracy; //deviation in degrees between reported heading and true heading
-  final int timestamp; //the time the heading was determined
-  CompassHeading(this.magneticHeading, this.trueHeading, this.headingAccuracy, this.timestamp);
-  CompassHeading.from(Map heading) : this.magneticHeading = heading["magneticHeading"],
-      this.trueHeading = heading["trueHeading"], this.headingAccuracy = heading["headingAccuracy"],
-      this.timestamp = heading["timestamp"];
+  final int timeStamp; //the time the heading was determined
+
+  CompassHeading(double magneticHeading, double trueHeading,
+  double headingAccuracy, int timeStamp);
+  CompassHeading.from(Map heading);
+}
+class _CompassHeading implements CompassHeading {
+  final double magneticHeading; //0 ~ 359.99 degree
+  final double trueHeading; //heading relative to geographic north pole
+  final double headingAccuracy; //deviation in degrees between reported heading and true heading
+  final int timeStamp; //the time the heading was determined
+
+  _CompassHeading(double this.magneticHeading, double this.trueHeading,
+  double this.headingAccuracy, int this.timeStamp);
+  _CompassHeading.from(Map heading) :
+    this.magneticHeading = heading["magneticHeading"],
+    this.trueHeading = heading["trueHeading"],
+    this.headingAccuracy = heading["headingAccuracy"],
+    this.timeStamp = heading["timestamp"];
+
+  String toString() => "($timeStamp: $magneticHeading, $trueHeading, $headingAccuracy)";
 }

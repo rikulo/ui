@@ -1,5 +1,6 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 17, 2012
+// Author: tomyeh
 
 /** A list of [ViewEvent] listeners.
  */
@@ -10,9 +11,9 @@ interface ViewEventListenerList default _ViewEventListenerList {
   /** Removes an event listener from this list.
    */
   ViewEventListenerList remove(ViewEventListener handler);
-  /** Dispatches the event to the listeners in this list.
+  /** Sends the event to the listeners in this list.
    */
-  bool dispatch(ViewEvent event);
+  bool send(ViewEvent event);
   /** Tests if no event listener is registered.
    */
   bool isEmpty();
@@ -25,7 +26,6 @@ interface ViewEventListenerMap default _ViewEventListenerMap {
   /** Returns the list of [ViewEvent] listeners for the given type.
    */
   ViewEventListenerList operator [](String type);
-
   /** Tests if the given event type is listened.
    */
   bool isListened(String type);
@@ -50,12 +50,14 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
   ViewEventListenerList get mouseWheel();
   ViewEventListenerList get scroll();
 
-  /** Indicates the selection state of a view is changed.
+  /** A list of event listeners for indicating
+   * the selection state of a view is changed.
    *
    * The event is an instance of [SelectEvent].
    */
   ViewEventListenerList get select();
-  /** Indicates a view has re-rendered itself because
+  /** A list of event listeners for indicating
+   * a view has re-rendered itself because
    * its data model has been changed.
    * It is used with views that support the data model, such as
    * [DropDownList] and [RadioGroup].
@@ -69,17 +71,20 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
    */
   ViewEventListenerList get render();
 
-  /** Indicates the layout of a view is changed.
+  /** A list of event listeners for indicating
+   * the layout of a view is changed.
    *
    * The event is an instance of [ViewEvent].
    */
   ViewEventListenerList get layout();
-  /** Indicates a view has been attached to a document.
+  /** A list of event listeners for indicating
+   * a view has been attached to a document.
    *
    * The event is an instance of [ViewEvent].
    */
   ViewEventListenerList get mount();
-  /** Indicates a view has been detached from a document.
+  /** A list of event listeners for indicating
+   * a view has been detached from a document.
    *
    * The event is an instance of [ViewEvent].
    */
@@ -108,7 +113,6 @@ class _ViewEventListenerList implements ViewEventListenerList {
 /** An implementation of [ViewEventListenerMap].
  */
 class _ViewEventListenerMap implements ViewEventListenerMap {
-  //raw event target
   final _ptr;
   final Map<String, ViewEventListenerList> _lnlist;
 
@@ -118,7 +122,6 @@ class _ViewEventListenerMap implements ViewEventListenerMap {
   _ViewEventListenerList _get(String type) {
     return _lnlist.putIfAbsent(type, () => new _ViewEventListenerList(_ptr, type));
   }
-
   bool isListened(String type) {
     final p = _lnlist[type];
     return p == null || p.isEmpty();
