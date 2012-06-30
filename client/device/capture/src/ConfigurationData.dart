@@ -18,5 +18,5 @@ class ConfigurationData {
   
   ConfigurationData(this.type, this.height, this.width);
   
-  ConfigurationData.from(Map data) : this.type = data["type"], this.height = data["height"], this.width = data["width"];
+  ConfigurationData.from(Map data) : this(data["type"], data["height"], data["width"]);
 }

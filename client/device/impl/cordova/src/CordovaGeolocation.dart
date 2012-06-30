@@ -76,8 +76,7 @@ class _PositionError implements PositionError {
   
   _PositionError(int this.code, String this.message);
   
-  _PositionError.from(Map map) :
-    this.code = map["code"], this.message = map["message"];
+  _PositionError.from(Map map) : this(map["code"], map["message"]);
 }
 class _Coordinates implements Coordinates {
   /** Latitude in decimal degrees. */
@@ -97,8 +96,8 @@ class _Coordinates implements Coordinates {
   
   _Coordinates(this.latitude, this.longitude, this.altitude, 
     this.accuracy, this.altitudeAccuracy, this.heading, this.speed);
-  _Coordinates.from(Map coords) : this.latitude = coords["latitude"], this.longitude = coords["longitude"],
-    this.altitude = coords["altitude"], this.accuracy = coords["accuracy"], 
-    this.altitudeAccuracy = coords["altitudeAccuracy"], this.heading = coords["heading"],
-    this.speed = coords["speed"];
+  _Coordinates.from(Map coords) :
+    this(coords["latitude"], coords["longitude"], coords["altitude"],
+      coords["accuracy"],  coords["altitudeAccuracy"], coords["heading"],
+      coords["speed"]);
 }

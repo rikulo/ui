@@ -21,8 +21,7 @@ class _Acceleration implements Acceleration {
 
   _Acceleration(double this.x, double this.y, double this.z, int this.timeStamp);
   _Acceleration.from(Map accel) :
-    this.x = accel["x"], this.y = accel["y"],
-    this.z = accel["z"], this.timeStamp = accel["timestamp"];
+    this(accel["x"], accel["y"], accel["z"], accel["timestamp"]);
 
   String toString() => "($timeStamp: $x, $y, $z)";
 }

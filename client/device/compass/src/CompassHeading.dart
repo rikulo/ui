@@ -21,10 +21,8 @@ class _CompassHeading implements CompassHeading {
   _CompassHeading(double this.magneticHeading, double this.trueHeading,
   double this.headingAccuracy, int this.timeStamp);
   _CompassHeading.from(Map heading) :
-    this.magneticHeading = heading["magneticHeading"],
-    this.trueHeading = heading["trueHeading"],
-    this.headingAccuracy = heading["headingAccuracy"],
-    this.timeStamp = heading["timestamp"];
+    this(heading["magneticHeading"], heading["trueHeading"],
+      heading["headingAccuracy"], heading["timestamp"]);
 
   String toString() => "($timeStamp: $magneticHeading, $trueHeading, $headingAccuracy)";
 }

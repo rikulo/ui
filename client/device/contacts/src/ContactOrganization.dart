@@ -16,6 +16,6 @@ class ContactOrganization {
   
   ContactOrganization(this.pref, this.type, this.name, this.department, this.title);
   
-  ContactOrganization.from(Map org) : this.pref = org["pref"], this.type = org["type"], 
-      this.name = org["name"], this.department = org["department"], this.title = org["title"];
+  ContactOrganization.from(Map org) :
+    this(org["pref"], org["type"], org["name"], org["department"], org["title"]);
 }

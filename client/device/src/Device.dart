@@ -6,34 +6,34 @@
  */
 interface Device {
   /** The name of this device */
-  String name;
+  String get name();
   /** The version of Cordove running on the device. */
-//  String cordovaVersion;
+//  String get cordovaVersion();
   /** The operating system name of this device. */
-  String platform;
+  String get platform();
   /** The operating system version of this device. */
-  String version;
+  String get version();
   /** The uuid of this device. */
-  String uuid;
+  String get uuid();
 
   Task readyFunction; //function called when the device is ready
 
   /** The accelerometer of this device. */
-  final Accelerometer accelerometer;
+  Accelerometer get accelerometer();
   /** The camera of this device.*/
-  final Camera camera;
+  Camera get camera();
   /** The capture. */
-  final Capture capture;
+  Capture get capture();
   /** The compass of this device. */
-  final Compass compass;
+  Compass get compass();
   /** The connection of this device. */
-  final Connection connection;
+  Connection get connection();
   /** The contacts of this device. */
-  final Contacts contacts;
+  Contacts get contacts();
   /** The geolocation of this device. */
-  final XGeolocation geolocation;
+  XGeolocation get geolocation();
   /** The notification facility of this device. */
-  final XNotification notification;
+  XNotification get notification();
 }
 
 /** Enable the device accesibility.
