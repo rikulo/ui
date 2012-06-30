@@ -20,9 +20,9 @@ class CordovaDevice implements Device {
   String get version() => jsutil.jsCall(_VERSION); //operating system version of this device
   String get uuid() => jsutil.jsCall(_UUID); //uuid of this device
 
-  Task readyFunction;
   Map<String, Object> services; //services
   
+  Task _readyFunction;
   bool _ready; //indicate whether the device is ready for access
 
   Accelerometer get accelerometer() => services["accelerometer"];
@@ -69,7 +69,7 @@ class CordovaDevice implements Device {
   }
   
   void _doWhenDeviceReady(Task then) {
-    readyFunction = () {
+    _readyFunction = () {
       _ready = true;
       _registerDeviceEvents();
       then();
@@ -99,7 +99,7 @@ class CordovaDevice implements Device {
   }
   
   void _onDeviceReady() {
-    device.readyFunction();
+    _readyFunction();
   }
   
   void _onPause() {

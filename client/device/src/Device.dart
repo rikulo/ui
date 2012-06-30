@@ -16,8 +16,6 @@ interface Device {
   /** The uuid of this device. */
   String get uuid();
 
-  Task readyFunction; //function called when the device is ready
-
   /** The accelerometer of this device. */
   Accelerometer get accelerometer();
   /** The camera of this device.*/
