@@ -196,15 +196,15 @@ class _EventListenerInfo {
     on = new ViewEvents(this);
   }
 
-  /** Returns if there is any event listener registered to the given type.
+  /** Returns if no event listener registered to the given type. (Called by ViewEvents)
    */
-  bool isEventListened(String type) {
+  bool isEmpty(String type) {
     List<ViewEventListener> ls;
-    return _listeners != null && (ls = _listeners[type]) != null && !ls.isEmpty();
+    return _listeners === null || (ls = _listeners[type]) === null || ls.isEmpty();
   }
-  /** Adds an event listener.
+  /** Adds an event listener. (Called by ViewEvents)
    */
-  void addEventListener(String type, ViewEventListener listener) {
+  void add(String type, ViewEventListener listener) {
     if (listener === null)
       throw const UIException("listener required");
 
@@ -222,9 +222,9 @@ class _EventListenerInfo {
     && (disp = _owner.getDOMEventDispatcher_(type)) !== null)
       _owner.domListen_(_owner.node, type, disp);
   }
-  /** Removes an event listener.
+  /** Removes an event listener. (Called by ViewEvents)
    */
-  bool removeEventListener(String type, ViewEventListener listener) {
+  bool remove(String type, ViewEventListener listener) {
     List<ViewEventListener> ls;
     bool found = false;
     if (_listeners !== null && (ls = _listeners[type]) !== null) {
@@ -240,9 +240,9 @@ class _EventListenerInfo {
     }
     return found;
   }
-  /** Sends an event.
+  /** Sends an event. (Called by ViewEvents)
    */
-  bool sendEvent(ViewEvent event, [String type]) {
+  bool send(ViewEvent event, [String type]) {
     if (type == null)
       type = event.type;
 

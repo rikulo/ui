@@ -60,7 +60,7 @@ class _Broadcaster implements Broadcaster {
   BroadcastEvents get on() => _on;
 
   bool sendEvent(ViewEvent event, [String type])
-  => _listeners.sendEvent(event, type);
+  => _listeners.send(event, type);
   void postEvent(ViewEvent event, [String type]) {
     window.setTimeout(() {sendEvent(event, type);}, 0);
       //note: the order of messages is preserved across all views (and message queues)
@@ -74,28 +74,29 @@ class _BroadcastListeners {
   _BroadcastListeners(Broadcaster this._owner): _listeners = new Map() {
   }
 
-  void addEventListener(String type, ViewEventListener listener) {
+  /** Returns if no event listener registered to the given type. (Called by ViewEvents)
+   */
+  bool isEmpty(String type) {
+    List<ViewEventListener> ls;
+    return _listeners === null || (ls = _listeners[type]) === null || ls.isEmpty();
+  }
+  /** Adds an event listener.  (Called by ViewEvents)
+   */
+  void add(String type, ViewEventListener listener) {
     if (listener == null)
       throw const UIException("listener required");
 
     _listeners.putIfAbsent(type, () => []).add(listener);
   }
-
-  /** Removes an event listener.
-   *
-   * `addEventListener("click", listener)` is the same as
-   * `on.click.remove(listener)`.
+  /** Removes an event listener. (Called by ViewEvents)
    */
-  bool removeEventListener(String type, ViewEventListener listener) {
+  bool remove(String type, ViewEventListener listener) {
     List<ViewEventListener> ls;
     return (ls = _listeners[type]) != null && ListUtil.remove(ls, listener);
   }
-  /** Sends an event to this view.
-   *
-   * Example: `view.sendEvent(new PopupEvent(view))`.
-   * If the type parameter is not specified, it is assumed to be [ViewEvent.type].
+  /** Sends an event. (Called by ViewEvents)
    */
-  bool sendEvent(ViewEvent event, [String type]) {
+  bool send(ViewEvent event, [String type]) {
     if (type == null)
       type = event.type;
 

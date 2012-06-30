@@ -95,19 +95,15 @@ class _ViewEventListenerList implements ViewEventListenerList {
   _ViewEventListenerList(this._ptr, this._type);
 
   ViewEventListenerList add(ViewEventListener handler) {
-    _ptr.addEventListener(_type, handler);
+    _ptr.add(_type, handler);
     return this;
   }
   ViewEventListenerList remove(ViewEventListener handler) {
-    _ptr.removeEventListener(_type, handler);
+    _ptr.remove(_type, handler);
     return this;
   }
-  bool dispatch(ViewEvent event) {
-    return _ptr.sendEvent(event, _type);
-  }
-  bool isEmpty() {
-    return _ptr.isEventListened(_type);
-  }
+  bool send(ViewEvent event) => _ptr.send(event, _type);
+  bool isEmpty() => _ptr.isEmpty(_type);
 }
 /** An implementation of [ViewEventListenerMap].
  */

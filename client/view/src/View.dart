@@ -1085,7 +1085,7 @@ class View implements Hashable {
    * To broadcast an event, please use [broadcaster] instead.
    */
   bool sendEvent(ViewEvent event, [String type])
-  => _evlInfo !== null && _evlInfo.sendEvent(event, type);
+  => _evlInfo !== null && _evlInfo.send(event, type);
   /** Posts an event to this view.
    * Unlike [sendEvent], [postEvent] puts the event in a queue and returns
    * immediately. The event will be handled later.
