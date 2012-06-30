@@ -6,22 +6,22 @@
  * Compass implementation for Cordova device.
  */
 class CordovaCompass extends AbstractCompass {
-  static final String _GET_CURRENT_HEADING = "compass.getCurrentCompassHeading";
-  static final String _WATCH_HEADING = "compass.watchHeading";
-  static final String _CLEAR_WATCH = "compass.clearWatch";
+  static final String _GET_CURRENT_HEADING = "comp.1";
+  static final String _WATCH_HEADING = "comp.2";
+  static final String _CLEAR_WATCH = "comp.3";
   CordovaCompass() {
     _initJSFunctions();
   }
   void getCurrentHeading(CompassSuccessCallback success, CompassErrorCallback error) {
-    jsCall(_GET_CURRENT_HEADING, [_wrapFunction(success), error]);
+    jsutil.jsCall(_GET_CURRENT_HEADING, [_wrapFunction(success), error]);
   }
 
   CompassSuccessCallback _wrapFunction(CompassSuccessCallback dartFn) {   
-    return (jsHeading) => dartFn(new CompassHeading.from(toDartMap(jsHeading)));
+    return (jsHeading) => dartFn(new CompassHeading.from(jsutil.toDartMap(jsHeading)));
   }
   
   CompassSuccessCallback wrapSuccessListener_(CompassHeadingEventListener listener) {   
-    return (jsHeading) => listener(new CompassHeadingEvent(this, new CompassHeading.from(toDartMap(jsHeading))));
+    return (jsHeading) => listener(new CompassHeadingEvent(this, new CompassHeading.from(jsutil.toDartMap(jsHeading))));
   }
 
   CompassErrorCallback wrapErrorListener_(CompassHeadingErrorEventListener listener) {  
@@ -29,24 +29,24 @@ class CordovaCompass extends AbstractCompass {
   }
   
   watchHeading_(CompassSuccessCallback success, CompassErrorCallback error, [Map options]) {
-    return jsCall(_WATCH_HEADING, [success, error, toJSMap(options)]);
+    return jsutil.jsCall(_WATCH_HEADING, [success, error, jsutil.toJSMap(options)]);
   }
   
   void clearWatch(var watchID) {
-    jsCall(_CLEAR_WATCH, [watchID]);
+    jsutil.jsCall(_CLEAR_WATCH, [watchID]);
   }
   
   void _initJSFunctions() {
-    newJSFunction(_GET_CURRENT_HEADING, ["onSuccess", "onError"], '''
+    jsutil.newJSFunction(_GET_CURRENT_HEADING, ["onSuccess", "onError"], '''
       var fnSuccess = function(heading) {onSuccess.\$call\$1(heading);},
           fnError = function() {onError.\$call\$0();};
       navigator.compass.getCurrentCompassHeading(fnSuccess, fnError);
     ''');
-    newJSFunction(_WATCH_HEADING, ["onSuccess", "onError", "opts"], '''
+    jsutil.newJSFunction(_WATCH_HEADING, ["onSuccess", "onError", "opts"], '''
       var fnSuccess = function(heading) {onSuccess.\$call\$1(heading);},
           fnError = function() {onError.\$call\$0();};
       return navigator.compass.watchHeading(fnSuccess, fnError, opts);
     ''');
-    newJSFunction(_CLEAR_WATCH, ["watchID"], "navigator.compass.clearWatch(watchID);");
+    jsutil.newJSFunction(_CLEAR_WATCH, ["watchID"], "navigator.compass.clearWatch(watchID);");
   }
 }

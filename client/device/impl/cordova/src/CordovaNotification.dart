@@ -6,10 +6,10 @@
  * A Cordova notification implementation.
  */
 class CordovaNotification implements XNotification {
-  static final String _ALERT = "notification.alert";
-  static final String _CONFIRM = "notification.confirm";
-  static final String _BEEP = "notification.beep";
-  static final String _VIBRATE = "notification.vibrate";
+  static final String _ALERT = "noti.1";
+  static final String _CONFIRM = "noti.2";
+  static final String _BEEP = "noti.3";
+  static final String _VIBRATE = "noti.4";
   
   CordovaNotification() {
     _initJSFunctions();
@@ -17,33 +17,33 @@ class CordovaNotification implements XNotification {
   alert(String message, NotificationAlertCallback alertCallback, [String title, String buttonName]) {
     if (title === null) title = "Alert";
     if (buttonName === null) buttonName = "OK";
-    jsCall(_ALERT, [message, alertCallback, title, buttonName]);
+    jsutil.jsCall(_ALERT, [message, alertCallback, title, buttonName]);
   }
   
   confirm(String message, NotificationConfirmCallback confirmCallback, [String title, String buttonLabels]) {
     if (title === null) title = "Confirm";
     if (buttonLabels === null) buttonLabels = "OK,Cancel";
-    jsCall(_CONFIRM, [message, confirmCallback, title, buttonLabels]);
+    jsutil.jsCall(_CONFIRM, [message, confirmCallback, title, buttonLabels]);
   }
   
   beep(int times) {
-    jsCall(_BEEP, [times]);
+    jsutil.jsCall(_BEEP, [times]);
   }
   
   vibrate(int milliseconds) {
-    jsCall(_VIBRATE, [milliseconds]);
+    jsutil.jsCall(_VIBRATE, [milliseconds]);
   }
   
   void _initJSFunctions() {
-    newJSFunction(_ALERT, ["message", "alertCallback", "title", "buttonName"], '''
+    jsutil.newJSFunction(_ALERT, ["message", "alertCallback", "title", "buttonName"], '''
       var fn = function() {alertCallback.\$call\$0();};
       navigator.notification.alert(message, fn, title, buttonName);
     ''');
-    newJSFunction(_CONFIRM, ["message", "confirmCallback", "title", "buttonLabels"], '''
+    jsutil.newJSFunction(_CONFIRM, ["message", "confirmCallback", "title", "buttonLabels"], '''
       var fn = function(btn) {confirmCallback.\$call\$1(btn);};
       navigator.notification.confirm(message, fn, title, buttonLabels);
     ''');
-    newJSFunction(_BEEP, ["times"], "navigator.notification.beep(times);");
-    newJSFunction(_VIBRATE, ["msecs"], "navigator.notification.vibrate(msecs);");
+    jsutil.newJSFunction(_BEEP, ["times"], "navigator.notification.beep(times);");
+    jsutil.newJSFunction(_VIBRATE, ["msecs"], "navigator.notification.vibrate(msecs);");
   }
 }
