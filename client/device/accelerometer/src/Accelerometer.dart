@@ -41,7 +41,7 @@ abstract class AbstractAccelerometer implements Accelerometer {
   *
   *     options = {"frequency" : 3000}; //update every 3 seconds
   *
-  * It returns a watchID that can be used to stop this watching later by [clearWatch].
+  * It returns a watchID that can be used to stop this watching later by [clearWatch_].
   */  
   abstract watchAcceleration_(AccelerometerSuccessCallback success,
   AccelerometerErrorCallback error, [Map options]);
@@ -49,5 +49,5 @@ abstract class AbstractAccelerometer implements Accelerometer {
   /**
   * Stop watching the motion acceleration.
   */
-  abstract void clearWatch(var watchID);
+  abstract void clearWatch_(var watchID);
 }

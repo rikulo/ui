@@ -39,7 +39,7 @@ abstract class AbstractCompass implements Compass {
   *
   *     options = {"frequency" : 100}; //update every 0.1 second
   *
-  * It returns a watchID that can be used to stop this watching later by [clearWatch].
+  * It returns a watchID that can be used to stop this watching later by [clearWatch_].
   */  
   abstract watchHeading_(CompassSuccessCallback success,
   CompassErrorCallback error, [Map options]);
@@ -47,5 +47,5 @@ abstract class AbstractCompass implements Compass {
   /**
   * Stop watching the heading.
   */
-  abstract void clearWatch(var watchID);
+  abstract void clearWatch_(var watchID);
 }

@@ -56,7 +56,7 @@ class _AccelerationEventListenerList implements AccelerationEventListenerList {
       if (_listeners[j].listener == success) {
         var watchID = _listeners[j].watchID;
         if (watchID !== null) {
-          _owner.clearWatch(watchID);
+          _owner.clearWatch_(watchID);
         }
         break;
       }

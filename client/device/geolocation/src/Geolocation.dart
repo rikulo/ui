@@ -37,7 +37,7 @@ abstract class AbstractGeolocation implements XGeolocation {
   * Watches for position changes of this device.
   * The Position is returned via the [success] callback function.
   *
-  * It returns a watchID that can be used to stop this watching later by [clearWatch].
+  * It returns a watchID that can be used to stop this watching later by [clearWatch_].
   */  
   abstract watchPosition_(GeolocationSuccessCallback success,
     [GeolocationErrorCallback error, Map options]);
@@ -45,5 +45,5 @@ abstract class AbstractGeolocation implements XGeolocation {
   /**
   * Stop watching the motion Position.
   */
-  abstract void clearWatch(var watchID);
+  abstract void clearWatch_(var watchID);
 }

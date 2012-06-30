@@ -32,7 +32,7 @@ class CordovaAccelerometer extends AbstractAccelerometer {
     return jsutil.jsCall(_WATCH_ACCELERATION, [success, error, jsutil.toJSMap(options)]);
   }
   
-  void clearWatch(var watchID) {
+  void clearWatch_(var watchID) {
     jsutil.jsCall(_CLEAR_WATCH, [watchID]);
   }
   
