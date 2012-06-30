@@ -15,7 +15,7 @@ class GMarker implements JSPeer {
   
   GMarker([Map markerOptions]) {
     _initJSFunctions();
-    _gmarker = jsutil.jsCall(_NEW_MARKER, [jsutil.toJSMap(markerOptions, (v)=>jsutil.toJSPeer(v))]);
+    _gmarker = JSUtil.jsCall(_NEW_MARKER, [JSUtil.toJSMap(markerOptions, (v)=>JSUtil.toJSPeer(v))]);
   }
 
   toJSObject() {
@@ -25,6 +25,6 @@ class GMarker implements JSPeer {
   _initJSFunctions() {
     if (_ready) return;
     _ready = true;
-    jsutil.newJSFunction(_NEW_MARKER, ["opts"], "return new window.google.maps.Marker(opts);");
+    JSUtil.newJSFunction(_NEW_MARKER, ["opts"], "return new window.google.maps.Marker(opts);");
   }
 }

@@ -40,29 +40,29 @@ class GMap implements JSPeer {
    * when the container size changes.
    */ 
   void checkResize() {
-    jsutil.jsCall(_RESIZE, [_jsMap]);
+    JSUtil.jsCall(_RESIZE, [_jsMap]);
   }
   
   void setOptoins(Map mapOptions) {
-    jsutil.jsCall(_SET_OPTIONS, [_jsMap, _toJSOptions(mapOptions)]);
+    JSUtil.jsCall(_SET_OPTIONS, [_jsMap, _toJSOptions(mapOptions)]);
   }
   
   getMapTypeId() {
-    String key = jsutil.jsCall(_GET_MAP_TYPE_ID, [_jsMap]);
+    String key = JSUtil.jsCall(_GET_MAP_TYPE_ID, [_jsMap]);
     MapTypeId typeid = MapTypeId._lookFrom(key);
     return typeid !== null ? typeid : key;
   }
   
   void setMapTypeId(var mapTypeId) { //MapTypeId or String
-    jsutil.jsCall(_SET_MAP_TYPE_ID, [_jsMap, mapTypeId is MapTypeId ? mapTypeId.toJSObject() : mapTypeId]);
+    JSUtil.jsCall(_SET_MAP_TYPE_ID, [_jsMap, mapTypeId is MapTypeId ? mapTypeId.toJSObject() : mapTypeId]);
   }
   
   LatLng getCenter() {
-    return new LatLng.fromJSObject(jsutil.jsCall(_GET_CENTER, [_jsMap]));
+    return new LatLng.fromJSObject(JSUtil.jsCall(_GET_CENTER, [_jsMap]));
   }
   
   void setCenter(LatLng latlng) {
-    jsutil.jsCall(_SET_CENTER, [_jsMap, latlng.toJSObject()]);
+    JSUtil.jsCall(_SET_CENTER, [_jsMap, latlng.toJSObject()]);
   }
   
   //load maps module
@@ -94,7 +94,7 @@ class GMap implements JSPeer {
 
   //convert Dart Map to JavaScript options
   _toJSOptions(Map mapOptions) {
-    return jsutil.toJSMap(mapOptions, (v)=>jsutil.toJSPeer(v));
+    return JSUtil.toJSMap(mapOptions, (v)=>JSUtil.toJSPeer(v));
   }
   
   //init the specified Maps
@@ -104,7 +104,7 @@ class GMap implements JSPeer {
       if (div === null) {
         throw new IllegalArgumentException("mapCanvas: Cannot find the specified HTML element, $_mapCanvas");
       }
-      _jsMap = jsutil.jsCall(_NEW_MAP, [div, _toJSOptions(mapOptions)]); 
+      _jsMap = JSUtil.jsCall(_NEW_MAP, [div, _toJSOptions(mapOptions)]); 
     }
   }
   
@@ -113,12 +113,12 @@ class GMap implements JSPeer {
   }
   
   void _initJSFunctions() {
-    jsutil.newJSFunction(_NEW_MAP, ["mapdiv", "mapOptions"], "return new window.google.maps.Map(mapdiv, mapOptions);");
-    jsutil.newJSFunction(_GET_MAP_TYPE_ID, ["gmap"], "return gmap.getMapTypeId();");
-    jsutil.newJSFunction(_SET_MAP_TYPE_ID, ["gmap", "id"], "return gmap.setMapTypeId(id);");
-    jsutil.newJSFunction(_GET_CENTER, ["gmap"], "return gmap.getCenter();");
-    jsutil.newJSFunction(_SET_CENTER, ["gmap", "latlng"], "return gmap.setCenter(latlng);");
-    jsutil.newJSFunction(_RESIZE, ["gmap"], '''
+    JSUtil.newJSFunction(_NEW_MAP, ["mapdiv", "mapOptions"], "return new window.google.maps.Map(mapdiv, mapOptions);");
+    JSUtil.newJSFunction(_GET_MAP_TYPE_ID, ["gmap"], "return gmap.getMapTypeId();");
+    JSUtil.newJSFunction(_SET_MAP_TYPE_ID, ["gmap", "id"], "return gmap.setMapTypeId(id);");
+    JSUtil.newJSFunction(_GET_CENTER, ["gmap"], "return gmap.getCenter();");
+    JSUtil.newJSFunction(_SET_CENTER, ["gmap", "latlng"], "return gmap.setCenter(latlng);");
+    JSUtil.newJSFunction(_RESIZE, ["gmap"], '''
       var c = gmap.getCenter();
       window.google.maps.event.trigger(gmap, "resize");
       gmap.setCenter(c);

@@ -13,11 +13,11 @@ class CordovaAccelerometer extends AbstractAccelerometer {
     _initJSFunctions();
   }
   void getCurrentAcceleration(AccelerometerSuccessCallback success, AccelerometerErrorCallback error) {
-    jsutil.jsCall(_GET_CURRENT_ACCELERATION, [_wrapFunction(success), error]);
+    JSUtil.jsCall(_GET_CURRENT_ACCELERATION, [_wrapFunction(success), error]);
   }
   
   AccelerometerSuccessCallback wrapSuccessListener_(AccelerationEventListener listener) {
-    return (jsAccel) => listener(new AccelerationEvent(this, new Acceleration.from(jsutil.toDartMap(jsAccel))));
+    return (jsAccel) => listener(new AccelerationEvent(this, new Acceleration.from(JSUtil.toDartMap(jsAccel))));
   }
   
   AccelerometerErrorCallback wrapErrorListener_(AccelerationErrorEventListener listener) {
@@ -25,28 +25,28 @@ class CordovaAccelerometer extends AbstractAccelerometer {
   }
 
   _wrapFunction(dartFn) {
-    return (jsAccel) => dartFn(new Acceleration.from(jsutil.toDartMap(jsAccel)));
+    return (jsAccel) => dartFn(new Acceleration.from(JSUtil.toDartMap(jsAccel)));
   }
   
   watchAcceleration_(AccelerometerSuccessCallback success, AccelerometerErrorCallback error, [Map options]) {
-    return jsutil.jsCall(_WATCH_ACCELERATION, [success, error, jsutil.toJSMap(options)]);
+    return JSUtil.jsCall(_WATCH_ACCELERATION, [success, error, JSUtil.toJSMap(options)]);
   }
   
   void clearWatch_(var watchID) {
-    jsutil.jsCall(_CLEAR_WATCH, [watchID]);
+    JSUtil.jsCall(_CLEAR_WATCH, [watchID]);
   }
   
   void _initJSFunctions() {
-      jsutil.newJSFunction(_GET_CURRENT_ACCELERATION, ["onSuccess", "onError"], ''' 
+      JSUtil.newJSFunction(_GET_CURRENT_ACCELERATION, ["onSuccess", "onError"], ''' 
         var fnSuccess = function(accel) {onSuccess.\$call\$1(accel);},
             fnError = function() {onError.\$call\$0();};
         navigator.accelerometer.getCurrentAcceleration(fnSuccess, fnError);
       ''');
-      jsutil.newJSFunction(_WATCH_ACCELERATION, ["onSuccess", "onError", "opts"], '''
+      JSUtil.newJSFunction(_WATCH_ACCELERATION, ["onSuccess", "onError", "opts"], '''
         var fnSuccess = function(accel) {onSuccess.\$call\$1(accel);},
             fnError = function() {onError.\$call\$0();};
         return navigator.accelerometer.watchAcceleration(fnSuccess, fnError, opts);
       ''');
-      jsutil.newJSFunction(_CLEAR_WATCH, ["watchID"], "navigator.accelerometer.clearWatch(watchID);");
+      JSUtil.newJSFunction(_CLEAR_WATCH, ["watchID"], "navigator.accelerometer.clearWatch(watchID);");
   }
 }

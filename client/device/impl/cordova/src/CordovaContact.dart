@@ -11,31 +11,31 @@ class CordovaContact implements Contact {
   static final String _REMOVE = "cont.3";
   static final String _SAVE = "cont.4";
   
-  String get id() => jsutil.getJSValue(_jsContact, "id"); //global unique identifier
-  String get displayName() => jsutil.getJSValue(_jsContact, "displayName"); //display name of this Contact
-  String get nickname() => jsutil.getJSValue(_jsContact, "nickname"); //casual name of this Contact
-  String get note() => jsutil.getJSValue(_jsContact, "note"); //note about this Contact
+  String get id() => JSUtil.getJSValue(_jsContact, "id"); //global unique identifier
+  String get displayName() => JSUtil.getJSValue(_jsContact, "displayName"); //display name of this Contact
+  String get nickname() => JSUtil.getJSValue(_jsContact, "nickname"); //casual name of this Contact
+  String get note() => JSUtil.getJSValue(_jsContact, "note"); //note about this Contact
 
-  set id(var x) => jsutil.setJSValue(_jsContact, "id", x); //global unique identifier
-  set displayName(var x) => jsutil.setJSValue(_jsContact, "displayName", x); //display name of this Contact
-  set nickname(var x) => jsutil.setJSValue(_jsContact, "nickname", x); //casual name of this Contact
-  set note(var x) => jsutil.setJSValue(_jsContact, "note", x); //note about this Contact
+  set id(var x) => JSUtil.setJSValue(_jsContact, "id", x); //global unique identifier
+  set displayName(var x) => JSUtil.setJSValue(_jsContact, "displayName", x); //display name of this Contact
+  set nickname(var x) => JSUtil.setJSValue(_jsContact, "nickname", x); //casual name of this Contact
+  set note(var x) => JSUtil.setJSValue(_jsContact, "note", x); //note about this Contact
   
-  _create() => jsutil.jsCall(_CREATE);
-  _clone0() => jsutil.jsCall(_CLONE, [_jsContact]);
-  _remove0(ContactSuccessCallback success, ContactErrorCallback error) => jsutil.jsCall(_REMOVE, [_jsContact, success, error]);
-  _save0(ContactSuccessCallback success, ContactErrorCallback error) => jsutil.jsCall(_SAVE, [_jsContact, success, error]);
+  _create() => JSUtil.jsCall(_CREATE);
+  _clone0() => JSUtil.jsCall(_CLONE, [_jsContact]);
+  _remove0(ContactSuccessCallback success, ContactErrorCallback error) => JSUtil.jsCall(_REMOVE, [_jsContact, success, error]);
+  _save0(ContactSuccessCallback success, ContactErrorCallback error) => JSUtil.jsCall(_SAVE, [_jsContact, success, error]);
 
-  _updateJSBirthday() => jsutil.setJSValue(_jsContact, "birthday", jsutil.toJSDate(this.birthday));
-  _updateJSContactName() => jsutil.setJSValue(_jsContact, "name", _toJSContactName(this.name));
-  _updateJSPhoneNumbers() => jsutil.setJSValue(_jsContact, "phoneNumbers", _toJSContactFields(this.phoneNumbers));
-  _updateJSEmails() => jsutil.setJSValue(_jsContact, "emails", _toJSContactFields(this.emails));
-  _updateJSIms() => jsutil.setJSValue(_jsContact, "ims", _toJSContactFields(this.ims));
-  _updateJSPhotos() => jsutil.setJSValue(_jsContact, "photos", _toJSContactFields(this.photos));
-  _updateJSCategories() => jsutil.setJSValue(_jsContact, "categories", _toJSContactFields(this.categories));
-  _updateJSUrls() => jsutil.setJSValue(_jsContact, "urls", _toJSContactFields(this.urls));
-  _updateJSAddresses() => jsutil.setJSValue(_jsContact, "addresses", _toJSContactAddresses(this.addresses));
-  _updateJSOrganizations() => jsutil.setJSValue(_jsContact, "organizations", _toJSContactOrganizations(this.organizations));
+  _updateJSBirthday() => JSUtil.setJSValue(_jsContact, "birthday", JSUtil.toJSDate(this.birthday));
+  _updateJSContactName() => JSUtil.setJSValue(_jsContact, "name", _toJSContactName(this.name));
+  _updateJSPhoneNumbers() => JSUtil.setJSValue(_jsContact, "phoneNumbers", _toJSContactFields(this.phoneNumbers));
+  _updateJSEmails() => JSUtil.setJSValue(_jsContact, "emails", _toJSContactFields(this.emails));
+  _updateJSIms() => JSUtil.setJSValue(_jsContact, "ims", _toJSContactFields(this.ims));
+  _updateJSPhotos() => JSUtil.setJSValue(_jsContact, "photos", _toJSContactFields(this.photos));
+  _updateJSCategories() => JSUtil.setJSValue(_jsContact, "categories", _toJSContactFields(this.categories));
+  _updateJSUrls() => JSUtil.setJSValue(_jsContact, "urls", _toJSContactFields(this.urls));
+  _updateJSAddresses() => JSUtil.setJSValue(_jsContact, "addresses", _toJSContactAddresses(this.addresses));
+  _updateJSOrganizations() => JSUtil.setJSValue(_jsContact, "organizations", _toJSContactOrganizations(this.organizations));
   
   ContactName name; //detail name of this Contact
   List<ContactField> phoneNumbers; //array of phone numbers of this Contact
@@ -85,7 +85,7 @@ class CordovaContact implements Contact {
     return (jsContact) => dartFn(_initContact0(jsContact));
   }
   _wrapErrorFunction(dartFn) {
-    return (jsErr) => dartFn(new ContactError.from(jsutil.toDartMap(jsErr)));
+    return (jsErr) => dartFn(new ContactError.from(JSUtil.toDartMap(jsErr)));
   }
 
   Contact _initContact0(jsContact) {
@@ -102,7 +102,7 @@ class CordovaContact implements Contact {
     };
   }
   _toJSContactFields(List<ContactField> fields) {
-    return jsutil.toJSArray(fields, (ContactField field) => jsutil.toJSMap(_toContactFieldMap(field)));
+    return JSUtil.toJSArray(fields, (ContactField field) => JSUtil.toJSMap(_toContactFieldMap(field)));
   }
 
   _toContactAddressMap(ContactAddress addr) {
@@ -118,7 +118,7 @@ class CordovaContact implements Contact {
     };
   }
   _toJSContactAddresses(List<ContactAddress> addrs) {
-    return jsutil.toJSArray(addrs, (ContactAddress addr) => jsutil.toJSMap(_toContactAddressMap(addr)));
+    return JSUtil.toJSArray(addrs, (ContactAddress addr) => JSUtil.toJSMap(_toContactAddressMap(addr)));
   }
   
   _toContactOrganizationMap(ContactOrganization org) {
@@ -131,7 +131,7 @@ class CordovaContact implements Contact {
     };
   }
   _toJSContactOrganizations(List<ContactOrganization> orgs) {
-    return jsutil.toJSArray(addresses, (ContactOrganization org) => jsutil.toJSMap(_toContactOrganizationMap(org)));
+    return JSUtil.toJSArray(addresses, (ContactOrganization org) => JSUtil.toJSMap(_toContactOrganizationMap(org)));
   }
   
   _toContactNameMap(ContactName name0) {
@@ -145,7 +145,7 @@ class CordovaContact implements Contact {
     };
   }
   _toJSContactName(ContactName name0) {
-    return jsutil.toJSMap(_toContactNameMap(name0));
+    return JSUtil.toJSMap(_toContactNameMap(name0));
   }
   
   _updateJsContact() {
@@ -182,44 +182,44 @@ class CordovaContact implements Contact {
   
   void _initDartContact() {
     //birthday
-    this.birthday = jsutil.toDartDate(jsutil.getJSValue(_jsContact, "birthday"));
+    this.birthday = JSUtil.toDartDate(JSUtil.getJSValue(_jsContact, "birthday"));
     //name
-    ContactName val0 = jsutil.getJSValue(_jsContact, "name");
+    ContactName val0 = JSUtil.getJSValue(_jsContact, "name");
     if (val0 !== null)
-      this.name = new ContactName.from(jsutil.toDartMap(val0));
+      this.name = new ContactName.from(JSUtil.toDartMap(val0));
     //addresses
-    this.addresses = jsutil.toDartList(jsutil.getJSValue(_jsContact, "addresses"), (jsAddr) => new ContactAddress.from(jsutil.toDartMap(jsAddr)));
+    this.addresses = JSUtil.toDartList(JSUtil.getJSValue(_jsContact, "addresses"), (jsAddr) => new ContactAddress.from(JSUtil.toDartMap(jsAddr)));
     //organizations
-    this.organizations = jsutil.toDartList(jsutil.getJSValue(_jsContact, "organizations"), (jsOrg) => new ContactOrganization.from(jsutil.toDartMap(jsOrg)));
+    this.organizations = JSUtil.toDartList(JSUtil.getJSValue(_jsContact, "organizations"), (jsOrg) => new ContactOrganization.from(JSUtil.toDartMap(jsOrg)));
     //phoneNumbers
-    this.phoneNumbers = _newContactFieldList(jsutil.getJSValue(_jsContact, "phoneNumbers"));
+    this.phoneNumbers = _newContactFieldList(JSUtil.getJSValue(_jsContact, "phoneNumbers"));
     //emails
-    this.emails = _newContactFieldList(jsutil.getJSValue(_jsContact, "emails"));
+    this.emails = _newContactFieldList(JSUtil.getJSValue(_jsContact, "emails"));
     //ims
-    this.ims = _newContactFieldList(jsutil.getJSValue(_jsContact, "ims"));
+    this.ims = _newContactFieldList(JSUtil.getJSValue(_jsContact, "ims"));
     //photos
-    this.photos = _newContactFieldList(jsutil.getJSValue(_jsContact, "photos"));
+    this.photos = _newContactFieldList(JSUtil.getJSValue(_jsContact, "photos"));
     //categories
-    this.categories = _newContactFieldList(jsutil.getJSValue(_jsContact, "categories"));
+    this.categories = _newContactFieldList(JSUtil.getJSValue(_jsContact, "categories"));
     //urls
-    this.urls = _newContactFieldList(jsutil.getJSValue(_jsContact, "urls"));
+    this.urls = _newContactFieldList(JSUtil.getJSValue(_jsContact, "urls"));
   }
   
   List<ContactField> _newContactFieldList(jsFields) {
-    return jsutil.toDartList(jsFields, (jsField) => new ContactField.from(jsutil.toDartMap(jsField)));
+    return JSUtil.toDartList(jsFields, (jsField) => new ContactField.from(JSUtil.toDartMap(jsField)));
   }
   
   static bool _doneInit = false;
   void _initJSFunctions() {
     if (!_doneInit) {
-      jsutil.newJSFunction(_CREATE,  null, "return navigator.contacts.create({});");
-      jsutil.newJSFunction(_CLONE, ["contact"], "return contact.clone();");
-      jsutil.newJSFunction(_REMOVE, ["contact", "onSuccess", "onError"], '''
+      JSUtil.newJSFunction(_CREATE,  null, "return navigator.contacts.create({});");
+      JSUtil.newJSFunction(_CLONE, ["contact"], "return contact.clone();");
+      JSUtil.newJSFunction(_REMOVE, ["contact", "onSuccess", "onError"], '''
         var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
             fnError = function(err) {onError.\$call\$1(err);};
         contact.remove(fnSuccess, fnError);
       ''');
-      jsutil.newJSFunction(_SAVE, ["contact", "onSuccess", "onError"], '''
+      JSUtil.newJSFunction(_SAVE, ["contact", "onSuccess", "onError"], '''
         var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
             fnError = function(err) {onError.\$call\$1(err);};
         contact.save(fnSuccess, fnError);

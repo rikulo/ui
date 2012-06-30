@@ -31,15 +31,15 @@ class GLoader {
   
   Map get _ipLocation() {
     if (_loc == null)
-      _loc = jsutil.toDartMap(jsutil.jsCall(_IP_LOCATION));
+      _loc = JSUtil.toDartMap(JSUtil.jsCall(_IP_LOCATION));
     return _loc;
   }
   
   void _loadModule(Function readyFn) {
     _initJSFunctions();
     
-    jsutil.injectJavaScriptSrc(_BASE_URI);
-    doWhenReady(readyFn, ()=>jsutil.jsCall(_GLOADER_READY), 
+    JSUtil.injectJavaScriptSrc(_BASE_URI);
+    JSUtil.doWhenReady(readyFn, ()=>JSUtil.jsCall(_GLOADER_READY), 
       (int msec) {if(msec == 0) print("Fail to load jsapi.js!");}, 10, 180000); //check every 10 ms, wait total 180 seconds
   }
   
@@ -57,12 +57,12 @@ class GLoader {
   }
   
   void _load(String name, String version, [Map options]) {
-    jsutil.jsCall(_LOAD_MODULE, [name, version, jsutil.toJSMap(options)]);
+    JSUtil.jsCall(_LOAD_MODULE, [name, version, JSUtil.toJSMap(options)]);
   }
   
   void _initJSFunctions() {
-    jsutil.newJSFunction(_GLOADER_READY, null, "return !!window.google && !!window.google.load;");
-    jsutil.newJSFunction(_IP_LOCATION, null,''' 
+    JSUtil.newJSFunction(_GLOADER_READY, null, "return !!window.google && !!window.google.load;");
+    JSUtil.newJSFunction(_IP_LOCATION, null,''' 
       var loc = {};
       if (window.google.loader.ClientLocation) {
         loc.lat = window.google.loader.ClientLocation.latitude;
@@ -70,7 +70,7 @@ class GLoader {
       }
       return loc;
     ''');
-    jsutil.newJSFunction(_LOAD_MODULE, ["name", "version", "options"], '''
+    JSUtil.newJSFunction(_LOAD_MODULE, ["name", "version", "options"], '''
       if (options && options.callback) {
         var dartfn = options.callback;
         options.callback = function() {dartfn.\$call\$0();};

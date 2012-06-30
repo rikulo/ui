@@ -11,9 +11,9 @@ class CordovaConnection implements Connection {
     _initJSFunctions();
   }
   String get type() {
-    return jsutil.jsCall(_TYPE);
+    return JSUtil.jsCall(_TYPE);
   }
   void _initJSFunctions() {
-    jsutil.newJSFunction(_TYPE, null, "return navigator.network.connection.type;");
+    JSUtil.newJSFunction(_TYPE, null, "return navigator.network.connection.type;");
   }
 }

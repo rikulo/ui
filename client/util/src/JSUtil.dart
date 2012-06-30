@@ -2,17 +2,24 @@
 //History: Wed, May 16, 2012  02:37:12 PM
 // Author: henrichen
 
-//Utilities to convert Date, List, Map between Dart and JavaScript
+/**
+ * A Dart Object that represent a JavaScript Object.
+ */
+interface JSPeer {
+  /** Returns the peer JavaScriptObject.
+   */
+  toJSObject();
+}
+
+/**
+ * Utilities to convert Date, List, Map between Dart and JavaScript.
+ */
 class JSUtil {
-  JSUtil() {
-    initJSCall();
-  }
-  
   /** Converts a Dart Date to JavaScript Date
    * @param dartdate the dart Date
    * @return the converted JavaScript Date
    */
-  toJSDate(Date dartdate) {
+  static toJSDate(Date dartdate) {
     int msecs = dartdate !== null ? dartdate.millisecondsSinceEpoch : null;
     return msecs != null ? jsCall("newDate", [msecs]) : null;
   }
@@ -21,7 +28,7 @@ class JSUtil {
    * @param jsdate the JavaScript Date
    * @return the converted Dart Date
    */
-  toDartDate(jsdate) {
+  static toDartDate(jsdate) {
     int msecs = jsdate !== null ? jsCall("getTime", [jsdate]) : null;
     return msecs !== null ? new Date.fromMillisecondsSinceEpoch(msecs, false) : null; //use local timezone
   }
@@ -30,7 +37,7 @@ class JSUtil {
    * @param dartlist the dart List
    * @return the converted JavaScript Array
    */
-  toJSArray(List dartlist, [Function converter = null]) {
+  static toJSArray(List dartlist, [Function converter = null]) {
     if (dartlist !== null) {
       if (dartlist.length == 0) {
         return jsCall("[]"); //return empty JavaScript Array
@@ -51,7 +58,7 @@ class JSUtil {
    * @param converter the converter function that convert the JavaScript Object into Dart Object.
    * @return the converted Dart List
    */
-  toDartList(var jsarray, [Function converter = null]) {
+  static toDartList(var jsarray, [Function converter = null]) {
     if (jsarray !== null) {
       List result = new List();
       if (converter !== null)
@@ -67,7 +74,7 @@ class JSUtil {
    * @param dartmap the Dart Map
    * @return the converted JavaScript map 
    */
-  toJSMap(Map dartmap, [Function converter = null]) {
+  static toJSMap(Map dartmap, [Function converter = null]) {
     if (dartmap !==  null) {
       if (dartmap.length == 0) {
         return jsCall("{}"); //return empty JavaScript map
@@ -86,7 +93,7 @@ class JSUtil {
    * @param jsmap the JavaScript map
    * @return the converted Dart Map
    */
-  toDartMap(var jsmap, [Function converter = null]) {
+  static toDartMap(var jsmap, [Function converter = null]) {
     if (jsmap !== null) {
       Map result = new Map();
       if (converter !== null)
@@ -100,7 +107,7 @@ class JSUtil {
   
   /** Convert Dart object to its peer JS object.
    */
-  toJSPeer(var v) {
+  static toJSPeer(var v) {
     if (v is JSPeer) {
       JSPeer peer=v; 
       return peer.toJSObject();
@@ -112,9 +119,9 @@ class JSUtil {
    * @param xmldoc the JavaScript XMLDocument
    * @return the converted Dart Map/List tree structure.
    */
-  xmlDocToDartMap(var xmldoc) {
-    return jsCall("_elmToDart", [jsutil.getJSValue(xmldoc, "documentElement"), toDartMap, 
-                                 (v) {return jsCall("toType", [v]) === 'array' ? toDartList(v) : v;}]);
+  static xmlDocToDartMap(var xmldoc) {
+    return jsCall("_elmToDart", [getJSValue(xmldoc, "documentElement"), toDartMap, 
+      (v) {return jsCall("toType", [v]) === 'array' ? toDartList(v) : v;}]);
   }
   
   /** Returns the value of the JavaScript object's attribute.
@@ -122,7 +129,7 @@ class JSUtil {
    * @param attr attribute name
    * @return the value of the JavaScript object's attribute.
    */
-  getJSValue(jsObj, String attr) {
+  static getJSValue(jsObj, String attr) {
     return jsCall("get", [jsObj, attr]);
   }
   
@@ -131,7 +138,7 @@ class JSUtil {
    * @param attr attribute name
    * @param value the value
    */
-  setJSValue(jsObj, String attr, val) {
+  static setJSValue(jsObj, String attr, val) {
     jsCall("set", [jsObj, attr, val]);
   }
   
@@ -140,8 +147,8 @@ class JSUtil {
    * @param args arguments to be passed into JavaScript function
    * @see #newJSFunction
    */ 
-  jsCall(String name, [List args = const []]) {
-    return jsCallX.exec(name, args);
+  static jsCall(String name, [List args = const []]) {
+    return _jsCallX.exec(name, args);
   }
 
   /** Create and register a new JavaScript function; can be called from Dart later via #jsCall function.
@@ -150,14 +157,14 @@ class JSUtil {
    * @param body the function definition body
    * @see #jsCall
    */
-  newJSFunction(String name, List<String> args, String body) {
+  static newJSFunction(String name, List<String> args, String body) {
     jsCall("newFn", [name, args, body]);
   }
 
   /** Initialization of the #jsCall function; must be called at least once before using #jsCall method. 
    */
-  initJSCall() {
-    if (jsCallX === null) {
+  static _JSCallX get _jsCallX() {
+    if (_$jsCallX === null) {
       final String newFn = '''  
         var _natives = {
           "newFn" : function(nm, args, body) {
@@ -260,15 +267,17 @@ class JSUtil {
       ''';
       
       injectJavaScript(newFn, false); //initialize JavaScript function table
-      jsCallX = new _JSCallX(); //connect jsCall to JavaScript function table
+      _$jsCallX = new _JSCallX(); //connect jsCall to JavaScript function table
     }
+    return _$jsCallX;
   }
-  
+  static _JSCallX _$jsCallX; //bridge class from Dart to JavaScript
+
   /**
    * Inject JavaScript src file.
    * @param uri the JavaScript file uri
    */
-  injectJavaScriptSrc(String uri) {
+  static injectJavaScriptSrc(String uri) {
     var s = new ScriptElement();
     s.attributes["type"] = "text/javascript";
     s.attributes["src"] = uri;
@@ -280,55 +289,42 @@ class JSUtil {
    * @param script the JavaScript codes
    * @param remove whether remove the script after running; default true.
    */  
-  injectJavaScript(String script, [bool remove = true]) {
+  static injectJavaScript(String script, [bool remove = true]) {
     var s = new ScriptElement();
     s.attributes["type"] = "text/javascript";
     s.text = script;
     document.head.nodes.add(s);
     if (remove) s.remove();
   }
-}
 
-JSUtil get jsutil() {
-  if (_jsutil == null)
-    _jsutil = new JSUtil();
-  return _jsutil;
-}
-
-JSUtil _jsutil;
-
-_JSCallX jsCallX; //bridge class from Dart to JavaScript
-
-/**
- * Execute the specified function when the specified ready function returns true. 
- * @param fn the function to be executed
- * @param ready the function to check if it meets some preset condition
- * @param progress the {@link Progress} callback function to report how many time left in milliseconds before timeout (-1 means forever)
- * @param freq the retry frequency in milliseconds
- * @param timeout the timeout time in milliseconds to give up; -1 means forever.  
- */
-void doWhenReady(Function fn, Function ready, Function progress, int freq, int timeout) {
-  final int end = timeout < 0 ? timeout : new Date.now().millisecondsSinceEpoch + timeout;
-  _doWhen0(fn, ready, progress, freq, end);
-}
-/** Progress callback function to show the time left in milliseconds before timeout */
-typedef Progress(int msec);
-
-void _doWhen0(Function fn, Function ready, Progress progress, int freq, final int end) {
-  window.setTimeout(() {
-    if (ready()) {
-      if (fn !== null) fn();
-    } else {
-      int diff = end - new Date.now().millisecondsSinceEpoch;
-      if (end < 0 || diff > 0) { //still have time to try it
-        if (progress !== null) progress(end < 0 ? -1 : diff); 
-        _doWhen0(fn, ready, progress, freq, end); //try again
+  /**
+   * Execute the specified function when the specified ready function returns true. 
+   * @param fn the function to be executed
+   * @param ready the function to check if it meets some preset condition
+   * @param progress the {@link Progress} callback function to report how many time left in milliseconds before timeout (-1 means forever)
+   * @param freq the retry frequency in milliseconds
+   * @param timeout the timeout time in milliseconds to give up; -1 means forever.  
+   */
+  static void doWhenReady(Function fn, Function ready, Function progress, int freq, int timeout) {
+    final int end = timeout < 0 ? timeout : new Date.now().millisecondsSinceEpoch + timeout;
+    _doWhen0(fn, ready, progress, freq, end);
+  }
+  static void _doWhen0(Function fn, Function ready, Function progress, int freq, final int end) {
+    window.setTimeout(() {
+      if (ready()) {
+        if (fn !== null) fn();
       } else {
-        if (progress !== null) progress(0); //timout. fail!
+        int diff = end - new Date.now().millisecondsSinceEpoch;
+        if (end < 0 || diff > 0) { //still have time to try it
+          if (progress !== null) progress(end < 0 ? -1 : diff); 
+          _doWhen0(fn, ready, progress, freq, end); //try again
+        } else {
+          if (progress !== null) progress(0); //timout. fail!
+        }
       }
-    }
-  }, freq);
+    }, freq);
+  }
 }
 
-typedef JSCallFunction(String op, List args);
-class _JSCallX {JSCallFunction exec;} //change NEITHER class name NOR field name; couple to JavaScript code
+typedef _JSCallFunction(String op, List args);
+class _JSCallX {_JSCallFunction exec;} //change NEITHER class name NOR field name; couple to JavaScript code

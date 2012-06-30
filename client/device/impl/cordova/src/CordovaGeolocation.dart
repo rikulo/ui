@@ -14,7 +14,7 @@ class CordovaGeolocation extends AbstractGeolocation {
     _initJSFunctions();
   }
   void getCurrentPosition(GeolocationSuccessCallback success, [GeolocationErrorCallback error, GeolocationOptions options]) {
-    jsutil.jsCall(_GET_CURRENT_POSITION, [_wrapFunction(success), error, jsutil.toJSMap(_toMap(options))]);
+    JSUtil.jsCall(_GET_CURRENT_POSITION, [_wrapFunction(success), error, JSUtil.toJSMap(_toMap(options))]);
   }
 
   _toMap(GeolocationOptions options) {
@@ -28,45 +28,45 @@ class CordovaGeolocation extends AbstractGeolocation {
   
   GeolocationSuccessCallback wrapSuccessListener_(PositionEventListener listener) {   
     return (jsPos) => 
-      listener(new PositionEvent(this, new Position(new _Coordinates.from(jsutil.toDartMap(jsPos.coords)), jsutil.getJSValue(jsPos, "timestamp"))));
+      listener(new PositionEvent(this, new Position(new _Coordinates.from(JSUtil.toDartMap(jsPos.coords)), JSUtil.getJSValue(jsPos, "timestamp"))));
   }
   
   GeolocationErrorCallback wrapErrorListener_(PositionErrorEventListener listener) {   
     return (jsPosErr) {
       if (listener !== null)  
-        listener(new PositionErrorEvent(this, new _PositionError.from(jsutil.toDartMap(jsPosErr))));
+        listener(new PositionErrorEvent(this, new _PositionError.from(JSUtil.toDartMap(jsPosErr))));
     };
   }
   
   GeolocationSuccessCallback _wrapFunction(GeolocationSuccessCallback dartFn) {   
     return (jsPos) => 
-        dartFn(new Position(new _Coordinates.from(jsutil.toDartMap(jsPos.coords)), jsutil.getJSValue(jsPos, "timestamp")));
+        dartFn(new Position(new _Coordinates.from(JSUtil.toDartMap(jsPos.coords)), JSUtil.getJSValue(jsPos, "timestamp")));
   }
   
   GeolocationErrorCallback _wrapErrorFunction(GeolocationErrorCallback dartFn) {
-    return (jsPosErr) => dartFn(new _PositionError.from(jsutil.toDartMap(jsPosErr)));
+    return (jsPosErr) => dartFn(new _PositionError.from(JSUtil.toDartMap(jsPosErr)));
   }
 
   watchPosition_(GeolocationSuccessCallback success, [GeolocationErrorCallback error, Map options]) {
-    jsutil.jsCall(_WATCH_POSITION, [success, error, jsutil.toJSMap(options)]);
+    JSUtil.jsCall(_WATCH_POSITION, [success, error, JSUtil.toJSMap(options)]);
   }
   
   void clearWatch_(var watchID) {
-    jsutil.jsCall(_CLEAR_WATCH, [watchID]);
+    JSUtil.jsCall(_CLEAR_WATCH, [watchID]);
   }
   
   void _initJSFunctions() {
-    jsutil.newJSFunction(_GET_CURRENT_POSITION, ["onSuccess", "onError", "opts"], '''
+    JSUtil.newJSFunction(_GET_CURRENT_POSITION, ["onSuccess", "onError", "opts"], '''
       var fnSuccess = function(pos) {onSuccess.\$call\$1(pos);},
           fnError = function(err) {onError.\$call\$1(err);};
       navigator.geolocation.getCurrentPosition(fnSuccess, fnError, opts);
     ''');
-    jsutil.newJSFunction(_WATCH_POSITION, ["onSuccess", "onError", "opts"], '''
+    JSUtil.newJSFunction(_WATCH_POSITION, ["onSuccess", "onError", "opts"], '''
       var fnSuccess = function(pos) {onSuccess.\$call\$1(pos);},
         fnError = function(err) {onError.\$call\$1(err);};
       return navigator.geolocation.watchPosition(fnSuccess, fnError, opts);
     ''');
-    jsutil.newJSFunction(_CLEAR_WATCH, ["watchID"], "navigator.geolocation.clearWatch(watchID);");
+    JSUtil.newJSFunction(_CLEAR_WATCH, ["watchID"], "navigator.geolocation.clearWatch(watchID);");
   }
 }
 

@@ -14,11 +14,11 @@ class CordovaDevice implements Device {
   static final String _ADD_EVENT_LISTENER = "devi.6";
   static final String _INIT_CORDOVA = "devi.7";
   
-  String get name() => jsutil.jsCall(_NAME); //name of this device
+  String get name() => JSUtil.jsCall(_NAME); //name of this device
 //  String get cordovaVersion() => jsutil.jsCall(_CORDOVA); //version of Cordova running on the device
-  String get platform() => jsutil.jsCall(_PLATFORM); //operating system name of this device
-  String get version() => jsutil.jsCall(_VERSION); //operating system version of this device
-  String get uuid() => jsutil.jsCall(_UUID); //uuid of this device
+  String get platform() => JSUtil.jsCall(_PLATFORM); //operating system name of this device
+  String get version() => JSUtil.jsCall(_VERSION); //operating system version of this device
+  String get uuid() => JSUtil.jsCall(_UUID); //uuid of this device
 
   Map<String, Object> services; //services
   
@@ -75,27 +75,27 @@ class CordovaDevice implements Device {
       then();
     };
     //init cordova
-    doWhenReady(() => jsutil.jsCall(_ADD_EVENT_LISTENER, ["deviceready", _onDeviceReady, false]), 
-        () => jsutil.jsCall(_INIT_CORDOVA) !== null, //until window.cordova exists (@see cordova.js)
-        (int msec) {if(msec == 0) print("Fail to load cordova.js!");},
-        10, 180000); //try every 10 ms, try total 180 seconds. 
+    JSUtil.doWhenReady(() => JSUtil.jsCall(_ADD_EVENT_LISTENER, ["deviceready", _onDeviceReady, false]), 
+      () => JSUtil.jsCall(_INIT_CORDOVA) !== null, //until window.cordova exists (@see cordova.js)
+      (int msec) {if(msec == 0) print("Fail to load cordova.js!");},
+      10, 180000); //try every 10 ms, try total 180 seconds. 
   }
   
   void _registerDeviceEvents() {
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["pause", _onPause, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["resume", _onResume, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["online", _onOnline, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["offline", _onOffline, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["backbutton", _onBackButton, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["batterycritical", _onBatteryCritical, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["batterylow", _onBatteryLow, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["batterystatus", _onBatteryStatus, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["menubutton", _onMenuButton, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["searchbutton", _onSearchButton, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["startcallbutton", _onStartCallButton, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["endcallbutton", _onEndCallButton, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["volumedownbutton", _onVolumeDownButton, false]);
-    jsutil.jsCall(_ADD_EVENT_LISTENER, ["volumeupbutton", _onVolumeUpButton, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["pause", _onPause, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["resume", _onResume, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["online", _onOnline, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["offline", _onOffline, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["backbutton", _onBackButton, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["batterycritical", _onBatteryCritical, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["batterylow", _onBatteryLow, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["batterystatus", _onBatteryStatus, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["menubutton", _onMenuButton, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["searchbutton", _onSearchButton, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["startcallbutton", _onStartCallButton, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["endcallbutton", _onEndCallButton, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["volumedownbutton", _onVolumeDownButton, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["volumeupbutton", _onVolumeUpButton, false]);
   }
   
   void _onDeviceReady() {
@@ -165,13 +165,13 @@ class CordovaDevice implements Device {
   }
   
   void _initCordova(String uri) {
-    if (jsutil.jsCall(_INIT_CORDOVA) === null) {
-      jsutil.injectJavaScriptSrc(uri); //load asynchronously
+    if (JSUtil.jsCall(_INIT_CORDOVA) === null) {
+      JSUtil.injectJavaScriptSrc(uri); //load asynchronously
     }
   }
   
   void _initJSFunctions() {
-    jsutil.newJSFunction(_INIT_CORDOVA, null, '''
+    JSUtil.newJSFunction(_INIT_CORDOVA, null, '''
       if (window.cordova) {
         if(window.cordova.require) {
           var channel = window.cordova.require("cordova/channel");
@@ -182,14 +182,14 @@ class CordovaDevice implements Device {
       }
       return window.cordova;
     ''');
-    jsutil.newJSFunction(_ADD_EVENT_LISTENER, ["evtname", "listener", "bubble"], '''
+    JSUtil.newJSFunction(_ADD_EVENT_LISTENER, ["evtname", "listener", "bubble"], '''
       var fn = function() {listener.\$call\$0();};
       document.addEventListener(evtname, fn, bubble);
     ''');
-    jsutil.newJSFunction(_NAME, null, "return device.name;"); //name of this device
-    jsutil.newJSFunction(_CORDOVA, null, "return device.cordova;"); //version of Cordova running on the device
-    jsutil.newJSFunction(_PLATFORM, null, "return device.plaform;"); //operating system name of this device
-    jsutil.newJSFunction(_VERSION, null, "return device.version;"); //operating system version of this device
-    jsutil.newJSFunction(_UUID, null, "return device.uuid;"); //uuid of this device 
+    JSUtil.newJSFunction(_NAME, null, "return device.name;"); //name of this device
+    JSUtil.newJSFunction(_CORDOVA, null, "return device.cordova;"); //version of Cordova running on the device
+    JSUtil.newJSFunction(_PLATFORM, null, "return device.plaform;"); //operating system name of this device
+    JSUtil.newJSFunction(_VERSION, null, "return device.version;"); //operating system version of this device
+    JSUtil.newJSFunction(_UUID, null, "return device.uuid;"); //uuid of this device 
   }
 }

@@ -50,7 +50,7 @@ class MapTypeId implements JSPeer {
   
   toJSObject() { //must make it a lazy initial to fit timing of maps module loading
     if (_jsMapTypeId == null) {
-      _jsMapTypeId = jsutil.jsCall(_GET_BUILT_IN_MAP_TYPE_ID, [_key]);
+      _jsMapTypeId = JSUtil.jsCall(_GET_BUILT_IN_MAP_TYPE_ID, [_key]);
       _builtInTypeIds[_jsMapTypeId] = this;
     }
     return _jsMapTypeId;
@@ -60,7 +60,7 @@ class MapTypeId implements JSPeer {
     if (_builtInTypeIds != null) return;
     _builtInTypeIds = new Map();
     
-    jsutil.newJSFunction(_GET_BUILT_IN_MAP_TYPE_ID, ["key"], "return window.google.maps.MapTypeId[key];");
+    JSUtil.newJSFunction(_GET_BUILT_IN_MAP_TYPE_ID, ["key"], "return window.google.maps.MapTypeId[key];");
   }
   
   static MapTypeId _lookFrom(var jsMapTypeId) { //called by GMaps to look built-in MapTypeId back

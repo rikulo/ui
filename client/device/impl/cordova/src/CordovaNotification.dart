@@ -17,33 +17,33 @@ class CordovaNotification implements XNotification {
   alert(String message, NotificationAlertCallback alertCallback, [String title, String buttonName]) {
     if (title === null) title = "Alert";
     if (buttonName === null) buttonName = "OK";
-    jsutil.jsCall(_ALERT, [message, alertCallback, title, buttonName]);
+    JSUtil.jsCall(_ALERT, [message, alertCallback, title, buttonName]);
   }
   
   confirm(String message, NotificationConfirmCallback confirmCallback, [String title, String buttonLabels]) {
     if (title === null) title = "Confirm";
     if (buttonLabels === null) buttonLabels = "OK,Cancel";
-    jsutil.jsCall(_CONFIRM, [message, confirmCallback, title, buttonLabels]);
+    JSUtil.jsCall(_CONFIRM, [message, confirmCallback, title, buttonLabels]);
   }
   
   beep(int times) {
-    jsutil.jsCall(_BEEP, [times]);
+    JSUtil.jsCall(_BEEP, [times]);
   }
   
   vibrate(int milliseconds) {
-    jsutil.jsCall(_VIBRATE, [milliseconds]);
+    JSUtil.jsCall(_VIBRATE, [milliseconds]);
   }
   
   void _initJSFunctions() {
-    jsutil.newJSFunction(_ALERT, ["message", "alertCallback", "title", "buttonName"], '''
+    JSUtil.newJSFunction(_ALERT, ["message", "alertCallback", "title", "buttonName"], '''
       var fn = function() {alertCallback.\$call\$0();};
       navigator.notification.alert(message, fn, title, buttonName);
     ''');
-    jsutil.newJSFunction(_CONFIRM, ["message", "confirmCallback", "title", "buttonLabels"], '''
+    JSUtil.newJSFunction(_CONFIRM, ["message", "confirmCallback", "title", "buttonLabels"], '''
       var fn = function(btn) {confirmCallback.\$call\$1(btn);};
       navigator.notification.confirm(message, fn, title, buttonLabels);
     ''');
-    jsutil.newJSFunction(_BEEP, ["times"], "navigator.notification.beep(times);");
-    jsutil.newJSFunction(_VIBRATE, ["msecs"], "navigator.notification.vibrate(msecs);");
+    JSUtil.newJSFunction(_BEEP, ["times"], "navigator.notification.beep(times);");
+    JSUtil.newJSFunction(_VIBRATE, ["msecs"], "navigator.notification.vibrate(msecs);");
   }
 }

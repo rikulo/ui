@@ -8,11 +8,11 @@
 class CordovaMediaFile implements MediaFile {
   static final String _GET_FORMAT_DATA = "mf.1";
   
-  String get name() => jsutil.getJSValue(_jsFile, "name");
-  String get fullPath() => jsutil.getJSValue(_jsFile, "fullPath");
-  String get type() => jsutil.getJSValue(_jsFile, "type");
-  Date get date() => jsutil.toDartDate(jsutil.getJSValue(_jsFile, "lastModifiedDate"));
-  int get size() => jsutil.getJSValue(_jsFile, "size");
+  String get name() => JSUtil.getJSValue(_jsFile, "name");
+  String get fullPath() => JSUtil.getJSValue(_jsFile, "fullPath");
+  String get type() => JSUtil.getJSValue(_jsFile, "type");
+  Date get date() => JSUtil.toDartDate(JSUtil.getJSValue(_jsFile, "lastModifiedDate"));
+  int get size() => JSUtil.getJSValue(_jsFile, "size");
   
   var _jsFile; //associated JavaScript object
   
@@ -23,17 +23,17 @@ class CordovaMediaFile implements MediaFile {
   
   /** Returns format information of this Media file */
   void getFormatData(MediaFileDataSuccessCallback success, [MediaFileDataErrorCallback error]) {
-    jsutil.jsCall(_GET_FORMAT_DATA, [_jsFile, _wrapDataSuccess(success), error]);
+    JSUtil.jsCall(_GET_FORMAT_DATA, [_jsFile, _wrapDataSuccess(success), error]);
   }
   
   _wrapDataSuccess(MediaFileDataSuccessCallback dartFn) {
-    reutrn (jsData) => dartFn(new MediaFileData.from(jsutil.toDartMap(jsData)));
+    reutrn (jsData) => dartFn(new MediaFileData.from(JSUtil.toDartMap(jsData)));
   }
   
   static bool _doneInit = false;
   void _initJSFunctions() {
     if (!_doneInit) {
-      jsutil.newJSFunction(_GET_FORMAT_DATA, ["mediaFile", "onSuccess", "onError"], '''
+      JSUtil.newJSFunction(_GET_FORMAT_DATA, ["mediaFile", "onSuccess", "onError"], '''
         var fnSuccess = function(data) {onSuccess.\$call\$1(data);},
             fnError = function() {onError.\$call\$0();};
         mediaFile.getFormatData(fnSuccess, fnError);

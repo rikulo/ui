@@ -52,7 +52,7 @@ class YPlaceFinder {
       if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
         final Document doc = req.responseXML;
         if (doc !== null) {
-          Map resultSet = jsutil.xmlDocToDartMap(doc);
+          Map resultSet = JSUtil.xmlDocToDartMap(doc);
           onSuccess(resultSet);
         } else {
           onSuccess(null);

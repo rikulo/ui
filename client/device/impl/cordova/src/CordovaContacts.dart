@@ -11,7 +11,7 @@ class CordovaContacts implements Contacts {
     _initJSFunctions();
   }
   void find(List<String> fields, ContactsSuccessCallback success, ContactsErrorCallback error, ContactsFindOptions contactOptions) {
-    jsutil.jsCall(_FIND, [jsutil.toJSArray(fields), _wrapContactsFunction(success), _wrapErrorFunction(error), jsutil.toJSMap(_toMap(contactOptions))]);
+    JSUtil.jsCall(_FIND, [JSUtil.toJSArray(fields), _wrapContactsFunction(success), _wrapErrorFunction(error), JSUtil.toJSMap(_toMap(contactOptions))]);
   }
   
   Map _toMap(ContactsFindOptions opts) {
@@ -25,15 +25,15 @@ class CordovaContacts implements Contacts {
     
   //parameter called back from javascript Cordova would be a json object {}, must convert paremeter type back to dart Contact
   _wrapContactsFunction(dartFn) {   
-    return (jsContacts) => dartFn(jsutil.toDartList(jsContacts, (jsContact) => new CordovaContact.from(jsutil.toDartMap(jsContact))));
+    return (jsContacts) => dartFn(JSUtil.toDartList(jsContacts, (jsContact) => new CordovaContact.from(JSUtil.toDartMap(jsContact))));
   }
     
   _wrapErrorFunction(dartFn) {
-    return (jsErr) => dartFn(new ContactError.from(jsutil.toDartMap(jsErr)));
+    return (jsErr) => dartFn(new ContactError.from(JSUtil.toDartMap(jsErr)));
   }
   
   void _initJSFunctions() {
-    jsutil.newJSFunction(_FIND, ["fields", "onSuccess", "onError", "opts"], '''
+    JSUtil.newJSFunction(_FIND, ["fields", "onSuccess", "onError", "opts"], '''
       var fnSuccess = function(contacts) {onSuccess.\$call\$1(contacts);},
           fnError = function(err) {onError.\$call\$1(err);};
       navigator.contacts.find(fields, fnSuccess, fnError, opts);

@@ -48,18 +48,18 @@ class GFeed {
   //load the specified Feed
   void _load(GFeedSuccessCallback onSuccess) {
     if (jsFeed == null) {
-      jsFeed = jsutil.jsCall(_NEW_FEED, [_url]);             
+      jsFeed = JSUtil.jsCall(_NEW_FEED, [_url]);             
     }
-    jsutil.jsCall(_LOAD, [jsFeed, (xmldoc) => onSuccess(xmldoc === null ? null : jsutil.xmlDocToDartMap(xmldoc))]);
+    JSUtil.jsCall(_LOAD, [jsFeed, (xmldoc) => onSuccess(xmldoc === null ? null : JSUtil.xmlDocToDartMap(xmldoc))]);
   }
   
   void _initJSFunctions() {
-    jsutil.newJSFunction(_NEW_FEED, ["url"], '''
+    JSUtil.newJSFunction(_NEW_FEED, ["url"], '''
       var jsFeed = new window.google.feeds.Feed(url);
       jsFeed.setResultFormat(window.google.feeds.Feed.XML_FORMAT);
       return jsFeed;
     ''');
-    jsutil.newJSFunction(_LOAD, ["jsFeed", "callback"], '''
+    JSUtil.newJSFunction(_LOAD, ["jsFeed", "callback"], '''
       jsFeed.load(function(result) {
         if (result.status.code === 200)
             callback.\$call\$1(result.xmlDocument);

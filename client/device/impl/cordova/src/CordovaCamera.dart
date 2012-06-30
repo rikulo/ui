@@ -12,7 +12,7 @@ class CordovaCamera implements Camera {
   }
   
   void getPicture(CameraSuccessCallback success, CameraErrorCallback error, [CameraOptions options]) {
-    jsutil.jsCall(_GET_PICTURE, [success, error, jsutil.toJSMap(_toMap(options))]);
+    JSUtil.jsCall(_GET_PICTURE, [success, error, JSUtil.toJSMap(_toMap(options))]);
   }
   
   Map _toMap(CameraOptions opts) {
@@ -33,7 +33,7 @@ class CordovaCamera implements Camera {
   }
   
   void _initJSFunctions() {
-    jsutil.newJSFunction(_GET_PICTURE, ["onSuccess", "onError", "opts"], '''
+    JSUtil.newJSFunction(_GET_PICTURE, ["onSuccess", "onError", "opts"], '''
       var fnSuccess = function(data) {onSuccess.\$call\$1(data);},
           fnError = function(meg) {onError.\$call\$1(msg);};
       navigator.camera.getPicture(fnSuccess, fnError, opts);

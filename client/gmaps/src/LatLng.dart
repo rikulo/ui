@@ -21,20 +21,20 @@ class LatLng implements JSPeer {
   }
   
   LatLng.fromJSObject(var jsobj) :
-    lat = jsutil.jsCall(_LAT, [jsobj]),
-    lng = jsutil.jsCall(_LNG, [jsobj]),
+    lat = JSUtil.jsCall(_LAT, [jsobj]),
+    lng = JSUtil.jsCall(_LNG, [jsobj]),
     _noWrap = false;
   
   toJSObject() {
-    return jsutil.jsCall(_NEW_LAT_LNG, [lat, lng, _noWrap]);
+    return JSUtil.jsCall(_NEW_LAT_LNG, [lat, lng, _noWrap]);
   }
   
   void _initJSFunction() {
     if (_ready) return;
     _ready = true;
 
-    jsutil.newJSFunction(_NEW_LAT_LNG, ["lat","lng","noWrap"], "return new window.google.maps.LatLng(lat,lng,noWrap);");
-    jsutil.newJSFunction(_LNG, ["latlng"], "return latlng.lng();");
-    jsutil.newJSFunction(_LAT, ["latlng"], "return latlng.lat();");
+    JSUtil.newJSFunction(_NEW_LAT_LNG, ["lat","lng","noWrap"], "return new window.google.maps.LatLng(lat,lng,noWrap);");
+    JSUtil.newJSFunction(_LNG, ["latlng"], "return latlng.lng();");
+    JSUtil.newJSFunction(_LAT, ["latlng"], "return latlng.lat();");
   }
 }
