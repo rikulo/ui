@@ -6,7 +6,7 @@
  * Bridge Dart to Google Maps JavaScript object -- Map; 
  * see https://developers.google.com/maps/documentation/javascript/reference#Map for details.
  */
-class GMap implements JSPeer {
+class GMap implements JSAgent {
   //private JavaScript function
   static final String _NEW_MAP = "gmaps.0";
   static final String _GET_MAP_TYPE_ID = "gmaps.1";
@@ -94,7 +94,7 @@ class GMap implements JSPeer {
 
   //convert Dart Map to JavaScript options
   _toJSOptions(Map mapOptions) {
-    return JSUtil.toJSMap(mapOptions, (v)=>JSUtil.toJSPeer(v));
+    return JSUtil.toJSMap(mapOptions, (v)=>JSUtil.toJSAgent(v));
   }
   
   //init the specified Maps

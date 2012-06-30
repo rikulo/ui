@@ -5,7 +5,7 @@
 /**
  * A Dart Object that represent a JavaScript Object.
  */
-interface JSPeer {
+interface JSAgent {
   /** Returns the peer JavaScriptObject.
    */
   toJSObject();
@@ -28,7 +28,7 @@ class JSUtil {
    * @param jsdate the JavaScript Date
    * @return the converted Dart Date
    */
-  static toDartDate(jsdate) {
+  static Date toDartDate(jsdate) {
     int msecs = jsdate !== null ? jsCall("getTime", [jsdate]) : null;
     return msecs !== null ? new Date.fromMillisecondsSinceEpoch(msecs, false) : null; //use local timezone
   }
@@ -58,7 +58,7 @@ class JSUtil {
    * @param converter the converter function that convert the JavaScript Object into Dart Object.
    * @return the converted Dart List
    */
-  static toDartList(var jsarray, [Function converter = null]) {
+  static List toDartList(var jsarray, [Function converter = null]) {
     if (jsarray !== null) {
       List result = new List();
       if (converter !== null)
@@ -93,7 +93,7 @@ class JSUtil {
    * @param jsmap the JavaScript map
    * @return the converted Dart Map
    */
-  static toDartMap(var jsmap, [Function converter = null]) {
+  static Map toDartMap(var jsmap, [Function converter = null]) {
     if (jsmap !== null) {
       Map result = new Map();
       if (converter !== null)
@@ -107,38 +107,29 @@ class JSUtil {
   
   /** Convert Dart object to its peer JS object.
    */
-  static toJSPeer(var v) {
-    if (v is JSPeer) {
-      JSPeer peer=v; 
-      return peer.toJSObject();
-    } else 
-      return v;
-  }
+  static toJSAgent(var v) => v is JSAgent ? v.toJSObject(): v;
 
   /** Convert an JavaScript XMLDocument to Dart Map/List tree structure.
    * @param xmldoc the JavaScript XMLDocument
    * @return the converted Dart Map/List tree structure.
    */
-  static xmlDocToDartMap(var xmldoc) {
-    return jsCall("_elmToDart", [getJSValue(xmldoc, "documentElement"), toDartMap, 
-      (v) {return jsCall("toType", [v]) === 'array' ? toDartList(v) : v;}]);
-  }
+  static xmlDocToDartMap(var xmldoc)
+  => jsCall("_elmToDart", [getJSValue(xmldoc, "documentElement"), toDartMap, 
+      (v) => jsCall("toType", [v]) == 'array' ? toDartList(v) : v]);
   
   /** Returns the value of the JavaScript object's attribute.
    * @param jsObj JavaScript object
    * @param attr attribute name
    * @return the value of the JavaScript object's attribute.
    */
-  static getJSValue(jsObj, String attr) {
-    return jsCall("get", [jsObj, attr]);
-  }
+  static getJSValue(jsObj, String attr) => jsCall("get", [jsObj, attr]);
   
   /** Sets the value of the JavaScript object's attribute.
    * @param jsObj JavaScript object
    * @param attr attribute name
    * @param value the value
    */
-  static setJSValue(jsObj, String attr, val) {
+  static void setJSValue(jsObj, String attr, val) {
     jsCall("set", [jsObj, attr, val]);
   }
   
@@ -147,9 +138,8 @@ class JSUtil {
    * @param args arguments to be passed into JavaScript function
    * @see #newJSFunction
    */ 
-  static jsCall(String name, [List args = const []]) {
-    return _jsCallX.exec(name, args);
-  }
+  static jsCall(String name, [List args = const []])
+  => _jsCallX.exec(name, args);
 
   /** Create and register a new JavaScript function; can be called from Dart later via #jsCall function.
    * @param name function name
@@ -243,7 +233,7 @@ class JSUtil {
           "_putmap" :  function(jsmap, nm, val) {
             var old = jsmap[nm];
             if (old) {
-              if (_natives.toType(old) === "array") { //same name, use the array
+              if (_natives.toType(old) == "array") { //same name, use the array
                 old.push(val);
               } else { //not array
                 var ary = [old, val];
@@ -277,10 +267,10 @@ class JSUtil {
    * Inject JavaScript src file.
    * @param uri the JavaScript file uri
    */
-  static injectJavaScriptSrc(String uri) {
+  static void injectJavaScriptSrc(String uri) {
     var s = new ScriptElement();
-    s.attributes["type"] = "text/javascript";
-    s.attributes["src"] = uri;
+    s.type = "text/javascript";
+    s.src = uri;
     document.head.nodes.add(s);  
   }
 
@@ -289,9 +279,9 @@ class JSUtil {
    * @param script the JavaScript codes
    * @param remove whether remove the script after running; default true.
    */  
-  static injectJavaScript(String script, [bool remove = true]) {
+  static void injectJavaScript(String script, [bool remove = true]) {
     var s = new ScriptElement();
-    s.attributes["type"] = "text/javascript";
+    s.type = "text/javascript";
     s.text = script;
     document.head.nodes.add(s);
     if (remove) s.remove();
