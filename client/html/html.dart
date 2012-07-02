@@ -15,3 +15,4 @@
 #source("src/HoldGesture.dart");
 #source("src/DragGesture.dart");
 #source("src/Scroller.dart");
+#source("src/JSUtil.dart");

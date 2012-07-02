@@ -12,5 +12,5 @@ class ContactField {
   
   ContactField(this.type, this.value, this.pref);
 
-  ContactField.from(Map field) : this.type = field["type"], this.value = field["value"], this.pref = field["pref"];
+  ContactField.from(Map field) : this(field["type"], field["value"], field["pref"]);
 }

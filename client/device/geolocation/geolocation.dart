@@ -5,15 +5,9 @@
 #library("rikulo:device:geolocation");
 
 #import("dart:html");
-#import("../../device/impl/impl.dart");
 
-#source("src/AbstractGeolocation.dart");
-#source("src/CoordinatesImpl.dart");
 #source("src/Geolocation.dart");
 #source("src/GeolocationOptions.dart");
 #source("src/Position.dart");
-#source("src/PositionErrorEvent.dart");
-#source("src/PositionErrorImpl.dart");
 #source("src/PositionEvent.dart");
-#source("src/PositionEventListenerList.dart");
 #source("src/PositionEvents.dart");

@@ -9,8 +9,8 @@
 
 #import("../app/app.dart");
 #import("../util/util.dart");
-#import("../cordova/cordova.dart");
-#import("../device/impl/impl.dart");
+#import("impl/cordova/cordova.dart");
+
 #import("accelerometer/accelerometer.dart");
 #import("camera/camera.dart");
 #import("capture/capture.dart");
@@ -21,4 +21,3 @@
 #import("notification/notification.dart");
 
 #source("src/Device.dart");
-

@@ -9,7 +9,7 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
   final View _view;
   CSSStyleDeclaration _pcss;
 
-  CSSStyleDeclarationImpl(this._view) {
+  CSSStyleDeclarationImpl(View this._view) {
   }
 
   CSSStyleDeclaration get _css() {

@@ -23,10 +23,10 @@ interface Contact {
   
   /** Remove this Contact from the device's contacts list.
    */
-  void remove(ContactSuccessCallback onSuccess, ContactErrorCallback onError);
+  void remove(ContactSuccessCallback success, ContactErrorCallback error);
   
   /** Saves a new contact to the device contacts list; or updates an existing contact if exists the id.
    */
-  void save(ContactSuccessCallback onSuccess, ContactErrorCallback onError);
+  void save(ContactSuccessCallback success, ContactErrorCallback error);
 }
 

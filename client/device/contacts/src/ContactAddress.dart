@@ -16,11 +16,10 @@ class ContactAddress {
   /** The country or area name */
   String country;
   
-  ContactAddress(this.pref, this.type, this.formatted, this.streetAddress, this.locality,
-    this.region, this.postalCode, this.country);
+  ContactAddress(this.pref, this.type, this.formatted, this.streetAddress,
+    this.locality, this.region, this.postalCode, this.country);
   
-  ContactAddress.from(Map addr) : this.pref = addr["pref"], this.type = addr["type"], 
-    this.formatted = addr["formatted"], this.streetAddress = addr["streetAddress"], 
-    this.locality = addr["locality"], this.region = addr["region"], 
-    this.postalCode = addr["postalCode"], this.country = addr["country"];
+  ContactAddress.from(Map addr) :
+    this(addr["pref"], addr["type"], addr["formatted"], addr["streetAddress"], 
+    addr["locality"], addr["region"], addr["postalCode"], addr["country"]);
 }

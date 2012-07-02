@@ -19,6 +19,6 @@ interface MediaFile {
   int size;
   
   /** Returns format information of this Media file */
-  void getFormatData(MediaFileDataSuccessCallback onSuccess, [MediaFileDataErrorCallback onError]);
+  void getFormatData(MediaFileDataSuccessCallback success, [MediaFileDataErrorCallback error]);
 }
 

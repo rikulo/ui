@@ -18,13 +18,13 @@ interface Capture {
   /**
   * Launch device audio recording application to record audio clips.
   */
-  void captureAudio(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, [CaptureAudioOptions options]);
+  void captureAudio(CaptureSuccessCallback success, CaptureErrorCallback error, [CaptureAudioOptions options]);
   /**
    * Launch camera application to capture image files.
    */
-  void captureImage(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, [CaptureImageOptions options]);
+  void captureImage(CaptureSuccessCallback success, CaptureErrorCallback error, [CaptureImageOptions options]);
   /**
   * Launch device video recording application to record video clips.
   */
-  void captureVideo(CaptureSuccessCallback onSuccess, CaptureErrorCallback onError, [CaptureVideoOptions options]);
+  void captureVideo(CaptureSuccessCallback success, CaptureErrorCallback error, [CaptureVideoOptions options]);
 }

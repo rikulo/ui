@@ -12,7 +12,8 @@ class DOMQuery {
 
   factory DOMQuery(var v) {
     v = v is View ? v.node: v is String ? document.query(v): v;
-    return v is Window ? new _WindowQuery._init(v): new DOMQuery._init(v);
+    return v is Window ? new _WindowQuery(v):
+      v !== null ? new DOMQuery._init(v): new _NullQuery();
   }
 
   DOMQuery._init(this.node) {
@@ -101,9 +102,38 @@ class DOMQuery {
    */
   int get paddingBottom() => CSS.intOf(computedStyle.paddingBottom);
 
+  /** Measure the size of the given text.
+   *
+   * If [node] is not null, the size will be based on it CSS style and
+   * the optinal [style]. If [node] is null, the size is based only
+   * only [style].
+   *
+   *    new DOMQuery(node_text_will_be_assigned).measureText(s);
+   *    new DOMQuery(null).measureText(s, style);
+   */
+  Size measureText(String text, [CSSStyleDeclaration style]) {
+    if (_txtdiv === null) {
+      _txtdiv = new DivElement();
+      _txtdiv.style.cssText =
+        "left:-1000px;position:absolute;visibility:hidden;border:none";
+      document.body.nodes.add(_txtdiv);
+    }
+
+    final CSSStyleDeclaration dst = _txtdiv.style;
+    _txtdiv.innerHTML = text;
+    if (node !== null)
+      CSS.cpTextStyles(dst, window.$dom_getComputedStyle(node, ""));
+    if (style !== null)
+      CSS.cpTextStyles(dst, style);
+
+    final Size sz = new Size(_txtdiv.$dom_offsetWidth, _txtdiv.$dom_offsetHeight);
+    _txtdiv.innerHTML = "";
+    return sz;
+  }
+  static Element _txtdiv;
 }
 class _WindowQuery extends DOMQuery {
-  _WindowQuery._init(var v): super._init(v) {}
+  _WindowQuery(var v): super._init(v) {}
 
   int get innerWidth() => node.innerWidth;
   int get innerHeight() => node.innerHeight;
@@ -115,4 +145,12 @@ class _WindowQuery extends DOMQuery {
   Offset get offset() => new Offset(0, 0);
   Offset get documentOffset() => offset;
   bool isDescendantOf(Element parent) => false;
+  CSSStyleDeclaration get computedStyle() => new CSSStyleDeclaration();
+}
+class _NullQuery extends _WindowQuery {
+  _NullQuery(): super(null);
+  int get innerWidth() => 0;
+  int get innerHeight() => 0;
+  int get outerWidth() => 0;
+  int get outerHeight() => 0;
 }

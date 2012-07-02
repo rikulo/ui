@@ -6,6 +6,7 @@ body {
   -webkit-text-size-adjust: none;
   -moz-text-size-adjust: none;
   text-size-adjust: none;
+  font: normal 12px "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
 .rikulo * {
@@ -22,7 +23,7 @@ body {
 }
 
 .v-button {
-  font: bold 12px helvetica, sans-serif
+  font-weight: bold;
 }
 .v-ScrollView {
   overflow: hidden;

@@ -16,6 +16,6 @@ class MediaFileData {
   
   MediaFileData(this.codecs, this.bitrate, this.height, this.width, this.duration);
   
-  MediaFileData.from(Map data) : this.codecs = data["codecs"], this.bitrate = data["bitrate"],
-      this.height = data["height"], this.width = data["width"], this.duration = data["duration"];
+  MediaFileData.from(Map data) :
+    this(data["codecs"], data["bitrate"], data["height"], data["width"], data["duration"]);
 }

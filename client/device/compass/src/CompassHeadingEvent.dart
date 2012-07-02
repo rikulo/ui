@@ -2,16 +2,22 @@
 //History: Fri, May 11, 2012  09:12:22 AM
 // Author: henrichen
 
-class CompassHeadingEvent extends DeviceEvent {
-  CompassHeadingEvent(DeviceEventTarget target, CompassHeading data) :
-    super(target), magneticHeading = data.magneticHeading, trueHeading = data.trueHeading,
-    headingAccuracy = data.headingAccuracy, timestamp = data.timestamp;
+class CompassHeadingEvent {
+  CompassHeadingEvent(Compass this.target, CompassHeading this.heading);
 
-  final double magneticHeading;
-  final double trueHeading;
-  final double headingAccuracy;
-  final int timestamp;
+  final Compass target;
+  final CompassHeading heading;
+  /** Returns the time stamp. */
+  int get timeStamp() => heading.timeStamp;
+}
+
+class CompassHeadingErrorEvent {
+  CompassHeadingErrorEvent(Compass this.target);
+
+  final Compass target;
 }
 
 /** CompassHeadingEvent listener function */
 typedef void CompassHeadingEventListener(CompassHeadingEvent event);
+/** CompassHeadingErrorEvent listener function */
+typedef void CompassHeadingErrorEventListener(CompassHeadingErrorEvent event);

@@ -2,23 +2,36 @@
 //History: Wed, May 2, 2012  12:32:56 PM
 // Author: henrichen
 
+/** The device.
+ */
 interface Device {
-  String name; //name of this device
-  String cordovaVersion; //version of Cordove running on the device
-  String platform; //operating system name of this device
-  String version; //operating system version of this device
-  String uuid; //uuid of this device
+  /** The name of this device */
+  String get name();
+  /** The version of Cordove running on the device. */
+//  String get cordovaVersion();
+  /** The operating system name of this device. */
+  String get platform();
+  /** The operating system version of this device. */
+  String get version();
+  /** The uuid of this device. */
+  String get uuid();
 
-  Task readyFunction; //function called when the device is ready
-  
-  final Accelerometer accelerometer; //accelerometer of this device
-  final Camera camera; //camera of this device
-  final Capture capture; //capture
-  final Compass compass; //compass of this device
-  final Connection connection; //connection of this device
-  final Contacts contacts; //contacts of this device
-  final XGeolocation geolocation; //geolocation of this device
-  final XNotification notification; //notification facility of this device
+  /** The accelerometer of this device. */
+  Accelerometer get accelerometer();
+  /** The camera of this device.*/
+  Camera get camera();
+  /** The capture. */
+  Capture get capture();
+  /** The compass of this device. */
+  Compass get compass();
+  /** The connection of this device. */
+  Connection get connection();
+  /** The contacts of this device. */
+  Contacts get contacts();
+  /** The geolocation of this device. */
+  XGeolocation get geolocation();
+  /** The notification facility of this device. */
+  XNotification get notification();
 }
 
 /** Enable the device accesibility.
@@ -32,10 +45,11 @@ interface Device {
  *
  * This method can be called multiple times, but the second invocation
  * will be ignored.
- * @param serviceURI the URI of the device access service uri; e.g. "cordova.js".
- * @param serviceNames the name of the services you want to enable; e.g. "accelerometer", 
- *        "camera", "capture", "compass", "connection", "contacts", "geolocation", "notification"; 
- *        default enable all device services. 
+ *
+ * + [serviceURI] the URI of the device access service uri; e.g. "cordova.js".
+ * + [serviceNames] the name of the services you want to enable; e.g. "accelerometer", 
+ * "camera", "capture", "compass", "connection", "contacts", "geolocation", "notification"; 
+ *  default enable all device services. 
  */
 void enableDeviceAccess([String serviceURI = "cordova.js", 
   List<String> serviceNames = const ["accelerometer", "camera", "capture", "compass", "connection", "contacts", "geolocation", "notification"]]) {

@@ -72,6 +72,19 @@ class CSS {
   }
   static final RegExp _reNum = const RegExp(@"([-]?[0-9]+)");
 
+  static void cpTextStyles(CSSStyleDeclaration dst, CSSStyleDeclaration src) {
+    for (int j = _txtStyles.length; --j >= 0;) {
+      final String nm = _txtStyles[j];
+      final String val = src.getPropertyValue(nm);
+      dst.setProperty(nm, val !== null ? val: "");
+    }
+  }
+  static final _txtStyles = const [
+      'font-family', 'font-size', 'font-weight', 'font-style',
+      'letter-spacing', 'line-height', 'text-align', 'text-decoration',
+      'text-indent', 'text-shadow', 'text-transform', 'text-overflow',
+      'direction', 'word-spacing', 'white-space'];
+
   /** Returns the corrected name for the given CSS property name.
    * For example, `css('text-size-adjust')` will return
    * `'-webkit-text-size-adjust'` if the browser is Webkit-based.

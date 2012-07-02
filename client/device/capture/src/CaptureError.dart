@@ -9,6 +9,6 @@ class CaptureError {
   
   CaptureError(this.code);
   
-  CaptureError.from(Map err) : code = err["code"];
+  CaptureError.from(Map err) : this(err["code"]);
 }
 

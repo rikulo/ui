@@ -16,9 +16,10 @@ class ContactName {
   /** The Contact's suffix */
   String honorificSuffix;
   
-  ContactName(this.formatted, this.familyName, this.givenName, this.middleName, this.honorificPrefix, this.honorificSuffix);
+  ContactName(this.formatted, this.familyName, this.givenName,
+    this.middleName, this.honorificPrefix, this.honorificSuffix);
   
-  ContactName.from(Map name) : this.formatted = name["formatted"], this.familyName = name["familyName"],
-      this.givenName = name["givenName"], this.middleName = name["middleName"], 
-      this.honorificPrefix = name["honorificPrefix"], this.honorificSuffix = name["honorificSuffix"];
+  ContactName.from(Map name) :
+    this(name["formatted"], name["familyName"], name["givenName"],
+      name["middleName"], name["honorificPrefix"], name["honorificSuffix"]);
 }

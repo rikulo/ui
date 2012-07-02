@@ -17,5 +17,5 @@ class ContactError {
   
   ContactError(this.code);
   
-  ContactError.from(Map err) : code = err["code"];
+  ContactError.from(Map err) : this(err["code"]);
 }

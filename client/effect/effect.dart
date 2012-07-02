@@ -12,5 +12,3 @@
 #source("src/Motion.dart");
 #source("src/MotionAction.dart");
 #source("src/EasingMotion.dart");
-#source("src/EffectFunction.dart");
-#source("src/Effect.dart");

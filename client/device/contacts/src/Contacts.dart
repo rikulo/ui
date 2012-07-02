@@ -18,7 +18,7 @@ interface Contacts {
   * @param fields specified the fields name in Contact you want to query back; return Contact id only if empty; return all fields if provide ["*"].
   * @param contactOptions the filter string to apply the query.
   */
-  void find(List<String> fields, ContactsSuccessCallback onSuccess, ContactsErrorCallback onError, ContactsFindOptions contactOptions);
+  void find(List<String> fields, ContactsSuccessCallback success, ContactsErrorCallback error, ContactsFindOptions contactOptions);
 }
 
 
