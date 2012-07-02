@@ -59,7 +59,13 @@ typedef void MotionCallback(int time, int elapsed, int paused);
  */
 typedef bool MotionRunner(int time, int elapsed, int paused);
 
-Animator _animator = new Animator();
+Animator _animator;
+
+Animator _getAnimator() {
+  if (_animator == null)
+    _animator = new Animator();
+  return _animator;
+}
 
 class _Motion implements Motion {
   
@@ -69,18 +75,15 @@ class _Motion implements Motion {
   
   final MotionRunner _runner;
   final MotionCallback _initCB, _endCB;
-  AnimatorTask _animate;
+  AnimatorTask _task;
   int _state = _MOTION_STATE_INIT;
   int _initTime, _pausedTimestamp, _pausedTime = 0;
   var data;
   
-  static _defaultAnimator(Animator a) => a != null ? a : new Animator();
-  
-  _Motion([Animator animator, MotionRunner run, MotionCallback init, 
-           MotionCallback end, bool autorun = true]) : 
-             _runner = run, _initCB = init, _endCB = end {
+  _Motion([MotionRunner run, MotionCallback init, MotionCallback end, bool autorun = true]) : 
+    _runner = run, _initCB = init, _endCB = end {
     
-    _animate = (int time, int elapsed) {
+    _task = (int time, int elapsed) {
       if (_state == _MOTION_STATE_INIT) {
         _initTime = time;
         onInit(time, elapsed);
@@ -110,7 +113,7 @@ class _Motion implements Motion {
       this.run();
   }
   
-  Animator get animator() => _animator;
+  Animator get animator() => _getAnimator();
   
   int get initTime() => _initTime;
   
@@ -156,7 +159,7 @@ class _Motion implements Motion {
         _state = _MOTION_STATE_RUNNING; // resume
         break;
       case _MOTION_STATE_INIT:
-        _animator.add(this._animate);
+        _getAnimator().add(this._task);
     }
   }
   
@@ -167,7 +170,7 @@ class _Motion implements Motion {
   }
   
   void stop() {
-    _animator.remove(this._animate);
+    _getAnimator().remove(this._task);
     _initTime = _pausedTimestamp = null;
     _pausedTime = 0;
     _state = _MOTION_STATE_INIT;
