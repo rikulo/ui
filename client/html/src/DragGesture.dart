@@ -33,7 +33,11 @@ interface MovementState {
    * (since `start` was called).
    */
   Offset get delta();
-
+  
+  /** The current estimated velocity of movement.
+   */
+  Offset get velocity();
+  
   /** The element that the users touches at the beginning.
    */
   Element get touched();
@@ -115,7 +119,7 @@ interface DragGesture default _DragGesture {
 
 class _DragGestureState implements DragGestureState {
   final _DragGesture _gesture;
-  final Offset _ownerOfs, _initPgOfs, _delta;
+  final Offset _ownerOfs, _initPgOfs, _delta, _velocity;
   Offset _ofs, _initTxOfs;
   Rectangle _range;
   Element _dragged, _touched, _pending;
@@ -125,6 +129,7 @@ class _DragGestureState implements DragGestureState {
   _DragGestureState(DragGesture gesture, int pageX, int pageY):
   _gesture = gesture, _delta = new Offset(0, 0),
   _initPgOfs = new Offset(pageX, pageY),
+  _velocity = new Offset(0, 0),
   _ownerOfs = new DOMQuery(gesture.owner).documentOffset {
     _ofs = _initPgOfs - _ownerOfs;
   }
@@ -132,6 +137,7 @@ class _DragGestureState implements DragGestureState {
   DragGesture get gesture() => _gesture;
   Offset get offset() => _ofs;
   Offset get delta() => _delta;
+  Offset get velocity() => _velocity;
   bool get moved() => _moved;
 
   Element get dragged() => _dragged;
@@ -159,7 +165,8 @@ abstract class _DragGesture implements DragGesture {
   final int _movement;
   _DragGestureState _state;
   final bool _transform;
-
+  int _snapX, _snapY, _snapTime;
+  
   factory _DragGesture(Element owner, [Element handle,
     bool transform=false, AsRectangle range, int movement=-1,
     DragGestureStart start, DragGestureMove end,
@@ -192,7 +199,7 @@ abstract class _DragGesture implements DragGesture {
   void _stop() {
     _state = null;
   }
-  void _touchStart(Element touched, int pageX, int pageY) {
+  void _touchStart(Element touched, int pageX, int pageY, int time) {
     _stop();
 
     _state = new _DragGestureState(this, pageX, pageY);
@@ -213,7 +220,7 @@ abstract class _DragGesture implements DragGesture {
     _state._initTxOfs = _transform ? 
       CSS.offset3dOf(dragged.style.transform): new DOMQuery(dragged).offset;
   }
-  void _touchMove(int pageX, int pageY) {
+  void _touchMove(int pageX, int pageY, int time) {
     if (_state !== null) {
       final Offset initPgOfs = _state._initPgOfs;
       if (_state._pending !== null) {
@@ -222,13 +229,33 @@ abstract class _DragGesture implements DragGesture {
         || (v = pageY - initPgOfs.y) > _movement || v < -_movement)
           _activate();
       }
+      if (_state !== null && time != null) {
+        int diffTime;
+        if (_snapTime != null) {
+          // TODO: shall be zero if waited too long
+          diffTime = time - _snapTime;
+          _state._velocity.x = diffTime > 250 ? 0 : (pageX - _snapX) / diffTime;
+          _state._velocity.y = diffTime > 250 ? 0 : (pageY - _snapY) / diffTime;
+        }
+        if (_snapTime == null || diffTime > 250) {
+          _snapTime = time;
+          _snapX = pageX;
+          _snapY = pageY;
+        }
+      }
       if (_state._touched !== null) {
         _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
           pageX - initPgOfs.x, pageY - initPgOfs.y, _moving); 
       }
     }
   }
-  void _touchEnd(int pageX, int pageY) {
+  void _touchEnd(int pageX, int pageY, int time) {
+    if (_state !== null && _snapTime != null && time != null) {
+      int diffTime = time - _snapTime;
+      _state._velocity.x = diffTime > 250 ? 0 : (pageX - _snapX) / diffTime;
+      _state._velocity.y = diffTime > 250 ? 0 : (pageY - _snapY) / diffTime;
+      _snapTime = _snapX = _snapY = null;
+    }
     if (_state !== null && _state._touched !== null) {
       _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
         pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, _end); 
@@ -255,7 +282,7 @@ abstract class _DragGesture implements DragGesture {
       _state._dragged.style.top = CSS.px(move.y);
     }
   }
-  Offset _constraint(int x, y) {
+  Offset _constraint(int x, y) { // TODO: refactor: just use Rectangle#snap() and deal with transform
     final Rectangle range = _state.range;
     if (range !== null) {
       if (range.width == 0) x = _state._initTxOfs.x;
@@ -293,15 +320,15 @@ class _TouchDragGesture extends _DragGesture {
     final ElementEvents on = handle.on;
     on.touchStart.add(_elStart = (TouchEvent event) {
       if (event.touches.length > 1)
-        _touchEnd(event.pageX, event.pageY); //ignore multiple fingers
+        _touchEnd(event.pageX, event.pageY, event.timeStamp); //ignore multiple fingers
       else
-        _touchStart(event.target, event.pageX, event.pageY);
+        _touchStart(event.target, event.pageX, event.pageY, event.timeStamp);
     });
     on.touchMove.add(_elMove = (TouchEvent event) {
-      _touchMove(event.pageX, event.pageY);
+      _touchMove(event.pageX, event.pageY, event.timeStamp);
     });
     on.touchEnd.add(_elEnd = (TouchEvent event) {
-      _touchEnd(event.pageX, event.pageY);
+      _touchEnd(event.pageX, event.pageY, event.timeStamp);
     });
   }
   void _unlisten() {
@@ -337,15 +364,15 @@ class _MouseDragGesture extends _DragGesture {
     _captured = true;
     final ElementEvents on = document.on;
     on.mouseMove.add(_elMove = (MouseEvent event) {
-      _touchMove(event.pageX, event.pageY);
+      _touchMove(event.pageX, event.pageY, event.timeStamp);
     });
     on.mouseUp.add(_elEnd = (MouseEvent event) {
-      _touchEnd(event.pageX, event.pageY);
+      _touchEnd(event.pageX, event.pageY, event.timeStamp);
     });
   }
   void _listen() {
     handle.on.mouseDown.add(_elStart = (MouseEvent event) {
-      _touchStart(event.target, event.pageX, event.pageY);
+      _touchStart(event.target, event.pageX, event.pageY, event.timeStamp);
       _capture();
     });
   }

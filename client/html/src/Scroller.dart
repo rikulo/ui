@@ -52,7 +52,7 @@ interface Scroller default _Scroller {
 class _ScrollerState implements ScrollerState {
   final _Scroller _scroller;
   final Element _touched;
-  final Offset _ownerOfs, _initPgOfs, _delta;
+  final Offset _ownerOfs, _initPgOfs, _delta, _velocity;
   Offset _ofs, _initTxOfs;
   Size _totalSize; //cached size
   var data;
@@ -60,6 +60,7 @@ class _ScrollerState implements ScrollerState {
 
   _ScrollerState(_Scroller scroller, Element this._touched, int pageX, int pageY):
   _scroller = scroller, _delta = new Offset(0, 0),
+  _velocity = new Offset(0, 0),
   _initPgOfs = new Offset(pageX, pageY),
   _ownerOfs = new DOMQuery(scroller.owner).documentOffset {
     _ofs = _initPgOfs - _ownerOfs;
@@ -68,6 +69,7 @@ class _ScrollerState implements ScrollerState {
   Scroller get scroller() => _scroller;
   Offset get offset() => _ofs;
   Offset get delta() => _delta;
+  Offset get velocity() => _velocity;
   Element get touched() => _touched;
   bool get moved() => _moved;
 
