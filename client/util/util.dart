@@ -18,4 +18,3 @@
 #source("src/Vector.dart");
 #source("src/Size.dart");
 #source("src/Utilities.dart");
-#source("src/JSUtil.dart");

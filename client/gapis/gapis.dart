@@ -5,7 +5,7 @@
 #library("rikulo:gapis");
 
 #import("dart:html");
-#import("../util/util.dart");
+#import("../html/html.dart");
 
 #source("src/LoadableModule.dart");
 #source("src/GLoader.dart");

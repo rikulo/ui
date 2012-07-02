@@ -122,27 +122,15 @@ class DOMQuery {
     final CSSStyleDeclaration dst = _txtdiv.style;
     _txtdiv.innerHTML = text;
     if (node !== null)
-      _cpTxtStyles(dst, window.$dom_getComputedStyle(node, ""));
+      CSS.cpTextStyles(dst, window.$dom_getComputedStyle(node, ""));
     if (style !== null)
-      _cpTxtStyles(dst, style);
+      CSS.cpTextStyles(dst, style);
 
     final Size sz = new Size(_txtdiv.$dom_offsetWidth, _txtdiv.$dom_offsetHeight);
     _txtdiv.innerHTML = "";
     return sz;
   }
-  static void _cpTxtStyles(CSSStyleDeclaration dst, CSSStyleDeclaration src) {
-    for (int j = _txtStyles.length; --j >= 0;) {
-      final String nm = _txtStyles[j];
-      final String val = src.getPropertyValue(nm);
-      dst.setProperty(nm, val !== null ? val: "");
-    }
-  }
   static Element _txtdiv;
-  static final _txtStyles = const [
-      'font-family', 'font-size', 'font-weight', 'font-style',
-      'letter-spacing', 'line-height', 'text-align', 'text-decoration',
-      'text-indent', 'text-shadow', 'text-transform', 'text-overflow',
-      'direction', 'word-spacing', 'white-space'];
 }
 class _WindowQuery extends DOMQuery {
   _WindowQuery(var v): super._init(v) {}

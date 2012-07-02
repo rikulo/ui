@@ -6,6 +6,7 @@
 
 #import("dart:html");
 #import("../util/util.dart");
+#import("../html/html.dart");
 #import("../gapis/gapis.dart");
 
 #source("src/YPlaceFinder.dart");
