@@ -24,7 +24,7 @@ class EasingMotion extends _Motion {
     Animator animator, MotionRunner run, MotionCallback init, 
     MotionCallback end, bool autorun = true]) : 
     this.duration = duration, this.easing = easing, 
-    super(animator, run, init, end, autorun);
+    super(run, init, end, autorun);
   
   /**
    * 
@@ -42,6 +42,14 @@ class EasingMotion extends _Motion {
       return false;
     applyMotionAction(getEasingValue(curr / duration));
     return curr < duration;
+  }
+  
+  /**
+   * Skip to the end of motion.
+   */
+  void skip() {
+    super.stop();
+    applyMotionAction(1);
   }
   
 }
