@@ -9,6 +9,7 @@
 #import("../view/view.dart");
 #import("../util/util.dart");
 
+#source("src/Animator.dart");
 #source("src/Browser.dart");
 #source("src/CSS.dart");
 #source("src/DOMQuery.dart");

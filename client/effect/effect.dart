@@ -8,7 +8,6 @@
 #import("../html/html.dart");
 #import("../util/util.dart");
 
-#source("src/Animator.dart");
 #source("src/Motion.dart");
 #source("src/MotionAction.dart");
 #source("src/EasingMotion.dart");
