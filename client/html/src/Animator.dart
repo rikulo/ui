@@ -15,10 +15,10 @@
  * + [elapsed] is the number of milliseconds elapsed since the previous
  * invocation.
  */
-typedef bool Animate(int time, int elapsed);
+typedef bool AnimatorTask(int time, int elapsed);
 
 /**
- * The animator used to play [Animate].
+ * The animator used to play [AnimatorTask].
  */
 interface Animator default _Animator {
   Animator();
@@ -26,21 +26,21 @@ interface Animator default _Animator {
   /** Adds an animation callback, such that it will be
    * called periodically.
    */
-  void add(Animate animate);
+  void add(AnimatorTask animate);
   /** Removes this animation callback.
    *
    * It is called automatically, if the callback returns false.
    */
-  void remove(Animate animate);
+  void remove(AnimatorTask animate);
   /** Returns a readonly collection of all animation callbacks.
    */
-  Collection<Animate> get animates();
+  Collection<AnimatorTask> get animates();
 }
 
 class _Animator implements Animator {
-  final List<Animate> _anims;
+  final List<AnimatorTask> _anims;
   //Used to hold deleted animation callback when callbacks are processed
-  List<Animate> _tmpRemoved;
+  List<AnimatorTask> _tmpRemoved;
   Function _callback;
   int _prevTime;
 
@@ -74,18 +74,18 @@ class _Animator implements Animator {
     _tmpRemoved = new List();
   }
   void _afterCallback() {
-    final List<Animate> removed = _tmpRemoved;
+    final List<AnimatorTask> removed = _tmpRemoved;
     _tmpRemoved = null;
 
-    for (final Animate animate in removed) {
+    for (final AnimatorTask animate in removed) {
       remove(animate);
     }
   }
   bool _isRemoved(int index) {
     if (!_tmpRemoved.isEmpty()) {
-      final Animate animate = _anims[index];
+      final AnimatorTask animate = _anims[index];
       int cnt = 0;
-      for (final Animate anim in _tmpRemoved) {
+      for (final AnimatorTask anim in _tmpRemoved) {
         if (anim == animate)
           ++cnt;
       }
@@ -100,21 +100,21 @@ class _Animator implements Animator {
     return false;
   }
 
-  void add(Animate animate) {
+  void add(AnimatorTask animate) {
     _anims.add(animate);
     if (_anims.length == 1) {
       _prevTime = _now();
       window.requestAnimationFrame(_callback);
     }
   }
-  void remove(Animate animate) {
+  void remove(AnimatorTask animate) {
     if (_tmpRemoved !== null) {
       _tmpRemoved.add(animate); //handle it later
     } else {
       ListUtil.remove(_anims, animate);
     }
   }
-  Collection<Animate> get animates() => _anims;  //TODO: readonly
+  Collection<AnimatorTask> get animates() => _anims;  //TODO: readonly
 
   static int _now() => new Date.now().millisecondsSinceEpoch;
 }

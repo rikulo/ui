@@ -3,7 +3,7 @@
 //Author: simon
 
 /**
- * The control object of an Animate, with a built-in life cycle and control APIs.
+ * The control object of an [AnimatorTask], with a built-in life cycle and control APIs.
  */
 interface Motion default _Motion {
   
@@ -55,7 +55,7 @@ interface Motion default _Motion {
 typedef void MotionCallback(int time, int elapsed, int paused);
 
 /**
- * The callback function used as the Animate callback in Motion.
+ * The callback function used as the [AnimatorTask] callback in Motion.
  */
 typedef bool MotionRunner(int time, int elapsed, int paused);
 
@@ -69,7 +69,7 @@ class _Motion implements Motion {
   
   final MotionRunner _runner;
   final MotionCallback _initCB, _endCB;
-  Animate _animate;
+  AnimatorTask _animate;
   int _state = _MOTION_STATE_INIT;
   int _initTime, _pausedTimestamp, _pausedTime = 0;
   var data;
