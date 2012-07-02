@@ -15,7 +15,7 @@
 #source("src/AbstractList.dart");
 #source("src/RunOnceQueue.dart");
 #source("src/Offset.dart");
-#source("src/Vector.dart");
+#source("src/VectorUtil.dart");
 #source("src/Size.dart");
 #source("src/Utilities.dart");
 #source("src/JSUtil.dart");
