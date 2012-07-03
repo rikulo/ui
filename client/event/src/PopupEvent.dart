@@ -21,7 +21,7 @@ class PopupEvent extends ViewEvent {
    * If null, it means all pop ups shall be closed.
    */
   PopupEvent(var source, [String type="popup"]):
-  super(null, type), _source = source {
+  super(type), _source = source {
   }
   /** Returns the UI object triggers this event.
    * It is either a view or a DOM element.

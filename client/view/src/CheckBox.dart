@@ -93,7 +93,7 @@ class CheckBox extends TextView implements Input<bool> {
   /** Callback when the user changes [value].
    */
   void onChange_() {
-    sendEvent(new ChangeEvent(this, _value));
+    sendEvent(new ChangeEvent(_value));
   }
 
   //@Override

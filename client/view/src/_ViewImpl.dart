@@ -74,7 +74,7 @@ class _ViewImpl {
   static DOMEventDispatcher _domEvtDisp(String type) {
     return (View target) {
       return (Event event) {
-        target.sendEvent(new ViewEvent.dom(target, event, type: type));
+        target.sendEvent(new ViewEvent.dom(event, type: type, target: target));
       };
     };
   }
