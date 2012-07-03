@@ -22,7 +22,7 @@ class CustomLayoutDemo extends Activity {
   void _move(int left, int top) {
     anchor.left = left - 35;
     anchor.top = top - 35;
-    anchor.requestLayout();
+    anchor.requestLayout(descendantOnly: true); //only views that depend on anchor (excluding anchor)
   }
 
   void _createViews() {

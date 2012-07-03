@@ -565,7 +565,7 @@ class View implements Hashable {
     ++_mntCnt;
     try {
       mount_();
-      requestLayout();
+      requestLayout(descendantOnly: true);
     } finally {
       --_mntCnt;
     }
@@ -680,21 +680,37 @@ class View implements Hashable {
     }
   }
 
-  /** Called when something has changed and caused that the layout of this
-   * view is changed.
+  /** Requests the layout manager to re-layout this view.
+   * If a view's dimension has been changed and the view's layout was handled
+   * by the layout manager, you usually need to re-layout it.
+   * It can be done by invoking [requestLayout].
+   * For example, if you change the content of [TextView], you can
+   * can invoke [requestLayout] and then the layout manager will re-position it later.
    *
-   * Notice that, for better performance, the layout will be taken place
+   * Of course, if you positioned the view manually (by setting [left], [top], [width]
+   * and [height] explicitly), you don't need to invoke this method. Rather, you
+   * have to handle it yourself, if necessary.
+   *
+   * If you want to layout only the child views and their descendants, you can specify
+   * [descendantOnly] to true.
+   * The performance is better if this view is part of a sophisticated layout structure,
+   * since the layout manager won't need to adjust this view's position.
+   *
+   * Notice that, for better performance, the layout won't be taken place
    *immediately. Rather, it is queued and all queued views are handled
    * together later.
    *
    * If you'd like to handle all queued layouts, you can invoke
    * [ViewUtil.flushRequestedLayouts].
    */
-  void requestLayout([bool immediate=false]) {
+  void requestLayout([bool immediate=false, bool descendantOnly=false]) {
+    //Implementation Note: from user's viewpoint, he requests the view that was changed
+    //OTOH, the layout manager has to start the layout from its parent (since parent
+    //controls the layout of the children).
     if (immediate)
-      layoutManager.flush(this);
+      layoutManager.flush(!descendantOnly && parent !== null ? parent: this);
     else
-      layoutManager.queue(this);
+      layoutManager.queue(!descendantOnly && parent !== null ? parent: this);
   }
   /** Hanldes the layout of this view.
    * It is called by [LayoutManager].

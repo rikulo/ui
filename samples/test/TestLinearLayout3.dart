@@ -21,7 +21,7 @@ class TestLinearLayout3 extends Activity {
     btn.on.click.add((event) {
       for (TextView v in vlayout.queryAll("TextView"))
         v.text = "${v.text} click";
-      mainView.requestLayout();
+      vlayout.requestLayout();
     });
     vlayout.addChild(btn);
   }

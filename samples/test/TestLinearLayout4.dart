@@ -42,7 +42,7 @@ class TestLinearLayout4 extends Activity {
     int clickCount = 0;
     ckbox.on.change.add((ChangeEvent<bool> event) {
       ckbox.text = 'value: ${event.value} ${++clickCount}';
-      ckbox.parent.requestLayout();
+      ckbox.requestLayout();
     });
     view.addChild(ckbox);
 
