@@ -30,7 +30,7 @@ interface Motion default _Motion {
   /**
    * Return the time when the motion starts.
    */
-  int get initTime();
+  int get startTime();
   
   /**
    * Return the total paused time.
@@ -74,18 +74,18 @@ class _Motion implements Motion {
   static final _MOTION_STATE_PAUSED = 2;
   
   final MotionRunner _runner;
-  final MotionCallback _initCB, _endCB;
+  final MotionCallback _startCB, _endCB;
   AnimatorTask _task;
   int _state = _MOTION_STATE_INIT;
-  int _initTime, _pausedTimestamp, _pausedTime = 0;
+  int _startTime, _pausedTimestamp, _pausedTime = 0;
   var data;
   
-  _Motion([MotionRunner run, MotionCallback init, MotionCallback end, bool autorun = true]) : 
-    _runner = run, _initCB = init, _endCB = end {
+  _Motion([MotionRunner run, MotionCallback start, MotionCallback end, bool autorun = true]) : 
+    _runner = run, _startCB = start, _endCB = end {
     
     _task = (int time, int elapsed) {
       if (_state == _MOTION_STATE_INIT) {
-        _initTime = time;
+        _startTime = time;
         onInit(time, elapsed);
         _state = _MOTION_STATE_RUNNING;
       }
@@ -115,7 +115,7 @@ class _Motion implements Motion {
   
   Animator get animator() => _getAnimator();
   
-  int get initTime() => _initTime;
+  int get startTime() => _startTime;
   
   int get pausedTime() => _pausedTime;
   
@@ -129,8 +129,8 @@ class _Motion implements Motion {
    * Called in the first animator iteration after the motion is added into animator.
    */
   void onInit(int time, int elapsed) {
-    if (_initCB != null)
-      _initCB(time, elapsed, 0);
+    if (_startCB != null)
+      _startCB(time, elapsed, 0);
   }
   
   /**
@@ -171,7 +171,7 @@ class _Motion implements Motion {
   
   void stop() {
     _getAnimator().remove(this._task);
-    _initTime = _pausedTimestamp = null;
+    _startTime = _pausedTimestamp = null;
     _pausedTime = 0;
     _state = _MOTION_STATE_INIT;
   }

@@ -21,9 +21,9 @@ class EasingMotion extends _Motion {
    * Construct an EasingMotion.
    */
   EasingMotion(this.action, [EasingFunction easing, int duration = 500, 
-    MotionRunner run, MotionCallback init, MotionCallback end, bool autorun = true]) : 
+    MotionRunner run, MotionCallback start, MotionCallback end, bool autorun = true]) : 
     this.duration = duration, this.easing = easing, 
-    super(run, init, end, autorun);
+    super(run, start, end, autorun);
   
   /**
    * 
@@ -36,7 +36,7 @@ class EasingMotion extends _Motion {
   void applyMotionAction(num x) => action(x);
   
   bool onRunning(int time, int elapsed, int paused) {
-    int curr = Math.min(time - _initTime - paused, duration);
+    int curr = Math.min(time - _startTime - paused, duration);
     if (_runner != null && !_runner(time, elapsed, paused))
       return false;
     applyMotionAction(getEasingValue(curr / duration));
