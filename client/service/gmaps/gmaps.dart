@@ -2,7 +2,7 @@
 //History: Fri, Jun 22, 2012  05:20:07 PM
 // Author: hernichen
 
-#library("rikulo:services:gmaps");
+#library("rikulo:service:gmaps");
 
 #import("dart:html");
 #import("../../html/html.dart");

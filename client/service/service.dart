@@ -2,7 +2,7 @@
 //History: Wed, Jun 20, 2012  05:21:28 PM
 // Author: hernichen
 
-#library("rikulo:services");
+#library("rikulo:service");
 
 #import("dart:html");
 #import("dart:json");
