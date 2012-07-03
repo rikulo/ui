@@ -1,6 +1,6 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jun. 07, 2012
-#library("rikulo:view:select");
+#library("rikulo:view/select");
 
 #import("dart:coreimpl");
 

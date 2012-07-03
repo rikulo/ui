@@ -9,6 +9,7 @@
 #import("../app/app.dart");
 #import("../event/event.dart");
 #import("../html/html.dart");
+#import("../effect/effect.dart");
 #import("../layout/layout.dart");
 #import("../model/model.dart");
 #import("impl/impl.dart");

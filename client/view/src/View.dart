@@ -680,21 +680,28 @@ class View implements Hashable {
     }
   }
 
-  /** Requests the layout manager to re-layout this view.
-   * If a view's dimension has been changed and the view's layout was handled
-   * by the layout manager, you usually need to re-layout it.
+  /** Requests the layout manager to re-position the layout of this view.
+   * If a view's layout was handled by the layout manager (such as inside a linear layout)
+   * and you change its dimension, you usually want its layout to be handled again.
    * It can be done by invoking [requestLayout].
    * For example, if you change the content of [TextView], you can
    * can invoke [requestLayout] and then the layout manager will re-position it later.
    *
-   * Of course, if you positioned the view manually (by setting [left], [top], [width]
+   * Notice that the layout manager will adjust the layout of sibling views and all of
+   * the descendant views, if necessary. For example, if a view is in a horizontal
+   * linear layout and width has been changed, then its sibling views at the right
+   * will be re-positioned too.
+   *
+   * If you positioned the view manually (by setting [left], [top], [width]
    * and [height] explicitly), you don't need to invoke this method. Rather, you
-   * have to handle it yourself, if necessary.
+   * have to handle it yourself, if necessary. Otherwise, nothing will be changed.
    *
    * If you want to layout only the child views and their descendants, you can specify
    * [descendantOnly] to true.
    * The performance is better if this view is part of a sophisticated layout structure,
-   * since the layout manager won't need to adjust this view's position.
+   * since the layout manager won't need to adjust the layout of this view and its siblings.
+   *
+   * If you want everything to be re-positioned, you can invoke `mainView.requestLayout()`.
    *
    * Notice that, for better performance, the layout won't be taken place
    *immediately. Rather, it is queued and all queued views are handled

@@ -11,3 +11,4 @@
 #source("src/Motion.dart");
 #source("src/MotionAction.dart");
 #source("src/EasingMotion.dart");
+#source("src/InertialMotion.dart");

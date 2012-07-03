@@ -2,7 +2,7 @@
 //History: Fri, Apr 27, 2012  10:25:10 AM
 // Author: hernichen
 
-#library("rikulo:cordova");
+#library("rikulo:device/impl/cordova");
 
 #import("dart:html");
 #import("dart:json");

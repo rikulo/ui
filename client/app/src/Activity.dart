@@ -244,6 +244,10 @@ class Activity {
   void onMount_() {
   }
   /** Called when the activity is going into background.
+   * For example, it is called when there is an incoming phone call.
+   *
+   * It is meaningful only if it is running as a native mobile application,
+   * and [enableDeviceAccess] has been called.
    */
   void onPause_() {
   }

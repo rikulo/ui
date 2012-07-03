@@ -2,6 +2,6 @@
 //History: Fri, May 18, 2012 03:30:49 PM
 // Author: henrichen
 
-#library("rikulo:device:notification");
+#library("rikulo:device/notification");
 
 #source("src/Notification.dart");

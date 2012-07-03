@@ -73,10 +73,19 @@ class Switch extends View implements Input<bool> {
     final bool bChanged = _value != value;
     _value = value;
     if (inDocument) {
-      //TODO: handle animation
-      final int ofs = _value ? 0: _x_off;
-      _sdNode.style.setProperty(CSS.name('transform'), CSS.translate3d(ofs, 0));
-      _updateBg(ofs);
+      final int nofs = _value ? 0 : _x_off;
+      if (bAnimate) {
+        final int sofs = _translate3dXValue(_sdNode.style.transform);
+        final int dofs = nofs - sofs;
+        new EasingMotion((num x) {
+          int cofs = sofs + (dofs * x).toInt();
+          _sdNode.style.transform = CSS.translate3d(cofs, 0);
+          _updateBg(cofs);
+        }, duration: 150);
+      } else {
+        _sdNode.style.transform = CSS.translate3d(nofs, 0);
+        _updateBg(nofs);
+      }
     }
     if (bSendEvent && bChanged)
       sendEvent(new ChangeEvent(this, _value));
@@ -84,7 +93,8 @@ class Switch extends View implements Input<bool> {
   void _updateBg(int delta) {
     _bgNode.style.marginLeft = CSS.px(delta + _marginDiff);
   }
-
+  int _translate3dXValue(String str) => str == null ? 0 : CSS.intOf(str.substring(12));
+  
   void mount_() {
     super.mount_();
 
