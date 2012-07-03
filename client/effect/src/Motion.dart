@@ -86,7 +86,7 @@ class _Motion implements Motion {
     _task = (int time, int elapsed) {
       if (_state == _MOTION_STATE_INIT) {
         _startTime = time;
-        onInit(time, elapsed);
+        onStart(time, elapsed);
         _state = _MOTION_STATE_RUNNING;
       }
       switch (_state) {
@@ -128,7 +128,7 @@ class _Motion implements Motion {
   /**
    * Called in the first animator iteration after the motion is added into animator.
    */
-  void onInit(int time, int elapsed) {
+  void onStart(int time, int elapsed) {
     if (_startCB != null)
       _startCB(time, elapsed, 0);
   }
