@@ -16,7 +16,7 @@ interface JSAgent {
  */
 class JSUtil {
   /** Converts a Dart Date to JavaScript Date
-   * +[dartdate] the dart Date
+   * + [dartdate] the dart Date
    */
   static toJSDate(Date dartdate) {
     int msecs = dartdate !== null ? dartdate.millisecondsSinceEpoch : null;
@@ -24,7 +24,7 @@ class JSUtil {
   }
   
   /** Convert a JavaScript Date to Dart Date 
-   * +[jsdate] the JavaScript Date
+   * + [jsdate] the JavaScript Date
    */
   static Date toDartDate(jsdate) {
     int msecs = jsdate !== null ? jsCall("getTime", [jsdate]) : null;
@@ -32,7 +32,7 @@ class JSUtil {
   }
     
   /** Convert Dart List to JavaScript array 
-   * +[dartlist] the dart List
+   * + [dartlist] the dart List
    */
   static toJSArray(List dartlist, [Function converter = null]) {
     if (dartlist !== null) {
@@ -51,8 +51,8 @@ class JSUtil {
   }
   
   /** Convert JavaScript array to Dart List
-   * +[jsarray] the JavaScript Array
-   * +[converter] the converter function that convert the JavaScript Object into Dart Object.
+   * + [jsarray] the JavaScript Array
+   * + [converter] the converter function that convert the JavaScript Object into Dart Object.
    */
   static List toDartList(var jsarray, [Function converter = null]) {
     if (jsarray !== null) {
@@ -67,7 +67,7 @@ class JSUtil {
   }
   
   /** Convert Dart Map to JavaScript map(prototype) 
-   * +[dartmap] the Dart Map
+   * + [dartmap] the Dart Map
    */
   static toJSMap(Map dartmap, [Function converter = null]) {
     if (dartmap !==  null) {
@@ -85,7 +85,7 @@ class JSUtil {
   }
   
   /** Convert JavaScript map(prototype) to Dart Map 
-   * +[jsmap] the JavaScript map
+   * + [jsmap] the JavaScript map
    */
   static Map toDartMap(var jsmap, [Function converter = null]) {
     if (jsmap !== null) {
@@ -104,39 +104,39 @@ class JSUtil {
   static toJSAgent(var v) => v is JSAgent ? v.toJSObject(): v;
 
   /** Convert an JavaScript XMLDocument to Dart Map/List tree structure.
-   * +[xmldoc] the JavaScript XMLDocument
+   * + [xmldoc] the JavaScript XMLDocument
    */
   static xmlDocToDartMap(var xmldoc)
   => jsCall("_elmToDart", [getJSValue(xmldoc, "documentElement"), toJSFunction(toDartMap, 2), 
       (k,v) => jsCall("toType", [v]) == 'array' ? toDartList(v) : v]);
   
   /** Returns the value of the JavaScript object's attribute.
-   * +[jsObj] JavaScript object
-   * +[attr] attribute name
+   * + [jsObj] JavaScript object
+   * + [attr] attribute name
    */
   static getJSValue(jsObj, String attr) => jsCall("get", [jsObj, attr]);
   
   /** Sets the value of the JavaScript object's attribute.
-   * +[jsObj] JavaScript object
-   * +[attr] attribute name
-   * +[param] value the value
+   * + [jsObj] JavaScript object
+   * + [attr] attribute name
+   * + [param] value the value
    */
   static void setJSValue(jsObj, String attr, val) {
     jsCall("set", [jsObj, attr, val]);
   }
   
   /** Dart bridge method to call into JavaScript function registered with #newJSFunction.
-   * +[name] JavaScript function name
-   * +[args] arguments to be passed into JavaScript function
+   * + [name] JavaScript function name
+   * + [args] arguments to be passed into JavaScript function
    * See [newJSFunction].
    */ 
   static jsCall(String name, [List args = const []])
   => _jsCallX.exec(name, args);
 
   /** Create and register a new JavaScript function; can be called from Dart later via #jsCall function.
-   * +[name] function name
-   * +[args] argument names
-   * +[body] the function definition body
+   * + [name] function name
+   * + [args] argument names
+   * + [body] the function definition body
    * See [jsCall]
    */
   static newJSFunction(String name, List<String> args, String body) 
@@ -303,7 +303,7 @@ class JSUtil {
 
   /**
    * Remove <Script> element with the specified [uri].
-   * +[uri] the JavaScript file uri
+   * + [uri] the JavaScript file uri
    */
   static void removeJavaScriptSrc(String uri) {
     ScriptElement elm = query("script[src='${uri}']");
@@ -313,8 +313,8 @@ class JSUtil {
   
   /**
    * Inject JavaScript code and run directly.
-   * +[script] the JavaScript codes
-   * +[remove] whether remove the script after running; default true.
+   * + [script] the JavaScript codes
+   * + [remove] whether remove the script after running; default true.
    */  
   static void injectJavaScript(String script, [bool remove = true]) {
     var s = new ScriptElement();
@@ -327,11 +327,11 @@ class JSUtil {
   /**
    * Execute the specified function when the specified ready function returns true. 
    *
-   * +[fn] the function to be executed when ready
-   * +[ready] the function to check if it meets some preset condition
-   * +[progress] the {@link Progress} callback function to report how many time left in milliseconds before timeout (-1 means forever)
-   * +[freq] the retry frequency in milliseconds
-   * +[timeout] the timeout time in milliseconds to give up; -1 means forever.  
+   * + [fn] the function to be executed when ready
+   * + [ready] the function to check if it meets some preset condition
+   * + [progress] the {@link Progress} callback function to report how many time left in milliseconds before timeout (-1 means forever)
+   * + [freq] the retry frequency in milliseconds
+   * + [timeout] the timeout time in milliseconds to give up; -1 means forever.  
    */
   static void doWhenReady(Function fn, Function ready, Function progress, int freq, int timeout) {
     final int end = timeout < 0 ? timeout : new Date.now().millisecondsSinceEpoch + timeout;

@@ -11,8 +11,8 @@ typedef ContactsErrorCallback(ContactError error);
 interface Contacts {
   /**
   * Returns the Contacts queried by this method.
-  * +[fields] the fields name in Contact you want to query back; return Contact id only if empty; return all fields if provide ["*"].
-  * +[contactOptions] the filter string to apply the query.
+  * + [fields] the fields name in Contact you want to query back; return Contact id only if empty; return all fields if provide ["*"].
+  * + [contactOptions] the filter string to apply the query.
   */
   void find(List<String> fields, ContactsSuccessCallback success, ContactsErrorCallback error, ContactsFindOptions contactOptions);
 }

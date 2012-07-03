@@ -42,7 +42,7 @@ class GFeed {
   }    
   
   /** Load feed information in a Map via callback function [onSuccess].
-   * +[onSuccess] callback function if successfully get the weather information. 
+   * + [onSuccess] callback function if successfully get the weather information. 
    */ 
   void loadFeedInfo(GFeedSuccessCallback onSuccess) {
     _feedModule.doWhenLoaded(()=>_load(onSuccess));

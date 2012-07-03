@@ -10,11 +10,11 @@ class YPlaceFinder {
   
   /** Load geo information per the specified [location] parameters in a Map via callback function [onSuccess]; see 
    * http://developer.yahoo.com/geo/placefinder/guide/responses.html for details.
-   * +[locations] location parameter; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
-   * +[onSuccess] callback function if successfully get the Geo information.
-   * +[controls] control parametr; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
-   * +[flags] control flag; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
-   * +[gflags] special control flag; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details
+   * + [locations] location parameter; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
+   * + [onSuccess] callback function if successfully get the Geo information.
+   * + [controls] control parametr; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
+   * + [flags] control flag; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
+   * + [gflags] special control flag; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details
    */
   void loadGeoInfo(Map locations, YPlaceFinderSuccessCallback onSuccess, [Map controls, String flags, String gflags]) {
     StringBuffer params = new StringBuffer(); 

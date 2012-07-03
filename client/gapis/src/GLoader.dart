@@ -45,16 +45,16 @@ class GLoader {
   
   /** Load latitude/longitude of the calling client via callback function [onSuccess]. Note that this service sometimes
    * return null value.
-   * +[onSuccess] callback function if successfully get the latitude/longitude.
+   * + [onSuccess] callback function if successfully get the latitude/longitude.
    */
   void loadIPLatLng(LatLngSuccessCallback onSuccess) {
     _loaderModule.doWhenLoaded(() => onSuccess(_ipLatLng['lat'], _ipLatLng['lng']));
   }
   
   /** Load Goolge JavaScript API module; see https://developers.google.com/loader/#GoogleLoad for details.
-   * +[name] the module name
-   * +[version] the module version
-   * +[options] the options used in loading the module
+   * + [name] the module name
+   * + [version] the module version
+   * + [options] the options used in loading the module
    */
   void load(String name, String version, [Map options]) {
     _loaderModule.doWhenLoaded(()=>_load(name, version, options));
