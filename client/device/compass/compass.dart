@@ -2,7 +2,7 @@
 //History: Fri, May 11, 2012 06:01:39 PM
 // Author: henrichen
 
-#library("rikulo:device:compass");
+#library("rikulo:device/compass");
 
 #source("src/Compass.dart");
 #source("src/CompassHeading.dart");

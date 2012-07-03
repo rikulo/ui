@@ -2,6 +2,6 @@
 //History: Fri, May 18, 2012 04:54:49 PM
 // Author: henrichen
 
-#library("rikulo:device:connection");
+#library("rikulo:device/connection");
 
 #source("src/Connection.dart");
