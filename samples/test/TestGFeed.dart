@@ -7,7 +7,7 @@ class TestGFeed extends Activity {
 
   void onCreate_() {
     GFeed feeder = new GFeed("http://weather.yahooapis.com/forecastrss?w=12797156");
-    feeder.load((Map result) {
+    feeder.loadFeedInfo((Map result) {
       log("RSS result: $result");
       Map channel = result["channel"];
       log("channel: $channel");

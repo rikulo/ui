@@ -75,29 +75,32 @@ class CordovaDevice implements Device {
       then();
     };
     //init cordova
-    JSUtil.doWhenReady(() => JSUtil.jsCall(_ADD_EVENT_LISTENER, ["deviceready", _onDeviceReady, false]), 
+    JSUtil.doWhenReady(() => JSUtil.jsCall(_ADD_EVENT_LISTENER, ["deviceready", _toJSFn(_onDeviceReady), false]), 
       () => JSUtil.jsCall(_INIT_CORDOVA) !== null, //until window.cordova exists (@see cordova.js)
       (int msec) {if(msec == 0) print("Fail to load cordova.js!");},
       10, 180000); //try every 10 ms, try total 180 seconds. 
   }
   
   void _registerDeviceEvents() {
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["pause", _onPause, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["resume", _onResume, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["online", _onOnline, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["offline", _onOffline, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["backbutton", _onBackButton, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["batterycritical", _onBatteryCritical, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["batterylow", _onBatteryLow, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["batterystatus", _onBatteryStatus, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["menubutton", _onMenuButton, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["searchbutton", _onSearchButton, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["startcallbutton", _onStartCallButton, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["endcallbutton", _onEndCallButton, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["volumedownbutton", _onVolumeDownButton, false]);
-    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["volumeupbutton", _onVolumeUpButton, false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["pause", _toJSFn(_onPause), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["resume", _toJSFn(_onResume), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["online", _toJSFn(_onOnline), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["offline", _toJSFn(_onOffline), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["backbutton", _toJSFn(_onBackButton), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["batterycritical", _toJSFn(_onBatteryCritical), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["batterylow", _toJSFn(_onBatteryLow), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["batterystatus", _toJSFn(_onBatteryStatus), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["menubutton", _toJSFn(_onMenuButton), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["searchbutton", _toJSFn(_onSearchButton), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["startcallbutton", _toJSFn(_onStartCallButton), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["endcallbutton", _toJSFn(_onEndCallButton), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["volumedownbutton", _toJSFn(_onVolumeDownButton), false]);
+    JSUtil.jsCall(_ADD_EVENT_LISTENER, ["volumeupbutton", _toJSFn(_onVolumeUpButton), false]);
   }
   
+  _toJSFn(Function dartFn) {
+    return JSUtil.toJSFunction(dartFn, 0);
+  }
   void _onDeviceReady() {
     _readyFunction();
   }
@@ -182,10 +185,8 @@ class CordovaDevice implements Device {
       }
       return window.cordova;
     ''');
-    JSUtil.newJSFunction(_ADD_EVENT_LISTENER, ["evtname", "listener", "bubble"], '''
-      var fn = function() {listener.\$call\$0();};
-      document.addEventListener(evtname, fn, bubble);
-    ''');
+    JSUtil.newJSFunction(_ADD_EVENT_LISTENER, ["evtname", "listener", "bubble"], 
+      "document.addEventListener(evtname, listener, bubble);");
     JSUtil.newJSFunction(_NAME, null, "return device.name;"); //name of this device
     JSUtil.newJSFunction(_CORDOVA, null, "return device.cordova;"); //version of Cordova running on the device
     JSUtil.newJSFunction(_PLATFORM, null, "return device.plaform;"); //operating system name of this device

@@ -15,7 +15,7 @@ class GMarker implements JSAgent {
   
   GMarker([Map markerOptions]) {
     _initJSFunctions();
-    _gmarker = JSUtil.jsCall(_NEW_MARKER, [JSUtil.toJSMap(markerOptions, (v)=>JSUtil.toJSAgent(v))]);
+    _gmarker = JSUtil.jsCall(_NEW_MARKER, [JSUtil.toJSMap(markerOptions, (k,v)=>JSUtil.toJSAgent(v))]);
   }
 
   toJSObject() {

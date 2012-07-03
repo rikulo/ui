@@ -3,19 +3,20 @@
 // Author: hernichen
 
 /**
- * Yahoo PlaceFinder API; see http://developer.yahoo.com/geo/placefinder/ for details.
+ * Bridge Dart to Yahoo PlaceFinder API; see http://developer.yahoo.com/geo/placefinder/ for details.
  */
 class YPlaceFinder {
   static final String _BASE_URI = "http://where.yahooapis.com/geocode";
   
-  /** Return geo information in a Map via callback function onSuccess(Map resultSet).
-   * @param locations location parameer; see http://developer.yahoo.com/geo/placefinder/ for details.
-   * @param onSuccess callback function if successfully get the Geo information.
-   * @param controls control parametr; see http://developer.yahoo.com/geo/placefinder/ for details.
-   * @param flags control flag; see http://developer.yahoo.com/geo/placefinder/ for details.
-   * @param gflags special control flag; see http://developer.yahoo.com/geo/placefinder/ for details
+  /** Load geo information per the specified [location] parameters in a Map via callback function [onSuccess]; see 
+   * http://developer.yahoo.com/geo/placefinder/guide/responses.html for details.
+   * +[locations] location parameter; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
+   * +[onSuccess] callback function if successfully get the Geo information.
+   * +[controls] control parametr; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
+   * +[flags] control flag; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
+   * +[gflags] special control flag; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details
    */
-  void request(Map locations, YPlaceFinderSuccessCallback onSuccess, [Map controls, String flags, String gflags]) {
+  void loadGeoInfo(Map locations, YPlaceFinderSuccessCallback onSuccess, [Map controls, String flags, String gflags]) {
     StringBuffer params = new StringBuffer(); 
     if (locations !== null)
       locations.forEach((k,v) => params.isEmpty() ? params.add(k).add('=').add(v) : params.add('&').add(k).add('=').add(v));

@@ -6,8 +6,8 @@
 class TestYWeather extends Activity {
 
   void onCreate_() {
-    YWeather finder = new YWeather("12797156", "c");
-    finder.load((Map channel){
+    YWeather loader = new YWeather("12797156", "c");
+    loader.loadWeatherInfo((Map channel){
       log("channel: $channel");
       Map location = channel['yweather:location'];
       log("location: $location");

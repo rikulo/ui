@@ -7,11 +7,15 @@ class TestYPlaceFinder extends Activity {
 
   void onCreate_() {
     YPlaceFinder finder = new YPlaceFinder();
-    finder.request({"location": "37.787082,-122.400929"}, 
-      (Map resultSet){
-        Map result = resultSet["Result"];
-        log("woeid: ${result['woeid']}"); //12797156
-        log("city: ${result['city']}"); //San Francisco
+    finder.loadGeoInfo({"location": "37.787082 -122.400929"}, 
+      (Map resultSet) {
+        if(resultSet === null)
+          log("Fail to loadGeoInfo.");
+        else {
+          Map result = resultSet["Result"];
+          log("woeid: ${result['woeid']}"); //12797156
+          log("city: ${result['city']}"); //San Francisco
+        }
       }, gflags:"R"); 
   }
 }

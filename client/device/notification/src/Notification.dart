@@ -10,23 +10,23 @@ typedef NotificationConfirmCallback(int buttonId);
 
 interface XNotification { //rename to avoide name conflict with dart:html Notification
   /** Show a custom alert/dialog box.
-   * @param message dialog message.
-   * @param alertCallback callback function when the alert dialog is closed.
-   * @param title dialog title; default to "Alert".
-   * @param buttonName button name of the dialog; default to "OK".
+   * +[message] dialog message.
+   * +[alertCallback] callback function when the alert dialog is closed.
+   * +[title] dialog title; default to "Alert".
+   * +[buttonName] button name of the dialog; default to "OK".
    */
   alert(String message, NotificationAlertCallback alertCallback, [String title, String buttonName]);
   
   /** Show a customizable confirmation dialog box.
-   * @param message dialog message.
-   * @param confirmCallback callback function invoked with index of button pressed(1, 2, or 3) when the confirm dialog is closed.
-   * @param title dialog title; default to "Confirm".
-   * @param buttonLabels comma separated button names of the dialog; default to "OK,Cancel".
+   * +[message] dialog message.
+   * +[confirmCallback] callback function invoked with index of button pressed(1, 2, or 3) when the confirm dialog is closed.
+   * +[title] dialog title; default to "Confirm".
+   * +[buttonLabels] comma separated button names of the dialog; default to "OK,Cancel".
    */
   confirm(String message, NotificationConfirmCallback confirmCallback, [String title, String buttonLabels]);
   
   /** Play a beep sound.
-   * @param times the number of times to beep.
+   * +[times] the number of times to beep.
    */
   beep(int times);
   

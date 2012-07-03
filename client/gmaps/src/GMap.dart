@@ -94,7 +94,7 @@ class GMap implements JSAgent {
 
   //convert Dart Map to JavaScript options
   _toJSOptions(Map mapOptions) {
-    return JSUtil.toJSMap(mapOptions, (v)=>JSUtil.toJSAgent(v));
+    return JSUtil.toJSMap(mapOptions, (k,v)=>JSUtil.toJSAgent(v));
   }
   
   //init the specified Maps

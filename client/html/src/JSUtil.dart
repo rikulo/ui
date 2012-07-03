@@ -16,8 +16,7 @@ interface JSAgent {
  */
 class JSUtil {
   /** Converts a Dart Date to JavaScript Date
-   * @param dartdate the dart Date
-   * @return the converted JavaScript Date
+   * +[dartdate] the dart Date
    */
   static toJSDate(Date dartdate) {
     int msecs = dartdate !== null ? dartdate.millisecondsSinceEpoch : null;
@@ -25,8 +24,7 @@ class JSUtil {
   }
   
   /** Convert a JavaScript Date to Dart Date 
-   * @param jsdate the JavaScript Date
-   * @return the converted Dart Date
+   * +[jsdate] the JavaScript Date
    */
   static Date toDartDate(jsdate) {
     int msecs = jsdate !== null ? jsCall("getTime", [jsdate]) : null;
@@ -34,8 +32,7 @@ class JSUtil {
   }
     
   /** Convert Dart List to JavaScript array 
-   * @param dartlist the dart List
-   * @return the converted JavaScript Array
+   * +[dartlist] the dart List
    */
   static toJSArray(List dartlist, [Function converter = null]) {
     if (dartlist !== null) {
@@ -54,25 +51,23 @@ class JSUtil {
   }
   
   /** Convert JavaScript array to Dart List
-   * @param jsarray the JavaScript Array
-   * @param converter the converter function that convert the JavaScript Object into Dart Object.
-   * @return the converted Dart List
+   * +[jsarray] the JavaScript Array
+   * +[converter] the converter function that convert the JavaScript Object into Dart Object.
    */
   static List toDartList(var jsarray, [Function converter = null]) {
     if (jsarray !== null) {
       List result = new List();
       if (converter !== null)
-        jsCall("forEach", [jsarray, (v) => result.add(converter(v))]);
+        jsCall("forEach", [jsarray, toJSFunction((v) => result.add(converter(v)), 1)]);
       else
-        jsCall("forEach", [jsarray, (v) => result.add(v)]);
+        jsCall("forEach", [jsarray, toJSFunction((v) => result.add(v), 1)]);
       return result;
     }
     return null;
   }
   
   /** Convert Dart Map to JavaScript map(prototype) 
-   * @param dartmap the Dart Map
-   * @return the converted JavaScript map 
+   * +[dartmap] the Dart Map
    */
   static toJSMap(Map dartmap, [Function converter = null]) {
     if (dartmap !==  null) {
@@ -81,7 +76,7 @@ class JSUtil {
       }
       var result = [];
       if (converter !== null)
-        dartmap.forEach((k,v) => jsCall("_newEntry", [result, k, converter(v)]));
+        dartmap.forEach((k,v) => jsCall("_newEntry", [result, k, converter(k,v)]));
       else
         dartmap.forEach((k,v) => jsCall("_newEntry", [result, k, v]));
       return result[0];
@@ -90,16 +85,15 @@ class JSUtil {
   }
   
   /** Convert JavaScript map(prototype) to Dart Map 
-   * @param jsmap the JavaScript map
-   * @return the converted Dart Map
+   * +[jsmap] the JavaScript map
    */
   static Map toDartMap(var jsmap, [Function converter = null]) {
     if (jsmap !== null) {
       Map result = new Map();
       if (converter !== null)
-        jsCall("forEachKey", [jsmap, (k,v) => result[k] = converter(v)]);
+        jsCall("forEachKey", [jsmap, toJSFunction((k,v) => result[k] = converter(k,v), 2)]);
       else
-        jsCall("forEachKey", [jsmap, (k,v) => result[k] = v]);
+        jsCall("forEachKey", [jsmap, toJSFunction((k,v) => result[k] = v, 2)]);
       return result;
     }
     return null;
@@ -110,48 +104,81 @@ class JSUtil {
   static toJSAgent(var v) => v is JSAgent ? v.toJSObject(): v;
 
   /** Convert an JavaScript XMLDocument to Dart Map/List tree structure.
-   * @param xmldoc the JavaScript XMLDocument
-   * @return the converted Dart Map/List tree structure.
+   * +[xmldoc] the JavaScript XMLDocument
    */
   static xmlDocToDartMap(var xmldoc)
-  => jsCall("_elmToDart", [getJSValue(xmldoc, "documentElement"), toDartMap, 
-      (v) => jsCall("toType", [v]) == 'array' ? toDartList(v) : v]);
+  => jsCall("_elmToDart", [getJSValue(xmldoc, "documentElement"), toJSFunction(toDartMap, 2), 
+      (k,v) => jsCall("toType", [v]) == 'array' ? toDartList(v) : v]);
   
   /** Returns the value of the JavaScript object's attribute.
-   * @param jsObj JavaScript object
-   * @param attr attribute name
-   * @return the value of the JavaScript object's attribute.
+   * +[jsObj] JavaScript object
+   * +[attr] attribute name
    */
   static getJSValue(jsObj, String attr) => jsCall("get", [jsObj, attr]);
   
   /** Sets the value of the JavaScript object's attribute.
-   * @param jsObj JavaScript object
-   * @param attr attribute name
-   * @param value the value
+   * +[jsObj] JavaScript object
+   * +[attr] attribute name
+   * +[param] value the value
    */
   static void setJSValue(jsObj, String attr, val) {
     jsCall("set", [jsObj, attr, val]);
   }
   
   /** Dart bridge method to call into JavaScript function registered with #newJSFunction.
-   * @param name JavaScript function name
-   * @param args arguments to be passed into JavaScript function
-   * @see #newJSFunction
+   * +[name] JavaScript function name
+   * +[args] arguments to be passed into JavaScript function
+   * See [newJSFunction].
    */ 
   static jsCall(String name, [List args = const []])
   => _jsCallX.exec(name, args);
 
   /** Create and register a new JavaScript function; can be called from Dart later via #jsCall function.
-   * @param name function name
-   * @param args argument names
-   * @param body the function definition body
-   * @see #jsCall
+   * +[name] function name
+   * +[args] argument names
+   * +[body] the function definition body
+   * See [jsCall]
    */
-  static newJSFunction(String name, List<String> args, String body) {
-    jsCall("newFn", [name, args, body]);
+  static newJSFunction(String name, List<String> args, String body) 
+  => jsCall("newFn", [name, args, body]);
+  
+  /** Register a JavaScript function so it can be called from Dart later via #jsCall function.
+   * + [name] function name
+   * + [jsfn] the JavaScript function
+   */
+  static addJSFunction(String name, var jsfn) 
+  => jsCall("addFn", [name, jsfn]);
+  
+  /** Remove the registered JavaScript function.
+   * + [name] function name
+   */ 
+  static void rmJSFunction(String name) {
+    jsCall("rmFn", [name]);
   }
-
-  /** Initialization of the #jsCall function; must be called at least once before using #jsCall method. 
+  
+  /** Return a bridge JavaScript function of the specified Dart function.
+   * + [dartFn] - the Dart function
+   * + [argnum] - number of arguments passed to the Dart function
+   */
+  static toJSFunction(Function dartFn, int argnum) {
+    String nm = "toJSFn${argnum}";
+    bool exists = jsCall("_existFn", [nm]);
+    if (!exists) {
+      // if argnum == 0, e.g. "toJSFn0" : function(dartFn) {return function(){return dartFn.\$call\$0();};}
+      // if argnum == 1, e.g. "toJSFn1" : function(dartFn) {return function(arg0){return dartFn.\$call\$1(arg0);};}
+      // if argnum == 2, e.g. "toJSFn2" : function(dartFn) {return function(arg0,arg1){return dartFn.\$call\$2(arg0,arg1);};}
+      List<String> args = new List<String>(argnum);
+      for(int j = 0; j < argnum; ++j)
+        args[j] = "arg${j}";
+      String argseq = Strings.join(args, ",");
+      String body = "return function(${argseq}){return dartFn.\$call\$${argnum}(${argseq});};";
+      //log("nm:${nm}, body:${body}");
+      newJSFunction(nm, ["dartFn"], body);
+    }
+    return jsCall(nm, [dartFn]);
+  }
+    
+  /** Initialization of the [jsCall] function; must be called at least once before using [jsCall] method. 
    */
   static _JSCallX get _jsCallX() {
     if (_$jsCallX === null) {
@@ -162,23 +189,35 @@ class JSUtil {
                 fn = new Function("body", fnbody)(body);
             return (_natives[nm] = fn);  
           },
+          "addFn" : function(nm, fn) {
+            _natives[nm] = fn;
+          },
+          "rmFn" : function(nm) {
+            delete _natives[nm];
+          },
+          "_existFn" : function(nm) {
+            return !!_natives[nm];
+          },
+          "_fetchFn" : function(nm) {
+            return _natives[nm];
+          },
           "get" : function(obj, attr) {
             return obj[attr];
           },
           "set" : function(obj, attr, val) {
             obj[attr] = val;
           },
-          "forEach" : function(jslist, fn) {
+          "forEach" : function(jslist, jsfn) {
             if (jslist) {
               for(var j = 0; j < jslist.length; ++j) {
-                fn.\$call\$1(jslist[j]);
+                jsfn(jslist[j]);
               }
             }
           },
-          "forEachKey" : function(jsmap, fn) {
+          "forEachKey" : function(jsmap, jsfn) {
             if (jsmap) {
               for(var key in jsmap) {
-                fn.\$call\$2(key, jsmap[key]);
+                jsfn(key, jsmap[key]);
               }
             }
           },
@@ -202,33 +241,21 @@ class JSUtil {
           "[]" : function() { //empty array
             return [];
           },
-          "toJSFn0" : function(dartFn) {
-            return function(){dartFn.\$call\$0();};
-          },
-          "toJSFn1" : function(dartFn) {
-            return function(arg1){dartFn.\$call\$1(arg1);};
-          },
-          "toJSFn2" : function(dartFn) {
-            return function(arg1,arg2){dartFn.\$call\$2(arg1,arg2);};
-          },
-          "toJSFn3" : function(dartFn) {
-            return function(arg1,arg2,arg3){dartFn.\$call\$2(arg1,arg2,arg3);};
-          },
           "toType" : function(jsobj) { //check JavaScript object type
             return ({}).toString.call(jsobj).match(/\\s([a-zA-Z]+)/)[1].toLowerCase();
           },
-          "_elmToDart" : function(elm, toDartMap, mapConverter) { //convert an JS Element to Dart Map/String 
+          "_elmToDart" : function(elm, jstoDartMap, mapConverter) { //convert an JS Element to Dart Map/String 
             var jsmap = {},
               attrs = elm.attributes,
               count = 0;
             for(var kid = elm.firstElementChild; kid; kid = kid.nextElementSibling, ++count) {
-              _natives._putmap(jsmap, kid.tagName, _natives._elmToDart(kid, toDartMap, mapConverter)); //recursive 
+              _natives._putmap(jsmap, kid.tagName, _natives._elmToDart(kid, jstoDartMap, mapConverter)); //recursive 
             }
             for(var j= attrs.length; j-- > 0; ++count) {
               var attr = attrs[j];
               _natives._putmap(jsmap, attr.nodeName, attr.nodeValue);  
             }
-            return count > 0 ? toDartMap.\$call\$2(jsmap, mapConverter) : elm.textContent;
+            return count > 0 ? jstoDartMap(jsmap, mapConverter) : elm.textContent;
           },
           "_putmap" :  function(jsmap, nm, val) {
             var old = jsmap[nm];
@@ -265,7 +292,7 @@ class JSUtil {
 
   /**
    * Inject JavaScript src file.
-   * @param uri the JavaScript file uri
+   * + [uri] the JavaScript file uri
    */
   static void injectJavaScriptSrc(String uri) {
     var s = new ScriptElement();
@@ -275,9 +302,19 @@ class JSUtil {
   }
 
   /**
+   * Remove <Script> element with the specified [uri].
+   * +[uri] the JavaScript file uri
+   */
+  static void removeJavaScriptSrc(String uri) {
+    ScriptElement elm = query("script[src='${uri}']");
+    if (elm !== null)
+      elm.remove();
+  }
+  
+  /**
    * Inject JavaScript code and run directly.
-   * @param script the JavaScript codes
-   * @param remove whether remove the script after running; default true.
+   * +[script] the JavaScript codes
+   * +[remove] whether remove the script after running; default true.
    */  
   static void injectJavaScript(String script, [bool remove = true]) {
     var s = new ScriptElement();
@@ -289,11 +326,12 @@ class JSUtil {
 
   /**
    * Execute the specified function when the specified ready function returns true. 
-   * @param fn the function to be executed
-   * @param ready the function to check if it meets some preset condition
-   * @param progress the {@link Progress} callback function to report how many time left in milliseconds before timeout (-1 means forever)
-   * @param freq the retry frequency in milliseconds
-   * @param timeout the timeout time in milliseconds to give up; -1 means forever.  
+   *
+   * +[fn] the function to be executed when ready
+   * +[ready] the function to check if it meets some preset condition
+   * +[progress] the {@link Progress} callback function to report how many time left in milliseconds before timeout (-1 means forever)
+   * +[freq] the retry frequency in milliseconds
+   * +[timeout] the timeout time in milliseconds to give up; -1 means forever.  
    */
   static void doWhenReady(Function fn, Function ready, Function progress, int freq, int timeout) {
     final int end = timeout < 0 ? timeout : new Date.now().millisecondsSinceEpoch + timeout;
