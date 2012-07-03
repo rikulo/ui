@@ -9,6 +9,7 @@ Thumbs.db
 .children
 *.dart.js
 *.dart.js_
+*.dart.js.map
 out.js
 *.bak
 ~$*.pptx
