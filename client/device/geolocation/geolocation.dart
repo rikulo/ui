@@ -2,7 +2,7 @@
 //History: Fri, May 18, 2012 09:14:12 AM
 // Author: henrichen
 
-#library("rikulo:device:geolocation");
+#library("rikulo:device/geolocation");
 
 #import("dart:html");
 
