@@ -23,21 +23,16 @@ class CordovaMediaFile implements MediaFile {
   
   /** Returns format information of this Media file */
   void getFormatData(MediaFileDataSuccessCallback success, [MediaFileDataErrorCallback error]) {
-    JSUtil.jsCall(_GET_FORMAT_DATA, [_jsFile, _wrapDataSuccess(success), error]);
-  }
-  
-  _wrapDataSuccess(MediaFileDataSuccessCallback dartFn) {
-    reutrn (jsData) => dartFn(new MediaFileData.from(JSUtil.toDartMap(jsData)));
+    var jsSuccess = JSUtil.toJSFunction((jsData) => success(new MediaFileData.from(JSUtil.toDartMap(jsData))), 1);
+    var jsError = JSUtil.toJSFunction(() {if (error !== null) error();}, 0);
+    JSUtil.jsCall(_GET_FORMAT_DATA, [_jsFile, jsSuccess, jsError]);
   }
   
   static bool _doneInit = false;
   void _initJSFunctions() {
     if (!_doneInit) {
-      JSUtil.newJSFunction(_GET_FORMAT_DATA, ["mediaFile", "onSuccess", "onError"], '''
-        var fnSuccess = function(data) {onSuccess.\$call\$1(data);},
-            fnError = function() {onError.\$call\$0();};
-        mediaFile.getFormatData(fnSuccess, fnError);
-      ''');
+      JSUtil.newJSFunction(_GET_FORMAT_DATA, ["mediaFile", "onSuccess", "onError"],
+        "mediaFile.getFormatData(onSuccess, onError);");
       _doneInit = true;
     }
   }

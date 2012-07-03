@@ -17,13 +17,13 @@ class CordovaNotification implements XNotification {
   alert(String message, NotificationAlertCallback alertCallback, [String title, String buttonName]) {
     if (title === null) title = "Alert";
     if (buttonName === null) buttonName = "OK";
-    JSUtil.jsCall(_ALERT, [message, alertCallback, title, buttonName]);
+    JSUtil.jsCall(_ALERT, [message, JSUtil.toJSFunction(alertCallback, 0), title, buttonName]);
   }
   
   confirm(String message, NotificationConfirmCallback confirmCallback, [String title, String buttonLabels]) {
     if (title === null) title = "Confirm";
     if (buttonLabels === null) buttonLabels = "OK,Cancel";
-    JSUtil.jsCall(_CONFIRM, [message, confirmCallback, title, buttonLabels]);
+    JSUtil.jsCall(_CONFIRM, [message, JSUtil.toJSFunction(confirmCallback, 1), title, buttonLabels]);
   }
   
   beep(int times) {
@@ -35,14 +35,10 @@ class CordovaNotification implements XNotification {
   }
   
   void _initJSFunctions() {
-    JSUtil.newJSFunction(_ALERT, ["message", "alertCallback", "title", "buttonName"], '''
-      var fn = function() {alertCallback.\$call\$0();};
-      navigator.notification.alert(message, fn, title, buttonName);
-    ''');
-    JSUtil.newJSFunction(_CONFIRM, ["message", "confirmCallback", "title", "buttonLabels"], '''
-      var fn = function(btn) {confirmCallback.\$call\$1(btn);};
-      navigator.notification.confirm(message, fn, title, buttonLabels);
-    ''');
+    JSUtil.newJSFunction(_ALERT, ["message", "alertCallback", "title", "buttonName"],
+      "navigator.notification.alert(message, alertCallback, title, buttonName);");
+    JSUtil.newJSFunction(_CONFIRM, ["message", "confirmCallback", "title", "buttonLabels"],
+      "navigator.notification.confirm(message, confirmCallback, title, buttonLabels);");
     JSUtil.newJSFunction(_BEEP, ["times"], "navigator.notification.beep(times);");
     JSUtil.newJSFunction(_VIBRATE, ["msecs"], "navigator.notification.vibrate(msecs);");
   }

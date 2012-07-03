@@ -3,7 +3,7 @@
 // Author: hernichen
 
 /**
- * Yahoo Weather RSS Feed; see http://developer.yahoo.com/weather/ for details.
+ * Bridge Dart to Yahoo Weather RSS Feed; see http://developer.yahoo.com/weather/ for details.
  */
 class YWeather {
   static final String _BASE_URI = "http://weather.yahooapis.com/forecastrss?";
@@ -27,20 +27,20 @@ class YWeather {
     _url = new StringBuffer(_BASE_URI).add("w=").add(woeid).add("&u=").add(unit).toString();
   }
   
-  /** Return Weather information via callback function onSuccess(Map channel).
+  /** Load Weather information in a Map via callback function [onSuccess].
    * See http://developer.yahoo.com/weather/ for details. Note that YWeather will
-   * return you the cached weather information if it is proper unless you force it to
-   * re-load from the internet.
+   * return you the cached weather information if the information is not expired yet unless 
+   * you force it to re-load from the internet.
    * + [onSuccess(Map channel)] - Callback function if successfully get the Weather information.
    * + [force] - Whether to force loading the information from internet; default false.
    */
-  void load(YWeatherSuccessCallback onSuccess, [bool force = false]) {
+  void loadWeatherInfo(YWeatherSuccessCallback onSuccess, [bool force = false]) {
     //return cached channel if not expired yet!
     if (!force && _channel != null && new Date.now().millisecondsSinceEpoch < _expireTime) { 
       onSuccess(_channel);
     }
     GFeed feeder = new GFeed(_url);
-    feeder.load((Map result) {
+    feeder.loadFeedInfo((Map result) {
       Map channel = result != null ? result["channel"] : null;
       if (channel !== null) {
         //check if the woeid correct

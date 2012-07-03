@@ -82,10 +82,10 @@ class CordovaContact implements Contact {
   }
 
   _wrapContactFunction(dartFn) {   
-    return (jsContact) => dartFn(_initContact0(jsContact));
+    return JSUtil.toJSFunction((jsContact) => dartFn(_initContact0(jsContact)),1);
   }
   _wrapErrorFunction(dartFn) {
-    return (jsErr) => dartFn(new ContactError.from(JSUtil.toDartMap(jsErr)));
+    return JSUtil.toJSFunction((jsErr) => dartFn(new ContactError.from(JSUtil.toDartMap(jsErr))), 1);
   }
 
   Contact _initContact0(jsContact) {
@@ -214,16 +214,10 @@ class CordovaContact implements Contact {
     if (!_doneInit) {
       JSUtil.newJSFunction(_CREATE,  null, "return navigator.contacts.create({});");
       JSUtil.newJSFunction(_CLONE, ["contact"], "return contact.clone();");
-      JSUtil.newJSFunction(_REMOVE, ["contact", "onSuccess", "onError"], '''
-        var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
-            fnError = function(err) {onError.\$call\$1(err);};
-        contact.remove(fnSuccess, fnError);
-      ''');
-      JSUtil.newJSFunction(_SAVE, ["contact", "onSuccess", "onError"], '''
-        var fnSuccess = function(contact0) {onSuccess.\$call\$1(contact0);},
-            fnError = function(err) {onError.\$call\$1(err);};
-        contact.save(fnSuccess, fnError);
-      ''');
+      JSUtil.newJSFunction(_REMOVE, ["contact", "onSuccess", "onError"],
+        "contact.remove(onSuccess, onError);");
+      JSUtil.newJSFunction(_SAVE, ["contact", "onSuccess", "onError"],
+        "contact.save(onSuccess, onError);");
       _doneInit = true;
     }
   }

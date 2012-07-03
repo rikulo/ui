@@ -36,12 +36,15 @@ class GFeed {
     _initJSFunctions();
 
     Map options = _options !== null ? new Map.from(_options) : new Map();
-    options["callback"] = () => readyFn(); //callback after Feed API is loaded
+    options["callback"] = readyFn; //callback after Feed API is loaded(used by loader)
     options["nocss"] = true;
     new GLoader().load(GLoader.FEED, _version, options); //load Feed API
   }    
   
-  load(GFeedSuccessCallback onSuccess) {
+  /** Load feed information in a Map via callback function [onSuccess].
+   * +[onSuccess] callback function if successfully get the weather information. 
+   */ 
+  void loadFeedInfo(GFeedSuccessCallback onSuccess) {
     _feedModule.doWhenLoaded(()=>_load(onSuccess));
   }
   
@@ -50,7 +53,8 @@ class GFeed {
     if (jsFeed == null) {
       jsFeed = JSUtil.jsCall(_NEW_FEED, [_url]);             
     }
-    JSUtil.jsCall(_LOAD, [jsFeed, (xmldoc) => onSuccess(xmldoc === null ? null : JSUtil.xmlDocToDartMap(xmldoc))]);
+    var jsSuccess = JSUtil.toJSFunction((xmldoc) => onSuccess(xmldoc === null ? null : JSUtil.xmlDocToDartMap(xmldoc)), 1);
+    JSUtil.jsCall(_LOAD, [jsFeed, jsSuccess]);
   }
   
   void _initJSFunctions() {
@@ -59,10 +63,10 @@ class GFeed {
       jsFeed.setResultFormat(window.google.feeds.Feed.XML_FORMAT);
       return jsFeed;
     ''');
-    JSUtil.newJSFunction(_LOAD, ["jsFeed", "callback"], '''
+    JSUtil.newJSFunction(_LOAD, ["jsFeed", "onSuccess"], '''
       jsFeed.load(function(result) {
         if (result.status.code === 200)
-            callback.\$call\$1(result.xmlDocument);
+            onSuccess(result.xmlDocument);
       });
     ''');
   }

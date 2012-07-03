@@ -7,7 +7,7 @@ class TestGLoader extends Activity {
 
   void onCreate_() {
     GLoader loader = new GLoader();
-    loader.getIPLocation((double lat, double lng) {
+    loader.loadIPLatLng((double lat, double lng) {
         log("lat: ${lat}, lng: ${lng}");
     });
     loader.load(GLoader.FEED, "1", {"callback": ()=>log("Feed loaded")});
