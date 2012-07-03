@@ -2,10 +2,10 @@
 //History: Fri, Jun 22, 2012  05:20:07 PM
 // Author: hernichen
 
-#library("rikulo:gmaps");
+#library("rikulo:services:gmaps");
 
 #import("dart:html");
-#import("../html/html.dart");
+#import("../../html/html.dart");
 #import("../gapis/gapis.dart");
 
 #source("src/MapTypeId.dart");

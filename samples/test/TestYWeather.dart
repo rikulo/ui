@@ -1,6 +1,6 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
-#import('../../client/yapis/yapis.dart');
+#import('../../client/service/yapis/yapis.dart');
 #import('../../client/util/util.dart');
 
 class TestYWeather extends Activity {

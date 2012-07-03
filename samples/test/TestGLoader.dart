@@ -1,6 +1,6 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
-#import('../../client/gapis/gapis.dart');
+#import('../../client/service/gapis/gapis.dart');
 #import('../../client/util/util.dart');
 
 class TestGLoader extends Activity {

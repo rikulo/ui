@@ -2,11 +2,11 @@
 //History: Wed, Jun 20, 2012  05:21:28 PM
 // Author: hernichen
 
-#library("rikulo:yapis");
+#library("rikulo:services:yapis");
 
 #import("dart:html");
-#import("../util/util.dart");
-#import("../html/html.dart");
+#import("../../util/util.dart");
+#import("../../html/html.dart");
 #import("../gapis/gapis.dart");
 
 #source("src/YPlaceFinder.dart");
