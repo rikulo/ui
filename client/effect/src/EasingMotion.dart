@@ -21,8 +21,7 @@ class EasingMotion extends _Motion {
    * Construct an EasingMotion.
    */
   EasingMotion(this.action, [EasingFunction easing, int duration = 500, 
-    Animator animator, MotionRunner run, MotionCallback init, 
-    MotionCallback end, bool autorun = true]) : 
+    MotionRunner run, MotionCallback init, MotionCallback end, bool autorun = true]) : 
     this.duration = duration, this.easing = easing, 
     super(run, init, end, autorun);
   
