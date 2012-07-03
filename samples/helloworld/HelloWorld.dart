@@ -13,7 +13,7 @@ class HelloWorld extends Activity {
     welcome.on.click.add((event) {
       welcome.text = "Hi, this is Rikulo.";
       welcome.style.border = welcome.style.border.isEmpty() ? "1px solid blue": "";
-      welcome.parent.requestLayout();
+      welcome.requestLayout(); //need to re-layout since its size is changed
     });
     mainView.addChild(welcome);
   }
