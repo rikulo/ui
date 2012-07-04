@@ -26,7 +26,8 @@ class GLoader {
   static Map<String, double> _loc;
 
   GLoader() {
-    _loaderModule = new LoadableModule(_loadModule);
+    if (_loaderModule === null)
+      _loaderModule = new LoadableModule(_loadModule);
   }
   
   Map get _ipLatLng() {

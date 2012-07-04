@@ -27,8 +27,10 @@ class GFeed {
    */
   GFeed(String url, [String version="1", Map options]) :
     _url = url, _version = version, _options = options {
-    _feedModule = new LoadableModule(_loadModule);
-    _feedModule.doWhenLoaded(null); //force loading module
+    if (_feedModule === null) {
+      _feedModule = new LoadableModule(_loadModule);
+      _feedModule.doWhenLoaded(null); //force loading module
+    }
   }
   
   //load Feed module
