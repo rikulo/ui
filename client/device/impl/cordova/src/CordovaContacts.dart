@@ -34,9 +34,14 @@ class CordovaContacts implements Contacts {
     return JSUtil.toJSFunction((jsErr) => dartFn(new ContactError.from(JSUtil.toDartMap(jsErr))), 1);
   }
   
+  static bool _doneInit = false;
   void _initJSFunctions() {
+    if (_doneInit) return;
+    
     JSUtil.newJSFunction(_FIND, ["fields", "onSuccess", "onError", "opts"],
       "navigator.contacts.find(fields, onSuccess, onError, opts);");
+
+    _doneInit = true;
   }
 }
 

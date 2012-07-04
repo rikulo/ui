@@ -30,10 +30,11 @@ class CordovaMediaFile implements MediaFile {
   
   static bool _doneInit = false;
   void _initJSFunctions() {
-    if (!_doneInit) {
-      JSUtil.newJSFunction(_GET_FORMAT_DATA, ["mediaFile", "onSuccess", "onError"],
-        "mediaFile.getFormatData(onSuccess, onError);");
-      _doneInit = true;
-    }
+    if (_doneInit) return;
+
+    JSUtil.newJSFunction(_GET_FORMAT_DATA, ["mediaFile", "onSuccess", "onError"],
+      "mediaFile.getFormatData(onSuccess, onError);");
+
+    _doneInit = true;
   }
 }

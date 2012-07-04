@@ -172,8 +172,11 @@ class CordovaDevice implements Device {
       JSUtil.injectJavaScriptSrc(uri); //load asynchronously
     }
   }
-  
+
+  static bool _doneInit = false;
   void _initJSFunctions() {
+    if (_doneInit) return;
+
     JSUtil.newJSFunction(_INIT_CORDOVA, null, '''
       if (window.cordova) {
         if(window.cordova.require) {
@@ -192,5 +195,7 @@ class CordovaDevice implements Device {
     JSUtil.newJSFunction(_PLATFORM, null, "return device.plaform;"); //operating system name of this device
     JSUtil.newJSFunction(_VERSION, null, "return device.version;"); //operating system version of this device
     JSUtil.newJSFunction(_UUID, null, "return device.uuid;"); //uuid of this device 
+
+    _doneInit = true;
   }
 }

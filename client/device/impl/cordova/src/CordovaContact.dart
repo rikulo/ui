@@ -211,14 +211,15 @@ class CordovaContact implements Contact {
   
   static bool _doneInit = false;
   void _initJSFunctions() {
-    if (!_doneInit) {
-      JSUtil.newJSFunction(_CREATE,  null, "return navigator.contacts.create({});");
-      JSUtil.newJSFunction(_CLONE, ["contact"], "return contact.clone();");
-      JSUtil.newJSFunction(_REMOVE, ["contact", "onSuccess", "onError"],
-        "contact.remove(onSuccess, onError);");
-      JSUtil.newJSFunction(_SAVE, ["contact", "onSuccess", "onError"],
-        "contact.save(onSuccess, onError);");
-      _doneInit = true;
-    }
+    if (_doneInit) return;
+
+    JSUtil.newJSFunction(_CREATE,  null, "return navigator.contacts.create({});");
+    JSUtil.newJSFunction(_CLONE, ["contact"], "return contact.clone();");
+    JSUtil.newJSFunction(_REMOVE, ["contact", "onSuccess", "onError"],
+      "contact.remove(onSuccess, onError);");
+    JSUtil.newJSFunction(_SAVE, ["contact", "onSuccess", "onError"],
+      "contact.save(onSuccess, onError);");
+
+    _doneInit = true;
   }
 }

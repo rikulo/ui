@@ -57,7 +57,7 @@ class MapTypeId implements JSAgent {
   }
   
   void _initJSFunctions() {
-    if (_builtInTypeIds != null) return;
+    if (_builtInTypeIds !== null) return;
     _builtInTypeIds = new Map();
     
     JSUtil.newJSFunction(_GET_BUILT_IN_MAP_TYPE_ID, ["key"], "return window.google.maps.MapTypeId[key];");

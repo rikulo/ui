@@ -52,12 +52,17 @@ class CordovaGeolocation extends AbstractGeolocation {
     JSUtil.jsCall(_CLEAR_WATCH, [watchID]);
   }
   
+  static bool _doneInit = false;
   void _initJSFunctions() {
+    if (_doneInit) return;
+
     JSUtil.newJSFunction(_GET_CURRENT_POSITION, ["onSuccess", "onError", "opts"],
       "navigator.geolocation.getCurrentPosition(onSuccess, onError, opts);");
     JSUtil.newJSFunction(_WATCH_POSITION, ["onSuccess", "onError", "opts"],
       "return navigator.geolocation.watchPosition(onSuccess, onError, opts);");
     JSUtil.newJSFunction(_CLEAR_WATCH, ["watchID"], "navigator.geolocation.clearWatch(watchID);");
+
+    _doneInit = true;
   }
 }
 

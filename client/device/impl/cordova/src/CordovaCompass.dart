@@ -36,11 +36,16 @@ class CordovaCompass extends AbstractCompass {
     JSUtil.jsCall(_CLEAR_WATCH, [watchID]);
   }
   
+  static bool _doneInit = false;
   void _initJSFunctions() {
+    if (_doneInit) return;
+
     JSUtil.newJSFunction(_GET_CURRENT_HEADING, ["onSuccess", "onError"],
       "navigator.compass.getCurrentCompassHeading(onSuccess, onError);");
     JSUtil.newJSFunction(_WATCH_HEADING, ["onSuccess", "onError", "opts"],
       "return navigator.compass.watchHeading(onSuccess, onError, opts);");
     JSUtil.newJSFunction(_CLEAR_WATCH, ["watchID"], "navigator.compass.clearWatch(watchID);");
+    
+    _doneInit = true;
   }
 }

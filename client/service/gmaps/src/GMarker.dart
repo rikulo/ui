@@ -9,7 +9,6 @@
 class GMarker implements JSAgent {
   //private JavaScript function
   static final String _NEW_MARKER = "gmarker.0";
-  static bool _ready = false;
   
   var _gmarker; //JavaScript Marker object of Google Maps
   
@@ -22,9 +21,12 @@ class GMarker implements JSAgent {
     return _gmarker;
   }
   
+  static bool _doneInit = false;
   _initJSFunctions() {
-    if (_ready) return;
-    _ready = true;
+    if (_doneInit) return;
+    
     JSUtil.newJSFunction(_NEW_MARKER, ["opts"], "return new window.google.maps.Marker(opts);");
+    
+    _doneInit = true;
   }
 }
