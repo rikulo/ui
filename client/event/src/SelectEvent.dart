@@ -15,8 +15,8 @@ class SelectEvent<E> extends ViewEvent {
    * + [selectedIndex] is the index of the first selected value, or -1
    * if [selectedValues] is empty.
    */
-  SelectEvent(View target, Collection<E> selectedValues, int selectedIndex, [String type="select"]):
-  super(target, type), _selectedValues = selectedValues, _selectedIndex = selectedIndex;
+  SelectEvent(Collection<E> selectedValues, int selectedIndex, [String type="select", View target]):
+  super(type, target), _selectedValues = selectedValues, _selectedIndex = selectedIndex;
 
   /** Returns the selected values.
    */

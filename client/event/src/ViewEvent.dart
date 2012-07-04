@@ -11,7 +11,6 @@ typedef void ViewEventListener(ViewEvent event);
  * The event received by [View]'s event listener must be an instance of this class.
  */
 class ViewEvent {
-  View _target;
   final Event _domEvt;
   final String _type;
   final int _stamp;
@@ -21,8 +20,9 @@ class ViewEvent {
 
   /** Constructor.
    *
-   * + [target] is the view that this event is targeting.
-   * [type] is the event type, such as click.
+   * + [type] is the event type, such as click.
+   * + [target] is the view that this event is targeting. If not specified, it will
+   * be assigned automatically when the sendEvent method is called.
    * + [pageX] and [pageY] are the mouse pointer relative to the document.
    * They are ignored if not specified.
    * + [offsetX] and [offsetY] are the mouse pointer relative to [target]'s
@@ -32,11 +32,11 @@ class ViewEvent {
    * If this event is constructed from a DOM event (UIEvent),
    * it is UIEvent.pageX and UIEvent.pageY.
    */
-  ViewEvent(View target, String type, [int pageX, int pageY, int offsetX, int offsetY]):
+  ViewEvent(String type, [View target, int pageX, int pageY, int offsetX, int offsetY]):
   _domEvt = null, _type = type, _stamp = new Date.now().millisecondsSinceEpoch {
     if (type == null)
       throw const UIException("type required");
-    _target = currentTarget = target;
+    this.target = currentTarget = target;
 
     if (pageX !== null && pageY !== null) {
       _offset = new Offset(pageX, pageY);
@@ -48,10 +48,10 @@ class ViewEvent {
   /** Constructs a view event from a DOM event.
    * It is rarely called unless you'd like to wrap a DOM event.
    */
-  ViewEvent.dom(View target, Event domEvent, [String type]) : 
+  ViewEvent.dom(Event domEvent, [String type, View target]) : 
   _domEvt = domEvent, _type = type != null ? type: domEvent.type,
   _stamp = domEvent.timeStamp {
-    _target = currentTarget = target;
+    this.target = currentTarget = target;
     _offset = new Offset(0, 0);
   }
 
@@ -82,7 +82,7 @@ class ViewEvent {
 
   /** Returns the view that this event is targeting  to.
    */
-  View get target() => _target;
+  View target;
   /** The view that is handling this event currently.
    */
   View currentTarget;

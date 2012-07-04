@@ -7,8 +7,8 @@
  */
 class ChangeEvent<E> extends ViewEvent {
   final E _value;
-  ChangeEvent(View target, E value, [String type="change"]):
-  super(target, type), _value = value;
+  ChangeEvent(E value, [String type="change", View target]):
+  super(type, target), _value = value;
 
   /** Returns the value.
    */

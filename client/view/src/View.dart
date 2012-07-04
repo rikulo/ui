@@ -249,7 +249,7 @@ class View implements Hashable {
    * The application can listen `layout` for this event.
    */
   void onLayout() {
-    sendEvent(new ViewEvent(this, "layout"));
+    sendEvent(new ViewEvent("layout"));
   }
 
   /** Returns whether this view is a vie group.
@@ -636,7 +636,7 @@ class View implements Hashable {
     if (_evlInfo !== null)
       _evlInfo.mount();
 
-    sendEvent(new ViewEvent(this, "mount"));
+    sendEvent(new ViewEvent("mount"));
   }
   /** Callback when this view is detached from the document.
    *
@@ -645,7 +645,7 @@ class View implements Hashable {
    * Subclass shall call back this method if it overrides this method. 
    */
   void unmount_() {
-    sendEvent(new ViewEvent(this, "unmount"));
+    sendEvent(new ViewEvent("unmount"));
 
     if (_evlInfo !== null)
       _evlInfo.unmount();
@@ -1102,13 +1102,16 @@ class View implements Hashable {
 
   /** Sends an event to this view.
    *
-   * Example: `view.sendEvent(new ViewEvent(target, "click"))</code>.
+   * Example: `view.sendEvent(new ViewEvent("click"))</code>.
    * If the type parameter is not specified, it is assumed to be [ViewEvent.type].
    *
    * To broadcast an event, please use [broadcaster] instead.
    */
-  bool sendEvent(ViewEvent event, [String type])
-  => _evlInfo !== null && _evlInfo.send(event, type);
+  bool sendEvent(ViewEvent event, [String type]) {
+    if (event.target == null)
+      event.target = this;
+    return _evlInfo !== null && _evlInfo.send(event, type);
+  }
   /** Posts an event to this view.
    * Unlike [sendEvent], [postEvent] puts the event in a queue and returns
    * immediately. The event will be handled later.

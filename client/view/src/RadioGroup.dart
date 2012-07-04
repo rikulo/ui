@@ -121,7 +121,7 @@ class RadioGroup<E> extends View {
     for (final AfterMount callback in callbacks)
       callback(this);
 
-    sendEvent(new ViewEvent(this, "render"));
+    sendEvent(new ViewEvent("render"));
   }
 
   //@override
@@ -200,7 +200,7 @@ class RadioGroup<E> extends View {
             break; //found
       }
     }
-    sendEvent(new SelectEvent(this, selmodel.selection, index));
+    sendEvent(new SelectEvent(selmodel.selection, index));
   }
   void _initRadios() {
     EventListener onClick = (Event event) {

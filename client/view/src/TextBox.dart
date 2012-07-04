@@ -224,7 +224,7 @@ class TextBox extends View implements Input<String> {
     if (_changeDispatcher === null)
       _changeDispatcher = (View target) => (event) {
         final TextBox t = target;
-        t.sendEvent(new ChangeEvent<String>(t, t.value));
+        t.sendEvent(new ChangeEvent<String>(t.value));
       };
     return _changeDispatcher;
   }

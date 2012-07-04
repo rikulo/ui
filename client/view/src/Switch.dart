@@ -88,7 +88,7 @@ class Switch extends View implements Input<bool> {
       }
     }
     if (bSendEvent && bChanged)
-      sendEvent(new ChangeEvent(this, _value));
+      sendEvent(new ChangeEvent(_value));
   }
   void _updateBg(int delta) {
     _bgNode.style.marginLeft = CSS.px(delta + _marginDiff);
