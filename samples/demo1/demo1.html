@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<!-- Demo of local time/weather/location information -->
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid Sans">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/view.css" />
+    <style>
+@keyframes glow {
+    0% { 
+    	opacity: 0.05;
+    	box-shadow: 0 0 1px #FFFFFF;
+    }
+    90% {
+		opacity: 1;
+    	box-shadow: 0 0 12px #FFFFFF;
+    }
+    100% {
+		opacity: 1;
+    	box-shadow: 0 0 12px #FFFFFF;
+    }
+}
+@-moz-keyframes glow {
+    0% { 
+    	opacity: 0.05;
+    	box-shadow: 0 0 1px #FFFFFF;
+    }
+    90% {
+		opacity: 1;
+    	box-shadow: 0 0 12px #FFFFFF;
+    }
+    100% {
+		opacity: 1;
+    	box-shadow: 0 0 12px #FFFFFF;
+    }
+}
+@-webkit-keyframes glow {
+    0% { 
+    	opacity: 0.05;
+    	box-shadow: 0 0 1px #FFFFFF;
+    }
+    90% {
+    	opacity: 1;
+    	box-shadow: 0 0 12px #FFFFFF;
+    }
+    100% {
+		opacity: 1;
+    	box-shadow:0 0 12px #FFFFFF;
+    }
+}
+    </style>
+  </head>
+  <body>
+  	<div id="v-main" style="width:157px;height:250px"/>
+  	
+    <!--<script type="text/javascript" src="LocalInfo.dart.js"></script>-->
+    <script type="application/dart" src="LocalInfo.dart"></script>
+    <script src="../../resources/js/dart.js"></script><!-- dart loader -->
+  </body>
+</html>
