@@ -95,7 +95,10 @@ class CordovaCapture implements Capture {
     }
   }
   
+  static bool _doneInit = false;
   void _initJSFunctions() {
+    if (_doneInit) return;
+    
     JSUtil.newJSFunction(_SUPPORTED_AUDIO_MODES, null, "return navigator.device.capture.supportedAudioModes;");
     JSUtil.newJSFunction(_SUPPORTED_IMAGE_MODES, null, "return navigator.device.capture.supportedImageModes;");
     JSUtil.newJSFunction(_SUPPORTED_VIDEO_MODES, null, "return navigator.device.capture.supportedVideoModes;");
@@ -105,5 +108,7 @@ class CordovaCapture implements Capture {
       "navigator.device.capture.captureImage(onSuccess, onError, opts);");
     JSUtil.newJSFunction(_CAPTURE_VIDEO, ["onSuccess", "onError", "opts"],
       "navigator.device.capture.captureVideo(onSuccess, onError, opts);");
+
+    _doneInit = true;
   }
 }

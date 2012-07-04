@@ -31,8 +31,10 @@ class GMap implements JSAgent {
    */
   GMap(String mapCanvas, [String version="3.9", Map options= const {"sensor":true}]) :
     _mapCanvas = mapCanvas, _version = version, _options = options {
-    _mapsModule = new LoadableModule(_loadModule);
-    _mapsModule.doWhenLoaded(null); //force loading module
+    if (_mapsModule === null) {
+      _mapsModule = new LoadableModule(_loadModule);
+      _mapsModule.doWhenLoaded(null); //force loading module
+    }
   }
   
   /**
@@ -76,7 +78,7 @@ class GMap implements JSAgent {
     Map options = new Map();
     if (!sb.isEmpty())
       options["other_params"] = sb.toString();
-    options["callback"] = ()=>readyFn(); //callback after Maps API is loaded
+    options["callback"] = readyFn; //callback after Maps API is loaded
 
     new GLoader().load(GLoader.MAPS, _version, options); //load Maps API
   }    

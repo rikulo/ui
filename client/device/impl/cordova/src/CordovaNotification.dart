@@ -34,12 +34,17 @@ class CordovaNotification implements XNotification {
     JSUtil.jsCall(_VIBRATE, [milliseconds]);
   }
   
+  static bool _doneInit = false;
   void _initJSFunctions() {
+    if (_doneInit) return;
+    
     JSUtil.newJSFunction(_ALERT, ["message", "alertCallback", "title", "buttonName"],
       "navigator.notification.alert(message, alertCallback, title, buttonName);");
     JSUtil.newJSFunction(_CONFIRM, ["message", "confirmCallback", "title", "buttonLabels"],
       "navigator.notification.confirm(message, confirmCallback, title, buttonLabels);");
     JSUtil.newJSFunction(_BEEP, ["times"], "navigator.notification.beep(times);");
     JSUtil.newJSFunction(_VIBRATE, ["msecs"], "navigator.notification.vibrate(msecs);");
+    
+    _doneInit = true;
   }
 }

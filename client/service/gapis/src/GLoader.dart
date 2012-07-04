@@ -26,7 +26,8 @@ class GLoader {
   static Map<String, double> _loc;
 
   GLoader() {
-    _loaderModule = new LoadableModule(_loadModule);
+    if (_loaderModule === null)
+      _loaderModule = new LoadableModule(_loadModule);
   }
   
   Map get _ipLatLng() {
@@ -54,7 +55,7 @@ class GLoader {
   /** Load Goolge JavaScript API module; see https://developers.google.com/loader/#GoogleLoad for details.
    * + [name] the module name
    * + [version] the module version
-   * + [options] the options used in loading the module
+   * + [options] the options used in loading the module; can specify a *callback* function when module loaded. 
    */
   void load(String name, String version, [Map options]) {
     _loaderModule.doWhenLoaded(()=>_load(name, version, options));
