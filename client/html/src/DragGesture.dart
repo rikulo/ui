@@ -282,28 +282,12 @@ abstract class _DragGesture implements DragGesture {
       _state._dragged.style.top = CSS.px(move.y);
     }
   }
-  Offset _constraint(int x, y) { // TODO: refactor: just use Rectangle#snap() and deal with transform
+  Offset _constraint(int x, y) {
     final Rectangle range = _state.range;
-    if (range !== null) {
-      if (range.width == 0) x = _state._initTxOfs.x;
-      else if (_transform) { //if transform, width is negative
-        if (x > range.x) x = range.x;
-        else if (x < range.right) x = range.right;
-      } else {
-        if (x < range.x) x = range.x;
-        else if (x > range.right) x = range.right;
-      }
-
-      if (range.height == 0) y = _state._initTxOfs.y;
-      else if (_transform) {
-        if (y > range.y) y = range.y;
-        else if (y < range.bottom) y = range.bottom;
-      } else {
-        if (y < range.y) y = range.y;
-        else if (y > range.bottom) y = range.bottom;
-      }
-    }
-    return new Offset(x, y);
+    Offset off = new Offset(x, y);
+    if (range != null)
+      off = range.snap(off);
+    return off;
   }
 }
 
