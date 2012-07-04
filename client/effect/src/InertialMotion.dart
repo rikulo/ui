@@ -17,11 +17,11 @@ class InertialMotion extends _Motion {
    * Construct an InertialMotion.
    */
   InertialMotion(this.element, Offset velocity, [num deceleration = 0.0005, 
-      MotionRunner run, MotionCallback init, MotionCallback end, bool autorun = true]) : 
+      MotionCallback start, MotionRunner moving, MotionCallback end, bool autorun = true]) : 
         _speed = VectorUtil.norm(velocity),
         _direction = velocity / VectorUtil.norm(velocity), // TODO: stupid, but what's a better way
         this.deceleration = deceleration, 
-        super(run, init, end, autorun);
+        super(start, moving, end, autorun);
   
   /**
    * Return the direction of this motion.
@@ -59,8 +59,8 @@ class InertialMotion extends _Motion {
     super.onStart(time, elapsed);
   }
   
-  bool onRunning(int time, int elapsed, int paused) {
-    if (_runner != null && !_runner(time, elapsed, paused))
+  bool onMoving(int time, int elapsed, int paused) {
+    if (_movingCB != null && !_movingCB(time, elapsed, paused))
       return false;
     applyPosition(updatePosition(time, elapsed, paused));
     _speed = updateSpeed(time, elapsed, paused);

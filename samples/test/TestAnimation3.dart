@@ -37,9 +37,9 @@ class BoundedInertialMotion extends InertialMotion {
   final Rectangle range;
   
   BoundedInertialMotion(Element element, Offset velocity, this.range, 
-    [num deceleration = 0.0005, MotionRunner run, MotionCallback init, 
+    [num deceleration = 0.0005, MotionCallback start, MotionRunner moving,  
     MotionCallback end, bool autorun = true]) :
-      super(element, velocity, deceleration, run, init, end, autorun);
+      super(element, velocity, deceleration, start, moving, end, autorun);
   
   num updateSpeed(int time, int elapsed, int paused) {
     num nspeed = speed - deceleration * elapsed;

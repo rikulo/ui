@@ -73,15 +73,15 @@ class _Motion implements Motion {
   static final _MOTION_STATE_RUNNING = 1;
   static final _MOTION_STATE_PAUSED = 2;
   
-  final MotionRunner _runner;
+  final MotionRunner _movingCB;
   final MotionCallback _startCB, _endCB;
   AnimatorTask _task;
   int _state = _MOTION_STATE_INIT;
   int _startTime, _pausedTimestamp, _pausedTime = 0;
   var data;
   
-  _Motion([MotionRunner run, MotionCallback start, MotionCallback end, bool autorun = true]) : 
-    _runner = run, _startCB = start, _endCB = end {
+  _Motion([MotionCallback start, MotionRunner moving, MotionCallback end, bool autorun = true]) : 
+    _movingCB = moving, _startCB = start, _endCB = end {
     
     _task = (int time, int elapsed) {
       if (_state == _MOTION_STATE_INIT) {
@@ -96,7 +96,7 @@ class _Motion implements Motion {
             _pausedTimestamp = null;
             onResume(time, elapsed, _pausedTime);
           }
-          final bool cont = onRunning(time, elapsed, _pausedTime);
+          final bool cont = onMoving(time, elapsed, _pausedTime);
           if (!cont)
             onEnd(time, elapsed, _pausedTime);
           return cont;
@@ -122,8 +122,8 @@ class _Motion implements Motion {
   /**
    * Called in each animator iteration, when the motion is at running state.
    */
-  bool onRunning(int time, int elapsed, int paused) => 
-      _runner == null || _runner(time, elapsed, paused);
+  bool onMoving(int time, int elapsed, int paused) => 
+      _movingCB == null || _movingCB(time, elapsed, paused);
   
   /**
    * Called in the first animator iteration after the motion is added into animator.

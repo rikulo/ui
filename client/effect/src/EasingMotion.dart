@@ -13,6 +13,7 @@ typedef num EasingFunction(num time);
  */
 class EasingMotion extends _Motion {
   
+  // TODO: support mode: run-once, alternate, repeat
   final MotionAction action;
   final EasingFunction easing;
   final int duration;
@@ -21,9 +22,9 @@ class EasingMotion extends _Motion {
    * Construct an EasingMotion.
    */
   EasingMotion(this.action, [EasingFunction easing, int duration = 500, 
-    MotionRunner run, MotionCallback start, MotionCallback end, bool autorun = true]) : 
+    MotionCallback start, MotionRunner moving, MotionCallback end, bool autorun = true]) : 
     this.duration = duration, this.easing = easing, 
-    super(run, start, end, autorun);
+    super(start, moving, end, autorun);
   
   /**
    * 
@@ -35,9 +36,9 @@ class EasingMotion extends _Motion {
    */
   void applyMotionAction(num x) => action(x);
   
-  bool onRunning(int time, int elapsed, int paused) {
+  bool onMoving(int time, int elapsed, int paused) {
     int curr = Math.min(time - _startTime - paused, duration);
-    if (_runner != null && !_runner(time, elapsed, paused))
+    if (_movingCB != null && !_movingCB(time, elapsed, paused))
       return false;
     applyMotionAction(getEasingValue(curr / duration));
     return curr < duration;
