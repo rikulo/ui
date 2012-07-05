@@ -55,7 +55,7 @@ class InertialMotion extends _Motion {
   }
   
   void onStart(int time, int elapsed) {
-    _pos = new DOMQuery(element).documentOffset;
+    _pos = new DOMQuery(element).offset;
     super.onStart(time, elapsed);
   }
   
