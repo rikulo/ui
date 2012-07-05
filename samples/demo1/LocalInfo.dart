@@ -32,7 +32,8 @@ class LocalInfo extends Activity {
   
   Image _weatherIcon;
   Image _locationIcon;
-  TextView _back;
+  Image _back;
+  Switch _mapType;
   View _mapArea;
   View _mapView;
   GMap _gmap;
@@ -100,8 +101,10 @@ class LocalInfo extends Activity {
         _mapArea.hidden = false;
         _prepareMaps();
         _gmap.checkResize();
+        _mapArea.requestLayout();
       }, end: (int time, int elapsed, int paused) {
         _homePanel.hidden = true;
+        _back.hidden = false;
       });
     });
     
@@ -113,6 +116,7 @@ class LocalInfo extends Activity {
         _mapArea.style.transform = CSS.translate3d(0, off);
       }, duration: 350, start: (int time, int elapsed, int paused) {
         _homePanel.hidden = false;
+        _back.hidden = true;
         _prepareWeather();
       }, end: (int time, int elapsed, int paused) {
         _mapArea.hidden = true;
@@ -166,8 +170,7 @@ class LocalInfo extends Activity {
     if (_lat != null)
       onSuccess(_lat, _lng);
     else {
-      GLoader loader = new GLoader();
-      loader.loadIPLatLng((double lat, double lng) {
+      GLoader.loadIPLatLng((double lat, double lng) {
         if (lat != null) {
           _lat = lat;
           _lng = lng;
@@ -313,6 +316,7 @@ class LocalInfo extends Activity {
     return locationText;
   }
   
+  static int _BAR_HEIGHT = 26;
   //create Maps area
   View _createMapsArea() {
     //Maps area
@@ -325,27 +329,43 @@ class LocalInfo extends Activity {
 
     //toolbar
     View tbar = _createHlayout();
-    tbar.style.backgroundColor = "rgba(0,0,0,0.6)";
+    tbar.style.backgroundColor = "rgba(0,0,0,0)"; //"rgba(0,0,0,0.6)"
     tbar.profile.width = CSS.px(mainView.width);
-    tbar.profile.height = "16px";
+    tbar.profile.height = CSS.px(_BAR_HEIGHT);
+    tbar.style.lineHeight = CSS.px(_BAR_HEIGHT);
     tbar.profile.spacing = "0";
     tbar.height = 16;
     mapArea.addChild(tbar);
     
     //back button
-    _back = _createTextView(10, "Back");
-    _back.style.lineHeight = "16px";
+    _back = new Image("img/back_button.png");//_createTextView(10, "Back");
+    _back.profile.width = "26px"; //"34px";
+    _back.profile.height = "12px"; //"16px";
+//    _back.style.lineHeight = "16px";
 
     _back.profile.anchor = "parent";
-    _back.profile.location = "top left";
-    _back.on.layout.add((event)=>_back.left += 3);
+    _back.profile.location = "center left";
+    _back.on.layout.add((event)=>_back.left += 5);
     tbar.addChild(_back);
+    _back.hidden = true;
+    
+    //map type switch
+    _mapType = new Switch(true, "Map", "Sat.");
+    _mapType.classes.add("v-small");
+    _mapType.profile.anchor = "parent";
+    _mapType.profile.location = "center right";
+    _mapType.on.layout.add((event)=>_mapType.left -= 4);
+    _mapType.on.change.add((evt) {
+      if (_gmap !== null)
+        _gmap.setMapTypeId(_mapType.value ? MapTypeId.ROADMAP : MapTypeId.HYBRID);
+    });
+    tbar.addChild(_mapType);
 
     //Maps view
     View mapView = new View();
     mapView.style.backgroundColor = "#FFFFFF";
     mapView.profile.width = CSS.px(mainView.width);
-    mapView.profile.height = CSS.px(mainView.height - 16);
+    mapView.profile.height = CSS.px(mainView.height - _BAR_HEIGHT);
     mapView.profile.spacing = "0";
     mapArea.addChild(mapView);
     _mapView = mapView;
@@ -374,8 +394,7 @@ class LocalInfo extends Activity {
   
   //locate woeid per latitude and longitude; then retrieve weather info
   void _prepareWeather0(double lat, double lng) {
-    YPlaceFinder finder = new YPlaceFinder();
-    finder.loadGeoInfo({"location": "${lat}, ${lng}"}, 
+    YPlaceFinder.loadGeoInfo({"location": "${lat}, ${lng}"}, 
       (Map resultSet) {
         Map result = resultSet["Result"];
         String woeid = result['woeid']; //locate woeid
@@ -424,7 +443,7 @@ class LocalInfo extends Activity {
     Map mapOptions = {
       "center": new LatLng(lat, lng),
       "zoom": 11,
-//      "mapTypeControl" : false,
+      "mapTypeControl" : false,
       "streetViewControl" : false,
       "mapTypeId": MapTypeId.ROADMAP
     };
