@@ -7,7 +7,7 @@
 class Issue5 extends Activity {
 
   void onCreate_() {
-    Button btn = new Button("Click me to show switches");
+    Button btn = new Button("Click me to show switches and check if one is on and the other off");
     btn.profile.text = "anchor:parent;location:top center";
     mainView.addChild(btn);
 
