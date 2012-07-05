@@ -53,65 +53,73 @@ class MeasureContext {
 
   /** Set the width of the given view based on its profile.
    * It is an utility for implementing a layout.
+   *
+   * It has no effect if view is not visible.
    */
   void setWidthByProfile(View view, AsInt width) {
-    final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "width"));
-    switch (amt.type) {
-      case LayoutAmountType.FIXED:
-        view.width = amt.value;
-        break;
-      case LayoutAmountType.FLEX:
-        view.width = width();
-        break;
-      case LayoutAmountType.RATIO:
-        view.width = (width() * amt.value).round().toInt();
-        break;
-      case LayoutAmountType.NONE:
-      case LayoutAmountType.CONTENT:
-        //Note: if NONE and app doesn't set width, it means content
-        if (amt.type == LayoutAmountType.NONE && getWidthSetByApp(view) !== null)
+    if (!view.hidden) {
+      final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "width"));
+      switch (amt.type) {
+        case LayoutAmountType.FIXED:
+          view.width = amt.value;
           break;
-        final int wd = view.measureWidth_(this);
-        if (wd != null)
-          view.width = wd;
-        break;
+        case LayoutAmountType.FLEX:
+          view.width = width();
+          break;
+        case LayoutAmountType.RATIO:
+          view.width = (width() * amt.value).round().toInt();
+          break;
+        case LayoutAmountType.NONE:
+        case LayoutAmountType.CONTENT:
+          //Note: if NONE and app doesn't set width, it means content
+          if (amt.type == LayoutAmountType.NONE && getWidthSetByApp(view) !== null)
+            break;
+          final int wd = view.measureWidth_(this);
+          if (wd != null)
+            view.width = wd;
+          break;
+      }
     }
   }
   /** Set the height of the given view based on its profile.
    * It is an utility for implementing a layout.
+   *
+   * It has no effect if view is not visible.
    */
   void setHeightByProfile(View view, AsInt height) {
-    final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "height"));
-    switch (amt.type) {
-      case LayoutAmountType.FIXED:
-        view.height = amt.value;
-        break;
-      case LayoutAmountType.FLEX:
-        view.height = height();
-        break;
-      case LayoutAmountType.RATIO:
-        view.height = (height() * amt.value).round().toInt();
-        break;
-      case LayoutAmountType.NONE:
-      case LayoutAmountType.CONTENT:
-        //Note: if NONE and app doesn't set height, it means content
-        if (amt.type == LayoutAmountType.NONE && getHeightSetByApp(view) !== null)
+    if (!view.hidden) {
+      final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "height"));
+      switch (amt.type) {
+        case LayoutAmountType.FIXED:
+          view.height = amt.value;
           break;
-        final int hgh = view.measureHeight_(this);
-        if (hgh != null)
-          view.height = hgh;
-        break;
+        case LayoutAmountType.FLEX:
+          view.height = height();
+          break;
+        case LayoutAmountType.RATIO:
+          view.height = (height() * amt.value).round().toInt();
+          break;
+        case LayoutAmountType.NONE:
+        case LayoutAmountType.CONTENT:
+          //Note: if NONE and app doesn't set height, it means content
+          if (amt.type == LayoutAmountType.NONE && getHeightSetByApp(view) !== null)
+            break;
+          final int hgh = view.measureHeight_(this);
+          if (hgh != null)
+            view.height = hgh;
+          break;
+      }
     }
   }
 
   /** Measure the width of the given view.
    */
   int measureWidth(View view)
-  => layoutManager.getLayoutOfView(view).measureWidth(this, view);
+  => view.hidden ? 0: layoutManager.getLayoutOfView(view).measureWidth(this, view);
   /** Measure the height of the given view.
    */
   int measureHeight(View view)
-  => layoutManager.getLayoutOfView(view).measureHeight(this, view);
+  => view.hidden ? 0: layoutManager.getLayoutOfView(view).measureHeight(this, view);
 
   /** Measures the width based on the view's content.
    * It is an utility for implementing a view's [View.measureWidth_].
@@ -140,6 +148,9 @@ class MeasureContext {
       hgh: _measureByContent(view, autowidth).height;
   }
   Size _measureByContent(View view, bool autowidth) {
+    if (view.hidden)
+      return new Size(widths[view] = 0, heights[view] = 0);
+
     CSSStyleDeclaration nodestyle;
     String orgspace, orgwd, orghgh;
     if (autowidth) {

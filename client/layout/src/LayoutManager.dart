@@ -45,6 +45,24 @@ class LayoutManager extends RunOnceViewManager {
     return clayout;
   }
 
+  /** Handles the layout of the given view.
+   */
+  void requestLayout(View view, bool immediate, bool descendantOnly) {
+    if (!descendantOnly) {
+      final View parent = view.parent;
+      //Start the layout from parent only if necessary
+      //Currently, we start from parent if with anchor, or in some layout,
+      //or some dimension not set by app
+      if (parent !== null
+      && (view.profile.anchorView !== null || !parent.layout.type.isEmpty()
+        || MeasureContext._getSetByApp(view, view.width, 'rk.layout.w') === null
+        || MeasureContext._getSetByApp(view, view.height, 'rk.layout.h') === null))
+        view = parent; //start from parent (slower performance but safer)
+    }
+
+    if (immediate) flush(view);
+    else queue(view);
+  }
 
   /** Called by [View], when it changed the width or height.
    */
@@ -79,16 +97,17 @@ class LayoutManager extends RunOnceViewManager {
   /** Handles the layout of the given view.
    */
   void doLayout(MeasureContext mctx, View view) {
-    if (view.parent === null && view.profile.anchorView === null) { //root without anchor
-      //handle profile since it has no parent to handel for it
-      mctx.setWidthByProfile(view, () => browser.size.width);
-      mctx.setHeightByProfile(view, () => browser.size.height);
-      AnchorRelation._positionRoot(view);
+    if (!view.hidden) {
+      if (view.parent === null && view.profile.anchorView === null) { //root without anchor
+        //handle profile since it has no parent to handel for it
+        mctx.setWidthByProfile(view, () => browser.size.width);
+        mctx.setHeightByProfile(view, () => browser.size.height);
+        AnchorRelation._positionRoot(view);
+      }
+      getLayoutOfView(view).doLayout(mctx, view);
+      view.onLayout();
     }
-    getLayoutOfView(view).doLayout(mctx, view);
-    view.onLayout();
   }
-
 
   /** Wait until the given image is loaded.
    * If the width and height of the image is not known in advance, this method

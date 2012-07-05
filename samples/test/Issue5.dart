@@ -17,8 +17,7 @@ class Issue5 extends Activity {
     mainView.addChild(myView);
 
     btn.on.click.add((event) {
-        myView.hidden = false;
-        myView.requestLayout();
+      myView.hidden = !myView.hidden;
     });
 
     myView.addChild(new Switch(true));
