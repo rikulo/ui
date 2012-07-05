@@ -507,6 +507,8 @@ class View implements Hashable {
    * Notice: if you specify [before], you don't have to specify [node].
    * On the other hand, [node] is required if you don't specify [before].
    * It also means you have to specify either [node] or [before].
+   *
+   * Unlike most of API, [requestLayout] will be called automatically after mounted.
    */
   void addToDocument([Element node, bool outer=false, bool inner=false,
   Element before, bool keepId=false]) {
@@ -711,13 +713,7 @@ class View implements Hashable {
    * [ViewUtil.flushRequestedLayouts].
    */
   void requestLayout([bool immediate=false, bool descendantOnly=false]) {
-    //Implementation Note: from user's viewpoint, he requests the view that was changed
-    //OTOH, the layout manager has to start the layout from its parent (since parent
-    //controls the layout of the children).
-    if (immediate)
-      layoutManager.flush(!descendantOnly && parent !== null ? parent: this);
-    else
-      layoutManager.queue(!descendantOnly && parent !== null ? parent: this);
+    layoutManager.requestLayout(this, immediate, descendantOnly);
   }
   /** Hanldes the layout of this view.
    * It is called by [LayoutManager].
@@ -803,12 +799,18 @@ class View implements Hashable {
    */
   bool get hidden() => _hidden;
   /** Sets if this view is hidden.
+   *
+   * Unlike most API, [requestLayout] will be called automatically if it is becoming visible.
    */
   void set hidden(bool hidden) {
+    final bool changed = hidden != _hidden;
     _hidden = hidden;
 
-    if (_inDoc)
+    if (_inDoc) {
       node.style.display = hidden ? "none": "";
+      if (changed && !hidden)
+        requestLayout();
+    }
   }
 
   /** Returns the left position of this view relative to its parent.
@@ -840,12 +842,15 @@ class View implements Hashable {
 
   /** Returns the width of this view.
    *
-   * Default: null (up to the system).
+   * Default: null (means the width shall be calculated based on its content).
    *
    * + To get the real width on the document, use [outerWidth].
    */
   int get width() => _width;
   /** Sets the width of this view.
+   *
+   * Notice that, like most of APIs, if the change will affect the layout,
+   * you have to invoke [requestLayout] by yourself.
    */
   void set width(int width) {
     _width = width;
@@ -858,12 +863,15 @@ class View implements Hashable {
   }
   /** Returns the height of this view.
    *
-   * Default: null (up to the system)
+   * Default: null (means the height shall be calculated based on its content).
    *
    * + To get the real height on the document, use [outerWidth].
    */
   int get height() => _height;
   /** Sets the height of this view.
+   *
+   * Notice that, like most of APIs, if the change will affect the layout,
+   * you have to invoke [requestLayout] by yourself.
    */
   void set height(int height) {
     _height = height;

@@ -36,7 +36,8 @@ class LinearLayout implements Layout {
 
       //3) pass control to children
       for (final View child in view.children) {
-        child.doLayout_(mctx); //no matter shallLayout_(child)
+        if (!child.hidden)
+          child.doLayout_(mctx); //no matter shallLayout_(child)
       }
     }
   }
