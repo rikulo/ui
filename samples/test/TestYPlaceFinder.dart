@@ -6,8 +6,7 @@
 class TestYPlaceFinder extends Activity {
 
   void onCreate_() {
-    YPlaceFinder finder = new YPlaceFinder();
-    finder.loadGeoInfo({"location": "37.787082 -122.400929"}, 
+    YPlaceFinder.loadGeoInfo({"location": "37.787082 -122.400929"}, 
       (Map resultSet) {
         if(resultSet === null)
           log("Fail to loadGeoInfo.");

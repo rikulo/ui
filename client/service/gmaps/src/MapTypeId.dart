@@ -4,7 +4,7 @@
 
 /**
  * Bridge Dart to Google Maps JavaScript Object, MapTypeId ; 
- * see https://developers.google.com/maps/documentation/javascript/tutorial for details.
+ * see <https://developers.google.com/maps/documentation/javascript/tutorial> for details.
  */
 class MapTypeId implements JSAgent {
   //private JS functions

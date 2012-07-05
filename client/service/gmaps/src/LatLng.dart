@@ -4,7 +4,7 @@
 
 /**
  * Bridge Dart to Google Maps JavaScript Object -- LatLng; 
- * see https://developers.google.com/maps/documentation/javascript/reference#LatLng for details.
+ * see <https://developers.google.com/maps/documentation/javascript/reference#LatLng> for details.
  */
 class LatLng implements JSAgent {
   static final String _NEW_LAT_LNG = "latlng.0";

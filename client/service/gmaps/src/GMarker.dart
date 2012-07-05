@@ -4,7 +4,7 @@
 
 /**
  * Bridge Dart to Google Maps JavaScript object -- Marker; 
- * see https://developers.google.com/maps/documentation/javascript/reference#Marker for details.
+ * see <https://developers.google.com/maps/documentation/javascript/reference#Marker> for details.
  */
 class GMarker implements JSAgent {
   //private JavaScript function
