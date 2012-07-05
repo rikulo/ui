@@ -9,9 +9,10 @@
 class LayoutManager extends RunOnceViewManager {
   final Map<String, Layout> _layouts;
   final Set<String> _imgWaits;
+  final List<Task> _afters;
   int _inLayout = 0;
 
-  LayoutManager(): super(null), _layouts = {}, _imgWaits = new Set() {
+  LayoutManager(): super(null), _layouts = {}, _imgWaits = new Set(), _afters = [] {
     addLayout("linear", new LinearLayout());
     FreeLayout freeLayout = new FreeLayout();
     addLayout("none", freeLayout);
@@ -91,9 +92,24 @@ class LayoutManager extends RunOnceViewManager {
     try {
       doLayout(new MeasureContext(), view);
     } finally {
-      --_inLayout;
+      if (--_inLayout <= 0 && isQueueEmpty() && !_afters.isEmpty()) {
+        final List<Task> afters = new List.from(_afters);
+        _afters.clear();
+        for (final Task task in afters)
+          task();
+      }
     }
   }
+  /** Schedules a task to be run after the layout is done.
+   * If there is no pending layouts, it will be executed immediately.
+   */
+  void afterLayout(Task task) {
+    if (_inLayout <= 0 && isQueueEmpty())
+      task();
+    else
+      _afters.add(task);
+  }
+
   /** Handles the layout of the given view.
    */
   void doLayout(MeasureContext mctx, View view) {

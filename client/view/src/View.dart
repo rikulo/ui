@@ -511,14 +511,14 @@ class View implements Hashable {
    * Unlike most of API, [requestLayout] will be called automatically after mounted.
    */
   void addToDocument([Element node, bool outer=false, bool inner=false,
-  Element before, bool keepId=false]) {
+  Element before, bool keepId=false, String location]) {
     if (parent !== null || inDocument)
       throw new UIException("No parent allowed, nor attached twice: $this");
 
-    _addToDoc(node, outer, inner, before, keepId);
+    _addToDoc(node, outer, inner, before, keepId, location);
   }
-  void _addToDoc(Element node,
-  [bool outer=false, bool inner=false, Element before, bool keepId=false]) {
+  void _addToDoc(Element node, [bool outer=false, bool inner=false,
+  Element before, bool keepId=false, String location]) {
     if (outer && keepId && !node.id.isEmpty())
       _uuid = node.id;
 
@@ -542,6 +542,20 @@ class View implements Hashable {
       p.insertAdjacentHTML("beforeEnd", html);
 
     _mount();
+
+    if (location !== null)
+      layoutManager.afterLayout(() {
+        final Element n = this.node;
+        final Element p = n.parent;
+        if (p !== null) {
+          int x = 0, y = 0;
+          if (p.offsetParent == n.offsetParent) {
+            x = p.$dom_offsetLeft;
+            y = p.$dom_offsetTop;
+          }
+          ViewUtil.position(this, x, y, location);
+        }
+      });
   }
   /** Removes this view from the document.
    * All of its descendant views are removed too.

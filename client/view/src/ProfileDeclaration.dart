@@ -34,6 +34,15 @@ default ProfileDeclarationImpl {
    * (or [anchorView] is assigned with a view).
    *
    * Default: `top left`
+   *
+   * It can be one of the following.  
+   * "north start", "north center", "north end",
+   * "south start", "south center", "south end",
+   * "west start", "west center", "west end",
+   * "east start", "east center", "east end",
+   * "top left", "top center", "top right",
+   * "center left", "center center", "center right",
+   * "bottom left", "bottom center", and "bottom right"
    */
   String location;
 

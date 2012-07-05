@@ -83,6 +83,20 @@ class AnchorRelation {
       _anchorYHandlers[handlers[1]](0, _anchorOfRoot, view);
     }
   }
+  /** Positions the given view at the given offset.
+   *
+   * Please refer to [ViewUtil]'s `position` for more information.
+   */
+  static void position(View view, int x, int y, String location) {
+    if (location === null || location.isEmpty()) {
+      view.left = x;
+      view.top = y;
+    } else {
+      final List<int> handlers = _getHandlers(location);
+      _anchorXHandlers[handlers[0]](x, _anchorOfPoint, view);
+      _anchorYHandlers[handlers[1]](y, _anchorOfPoint, view);
+    }
+  }
 
   static List<int> _getHandlers(String loc) {
     if (loc.isEmpty()) //assume a value if empty since there is an anchor
@@ -120,8 +134,8 @@ final Map<String, List<int>> _locations = const {
 };
 //TODO: use const when Dart considers Closure as constant
 List<_AnchorHandler> get _anchorXHandlers() {
-  if (_cacheXAnchorHandlers == null)
-    _cacheXAnchorHandlers = [
+  if (_$anchorXHandlers == null)
+    _$anchorXHandlers = [
       (int offset, var anchor, View view) { //outer left
         view.left = offset - view.outerWidth;
       },
@@ -140,12 +154,12 @@ List<_AnchorHandler> get _anchorXHandlers() {
         view.left = offset + anchor.outerWidth;
       }
     ];
-  return _cacheXAnchorHandlers;
+  return _$anchorXHandlers;
 }
-List<_AnchorHandler> _cacheXAnchorHandlers;
+List<_AnchorHandler> _$anchorXHandlers;
 List<_AnchorHandler> get _anchorYHandlers() {
-  if (_cacheYAnchorHandlers == null)
-    _cacheYAnchorHandlers = [
+  if (_$anchorYHandlers == null)
+    _$anchorYHandlers = [
       (int offset, var anchor, View view) {
         view.top = offset - view.outerHeight;
       },
@@ -164,9 +178,9 @@ List<_AnchorHandler> get _anchorYHandlers() {
         view.top = offset + anchor.outerHeight;
       }
     ];
-  return _cacheYAnchorHandlers;
+  return _$anchorYHandlers;
 }
-List<_AnchorHandler> _cacheYAnchorHandlers;
+List<_AnchorHandler> _$anchorYHandlers;
 
 //Used by _positionRoot to simulate an achor for root views
 class _AnchorOfRoot {
@@ -177,3 +191,12 @@ class _AnchorOfRoot {
   int get innerHeight() => browser.size.height;
 }
 final _anchorOfRoot = const _AnchorOfRoot();
+
+class _AnchorOfPoint {
+  const _AnchorOfPoint();
+  int get outerWidth() => 0;
+  int get innerWidth() => 0;
+  int get outerHeight() => 0;
+  int get innerHeight() => 0;
+}
+final _anchorOfPoint = const _AnchorOfPoint();
