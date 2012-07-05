@@ -842,7 +842,7 @@ class View implements Hashable {
 
   /** Returns the width of this view.
    *
-   * Default: null (up to the system).
+   * Default: null (means the width shall be calculated based on its content).
    *
    * + To get the real width on the document, use [outerWidth].
    */
@@ -863,7 +863,7 @@ class View implements Hashable {
   }
   /** Returns the height of this view.
    *
-   * Default: null (up to the system)
+   * Default: null (means the height shall be calculated based on its content).
    *
    * + To get the real height on the document, use [outerWidth].
    */

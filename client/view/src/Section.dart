@@ -1,7 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 09, 2012
 
-/** A zone is a view implementing ID space ([IdSpace]).
+/** A section is a view implementing ID space ([IdSpace]).
  */
 class Section extends View implements IdSpace {
   //The fellows. Used only if this is IdSpace
