@@ -27,14 +27,22 @@ class DOMQuery {
    * but not border.
    */
   int get innerHeight() => node.$dom_clientHeight;
-  /** Returns the other width of the given element, including padding,
+  /** Returns the outer width of the given element, including padding,
    * border and margin.
    */
   int get outerWidth() => node.$dom_offsetWidth;
-  /** Returns the other width of the given element, including padding,
+  /** Returns the outer width of the given element, including padding,
    * border and margin.
    */
   int get outerHeight() => node.$dom_offsetHeight;
+  /** Returns the inner size of the given element, including padding
+   * but not border.
+   */
+  Size get innerSize() => new Size(innerWidth, innerHeight);
+  /** Returns the outer size of the given element, including padding,
+   * border and margin.
+   */
+  Size get outerSize() => new Size(outerWidth, outerHeight);
   /** Returns the closest ancestor elemento in the DOM hierachy from
    * which the position of the current element is calculated, or null
    * if it is the topmost element.
