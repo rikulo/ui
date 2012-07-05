@@ -25,18 +25,37 @@ class GLoader {
   static LoadableModule _loaderModule;
   static Map<String, double> _loc;
 
-  GLoader() {
+  /** Load Google JavaScript API module; see <https://developers.google.com/loader/#GoogleLoad> for details.
+   * + [name] the module name
+   * + [version] the module version
+   * + [options] the options used in loading the module; can specify a *callback* function when module loaded. 
+   */
+  static void load(String name, String version, [Map options]) {
+    _initGLoader();
+    _loaderModule.doWhenLoaded(()=>_load(name, version, options));
+  }
+  
+  /** Load latitude/longitude of the calling client via callback function [onSuccess]. Note that this service sometimes
+   * return null value.
+   * + [onSuccess] callback function if successfully get the latitude/longitude.
+   */
+  static void loadIPLatLng(LatLngSuccessCallback onSuccess) {
+    _initGLoader();
+    _loaderModule.doWhenLoaded(() => onSuccess(_ipLatLng['lat'], _ipLatLng['lng']));
+  }
+  
+  static _initGLoader() {
     if (_loaderModule === null)
       _loaderModule = new LoadableModule(_loadModule);
   }
   
-  Map get _ipLatLng() {
+  static Map get _ipLatLng() {
     if (_loc == null)
       _loc = JSUtil.toDartMap(JSUtil.jsCall(_IP_LOCATION));
     return _loc;
   }
   
-  void _loadModule(Function readyFn) {
+  static void _loadModule(Function readyFn) {
     _initJSFunctions();
     
     JSUtil.injectJavaScriptSrc(_BASE_URI);
@@ -44,28 +63,11 @@ class GLoader {
       (int msec) {if(msec == 0) print("Fail to load jsapi.js!");}, 10, 180000); //check every 10 ms, wait total 180 seconds
   }
   
-  /** Load latitude/longitude of the calling client via callback function [onSuccess]. Note that this service sometimes
-   * return null value.
-   * + [onSuccess] callback function if successfully get the latitude/longitude.
-   */
-  void loadIPLatLng(LatLngSuccessCallback onSuccess) {
-    _loaderModule.doWhenLoaded(() => onSuccess(_ipLatLng['lat'], _ipLatLng['lng']));
-  }
-  
-  /** Load Goolge JavaScript API module; see https://developers.google.com/loader/#GoogleLoad for details.
-   * + [name] the module name
-   * + [version] the module version
-   * + [options] the options used in loading the module; can specify a *callback* function when module loaded. 
-   */
-  void load(String name, String version, [Map options]) {
-    _loaderModule.doWhenLoaded(()=>_load(name, version, options));
-  }
-  
-  void _load(String name, String version, [Map options]) {
+  static void _load(String name, String version, [Map options]) {
     JSUtil.jsCall(_LOAD_MODULE, [name, version, JSUtil.toJSMap(options, (k,v) => k == "callback" ? JSUtil.toJSFunction(v, 0) : v)]);
   }
   
-  void _initJSFunctions() {
+  static void _initJSFunctions() {
     JSUtil.newJSFunction(_GLOADER_READY, null, "return !!window.google && !!window.google.load;");
     JSUtil.newJSFunction(_IP_LOCATION, null,''' 
       var loc = {};

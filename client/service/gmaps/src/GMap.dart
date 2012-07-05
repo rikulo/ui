@@ -4,7 +4,7 @@
 
 /**
  * Bridge Dart to Google Maps JavaScript object -- Map; 
- * see https://developers.google.com/maps/documentation/javascript/reference#Map for details.
+ * see <https://developers.google.com/maps/documentation/javascript/reference#Map> for details.
  */
 class GMap implements JSAgent {
   //private JavaScript function
@@ -24,10 +24,10 @@ class GMap implements JSAgent {
   var _jsMap; //JavaScript Map object of Google Maps
   
   /**
-   * Prepare a Google Maps; see https://developers.google.com/maps/documentation/javascript/tutorial for details.
+   * Prepare a Google Maps; see <https://developers.google.com/maps/documentation/javascript/tutorial> for details.
    * + [mapCanvas] - the id of the HTML div element to be associated with the Google Maps.
    * + [version] - the Google Maps API version to be loaded; default "3.9".
-   * + [options] - special option when loading Google Maps API such as "sensor" and Google API "key"; default to {"sensor":true}.
+   * + [options] - special options when loading Google Maps API such as "sensor" and Google API "key"; default to {"sensor":true}.
    */
   GMap(String mapCanvas, [String version="3.9", Map options= const {"sensor":true}]) :
     _mapCanvas = mapCanvas, _version = version, _options = options {
@@ -80,7 +80,7 @@ class GMap implements JSAgent {
       options["other_params"] = sb.toString();
     options["callback"] = readyFn; //callback after Maps API is loaded
 
-    new GLoader().load(GLoader.MAPS, _version, options); //load Maps API
+    GLoader.load(GLoader.MAPS, _version, options); //load Maps API
   }    
   
   /**

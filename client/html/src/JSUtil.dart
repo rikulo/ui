@@ -125,7 +125,7 @@ class JSUtil {
     jsCall("set", [jsObj, attr, val]);
   }
   
-  /** Dart bridge method to call into JavaScript function registered with #newJSFunction.
+  /** Dart bridge method to call into JavaScript function registered with [newJSFunction].
    * + [name] JavaScript function name
    * + [args] arguments to be passed into JavaScript function
    * See [newJSFunction].
@@ -133,7 +133,7 @@ class JSUtil {
   static jsCall(String name, [List args = const []])
   => _jsCallX.exec(name, args);
 
-  /** Create and register a new JavaScript function; can be called from Dart later via #jsCall function.
+  /** Create and register a new JavaScript function; can be called from Dart later via [jsCall] function.
    * + [name] function name
    * + [args] argument names
    * + [body] the function definition body
@@ -142,7 +142,7 @@ class JSUtil {
   static newJSFunction(String name, List<String> args, String body) 
   => jsCall("newFn", [name, args, body]);
   
-  /** Register a JavaScript function so it can be called from Dart later via #jsCall function.
+  /** Register a JavaScript function so it can be called from Dart later via [jsCall] function.
    * + [name] function name
    * + [jsfn] the JavaScript function
    */

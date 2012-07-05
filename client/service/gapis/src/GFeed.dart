@@ -3,7 +3,7 @@
 // Author: hernichen
 
 /**
- * Bridge Dart to Google Feed JavaScript APIs; see https://developers.google.com/jsFeed/ for details.
+ * Bridge Dart to Google Feed JavaScript APIs; see <https://developers.google.com/feed/> for details.
  */
 
 class GFeed {
@@ -14,14 +14,14 @@ class GFeed {
 
   static LoadableModule _feedModule;
   
-  String _url; //jsFeed url
-  String _version; //jsFeed module version
+  String _url; //feed url
+  String _version; //Feed module version
   Map _options; //options for loading the jsFeed module
   var jsFeed; //JavaScript Feed object
   
   /**
    * Prepare a Google Feed.
-   * + [url] - the jsFeed url.
+   * + [url] - the url of this Feed.
    * + [version] - the Google Feed API version to be loaded; default "1".
    * + [options] - special option when loading Google Feed API (used by Google Loader).
    */
@@ -33,29 +33,29 @@ class GFeed {
     }
   }
   
-  //load Feed module
+  //load Feed API module
   void _loadModule(Function readyFn) {
     _initJSFunctions();
 
     Map options = _options !== null ? new Map.from(_options) : new Map();
     options["callback"] = readyFn; //callback after Feed API is loaded(used by loader)
     options["nocss"] = true;
-    new GLoader().load(GLoader.FEED, _version, options); //load Feed API
+    GLoader.load(GLoader.FEED, _version, options); //load Feed API
   }    
   
-  /** Load feed information in a Map via callback function [onSuccess].
-   * + [onSuccess] callback function if successfully get the weather information. 
+  /** Load feed information in a Map via callback function [success].
+   * + [success(Map feed)] callback function if successfully get the feed information. 
    */ 
-  void loadFeedInfo(GFeedSuccessCallback onSuccess) {
-    _feedModule.doWhenLoaded(()=>_load(onSuccess));
+  void loadFeedInfo(GFeedSuccessCallback success) {
+    _feedModule.doWhenLoaded(()=>_load(success));
   }
   
   //load the specified Feed
-  void _load(GFeedSuccessCallback onSuccess) {
+  void _load(GFeedSuccessCallback success) {
     if (jsFeed == null) {
       jsFeed = JSUtil.jsCall(_NEW_FEED, [_url]);             
     }
-    var jsSuccess = JSUtil.toJSFunction((xmldoc) => onSuccess(xmldoc === null ? null : JSUtil.xmlDocToDartMap(xmldoc)), 1);
+    var jsSuccess = JSUtil.toJSFunction((xmldoc) => success(xmldoc === null ? null : JSUtil.xmlDocToDartMap(xmldoc)), 1);
     JSUtil.jsCall(_LOAD, [jsFeed, jsSuccess]);
   }
   
@@ -74,4 +74,4 @@ class GFeed {
   }
 }
 
-typedef GFeedSuccessCallback(Map resultSet);
+typedef GFeedSuccessCallback(Map feed);

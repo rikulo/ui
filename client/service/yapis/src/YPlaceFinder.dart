@@ -8,15 +8,15 @@
 class YPlaceFinder {
   static final String _BASE_URI = "http://where.yahooapis.com/geocode";
   
-  /** Load geo information per the specified [location] parameters in a Map via callback function [onSuccess]; see 
-   * http://developer.yahoo.com/geo/placefinder/guide/responses.html for details.
-   * + [locations] location parameter; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
-   * + [onSuccess] callback function if successfully get the Geo information.
-   * + [controls] control parametr; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
-   * + [flags] control flag; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details.
-   * + [gflags] special control flag; see http://developer.yahoo.com/geo/placefinder/guide/requests.html for details
+  /** Load geo information per the specified [location] parameters in a Map via callback function [success]; see 
+   * <http://developer.yahoo.com/geo/placefinder/guide/responses.html> for details.
+   * + [locations] location parameter; see <http://developer.yahoo.com/geo/placefinder/guide/requests.html> for details.
+   * + [success(Map ResultSet)] callback function if successfully get the Geo information.
+   * + [controls] optional control parametr; see <http://developer.yahoo.com/geo/placefinder/guide/requests.html> for details.
+   * + [flags] optional control flag; see <http://developer.yahoo.com/geo/placefinder/guide/requests.html> for details.
+   * + [gflags] optional special control flag; see <http://developer.yahoo.com/geo/placefinder/guide/requests.html> for details
    */
-  void loadGeoInfo(Map locations, YPlaceFinderSuccessCallback onSuccess, [Map controls, String flags, String gflags]) {
+  static void loadGeoInfo(Map locations, YPlaceFinderSuccessCallback success, [Map controls, String flags, String gflags]) {
     StringBuffer params = new StringBuffer(); 
     if (locations !== null)
       locations.forEach((k,v) => params.isEmpty() ? params.add(k).add('=').add(v) : params.add('&').add(k).add('=').add(v));
@@ -54,9 +54,9 @@ class YPlaceFinder {
         final Document doc = req.responseXML;
         if (doc !== null) {
           Map resultSet = JSUtil.xmlDocToDartMap(doc);
-          onSuccess(resultSet);
+          success(resultSet);
         } else {
-          onSuccess(null);
+          success(null);
         }
       }
     });
