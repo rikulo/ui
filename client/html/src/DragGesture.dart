@@ -45,6 +45,9 @@ interface MovementState {
   /** Returns whether the user ever moved his finger.
    */
   bool get moved();
+  /** The timestamp at the moment of movement.
+   */
+  int get time();
   /** Any data that the caller stores.
    */
   var data;
@@ -125,6 +128,7 @@ class _DragGestureState implements DragGestureState {
   Element _dragged, _touched, _pending;
   var data;
   bool _moved = false;
+  int _time;
 
   _DragGestureState(DragGesture gesture, int pageX, int pageY):
   _gesture = gesture, _delta = new Offset(0, 0),
@@ -139,6 +143,7 @@ class _DragGestureState implements DragGestureState {
   Offset get delta() => _delta;
   Offset get velocity() => _velocity;
   bool get moved() => _moved;
+  int get time() => _time;
 
   Element get dragged() => _dragged;
   Element get touched() => _touched;
@@ -232,7 +237,6 @@ abstract class _DragGesture implements DragGesture {
       if (_state !== null && time != null) {
         int diffTime;
         if (_snapTime != null) {
-          // TODO: shall be zero if waited too long
           diffTime = time - _snapTime;
           _state._velocity.x = diffTime > 250 ? 0 : (pageX - _snapX) / diffTime;
           _state._velocity.y = diffTime > 250 ? 0 : (pageY - _snapY) / diffTime;
@@ -245,7 +249,7 @@ abstract class _DragGesture implements DragGesture {
       }
       if (_state._touched !== null) {
         _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
-          pageX - initPgOfs.x, pageY - initPgOfs.y, _moving); 
+          pageX - initPgOfs.x, pageY - initPgOfs.y, time, _moving); 
       }
     }
   }
@@ -258,11 +262,11 @@ abstract class _DragGesture implements DragGesture {
     }
     if (_state !== null && _state._touched !== null) {
       _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
-        pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, _end); 
+        pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, time, _end); 
     }
     _stop();
   }
-  void _moveBy(int ofsX, int ofsY, int deltaX, int deltaY,
+  void _moveBy(int ofsX, int ofsY, int deltaX, int deltaY, int time,
     DragGestureMove callback) {
     final Offset initofs = _state._initTxOfs,
       move = _constraint(deltaX + initofs.x, deltaY + initofs.y);
@@ -270,6 +274,7 @@ abstract class _DragGesture implements DragGesture {
     if (callback !== null) {
       _state._setOfs(ofsX, ofsY);
       _state._setDelta(move.x - initofs.x, move.y - initofs.y);
+      _state._time = time;
       _state._moved = _state._moved || deltaX != 0 || deltaY != 0;
       bool done = callback(_state);
       if (done !== null && done)
