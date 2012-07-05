@@ -68,12 +68,12 @@ class Switch extends View implements Input<bool> {
   Element get _bgNode() => getNode('bg');
   int get _marginDiff() => 1 - (outerHeight >> 1); //-(radius - 1) (border)
   /** X offset for the OFF label. */
-  int get _x_off() => outerHeight - outerWidth; //-(width - 2 * radius)
+  int get _x_off() => outerWidth - outerHeight; //-(width - 2 * radius)
   void _setValue(bool value, [bool bAnimate=false, bool bSendEvent=false]) {
     final bool bChanged = _value != value;
     _value = value;
     if (inDocument) {
-      final int nofs = _value ? 0 : _x_off;
+      final int nofs = _value ? 0 : -_x_off;
       if (bAnimate) {
         final int sofs = _translate3dXValue(_sdNode.style.transform);
         final int dofs = nofs - sofs;
@@ -100,7 +100,7 @@ class Switch extends View implements Input<bool> {
 
     _setValue(_value);
     _dg = new DragGesture(_sdNode, transform: true,
-      range: () => new Rectangle(0, 0, _x_off, 0),
+      range: () => new Rectangle(-_x_off, 0, 0, 0),
       start: (state) {
         state.data = CSS.intOf(_bgNode.style.marginLeft) - _marginDiff;
         return state.gesture.owner;
@@ -111,7 +111,7 @@ class Switch extends View implements Input<bool> {
       },
       end: (state) {
         _setValue(state.moved ?
-					(state.delta.x + state.data) > (_x_off>>1): !_value,
+					(state.delta.x + state.data) > (-_x_off>>1): !_value,
 					true, true);
         return true; //no more move
       });

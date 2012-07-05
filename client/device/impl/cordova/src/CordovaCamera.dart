@@ -34,8 +34,13 @@ class CordovaCamera implements Camera {
     return map;
   }
   
+  static bool _doneInit = false;
   void _initJSFunctions() {
+    if (_doneInit) return;
+
     JSUtil.newJSFunction(_GET_PICTURE, ["onSuccess", "onError", "opts"],
       "navigator.camera.getPicture(onSuccess, onError, opts);");
+
+    _doneInit = true;
   }
 }

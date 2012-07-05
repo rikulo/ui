@@ -36,11 +36,16 @@ class CordovaAccelerometer extends AbstractAccelerometer {
     JSUtil.jsCall(_CLEAR_WATCH, [watchID]);
   }
   
+  static bool _doneInit = false;
   void _initJSFunctions() {
-      JSUtil.newJSFunction(_GET_CURRENT_ACCELERATION, ["onSuccess", "onError"], 
-        "navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);");
-      JSUtil.newJSFunction(_WATCH_ACCELERATION, ["onSuccess", "onError", "opts"],
-        "return navigator.accelerometer.watchAcceleration(onSuccess, onError, opts);");
-      JSUtil.newJSFunction(_CLEAR_WATCH, ["watchID"], "navigator.accelerometer.clearWatch(watchID);");
+    if (_doneInit) return;
+    
+    JSUtil.newJSFunction(_GET_CURRENT_ACCELERATION, ["onSuccess", "onError"], 
+      "navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);");
+    JSUtil.newJSFunction(_WATCH_ACCELERATION, ["onSuccess", "onError", "opts"],
+      "return navigator.accelerometer.watchAcceleration(onSuccess, onError, opts);");
+    JSUtil.newJSFunction(_CLEAR_WATCH, ["watchID"], "navigator.accelerometer.clearWatch(watchID);");
+    
+    _doneInit = true;
   }
 }
