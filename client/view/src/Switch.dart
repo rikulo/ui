@@ -120,6 +120,10 @@ class Switch extends View implements Input<bool> {
     _dg.destroy();
     super.unmount_();
   }
+  void doLayout_(MeasureContext mctx) { //Issue 5: if its parent's hidden is changed
+    super.doLayout_(mctx);
+    _setValue(_value);
+  }
 
   void domInner_(StringBuffer out) {
     out.add('<div class="v-bg"><div class="v-bgi" id="')
