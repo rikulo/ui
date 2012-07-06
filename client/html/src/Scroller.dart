@@ -12,16 +12,6 @@ typedef bool ScrollerStart(ScrollerState state);
  */
 typedef void ScrollerMove(ScrollerState state);
 
-/** The state of scroller.
- */
-interface ScrollerState extends MovementState {
-  Scroller get scroller();
-
-  /** Returns the total size that can be scrolled.
-   */
-  Size get totalSize();
-}
-
 /** The scroller used to scroll an element by use of its style's
  * transform property.
  */
@@ -32,243 +22,224 @@ interface Scroller default _Scroller {
    * If it returns false, the scrolling won't be activated.
    * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
    */
-  Scroller(Element owner, [Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerStart start, ScrollerMove end, ScrollerMove moving]);
-
+  Scroller(Element owner, AsSize viewPortSize, [Element handle, Dir direction = Dir.BOTH, 
+      AsSize contentSize, ScrollerStart start, ScrollerMove moving, ScrollerMove end]);
+  // TODO: inertial, bounce, scrollbar
+  
   /** Destroys the scroller.
    * It shall be called to clean up the scroller, if it is no longer used.
    */
   void destroy();
-
-  /** The element that owns this scroller.
-   */
-  Element get owner();
-
+  
   /** Returns the direction that the scrolling is allowed.
    */
-  Dir get dir();
+  Dir get direction();
+}
+
+interface ScrollerState default _ScrollerState {
+  
+  /** Returns the associated [Scroller].
+   */
+  Scroller get scroller();
+  
+  /** Returns the current scroll offset.
+   */
+  Offset get position();
+  
+  /** Returns the current scrolling velocity.
+   */
+  Offset get velocity();
+  
+  /** Returns the latest timestamp at which the scroll position is updated.
+   */
+  int get time();
+  
 }
 
 class _ScrollerState implements ScrollerState {
-  final _Scroller _scroller;
-  final Element _touched;
-  final Offset _ownerOfs, _initPgOfs, _delta, _velocity;
-  Offset _ofs, _initTxOfs;
-  Size _totalSize; //cached size
-  var data;
-  bool _moved = false;
-
-  _ScrollerState(_Scroller scroller, Element this._touched, int pageX, int pageY):
-  _scroller = scroller, _delta = new Offset(0, 0),
-  _velocity = new Offset(0, 0),
-  _initPgOfs = new Offset(pageX, pageY),
-  _ownerOfs = new DOMQuery(scroller.owner).documentOffset {
-    _ofs = _initPgOfs - _ownerOfs;
+  
+  final Scroller scroller;
+  final Offset startPosition;
+  Offset _pos, _ppos;
+  int _time, _ptime;
+  
+  _ScrollerState(_Scroller scroller, this._time) : 
+    this.scroller = scroller,
+    startPosition = new DOMQuery(scroller.owner).offset {
+    _pos = startPosition;
   }
-
-  Scroller get scroller() => _scroller;
-  Offset get offset() => _ofs;
-  Offset get delta() => _delta;
-  Offset get velocity() => _velocity;
-  Element get touched() => _touched;
-  bool get moved() => _moved;
-
-  Size get totalSize() {
-    if (_totalSize === null)
-      _totalSize = _scroller._fnTotalSize();
-    return _totalSize;
+  
+  Offset get position() => _pos;
+  
+  void snapshot(Offset pos, int time) {
+    if (_time == null || time > _time) {
+      _ppos = _pos;
+      _ptime = _time;
+      _pos = pos;
+      _time = time;
+    }
   }
-  void _setOfs(int x, int y) {
-    _ofs.x = x;
-    _ofs.y = y;
-  }
-  void _setDelta(int x, int y) {
-    _delta.x = x;
-    _delta.y = y;
-  }
+  
+  Offset get velocity() => _ppos == null ? new Offset(0, 0) : (_pos - _ppos) / (_time - _ptime);
+  
+  int get time() => _time;
+  
 }
 
 /**
  * A custom-scrolling handler.
  */
-abstract class _Scroller implements Scroller {
-  final Element _owner;
-  final Dir _dir;
+class _Scroller implements Scroller {
+  final Element owner, handle;
+  final Dir direction;
   final ScrollerStart _start;
   final ScrollerMove _end, _moving;
-  final AsSize _fnTotalSize, _fnViewSize;
+  final AsSize _fnContentSize, _fnViewPortSize;
+  
+  DragGesture _dg;
+  _BoundedInertialMotion _bim;
   _ScrollerState _state;
-
-  factory _Scroller(Element owner, [Dir dir=Dir.BOTH,
-    AsSize totalSize, AsSize viewSize,
-    ScrollerStart start, ScrollerMove end, ScrollerMove moving]) {
-    return browser.touch ?
-      new _TouchScroller(owner, dir, totalSize, viewSize, start, end, moving):
-      new _MouseScroller(owner, dir, totalSize, viewSize, start, end, moving);
-      //TODO: support desktop - if not in simulator, mousewheel/draggable scrollbar
+  
+  _Scroller(this.owner, this._fnViewPortSize, [Element handle, Dir direction = Dir.BOTH, 
+      AsSize contentSize, ScrollerStart start, ScrollerMove moving, ScrollerMove end]) :
+      this.handle = handle, this.direction = direction, _fnContentSize = contentSize, 
+      _start = start, _moving = moving, _end = end {
+    
+    // TODO: transform
+    _dg = new DragGesture(this.owner, handle: handle,
+    start: (DragGestureState state) => onStart(state.time) ? owner : null,
+    moving: (DragGestureState state) => onMoving(_state.startPosition + state.delta, state.time), 
+    end: (DragGestureState state) {
+      final Offset pos = new DOMQuery(owner).offset;
+      final Rectangle range = _dragRange;
+      _bim = new _BoundedInertialMotion(owner, state.velocity, range, moving: onMoving, end: onEnd);
+    });
+    
+    //TODO: support desktop - if not in simulator, mousewheel/draggable scrollbar
   }
-  _Scroller._init(Element this._owner, Dir this._dir,
-    AsSize this._fnTotalSize, AsSize this._fnViewSize,
-    ScrollerStart this._start, ScrollerMove this._end,
-    ScrollerMove this._moving) {
-    _listen();
+  
+  bool onStart(int time) {
+    if (_bim != null)
+      _bim.stop();
+    _state = new _ScrollerState(this, time);
+    return _start == null || _start(_state);
   }
-
-  void destroy() {
-    _stop();
-    _unlisten();
+  
+  void onMoving(Offset position, int time) {
+    _state.snapshot(position, time);
+    if (_moving != null)
+      _moving(_state);
   }
-
-  Element get owner() => _owner;
-  Dir get dir() => _dir;
-
-  abstract void _listen();
-  abstract void _unlisten();
-
-  void _stop() {
+  
+  void onEnd() {
+    if (_end != null)
+      _end(_state);
     _state = null;
   }
-  bool _touchStart(Element touched, int pageX, int pageY) {
-    _stop();
-
-    _state = new _ScrollerState(this, touched, pageX, pageY);
-    if (_start !== null) {
-      final bool c = _start(_state);
-      if (c !== null && !c) {
-        _stop();
-        return false;
-      }
+  
+  // size cache //
+  Size _contentSizeCache, _viewPortSizeCache;
+  Rectangle _dragRangeCache;
+  
+  Rectangle get _dragRange() {
+    if (_dragRangeCache == null) {
+      Size vsize = viewPortSize,
+          csize = contentSize;
+      _dragRangeCache = new Rectangle(vsize.width - csize.width, vsize.height - csize.height, 0, 0);
     }
-
-    _state._initTxOfs = CSS.offset3dOf(owner.style.transform);
-    return true;
+    return _dragRangeCache;
   }
-  void _touchMove(int pageX, int pageY) {
-    if (_state !== null) {
-      _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
-        pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, _moving); 
-    }
+  Size get contentSize() {
+    if (_contentSizeCache == null)
+      _contentSizeCache = _fnContentSize != null ? _fnContentSize() : new DOMQuery(owner).outerSize;
+    return _contentSizeCache;
   }
-  void _touchEnd(int pageX, int pageY) {
-    if (_state !== null) {
-      _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
-        pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, _end); 
-      _stop();
-    }
+  Size get viewPortSize() {
+    if (_viewPortSizeCache == null)
+      _viewPortSizeCache = _fnViewPortSize();
+    return _viewPortSizeCache;
   }
-  void _moveBy(int ofsX, int ofsY, int deltaX, int deltaY,
-    ScrollerMove callback) {
-    final Offset initofs = _state._initTxOfs,
-      move = _constraint(deltaX + initofs.x, deltaY + initofs.y);
-
-    if (callback !== null) {
-      _state._setOfs(ofsX, ofsY);
-      _state._setDelta(move.x - initofs.x, move.y - initofs.y);
-      _state._moved = _state._moved || deltaX != 0 || deltaY != 0;
-      callback(_state);
-    }
-
-    _owner.style.transform = CSS.translate3d(move.x, move.y);
+  
+  /**
+   *
+   */
+  clearSizeCache() { // TODO: rename to notifySizeChange() ?
+    _viewPortSizeCache = _contentSizeCache = null;
+    _dragRangeCache = null;
   }
-  Offset _constraint(int x, int y) {
-    Size viewSize;
-    if (_fnViewSize !== null) {
-      viewSize = _fnViewSize();
-    } else {
-      final DOMQuery q = new DOMQuery(_owner);
-      viewSize = new Size(q.outerWidth, q.outerHeight);
-    }
-
-    if (dir == Dir.VERTICAL || x >= 0) {
-      x = 0;
-    } else {
-      final int right = viewSize.width - _state.totalSize.width;
-      if (right >= 0) x = 0;
-      else if (x < right) x = right;
-    }
-    if (dir == Dir.HORIZONTAL || y >= 0) {
-      y = 0;
-    } else {
-      final int bottom = viewSize.height - _state.totalSize.height;
-      if (bottom >= 0) y = 0;
-      else if (y < bottom) y = bottom;
-    }
-    return new Offset(x, y);
+  
+  void destroy() {
+    _state = null;
+    _dg.destroy();
   }
+  
 }
 
-/** The scroller for touch devices.
- */
-class _TouchScroller extends _Scroller {
-  EventListener _elStart, _elMove, _elEnd;
-
-  _TouchScroller(Element owner, Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerStart start, ScrollerMove end, ScrollerMove moving)
-  : super._init(owner, dir, totalSize, viewSize, start, end, moving);
-
-  void _listen() {
-    final ElementEvents on = owner.on;
-    on.touchStart.add(_elStart = (TouchEvent event) {
-      if (event.touches.length > 1)
-        _touchEnd(event.pageX, event.pageY); //ignore multiple fingers
-      else
-        _touchStart(event.target, event.pageX, event.pageY);
-    });
-    on.touchMove.add(_elMove = (TouchEvent event) {
-      _touchMove(event.pageX, event.pageY);
-    });
-    on.touchEnd.add(_elEnd = (TouchEvent event) {
-      _touchEnd(event.pageX, event.pageY);
-    });
+class _BoundedInertialMotion extends Motion {
+  
+  final Element element;
+  final num friction, bounce;
+  final Rectangle range;
+  final Function _moving, _end;
+  Offset _pos, _vel;
+  
+  _BoundedInertialMotion(Element element, Offset velocity, this.range, 
+  [num friction = 0.0005, num bounce = 1500, 
+  void moving(Offset position, int time), void end()]) :
+  this.element = element, this.friction = friction, this.bounce = bounce,
+  _moving = moving, _end = end, 
+  _pos = new DOMQuery(element).offset, _vel = velocity, super(null);
+  
+  bool onMoving(int time, int elapsed, int paused) {
+    final num speed = VectorUtil.norm(_vel);
+    final Offset dir = speed == 0 ? new Offset(0, 0) : _vel / speed;
+    final Offset dec = dir * friction;
+    
+    _pos.x = _updatePosition(_pos.x, _vel.x, dec.x, elapsed, range.x, range.right);
+    _pos.y = _updatePosition(_pos.y, _vel.y, dec.y, elapsed, range.y, range.bottom);
+    
+    _applyPosition(_pos);
+    if (_moving != null)
+      _moving(_pos, time);
+    
+    _vel.x = _updateVelocity(_pos.x, _vel.x, dec.x, elapsed, range.x, range.right);
+    _vel.y = _updateVelocity(_pos.y, _vel.y, dec.y, elapsed, range.y, range.bottom);
+    
+    return !_shallStop(_pos.x, _vel.x, range.x, range.right) ||
+        !_shallStop(_pos.y, _vel.y, range.y, range.bottom); 
   }
-  void _unlisten() {
-    final ElementEvents on = owner.on;
-    if (_elStart !== null) on.touchStart.remove(_elStart);
-    if (_elMove !== null) on.touchMove.remove(_elMove);
-    if (_elEnd !== null) on.touchEnd.remove(_elEnd);
+  
+  void onEnd(int time, int elapsed, int paused) {
+    if (_end != null)
+      _end();
   }
-}
-
-/** The scroller for mouse-based devices.
- */
-class _MouseScroller extends _Scroller {
-  EventListener _elStart, _elMove, _elEnd;
-  bool _captured = false;
-
-  _MouseScroller(Element owner, Dir dir, AsSize totalSize, AsSize viewSize,
-  ScrollerStart start, ScrollerMove end, ScrollerMove moving)
-  : super._init(owner, dir, totalSize, viewSize, start, end, moving);
-
-  //@Override
-  void _stop() {
-    if (_captured) {
-      _captured = false;
-      final ElementEvents on = document.on;
-      if (_elMove !== null)
-        on.mouseMove.remove(_elMove);
-      if (_elEnd !== null)
-        on.mouseUp.remove(_elEnd);
-    }
-    super._stop();
+  
+  num _updatePosition(num pos, num vel, num dec, int elap, num lbnd, num rbnd) {
+    num npos = pos + vel * elap;
+    if (pos < lbnd && npos > lbnd && vel > 0)
+      return lbnd;
+    else if (pos > rbnd && npos < rbnd && vel < 0)
+      return rbnd;
+    return npos;
   }
-  void _capture() {
-    _captured = true;
-    final ElementEvents on = document.on;
-    on.mouseMove.add(_elMove = (MouseEvent event) {
-      _touchMove(event.pageX, event.pageY);
-    });
-    on.mouseUp.add(_elEnd = (MouseEvent event) {
-      _touchEnd(event.pageX, event.pageY);
-    });
+  
+  num _updateVelocity(num pos, num vel, num dec, int elap, num lbnd, num rbnd) {
+    if ((pos == lbnd && vel > 0) || (pos == rbnd && vel < 0))
+      return 0;
+    num acc = pos < lbnd ? (lbnd - pos) / bounce :
+              pos > rbnd ? (rbnd - pos) / bounce : -dec;
+    num nvel = vel + acc * elap;
+    if ((nvel > 0 && vel < 0) || (nvel < 0 && vel > 0)) // decelerate to 0 at most
+      return 0;
+    return nvel;
   }
-  void _listen() {
-    owner.on.mouseDown.add(_elStart = (MouseEvent event) {
-      if (_touchStart(event.target, event.pageX, event.pageY))
-        _capture();
-    });
+  
+  bool _shallStop(num pos, num vel, num lbnd, num rbnd) =>
+    lbnd <= pos && pos <= rbnd && vel == 0;
+  
+  void _applyPosition(Offset pos) {
+    element.style.left = CSS.px(pos.left.toInt());
+    element.style.top = CSS.px(pos.top.toInt());
   }
-  void _unlisten() {
-    if (_elStart !== null)
-      owner.on.mouseDown.remove(_elStart);
-  }
+  
 }
