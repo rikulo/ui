@@ -78,7 +78,8 @@ class _HoldGestureState implements HoldGestureState {
   Offset get documentOffset() => _docOfs;
 }
 
-abstract class _HoldGesture implements HoldGesture {
+//abstract
+class _HoldGesture implements HoldGesture {
   final Element _owner;
   final int _duration;
   final int _movement;

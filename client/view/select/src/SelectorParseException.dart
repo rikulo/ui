@@ -16,9 +16,9 @@ class SelectorParseException implements Exception {
   SelectorParseException.unexpectedEnding(this.source) :
     this.token = null, index = -1;
   
-  String toString() => token == null ? index < 0 ?
+  String toString() => token == null ? (index < 0 ?
       "Unexpected end of selector: ${this.source}" :
-      "Unexpected character at ${this.index} in selector ${this.source}" :
+      "Unexpected character at ${this.index} in selector ${this.source}") :
       "Unexpected token ${this.token.type} at ${this.index} in selector ${this.source}";
   
 }

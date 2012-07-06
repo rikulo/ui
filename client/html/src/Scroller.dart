@@ -91,7 +91,8 @@ class _ScrollerState implements ScrollerState {
 /**
  * A custom-scrolling handler.
  */
-abstract class _Scroller implements Scroller {
+//abstract
+class _Scroller implements Scroller {
   final Element _owner;
   final Dir _dir;
   final ScrollerStart _start;

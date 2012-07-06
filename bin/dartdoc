@@ -1,0 +1,35 @@
+#!/bin/bash
+# dartdoc
+#
+#	Purpose:
+#		Generates API Reference for rikulo
+#
+#Copyright (C) 2012 Potix Corporation. All Rights Reserved.
+#
+SDK=/usr/dart/dart-sdk
+if [ ! -d $SDK ] ; then
+  echo $SDK not found
+  exit
+fi
+codepath=$0
+codepath=${codepath%/*}
+if [ "$codepath" = "." ] ; then
+  codepath=".."
+elif [ "$codepath" = "${codepath%/*}" ] ; then
+  codepath="."
+else
+  codepath=${codepath%/*}
+fi
+if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
+  codepath=$(cygpath -u $codepath)
+fi
+codepath=$codepath/samples/dartdoc/dartdoc.dart
+
+dartdoc=$SDK/lib/dartdoc/dartdoc.dart
+if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
+  dartdoc=$(cygpath -wa $dartdoc)
+fi
+
+PATH=$PATH:$SDK/bin
+
+dart.exe $dartdoc $codepath
