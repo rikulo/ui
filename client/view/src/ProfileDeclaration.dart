@@ -12,7 +12,7 @@ default ProfileDeclarationImpl {
   /** The anchor, or null if [anchorView] was assigned and it isn't
    * assigned with an ID.
    *
-   * Syntax: `anchor: auto | *CSS selector*;` | `parent`
+   * Syntax: `anchor: auto | a_CSS_selector | parent`
    *
    * Default: `auto`.
    *
@@ -61,7 +61,7 @@ default ProfileDeclarationImpl {
 
   /** The expected width of the associated view.
    *
-   * Syntax: `width: #n | content | flex | flex #n | #n %;`
+   * Syntax: `width: #n | content | flex | flex #n | #n %`
    *
    * Default: `content`.
    */

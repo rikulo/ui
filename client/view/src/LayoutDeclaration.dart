@@ -13,7 +13,7 @@ default LayoutDeclarationImpl {
    *
    * Syntax: `type: none | linear | stack | tiles | table`
    *
-   * Default: an empty string, i.e., `none`.
+   * Default: an empty string (i.e., `none`)
    *
    * Notice you can plug in addition custom layouts. Refer to [LayoutManager]
    * for details.
@@ -43,7 +43,7 @@ default LayoutDeclarationImpl {
    *
    * If the spacing at the left and at the right is different,
    * the horizontal spacing of two adjacent views is the maximal value of them.
-   * Similarily, The vertical spacing is the maximal
+   * Similarly, the vertical spacing is the maximal
    * value of the spacing at the top and at the bottom.
    * If you prefer a different value, specify it in [gap].
    */
@@ -51,7 +51,7 @@ default LayoutDeclarationImpl {
   /** The gap between two adjacent child views.
    * If not specified, the value specified at [spacing] will be used.
    *
-   * Syntax: `gap: #n1 [#n2];`
+   * Syntax: `gap: #n1 [#n2]`
    *
    * Default: *empty* (i.e., dependong on [spacing])
    *
@@ -64,7 +64,7 @@ default LayoutDeclarationImpl {
   /** The width of each child view.
    * It can be overriden by child view's [View.profile.width].
    *
-   * Syntax: `width: #n | content | flex | flex #n`
+   * Syntax: `width: #n | content | flex | flex #n | #n %`
    *
    * Default: depends on [type]
    */
@@ -72,7 +72,7 @@ default LayoutDeclarationImpl {
   /** The width of each child view.
    * It can be overriden by child view's [View.profile.height].
    *
-   * Syntax: `height: #n | content | flex | flex #n`
+   * Syntax: `height: #n | content | flex | flex #n | #n %`
    *
    * Default: depends on [type]
    */
