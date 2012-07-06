@@ -8,12 +8,13 @@ typedef bool _BrowserMatch(RegExp regex);
  * The browser.
  */
 class Browser {
+  // all RegExp shall be lower case here
   static final RegExp _rwebkit = const RegExp(@"(webkit)[ /]([\w.]+)"),
     _rsafari = const RegExp(@"(safari)[ /]([\w.]+)"),
     _rchrome = const RegExp(@"(chrome)[ /]([\w.]+)"),
     _rmsie = const RegExp(@"(msie) ([\w.]+)"),
     _rmozilla = const RegExp(@"(mozilla)(?:.*? rv:([\w.]+))?"),
-    _rios = const RegExp(@"OS[ /]([\w_]+) like Mac OS"),
+    _rios = const RegExp(@"os[ /]([\w_]+) like mac os"),
     _randroid = const RegExp(@"android[ /]([\w.]+)");
 
   /** The browser's name. */
