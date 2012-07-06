@@ -42,8 +42,10 @@ class YWeather {
    */
   void loadWeatherInfo(YWeatherSuccessCallback success, [bool force = false]) {
     //return cached channel if not expired yet!
-    if (!force && _channel != null && new Date.now().millisecondsSinceEpoch < _expireTime) { 
+    int now = new Date.now().millisecondsSinceEpoch;
+    if (!force && _channel !== null && now < _expireTime) { 
       success(_channel);
+      return;
     }
     if (_feeder === null) {
       String url = "${_BASE_URI}w=${woeid}&u=${_unit}";
@@ -56,7 +58,7 @@ class YWeather {
         String ttl = channel["ttl"];
         if (ttl !== null) {
           _channel = channel; //cache the result
-          _expireTime = Math.parseInt(ttl) * 60000 + new Date.now().millisecondsSinceEpoch;
+          _expireTime = Math.parseInt(ttl) * 60000 + now;
         }
       }
       success(channel);

@@ -2,8 +2,7 @@ debug
 codegen
 *.local
 *.class
-dartdoc
-javadoc
+docs
 Thumbs.db
 .project
 .children
