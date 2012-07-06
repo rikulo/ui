@@ -546,12 +546,12 @@ class View implements Hashable {
     if (location !== null)
       layoutManager.afterLayout(() {
         final Element n = this.node;
-        final Element p = n.parent;
-        if (p !== null) {
+        final Element pn = n.parent;
+        if (pn !== null) {
           int x = 0, y = 0;
-          if (p.offsetParent == n.offsetParent) {
-            x = p.$dom_offsetLeft;
-            y = p.$dom_offsetTop;
+          if (pn.offsetParent == n.offsetParent) {
+            x = pn.$dom_offsetLeft;
+            y = pn.$dom_offsetTop;
           }
           ViewUtil.position(this, x, y, location);
         }
