@@ -14,10 +14,19 @@ class Canvas extends View {
 
   /** Returns a drawing context for 2D on the canvas.
    * A drawing context lets you draw on the canvas.
+   *
+   * Notice that it will throw an exception if it is not attached. In other words,
+   * [inDocument] must be true when calling this method.
+   *
+   * If you instantiates a canvas in an activity's onCreate_, you can invoke this method
+   * in onMount_. Alternatively, you can invoke in the listener for the mount event.
    */
   CanvasRenderingContext2D get context2D() => canvasNode.getContext("2d");
   /** Returns a drawing context for WebGL on the canvas, or null
    * if the browser doesn't support WebGL.
+   *
+   * Notice that it will throw an exception if it is not attached. In other words,
+   * [inDocument] must be true when calling this method.
    */
   WebGLRenderingContext get contextWebGL() => canvasNode.getContext("experimental-webgl");
 

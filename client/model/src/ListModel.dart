@@ -58,7 +58,8 @@ default DefaultListModel<E> {
  * A skeletal implementation of [ListModel].
  * It handles the data events ([ListDataEvent]) and the selection ([Selection]).
  */
-abstract class AbstractListModel<E> extends AbstractSelectionModel<E>
+//abstract
+class AbstractListModel<E> extends AbstractSelectionModel<E>
 implements ListSelectionModel<E> {
   /** Constructor.
    *
