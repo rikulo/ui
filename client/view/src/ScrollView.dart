@@ -31,7 +31,8 @@ class ScrollView extends View {
 
   /** Instantiates and returns the scroller.
    */
-  Scroller newScroller_() => new Scroller(innerNode, totalSize: () => contentSize);
+  Scroller newScroller_() => new Scroller(innerNode, 
+    () => new DOMQuery(node).innerSize, contentSize: () => contentSize);
 
   //@Override
   void mount_() {

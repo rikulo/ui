@@ -3,53 +3,6 @@
 //Author: simon
 
 /**
- * The control object of an [AnimatorTask], with a built-in life cycle and control APIs.
- */
-interface Motion default _Motion {
-  
-  /**
-   * The Animator associated with the motion.
-   */
-  Animator get animator();
-  
-  /**
-   * Start the motion, or resume it from a pause.
-   */
-  void run();
-  
-  /**
-   * Pause the motion. 
-   */
-  void pause();
-  
-  /**
-   * Stop the motion and reset the internal states.
-   */
-  void stop();
-  
-  /**
-   * Return the time when the motion starts.
-   */
-  int get startTime();
-  
-  /**
-   * Return the total paused time.
-   */
-  int get pausedTime();
-  
-  /**
-   * Return true if the motion is at running state.
-   */
-  bool isRunning();
-  
-  /**
-   * Return true if the motion is at paused state.
-   */
-  bool isPaused();
-  
-}
-
-/**
  * The callback function used in Motion life cycle.
  */
 typedef void MotionCallback(int time, int elapsed, int paused);
@@ -67,7 +20,10 @@ Animator _getAnimator() {
   return _animator;
 }
 
-class _Motion implements Motion {
+/**
+ * The control object of an [AnimatorTask], with a built-in life cycle and control APIs.
+ */
+class Motion {
   
   static final _MOTION_STATE_INIT = 0;
   static final _MOTION_STATE_RUNNING = 1;
@@ -80,7 +36,7 @@ class _Motion implements Motion {
   int _startTime, _pausedTimestamp, _pausedTime = 0;
   var data;
   
-  _Motion([MotionCallback start, MotionRunner moving, MotionCallback end, bool autorun = true]) : 
+  Motion([MotionCallback start, MotionRunner moving, MotionCallback end, bool autorun = true]) : 
     _movingCB = moving, _startCB = start, _endCB = end {
     
     _task = (int time, int elapsed) {
@@ -113,10 +69,19 @@ class _Motion implements Motion {
       this.run();
   }
   
+  /**
+   * The Animator associated with the motion.
+   */
   Animator get animator() => _getAnimator();
   
+  /**
+   * Return the time when the motion starts.
+   */
   int get startTime() => _startTime;
   
+  /**
+   * Return the total paused time.
+   */
   int get pausedTime() => _pausedTime;
   
   /**
@@ -151,6 +116,9 @@ class _Motion implements Motion {
    */
   void onResume(int time, int elapsed, int paused) {}
   
+  /**
+   * Start the motion, or resume it from a pause.
+   */
   void run() {
     switch (_state) {
       case _MOTION_STATE_RUNNING:
@@ -163,12 +131,18 @@ class _Motion implements Motion {
     }
   }
   
+  /**
+   * Pause the motion. 
+   */
   void pause() {
     if (_state != _MOTION_STATE_RUNNING)
       return;
     _state = _MOTION_STATE_PAUSED;
   }
   
+  /**
+   * Stop the motion and reset the internal states.
+   */
   void stop() {
     _getAnimator().remove(this._task);
     _startTime = _pausedTimestamp = null;
@@ -176,8 +150,14 @@ class _Motion implements Motion {
     _state = _MOTION_STATE_INIT;
   }
   
+  /**
+   * Return true if the motion is at running state.
+   */
   bool isRunning() => _state == _MOTION_STATE_RUNNING;
   
+  /**
+   * Return true if the motion is at paused state.
+   */
   bool isPaused() => _state == _MOTION_STATE_PAUSED;
   
 }

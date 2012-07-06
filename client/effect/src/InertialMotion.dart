@@ -5,7 +5,7 @@
 /**
  * A constant deceleration motion.
  */
-class InertialMotion extends _Motion {
+class InertialMotion extends Motion {
   
   final Element element;
   final num deceleration;

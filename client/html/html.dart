@@ -8,6 +8,7 @@
 
 #import("../view/view.dart");
 #import("../util/util.dart");
+#import("../effect/effect.dart");
 
 #source("src/Animator.dart");
 #source("src/Browser.dart");

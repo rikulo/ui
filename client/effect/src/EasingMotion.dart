@@ -11,7 +11,7 @@ typedef num EasingFunction(num time);
 /**
  * A fixed-duration motion constructed by an EasingFunction and a MotionAction.
  */
-class EasingMotion extends _Motion {
+class EasingMotion extends Motion {
   
   // TODO: support mode: run-once, alternate, repeat
   final MotionAction action;

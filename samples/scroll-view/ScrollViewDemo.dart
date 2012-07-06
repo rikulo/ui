@@ -19,6 +19,7 @@ class ScrollViewDemo extends Activity {
         View child = new View();
         final String color = CSS.color(250 - x * 4, 250 - y * 4, 200);
         child.style.cssText = "border: 1px solid #553; background-color: $color";
+        child.style.userSelect = "none";
         child.left = x * 50 + 2;
         child.top = y * 50 + 2;
         child.width = child.height = 46;
