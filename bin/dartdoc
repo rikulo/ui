@@ -9,6 +9,7 @@
 SDK=/usr/dart/dart-sdk
 if [ ! -d $SDK ] ; then
   echo $SDK not found
+  echo "Please link /usr/dart to Dart Editor's folder."
   exit
 fi
 codepath=$0
