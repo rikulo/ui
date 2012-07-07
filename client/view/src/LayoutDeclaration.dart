@@ -39,7 +39,7 @@ default LayoutDeclarationImpl {
    *
    * Syntax: `spacing: #n1 [#n2 [#n3 #n4]]`
    *
-   * Default: 2
+   * Default: 3
    *
    * If the spacing at the left and at the right is different,
    * the horizontal spacing of two adjacent views is the maximal value of them.

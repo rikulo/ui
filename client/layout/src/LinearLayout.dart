@@ -43,7 +43,7 @@ class LinearLayout implements Layout {
   }
 
   //Utilities//
-  static final int DEFAULT_SPACING = 2;
+  static final int DEFAULT_SPACING = 3;
 }
 interface _RealLinearLayout {
   int measureWidth(MeasureContext mctx, View view);
