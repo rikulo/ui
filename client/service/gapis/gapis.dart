@@ -10,3 +10,5 @@
 #source("src/LoadableModule.dart");
 #source("src/GLoader.dart");
 #source("src/GFeed.dart");
+#source("src/GAnalytics.dart");
+#source("src/PageTracker.dart");
