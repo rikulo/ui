@@ -12,19 +12,21 @@ if [ ! -d $SDK ] ; then
   echo "Please link /usr/dart to Dart Editor's folder."
   exit
 fi
-codepath=$0
-codepath=${codepath%/*}
-if [ "$codepath" = "." ] ; then
-  codepath=".."
-elif [ "$codepath" = "${codepath%/*}" ] ; then
-  codepath="."
+srcpath=$0
+srcpath=${srcpath%/*}
+if [ "$srcpath" = "." ] ; then
+  srcpath=".."
+elif [ "$srcpath" = "${srcpath%/*}" ] ; then
+  srcpath="."
 else
-  codepath=${codepath%/*}
+  srcpath=${srcpath%/*}
 fi
 if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
-  codepath=$(cygpath -u $codepath)
+  srcpath=$(cygpath -u $srcpath)
 fi
-codepath=$codepath/samples/dartdoc/dartdoc.dart
+dstdir=$srcpath/docs
+libdir=$srcpath/bin/lib
+srcpath=$srcpath/samples/dartdoc/dartdoc.dart
 
 dartdoc=$SDK/lib/dartdoc/dartdoc.dart
 if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
@@ -33,4 +35,21 @@ fi
 
 PATH=$PATH:$SDK/bin
 
-dart.exe $dartdoc $codepath
+dart.exe $dartdoc $srcpath
+
+#Fix the redundant page: _____.html
+rm -rf $dstdir/_____.html
+if [ -f $dstdir/nav.json ] ; then
+	sed -f $libdir/nav.json.sed $dstdir/nav.json > $dstdir/dd.tmp
+	rm -f $dstdir/nav.json
+	mv $dstdir/dd.tmp $dstdir/nav.json
+else
+	echo $dstdir/nav.json not found
+fi
+if [ -f $dstdir/index.html ] ; then
+	sed -f $libdir/index.html.sed $dstdir/index.html > $dstdir/dd.tmp
+	rm -f $dstdir/index.html
+	mv $dstdir/dd.tmp $dstdir/index.html
+else
+	echo $dstdir/index.html not found
+fi
