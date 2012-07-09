@@ -37,8 +37,8 @@ PATH=$PATH:$SDK/bin
 
 dart.exe $dartdoc $srcpath
 
-#Fix the redundant page: ___.html
-rm -rf ___.html
+#Fix the redundant page: _____.html
+rm -rf $dstdir/_____.html
 if [ -f $dstdir/nav.json ] ; then
 	sed -f $libdir/nav.json.sed $dstdir/nav.json > $dstdir/dd.tmp
 	rm -f $dstdir/nav.json
