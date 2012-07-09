@@ -5,11 +5,10 @@
 /**
  * A Cordova Contact implementation.
  */
-class CordovaContact implements Contact {
-  static final String _CREATE = "cont.1";
-  static final String _CLONE = "cont.2";
-  static final String _REMOVE = "cont.3";
-  static final String _SAVE = "cont.4";
+class CordovaContact implements Contact, JSAgent {
+  static final String _CLONE = "cont.1";
+  static final String _REMOVE = "cont.2";
+  static final String _SAVE = "cont.3";
   
   String get id() => JSUtil.getJSValue(_jsContact, "id"); //global unique identifier
   String get displayName() => JSUtil.getJSValue(_jsContact, "displayName"); //display name of this Contact
@@ -21,7 +20,6 @@ class CordovaContact implements Contact {
   set nickname(var x) => JSUtil.setJSValue(_jsContact, "nickname", x); //casual name of this Contact
   set note(var x) => JSUtil.setJSValue(_jsContact, "note", x); //note about this Contact
   
-  _create() => JSUtil.jsCall(_CREATE);
   _clone0() => JSUtil.jsCall(_CLONE, [_jsContact]);
   _remove0(ContactSuccessCallback success, ContactErrorCallback error) => JSUtil.jsCall(_REMOVE, [_jsContact, success, error]);
   _save0(ContactSuccessCallback success, ContactErrorCallback error) => JSUtil.jsCall(_SAVE, [_jsContact, success, error]);
@@ -50,23 +48,21 @@ class CordovaContact implements Contact {
   
   var _jsContact; //associated javascript Contact
   
-  CordovaContact() {
-    _initJSFunctions();
-    this._jsContact = _create();
-    _initDartContact();
-  }
-  
-  CordovaContact.from(var jsContact) {
+  CordovaContact._from(var jsContact) {
     _initJSFunctions();
     this._jsContact = jsContact;
     _initDartContact();
+  }
+  
+  toJSObject() {
+    return _jsContact;
   }
   
   /** Returns a cloned Contact object except its id is set to null.
    */
   Contact clone() {
     _initJSFunctions();
-    return new CordovaContact.from(_clone0());
+    return new CordovaContact._from(_clone0());
   }
   
   /** Remove this Contact from the device's contacts list.
@@ -213,7 +209,6 @@ class CordovaContact implements Contact {
   void _initJSFunctions() {
     if (_doneInit) return;
 
-    JSUtil.newJSFunction(_CREATE,  null, "return navigator.contacts.create({});");
     JSUtil.newJSFunction(_CLONE, ["contact"], "return contact.clone();");
     JSUtil.newJSFunction(_REMOVE, ["contact", "onSuccess", "onError"],
       "contact.remove(onSuccess, onError);");

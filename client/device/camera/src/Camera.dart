@@ -7,6 +7,7 @@
  */
 typedef CameraSuccessCallback(String imageData);
 typedef CameraErrorCallback(String message);
+typedef CleanupSuccessCallback();
 
 interface Camera {
   /**
@@ -14,4 +15,11 @@ interface Camera {
   * Returns the image as a base64 encoded String or as the URI of an image file.
   */
   void getPicture(CameraSuccessCallback success, CameraErrorCallback error, [CameraOptions options]);
+  
+  /**
+   * Cleans up the image files stored in in temporary storage that were taken by the camera when 
+   * the CameraOption.sourceType is set to PictureSourceType.CAMERA and destinationType is set
+   * to CameraOption.destinationType is set to DestinationType.FILE_URI.
+   */
+  void cleanup(CleanupSuccessCallback success, CameraErrorCallback error);
 }
