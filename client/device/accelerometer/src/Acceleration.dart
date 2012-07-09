@@ -2,12 +2,17 @@
 //History: Thu, May 3, 2012  11:22:40 AM
 // Author: henrichen, tomyeh
 
-/** The acecleration information.
+/** The acecleration information. When a device lying flat on a table and facing up, the value
+ * is x = 0, y = 0, and z = 9.81 (one gravity in meter/sec^2)
  */
 interface Acceleration default _Acceleration {
+  /** Acceleration in x axis in meters/sec^2. */
   final double x;
+  /** Acceleration in y axis in meters/sec^2. */
   final double y;
+  /** Acceleration in z axis in meters/sec^2. */
   final double z;
+  /** The time stamp in milliseconds this value is created */
   final int timeStamp;
 
   Acceleration(double x, double y, double z, int timeStamp);

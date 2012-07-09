@@ -7,6 +7,7 @@
  */
 class CordovaCamera implements Camera {
   static final String _GET_PICTURE = "came.1";
+  static final String _CLEANUP = "came.2";
   CordovaCamera() {
     _initJSFunctions();
   }
@@ -15,6 +16,12 @@ class CordovaCamera implements Camera {
     var jsSuccess = JSUtil.toJSFunction(success, 1);
     var jsError = JSUtil.toJSFunction(error, 1);
     JSUtil.jsCall(_GET_PICTURE, [jsSuccess, jsError, JSUtil.toJSMap(_toMap(options))]);
+  }
+  
+  void cleanup(CleanupSuccessCallback success, CameraErrorCallback error) {
+    var jsSuccess = JSUtil.toJSFunction(success, 0);
+    var jsError = JSUtil.toJSFunction(error, 1);
+    JSUtil.jsCall(_CLEANUP, [jsSuccess, jsError]);
   }
   
   Map _toMap(CameraOptions opts) {
@@ -40,6 +47,8 @@ class CordovaCamera implements Camera {
 
     JSUtil.newJSFunction(_GET_PICTURE, ["onSuccess", "onError", "opts"],
       "navigator.camera.getPicture(onSuccess, onError, opts);");
+    JSUtil.newJSFunction(_CLEANUP, ["onSuccess", "onError"],
+      "navigator.camera.cleanup(onSuccess, onError);");
 
     _doneInit = true;
   }

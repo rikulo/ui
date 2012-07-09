@@ -6,10 +6,17 @@
  * A Cordova Contacts implementation.
  */
 class CordovaContacts implements Contacts {
-  static final String _FIND = "conts.1";  
+  static final String _FIND = "conts.1";
+  static final String _CREATE = "conts.2";
+  
   CordovaContacts() {
     _initJSFunctions();
   }
+  Contact create(Map properties) {
+    return new CordovaContact._from(JSUtil.jsCall(_CREATE, 
+      [properties === null ? JSUtil.jsCall("{}") : JSUtil.toJSMap(properties)]));
+  }
+  
   void find(List<String> fields, ContactsSuccessCallback success, ContactsErrorCallback error, ContactsFindOptions contactOptions) {
     var jsSuccess = _wrapContactsFunction(success);
     var jsError = _wrapErrorFunction(error);
@@ -27,7 +34,7 @@ class CordovaContacts implements Contacts {
     
   //parameter called back from javascript Cordova would be a json object {}, must convert paremeter type back to dart Contact
   _wrapContactsFunction(dartFn) {   
-    return JSUtil.toJSFunction((jsContacts) => dartFn(JSUtil.toDartList(jsContacts, (jsContact) => new CordovaContact.from(JSUtil.toDartMap(jsContact)))), 1);
+    return JSUtil.toJSFunction((jsContacts) => dartFn(JSUtil.toDartList(jsContacts, (jsContact) => new CordovaContact._from(jsContact))), 1);
   }
     
   _wrapErrorFunction(dartFn) {
@@ -40,6 +47,8 @@ class CordovaContacts implements Contacts {
     
     JSUtil.newJSFunction(_FIND, ["fields", "onSuccess", "onError", "opts"],
       "navigator.contacts.find(fields, onSuccess, onError, opts);");
+    JSUtil.newJSFunction(_CREATE, ["props"], 
+      "return navigator.contacts.create(props);");
 
     _doneInit = true;
   }

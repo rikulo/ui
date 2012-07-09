@@ -10,6 +10,12 @@ typedef ContactsErrorCallback(ContactError error);
 
 interface Contacts {
   /**
+   * Create a new Contact object but not persisted into contact DB yet.
+   * + [properties] the initial properties for the created [Contact].
+   */
+  Contact create(Map properties);
+  
+  /**
   * Returns the Contacts queried by this method.
   * + [fields] the fields name in Contact you want to query back; return Contact id only if empty; return all fields if provide ["*"].
   * + [contactOptions] the filter string to apply the query.

@@ -5,7 +5,7 @@
 /**
  * A Cordova MediaFile implementation.
  */
-class CordovaMediaFile implements MediaFile {
+class CordovaMediaFile implements MediaFile, JSAgent {
   static final String _GET_FORMAT_DATA = "mf.1";
   
   String get name() => JSUtil.getJSValue(_jsFile, "name");
@@ -19,6 +19,10 @@ class CordovaMediaFile implements MediaFile {
   CordovaMediaFile.from(var jsFile) {
     _initJSFunctions();
     this._jsFile = jsFile;
+  }
+  
+  toJSObject() {
+    return _jsFile;
   }
   
   /** Returns format information of this Media file */
