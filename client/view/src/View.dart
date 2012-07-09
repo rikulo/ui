@@ -440,22 +440,27 @@ class View implements Hashable {
    * The inner element is used to place the child views and provide a coordinate
    * system originating at [innerLeft] and [innerTop] rather than (0, 0).
    *
-   * To support the inner element, the deriving class has to override this method.
-   * And, optionally, override [innerSpacing_] if there is some spacing at the right
-   * or at the bottom. If not all child views are in the inner element, it has to
-   * override [shallLayout_] too.
+   * To support the inner element:
+   *
+   * 1. You must override this method to return the inner element.
+   * 2. If not all child views are in the inner element, you shall
+   * override [shallLayout_] to skip views that is *not* in the inner element.
+   * 3. If you'd like to adjust the width/height of the inner element when
+   * [set:width]/[set:height] is called, you can override [adjustInnerNode_]
+   * to adjust the width/height of the inner element.
+   *
    * Please refer to the viewport example for a sample implementation.
    */
   Element get innerNode() => node;
   /** Adjusts the left, top, width, and/or height of the innerNode.
    *
-   * Default: adjust [innerNode] based on [innerWidth], [innerHeight], and
-   * [innerSpacing_], if [innerNode] is not the same as [node].
+   * Default: adjust [innerNode]'s left and top cornder based on [innerLeft]
+   * and [innerTop], if [innerNode] is not the same as [node].
    *
-   * If the subclass uses the static position and percentage to let the
-   * browser adjust the offset and dimensions automatically, it can
-   * override this method to do nothing (for better performance).
-   * [ScrollView] is a typical example.
+   * If you'd like to adjust the width and height of the inner element, you
+   * can override this method.
+   *
+   * Please refer to the viewport example for a sample implementation.
    */
   void adjustInnerNode_([bool bLeft=false, bool bTop=false, bool bWidth=false, bool bHeight=false]) {
     if (!_inDoc)
@@ -468,14 +473,6 @@ class View implements Hashable {
         inner.style.left = CSS.px(innerLeft);
       if (bTop)
         inner.style.top = CSS.px(innerTop);
-      if (bWidth) {
-        int v = new DOMQuery(n).innerWidth - innerSpacing_.width;
-        inner.style.width = CSS.px(v > 0 ? v: 0);
-      }
-      if (bHeight) {
-        int v = new DOMQuery(n).innerHeight - innerSpacing_.height;
-        inner.style.height = CSS.px(v > 0 ? v: 0);
-      }
     }
   }
 
@@ -939,15 +936,6 @@ class View implements Hashable {
 
     adjustInnerNode_(bTop: true);
   }
-  /** Returns the spacing between the inner element and the border.
-   *
-   * Default: `new Size(innerLeft, innerTop)`
-   *
-   * Notice: instead of overriding [width] and [height], you
-   * shall override this method if the spacing is more than
-   * [innerLeft] and [innerTop].
-   */
-  Size get innerSpacing_() => new Size(innerLeft, innerTop);
 
   /** Returns the real width of this view shown on the document (never null).
    * Notice that the performance of this method is not good, if
@@ -975,7 +963,7 @@ class View implements Hashable {
    */
   int get innerWidth() {
     final int v = inDocument ? new DOMQuery(innerNode).innerWidth:
-      (_width !== null ? _width - innerSpacing_.width: 0);
+      (_width !== null ? _width: 0);
     return v > 0 ? v: 0;
   }
   /** Returns the viewable height of this view, excluding the borders, margins
@@ -988,7 +976,7 @@ class View implements Hashable {
    */
   int get innerHeight() {
     final int v = inDocument ? new DOMQuery(innerNode).innerHeight:
-      (_height !== null ? _height - innerSpacing_.height: 0);
+      (_height !== null ? _height: 0);
     return v > 0 ? v: 0;
   }
 

@@ -97,4 +97,21 @@ class Viewport extends View {
     if (_toolbar != null)
       _syncToolbar();
   }
+  void adjustInnerNode_([bool bLeft=false, bool bTop=false, bool bWidth=false, bool bHeight=false]) {
+    if (inDocument) {
+      super.adjustInnerNode_(bLeft, bTop, bWidth, bHeight);
+
+    //We adjust the width/height of the inner width/height to be best fit to [node]
+    //If the content depends on children, you can adjust it in [doLayout_] like [ScrollView] does
+      final Element n = node, inner = innerNode;
+      if (bWidth) {
+        int v = new DOMQuery(n).innerWidth - innerLeft;
+        inner.style.width = CSS.px(v > 0 ? v: 0);
+      }
+      if (bHeight) {
+        int v = new DOMQuery(n).innerHeight - innerTop;
+        inner.style.height = CSS.px(v > 0 ? v: 0);
+      }
+    }
+  }
 }
