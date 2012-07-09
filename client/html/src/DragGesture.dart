@@ -261,8 +261,6 @@ class _DragGesture implements DragGesture {
       _state._velocity.y = diffTime > 250 ? 0 : (pageY - _snapY) / diffTime;
       _snapTime = _snapX = _snapY = null;
     }
-    //if (_end != null)
-    //  _end(_state);
     if (_state !== null && _state._touched !== null) {
       _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
         pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, time, _end); 
