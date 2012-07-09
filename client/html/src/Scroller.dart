@@ -22,7 +22,7 @@ interface Scroller default _Scroller {
    * If it returns false, the scrolling won't be activated.
    * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
    */
-  Scroller(Element owner, AsSize viewPortSize, [Element handle, Dir direction = Dir.BOTH, 
+  Scroller(Element owner, AsSize viewPortSize, [Element handle, Dir direction, 
       AsSize contentSize, ScrollerStart start, ScrollerMove moving, ScrollerMove end]);
   // TODO: inertial, bounce, scrollbar
   
