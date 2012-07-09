@@ -1,5 +1,5 @@
 //List all packages that shall be part of Rikulo API Reference
-#library("---");
+#library("___");
 
 #import("../../client/app/app.dart");
 #import("../../client/device/device.dart");
