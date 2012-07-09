@@ -261,6 +261,8 @@ class _DragGesture implements DragGesture {
       _state._velocity.y = diffTime > 250 ? 0 : (pageY - _snapY) / diffTime;
       _snapTime = _snapX = _snapY = null;
     }
+    //if (_end != null)
+    //  _end(_state);
     if (_state !== null && _state._touched !== null) {
       _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
         pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, time, _end); 
@@ -271,7 +273,7 @@ class _DragGesture implements DragGesture {
     DragGestureMove callback) {
     final Offset initofs = _state._initTxOfs,
       move = _constraint(deltaX + initofs.x, deltaY + initofs.y);
-
+    
     if (callback !== null) {
       _state._setOfs(ofsX, ofsY);
       _state._setDelta(move.x - initofs.x, move.y - initofs.y);
@@ -299,7 +301,8 @@ class _DragGesture implements DragGesture {
 
 class _TouchDragGesture extends _DragGesture {
   EventListener _elStart, _elMove, _elEnd;
-
+  int _pgx, _pgy; // cached pageX/pageY, so we have values at touchEnd
+  
   _TouchDragGesture(Element owner, [Element handle,
     bool transform, AsRectangle range, int movement,
     DragGestureStart start, DragGestureMove end,
@@ -309,18 +312,26 @@ class _TouchDragGesture extends _DragGesture {
   void _listen() {
     final ElementEvents on = handle.on;
     on.touchStart.add(_elStart = (TouchEvent event) {
+      Touch t = event.touches[0];
       if (event.touches.length > 1)
-        _touchEnd(event.pageX, event.pageY, event.timeStamp); //ignore multiple fingers
+        _touchEnd(t.pageX, t.pageY, event.timeStamp); //ignore multiple fingers
       else {
-        _touchStart(event.target, event.pageX, event.pageY, event.timeStamp);
+        _touchStart(event.target, t.pageX, t.pageY, event.timeStamp);
+        _pgx = t.pageX;
+        _pgy = t.pageY;
         event.preventDefault();
       }
     });
     on.touchMove.add(_elMove = (TouchEvent event) {
-      _touchMove(event.pageX, event.pageY, event.timeStamp);
+      Touch t = event.touches[0];
+      _touchMove(t.pageX, t.pageY, event.timeStamp);
+      _pgx = t.pageX;
+      _pgy = t.pageY;
     });
     on.touchEnd.add(_elEnd = (TouchEvent event) {
-      _touchEnd(event.pageX, event.pageY, event.timeStamp);
+      Touch t = event.touches[0];
+      _touchEnd(t == null ? _pgx : t.pageX, t == null ? _pgy : t.pageY, event.timeStamp);
+      _pgx = _pgy = null;
     });
   }
   void _unlisten() {
