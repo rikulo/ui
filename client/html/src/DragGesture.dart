@@ -311,9 +311,10 @@ class _TouchDragGesture extends _DragGesture {
     on.touchStart.add(_elStart = (TouchEvent event) {
       if (event.touches.length > 1)
         _touchEnd(event.pageX, event.pageY, event.timeStamp); //ignore multiple fingers
-      else
+      else {
         _touchStart(event.target, event.pageX, event.pageY, event.timeStamp);
-      event.preventDefault();
+        event.preventDefault();
+      }
     });
     on.touchMove.add(_elMove = (TouchEvent event) {
       _touchMove(event.pageX, event.pageY, event.timeStamp);
