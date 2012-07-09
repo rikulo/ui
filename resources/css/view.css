@@ -33,6 +33,10 @@ body {
 }
 .v-ScrollView {
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .v-ScrollView > .v-inner {
   position: absolute;
@@ -40,6 +44,10 @@ body {
   -webkit-transform: translate3d(0,0,0);
   -moz-transform: translate3d(0,0,0);
   transform: translate3d(0,0,0);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .v-Switch {
