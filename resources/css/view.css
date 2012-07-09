@@ -25,6 +25,12 @@ body {
 .v-button {
   font-weight: bold;
 }
+.v-scrollbar-ver, .v-scrollbar-hor {
+  position: absolute;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
+}
 .v-ScrollView {
   overflow: hidden;
 }
