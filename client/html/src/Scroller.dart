@@ -43,6 +43,11 @@ interface Scroller default _Scroller {
   /** Returns the direction that the scrolling is allowed.
    */
   Dir get direction();
+  
+  /** Tell scroller to re-determine view port and content sizes.
+   */
+  void resize();
+  
 }
 
 /**
@@ -309,10 +314,7 @@ class _Scroller implements Scroller {
     return _viewPortSizeCache;
   }
   
-  /**
-   *
-   */
-  clearSizeCache() { // TODO: rename to notifySizeChange() ?
+  void resize() {
     _viewPortSizeCache = _contentSizeCache = null;
     _dragRangeCache = null;
   }
