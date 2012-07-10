@@ -370,7 +370,7 @@ class _BoundedInertialMotion extends Motion {
   Offset _pos, _vel;
   
   _BoundedInertialMotion(Element element, Offset velocity, this.range, 
-  this._hasHor, this._hasVer, [num friction = 0.0005, num bounce = 1500, 
+  this._hasHor, this._hasVer, [num friction = 0.0005, num bounce = 3000, 
   void moving(Offset position, int time), void end()]) :
   this.element = element, this.friction = friction, this.bounce = bounce,
   _moving = moving, _end = end, 
