@@ -8,16 +8,16 @@
 #import("../../client/html/html.dart");
 
 /**
- * A view port that demostrates how to use [View.innerLeft]
- * and [View.innerTop], such that the origin of child views
- * is not at the left-top corner of this view.
+ * A view port that demostrates how to implement a view that the origin of
+ * child views is not at the left-top corner of this view.
  */
 class Viewport extends View {
-  String _title = "";
+  String _title;
   View _toolbar;
+  //Controlling the space between [node] and [contentNode]
+  int _spacingLeft = 10, _spacingTop = 30, _spacingRight = 10, _spacingBottom = 10;
 
   Viewport([String title=""]) {
-    innerLeft = innerTop = 30;
     _title = title;
   }
 
@@ -54,7 +54,7 @@ class Viewport extends View {
   }
 
   //@Override to returns the element representing the inner element.
-  Element get innerNode() => getNode("inner");
+  Element get contentNode() => getNode("inner");
   //@Override to skip the toolbar
   bool shallLayout_(View child) => child !== _toolbar && super.shallLayout_(child);
   //@Override
@@ -79,7 +79,7 @@ class Viewport extends View {
 
     out.add('</div>');
   }
-  //@Override to insert the toolbar to the right place
+  //@Override to insert the toolbar to getNode("toolbar"), and others into contentNode
   void insertChildToDocument_(View child, var childInfo, View beforeChild) {
     if (child === _toolbar) {
       if (childInfo is Element)
@@ -87,31 +87,55 @@ class Viewport extends View {
       else
         getNode("toolbar").insertAdjacentHTML("beforeEnd", childInfo);
     } else {
-      super.insertChildToDocument_(child, childInfo,
-        beforeChild === _toolbar ? null: beforeChild);
+      if (beforeChild === _toolbar)
+        beforeChild = null;
+
+      if (beforeChild === null)
+        super.insertChildToDocument_(child, childInfo, beforeChild);
+      else if (childInfo is Element)
+        contentNode.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement
+      else
+        contentNode.insertAdjacentHTML("beforeEnd", childInfo);
     }
   }
+  //@override to adjust toolbar and contentNode
   void mount_() {
     super.mount_();
 
+    final style = contentNode.style;
+    style.left = CSS.px(_spacingLeft);
+    style.top = CSS.px(_spacingTop);
+    _adjustWidth();
+    _adjustHeight();
     if (_toolbar != null)
       _syncToolbar();
   }
-  void adjustInnerNode_([bool bLeft=false, bool bTop=false, bool bWidth=false, bool bHeight=false]) {
-    if (inDocument) {
-      super.adjustInnerNode_(bLeft, bTop, bWidth, bHeight);
-
-    //We adjust the width/height of the inner width/height to be best fit to [node]
-    //If the content depends on children, you can adjust it in [doLayout_] like [ScrollView] does
-      final Element n = node, inner = innerNode;
-      if (bWidth) {
-        int v = new DOMQuery(n).innerWidth - innerLeft;
-        inner.style.width = CSS.px(v > 0 ? v: 0);
-      }
-      if (bHeight) {
-        int v = new DOMQuery(n).innerHeight - innerTop;
-        inner.style.height = CSS.px(v > 0 ? v: 0);
-      }
-    }
+  //@Override
+  int get innerWidth() => new DOMQuery(contentNode).innerWidth;
+  //@Override
+  int get innerHeight() => new DOMQuery(contentNode).innerHeight;
+  //@Override
+  int get contentWidth() => new DOMQuery(contentNode).contentWidth;
+  //@Override
+  int get contentHeight() => new DOMQuery(contentNode).contentHeight;
+  //@Override to adjust [contentNode]'s width accordingly
+  void set width(int width) {
+    super.width = width;
+    if (inDocument)
+      _adjustWidth();
+  }
+  //@Override to adjust [contentNode]'s height accordingly
+  void set height(int height) {
+    super.height = height;
+    if (inDocument)
+      _adjustHeight();
+  }
+  void _adjustWidth() {
+    int v = new DOMQuery(node).innerWidth - _spacingLeft - _spacingRight;
+    contentNode.style.width = CSS.px(v > 0 ? v: 0);
+  }
+  void _adjustHeight() {
+    int v = new DOMQuery(node).innerHeight - _spacingTop - _spacingBottom;
+    contentNode.style.height = CSS.px(v > 0 ? v: 0);
   }
 }

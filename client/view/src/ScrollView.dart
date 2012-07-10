@@ -15,7 +15,7 @@ class ScrollView extends View {
   String get className() => "ScrollView"; //TODO: replace with reflection if Dart supports it
 
   /** Update the size of [contentNode].
-   * [ScrollView] assumes [contentNode] shall cover all sub views. IN other words,
+   * [ScrollView] assumes [contentNode] shall cover all sub views. In other words,
    * it is the total size that the user can scroll.
    *
    * Default: it iterates through all child views to calculate
@@ -77,7 +77,7 @@ class ScrollView extends View {
   //@Override
   void insertChildToDocument_(View child, var childInfo, View beforeChild) {
     if (beforeChild === null)
-      super.insertChildToDocument_(view, childInfo, beforeChild);
+      super.insertChildToDocument_(child, childInfo, beforeChild);
     else if (childInfo is Element)
       contentNode.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement
     else

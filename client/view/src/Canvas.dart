@@ -35,12 +35,16 @@ class Canvas extends View {
   CanvasElement get canvasNode() => node;
 
   //@Override
-  void adjustInnerNode_([bool bLeft=false, bool bTop=false, bool bWidth=false, bool bHeight=false]) {
-    if (bWidth)
+  void set width(int width) {
+    super.width = width;
+    if (inDocument)
       canvasNode.width = width;
-    if (bHeight)
+  }
+  //@Override
+  void set height(int height) {
+    super.height = height;
+    if (inDocument)
       canvasNode.height = height;
-    super.adjustInnerNode_(bLeft, bTop, bWidth, bHeight);
   }
   //@Override
   void domAttrs_(StringBuffer out,

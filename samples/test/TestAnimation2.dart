@@ -71,13 +71,13 @@ class TestAnimation2 extends Activity {
     
     Rectangle range = new Rectangle(50, 50, 446, 446);
     
-    DragGesture dg = new DragGesture(v.innerNode, range: () => range, 
+    DragGesture dg = new DragGesture(v.node, range: () => range, 
         start: (DragGestureState state) {
       if (im != null)
         im.stop();
-      return v.innerNode;
+      return v.node;
     }, end: (DragGestureState state) {
-      im = new BoundedInertialMotion(v.innerNode, state.velocity, range);
+      im = new BoundedInertialMotion(v.node, state.velocity, range);
       return true;
     });
     
