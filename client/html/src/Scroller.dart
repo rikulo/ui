@@ -190,11 +190,13 @@ class _ScrollbarControl implements ScrollbarControl {
       _vbar = new Element.tag("div");
       _vbar.classes = ["v-scrollbar-ver"];
       _vbar.style.width = CSS.px(_ins); // do here to have better sync
+      _vbar.style.display = "none";
       owner.parent.insertBefore(_vbar, owner.nextElementSibling);
     } else {
       _hbar = new Element.tag("div");
       _hbar.classes = ["v-scrollbar-hor"];
       _hbar.style.height = CSS.px(_ins); // do here to have better sync
+      _hbar.style.display = "none";
       owner.parent.insertBefore(_hbar, owner.nextElementSibling);
     }
   }
