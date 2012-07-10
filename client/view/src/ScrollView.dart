@@ -27,10 +27,10 @@ class ScrollView extends View {
    * the content's size more efficiently.
    */
   void updateInnerSize_() {
-    final Size sz = ViewUtil.getRectangle(children);
+    final Rectangle rect = ViewUtil.getRectangle(children);
     final style = innerNode.style;
-    style.width = CSS.px(sz.width);
-    style.height = CSS.px(sz.height);
+    style.width = CSS.px(rect.right);
+    style.height = CSS.px(rect.bottom);
   }
 
   /** Instantiates and returns the scroller.

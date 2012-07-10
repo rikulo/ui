@@ -32,17 +32,18 @@ interface Scroller default _Scroller {
    */
   void destroy();
   
-  /** Returns the size of view port.
-   */
-  Size get viewPortSize();
-  
-  /** Returns the content size.
-   */
-  Size get contentSize();
-  
   /** Returns the direction that the scrolling is allowed.
    */
   Dir get direction();
+  
+  /** Returns the owner that associates to the scroller.
+   */
+  Element get owner();
+  
+  /** Returns the handle element that associates to the scroller, if any.
+   */
+  Element get handle();
+  
 }
 
 /**
@@ -67,6 +68,18 @@ interface ScrollerState default _ScrollerState {
    */
   int get time();
   
+  /** Returns the size of view port.
+   */
+  Size get viewPortSize();
+  
+  /** Returns the content size.
+   */
+  Size get contentSize();
+  
+  /** Tell scroller state to re-determine view port and content sizes.
+   */
+  void resize();
+  
 }
 
 /**
@@ -84,26 +97,27 @@ interface ScrollbarControl default _ScrollbarControl {
   
   /** Called when scrolling starts.
    */
-  void start(bool vertical, num position, num velocity, int time);
+  void start(bool vertical, ScrollerState state);
   
   /** Called at each scrolling iteraion.
    */
-  void move(bool vertical, num position, num velocity, int time);
+  void move(bool vertical, ScrollerState state);
   
   /** Called when scrolling stops.
    */
-  void end(bool vertical, num position, num velocity, int time);
+  void end(bool vertical, ScrollerState state);
   
 }
 
 class _ScrollerState implements ScrollerState {
   
   final Scroller scroller;
+  final AsSize _fnViewPortSize, _fnContentSize;
   final Offset startPosition;
   Offset _pos, _ppos;
   int _time, _ptime;
   
-  _ScrollerState(_Scroller scroller, this._time) : 
+  _ScrollerState(_Scroller scroller, this._fnViewPortSize, this._fnContentSize, this._time) : 
     this.scroller = scroller,
     startPosition = new DOMQuery(scroller.owner).offset {
     _pos = startPosition;
@@ -124,6 +138,36 @@ class _ScrollerState implements ScrollerState {
       new Offset(0, 0) : ((_pos - _ppos) / (_time - _ptime));
   
   int get time() => _time;
+  
+  // size cache //
+  Size _contentSizeCache, _viewPortSizeCache;
+  Rectangle _dragRangeCache;
+  
+  Rectangle get dragRange() {
+    if (_dragRangeCache == null) {
+      Size vsize = viewPortSize,
+          csize = contentSize;
+      _dragRangeCache = new Rectangle(vsize.width - csize.width, vsize.height - csize.height, 0, 0);
+    }
+    return _dragRangeCache;
+  }
+  
+  Size get viewPortSize() {
+    if (_viewPortSizeCache == null)
+      _viewPortSizeCache = _fnViewPortSize();
+    return _viewPortSizeCache;
+  }
+  
+  Size get contentSize() {
+    if (_contentSizeCache == null)
+      _contentSizeCache = _fnContentSize();
+    return _contentSizeCache;
+  }
+  
+  void resize() {
+    _viewPortSizeCache = _contentSizeCache = null;
+    _dragRangeCache = null;
+  }
   
 }
 
@@ -165,39 +209,49 @@ class _ScrollbarControl implements ScrollbarControl {
     }
   }
   
-  void start(bool vertical, num position, num velocity, int time) {
-    _updateBar(vertical, position);
+  void start(bool vertical, ScrollerState state) {
+    _updateBarSize(vertical, state);
+    _updateBarPosition(vertical, state);
     final Element bar = vertical ? _vbar : _hbar;
     bar.style.display = "block"; // TODO: animation + leave hook to cancel
   }
   
-  void move(bool vertical, num position, num velocity, int time) {
-    _updateBar(vertical, position);
+  void move(bool vertical, ScrollerState state) {
+    _updateBarPosition(vertical, state);
   }
   
-  void end(bool vertical, num position, num velocity, int time) {
+  void end(bool vertical, ScrollerState state) {
     final Element bar = vertical ? _vbar : _hbar;
     bar.style.display = "none"; // TODO: animation + leave hook to skip
   }
   
-  void _updateBar(bool ver, num pos) {
-    final Size csize = scroller.contentSize;
-    final Size vsize = scroller.viewPortSize;
+  void _updateBarSize(bool ver, ScrollerState state) {
+    final Size csize = state.contentSize;
+    final Size vsize = state.viewPortSize;
     final num csize0 = ver ? csize.height : csize.width;
     final num vsize0 = ver ? vsize.height : vsize.width;
     final num s = ((vsize0 - _mgs * 2) * (csize0 > vsize0 ? vsize0 / csize0 : 1)).toInt() - _bds * 2;
-    final num x = _mgs + (csize0 > vsize0 ? ((vsize0 - _mgs * 2) * pos / csize0) : 0);
     final num off = (ver ? vsize.width : vsize.height) - _mgs - _ins - _bds * 2;
-    
     if (ver) {
       _vbar.style.height = CSS.px(s);
-      _vbar.style.top = CSS.px(x);
       _vbar.style.left = CSS.px(off);
     } else {
       _hbar.style.width = CSS.px(s);
-      _hbar.style.left = CSS.px(x);
       _hbar.style.top = CSS.px(off);
     }
+  }
+  
+  void _updateBarPosition(bool ver, ScrollerState state) {
+    final Size csize = state.contentSize;
+    final Size vsize = state.viewPortSize;
+    final num csize0 = ver ? csize.height : csize.width;
+    final num vsize0 = ver ? vsize.height : vsize.width;
+    final num pos = ver ? state.position.y : state.position.x;
+    final num x = _mgs + (csize0 > vsize0 ? ((vsize0 - _mgs * 2) * pos / csize0) : 0);
+    if (ver)
+      _vbar.style.top = CSS.px(x);
+    else
+      _hbar.style.left = CSS.px(x);
   }
   
 }
@@ -224,13 +278,12 @@ class _Scroller implements Scroller {
   this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
   _start = start, _moving = moving, _end = end {
     
-    // TODO: transform
     _dg = new DragGesture(this.owner, handle: handle,
     start: (DragGestureState state) => onStart(state.time) ? owner : null,
     moving: (DragGestureState state) => onMoving(_state.startPosition + state.delta, state.time), 
     end: (DragGestureState state) {
       final Offset pos = new DOMQuery(owner).offset;
-      final Rectangle range = _dragRange;
+      final Rectangle range = _state.dragRange;
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, moving: onMoving, end: onEnd);
     });
     
@@ -247,7 +300,7 @@ class _Scroller implements Scroller {
   bool onStart(int time) {
     if (_bim != null)
       _bim.stop();
-    _state = new _ScrollerState(this, time);
+    _state = new _ScrollerState(this, _fnViewPortSize, _fnContentSize, time);
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.start, _state);
     return _start == null || _start(_state);
@@ -281,40 +334,9 @@ class _Scroller implements Scroller {
   
   void _applyScrollBarFunction1(Function f, ScrollerState state) {
     if (this.direction == Dir.HORIZONTAL || this.direction == Dir.BOTH)
-      f(false, state.position.x, state.velocity.x, state.time);
+      f(false, state);
     if (this.direction == Dir.VERTICAL || this.direction == Dir.BOTH)
-      f(true, state.position.y, state.velocity.y, state.time);
-  }
-  
-  // size cache //
-  Size _contentSizeCache, _viewPortSizeCache;
-  Rectangle _dragRangeCache;
-  
-  Rectangle get _dragRange() {
-    if (_dragRangeCache == null) {
-      Size vsize = viewPortSize,
-          csize = contentSize;
-      _dragRangeCache = new Rectangle(vsize.width - csize.width, vsize.height - csize.height, 0, 0);
-    }
-    return _dragRangeCache;
-  }
-  Size get contentSize() {
-    if (_contentSizeCache == null)
-      _contentSizeCache = _fnContentSize != null ? _fnContentSize() : new DOMQuery(owner).outerSize;
-    return _contentSizeCache;
-  }
-  Size get viewPortSize() {
-    if (_viewPortSizeCache == null)
-      _viewPortSizeCache = _fnViewPortSize();
-    return _viewPortSizeCache;
-  }
-  
-  /**
-   *
-   */
-  clearSizeCache() { // TODO: rename to notifySizeChange() ?
-    _viewPortSizeCache = _contentSizeCache = null;
-    _dragRangeCache = null;
+      f(true, state);
   }
   
   void destroy() {
@@ -328,6 +350,7 @@ class _Scroller implements Scroller {
 
 class _BoundedInertialMotion extends Motion {
   
+  // TODO: snap
   final Element element;
   final num friction, bounce;
   final Rectangle range;
