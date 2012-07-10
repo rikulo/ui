@@ -14,8 +14,8 @@ class ScrollView extends View {
   //@Override
   String get className() => "ScrollView"; //TODO: replace with reflection if Dart supports it
 
-  /** Update the size of [innerNode].
-   * [ScrollView] assumes [innerNode] shall cover all sub views. IN other words,
+  /** Update the size of [contentNode].
+   * [ScrollView] assumes [contentNode] shall cover all sub views. IN other words,
    * it is the total size that the user can scroll.
    *
    * Default: it iterates through all child views to calculate
@@ -28,16 +28,20 @@ class ScrollView extends View {
    */
   void updateInnerSize_() {
     final Rectangle rect = ViewUtil.getRectangle(children);
-    final style = innerNode.style;
+    final style = contentNode.style;
     style.width = CSS.px(rect.right);
     style.height = CSS.px(rect.bottom);
   }
 
   /** Instantiates and returns the scroller.
    */
-  Scroller newScroller_() => new Scroller(innerNode, 
-    () => new DOMQuery(node).innerSize, () => new DOMQuery(innerNode).innerSize);
+  Scroller newScroller_() => new Scroller(contentNode, 
+    () => new DOMQuery(node).innerSize,
+    () => new DOMQuery(contentNode).contentSize);
 
+  Element get contentNode() => getNode("inner");
+
+  //@Override
   void onLayout() {
     updateInnerSize_();
     super.onLayout();
@@ -65,5 +69,18 @@ class ScrollView extends View {
     out.add('</div></').add(tag).add('>');
   }
   //@Override
-  Element get innerNode() => getNode("inner");
+  int get contentWidth()
+  => inDocument ? new DOMQuery(contentNode).contentWidth: super.contentWidth;
+  //@Override
+  int get contentHeight()
+  => inDocument ? new DOMQuery(contentNode).contentHeight: super.contentHeight;
+  //@Override
+  void insertChildToDocument_(View child, var childInfo, View beforeChild) {
+    if (beforeChild === null)
+      super.insertChildToDocument_(view, childInfo, beforeChild);
+    else if (childInfo is Element)
+      contentNode.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement
+    else
+      contentNode.insertAdjacentHTML("beforeEnd", childInfo);
+  }
 }

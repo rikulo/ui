@@ -20,13 +20,22 @@ class DOMQuery {
   }
 
   /** Returns the inner width of the given element, including padding
-   * but not border.
+   * but not including border, margin and scroll bar.
+   *
+   * Note for JavaScript programmers, it is called clientWidth in JavaScript.
    */
   int get innerWidth() => node.$dom_clientWidth;
-  /** Returns the inner width of the given element, including padding
-   * but not border.
+  /** Returns the inner height of the given element, including padding
+   * but not including border, margin and scroll bar.
+   *
+   * Note for JavaScript programmers, it is called clientHeight in JavaScript.
    */
   int get innerHeight() => node.$dom_clientHeight;
+  /** Returns the inner size of the given element, including padding
+   * but not border.
+   */
+  Size get innerSize() => new Size(innerWidth, innerHeight);
+
   /** Returns the outer width of the given element, including padding,
    * border and margin.
    */
@@ -35,14 +44,28 @@ class DOMQuery {
    * border and margin.
    */
   int get outerHeight() => node.$dom_offsetHeight;
-  /** Returns the inner size of the given element, including padding
-   * but not border.
-   */
-  Size get innerSize() => new Size(innerWidth, innerHeight);
   /** Returns the outer size of the given element, including padding,
    * border and margin.
    */
   Size get outerSize() => new Size(outerWidth, outerHeight);
+
+  /** Returns the total width of the given element's content, including padding
+   * but not including border, margin and scroll bar.
+   *
+   * Note for JavaScript programmers, it is called scrollWidth in JavaScript.
+   */
+  int get contentWidth() => node.$dom_scrollWidth;
+  /** Returns the total height of the given element's content, including padding
+   * but not including border, margin and scroll bar.
+   *
+   * Note for JavaScript programmers, it is called scrollHeight in JavaScript.
+   */
+  int get contentHeight() => node.$dom_scrollHeight;
+  /** Returns the total size of the given element's content, including padding
+   * but not including border, margin and scroll bar.
+   */
+  Size get contentSize() => new Size(contentWidth, contentHeight);
+
   /** Returns the closest ancestor elemento in the DOM hierachy from
    * which the position of the current element is calculated, or null
    * if it is the topmost element.
@@ -147,6 +170,8 @@ class _WindowQuery extends DOMQuery {
   int get innerHeight() => node.innerHeight;
   int get outerWidth() => node.outerWidth;
   int get outerHeight() => node.outerHeight;
+  int get contentWidth() => node.innerWidth;
+  int get contentHeight() => node.innerHeight;
   Element get offsetParent() => null;
   int get offsetLeft() => 0;
   int get offsetTop() => 0;
@@ -161,4 +186,6 @@ class _NullQuery extends _WindowQuery {
   int get innerHeight() => 0;
   int get outerWidth() => 0;
   int get outerHeight() => 0;
+  int get contentWidth() => 0;
+  int get contentHeight() => 0;
 }

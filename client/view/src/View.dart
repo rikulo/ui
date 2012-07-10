@@ -60,7 +60,6 @@ class View implements Hashable {
   Element _node;
 
   int _left = 0, _top = 0, _width, _height;
-  Offset _innerofs; //rarely used (so saving memory)
   ProfileDeclaration _profile;
   LayoutDeclaration _layout;
 
@@ -390,9 +389,9 @@ class View implements Hashable {
       }
     } else {
       if (childInfo is Element)
-        innerNode.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement
+        node.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement
       else
-        innerNode.insertAdjacentHTML("beforeEnd", childInfo);
+        node.insertAdjacentHTML("beforeEnd", childInfo);
     }
   }
   /** Removes the corresponding DOM elements of the give child from the document.
@@ -431,50 +430,6 @@ class View implements Hashable {
   /** Returns if this view has been attached to the document.
    */
   bool get inDocument() => _inDoc;
-
-  /** Returns the element representing the inner element.
-   * If there is no inner element, this method is the same as [node].
-   *
-   * Default: [node].
-   *
-   * The inner element is used to place the child views and provide a coordinate
-   * system originating at [innerLeft] and [innerTop] rather than (0, 0).
-   *
-   * To support the inner element:
-   *
-   * 1. You must override this method to return the inner element.
-   * 2. If not all child views are in the inner element, you shall
-   * override [shallLayout_] to skip views that is *not* in the inner element.
-   * 3. If you'd like to adjust the width/height of the inner element when
-   * [set:width]/[set:height] is called, you can override [adjustInnerNode_]
-   * to adjust the width/height of the inner element.
-   *
-   * Please refer to the viewport example for a sample implementation.
-   */
-  Element get innerNode() => node;
-  /** Adjusts the left, top, width, and/or height of the innerNode.
-   *
-   * Default: adjust [innerNode]'s left and top cornder based on [innerLeft]
-   * and [innerTop], if [innerNode] is not the same as [node].
-   *
-   * If you'd like to adjust the width and height of the inner element, you
-   * can override this method.
-   *
-   * Please refer to the viewport example for a sample implementation.
-   */
-  void adjustInnerNode_([bool bLeft=false, bool bTop=false, bool bWidth=false, bool bHeight=false]) {
-    if (!_inDoc)
-      return; //nothing to do
-
-    final Element n = node, inner = innerNode;
-    if (inner !== n) {
-      //sync innerNode's positon and size
-      if (bLeft)
-        inner.style.left = CSS.px(innerLeft);
-      if (bTop)
-        inner.style.top = CSS.px(innerTop);
-    }
-  }
 
   /** Adds this view to the document (i.e., the screen that the user interacts with).
    * All of its descendant views are added too.
@@ -577,6 +532,7 @@ class View implements Hashable {
   void _mount() {
     ++_mntCnt;
     try {
+      _mntInit();
       mount_();
       requestLayout(descendantOnly: true);
     } finally {
@@ -622,14 +578,19 @@ class View implements Hashable {
   /** Unbinds the view.
    */
   void _unmount() {
-    if (inDocument)
+    if (_inDoc) {
       unmount_();
+      _mntClean();
+    }
   }
   /** Callback when this view is attached to the document.
+   * Never invoke this method directly.
    *
    * Default: invoke [mount_] for each child.
    *
-   * Subclass shall call back this method if it overrides this method. 
+   * Subclass shall call back this method if it overrides this method.
+   * When this method is called, [inDocument] is true, so it is safe to
+   * access [node] and other element related method.
    *
    * If the deriving class would like some tasks to be executed
    * after [mount_] of all new-attached views are called, it can
@@ -638,11 +599,8 @@ class View implements Hashable {
    * See also [inDocument] and [invalidate].
    */
   void mount_() {
-    _inDoc = true;
-
-    adjustInnerNode_(true, true, true, true);
-
     for (View child = firstChild; child != null; child = child.nextSibling) {
+      child._mntInit();
       child.mount_();
     }
 
@@ -652,6 +610,7 @@ class View implements Hashable {
     sendEvent(new ViewEvent("mount"));
   }
   /** Callback when this view is detached from the document.
+   * Never invoke this method directly.
    *
    * Default: invoke [unmount_] for each child.
    *
@@ -665,8 +624,13 @@ class View implements Hashable {
 
     for (View child = firstChild; child != null; child = child.nextSibling) {
       child.unmount_();
+      child._mntClean();
     }
-
+  }
+  void _mntInit() {
+    _inDoc = true;
+  }
+  void _mntClean() {
     _mntAttrs = null; //clean up
     _inDoc = false;
     _node = null; //as the last step since node might be called in unmount_
@@ -868,7 +832,6 @@ class View implements Hashable {
 
     if (_inDoc) {
       node.style.width = CSS.px(width);
-      adjustInnerNode_(bWidth: true);
       layoutManager.sizeUpdated(this, width, true);
     }
   }
@@ -889,52 +852,8 @@ class View implements Hashable {
 
     if (_inDoc) {
       node.style.height = CSS.px(height);
-      adjustInnerNode_(bHeight: true);
       layoutManager.sizeUpdated(this, height, false);
     }
-  }
-
-  /** Returns the left offset of the origin of the child's coordinate system.
-   *
-   * Default: 0.
-   */
-  int get innerLeft() => _innerofs !== null ? _innerofs.left: 0;
-  /** Returns the top offset of the origin of the child's coordinate system.
-   *
-   * Default: 0.
-   */
-  int get innerTop() => _innerofs !== null ? _innerofs.top: 0;
-  /** Returns the left offset of the origin of the child's coordinate system.
-   *
-   * Default: 0.
-   *
-   * Whether a view allows the developer to change the origin is up to the view's
-   * spec. By default, it is not supported.
-   * To support it, the view usually introduces an additional DIV to provide
-   * the origin for the child views, and overrides [innerNode] to return it.
-   * Please refer to the viewport example for a sample implementation.
-   */
-  void set innerLeft(int left)  {
-    if (_innerofs !== null) _innerofs.left = left;
-    else _innerofs = new Offset(left, 0);
-
-    adjustInnerNode_(bLeft: true);
-  }
-  /** Returns the top offset of the origin of the child's coordinate system.
-   *
-   * Default: throws [UIException].
-   *
-   * Whether a view allows the developer to change the origin is up to the view's
-   * spec. By default, it is not supported.
-   * To support it, the view usually introduces an additional DIV to provide
-   * the origin for the child views, and overrides [innerNode] to return it.
-   * Please refer to the viewport example for a sample implementation.
-   */
-  void set innerTop(int top) {
-    if (_innerofs !== null) _innerofs.top = top;
-    else _innerofs = new Offset(0, top);
-
-    adjustInnerNode_(bTop: true);
   }
 
   /** Returns the real width of this view shown on the document (never null).
@@ -962,7 +881,7 @@ class View implements Hashable {
    * not to call this method if the view is not attached.
    */
   int get innerWidth() {
-    final int v = inDocument ? new DOMQuery(innerNode).innerWidth:
+    final int v = inDocument ? new DOMQuery(node).innerWidth:
       (_width !== null ? _width: 0);
     return v > 0 ? v: 0;
   }
@@ -975,7 +894,33 @@ class View implements Hashable {
    * not to call this method if the view is not attached.
    */
   int get innerHeight() {
-    final int v = inDocument ? new DOMQuery(innerNode).innerHeight:
+    final int v = inDocument ? new DOMQuery(node).innerHeight:
+      (_height !== null ? _height: 0);
+    return v > 0 ? v: 0;
+  }
+  /** Returns the total width of this view's content, excluding the borders, margins
+   * and scrollbars.
+   *
+   * Note: this method returns [width] if [inDocument] is false and [width] is not null.
+   * In other words, it doesn't exclude the border's width if not attached to the document
+   * (for performance reason). However, we might change it in the future, so it is better
+   * not to call this method if the view is not attached.
+   */
+  int get contentWidth() {
+    final int v = inDocument ? new DOMQuery(node).contentWidth:
+      (_width !== null ? _width: 0);
+    return v > 0 ? v: 0;
+  }
+  /** Returns the total height of this view's content, excluding the borders, margins
+   * and scrollbars.
+   *
+   * Note: this method returns [height] if [inDocument] is false and [height] is not null.
+   * In other words, it doesn't exclude the border's height if not attached to the document
+   * (for performance reason). However, we might change it in the future, so it is better
+   * not to call this method if the view is not attached.
+   */
+  int get contentHeight() {
+    final int v = inDocument ? new DOMQuery(node).contentHeight:
       (_height !== null ? _height: 0);
     return v > 0 ? v: 0;
   }
