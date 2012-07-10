@@ -120,7 +120,7 @@ class _ScrollerState implements ScrollerState {
   _ScrollerState(_Scroller scroller, this._fnViewPortSize, this._fnContentSize, this._time) : 
     this.scroller = scroller,
     startPosition = new DOMQuery(scroller.owner).offset {
-    _pos = startPosition;
+    _pos = startPosition * -1;
   }
   
   Offset get position() => _pos;
@@ -129,7 +129,7 @@ class _ScrollerState implements ScrollerState {
     if (_time == null || time > _time) {
       _ppos = _pos;
       _ptime = _time;
-      _pos = new Offset(-pos.x, -pos.y);
+      _pos = pos * -1;
       _time = time;
     }
   }
@@ -190,11 +190,13 @@ class _ScrollbarControl implements ScrollbarControl {
       _vbar = new Element.tag("div");
       _vbar.classes = ["v-scrollbar-ver"];
       _vbar.style.width = CSS.px(_ins); // do here to have better sync
+      _vbar.style.display = "none";
       owner.parent.insertBefore(_vbar, owner.nextElementSibling);
     } else {
       _hbar = new Element.tag("div");
       _hbar.classes = ["v-scrollbar-hor"];
       _hbar.style.height = CSS.px(_ins); // do here to have better sync
+      _hbar.style.display = "none";
       owner.parent.insertBefore(_hbar, owner.nextElementSibling);
     }
   }
