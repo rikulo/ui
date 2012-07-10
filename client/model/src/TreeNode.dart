@@ -5,8 +5,11 @@
 /**
  * Represents a tree node that can be used with [DefaultTreeModel].
  * [DefaultTreeModel] assumes each node is an instance of [TreeNode].
+ *
+ * Notice the tree node has to implement [Hashable] if the selection will be
+ * used.
  */
-interface TreeNode<E> extends Hashable default DefaultTreeNode<E> {
+interface TreeNode<E> default DefaultTreeNode<E> {
   /** Constructor.
    *
    * + [nodes] is a collection of nodes to add. Any element of it can

@@ -39,6 +39,7 @@ class TestDropDownListWithTreeModel extends Activity {
         ["Sydney", "Melbourne", "Port Hedland"]),
       new TreeNode("New Zealand",
         ["Cromwell", "Queenstown"])]);
+//    model.addToSelection(model.root[1][2]);
     model.on.select.add((event) {
       log("Selected: ${model.selection}");
     });
