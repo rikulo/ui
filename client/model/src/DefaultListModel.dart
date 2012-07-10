@@ -38,11 +38,11 @@ class DefaultListModel<E> extends AbstractListModel<E> {
    * The implementation uses `List.indexOf` to retrieve the index, so the
    * performance might not be good if the list is big.
    * If the list is sorted, you can override this method to utilize it.
-	 *
-	 * This method is designed for use in application. The impelmentation of a view
-	 * shall access API available in [TreeModel].
-	 */
-	int indexOf(E value) => _data.indexOf(value);
+   *
+   * This method is designed for use in application. The impelmentation of a view
+   * shall access API available in [TreeModel].
+   */
+  int indexOf(E value) => _data.indexOf(value);
 
   /** Assigns a value to the given index.
    */

@@ -8,12 +8,16 @@
  *
  * Example,
  *
- *   new DefaultTreeModel<String>(nodes: [
- *     "Wonderland",
- *     new TreeNode("Australia",
- *       ["Sydney", "Melbourne", "Port Hedland"]),
- *     new TreeNode("New Zealand",
- *       ["Cromwell", "Queenstown"])]);
+ *    DefaultTreeModel<String> model = new DefaultTreeModel(nodes: [
+ *      "Wonderland",
+ *      new TreeNode("Australia",
+ *        ["Sydney", "Melbourne", "Port Hedland"]),
+ *      new TreeNode("New Zealand",
+ *        ["Cromwell", "Queenstown"])]);
+ *    model.addToSelection(model.root[1][2]);
+ *    model.on.select.add((event) {
+ *      //do something when it is selected
+ *    });
  *
  * ##Big Tree
  *
