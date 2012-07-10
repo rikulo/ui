@@ -262,6 +262,7 @@ class _ScrollbarControl implements ScrollbarControl {
 class _Scroller implements Scroller {
   final Element owner, handle;
   final Dir direction;
+  final bool _hasHor, _hasVer;
   final bool scrollbar;
   final ScrollerStart _start;
   final ScrollerMove _end, _moving;
@@ -276,15 +277,21 @@ class _Scroller implements Scroller {
   [Element handle, Dir direction = Dir.BOTH, bool scrollbar = true, 
   ScrollerStart start, ScrollerMove moving, ScrollerMove end]) :
   this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
+  _hasHor = direction === Dir.HORIZONTAL || direction === Dir.BOTH,
+  _hasVer = direction === Dir.VERTICAL || direction === Dir.BOTH,
   _start = start, _moving = moving, _end = end {
     
     _dg = new DragGesture(this.owner, handle: handle,
     start: (DragGestureState state) => onStart(state.time) ? owner : null,
-    moving: (DragGestureState state) => onMoving(_state.startPosition + state.delta, state.time), 
-    end: (DragGestureState state) {
+    moving: (DragGestureState state) { 
+      onMoving(_state.startPosition + state.delta, state.time);
+      return true; // custom movning handling
+    }, end: (DragGestureState state) {
       final Offset pos = new DOMQuery(owner).offset;
       final Rectangle range = _state.dragRange;
-      _bim = new _BoundedInertialMotion(owner, state.velocity, range, moving: onMoving, end: onEnd);
+      _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
+        _hasHor, _hasVer, moving: onMoving, end: onEnd);
+      return true; // custom movning handling
     });
     
     // init scroll bar
@@ -303,7 +310,7 @@ class _Scroller implements Scroller {
     _state = new _ScrollerState(this, _fnViewPortSize, _fnContentSize, time);
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.start, _state);
-    return _start == null || _start(_state);
+    return _start == null || _start(_state); // TODO: null should be as true
   }
   
   void onMoving(Offset position, int time) {
@@ -312,6 +319,10 @@ class _Scroller implements Scroller {
       _applyScrollBarFunction1(_scrollbarCtrl.move, _state);
     if (_moving != null)
       _moving(_state);
+    if (_hasHor)
+      owner.style.left = CSS.px(position.left);
+    if (_hasVer)
+      owner.style.top = CSS.px(position.top);
   }
   
   void onEnd() {
@@ -326,16 +337,16 @@ class _Scroller implements Scroller {
   ScrollbarControl _scrollbarControl() => new _ScrollbarControl(this, this.owner);
   
   void _applyScrollBarFunction0(Function f) {
-    if (this.direction == Dir.HORIZONTAL || this.direction == Dir.BOTH)
+    if (_hasHor)
       f(false);
-    if (this.direction == Dir.VERTICAL || this.direction == Dir.BOTH)
+    if (_hasVer)
       f(true);
   }
   
   void _applyScrollBarFunction1(Function f, ScrollerState state) {
-    if (this.direction == Dir.HORIZONTAL || this.direction == Dir.BOTH)
+    if (_hasHor)
       f(false, state);
-    if (this.direction == Dir.VERTICAL || this.direction == Dir.BOTH)
+    if (_hasVer)
       f(true, state);
   }
   
@@ -351,6 +362,7 @@ class _Scroller implements Scroller {
 class _BoundedInertialMotion extends Motion {
   
   // TODO: snap
+  final bool _hasHor, _hasVer;
   final Element element;
   final num friction, bounce;
   final Rectangle range;
@@ -358,29 +370,38 @@ class _BoundedInertialMotion extends Motion {
   Offset _pos, _vel;
   
   _BoundedInertialMotion(Element element, Offset velocity, this.range, 
-  [num friction = 0.0005, num bounce = 1500, 
+  this._hasHor, this._hasVer, [num friction = 0.0005, num bounce = 1500, 
   void moving(Offset position, int time), void end()]) :
   this.element = element, this.friction = friction, this.bounce = bounce,
   _moving = moving, _end = end, 
-  _pos = new DOMQuery(element).offset, _vel = velocity, super(null);
+  _pos = new DOMQuery(element).offset, _vel = velocity, super(null) {
+    if (!_hasHor)
+      _vel.x = 0;
+    if (!_hasVer)
+      _vel.y = 0;
+  }
   
   bool onMoving(int time, int elapsed, int paused) {
     final num speed = VectorUtil.norm(_vel);
     final Offset dir = speed == 0 ? new Offset(0, 0) : _vel / speed;
     final Offset dec = dir * friction;
     
-    _pos.x = _updatePosition(_pos.x, _vel.x, dec.x, elapsed, range.x, range.right);
-    _pos.y = _updatePosition(_pos.y, _vel.y, dec.y, elapsed, range.y, range.bottom);
+    if (_hasHor)
+      _pos.x = _updatePosition(_pos.x, _vel.x, dec.x, elapsed, range.x, range.right);
+    if (_hasVer)
+      _pos.y = _updatePosition(_pos.y, _vel.y, dec.y, elapsed, range.y, range.bottom);
     
     _applyPosition(_pos);
     if (_moving != null)
       _moving(_pos, time);
     
-    _vel.x = _updateVelocity(_pos.x, _vel.x, dec.x, elapsed, range.x, range.right);
-    _vel.y = _updateVelocity(_pos.y, _vel.y, dec.y, elapsed, range.y, range.bottom);
+    if (_hasHor)
+      _vel.x = _updateVelocity(_pos.x, _vel.x, dec.x, elapsed, range.x, range.right);
+    if (_hasVer)
+      _vel.y = _updateVelocity(_pos.y, _vel.y, dec.y, elapsed, range.y, range.bottom);
     
-    return !_shallStop(_pos.x, _vel.x, range.x, range.right) ||
-        !_shallStop(_pos.y, _vel.y, range.y, range.bottom); 
+    return (_hasHor && !_shallStop(_pos.x, _vel.x, range.x, range.right)) ||
+        (_hasVer && !_shallStop(_pos.y, _vel.y, range.y, range.bottom)); 
   }
   
   void onEnd(int time, int elapsed, int paused) {
@@ -412,8 +433,10 @@ class _BoundedInertialMotion extends Motion {
     lbnd <= pos && pos <= rbnd && vel == 0;
   
   void _applyPosition(Offset pos) {
-    element.style.left = CSS.px(pos.left.toInt());
-    element.style.top = CSS.px(pos.top.toInt());
+    if (_hasHor)
+      element.style.left = CSS.px(pos.left.toInt());
+    if (_hasVer)
+      element.style.top = CSS.px(pos.top.toInt());
   }
   
 }
