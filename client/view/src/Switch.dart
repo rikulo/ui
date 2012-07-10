@@ -120,9 +120,11 @@ class Switch extends View implements Input<bool> {
     _dg.destroy();
     super.unmount_();
   }
-  void doLayout_(MeasureContext mctx) { //Issue 5: if its parent's hidden is changed
-    super.doLayout_(mctx);
+  void onLayout() { //Issue 5: if its parent's hidden is changed
+    //we call it before super.onLayout, i.e., before sending event out
+    //Note: overriding doLayout_ can't control between layouted and send event
     _setValue(_value);
+    super.onLayout();
   }
 
   void domInner_(StringBuffer out) {

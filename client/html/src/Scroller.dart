@@ -22,8 +22,8 @@ interface Scroller default _Scroller {
    * If it returns false, the scrolling won't be activated.
    * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
    */
-  Scroller(Element owner, AsSize viewPortSize, [Element handle, Dir direction, 
-      AsSize contentSize, bool scrollbar, 
+  Scroller(Element owner, AsSize viewPortSize, AsSize contentSize,
+    [Element handle, Dir direction, bool scrollbar, 
       ScrollerStart start, ScrollerMove moving, ScrollerMove end]);
   // TODO: inertial, bounce
   
@@ -218,11 +218,10 @@ class _Scroller implements Scroller {
   _ScrollerState _state;
   ScrollbarControl _scrollbarCtrl;
   
-  _Scroller(this.owner, this._fnViewPortSize, [Element handle, 
-  Dir direction = Dir.BOTH, AsSize contentSize, bool scrollbar = true, 
+  _Scroller(this.owner, this._fnViewPortSize, AsSize this._fnContentSize,
+  [Element handle, Dir direction = Dir.BOTH, bool scrollbar = true, 
   ScrollerStart start, ScrollerMove moving, ScrollerMove end]) :
   this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
-  _fnContentSize = contentSize, 
   _start = start, _moving = moving, _end = end {
     
     // TODO: transform

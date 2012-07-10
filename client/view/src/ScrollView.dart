@@ -14,10 +14,9 @@ class ScrollView extends View {
   //@Override
   String get className() => "ScrollView"; //TODO: replace with reflection if Dart supports it
 
-  /** Returns the size that the content occupies.
-   * In other words, [ScrollView] assumes the content occupies
-   * from the left-top corner of [innerNode] and up to the size
-   * returned by this method.
+  /** Update the size of [innerNode].
+   * [ScrollView] assumes [innerNode] shall cover all sub views. IN other words,
+   * it is the total size that the user can scroll.
    *
    * Default: it iterates through all child views to calculate
    * the size. It could be slow if there are a lot of children.
@@ -27,13 +26,22 @@ class ScrollView extends View {
    * Therefore, it is strongly suggested to override this method to calculate
    * the content's size more efficiently.
    */
-  Size get contentSize() => ViewUtil.getRectangle(children);
+  void updateInnerSize_() {
+    final Size sz = ViewUtil.getRectangle(children);
+    final style = innerNode.style;
+    style.width = CSS.px(sz.width);
+    style.height = CSS.px(sz.height);
+  }
 
   /** Instantiates and returns the scroller.
    */
   Scroller newScroller_() => new Scroller(innerNode, 
-    () => new DOMQuery(node).innerSize, contentSize: () => contentSize);
+    () => new DOMQuery(node).innerSize, () => new DOMQuery(innerNode).innerSize);
 
+  void onLayout() {
+    updateInnerSize_();
+    super.onLayout();
+  }
   //@Override
   void mount_() {
     super.mount_();
