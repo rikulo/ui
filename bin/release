@@ -1,0 +1,38 @@
+#!/bin/bash
+# release
+#
+#	Purpose:
+#		Build the  distribution
+#
+#Copyright (C) 2012 Potix Corporation. All Rights Reserved.
+#
+maindir="$(pwd)"
+maindir="${maindir%/cmldoc}"
+cd $maindir
+stamp=$(date +%Y-%m-%d)
+echo "$stamp working at $maindir"
+
+target=$1
+
+if [ ! -d client ] ; then
+  echo "Wrong working directory"
+  exit
+fi
+if [ "$target" = "" ] ; then
+	echo "Usage:"
+	echo "  release freshly"
+	echo "  release 1.0"
+	exit
+fi
+
+if [ "$target" = "freshly" ] ; then
+	flnm=out/rikulo-$stamp.zip
+else
+	flnm=out/rikulo-$target.zip
+fi
+
+echo Generating $flnm
+
+mkdir -p out
+rm $flnm
+zip -qr9 $flnm client samples resources
