@@ -52,11 +52,17 @@ class DOMQuery {
   /** Returns the total width of the given element's content, including padding
    * but not including border, margin and scroll bar.
    *
+   * Note: it includes every child elements (no matter that belongs to
+   * the anchored views or not)
+   *
    * Note for JavaScript programmers, it is called scrollWidth in JavaScript.
    */
   int get contentWidth() => node.$dom_scrollWidth;
   /** Returns the total height of the given element's content, including padding
    * but not including border, margin and scroll bar.
+   *
+   * Note: it includes every child elements (no matter that belongs to
+   * the anchored views or not)
    *
    * Note for JavaScript programmers, it is called scrollHeight in JavaScript.
    */

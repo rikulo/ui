@@ -49,18 +49,10 @@ class AnchorRelation {
   void _layoutAnchored(MeasureContext mctx, View anchor) {
     final List<View> views = anchored[anchor];
     if (views !== null && !views.isEmpty()) {
-      final AsInt
-        anchorOuterWidth = () => anchor.outerWidth,
-        anchorOuterHeight = () => anchor.outerHeight,
-        anchorInnerWidth = () => anchor.innerWidth,
-        anchorInnerHeight = () => anchor.innerHeight;
-
       for (final View view in views) {
         //1) size
-        mctx.setWidthByProfile(view,
-          anchor === view.parent ? anchorInnerWidth: anchorOuterWidth);
-        mctx.setHeightByProfile(view,
-          anchor === view.parent ? anchorInnerHeight: anchorOuterHeight);
+        mctx.setWidthByProfile(view, () => _anchorWidth(anchor, view));
+        mctx.setHeightByProfile(view, () => _anchorHeight(anchor, view));
 
         //2) position
         final List<int> handlers = _getHandlers(view.profile.location);
@@ -132,6 +124,12 @@ final Map<String, List<int>> _locations = const {
   "center left": const [1, 2], "center center": const [2, 2], "center right": const [3, 2],
   "bottom left": const [1, 3], "bottom center": const [2, 3], "bottom right": const [3, 3]
 };
+
+int _anchorWidth(var anchor, View view)
+=> anchor === view.parent ? anchor.innerWidth: anchor.outerWidth;
+int _anchorHeight(var anchor, View view)
+=> anchor === view.parent ? anchor.innerHeight: anchor.outerHeight;
+
 //TODO: use const when Dart considers Closure as constant
 List<_AnchorHandler> get _anchorXHandlers() {
   if (_$anchorXHandlers == null)
@@ -143,15 +141,13 @@ List<_AnchorHandler> get _anchorXHandlers() {
         view.left = offset;
       },
       (int offset, var anchor, View view) { //center
-        view.left = offset + (anchor.outerWidth - view.outerWidth) ~/ 2;
+        view.left = offset + (_anchorWidth(anchor, view) - view.outerWidth) ~/ 2;
       },
       (int offset, var anchor, View view) { //inner right
-        view.left = offset
-          + (anchor === view.parent ? anchor.innerWidth: anchor.outerWidth)
-          - view.outerWidth;
+        view.left = offset + _anchorWidth(anchor, view) - view.outerWidth;
       },
       (int offset, var anchor, View view) { //outer right
-        view.left = offset + anchor.outerWidth;
+        view.left = offset + _anchorWidth(anchor, view);
       }
     ];
   return _$anchorXHandlers;
@@ -167,15 +163,13 @@ List<_AnchorHandler> get _anchorYHandlers() {
         view.top = offset;
       },
       (int offset, var anchor, View view) {
-        view.top = offset + (anchor.outerHeight - view.outerHeight) ~/ 2;
+        view.top = offset + (_anchorHeight(anchor, view) - view.outerHeight) ~/ 2;
       },
       (int offset, var anchor, View view) { //inner bottom
-        view.top = offset
-          + (anchor === view.parent ? anchor.innerHeight: anchor.outerHeight)
-          - view.outerHeight;
+        view.top = offset + _anchorHeight(anchor, view) - view.outerHeight;
       },
-      (int offset, var anchor, View view) {
-        view.top = offset + anchor.outerHeight;
+      (int offset, var anchor, View view) { //bottom
+        view.top = offset + _anchorHeight(anchor, view);
       }
     ];
   return _$anchorYHandlers;

@@ -114,10 +114,6 @@ class Viewport extends View {
   int get innerWidth() => new DOMQuery(contentNode).innerWidth;
   //@Override
   int get innerHeight() => new DOMQuery(contentNode).innerHeight;
-  //@Override
-  int get contentWidth() => new DOMQuery(contentNode).contentWidth;
-  //@Override
-  int get contentHeight() => new DOMQuery(contentNode).contentHeight;
   //@Override to adjust [contentNode]'s width accordingly
   void set width(int width) {
     super.width = width;

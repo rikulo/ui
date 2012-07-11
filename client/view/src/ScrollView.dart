@@ -8,47 +8,57 @@
 class ScrollView extends View {
   final Dir direction;
   Scroller _scroller;
+  Size _contentSize;
   
   /** Construct a ScrollView.
    * + [direction] specifies allowed scrolling direction.
    */
-  ScrollView([Dir direction = Dir.BOTH]) : this.direction = direction;
+  ScrollView([Dir direction = Dir.BOTH]) : this.direction = direction,
+  _contentSize = new Size(0, 0);
 
   //@Override
   String get className() => "ScrollView"; //TODO: replace with reflection if Dart supports it
 
-  /** Update the size of [contentNode].
-   * [ScrollView] assumes [contentNode] shall cover all sub views. In other words,
-   * it is the total size that the user can scroll.
+  /** Returns the total size of the content.
+   * It shall cover all sub views (excluding invisible, anchored views).
+   * In other words, it is the total size that the user can scroll.
    *
    * Default: it iterates through all child views to calculate
    * the size. It could be slow if there are a lot of children.
-   * However, depending on the application, it is usually to
-   * calculate the content's size without iterating all children.
+   * On the other hand, depending on the application, it is usually
+   * able to calculate the content's size without iterating all children.
+   *
    * For example, it could be a fixed value multiplied with number of rows.
    * Therefore, it is strongly suggested to override this method to calculate
    * the content's size more efficiently.
    */
-  void updateInnerSize_() {
-    final Rectangle rect = ViewUtil.getRectangle(children);
-    final style = contentNode.style;
-    style.width = CSS.px(rect.right);
-    style.height = CSS.px(rect.bottom);
+  Size get contentSize() {
+    if (_contentSize === null) {
+      final r = ViewUtil.getRectangle(children);
+      _contentSize = new Size(r.width, r.height);
+    }
+    return _contentSize;
   }
 
   /** Instantiates and returns the scroller.
    */
   Scroller newScroller_() => new Scroller(contentNode, 
-    () => new DOMQuery(node).innerSize,
-    () => new DOMQuery(contentNode).contentSize,
+    () => new DOMQuery(node).innerSize, () => contentSize,
     direction: direction);
 
   Element get contentNode() => getNode("inner");
 
   //@Override
-  void onLayout() {
-    updateInnerSize_();
-    super.onLayout();
+  void doLayout_(MeasureContext ctx) {
+    //we have to decide the content size before layout, since its child
+    //might depend on it
+    _contentSize = null; //force the calculation
+    final Size sz = contentSize;
+    final style = contentNode.style;
+    style.width = CSS.px(sz.width);
+    style.height = CSS.px(sz.height);
+
+    super.doLayout_(ctx);
   }
   //@Override
   void mount_() {
@@ -72,12 +82,6 @@ class ScrollView extends View {
     domInner_(out);
     out.add('</div></').add(tag).add('>');
   }
-  //@Override
-  int get contentWidth()
-  => inDocument ? new DOMQuery(contentNode).contentWidth: super.contentWidth;
-  //@Override
-  int get contentHeight()
-  => inDocument ? new DOMQuery(contentNode).contentHeight: super.contentHeight;
   //@Override
   void insertChildToDocument_(View child, var childInfo, View beforeChild) {
     if (beforeChild === null)

@@ -898,32 +898,6 @@ class View implements Hashable {
       (_height !== null ? _height: 0);
     return v > 0 ? v: 0;
   }
-  /** Returns the total width of this view's content, excluding the borders, margins
-   * and scrollbars.
-   *
-   * Note: this method returns [width] if [inDocument] is false and [width] is not null.
-   * In other words, it doesn't exclude the border's width if not attached to the document
-   * (for performance reason). However, we might change it in the future, so it is better
-   * not to call this method if the view is not attached.
-   */
-  int get contentWidth() {
-    final int v = inDocument ? new DOMQuery(node).contentWidth:
-      (_width !== null ? _width: 0);
-    return v > 0 ? v: 0;
-  }
-  /** Returns the total height of this view's content, excluding the borders, margins
-   * and scrollbars.
-   *
-   * Note: this method returns [height] if [inDocument] is false and [height] is not null.
-   * In other words, it doesn't exclude the border's height if not attached to the document
-   * (for performance reason). However, we might change it in the future, so it is better
-   * not to call this method if the view is not attached.
-   */
-  int get contentHeight() {
-    final int v = inDocument ? new DOMQuery(node).contentHeight:
-      (_height !== null ? _height: 0);
-    return v > 0 ? v: 0;
-  }
 
   /** Returns the offset of this view relative to the left-top corner
    * of the document.
