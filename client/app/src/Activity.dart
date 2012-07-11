@@ -43,12 +43,14 @@ class Activity {
   /** Sets the main view with an effect.
    */
   void setMainView(View main, [ViewSwitchEffect effect]) {
+    if (main === null)
+      throw const UIException("mainView can't be null");
     final View prevroot = _mainView;
     _mainView = main;
-    if (prevroot != null) {
-      if (main.width !== null)
+    if (prevroot !== null) {
+      if (main.width === null)
         main.width = prevroot.width;
-      if (main.height !== null)
+      if (main.height === null)
         main.height = prevroot.height;
 
       if (prevroot.inDocument) {
