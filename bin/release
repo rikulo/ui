@@ -6,8 +6,19 @@
 #
 #Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 #
-maindir="$(pwd)"
-maindir="${maindir%/cmldoc}"
+maindir=$0
+maindir=${maindir%/*}
+if [ "$maindir" = "." ] ; then
+  maindir=".."
+elif [ "$maindir" = "${maindir%/*}" ] ; then
+  maindir="."
+else
+  maindir=${maindir%/*}
+fi
+if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
+  maindir=$(cygpath -u $maindir)
+fi
+
 cd $maindir
 stamp=$(date +%Y-%m-%d)
 echo "$stamp working at $maindir"
@@ -31,8 +42,10 @@ else
 	flnm=out/rikulo-$target.zip
 fi
 
+bin/lesscss
+
 echo Generating $flnm
 
 mkdir -p out
-rm $flnm
+rm -f $flnm
 zip -qr9 $flnm client samples resources
