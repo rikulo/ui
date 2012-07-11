@@ -272,7 +272,6 @@ class JSUtil {
           }
         };
         if (window.Isolate && window.Isolate.\$isolateProperties) {
-          console.log("init _JSCallX");
           window.Isolate.\$isolateProperties._JSCallX.prototype.exec\$2 =  
             function(name, args) {
               if (!_natives[name])
