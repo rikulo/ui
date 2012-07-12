@@ -374,7 +374,7 @@ class _BoundedInertialMotion extends Motion {
   
   _BoundedInertialMotion(Element element, Offset velocity, this.range, 
   this._hasHor, this._hasVer, 
-  [num friction = 0.0005, num bounce = 3000, num snapSpeedThreshold = 0.05,
+  [num friction = 0.0005, num bounce = 0.0002, num snapSpeedThreshold = 0.05,
   void moving(Offset position, int time), void end(), Offset snap(Offset pos)]) :
   this.element = element, this.friction = friction, this.bounce = bounce,
   this.snapSpeedThreshold = snapSpeedThreshold, _moving = moving, _end = end, _snap = snap,
@@ -447,8 +447,8 @@ class _BoundedInertialMotion extends Motion {
   num _updateVelocity(num pos, num vel, num dec, int elap, num lbnd, num rbnd) {
     if ((pos == lbnd && vel > 0) || (pos == rbnd && vel < 0))
       return 0;
-    num acc = pos < lbnd ? (lbnd - pos) / bounce :
-              pos > rbnd ? (rbnd - pos) / bounce : -dec;
+    num acc = pos < lbnd ? (lbnd - pos) * bounce :
+              pos > rbnd ? (rbnd - pos) * bounce : -dec;
     num nvel = vel + acc * elap;
     if ((nvel > 0 && vel < 0) || (nvel < 0 && vel > 0)) // decelerate to 0 at most
       return 0;
