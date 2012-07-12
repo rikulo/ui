@@ -242,13 +242,23 @@ class View implements Hashable {
   /** Callback before this view's parent is going to change.
    */
   void beforeParentChanged_(View newParent) {}
-  /** Called after the layout of this view has been handled.
+  /** Called after the layout of this view and all its descendant views
+   * have been handled.
    *
    * Default: does nothing but fire a [ViewEvent] to itself.
    * The application can listen `layout` for this event.
    */
-  void onLayout() {
+  void onLayout_() {
     sendEvent(new ViewEvent("layout"));
+  }
+  /** Called after the layout of this view has been handled,
+   * but before any of its child views has been handled.
+   *
+   * Default: does nothing but fire a [ViewEvent] to itself.
+   * The application can listen `preLayout` for this event.
+   */
+  void onPreLayout_() {
+    sendEvent(new ViewEvent("preLayout"));
   }
 
   /** Returns whether this view is a vie group.
@@ -690,11 +700,14 @@ class View implements Hashable {
   void requestLayout([bool immediate=false, bool descendantOnly=false]) {
     layoutManager.requestLayout(this, immediate, descendantOnly);
   }
-  /** Hanldes the layout of this view.
+  /** Hanldes the layout of the child views of this view.
    * It is called by [LayoutManager].
    *
+   * Notice that, when this method is called, you can assume the layout of this view
+   * has been handled. Of couse, you can adjust it if you'd like.
+   *
    * Default: forward to [layoutManager] to handle it.
-   * [onLayout] will be called after the layout of the view has been handled.
+   * [onLayout_] will be called after the layout of the view has been handled.
    */
   void doLayout_(MeasureContext mctx) {
     layoutManager.doLayout(mctx, this);

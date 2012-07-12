@@ -17,12 +17,12 @@ class TestCustomLayout1 extends Activity {
     view.profile.width = "70%";
     view.profile.height = "80%";
     view.on.layout.add((event) {
-      TextView txt = new TextView("onLayout: A child at 10%, 10%");
+      TextView txt = new TextView("on.layout: A child at 10%, 10%");
       txt.style.border = "1px solid #663";
       txt.left = view.width ~/ 10;
       txt.top = view.height ~/ 10;
       txt.on.mount.add((event2) {
-        TextView txt2 = new TextView("onMount: another child at 20%, 20%");
+        TextView txt2 = new TextView("on.mount: another child at 20%, 20%");
         txt2.style.border = "1px solid #663";
         txt2.left = view.width ~/ 5;
         txt2.top = view.height ~/ 5;
