@@ -17,7 +17,7 @@ class InertialMotion extends Motion {
    * Construct an InertialMotion.
    */
   InertialMotion(this.element, Offset velocity, [num deceleration = 0.0005, 
-      MotionCallback start, MotionRunner moving, MotionCallback end, bool autorun = true]) : 
+      MotionStart start, MotionMoving moving, MotionEnd end, bool autorun = true]) : 
         _speed = VectorUtil.norm(velocity),
         _direction = velocity / VectorUtil.norm(velocity), // TODO: stupid, but what's a better way
         this.deceleration = deceleration, 

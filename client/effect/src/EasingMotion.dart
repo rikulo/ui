@@ -22,7 +22,7 @@ class EasingMotion extends Motion {
    * Construct an EasingMotion.
    */
   EasingMotion(this.action, [EasingFunction easing, int duration = 500, 
-    MotionCallback start, MotionRunner moving, MotionCallback end, bool autorun = true]) : 
+    MotionStart start, MotionMoving moving, MotionEnd end, bool autorun = true]) : 
     this.duration = duration, this.easing = easing, 
     super(start, moving, end, autorun);
   
@@ -38,7 +38,7 @@ class EasingMotion extends Motion {
   
   bool onMoving(int time, int elapsed, int paused) {
     int curr = Math.min(time - _startTime - paused, duration);
-    if (_movingCB != null && !_movingCB(time, elapsed, paused))
+    if (_movingCB != null && !_movingCB(time, elapsed, paused)) // TODO: null should be true
       return false;
     applyMotionAction(getEasingValue(curr / duration));
     return curr < duration;

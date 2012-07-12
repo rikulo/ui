@@ -3,14 +3,19 @@
 //Author: simon
 
 /**
+ * The callback function used when [Motion] starts.
+ */
+typedef void MotionStart(int time, int elapsed, int paused);
+
+/**
  * The callback function used in Motion life cycle.
  */
-typedef void MotionCallback(int time, int elapsed, int paused);
+typedef void MotionEnd(int time, int elapsed, int paused);
 
 /**
  * The callback function used as the [AnimatorTask] callback in Motion.
  */
-typedef bool MotionRunner(int time, int elapsed, int paused);
+typedef bool MotionMoving(int time, int elapsed, int paused);
 
 Animator _animator;
 
@@ -29,14 +34,15 @@ class Motion {
   static final _MOTION_STATE_RUNNING = 1;
   static final _MOTION_STATE_PAUSED = 2;
   
-  final MotionRunner _movingCB;
-  final MotionCallback _startCB, _endCB;
+  final MotionStart _startCB;
+  final MotionMoving _movingCB;
+  final MotionEnd _endCB;
   AnimatorTask _task;
   int _state = _MOTION_STATE_INIT;
   int _startTime, _pausedTimestamp, _pausedTime = 0;
   var data;
   
-  Motion([MotionCallback start, MotionRunner moving, MotionCallback end, bool autorun = true]) : 
+  Motion([MotionStart start, MotionMoving moving, MotionEnd end, bool autorun = true]) : 
     _movingCB = moving, _startCB = start, _endCB = end {
     
     _task = (int time, int elapsed) {
