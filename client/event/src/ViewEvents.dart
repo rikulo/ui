@@ -72,11 +72,19 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
   ViewEventListenerList get render();
 
   /** A list of event listeners for indicating
-   * the layout of a view is changed.
+   * the layout of a view and all of its descendant views
+   * have been changed.
    *
    * The event is an instance of [ViewEvent].
    */
   ViewEventListenerList get layout();
+  /** A list of event listeners for indicating
+   * the layout of a view has been changed,
+   * but before any of its child view been changed.
+   *
+   * The event is an instance of [ViewEvent].
+   */
+  ViewEventListenerList get preLayout();
   /** A list of event listeners for indicating
    * a view has been attached to a document.
    *
@@ -150,6 +158,7 @@ class _ViewEvents extends _ViewEventListenerMap implements ViewEvents {
   ViewEventListenerList get scroll() => _get('scroll');
 
   ViewEventListenerList get layout() => _get("layout");
+  ViewEventListenerList get preLayout() => _get("preLayout");
   ViewEventListenerList get mount() => _get("mount");
   ViewEventListenerList get unmount() => _get("unmount");
 

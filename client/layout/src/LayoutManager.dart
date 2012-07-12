@@ -120,8 +120,9 @@ class LayoutManager extends RunOnceViewManager {
         mctx.setHeightByProfile(view, () => browser.size.height);
         AnchorRelation._positionRoot(view);
       }
+      view.onPreLayout_();
       getLayoutOfView(view).doLayout(mctx, view);
-      view.onLayout();
+      view.onLayout_();
     }
   }
 

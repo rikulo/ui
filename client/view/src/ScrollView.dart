@@ -50,16 +50,15 @@ class ScrollView extends View {
   Element get contentNode() => getNode("inner");
 
   //@Override
-  void doLayout_(MeasureContext ctx) {
-    //we have to decide the content size before layout, since its child
-    //might depend on it
+  void onPreLayout_() {
+    //we have to decide the content size here, since its children might depend on it
     _contentSize = null; //force the calculation
     final Size sz = contentSize;
     final style = contentNode.style;
     style.width = CSS.px(sz.width);
     style.height = CSS.px(sz.height);
 
-    super.doLayout_(ctx);
+    super.onPreLayout_();
   }
   //@Override
   void mount_() {
