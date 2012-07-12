@@ -7,10 +7,12 @@
  * If it returns false, the scroller won't be activated (i.e., ignored).
  */
 typedef bool ScrollerStart(ScrollerState state);
-/** The callback that [Scroller] uses to indicate the user is scrolling,
- * or the user ends the scrolling (i.e., releases the finger).
+/** The callback that [Scroller] uses to indicate the user is scrolling.
  */
 typedef void ScrollerMove(ScrollerState state);
+/** The callback when [Scroller] ends the scrolling.
+ */
+typedef void ScrollerEnd(ScrollerState state);
 
 /** The scroller used to scroll an element by use of its style's
  * transform property.
@@ -24,7 +26,7 @@ interface Scroller default _Scroller {
    */
   Scroller(Element owner, AsSize viewPortSize, AsSize contentSize,
     [Element handle, Dir direction, bool scrollbar, Offset snap(Offset position), 
-      ScrollerStart start, ScrollerMove moving, ScrollerMove end]);
+      ScrollerStart start, ScrollerMove moving, ScrollerEnd end]);
   // TODO: inertial, bounce
   
   /** Destroys the scroller.
@@ -267,7 +269,8 @@ class _Scroller implements Scroller {
   final bool _hasHor, _hasVer;
   final bool scrollbar;
   final ScrollerStart _start;
-  final ScrollerMove _end, _moving;
+  final ScrollerMove _moving;
+  final ScrollerEnd _end;
   final AsSize _fnContentSize, _fnViewPortSize;
   
   DragGesture _dg;
@@ -277,7 +280,7 @@ class _Scroller implements Scroller {
   
   _Scroller(this.owner, this._fnViewPortSize, AsSize this._fnContentSize,
   [Element handle, Dir direction = Dir.BOTH, bool scrollbar = true, 
-  Offset snap(Offset off), ScrollerStart start, ScrollerMove moving, ScrollerMove end]) :
+  Offset snap(Offset off), ScrollerStart start, ScrollerMove moving, ScrollerEnd end]) :
   this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
   _hasHor = direction === Dir.HORIZONTAL || direction === Dir.BOTH,
   _hasVer = direction === Dir.VERTICAL || direction === Dir.BOTH,
