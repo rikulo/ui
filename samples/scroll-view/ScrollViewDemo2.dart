@@ -9,9 +9,14 @@ class ScrollViewDemo2 extends Activity {
   
   void onCreate_() {
     title = "ScrollView Demo";
-
-    final ScrollView view = new ScrollView(direction: Dir.VERTICAL, 
-      snap: (Offset off) => new Offset(off.x, ((off.y + 25) / 50).floor() * 50));
+    
+    ScrollView view;
+    view = new ScrollView(direction: Dir.VERTICAL, 
+      snap: (Offset off) {
+        final num vlimit = 50 * 50 - view.innerHeight;
+        final num y = off.y >= vlimit ? vlimit : ((off.y + 25) / 50).floor() * 50;
+        return new Offset(off.x, y);
+      });
     view.profile.text =
       "anchor: parent; location: center center; width: 80%; height: 80%";
     view.classes.add("scroll-view");
