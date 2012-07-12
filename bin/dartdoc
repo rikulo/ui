@@ -6,6 +6,7 @@
 #
 #Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 #
+nodosfilewarning=true
 SDK=/usr/dart/dart-sdk
 if [ ! -d $SDK ] ; then
   echo $SDK not found
@@ -33,8 +34,9 @@ if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
   dartdoc=$(cygpath -wa $dartdoc)
 fi
 
+rm -rf $dstdir/*
+mkdir -p $dstdir
 PATH=$PATH:$SDK/bin
-
 dart.exe $dartdoc $srcpath
 
 #Fix the redundant page: _____.html
