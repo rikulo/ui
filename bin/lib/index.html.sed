@@ -1,5 +1,7 @@
 s|<h4><a href="_____.html">_____</a></h4>||
 s|<title>.*</title>|<title>API Reference \| Rikulo</title>|
+s|<link rel="shortcut icon"[^>]*>|<link rel="shortcut icon" type="image/ico" href="http://rikulo.org/resource/img/favicon.ico" />|
+s|<h2>Dart Documentation</h2>|<h2>Rikulo Dart Documentation</h2>|
 s|</head>|<script type="text/javascript">\
   var _gaq = _gaq \|\| [];\
   _gaq.push(['_setAccount', 'UA-33293682-1']);\

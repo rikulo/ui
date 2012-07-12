@@ -29,13 +29,17 @@ dstdir=$srcpath/docs
 libdir=$srcpath/bin/lib
 srcpath=$srcpath/samples/dartdoc/dartdoc.dart
 
+if [ -d $dstdir ] ; then
+	rm -rf $dstdir/*
+else
+	mkdir -p $dstdir
+fi
+
 dartdoc=$SDK/lib/dartdoc/dartdoc.dart
 if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
   dartdoc=$(cygpath -wa $dartdoc)
 fi
 
-rm -rf $dstdir/*
-mkdir -p $dstdir
 PATH=$PATH:$SDK/bin
 dart.exe $dartdoc $srcpath
 
