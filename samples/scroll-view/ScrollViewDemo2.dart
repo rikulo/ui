@@ -10,7 +10,8 @@ class ScrollViewDemo2 extends Activity {
   void onCreate_() {
     title = "ScrollView Demo";
 
-    final ScrollView view = new ScrollView(direction: Dir.VERTICAL);
+    final ScrollView view = new ScrollView(direction: Dir.VERTICAL, 
+      snap: (Offset off) => new Offset(off.x, ((off.y + 25) / 50).floor() * 50));
     view.profile.text =
       "anchor: parent; location: center center; width: 80%; height: 80%";
     view.classes.add("scroll-view");
@@ -22,6 +23,7 @@ class ScrollViewDemo2 extends Activity {
       final String color = CSS.color(250 - x * 4, 250, 200);
       child.style.cssText = "border: 1px solid #AAAAAA; background-color: #FFFFFF; color: #111111; width: 100%; line-height: 50px";
       child.style.userSelect = "none";
+      child.profile.width = "flex";
       child.top = x * 50;
       child.height = 50;
       

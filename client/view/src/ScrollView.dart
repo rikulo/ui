@@ -6,6 +6,7 @@
  * A view container that can be scrolled by the user.
  */
 class ScrollView extends View {
+  final Function _snap;
   final Dir direction;
   Scroller _scroller;
   Size _contentSize;
@@ -13,8 +14,8 @@ class ScrollView extends View {
   /** Construct a ScrollView.
    * + [direction] specifies allowed scrolling direction.
    */
-  ScrollView([Dir direction = Dir.BOTH]) : this.direction = direction,
-  _contentSize = new Size(0, 0);
+  ScrollView([Dir direction = Dir.BOTH, Offset snap(Offset off)]) : 
+  this.direction = direction, _snap = snap, _contentSize = new Size(0, 0);
 
   //@Override
   String get className() => "ScrollView"; //TODO: replace with reflection if Dart supports it
@@ -44,7 +45,7 @@ class ScrollView extends View {
    */
   Scroller newScroller_() => new Scroller(contentNode, 
     () => new DOMQuery(node).innerSize, () => contentSize,
-    direction: direction);
+    direction: direction, snap: _snap);
 
   Element get contentNode() => getNode("inner");
 

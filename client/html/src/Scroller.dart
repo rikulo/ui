@@ -23,7 +23,7 @@ interface Scroller default _Scroller {
    * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
    */
   Scroller(Element owner, AsSize viewPortSize, AsSize contentSize,
-    [Element handle, Dir direction, bool scrollbar, 
+    [Element handle, Dir direction, bool scrollbar, Offset snap(Offset position), 
       ScrollerStart start, ScrollerMove moving, ScrollerMove end]);
   // TODO: inertial, bounce
   
@@ -277,7 +277,7 @@ class _Scroller implements Scroller {
   
   _Scroller(this.owner, this._fnViewPortSize, AsSize this._fnContentSize,
   [Element handle, Dir direction = Dir.BOTH, bool scrollbar = true, 
-  ScrollerStart start, ScrollerMove moving, ScrollerMove end]) :
+  Offset snap(Offset off), ScrollerStart start, ScrollerMove moving, ScrollerMove end]) :
   this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
   _hasHor = direction === Dir.HORIZONTAL || direction === Dir.BOTH,
   _hasVer = direction === Dir.VERTICAL || direction === Dir.BOTH,
@@ -291,8 +291,9 @@ class _Scroller implements Scroller {
     }, end: (DragGestureState state) {
       final Offset pos = new DOMQuery(owner).offset;
       final Rectangle range = _state.dragRange;
+      // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
-        _hasHor, _hasVer, moving: onMoving, end: onEnd);
+        _hasHor, _hasVer, moving: onMoving, end: onEnd, snap: snap);
       return true; // custom movning handling
     });
     
@@ -363,19 +364,20 @@ class _Scroller implements Scroller {
 
 class _BoundedInertialMotion extends Motion {
   
-  // TODO: snap
   final bool _hasHor, _hasVer;
   final Element element;
-  final num friction, bounce;
+  final num friction, bounce, snapSpeedThreshold;
   final Rectangle range;
-  final Function _moving, _end;
+  final Function _moving, _end, _snap;
   Offset _pos, _vel;
+  Motion _snapMotion;
   
   _BoundedInertialMotion(Element element, Offset velocity, this.range, 
-  this._hasHor, this._hasVer, [num friction = 0.0005, num bounce = 3000, 
-  void moving(Offset position, int time), void end()]) :
+  this._hasHor, this._hasVer, 
+  [num friction = 0.0005, num bounce = 3000, num snapSpeedThreshold = 0.05,
+  void moving(Offset position, int time), void end(), Offset snap(Offset pos)]) :
   this.element = element, this.friction = friction, this.bounce = bounce,
-  _moving = moving, _end = end, 
+  this.snapSpeedThreshold = snapSpeedThreshold, _moving = moving, _end = end, _snap = snap,
   _pos = new DOMQuery(element).offset, _vel = velocity, super(null) {
     if (!_hasHor)
       _vel.x = 0;
@@ -402,13 +404,35 @@ class _BoundedInertialMotion extends Motion {
     if (_hasVer)
       _vel.y = _updateVelocity(_pos.y, _vel.y, dec.y, elapsed, range.y, range.bottom);
     
+    if (_shallSnap())
+      return false;
+    
     return (_hasHor && !_shallStop(_pos.x, _vel.x, range.x, range.right)) ||
         (_hasVer && !_shallStop(_pos.y, _vel.y, range.y, range.bottom)); 
   }
   
   void onEnd(int time, int elapsed, int paused) {
-    if (_end != null)
+    if (_snapTo != null) {
+      num _t;
+      _snapMotion = new EasingMotion(new LinearMotionActionControl(element, _pos, _snapTo, 
+      callback: (num x, Offset pos) {
+        if (_moving != null)
+          _moving(pos, _t);
+      }).action, moving: (int t, int e, int p) {
+        _t = t;
+        return true;
+      }, end: (int t, int e, int p) {
+        if (_end != null)
+          _end();
+      }, duration: 200, easing: (num x) => x * x);
+    } else if (_end != null)
       _end();
+  }
+  
+  void stop() {
+    if (_snapMotion != null)
+      _snapMotion.stop();
+    super.stop();
   }
   
   num _updatePosition(num pos, num vel, num dec, int elap, num lbnd, num rbnd) {
@@ -439,6 +463,28 @@ class _BoundedInertialMotion extends Motion {
       element.style.left = CSS.px(pos.left.toInt());
     if (_hasVer)
       element.style.top = CSS.px(pos.top.toInt());
+  }
+  
+  // snap //
+  Offset _snapTo;
+  
+  bool _shallSnap() {
+    // use max, not norm, as x/y motion should be considered independent
+    // i.e. shall snap when both x & y motion are nearly stopped
+    if (_snap == null || _vel.x.abs() > snapSpeedThreshold || _vel.y.abs() > snapSpeedThreshold)
+      return false;
+    // do not snap outside of the range
+    if ((!_hasHor || _pos.x < range.x || _pos.x > range.right) &&
+        (!_hasVer || _pos.y < range.y || _pos.y > range.bottom))
+      return false;
+    Offset scrPos = _pos * -1, scrSnapPos = _snap(scrPos);
+    if (scrSnapPos == null)
+      return false;
+    if ((!_hasHor || scrSnapPos.x == scrPos.x) &&
+        (!_hasVer || scrSnapPos.y == scrPos.y))
+      return false;
+    _snapTo = scrSnapPos * -1;
+    return true;
   }
   
 }
