@@ -480,6 +480,7 @@ class _BoundedInertialMotion extends Motion {
     Offset scrPos = _pos * -1, scrSnapPos = _snap(scrPos);
     if (scrSnapPos == null)
       return false;
+    scrSnapPos = range.snap(scrSnapPos * -1) * -1;
     if ((!_hasHor || scrSnapPos.x == scrPos.x) &&
         (!_hasVer || scrSnapPos.y == scrPos.y))
       return false;
