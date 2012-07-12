@@ -8,14 +8,14 @@
 typedef void MotionStart(int time, int elapsed, int paused);
 
 /**
- * The callback function used in Motion life cycle.
- */
-typedef void MotionEnd(int time, int elapsed, int paused);
-
-/**
- * The callback function used as the [AnimatorTask] callback in Motion.
+ * The callback function used during the movement in [Motion].
  */
 typedef bool MotionMoving(int time, int elapsed, int paused);
+
+/**
+ * The callback function used when [Motion] ends.
+ */
+typedef void MotionEnd(int time, int elapsed, int paused);
 
 Animator _animator;
 
