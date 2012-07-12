@@ -1,7 +1,7 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 
-class Issue4 extends Activity {
+class Issue7 extends Activity {
   void onCreate_() {
     View div = new View();
     div.style.backgroundImage = "url('res/search.png')";
@@ -21,5 +21,5 @@ class Issue4 extends Activity {
 }
 
 main() {
-  new Issue4().run();
+  new Issue7().run();
 }
