@@ -316,7 +316,10 @@ class _Scroller implements Scroller {
     _state = new _ScrollerState(this, _fnViewPortSize, _fnContentSize, time);
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.start, _state);
-    return _start == null || _start(_state); // TODO: null should be as true
+    if (_start == null)
+      return true;
+    final bool res = _start(_state);
+    return res == null || res;
   }
   
   void onMoving(Offset position, int time) {
