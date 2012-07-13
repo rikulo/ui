@@ -32,24 +32,9 @@ View createCube(int size, String txt) {
   return v;
 }
 
-class BoundedInertialMotion extends InertialMotion {
-  
-  final Rectangle range;
-  
-  BoundedInertialMotion(Element element, Offset velocity, this.range, 
-    [num deceleration = 0.0005, MotionEnd start, MotionMoving moving, 
-    MotionEnd end, bool autorun = true]) :
-      super(element, velocity, deceleration, start, moving, end, autorun);
-  
-  Offset updatePosition(int time, int elapsed, int paused) => 
-      range.snap(super.updatePosition(time, elapsed, paused));
-  
-}
-
 class TestAnimation2 extends Activity {
   
-  View v;
-  InertialMotion im;
+  View cube;
   
   void onCreate_() {
     View box = new Section();
@@ -60,24 +45,40 @@ class TestAnimation2 extends Activity {
     box.style.border = "2px dashed #CCCCCC";
     mainView.addChild(box);
     
-    v = createCube(100, "Drag Me");
-    v.left = 250;
-    v.top = 250;
-    mainView.addChild(v);
+    cube = createCube(100, "Drag Me");
+    cube.left = 250;
+    cube.top = 250;
+    mainView.addChild(cube);
     
   }
   
   void onMount_() {
     
     Rectangle range = new Rectangle(50, 50, 446, 446);
+    Element element = cube.node;
+    final num deceleration = 0.0005;
     
-    DragGesture dg = new DragGesture(v.node, range: () => range, 
-        start: (DragGestureState state) {
-      if (im != null)
-        im.stop();
-      return v.node;
-    }, end: (DragGestureState state) {
-      im = new BoundedInertialMotion(v.node, state.velocity, range);
+    Motion motion;
+    DragGesture dg = new DragGesture(element, range: () => range, 
+    start: (DragGestureState dstate) {
+      if (motion != null)
+        motion.stop();
+      return element;
+    }, end: (DragGestureState dstate) {
+      final Offset vel = dstate.velocity;
+      num speed = VectorUtil.norm(vel);
+      if (speed == 0)
+        return true;
+      Offset unitv = vel / speed;
+      Offset pos = new DOMQuery(element).offset;
+      motion = new Motion(moving: (MotionState mstate) {
+        int elapsed = mstate.elapsedTime;
+        pos = range.snap(pos + (unitv * speed * elapsed));
+        element.style.left = CSS.px(pos.left.toInt());
+        element.style.top = CSS.px(pos.top.toInt());
+        speed = Math.max(0, speed - deceleration * elapsed);
+        return speed > 0;
+      });
       return true;
     });
     

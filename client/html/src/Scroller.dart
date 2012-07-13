@@ -391,24 +391,24 @@ class _BoundedInertialMotion extends Motion {
       _vel.y = 0;
   }
   
-  bool onMoving(int time, int elapsed, int paused) {
+  bool onMoving(MotionState state) {
     final num speed = VectorUtil.norm(_vel);
     final Offset dir = speed == 0 ? new Offset(0, 0) : _vel / speed;
     final Offset dec = dir * friction;
     
     if (_hasHor)
-      _pos.x = _updatePosition(_pos.x, _vel.x, dec.x, elapsed, range.x, range.right);
+      _pos.x = _updatePosition(_pos.x, _vel.x, dec.x, state.elapsedTime, range.x, range.right);
     if (_hasVer)
-      _pos.y = _updatePosition(_pos.y, _vel.y, dec.y, elapsed, range.y, range.bottom);
+      _pos.y = _updatePosition(_pos.y, _vel.y, dec.y, state.elapsedTime, range.y, range.bottom);
     
     _applyPosition(_pos);
     if (_moving != null)
-      _moving(_pos, time);
+      _moving(_pos, state.currentTime);
     
     if (_hasHor)
-      _vel.x = _updateVelocity(_pos.x, _vel.x, dec.x, elapsed, range.x, range.right);
+      _vel.x = _updateVelocity(_pos.x, _vel.x, dec.x, state.elapsedTime, range.x, range.right);
     if (_hasVer)
-      _vel.y = _updateVelocity(_pos.y, _vel.y, dec.y, elapsed, range.y, range.bottom);
+      _vel.y = _updateVelocity(_pos.y, _vel.y, dec.y, state.elapsedTime, range.y, range.bottom);
     
     if (_shallSnap())
       return false;
@@ -417,17 +417,13 @@ class _BoundedInertialMotion extends Motion {
         (_hasVer && !_shallStop(_pos.y, _vel.y, range.y, range.bottom)); 
   }
   
-  void onEnd(int time, int elapsed, int paused) {
+  void onEnd(MotionState state) {
     if (_snapTo != null) {
-      num _t;
-      _snapMotion = new EasingMotion(new LinearMotionActionControl(element, _pos, _snapTo, 
-      callback: (num x, Offset pos) {
+      _snapMotion = new LinearPositionMotion(element, _pos, _snapTo,
+      moving: (MotionState ms, Offset pos, num x) {
         if (_moving != null)
-          _moving(pos, _t);
-      }).action, moving: (int t, int e, int p) {
-        _t = t;
-        return true;
-      }, end: (int t, int e, int p) {
+          _moving(pos, ms.currentTime);
+      }, end: (MotionState ms) {
         if (_end != null)
           _end();
       }, duration: 200, easing: (num x) => x * x);
