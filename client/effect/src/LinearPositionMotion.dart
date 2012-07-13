@@ -18,12 +18,12 @@ class LinearPositionMotion extends EasingMotion {
    * +[destination] is the goal offset of the movement.
    */
   LinearPositionMotion(Element element, Offset origin, Offset destination, 
-    [EasingFunction easing, int duration = 500, MotionStart start, 
+    [EasingFunction easing, mode = "once", int duration = 500, MotionStart start, 
     bool moving(MotionState state, Offset position, num x), 
     MotionEnd end, bool autorun = true]) :
     this.element = element, this.origin = origin, this.destination = destination, 
     _diff = destination - origin, _movingCB = moving, 
-    super(null, easing, duration, start, end, autorun);
+    super(null, easing, mode, duration, start, end, autorun);
   
   bool doAction_(num x, MotionState state) {
     _pos = _diff * x + origin;

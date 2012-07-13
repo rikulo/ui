@@ -15,16 +15,16 @@ typedef bool MotionAction(num x);
  */
 class EasingMotion extends Motion {
   
-  // TODO: support mode: run-once, alternate, repeat
   final MotionAction action;
   final EasingFunction easing;
+  final String mode;
   final int duration;
   
   /** Construct an EasingMotion.
    */
-  EasingMotion(this.action, [EasingFunction easing, int duration = 500, 
-    MotionStart start, MotionEnd end, bool autorun = true]) : 
-    this.duration = duration, this.easing = easing, 
+  EasingMotion(this.action, [EasingFunction easing, String mode = "once", 
+    int duration = 500, MotionStart start, MotionEnd end, bool autorun = true]) : 
+    this.mode = mode, this.duration = duration, this.easing = easing, 
     super(start, null, end, autorun);
   
   /** Compute position value by [EasingFunction].
@@ -36,9 +36,23 @@ class EasingMotion extends Motion {
   bool doAction_(num x, MotionState state) => action(x);
   
   bool onMoving(MotionState state) {
-    int curr = Math.min(state.runningTime, duration);
+    int curr = _easingInput(state.runningTime);
     final bool result = doAction_(doEasing_(curr / duration), state);
-    return curr < duration && (result == null || result);
+    return (mode == "alternate" || mode == "repeat" || curr < duration) && (result == null || result);
+  }
+  
+  num _easingInput(num runningTime) {
+    switch(mode) {
+      case "alternate":
+        final num d2 = 2 * duration;
+        final num t = runningTime % d2;
+        return t <= duration ? t : d2 - t;
+      case "repeat":
+        return runningTime % duration;
+      case "once":
+      default:
+        return Math.min(runningTime, duration);
+    }
   }
   
   /** Skip to the end of motion.
