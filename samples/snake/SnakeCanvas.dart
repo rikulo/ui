@@ -15,11 +15,11 @@
 
 class SnakeCanvas extends Activity {
   final int UPDATE = 100;
-  final int height = 400, width = 400;
+  final int height = 250, width = 400;
   
   int lastCycle = 0;
   SnakeEnvironment environment;
-  TextView topBar;
+  TextView scoreBar;
   num _score = 0;
   
   //UI elements
@@ -30,37 +30,42 @@ class SnakeCanvas extends Activity {
   num get score() => _score;
   set score(num score) {
     _score = score;
-    topBar.text = "Your score is: ${score}";
+    scoreBar.text = "Your score is: ${score}";
   }
   
   void onCreate_() {
-    title = "Circles";
+    title = "Snake";
+
+    mainView.profile.width = "572px";
+    mainView.profile.height = "396px";
+
+    View div = new View();
+    div.style.backgroundImage = "url('./res/snake_bg.png')";
+    div.profile.width = "flex";
+    div.profile.height = "flex";
     
-    environment = new SnakeEnvironment(height,width);
+    //first vlayout
+    View vlayout = new View();
+    vlayout.layout.type = "linear";
+    vlayout.layout.orient = "vertical";
+    vlayout.profile.width = "flex";
+    vlayout.profile.height = "flex";    
+    vlayout.top = 60;
+    vlayout.left = 80;
     
-    //make rootView as vlayout
-    mainView.layout.type = "linear";
-    mainView.layout.orient = "vertical";
-    mainView.profile.width = "flex";
-    mainView.profile.height = "flex";
-    
-    topBar = new TextView("Your score is: ${score}");
-    topBar.profile.width = "flex";
-    topBar.profile.height = "30";
-    mainView.addChild(topBar);
-        
     //canvas
     canvas = new Canvas();
     canvas.profile.text = "width: ${width}; height: ${height}";
-    canvas.style.border = "1px solid blue";
-    mainView.addChild(canvas);
+    canvas.style.border = "1px solid black";
+    vlayout.addChild(canvas);
     
-    //first hlayout
-    View hlayout = new View();
-    hlayout.layout.type = "linear";
-    hlayout.profile.height = "content";
-    hlayout.profile.width = "flex";
-    mainView.addChild(hlayout);
+    scoreBar = new TextView("Your score is: ${score}");
+    scoreBar.profile.width = "flex";
+    scoreBar.profile.height = "30";
+    vlayout.addChild(scoreBar);
+    
+    div.addChild(vlayout);
+    mainView.addChild(div);
   }
 
   DragGestureMove _gestureMove() {
@@ -101,6 +106,15 @@ class SnakeCanvas extends Activity {
     new DragGesture(this.canvas.node, moving: _gestureMove(), end: _gestureEnd());
     
     document.on.keyDown.add(onKeyDown);
+    startGame();
+    
+  }
+
+  void startGame() {
+
+    score = 0;
+
+    environment = new SnakeEnvironment(height,width);
 
     new Animator().add((int time, int elapsed) {
       int timeSinceCycle = time - lastCycle;
@@ -112,7 +126,7 @@ class SnakeCanvas extends Activity {
         switch(message) {
           case SnakeEnvironment.GAMEOVER:
             ret = false;
-            window.alert('GAME OVER!! Your score was ${score}');
+            gameOverDialog();
             break;
           case SnakeEnvironment.SCORED:
             score += 1;
@@ -124,6 +138,26 @@ class SnakeCanvas extends Activity {
       
       return ret;
     });
+  }
+
+  void gameOverDialog() {
+    View dlg = new TextView("Game Over, your score was ${score}");
+    dlg.style.cssText = "text-align: center; padding-top: 20px";
+    dlg.profile.text = "location: center center;width:30%;height:20%";
+    dlg.classes.add("v-dialog");
+    dlg.on.click.add((e) {
+      removeDialog();
+      
+      //reset the canvas
+      ctx2d.save();
+      ctx2d.setTransform(1,0,0,1,0,0);
+      ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+      ctx2d.restore();
+      
+      startGame();
+    });
+    
+    addDialog(dlg);
   }
 
   void onKeyDown(KeyboardEvent event) {
