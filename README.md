@@ -5,8 +5,8 @@ in Dart and HTML 5. You can access your application directly with a modern Web b
 any plug-in. You can also build it as a native mobile application accessing the device's resources transparently.
 
 * [Home](http://rikulo.org)
-* [Documentation](https://docs.rikulo.org)
-* [API Reference](https://api.rikulo.org)
+* [Documentation](http://docs.rikulo.org)
+* [API Reference](http://api.rikulo.org)
 * [Discussion](http://stackoverflow.com/questions/tagged/rikulo)
 * [Issues](https://github.com/rikulo/rikulo/issues)
 
