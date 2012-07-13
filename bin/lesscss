@@ -34,7 +34,7 @@ for f in $cssdir/resources/css/*.less; do
 	java -jar $jarfl $f ${dstfl}.tmp
 
 	echo "/* DO NOT EDIT" > $dstfl
-	echo " * $(date +%Y-%m-%d): Auto-generated" >> $dstfl
+	echo " * Auto-generated" >> $dstfl #not to generate timestamp to avoid redundant commits
 	echo " * Copyright (C) 2012 Potix Corporation. All Rights Reserved." >> $dstfl
 	echo " */" >> $dstfl
 	cat ${dstfl}.tmp >> $dstfl
