@@ -12,7 +12,7 @@ any plug-in. You can also build it as a native mobile application accessing the 
 
 Rikulo is distributed under an Apache 2.0 License.
 
-##Notes to Contributors
+##Contributors Notes
 
 ###Create Addons
 
