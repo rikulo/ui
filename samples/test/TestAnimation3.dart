@@ -76,8 +76,14 @@ class TestAnimation3 extends Activity {
     }, end: (DragGestureState dstate) {
       final Offset vel = dstate.velocity;
       num speed = VectorUtil.norm(vel);
-      if (speed == 0)
-        return;
+      if (speed == 0) {
+        final num initColorValue = colorValue, diffColorValue = 1 - initColorValue;
+        recoveryMotion = new EasingMotion((num x) {
+          colorValue = diffColorValue * x + initColorValue;
+          element.style.backgroundColor = createColor(colorValue);
+        }, easing: (num x) => x * x);
+        return true;
+      }
       Offset unitv = vel / speed;
       Offset pos = new DOMQuery(element).offset;
       inertialMotion = new Motion(moving: (MotionState mstate) {
@@ -105,7 +111,7 @@ class TestAnimation3 extends Activity {
         recoveryMotion = new EasingMotion((num x) {
           colorValue = diffColorValue * x + initColorValue;
           element.style.backgroundColor = createColor(colorValue);
-        });
+        }, easing: (num x) => x * x);
       });
       return true;
     });
