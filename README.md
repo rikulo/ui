@@ -16,15 +16,15 @@ Rikulo is distributed under an Apache 2.0 License.
 
 ###Create Addons
 
-Rikulo is easy to extend. The simplest way to enhance Rikulo is to open your own repository and add your own great widgets and libraries.
+Rikulo is easy to extend. The simplest way to enhance Rikulo is to [create a new repository](https://help.github.com/articles/create-a-repo) and add your own great widgets and libraries to it.
 
 ###Fork Rikulo
 
-If you'd like to contribute back to the core, you can clone this repository and send us a pull request.
+If you'd like to contribute back to the core, you can [fork this repository](https://help.github.com/articles/fork-a-repo) and send us a pull request, when it is ready.
 
-Please be aware that we want to keep the sphere of API as neat as possible. It might take a lot of efforts to convince us to take your code.
+Please be aware that one of Rikulo's design goals is to keep the sphere of API as neat as possible. It might take some effort to convince us to add your code.
 
-If you are new to Git or GitHub, please read [this guide](https://help.github.com/articles/fork-a-repo) first.
+If you are new to Git or GitHub, please read [this guide](https://help.github.com/) first.
 
 ##Development Notes
 
