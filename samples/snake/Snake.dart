@@ -91,17 +91,32 @@ class Snake {
   
   void drawSnake(CanvasRenderingContext2D context, SnakePoint point, SnakePoint removed) {
     context.beginPath();
-    context.fillStyle = "blue";
-    
+    context.fillStyle = "black";
+
     num adjustment = SnakeEnvironment.adjustment;
-    
+
     if(removed != null) {
-      context.clearRect(removed.x, removed.y, adjustment, adjustment);
+        context.clearRect(removed.x, removed.y, adjustment, adjustment);
     }
-    
-    context.rect(point.x, point.y, adjustment, adjustment);
+
+    int width = SnakeEnvironment.adjustment;
+    int height = SnakeEnvironment.adjustment;
+    int radius = SnakeEnvironment.adjustment / 3;
+
+    context.beginPath();
+    context.moveTo(point.x + radius, point.y);
+    context.lineTo(point.x + width - radius, point.y);
+    context.quadraticCurveTo(point.x + width, point.y, point.x + width, 
+                             point.y + radius);
+    context.lineTo(point.x + width, point.y + height - radius);
+    context.quadraticCurveTo(point.x + width, point.y + height, 
+                             point.x + width - radius, point.y + height);
+    context.lineTo(point.x + radius, point.y + height);
+    context.quadraticCurveTo(point.x, point.y + height, point.x, 
+                             point.y + height - radius);
+    context.lineTo(point.x, point.y + radius);
+    context.quadraticCurveTo(point.x, point.y, point.x + radius, point.y);
     context.closePath();
     context.fill();
-    context.closePath();
   }
 }

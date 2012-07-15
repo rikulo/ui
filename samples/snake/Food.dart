@@ -45,11 +45,23 @@ class Food {
   }
   
   void draw(CanvasRenderingContext2D context) {
+    double smallSquareWidthAndHeight = SnakeEnvironment.adjustment / 3;
+
     context.beginPath();
-    context.fillStyle = "red";
-    context.rect(_x, _y, SnakeEnvironment.adjustment, SnakeEnvironment.adjustment);
-    context.fill();
+    context.fillStyle = "black";
+
+    //first rectangle, top row
+    context.rect(_x + smallSquareWidthAndHeight, _y, smallSquareWidthAndHeight, smallSquareWidthAndHeight);
+
+    //two rectangles second row
+    context.rect(_x, _y + smallSquareWidthAndHeight, smallSquareWidthAndHeight, smallSquareWidthAndHeight);
+    context.rect(_x + (smallSquareWidthAndHeight * 2), _y + smallSquareWidthAndHeight, smallSquareWidthAndHeight, smallSquareWidthAndHeight);
+
+    //bottom row rectangle
+    context.rect(_x + smallSquareWidthAndHeight, _y + (smallSquareWidthAndHeight * 2), smallSquareWidthAndHeight, smallSquareWidthAndHeight);
+
     context.closePath();
+    context.fill();
   }
   
   String toString() {
