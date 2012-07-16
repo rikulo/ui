@@ -1078,7 +1078,7 @@ class View implements Hashable {
     if (ei.domListeners === null)
       ei.domListeners = {};
     ei.domListeners[type] = ln;
-    n.on[type].add(ln);
+    n.on[type.toLowerCase()].add(ln);
   }
   /** Unlisten the given event type.
    */
@@ -1086,7 +1086,7 @@ class View implements Hashable {
     if (_evlInfo !== null) {
       final EventListener ln = _evlInfo.domListeners.remove(type);
       if (ln !== null)
-        n.on[type].remove(ln);
+        n.on[type.toLowerCase()].remove(ln);
     }
   }
 
