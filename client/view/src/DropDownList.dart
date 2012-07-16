@@ -5,7 +5,7 @@
 /** Renders the given data for the given [DropDownList].
  */
 typedef String DropDownListRenderer(
-  DropDownList dlist, var data, bool selected, bool disabled, int index);
+  DropDownList dlist, var data, bool multiple, bool selected, bool disabled, int index);
 
 /**
  * Represents a view that allows the user to select a single item
@@ -186,7 +186,7 @@ class DropDownList<E> extends View {
   }
   static DropDownListRenderer _defRenderer() {
     if (_$defRenderer === null)
-      _$defRenderer = (DropDownList dlist, var data, bool selected, bool disabled, int index)
+      _$defRenderer = (DropDownList dlist, var data, bool multiple, bool selected, bool disabled, int index)
         => HTMLFragment.getHTML(data, false); //handles TreeNode/Map; don't encode
     return _$defRenderer;
   }
@@ -264,6 +264,7 @@ class DropDownList<E> extends View {
       final DropDownListRenderer renderer =
         _renderer !== null ? _renderer: _defRenderer();
       final ListModel<E> model = _model;
+      final bool multiple = _cast(_model).multiple;
       for (int i = 0, len = model.length; i < len; ++i) {
         final obj = model[i];
         final bool selected = _cast(_model).isSelected(obj);
@@ -271,7 +272,7 @@ class DropDownList<E> extends View {
         out.add('<option');
         _renderAttrs(out, selected, disabled);
         out.add('>')
-          .add(StringUtil.encodeXML(renderer(this, obj, selected, disabled, i)))
+          .add(StringUtil.encodeXML(renderer(this, obj, multiple, selected, disabled, i)))
           .add('</option>');
         //Note: Firefox doesn't support <option label="xx">
       }
@@ -284,12 +285,13 @@ class DropDownList<E> extends View {
   }
   void _renderTree(StringBuffer out, TreeModel<E> model,
   DropDownListRenderer renderer, var node, int parentIndex) {
+    final bool multiple = _cast(_model).multiple;
     for (int i = 0, len = model.getChildCount(node); i < len; ++i) {
       final E child = model.getChild(node, i);
       final bool selected = _cast(_model).isSelected(child);
       final bool disabled = _model is Disables && _cast(_model).isDisabled(child);
       final String label =
-        StringUtil.encodeXML(renderer(this, child, selected, disabled, i));
+        StringUtil.encodeXML(renderer(this, child, multiple, selected, disabled, i));
       if (model.isLeaf(child)) {
         out.add('<option');
         _renderAttrs(out, selected, disabled);

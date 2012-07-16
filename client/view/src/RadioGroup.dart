@@ -60,7 +60,7 @@ class RadioGroup<E> extends View {
     } else if (_model !== null) {
       _model.on.all.remove(_dataListener);
       _model = null;
-      children.clear();
+      modelRenderer.queue(this); //queue for later operation (=> renderModel_)
     }
   }
   DataEventListener _initDataListener() {
