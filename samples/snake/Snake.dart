@@ -101,7 +101,7 @@ class Snake {
 
     int width = SnakeEnvironment.adjustment;
     int height = SnakeEnvironment.adjustment;
-    int radius = SnakeEnvironment.adjustment / 3;
+    int radius = SnakeEnvironment.adjustment ~/ 3;
 
     context.beginPath();
     context.moveTo(point.x + radius, point.y);
