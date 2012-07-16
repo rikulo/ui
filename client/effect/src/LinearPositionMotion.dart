@@ -18,7 +18,7 @@ class LinearPositionMotion extends EasingMotion {
    * +[destination] is the goal offset of the movement.
    */
   LinearPositionMotion(Element element, Offset origin, Offset destination, 
-    [EasingFunction easing, mode = "once", int duration = 500, MotionStart start, 
+    [EasingFunction easing, String mode = "once", int duration = 500, MotionStart start, 
     bool moving(MotionState state, Offset position, num x), 
     MotionEnd end, bool autorun = true]) :
     this.element = element, this.origin = origin, this.destination = destination, 
