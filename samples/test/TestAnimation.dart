@@ -41,19 +41,10 @@ class TestAnimation extends Activity {
     cube.left = 300;
     cube.top = 100;
     
+    /*
     int pauseStart = 0;
     int offset = 0;
     bool paused = false;
-    
-    /*
-    Animator animator = new Animator();
-    animator.add((int time, int elapsed) {
-      if (!paused) {
-        cube.left = 300 + (150 * Math.cos((time - offset) / 200)).toInt();
-        cube.top = 100 + (50 * Math.sin((time - offset) / 100)).toInt();
-      }
-      return true;
-    });
     */
     
     cube.on.mouseDown.add((ViewEvent event) {
@@ -78,6 +69,17 @@ class TestAnimation extends Activity {
   }
   
   void onMount_() {
+    
+    /*
+    Animator animator = new Animator();
+    animator.add((int time, int elapsed) {
+      if (!paused) {
+        cube.left = 300 + (150 * Math.cos((time - offset) / 200)).toInt();
+        cube.top = 100 + (50 * Math.sin((time - offset) / 100)).toInt();
+      }
+      return true;
+    });
+    */
     
     motion = new EasingMotion((num x) {
       cube.left = 300 + (150 * Math.cos(x * 2 * Math.PI)).toInt();
