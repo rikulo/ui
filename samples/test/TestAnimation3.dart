@@ -13,7 +13,7 @@ String createColor(num x) {
   return CSS.color((92 * x).toInt(), (115 * x).toInt(), (229 * x).toInt());
 }
 
-View createCube(int size, String txt) {
+List<View> createCube(int size) {
   View v = new View();
   v.width = size;
   v.height = size;
@@ -23,22 +23,54 @@ View createCube(int size, String txt) {
   v.style.userSelect = "none";
   v.style.zIndex = "10";
   
-  TextView txtv = new TextView(txt);
-  txtv.width = v.width;
-  txtv.style.lineHeight = "${v.height}px";
-  txtv.style.textAlign = "center";
-  txtv.style.color = "#EEEEEE";
-  txtv.style.fontFamily = "Arial";
-  txtv.style.fontWeight = "bold";
-  txtv.style.userSelect = "none";
-  v.addChild(txtv);
+  int s = ((size - 4) / 8).toInt();
+  View brow1 = new View();
+  View brow2 = new View();
+  brow1.width = brow2.width = s * 2;
+  brow1.height = brow2.height = 0;
+  brow1.top  = brow2.top = (2.5 * s).toInt();
+  brow1.left = s;
+  brow2.left = s * 5;
+  brow1.style.borderBottom = brow2.style.borderBottom = "2px solid #FFFFFF";
   
-  return v;
+  v.addChild(brow1);
+  v.addChild(brow2);
+  
+  View eye1 = new View();
+  View eye2 = new View();
+  eye1.width = eye2.width = eye1.height = eye2.height = 0;
+  eye1.top = eye2.top = 4 * s;
+  eye1.left = 2 * s - 4;
+  eye2.left = 6 * s - 4;
+  eye1.style.border = eye2.style.border = "4px solid #FFFFFF";
+  eye1.style.borderRadius = eye2.style.borderRadius = "4px";
+  
+  v.addChild(eye1);
+  v.addChild(eye2);
+  
+  View mouth = new View();
+  mouth.width = mouth.height = 0;
+  mouth.style.borderTop    = "10px solid transparent";
+  mouth.style.borderBottom = "10px solid #FFFFFF";
+  mouth.style.borderLeft = mouth.style.borderRight = "6px solid transparent";
+  mouth.left = 4 * s - 6;
+  mouth.top = 5 * s;
+  v.addChild(mouth);
+  
+  return [v, brow1, brow2];
 }
 
 class TestAnimation3 extends Activity {
   
-  View cube;
+  View cube, brow1, brow2;
+  num sanity = 1;
+  
+  void setSanity(num x) {
+    sanity = x;
+    cube.node.style.backgroundColor = createColor(sanity);
+    brow1.style.transform = "rotate(${((1 - x) * 30).toInt()}deg)";
+    brow2.style.transform = "rotate(${((x - 1) * 30).toInt()}deg)";
+  }
   
   void onCreate_() {
     View box = new Section();
@@ -49,9 +81,13 @@ class TestAnimation3 extends Activity {
     box.style.border = "2px dashed #CCCCCC";
     mainView.addChild(box);
     
-    cube = createCube(100, "Drag Me");
+    List<View> views = createCube(100);
+    cube = views[0];
     cube.left = 250;
     cube.top = 250;
+    
+    brow1 = views[1];
+    brow2 = views[2];
     
     mainView.addChild(cube);
     
@@ -62,7 +98,6 @@ class TestAnimation3 extends Activity {
     final Rectangle range = new Rectangle(50, 50, 446, 446);
     final Element element = cube.node;
     final num deceleration = 0.0005;
-    num colorValue = 1;
     
     Motion inertialMotion;
     EasingMotion recoveryMotion;
@@ -77,10 +112,9 @@ class TestAnimation3 extends Activity {
       final Offset vel = dstate.velocity;
       num speed = VectorUtil.norm(vel);
       if (speed == 0) {
-        final num initColorValue = colorValue, diffColorValue = 1 - initColorValue;
+        final num initSanity = sanity, diffSanity = 1 - initSanity;
         recoveryMotion = new EasingMotion((num x) {
-          colorValue = diffColorValue * x + initColorValue;
-          element.style.backgroundColor = createColor(colorValue);
+          setSanity(diffSanity * x + initSanity);
         }, easing: (num x) => x * x);
         return true;
       }
@@ -92,14 +126,12 @@ class TestAnimation3 extends Activity {
         if (pos.x < range.left || pos.x > range.right) {
           unitv.x *= -1;
           speed *= 0.8;
-          colorValue *= 0.8;
-          element.style.backgroundColor = createColor(colorValue);
+          setSanity(sanity * 0.8);
         }
         if (pos.y < range.top || pos.y > range.bottom) {
           unitv.y *= -1;
           speed *= 0.8;
-          colorValue *= 0.8;
-          element.style.backgroundColor = createColor(colorValue);
+          setSanity(sanity * 0.8);
         }
         pos = range.snap(pos);
         element.style.left = CSS.px(pos.left.toInt());
@@ -107,10 +139,9 @@ class TestAnimation3 extends Activity {
         speed = Math.max(0, speed - deceleration * elapsed);
         return speed > 0;
       }, end: (MotionState mstate) {
-        final num initColorValue = colorValue, diffColorValue = 1 - initColorValue;
+        final num initSanity = sanity, diffSanity = 1 - initSanity;
         recoveryMotion = new EasingMotion((num x) {
-          colorValue = diffColorValue * x + initColorValue;
-          element.style.backgroundColor = createColor(colorValue);
+          setSanity(diffSanity * x + initSanity);
         }, easing: (num x) => x * x);
       });
       return true;
