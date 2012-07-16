@@ -48,4 +48,4 @@ echo Generating $flnm
 
 mkdir -p out
 rm -f $flnm
-zip -qr9 $flnm client samples resources
+zip -qr9 $flnm LICENSE.txt README.md client samples resources
