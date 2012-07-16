@@ -180,11 +180,11 @@ class Activity {
   /** Initializes the browser window, such as registering the events.
    */
   void _init() {
-    window.on[browser.mobile || application.inSimulator ? 'deviceOrientation': 'resize'].add(
-      (event) { //DOM event
+    (browser.mobile || application.inSimulator ?
+      window.on.deviceOrientation: window.on.resize).add((event) { //DOM event
         updateSize();
       });
-    document.on[browser.touch ? 'touchStart': 'mouseDown'].add(
+    (browser.touch ? document.on.touchStart: document.on.mouseDown).add(
       (event) { //DOM event
         broadcaster.sendEvent(new PopupEvent(event.target));
       });
