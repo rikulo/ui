@@ -92,6 +92,16 @@ class Browser {
       return false;
     };
 
+    // os detection
+    Match m2;
+    if ((m2 = _randroid.firstMatch(ua)) !== null) {
+      touch = mobile = android = true;
+      androidVersion = _versionOf(m2.group(1));
+    } else if ((m2 = _rios.firstMatch(ua)) !== null) {
+      touch = mobile = ios = true;
+      iosVersion = _versionOf(m2.group(1), '_');
+    }
+    
     if (bm(_rwebkit)) {
       webkit = true;
       CSS.prefix = "-webkit-";
@@ -100,19 +110,9 @@ class Browser {
       if (bm(_rchrome)) {
         chrome = true;
 
-        Match m = _randroid.firstMatch(ua);
-        if (m !== null) {
-          touch = mobile = android = true;
-          androidVersion = _versionOf(m.group(1));
-        }
       } else if (bm(_rsafari)) {
         safari = true;
 
-        Match m = _rios.firstMatch(ua);
-        if (m !== null) {
-          touch = mobile = ios = true;
-          iosVersion = _versionOf(m.group(1), '_');
-        }
       }
     } else if (bm(_rmsie)) {
       CSS.prefix = "-ms-";
