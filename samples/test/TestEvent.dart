@@ -19,8 +19,8 @@ View createCube(int size, String txt, String desc) {
   v.style.zIndex = "10";
   
   TextView txtv = new TextView(txt);
-  txtv.width = v.width;
-  txtv.style.lineHeight = "${v.height}px";
+  txtv.width = size - 4;
+  txtv.style.lineHeight = "${size - 4}px";
   txtv.style.textAlign = "center";
   txtv.style.color = "#EEEEEE";
   txtv.style.fontFamily = "Arial";
