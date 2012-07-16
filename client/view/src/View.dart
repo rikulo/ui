@@ -844,7 +844,7 @@ class View implements Hashable {
     _width = width;
 
     if (_inDoc) {
-      node.style.width = CSS.px(width);
+      node.style.width = width !== null ? CSS.px(width): "";
       layoutManager.sizeUpdated(this, width, true);
     }
   }
@@ -864,7 +864,7 @@ class View implements Hashable {
     _height = height;
 
     if (_inDoc) {
-      node.style.height = CSS.px(height);
+      node.style.height = height !== null ? CSS.px(height): "";
       layoutManager.sizeUpdated(this, height, false);
     }
   }
