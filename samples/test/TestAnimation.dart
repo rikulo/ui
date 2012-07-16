@@ -32,38 +32,58 @@ View createCube(int size, String txt) {
 }
 
 class TestAnimation extends Activity {
-
+  
+  View cube;
+  Motion motion;
+  
   void onCreate_() {
-    View v = createCube(100, "Catch Me");
-    v.left = 300;
-    v.top = 100;
+    cube = createCube(100, "Catch Me");
+    cube.left = 300;
+    cube.top = 100;
     
     int pauseStart = 0;
     int offset = 0;
     bool paused = false;
     
+    /*
     Animator animator = new Animator();
     animator.add((int time, int elapsed) {
       if (!paused) {
-        v.left = 300 + (150 * Math.cos((time - offset) / 200)).toInt();
-        v.top = 100 + (50 * Math.sin((time - offset) / 100)).toInt();
+        cube.left = 300 + (150 * Math.cos((time - offset) / 200)).toInt();
+        cube.top = 100 + (50 * Math.sin((time - offset) / 100)).toInt();
       }
       return true;
     });
+    */
     
-    v.on.mouseDown.add((ViewEvent event) {
+    cube.on.mouseDown.add((ViewEvent event) {
+      motion.pause();
+      /*
       pauseStart = new Date.now().millisecondsSinceEpoch;
       paused = true;
+      */
     });
     
     mainView.on.mouseUp.add((ViewEvent event) {
+      motion.run();
+      /*
       if (paused) {
         offset += new Date.now().millisecondsSinceEpoch - pauseStart;
         paused = false;
       }
+      */
     });
     
-    mainView.addChild(v);
+    mainView.addChild(cube);
+  }
+  
+  void onMount_() {
+    
+    motion = new EasingMotion((num x) {
+      cube.left = 300 + (150 * Math.cos(x * 2 * Math.PI)).toInt();
+      cube.top = 100 + (50 * Math.sin(x * 4 * Math.PI)).toInt();
+    }, duration: (400 * Math.PI).toInt(), mode: "repeat");
+    
   }
   
 }
