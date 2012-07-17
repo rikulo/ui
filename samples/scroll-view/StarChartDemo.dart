@@ -1,4 +1,4 @@
-//Sample Code: ScrollView
+//Sample Code: Star Chart Demo
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
