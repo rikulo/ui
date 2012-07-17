@@ -44,6 +44,10 @@ fi
 
 bin/lesscss
 
+#Clean *dart.js
+find -name '*.dart.js' | xargs rm -f
+find -name '*.dart.js.map' | xargs rm -f
+
 echo Generating $flnm
 
 mkdir -p out
