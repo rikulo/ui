@@ -25,14 +25,10 @@ class ScrollView extends View {
    * It shall cover all sub views (excluding invisible, anchored views).
    * In other words, it is the total size that the user can scroll.
    *
-   * Default: it iterates through all child views to calculate
-   * the size. It could be slow if there are a lot of children.
-   * On the other hand, depending on the application, it is usually
-   * able to calculate the content's size without iterating all children.
-   *
-   * For example, it could be a fixed value multiplied with number of rows.
-   * Therefore, it is strongly suggested to override this method to calculate
-   * the content's size more efficiently.
+   * If [contentSize] is set or is given in the constructor, the value
+   * is used; otherwise it iterates through all child views to calculate
+   * the size. In the latter case, it could be slow if there are a lot of 
+   * children. Thus, if possible, it is encouraged to provide the content size.
    */
   Size get contentSize() {
     if (_contentSize === null) {
@@ -46,6 +42,9 @@ class ScrollView extends View {
     return _contentSize;
   }
   
+  /** Set the content size, which shall cover all the children. If null, the 
+   * ScrollView will determine content size by the range of its children.
+   */
   void set contentSize(Size size) {
     _contentSizeValue = _contentSize = size;
   }
