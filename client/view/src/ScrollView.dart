@@ -9,13 +9,14 @@ class ScrollView extends View {
   final Function _snap;
   final Dir direction;
   Scroller _scroller;
-  Size _contentSize;
+  Size _contentSizeValue, _contentSize;
   
   /** Construct a ScrollView.
    * + [direction] specifies allowed scrolling direction.
    */
-  ScrollView([Dir direction = Dir.BOTH, Offset snap(Offset off)]) : 
-  this.direction = direction, _snap = snap, _contentSize = new Size(0, 0);
+  ScrollView([Dir direction = Dir.BOTH, Offset snap(Offset off), Size contentSize]) : 
+  this.direction = direction, _snap = snap, 
+  _contentSizeValue = contentSize, _contentSize = contentSize;
 
   //@Override
   String get className() => "ScrollView"; //TODO: replace with reflection if Dart supports it
@@ -35,12 +36,20 @@ class ScrollView extends View {
    */
   Size get contentSize() {
     if (_contentSize === null) {
-      final r = ViewUtil.getRectangle(children);
-      _contentSize = new Size(r.width, r.height);
+      if (_contentSizeValue != null)
+        _contentSize = _contentSizeValue;
+      else {
+        final r = ViewUtil.getRectangle(children);
+        _contentSize = new Size(r.width, r.height);
+      }
     }
     return _contentSize;
   }
-
+  
+  void set contentSize(Size size) {
+    _contentSizeValue = _contentSize = size;
+  }
+  
   /** Instantiates and returns the scroller.
    */
   Scroller newScroller_() => new Scroller(contentNode, 

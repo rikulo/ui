@@ -73,8 +73,8 @@ double _rand() {
 }
 
 Offset _rollLoc(Size range, num margin) => new Offset(
-  2 * margin + (range.width  - 4 * margin) * _rand(),
-  2 * margin + (range.height - 4 * margin) * _rand()
+  margin + (range.width  - 2 * margin) * _rand(),
+  margin + (range.height - 2 * margin) * _rand()
 );
 
 int _rollc() => 65 + (26 * _rand()).toInt();
@@ -82,22 +82,13 @@ int _rollc() => 65 + (26 * _rand()).toInt();
 String _rollName() => 
   "${new String.fromCharCodes([_rollc(),_rollc(),_rollc()])}-${(1000*_rand()).toInt()}";
 
-class StarChartView extends ScrollView {
-  
-  final Size _sz;
-  StarChartView(this._sz) : super();
-  
-  Size get contentSize() => _sz;
-  
-}
-
 class StarChartDemo extends Activity {
 
   void onCreate_() {
     title = "Star Chart Demo";
 
     final Size range = new Size(1500, 1500);
-    final View view = new StarChartView(range);
+    final View view = new ScrollView(contentSize: range);
     view.profile.text =
       "anchor: parent; location: center center; width: 80%; height: 80%";
     view.classes.add("star-chart");
