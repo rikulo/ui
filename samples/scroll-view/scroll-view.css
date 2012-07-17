@@ -12,3 +12,19 @@
 	color: #333333;
 	font-weight: bold;
 }
+
+.star-chart {
+	border-radius: 4px;
+}
+.star-chart, .star-chart > v-inner {
+	background-color: #060619;
+}
+.star-chart > .v-scrollbar-ver,
+.star-chart > .v-scrollbar-hor {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+.star {
+	border-radius : 5px;
+	border: 5px solid #FFFFFF;
+	box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+}
