@@ -2,13 +2,12 @@
  * Auto-generated
  * Copyright (C) 2012 Potix Corporation. All Rights Reserved.
  */
-html,
-body {
+body.rikulo {
   overflow: hidden;
   padding: 0;
   margin: 0;
 }
-body {
+.rikulo {
   -webkit-text-size-adjust: none;
   -moz-text-size-adjust: none;
   -ms-text-size-adjust: none;

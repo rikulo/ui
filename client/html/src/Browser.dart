@@ -128,8 +128,8 @@ class Browser {
       version = 1.0;
     }
 
-    final Element caveNode = document.query("#v-main");
-    final DOMQuery qcave = new DOMQuery(caveNode !== null ? caveNode: window);
+		//We don't consider v-main here since Activity will handle it
+    final DOMQuery qcave = new DOMQuery(window);
     size = new Size(qcave.innerWidth, qcave.innerHeight);
   }
   static double _versionOf(String version, [String separator='.']) {
