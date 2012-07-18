@@ -92,11 +92,6 @@ class TestEasing extends Activity {
         }, duration: 1000, mode: modes[i]);
       });
     }
-    
-  }
-  
-  void onMount_() {
-    
   }
 }
 

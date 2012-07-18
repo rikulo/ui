@@ -17,9 +17,6 @@ class Canvas extends View {
    *
    * Notice that it will throw an exception if it is not attached. In other words,
    * [inDocument] must be true when calling this method.
-   *
-   * If you instantiates a canvas in an activity's onCreate_, you can invoke this method
-   * in onMount_. Alternatively, you can invoke in the listener for the mount event.
    */
   CanvasRenderingContext2D get context2D() => canvasNode.getContext("2d");
   /** Returns a drawing context for WebGL on the canvas, or null

@@ -15,11 +15,10 @@ class TestEmbed extends Activity {
       </ul>
       ''');
     webView.width = 250;
-    webView.on.mount.add((event) {
-      for (Element n in webView.node.queryAll("span"))
-        new Switch(true).addToDocument(n, location: "right top");
-    });
     mainView.addChild(webView);
+
+    for (Element n in webView.node.queryAll("span"))
+      new Switch(true).addToDocument(n, location: "right top");
   }
 }
 
