@@ -19,7 +19,6 @@ typedef void ViewSwitchEffect(View from, View to, Element mask);
  * compose your UI and attach it to [mainView] (or replace it).
  *
  *     class HelloWorld extends Activity {
- *     
  *       void onCreate_() {
  *         title = "Hello World!";
  *     
@@ -33,6 +32,7 @@ typedef void ViewSwitchEffect(View from, View to, Element mask);
  * of the screen, you can define an element in the HTML page (that loads the dart
  * application) and assign it the dimension you want and an id called `v-main`. For example,
  *
+ *     <link rel="stylesheet" type="text/css" href="../../resources/css/view.css" />
  *     <div id="v-main" style="width:100%;height:200px"></div>
  *     <script type="application/dart" src="HelloWorld.dart"></script>
  *     <script src="../../resources/js/dart.js"></script>
@@ -44,6 +44,7 @@ class Activity {
   String _title = "";
   View _mainView;
   final List<_DialogInfo> _dlgInfos;
+  Element _container;
 
   Activity(): _dlgInfos = [] {
     _title = application.name; //also force "get application()" to be called
@@ -115,14 +116,13 @@ class Activity {
 
     final _DialogInfo dlgInfo = new _DialogInfo(dialog, maskClass);
     _dlgInfos.insertRange(0, 1, dlgInfo);
-    _createDialog(dlgInfo, effect);
-    broadcaster.sendEvent(new PopupEvent(dialog));
-  }
-  void _createDialog(_DialogInfo dlgInfo, [ViewSwitchEffect effect]) {
+
     final Element parent = _mainView.node.parent;
     dlgInfo.createMask(parent);
     dlgInfo.dialog.addToDocument(parent);
     //TODO: effect
+
+    broadcaster.sendEvent(new PopupEvent(dialog));
   }
   /** Removes the topmost dialog or the given dialog.
    * If [dialog] is not specified, the topmost one is assumed.
@@ -183,8 +183,8 @@ class Activity {
     _mainView.style.overflow = "hidden"; //crop
 
     application._ready(() {
-      Element container = containerId !== null ? document.query("#$containerId"): null;
-      _mainView.addToDocument(container != null ? container: document.body);
+      _container = containerId !== null ? document.query("#$containerId"): null;
+      _mainView.addToDocument(_container != null ? _container: document.body);
 
       onCreate_();
       _mainView.requestLayout();
@@ -211,8 +211,7 @@ class Activity {
    * It is called automatically, so the application rarely need to call it.
    */
   void updateSize() {
-    final Element caveNode = document.query("#$containerId");
-    final DOMQuery qcave = new DOMQuery(caveNode !== null ? caveNode: window);
+    final DOMQuery qcave = new DOMQuery(_container !== null ? _container: window);
     browser.size.width = qcave.innerWidth;
     browser.size.height = qcave.innerHeight;
 
