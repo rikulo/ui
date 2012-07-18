@@ -216,8 +216,8 @@ class Activity {
    * the hierarchy tree of [mainView].
    *
    * If you prefer to instantiate a different main view, you can
-   * create an instance and then assign to [mainView] directly. Then, the
-   * hierarchy tree available to the user will become the one you assigned.
+   * create a hierarchy tree of views, and then assign to [mainView] directly.
+   * Thus, the hierarchy tree available to the user will become the one you assigned.
    *
    * ##Relation with DOM
    *
