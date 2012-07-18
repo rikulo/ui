@@ -11,8 +11,34 @@
 typedef void ViewSwitchEffect(View from, View to, Element mask);
 
 /**
- * An activity is a UI, aka., a desktop, that the user can interact with.
- * An activity is identified with an URL.
+ * An activity is a UI that the user can interact with.
+ * Each activity has a main view called [mainView]. It is the root of
+ * the hierarchy tree of views that the user can interact with.
+ *
+ * To instantiate UI, you have to extend this class and override [onCreate_] to
+ * compose your UI and attach it to [mainView] (or replace it).
+ *
+ *     class HelloWorld extends Activity {
+ *     
+ *       void onCreate_() {
+ *         title = "Hello World!";
+ *     
+ *         TextView welcome = new TextView("Hello World!");
+ *         welcome.profile.text = "anchor:  parent; location: center center";
+ *         mainView.addChild(welcome);
+ *       }
+ *     }
+ *
+ * By default, [mainView] will occupy the whole screen. If you want it to be a part
+ * of the screen, you can define an element in the HTML page (that loads the dart
+ * application) and assign it the dimension you want and an id called `v-main`. For example,
+ *
+ *     <div id="v-main" style="width:100%;height:200px"></div>
+ *     <script type="application/dart" src="HelloWorld.dart"></script>
+ *     <script src="../../resources/js/dart.js"></script>
+ *
+ * If you want to embed multiple application in the same HTML page, you can assign
+ * the elements with a different ID, and then invoke [run] with the ID you assigned.
  */
 class Activity {
   String _title = "";
@@ -185,7 +211,7 @@ class Activity {
    * It is called automatically, so the application rarely need to call it.
    */
   void updateSize() {
-    final Element caveNode = document.query("#v-main");
+    final Element caveNode = document.query("#$containerId");
     final DOMQuery qcave = new DOMQuery(caveNode !== null ? caveNode: window);
     browser.size.width = qcave.innerWidth;
     browser.size.height = qcave.innerHeight;
