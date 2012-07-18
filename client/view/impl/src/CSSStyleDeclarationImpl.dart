@@ -2552,6 +2552,8 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
     
     if (_illnms.contains(propertyName))
       throw new UIException("$propertyName not allowed. Please use View's API instead, such as left, width and hidden.");
+    if (propertyName.startsWith("margin"))
+      throw const UIException("You can't change margin");
   }
   //Illegal names (that are not allowed to access directly
   static Set<String> _illnms;
