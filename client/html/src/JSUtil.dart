@@ -296,6 +296,7 @@ class JSUtil {
   static void injectJavaScriptSrc(String uri) {
     var s = new ScriptElement();
     s.type = "text/javascript";
+    s.charset = "utf-8";
     s.src = uri;
     document.head.nodes.add(s);  
   }
@@ -318,6 +319,7 @@ class JSUtil {
   static void injectJavaScript(String script, [bool remove = true]) {
     var s = new ScriptElement();
     s.type = "text/javascript";
+    s.charset = "utf-8";
     s.text = script;
     document.head.nodes.add(s);
     if (remove) s.remove();
