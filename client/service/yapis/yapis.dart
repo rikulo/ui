@@ -2,7 +2,7 @@
 //History: Wed, Jun 20, 2012  05:21:28 PM
 // Author: hernichen
 
-#library("rikulo:service:yapis");
+#library("rikulo:service/yapis");
 
 #import("dart:html");
 #import("../../util/util.dart");

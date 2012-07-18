@@ -2,7 +2,7 @@
 //History: Wed, Jun 20, 2012  10:28:07 AM
 // Author: hernichen
 
-#library("rikulo:service:gapis");
+#library("rikulo:service/gapis");
 
 #import("dart:html");
 #import("../../html/html.dart");
