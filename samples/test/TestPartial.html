@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+  	<div style="margin-left: 50px; border: 1px solid #aaa">
+      <div style="background:yellow;height:200px">Content before activity.
+        <ol>
+          <li>You shall see Hello World being displayed at the center of the following box.</li>
+          <li>If you click on Hello World, you shall see a dialog displayed at the center
+            of the box (on top of Hello World).</li>
+          <li>Try to scroll the browser, you shall see they remain where it is</li>
+        </ol>
+      </div>
+
+      <link rel="stylesheet" type="text/css" href="../../resources/css/view.css" />
+      <div id="v-main" style="width:300px;height:250px;border:1px solid black;"></div>
+      <script type="application/dart" src="TestPartial.dart"></script>
+      <script src="../../resources/js/dart.js"></script>
+
+      <div style="background:blue;color:white;height:1200px">
+        Content after activity.
+        It will cause the scrollbar to show up. If you don't see it, it is a bug.
+      </div>
+    </div>
+  </body>
+</html>
