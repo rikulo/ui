@@ -36,22 +36,16 @@ class SnakeCanvas extends Activity {
   void onCreate_() {
     title = "Snake";
 
-    mainView.profile.width = "572px";
-    mainView.profile.height = "396px";
-
-    View div = new View();
-    div.style.backgroundImage = "url('./res/snake_bg.png')";
-    div.profile.width = "flex";
-    div.profile.height = "flex";
+    mainView.width = 572;
+    mainView.height = 396;
+    mainView.style.backgroundImage = "url('http://blog.rikulo.org/static/files/tutorial/creating-snake/res/snake_bg.png')";
     
     //first vlayout
     View vlayout = new View();
     vlayout.layout.type = "linear";
     vlayout.layout.orient = "vertical";
-    vlayout.profile.width = "flex";
-    vlayout.profile.height = "flex";    
-    vlayout.top = 60;
-    vlayout.left = 80;
+    vlayout.profile.anchorView = mainView;   
+    vlayout.profile.location = "center center";
     
     //canvas
     canvas = new Canvas();
@@ -64,8 +58,7 @@ class SnakeCanvas extends Activity {
     scoreBar.profile.height = "30";
     vlayout.addChild(scoreBar);
     
-    div.addChild(vlayout);
-    mainView.addChild(div);
+    mainView.addChild(vlayout);
 
     ctx2d = canvas.context2D;
 
