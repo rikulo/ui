@@ -66,7 +66,7 @@ interface Scroller default _Scroller {
    * + If [animate], scroll to the position continously. Otherwise the position
    * is updated instantly.
    */
-  void scrollTo(Offset position, [bool animate = true]);
+  void scrollTo(Offset position, [bool animate]);
   
 }
 
@@ -301,6 +301,7 @@ class _Scroller implements Scroller {
   
   DragGesture _dg;
   _BoundedInertialMotion _bim;
+  _ScrollToMotion _stm;
   _ScrollerState _state;
   ScrollbarControl _scrollbarCtrl;
   
@@ -313,7 +314,7 @@ class _Scroller implements Scroller {
   _start = start, _moving = moving, _end = end {
     
     _dg = new DragGesture(this.owner, handle: handle,
-    start: (DragGestureState state) => onStart(state.time) ? owner : null,
+    start: (DragGestureState state) => onStart(state.time) ? owner : null, // TODO: stop _stm
     moving: (DragGestureState state) { 
       onMoving(_state.startPosition + state.delta, state.time);
       return true; // custom movning handling
@@ -405,14 +406,24 @@ class _Scroller implements Scroller {
   
   void scrollTo(Offset position, [bool animate = true]) {
     stop();
-    _applyPosition(position);
-    // TODO: animate, interuption, callback
+    if (animate) {
+      _stm = new _ScrollToMotion(this, scrollPosition, position);
+    } else {
+      int time = new Date.now().millisecondsSinceEpoch;
+      onStart(time); // TODO: interrupt drag?
+      onMoving(position, time);
+      onEnd();
+    }
   }
   
   void stop() {
     if (_bim != null) {
       _bim.stop();
       _bim = null;
+    }
+    if (_stm != null) {
+      _stm.stop();
+      _stm = null;
     }
     _state = null;
   }
@@ -422,6 +433,27 @@ class _Scroller implements Scroller {
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction0(_scrollbarCtrl.destroy);
     _dg.destroy();
+  }
+  
+}
+
+class _ScrollToMotion extends EasingMotion {
+  
+  final _Scroller _scroller;
+  final Offset _initPos, _diffPos;
+  
+  _ScrollToMotion(_Scroller scroller, Offset initPos, Offset destPos) :
+  _scroller = scroller, _initPos = initPos, _diffPos = destPos - initPos,
+  super(null, start: (MotionState state) {
+    // TODO: interrupt?
+    scroller.onStart(state.currentTime);
+  }, end: (MotionState state) {
+    scroller.onEnd();
+  });
+  
+  bool doAction_(num x, MotionState state) {
+    _scroller.onMoving(_initPos + _diffPos * x, state.currentTime);
+    return true;
   }
   
 }
