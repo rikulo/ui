@@ -29,6 +29,10 @@ interface Scroller default _Scroller {
       ScrollerStart start, ScrollerMove moving, ScrollerEnd end]);
   // TODO: inertial, bounce
   
+  /** Stop current scrolling.
+   */
+  void stop();
+  
   /** Destroys the scroller.
    * It shall be called to clean up the scroller, if it is no longer used.
    */
@@ -45,6 +49,24 @@ interface Scroller default _Scroller {
   /** Returns the handle element that associates to the scroller, if any.
    */
   Element get handle();
+  
+  /** Return true if it is currently scrolling.
+   */
+  bool isScrolling();
+  
+  /** Return the current scroll position.
+   */
+  Offset get scrollPosition();
+  
+  /** Set the scroll position. The current scrolling motion, if any, will be stopped.
+   */
+  void set scrollPosition(Offset position);
+  
+  /** Set the scroll position. The current scrolling, if any, will be stopped.
+   * + If [animate], scroll to the position continously. Otherwise the position
+   * is updated instantly.
+   */
+  void scrollTo(Offset position, [bool animate = true]);
   
 }
 
@@ -116,6 +138,7 @@ class _ScrollerState implements ScrollerState {
   final Scroller scroller;
   final AsSize _fnViewPortSize, _fnContentSize;
   final Offset startPosition;
+  bool _hor, _ver;
   Offset _pos, _ppos;
   int _time, _ptime;
   
@@ -123,6 +146,9 @@ class _ScrollerState implements ScrollerState {
     this.scroller = scroller,
     startPosition = new DOMQuery(scroller.owner).offset {
     _pos = startPosition * -1;
+    Size cs = contentSize, vs = viewPortSize;
+    _hor = scroller._hasHor && cs.width > vs.width;
+    _ver = scroller._hasVer && cs.height > vs.height;
   }
   
   Offset get position() => _pos;
@@ -296,7 +322,7 @@ class _Scroller implements Scroller {
       final Rectangle range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
-        _hasHor, _hasVer, moving: onMoving, end: onEnd, snap: snap);
+        _hor, _ver, moving: onMoving, end: onEnd, snap: snap);
       return true; // custom movning handling
     });
     
@@ -310,6 +336,7 @@ class _Scroller implements Scroller {
     //TODO: support desktop - if not in simulator, mousewheel/draggable scrollbar
   }
   
+  // scrolling mechanism //
   bool onStart(int time) {
     if (_bim != null)
       _bim.stop();
@@ -328,10 +355,7 @@ class _Scroller implements Scroller {
       _applyScrollBarFunction1(_scrollbarCtrl.move, _state);
     if (_moving != null)
       _moving(_state);
-    if (_hasHor)
-      owner.style.left = CSS.px(position.left);
-    if (_hasVer)
-      owner.style.top = CSS.px(position.top);
+    _applyPosition(position);
   }
   
   void onEnd() {
@@ -340,23 +364,57 @@ class _Scroller implements Scroller {
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.end, _state);
     _state = null;
+    _bim = null;
+  }
+  
+  void _applyPosition(Offset position) {
+    if (_hor)
+      owner.style.left = CSS.px(position.left);
+    if (_ver)
+      owner.style.top = CSS.px(position.top);
   }
   
   // scroll bar //
   ScrollbarControl _scrollbarControl() => new _ScrollbarControl(this, this.owner);
   
   void _applyScrollBarFunction0(Function f) {
-    if (_hasHor)
+    if (_hor)
       f(false);
-    if (_hasVer)
+    if (_ver)
       f(true);
   }
   
   void _applyScrollBarFunction1(Function f, ScrollerState state) {
-    if (_hasHor)
+    if (_hor)
       f(false, state);
-    if (_hasVer)
+    if (_ver)
       f(true, state);
+  }
+  
+  bool get _hor() => _state != null ? _state._hor : _hasHor;
+  bool get _ver() => _state != null ? _state._ver : _hasVer;
+  
+  // query //
+  bool isScrolling() => _state != null;
+  
+  Offset get scrollPosition() => 
+      _state != null ? _state.position : new DOMQuery(owner).offset;
+  
+  // control //
+  void set scrollPosition(Offset position) => scrollTo(position, false);
+  
+  void scrollTo(Offset position, [bool animate = true]) {
+    stop();
+    _applyPosition(position);
+    // TODO: animate, interuption, callback
+  }
+  
+  void stop() {
+    if (_bim != null) {
+      _bim.stop();
+      _bim = null;
+    }
+    _state = null;
   }
   
   void destroy() {
@@ -370,7 +428,7 @@ class _Scroller implements Scroller {
 
 class _BoundedInertialMotion extends Motion {
   
-  final bool _hasHor, _hasVer;
+  final bool _hor, _ver;
   final Element element;
   final num friction, bounce, snapSpeedThreshold;
   final Rectangle range;
@@ -379,15 +437,15 @@ class _BoundedInertialMotion extends Motion {
   Motion _snapMotion;
   
   _BoundedInertialMotion(Element element, Offset velocity, this.range, 
-  this._hasHor, this._hasVer, 
+  this._hor, this._ver, 
   [num friction = 0.0005, num bounce = 0.0002, num snapSpeedThreshold = 0.05,
   void moving(Offset position, int time), void end(), Offset snap(Offset pos)]) :
   this.element = element, this.friction = friction, this.bounce = bounce,
   this.snapSpeedThreshold = snapSpeedThreshold, _moving = moving, _end = end, _snap = snap,
   _pos = new DOMQuery(element).offset, _vel = velocity, super(null) {
-    if (!_hasHor)
+    if (!_hor)
       _vel.x = 0;
-    if (!_hasVer)
+    if (!_ver)
       _vel.y = 0;
   }
   
@@ -396,25 +454,25 @@ class _BoundedInertialMotion extends Motion {
     final Offset dir = speed == 0 ? new Offset(0, 0) : _vel / speed;
     final Offset dec = dir * friction;
     
-    if (_hasHor)
+    if (_hor)
       _pos.x = _updatePosition(_pos.x, _vel.x, dec.x, state.elapsedTime, range.x, range.right);
-    if (_hasVer)
+    if (_ver)
       _pos.y = _updatePosition(_pos.y, _vel.y, dec.y, state.elapsedTime, range.y, range.bottom);
     
     _applyPosition(_pos);
     if (_moving != null)
       _moving(_pos, state.currentTime);
     
-    if (_hasHor)
+    if (_hor)
       _vel.x = _updateVelocity(_pos.x, _vel.x, dec.x, state.elapsedTime, range.x, range.right);
-    if (_hasVer)
+    if (_ver)
       _vel.y = _updateVelocity(_pos.y, _vel.y, dec.y, state.elapsedTime, range.y, range.bottom);
     
     if (_shallSnap())
       return false;
     
-    return (_hasHor && !_shallStop(_pos.x, _vel.x, range.x, range.right)) ||
-        (_hasVer && !_shallStop(_pos.y, _vel.y, range.y, range.bottom)); 
+    return (_hor && !_shallStop(_pos.x, _vel.x, range.x, range.right)) ||
+        (_ver && !_shallStop(_pos.y, _vel.y, range.y, range.bottom)); 
   }
   
   void onEnd(MotionState state) {
@@ -461,9 +519,9 @@ class _BoundedInertialMotion extends Motion {
     lbnd <= pos && pos <= rbnd && vel == 0;
   
   void _applyPosition(Offset pos) {
-    if (_hasHor)
+    if (_hor)
       element.style.left = CSS.px(pos.left.toInt());
-    if (_hasVer)
+    if (_ver)
       element.style.top = CSS.px(pos.top.toInt());
   }
   
@@ -476,15 +534,15 @@ class _BoundedInertialMotion extends Motion {
     if (_snap == null || _vel.x.abs() > snapSpeedThreshold || _vel.y.abs() > snapSpeedThreshold)
       return false;
     // do not snap outside of the range
-    if ((!_hasHor || _pos.x < range.x || _pos.x > range.right) &&
-        (!_hasVer || _pos.y < range.y || _pos.y > range.bottom))
+    if ((!_hor || _pos.x < range.x || _pos.x > range.right) &&
+        (!_ver || _pos.y < range.y || _pos.y > range.bottom))
       return false;
     Offset scrPos = _pos * -1, scrSnapPos = _snap(scrPos);
     if (scrSnapPos == null)
       return false;
     scrSnapPos = range.snap(scrSnapPos * -1) * -1;
-    if ((!_hasHor || scrSnapPos.x == scrPos.x) &&
-        (!_hasVer || scrSnapPos.y == scrPos.y))
+    if ((!_hor || scrSnapPos.x == scrPos.x) &&
+        (!_ver || scrSnapPos.y == scrPos.y))
       return false;
     _snapTo = scrSnapPos * -1;
     return true;
