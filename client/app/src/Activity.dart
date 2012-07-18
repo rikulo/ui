@@ -117,7 +117,11 @@ class Activity {
     final _DialogInfo dlgInfo = new _DialogInfo(dialog, maskClass);
     _dlgInfos.insertRange(0, 1, dlgInfo);
 
-    final Element parent = _mainView.node.parent;
+    final Element parent = new DivElement();
+    parent.style.position = "relative";
+      //we have to create a relative element to enclose dialog
+      //since layout assumes it (test case: TestPartial.html)
+    _mainView.node.parent.nodes.add(parent);
     dlgInfo.createMask(parent);
     dlgInfo.dialog.addToDocument(parent);
     //TODO: effect
@@ -153,11 +157,22 @@ class Activity {
       }
     }
 
-    dlgInfo.removeMask();
+    final Element parent = dlgInfo.dialog.node.parent;
     dlgInfo.dialog.removeFromDocument();
+    dlgInfo.removeMask();
+    parent.remove();
     broadcaster.sendEvent(new PopupEvent(null));
     return true;
   }
+
+  /** Returns the DOM element that contains this activity.
+   * It is null (by default).
+   *
+   * If there is a DOM element that matches the `containerId` argument when [run] is
+   * called. The DOM element is assumed to be the container, and the activity
+   * will be limited to it.
+   */
+  Element get container() => _container;
 
   /** Starts the activity.
    * By default, it creates [mainView] (if it was not created yet)
@@ -172,19 +187,13 @@ class Activity {
   void run([String containerId="v-main"]) {
     if (activity !== null) //TODO: switching activity (from another activity)
       throw const UIException("Only one activity is allowed");
+    if (_mainView !== null)
+      throw const UIException("run() called twice?");
 
     activity = this;
-    _init();
-
-    if (_mainView === null)
-      _mainView = new Section();
-    _mainView.width = browser.size.width;
-    _mainView.height = browser.size.height;
-    _mainView.style.overflow = "hidden"; //crop
 
     application._ready(() {
-      _container = containerId !== null ? document.query("#$containerId"): null;
-      _mainView.addToDocument(_container != null ? _container: document.body);
+      _init(containerId);
 
       onCreate_();
       _mainView.requestLayout();
@@ -192,7 +201,24 @@ class Activity {
   }
   /** Initializes the browser window, such as registering the events.
    */
-  void _init() {
+  void _init(String containerId) {
+    _container = containerId !== null ? document.query("#$containerId"): null;
+
+    Set<String> clses = _container !== null ? _container.classes: document.body.classes;
+    clses.add("rikulo");
+    clses.add(browser.name);
+    if (browser.ios) clses.add("ios");
+    else if (browser.android) clses.add("android");
+
+    if (_container !== null)
+      updateSize();
+
+    _mainView = new Section();
+    _mainView.width = browser.size.width;
+    _mainView.height = browser.size.height;
+    _mainView.style.overflow = "hidden"; //crop
+    _mainView.addToDocument(_container !== null ? _container: document.body);
+
     (browser.mobile || application.inSimulator ?
       window.on.deviceOrientation: window.on.resize).add((event) { //DOM event
         updateSize();
@@ -201,11 +227,6 @@ class Activity {
       (event) { //DOM event
         broadcaster.sendEvent(new PopupEvent(event.target));
       });
-    Set<String> clses = document.body.classes;
-    clses.add("rikulo");
-    clses.add(browser.name);
-    if (browser.ios) clses.add("ios");
-    else if (browser.android) clses.add("android");
   }
   /** Handles resizing, including device's orientation is changed.
    * It is called automatically, so the application rarely need to call it.
@@ -222,6 +243,10 @@ class Activity {
       mainView.width = browser.size.width;
       mainView.height = browser.size.height;
       mainView.requestLayout();
+    }
+    for (_DialogInfo dlgInfo in _dlgInfos) {
+      dlgInfo.resizeMask();
+      dlgInfo.dialog.requestLayout();
     }
   }
 
@@ -284,27 +309,27 @@ class _DialogInfo {
   final View dialog;
   final String maskClass;
   Element _maskNode;
-  EventListener _listener;
 
   _DialogInfo(View this.dialog, String this.maskClass);
   void createMask(Element parent) {
     if (maskClass !== null) {
       _maskNode = new Element.html(
         '<div class="v- ${maskClass}" style="width:${browser.size.width}px;height:${browser.size.height}px"></div>');
-      if (!browser.mobile) {
-        window.on.resize.add(_listener = (event) {
-          _maskNode.style.width = CSS.px(browser.size.width);
-          _maskNode.style.height = CSS.px(browser.size.height);
-        });
+      if (activity.container !== null) {
+        _maskNode.style.position = "absolute";
       }
 
       parent.$dom_appendChild(_maskNode);
     }
   }
+  void resizeMask() {
+    if (_maskNode !== null) {
+      _maskNode.style.width = CSS.px(browser.size.width);
+      _maskNode.style.height = CSS.px(browser.size.height);
+    }
+  }
   void removeMask() {
     if (_maskNode !== null) {
-      if (_listener !== null)
-        window.on.resize.remove(_listener);
       _maskNode.remove();
     }
   }
