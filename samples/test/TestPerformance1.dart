@@ -15,7 +15,6 @@ class TestPerformance1 extends Activity {
       hlayout.profile.text = "width: flex; height: content";
       hlayout.layout.type = "linear";
       hlayout.style.border = "1px solid #885";
-      mainView.addChild(hlayout);
 
       for (int j = 0; j < 50; ++j) {
         TextView view = new TextView("$i.$j");
@@ -27,6 +26,8 @@ class TestPerformance1 extends Activity {
           //note: don't assign to view.width/height directly since it is slower (measureWidth_ will be called)
         hlayout.addChild(view);
       }
+
+      mainView.addChild(hlayout);
     }
   }
 }

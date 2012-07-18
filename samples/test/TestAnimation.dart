@@ -66,9 +66,6 @@ class TestAnimation extends Activity {
     });
     
     mainView.addChild(cube);
-  }
-  
-  void onMount_() {
     
     /*
     Animator animator = new Animator();

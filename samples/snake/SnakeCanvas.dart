@@ -66,6 +66,13 @@ class SnakeCanvas extends Activity {
     
     div.addChild(vlayout);
     mainView.addChild(div);
+
+    ctx2d = canvas.context2D;
+
+    new DragGesture(this.canvas.node, moving: _gestureMove(), end: _gestureEnd());
+    
+    document.on.keyDown.add(onKeyDown);
+    startGame();
   }
 
   DragGestureMove _gestureMove() {
@@ -100,16 +107,6 @@ class SnakeCanvas extends Activity {
     };
   }
   
-  void onMount_() {
-    ctx2d = canvas.context2D;
-
-    new DragGesture(this.canvas.node, moving: _gestureMove(), end: _gestureEnd());
-    
-    document.on.keyDown.add(onKeyDown);
-    startGame();
-    
-  }
-
   void startGame() {
 
     score = 0;

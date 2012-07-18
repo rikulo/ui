@@ -46,8 +46,7 @@ class CanvasCircle extends Activity {
       new Ball(70, 1.6, 10, "green"),
       new Ball(100, 1.0, 13, "yellow"),
       new Ball(130, 0.8, 8, "#0ff")];
-  }
-  void onMount_() {
+
     ctx2d = canvas.context2D;
     new Animator().add((int time, int elapsed) {
       ctx2d.clearRect(0, 0, canvas.width, canvas.height);

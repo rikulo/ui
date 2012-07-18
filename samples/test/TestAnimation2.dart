@@ -50,10 +50,6 @@ class TestAnimation2 extends Activity {
     cube.top = 250;
     mainView.addChild(cube);
     
-  }
-  
-  void onMount_() {
-    
     Rectangle range = new Rectangle(50, 50, 446, 446);
     Element element = cube.node;
     final num deceleration = 0.0005;

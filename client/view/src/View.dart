@@ -275,6 +275,9 @@ class View implements Hashable {
   /** Adds a child.
    * If [beforeChild] is specified, the child will be inserted before it.
    * Otherwise, it will be added to the end.
+   *
+   * If this view is attached to the document, this method will attach the child
+   * to the document.
    */
   void addChild(View child, [View beforeChild]) {
     _addChild(child, beforeChild);
@@ -414,8 +417,7 @@ class View implements Hashable {
   /** Returns the DOM element associated with this view (never null).
    *
    * This method throws an exception if this view is attached to the document yet
-   * (i.e., [inDocument] is false). Notice that when [Activity.onCreate_]
-   * is called, [Activity.mainView] is not attached to the document yet.
+   * (i.e., [inDocument] is false).
    *
    * To retrieve a child element, use the [getNode] method instead.
    *
@@ -429,8 +431,7 @@ class View implements Hashable {
    * uuid, dash ('-'), and subId.
    *
    * This method throws an exception if this view is attached to the document yet
-   * (i.e., [inDocument] is false). Notice that when [Activity.onCreate_]
-   * is called, [Activity.mainView] is not attached to the document yet.
+   * (i.e., [inDocument] is false).
    */
   Element getNode(String subId) {
     if (!_inDoc)
@@ -844,7 +845,7 @@ class View implements Hashable {
     _width = width;
 
     if (_inDoc) {
-      node.style.width = width !== null ? CSS.px(width): "";
+      node.style.width = CSS.px(width);
       layoutManager.sizeUpdated(this, width, true);
     }
   }
@@ -864,7 +865,7 @@ class View implements Hashable {
     _height = height;
 
     if (_inDoc) {
-      node.style.height = height !== null ? CSS.px(height): "";
+      node.style.height = CSS.px(height);
       layoutManager.sizeUpdated(this, height, false);
     }
   }

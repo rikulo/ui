@@ -89,11 +89,8 @@ class Activity {
 
     final _DialogInfo dlgInfo = new _DialogInfo(dialog, maskClass);
     _dlgInfos.insertRange(0, 1, dlgInfo);
-
-    if (_mainView !== null && _mainView.node !== null) { //dialog might be added in onCreate_()
-      _createDialog(dlgInfo, effect);
-      broadcaster.sendEvent(new PopupEvent(dialog));
-    }
+    _createDialog(dlgInfo, effect);
+    broadcaster.sendEvent(new PopupEvent(dialog));
   }
   void _createDialog(_DialogInfo dlgInfo, [ViewSwitchEffect effect]) {
     final Element parent = _mainView.node.parent;
@@ -130,12 +127,9 @@ class Activity {
       }
     }
 
-    if (dlgInfo.dialog.inDocument) {
-      //TODO: effect
-      dlgInfo.removeMask();
-      dlgInfo.dialog.removeFromDocument();
-      broadcaster.sendEvent(new PopupEvent(null));
-    }
+    dlgInfo.removeMask();
+    dlgInfo.dialog.removeFromDocument();
+    broadcaster.sendEvent(new PopupEvent(null));
     return true;
   }
 
@@ -163,18 +157,11 @@ class Activity {
     _mainView.style.overflow = "hidden"; //crop
 
     application._ready(() {
+      Element container = containerId !== null ? document.query("#$containerId"): null;
+      _mainView.addToDocument(container != null ? container: document.body);
+
       onCreate_();
-
-      if (!_mainView.inDocument) { //app might add it to Document manually
-        Element container = containerId !== null ? document.query("#$containerId"): null;
-        _mainView.addToDocument(container != null ? container: document.body);
-
-        //the user might add dialog in onCreate_()
-        for (final _DialogInfo dlgInfo in _dlgInfos)
-          _createDialog(dlgInfo);
-      }
-
-      onMount_();
+      _mainView.requestLayout();
     });
   }
   /** Initializes the browser window, such as registering the events.
@@ -223,27 +210,29 @@ class Activity {
   }
 
   /** Called when the activity is starting.
-   * Before calling this method, [mainView] will be instantiated, but
-   * it won't be attached to the document until this method has returned
-   * (for better performaance).
+   * You can override this method to create the user interface.
    *
-   * It means you can't access [Element.node] (such as adding a listener),
-   * or any methods that depends on the DOM elements of the view.
-   * To access the DOM elements of the view, you have to do it in [onMount_].
+   * The UI you compose will be available to the user after you add it to
+   * the hierarchy tree of [mainView].
    *
    * If you prefer to instantiate a different main view, you can
-   * create an instance and then assign to [mainView] directly.
+   * create an instance and then assign to [mainView] directly. Then, the
+   * hierarchy tree available to the user will become the one you assigned.
    *
-   * + See also [run] and [onMount_].
+   * ##Relation with DOM
+   *
+   * Before calling this method, [mainView] has been attached to the document.
+   * It means all the views added the hierarchy tree of [mainView] will be
+   * attached automatically.
+   *
+   * ##Performance Tips
+   *
+   * The performance is a little better if you compose UI without adding them
+   * to the document first. To do so, you can simply add UI to [mainView] as
+   * the last statement. However, the performance improvement is hardly
+   * observable unless the UI is very complex (such as hundreds of views).
    */
   void onCreate_() {
-  }
-  /**Called after [onCreate_] is called and [mainView] has been
-   * added to the document.
-   *
-   * Tasks that depends on DOM elements can be done in this method.
-   */
-  void onMount_() {
   }
   /** Called when the activity is going into background.
    * For example, it is called when there is an incoming phone call.
