@@ -21,7 +21,7 @@ View _system(Offset pos, num maxsyssize, int rad, [String name]) {
   for (int i = 0; i < subsysnum; i++) {
     int subsyssize = (maxsyssize * (1 + _rand()) / 2).toInt();
     int subrad = (rad * (_rand() * 2 + 1) / 3).toInt();
-    num subdist = subsyssize + (maxsyssize - subsyssize) * 1.5 * _rand();
+    num subdist = subsyssize + (maxsyssize - subsyssize) * 3 * _rand();
     num subarg = _rand() * Math.PI * 2;
     Offset subpos = new Offset(subdist * Math.cos(subarg), subdist * Math.sin(subarg));
     View subsys = _system(subpos, subsyssize, subrad);
@@ -64,11 +64,12 @@ View _line(Offset pos, [num span = 1]) {
   return lv;
 }
 
-int _cnt = 0;
+int _v = 0;
 double _rand() {
   num r = 0;
-  for (int v in new SHA1().update([new Date.now().millisecondsSinceEpoch + _cnt++]).digest())
+  for (int v in new SHA1().update([new Date.now().millisecondsSinceEpoch + _v]).digest())
     r = (r + v) / 2;
+  _v = (r * 1000).toInt();
   return r % 1;
 }
 
@@ -100,11 +101,10 @@ class StarChartDemo extends Activity {
     final List<Offset> syslocs = [];
     for (; syslocs.length < sysnum;) {
       Offset loc = _rollLoc(range, syssize);
-      //print("try: $loc");
+      // avoid collision (too close) to previously assigned positions
       bool collide = false;
       for (Offset ploc in syslocs) {
-        if (VectorUtil.norm(loc - ploc) < syssize * 2) {
-          //print("collide: $loc, $ploc");
+        if (VectorUtil.norm(loc - ploc) < syssize * 1.5) {
           collide = true;
           break; // comparison loop
         }
@@ -112,7 +112,6 @@ class StarChartDemo extends Activity {
       if (collide)
         continue;
       syslocs.add(loc);
-      //print("success: ${syslocs.length}");
     }
     
     for (int i = 0; i < sysnum; i++)
