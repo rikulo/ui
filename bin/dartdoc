@@ -31,9 +31,8 @@ srcpath=$srcpath/samples/dartdoc/dartdoc.dart
 
 if [ -d $dstdir ] ; then
 	rm -rf $dstdir/*
-else
-	mkdir -p $dstdir
 fi
+mkdir -p $dstdir
 
 dartdoc=$SDK/lib/dartdoc/dartdoc.dart
 if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then

@@ -13,6 +13,9 @@ typedef void ScrollerMove(ScrollerState state);
 /** The callback when [Scroller] ends the scrolling.
  */
 typedef void ScrollerEnd(ScrollerState state);
+/** The callback to snap the given position to, say, a grid line.
+ */
+typedef Offset ScrollerSnap(Offset position);
 
 /** The scroller used to scroll an element by use of its style's
  * transform property.
@@ -25,7 +28,7 @@ interface Scroller default _Scroller {
    * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
    */
   Scroller(Element owner, AsSize viewPortSize, AsSize contentSize,
-    [Element handle, Dir direction, bool scrollbar, Offset snap(Offset position), 
+    [Element handle, Dir direction, bool scrollbar, ScrollerSnap snap, 
       ScrollerStart start, ScrollerMove moving, ScrollerEnd end]);
   // TODO: inertial, bounce
   
@@ -307,7 +310,7 @@ class _Scroller implements Scroller {
   
   _Scroller(this.owner, this._fnViewPortSize, AsSize this._fnContentSize,
   [Element handle, Dir direction = Dir.BOTH, bool scrollbar = true, 
-  Offset snap(Offset off), ScrollerStart start, ScrollerMove moving, ScrollerEnd end]) :
+  ScrollerSnap snap, ScrollerStart start, ScrollerMove moving, ScrollerEnd end]) :
   this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
   _hasHor = direction === Dir.HORIZONTAL || direction === Dir.BOTH,
   _hasVer = direction === Dir.VERTICAL || direction === Dir.BOTH,
@@ -471,7 +474,7 @@ class _BoundedInertialMotion extends Motion {
   _BoundedInertialMotion(Element element, Offset velocity, this.range, 
   this._hor, this._ver, 
   [num friction = 0.0005, num bounce = 0.0002, num snapSpeedThreshold = 0.05,
-  void moving(Offset position, int time), void end(), Offset snap(Offset pos)]) :
+  void moving(Offset position, int time), void end(), ScrollerSnap snap]) :
   this.element = element, this.friction = friction, this.bounce = bounce,
   this.snapSpeedThreshold = snapSpeedThreshold, _moving = moving, _end = end, _snap = snap,
   _pos = new DOMQuery(element).offset, _vel = velocity, super(null) {
