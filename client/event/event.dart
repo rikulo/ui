@@ -15,3 +15,4 @@
 #source("src/PopupEvent.dart");
 #source("src/ChangeEvent.dart");
 #source("src/SelectEvent.dart");
+#source("src/ScrollEvent.dart");
