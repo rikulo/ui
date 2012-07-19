@@ -53,10 +53,37 @@ class ScrollView extends View {
    */
   Scroller newScroller_() => new Scroller(contentNode, 
     () => new DOMQuery(node).innerSize, () => contentSize,
-    direction: direction, snap: _snap);
-
+    direction: direction, snap: _snap, 
+    start: onScrollStart_, moving: onScrollMove_, end: onScrollEnd_);
+  
+  /** Retrieve content node.
+   */
   Element get contentNode() => getNode("inner");
-
+  
+  /** Called when scrolling starts.
+   */
+  bool onScrollStart_(ScrollerState state) {
+    sendEvent(new ScrollEvent("onScrollStart", this, state));
+    return true;
+  }
+  
+  /** Called during scrolling.
+   */
+  void onScrollMove_(ScrollerState state) {
+    sendEvent(new ScrollEvent("onScrollMove", this, state));
+  }
+  
+  /** Called when scrolling ends.
+   */
+  void onScrollEnd_(ScrollerState state) {
+    sendEvent(new ScrollEvent("onScrollEnd", this, state));
+  }
+  
+  /** Return the [Scroller] associated with this scroll view. It is available
+   * after mount.
+   */
+  Scroller get scroller() => _scroller;
+  
   //@Override
   void onPreLayout_() {
     //we have to decide the content size here, since its children might depend on it
