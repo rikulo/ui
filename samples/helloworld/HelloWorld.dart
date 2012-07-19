@@ -9,7 +9,7 @@ class HelloWorld extends Activity {
     title = "Hello World!";
 
     TextView welcome = new TextView("Hello World!");
-    welcome.profile.text = "anchor:  parent; location: center center";
+    welcome.profile.location = "center center";
     welcome.on.click.add((event) {
       welcome.text = "Hi, this is Rikulo.";
       welcome.style.border = welcome.style.border.isEmpty() ? "1px solid blue": "";

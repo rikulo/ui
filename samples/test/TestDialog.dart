@@ -8,7 +8,7 @@ class TestDialog extends Activity {
 
   void onCreate_() {
     Button btn = new Button("Open a dialog");
-    btn.profile.text = "anchor: parent; location: center left";
+    btn.profile.location = "center left";
     btn.on.click.add((event) {
       View dlg = new TextView("Clicked me to close");
       dlg.style.cssText = "text-align: center; padding-top: 20px";
@@ -22,7 +22,7 @@ class TestDialog extends Activity {
     mainView.addChild(btn);
 
     btn = new Button("Replace the main View");
-    btn.profile.text = "anchor: parent; location: center right";
+    btn.profile.location = "center right";
     btn.on.click.add((event) {
       mainView = new TextView.html("<h1>New Main View</h1><p>The main view has been replaced</p>");
     });

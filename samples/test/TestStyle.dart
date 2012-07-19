@@ -26,10 +26,10 @@ class TestStyle extends Activity {
 
     View view = new View();
     view.profile.text =
-      "anchor: parent; location: center center; width: 80%; height: 80%";
+      "location: center center; width: 80%; height: 80%";
     view.classes.add("subject");
     Button btn = new Button("Click Me!");
-    btn.profile.text = "anchor: parent; location: center center";
+    btn.profile.text = "location: center center";
     btn.on.click.add((event) {
       style.content = style.content == style1 ? style2: style1;
     });

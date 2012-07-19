@@ -11,7 +11,7 @@ class CustomLayoutDemo extends Activity {
     title = "Custom Layout Demo";
 
     TextView text = new TextView("Touch Anywhere You like");
-    text.profile.text = "anchor:  parent; location: center center";
+    text.profile.text = "location: center center";
     mainView.addChild(text);
     mainView.on.click.add((ViewEvent event) {
       if (anchor == null)

@@ -18,7 +18,7 @@ class ListViewDemo extends Activity {
         return new Offset(off.x, y);
       });
     view.profile.text =
-      "anchor: parent; location: center center; width: 80%; height: 80%";
+      "location: center center; width: 80%; height: 80%";
     view.classes.add("list-view");
 
     for (int x = 0; x < 50; ++x) {

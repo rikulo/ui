@@ -31,7 +31,6 @@ View _system(Offset pos, num maxsyssize, int rad, [String name]) {
   
   if (name != null) {
     TextView tv = new TextView(name);
-    tv.profile.anchor = "parent";
     tv.profile.location = "south center";
     tv.style.color = "#CCCCCC";
     tv.style.paddingTop = CSS.px(rad);
@@ -90,8 +89,7 @@ class StarChartDemo extends Activity {
 
     final Size range = new Size(1500, 1500);
     final View view = new ScrollView(contentSize: range);
-    view.profile.text =
-      "anchor: parent; location: center center; width: 80%; height: 80%";
+    view.profile.text = "location: center center; width: 80%; height: 80%";
     view.classes.add("star-chart");
     
     final int sysnum = 30 + (10 * _rand()).toInt();

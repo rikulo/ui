@@ -22,7 +22,7 @@ class TestDrag extends Activity {
     View box = new View();
     box.classes.add("drag");
     box.profile.text =
-      "anchor: parent; location: center center; width: 70%; height: 70%";
+      "location: center center; width: 70%; height: 70%";
     parent.addChild(box);
 
     View view = _createDragView(box, "Boxed Drag");

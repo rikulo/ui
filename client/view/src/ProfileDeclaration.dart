@@ -12,11 +12,12 @@ default ProfileDeclarationImpl {
   /** The anchor, or null if [anchorView] was assigned and it isn't
    * assigned with an ID.
    *
-   * Syntax: `anchor: auto | a_CSS_selector | parent`
+   * Syntax: `anchor: | a_CSS_selector | parent`
    *
-   * Default: `auto`.
-   *
-   * If `auto`, the position is decided by parent's layout.
+   * Default: *an empty string*.  
+   * It measn parent if [location] is specified.  
+   * Otherwise, it means no anchor at all if both [location] and [anchor]
+   * are empty (and [anchorView] is null).
    */
   String anchor;
   /** The anchor view. There are two ways to assign an achor view:
@@ -33,7 +34,8 @@ default ProfileDeclarationImpl {
    * It is used only if [anchor] is not assigned with an non-empty value
    * (or [anchorView] is assigned with a view).
    *
-   * Default: `top left`
+   * Default: *an empty string*.
+   * It means `top left`, if [anchor] or [anchorView] is specified, 
    *
    * It can be one of the following.  
    * "north start", "north center", "north end",
@@ -50,12 +52,14 @@ default ProfileDeclarationImpl {
    *
    * Syntax: `align: start | center | end`
    *
-   * Default: `start`
+   * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    */
   String align;
   /** The spacing of the associated view.
    *
    * Syntax: `#n1 [#n2 [#n3 #n4]]`
+   *
+   * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    */
   String spacing;
 
@@ -63,14 +67,14 @@ default ProfileDeclarationImpl {
    *
    * Syntax: `width: #n | content | flex | flex #n | #n %`
    *
-   * Default: `content`.
+   * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    */
   String width;
   /** The expected width of the associated view.
    *
    * Syntax: `height: #n | content | flex | flex #n | #n %`
    *
-   * Default: `content`.
+   * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    */
   String height;
 
@@ -78,7 +82,7 @@ default ProfileDeclarationImpl {
    *
    * Syntax: `min-width: #n | flex | #n %`
    *
-   * Default: no limitation.
+   * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
    * Currently, it is supported only by [TextView], [Image] and their derives,
    * when the width is being measured (i.e., the width depends on content).
@@ -92,7 +96,7 @@ default ProfileDeclarationImpl {
    *
    * Syntax: `min-height: #n | flex | #n %`
    *
-   * Default: no limitation.
+   * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
    * Currently, it is supported only by [TextView], [Image] and their derives,
    * when the height is being measured (i.e., the height depends on content).
@@ -107,7 +111,7 @@ default ProfileDeclarationImpl {
    *
    * Syntax: `max-width: #n | flex | #n %`
    *
-   * Default: no limitation.
+   * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
    * Currently, it is supported only by [TextView], [Image] and their derives,
    * when the width is being measured (i.e., the width depends on content).
@@ -121,7 +125,7 @@ default ProfileDeclarationImpl {
    *
    * Syntax: `max-height: #n | flex | #n %`
    *
-   * Default: no limitation.
+   * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
    * Currently, it is supported only by [TextView], [Image] and their derives,
    * when the height is being measured (i.e., the height depends on content).

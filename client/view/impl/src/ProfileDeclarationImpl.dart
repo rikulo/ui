@@ -20,7 +20,10 @@ implements ProfileDeclaration {
   }
 
   View get anchorView() {
-    return _anchorView !== null ? _anchorView: _owner.query(anchor);
+    String anc;
+    return _anchorView !== null ? _anchorView:
+      (anc = anchor).isEmpty() ?
+        location.isEmpty() ? null: _owner.parent: _owner.query(anc);
   }
   void set anchorView(View view) {
     String av;

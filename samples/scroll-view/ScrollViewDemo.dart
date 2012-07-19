@@ -10,8 +10,7 @@ class ScrollViewDemo extends Activity {
     title = "ScrollView Demo";
 
     final ScrollView view = new ScrollView();
-    view.profile.text =
-      "anchor: parent; location: center center; width: 80%; height: 80%";
+    view.profile.text = "location: center center; width: 80%; height: 80%";
     view.classes.add("scroll-view");
 
     for (int x = 0; x < 30; ++x) {
