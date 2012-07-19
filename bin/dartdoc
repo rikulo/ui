@@ -41,16 +41,15 @@ fi
 PATH=$PATH:$SDK/bin
 dart.exe $dartdoc $srcpath
 
-echo Process HTML files at $dstdir
 cd $dstdir
+echo Process HTML files at $(pwd)
 libdir=../bin/lib
 
 #Fix the redundant page: _____.html
 rm -rf _____.html
 if [ -f nav.json ] ; then
 	sed -f $libdir/nav.json.sed nav.json > dd.tmp
-	rm -f nav.json
-	mv dd.tmp nav.json
+	mv -f dd.tmp nav.json
 else
 	echo nav.json not found
 fi
