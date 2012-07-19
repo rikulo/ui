@@ -1,9 +1,9 @@
 s|<h4><a href="_____.html">_____</a></h4>||
-s|<title>.*</title>|<title>API Reference \| Rikulo</title>|
+s|Dart Documentation</title>|API Reference / Rikulo</title>|
 s|<link rel="shortcut icon"[^>]*>|<link rel="shortcut icon" type="image/ico" href="http://rikulo.org/resource/img/favicon.ico" />|
-s|<h2>Dart Documentation</h2>|<h2>Rikulo Dart Documentation</h2>|
-s|<a href="index.html"><div class="logo"></div></a>||
-s|<a href="index.html">Dart Documentation</a>|<a href="http://rikulo.org" style="padding-left:30px;font-size:130%">Rikulo</a>|
+s|<h2>Dart Documentation</h2>|<h2>Rikulo API Reference</h2>|
+s|<a href=".*index.html"><div class="logo"></div></a>|<a href="http://rikulo.org"><img src="http://rikulo.org/resource/img/rikulo_api_logo.png" align="center"/></a>|
+s|Dart Documentation</a>|API Reference</a>|
 s|</head>|<script type="text/javascript">\
   var _gaq = _gaq \|\| [];\
   _gaq.push(['_setAccount', 'UA-33293682-1']);\

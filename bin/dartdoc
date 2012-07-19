@@ -26,7 +26,6 @@ if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
   srcpath=$(cygpath -u $srcpath)
 fi
 dstdir=$srcpath/docs
-libdir=$srcpath/bin/lib
 srcpath=$srcpath/samples/dartdoc/dartdoc.dart
 
 if [ -d $dstdir ] ; then
@@ -42,19 +41,42 @@ fi
 PATH=$PATH:$SDK/bin
 dart.exe $dartdoc $srcpath
 
+echo Process HTML files at $dstdir
+cd $dstdir
+libdir=../bin/lib
+
 #Fix the redundant page: _____.html
-rm -rf $dstdir/_____.html
-if [ -f $dstdir/nav.json ] ; then
-	sed -f $libdir/nav.json.sed $dstdir/nav.json > $dstdir/dd.tmp
-	rm -f $dstdir/nav.json
-	mv $dstdir/dd.tmp $dstdir/nav.json
+rm -rf _____.html
+if [ -f nav.json ] ; then
+	sed -f $libdir/nav.json.sed nav.json > dd.tmp
+	rm -f nav.json
+	mv dd.tmp nav.json
 else
-	echo $dstdir/nav.json not found
+	echo nav.json not found
 fi
-if [ -f $dstdir/index.html ] ; then
-	sed -f $libdir/index.html.sed $dstdir/index.html > $dstdir/dd.tmp
-	rm -f $dstdir/index.html
-	mv $dstdir/dd.tmp $dstdir/index.html
+
+function doHTML {
+	sedfl=$1
+	if [ ! -f $sedfl ] ; then
+		echo $sedfl not found
+		exit
+	fi
+	for f in *; do
+		if [ -d $f ] ; then
+			(
+			echo Process $f
+			cd $f
+			doHTML ../$sedfl
+			)
+		elif [ ${f%.html} != $f ] ; then
+			sed -f $sedfl $f > dd.tmp
+			mv -f dd.tmp $f
+		fi
+	done
+}
+
+if [ -f index.html ] ; then
+	doHTML ../bin/lib/index.html.sed
 else
-	echo $dstdir/index.html not found
+	echo index.html not found in $(pwd)
 fi
