@@ -19,19 +19,18 @@ class ListViewDemo extends Activity {
       });
     view.profile.text =
       "anchor: parent; location: center center; width: 80%; height: 80%";
-    view.classes.add("scroll-view");
-    view.style.backgroundColor = "#AAAAAA";
+    view.classes.add("list-view");
 
     for (int x = 0; x < 50; ++x) {
-      View child = new TextView("Row $x");
+      View child = new TextView("Row ${x + 1}");
       
-      final String color = CSS.color(250 - x * 4, 250, 200);
+      final int height = 50;
       child.classes.add("list-item");
-      child.style.cssText = "line-height: 50px";
+      child.style.cssText = "line-height: ${height}px";
       child.style.userSelect = "none";
       child.profile.width = "flex";
-      child.top = x * 50;
-      child.height = 50;
+      child.top = x * height;
+      child.height = height;
       
       view.addChild(child);
     }
