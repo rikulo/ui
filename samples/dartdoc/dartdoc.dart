@@ -25,3 +25,5 @@
 #import("../../client/view/view.dart");
 #import("../../client/view/impl/impl.dart");
 #import("../../client/view/select/select.dart");
+
+void main() {}
