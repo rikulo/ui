@@ -408,6 +408,7 @@ class _Scroller implements Scroller {
   void set scrollPosition(Offset position) => scrollTo(position, false);
   
   void scrollTo(Offset position, [bool animate = true]) {
+    position = position * -1;
     stop();
     if (animate) {
       _stm = new _ScrollToMotion(this, scrollPosition, position);

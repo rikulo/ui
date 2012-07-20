@@ -97,6 +97,23 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
    * The event is an instance of [ViewEvent].
    */
   ViewEventListenerList get unmount();
+  
+  /** A list of event listeners for indicating the start of a scrolling.
+   * The event is an instance of [ScrollEvent].
+   */
+  ViewEventListenerList get scrollStart();
+  
+  /** A list of event listeners for indicating the moving of a scrolling.
+   * The event is an instance of [ScrollEvent]. This event will be continuously
+   * fired at each iteration where the scroll position is updated.
+   */
+  ViewEventListenerList get scrollMove();
+  
+  /** A list of event listeners for indicating the end of a scrolling.
+   * The event is an instance of [ScrollEvent].
+   */
+  ViewEventListenerList get scrollEnd();
+  
 }
 
 /** An implementation of [ViewEventListenerList].
@@ -165,4 +182,9 @@ class _ViewEvents extends _ViewEventListenerMap implements ViewEvents {
   ViewEventListenerList get check() => _get("check");
   ViewEventListenerList get select() => _get("select");
   ViewEventListenerList get render() => _get("render");
+  
+  ViewEventListenerList get scrollStart() => _get("scrollStart");
+  ViewEventListenerList get scrollMove() => _get("scrollMove");
+  ViewEventListenerList get scrollEnd() => _get("scrollEnd");
+  
 }

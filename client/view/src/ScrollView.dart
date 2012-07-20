@@ -20,7 +20,12 @@ class ScrollView extends View {
 
   //@Override
   String get className() => "ScrollView"; //TODO: replace with reflection if Dart supports it
-
+  
+  /** Return the view port size, which is determined by the inner size of the
+   * node.
+   */
+  Size get viewPortSize() => new DOMQuery(node).innerSize;
+  
   /** Returns the total size of the content.
    * It shall cover all sub views (excluding invisible, anchored views).
    * In other words, it is the total size that the user can scroll.
@@ -52,7 +57,7 @@ class ScrollView extends View {
   /** Instantiates and returns the scroller.
    */
   Scroller newScroller_() => new Scroller(contentNode, 
-    () => new DOMQuery(node).innerSize, () => contentSize,
+    () => viewPortSize, () => contentSize,
     direction: direction, snap: _snap, 
     start: onScrollStart_, moving: onScrollMove_, end: onScrollEnd_);
   
@@ -63,20 +68,20 @@ class ScrollView extends View {
   /** Called when scrolling starts.
    */
   bool onScrollStart_(ScrollerState state) {
-    sendEvent(new ScrollEvent("onScrollStart", this, state));
+    sendEvent(new ScrollEvent("scrollStart", this, state));
     return true;
   }
   
   /** Called during scrolling.
    */
   void onScrollMove_(ScrollerState state) {
-    sendEvent(new ScrollEvent("onScrollMove", this, state));
+    sendEvent(new ScrollEvent("scrollMove", this, state));
   }
   
   /** Called when scrolling ends.
    */
   void onScrollEnd_(ScrollerState state) {
-    sendEvent(new ScrollEvent("onScrollEnd", this, state));
+    sendEvent(new ScrollEvent("scrollEnd", this, state));
   }
   
   /** Return the [Scroller] associated with this scroll view. It is available
