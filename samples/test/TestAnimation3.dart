@@ -116,7 +116,7 @@ class TestAnimation3 extends Activity {
       }
       Offset unitv = vel / speed;
       Offset pos = new DOMQuery(element).offset;
-      inertialMotion = new Motion(moving: (MotionState mstate) {
+      inertialMotion = new Motion(move: (MotionState mstate) {
         int elapsed = mstate.elapsedTime;
         pos += unitv * speed * elapsed;
         if (pos.x < range.left || pos.x > range.right) {

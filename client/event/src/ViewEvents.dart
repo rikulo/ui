@@ -103,7 +103,7 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
    */
   ViewEventListenerList get scrollStart();
   
-  /** A list of event listeners for indicating the moving of a scrolling.
+  /** A list of event listeners for indicating the move of a scrolling.
    * The event is an instance of [ScrollEvent]. This event will be continuously
    * fired at each iteration where the scroll position is updated.
    */

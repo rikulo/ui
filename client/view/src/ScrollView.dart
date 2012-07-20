@@ -59,7 +59,7 @@ class ScrollView extends View {
   Scroller newScroller_() => new Scroller(contentNode, 
     () => viewPortSize, () => contentSize,
     direction: direction, snap: _snap, 
-    start: onScrollStart_, moving: onScrollMove_, end: onScrollEnd_);
+    start: onScrollStart_, move: onScrollMove_, end: onScrollEnd_);
   
   /** Retrieve content node.
    */

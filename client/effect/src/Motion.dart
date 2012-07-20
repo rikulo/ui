@@ -85,7 +85,7 @@ class Motion {
   static final _MOTION_STATE_PAUSED = 2;
   
   final MotionStart _start;
-  final MotionMove _moving;
+  final MotionMove _move;
   final MotionEnd _end;
   AnimatorTask _task;
   
@@ -93,8 +93,8 @@ class Motion {
   int _stateFlag = _MOTION_STATE_INIT;
   var data;
   
-  Motion([MotionStart start, MotionMove moving, MotionEnd end, bool autorun = true]) : 
-    _start = start, _moving = moving, _end = end {
+  Motion([MotionStart start, MotionMove move, MotionEnd end, bool autorun = true]) : 
+    _start = start, _move = move, _end = end {
     
     _task = (int time, int elapsed) {
       if (_stateFlag == _MOTION_STATE_INIT) {
@@ -109,7 +109,7 @@ class Motion {
             _state._resume(time);
             onResume(_state);
           }
-          bool cont = onMoving(_state);
+          bool cont = onMove(_state);
           if (cont == null)
             cont = true;
           if (!cont) {
@@ -151,8 +151,8 @@ class Motion {
   /**
    * Called in each animator iteration, when the motion is at running state.
    */
-  bool onMoving(MotionState state) => 
-      _moving == null || _moving(state);
+  bool onMove(MotionState state) => 
+      _move == null || _move(state);
   
   /**
    * Called after the runner returns false. Calling stop() will not invoke this function.

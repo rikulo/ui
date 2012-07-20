@@ -105,7 +105,7 @@ class Switch extends View implements Input<bool> {
         state.data = CSS.intOf(_bgNode.style.marginLeft) - _marginDiff;
         return state.gesture.owner;
       },
-      moving: (state) {
+      move: (state) {
         _updateBg(state.delta.x + state.data);
         return false;
       },

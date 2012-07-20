@@ -29,7 +29,7 @@ interface Scroller default _Scroller {
    */
   Scroller(Element owner, AsSize viewPortSize, AsSize contentSize,
     [Element handle, Dir direction, bool scrollbar, ScrollerSnap snap, 
-      ScrollerStart start, ScrollerMove moving, ScrollerEnd end]);
+      ScrollerStart start, ScrollerMove move, ScrollerEnd end]);
   // TODO: inertial, bounce
   
   /** Stop current scrolling.
@@ -298,7 +298,7 @@ class _Scroller implements Scroller {
   final bool _hasHor, _hasVer;
   final bool scrollbar;
   final ScrollerStart _start;
-  final ScrollerMove _moving;
+  final ScrollerMove _move;
   final ScrollerEnd _end;
   final AsSize _fnContentSize, _fnViewPortSize;
   
@@ -310,23 +310,23 @@ class _Scroller implements Scroller {
   
   _Scroller(this.owner, this._fnViewPortSize, AsSize this._fnContentSize,
   [Element handle, Dir direction = Dir.BOTH, bool scrollbar = true, 
-  ScrollerSnap snap, ScrollerStart start, ScrollerMove moving, ScrollerEnd end]) :
+  ScrollerSnap snap, ScrollerStart start, ScrollerMove move, ScrollerEnd end]) :
   this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
   _hasHor = direction === Dir.HORIZONTAL || direction === Dir.BOTH,
   _hasVer = direction === Dir.VERTICAL || direction === Dir.BOTH,
-  _start = start, _moving = moving, _end = end {
+  _start = start, _move = move, _end = end {
     
     _dg = new DragGesture(this.owner, handle: handle,
     start: (DragGestureState state) => onStart(state.time) ? owner : null, // TODO: stop _stm
-    moving: (DragGestureState state) { 
-      onMoving(_state.startPosition + state.delta, state.time);
+    move: (DragGestureState state) { 
+      onMove(_state.startPosition + state.delta, state.time);
       return true; // custom movning handling
     }, end: (DragGestureState state) {
       final Offset pos = new DOMQuery(owner).offset;
       final Rectangle range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
-        _hor, _ver, moving: onMoving, end: onEnd, snap: snap);
+        _hor, _ver, move: onMove, end: onEnd, snap: snap);
       return true; // custom movning handling
     });
     
@@ -353,12 +353,12 @@ class _Scroller implements Scroller {
     return res == null || res;
   }
   
-  void onMoving(Offset position, int time) {
+  void onMove(Offset position, int time) {
     _state.snapshot(position, time);
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.move, _state);
-    if (_moving != null)
-      _moving(_state);
+    if (_move != null)
+      _move(_state);
     _applyPosition(position);
   }
   
@@ -415,7 +415,7 @@ class _Scroller implements Scroller {
     } else {
       int time = new Date.now().millisecondsSinceEpoch;
       onStart(time); // TODO: interrupt drag?
-      onMoving(position, time);
+      onMove(position, time);
       onEnd();
     }
   }
@@ -456,7 +456,7 @@ class _ScrollToMotion extends EasingMotion {
   });
   
   bool doAction_(num x, MotionState state) {
-    _scroller.onMoving(_initPos + _diffPos * x, state.currentTime);
+    _scroller.onMove(_initPos + _diffPos * x, state.currentTime);
     return true;
   }
   
@@ -468,16 +468,16 @@ class _BoundedInertialMotion extends Motion {
   final Element element;
   final num friction, bounce, snapSpeedThreshold;
   final Rectangle range;
-  final Function _moving, _end, _snap;
+  final Function _move, _end, _snap;
   Offset _pos, _vel;
   Motion _snapMotion;
   
   _BoundedInertialMotion(Element element, Offset velocity, this.range, 
   this._hor, this._ver, 
   [num friction = 0.0005, num bounce = 0.0002, num snapSpeedThreshold = 0.05,
-  void moving(Offset position, int time), void end(), ScrollerSnap snap]) :
+  void move(Offset position, int time), void end(), ScrollerSnap snap]) :
   this.element = element, this.friction = friction, this.bounce = bounce,
-  this.snapSpeedThreshold = snapSpeedThreshold, _moving = moving, _end = end, _snap = snap,
+  this.snapSpeedThreshold = snapSpeedThreshold, _move = move, _end = end, _snap = snap,
   _pos = new DOMQuery(element).offset, _vel = velocity, super(null) {
     if (!_hor)
       _vel.x = 0;
@@ -485,7 +485,7 @@ class _BoundedInertialMotion extends Motion {
       _vel.y = 0;
   }
   
-  bool onMoving(MotionState state) {
+  bool onMove(MotionState state) {
     final num speed = VectorUtil.norm(_vel);
     final Offset dir = speed == 0 ? new Offset(0, 0) : _vel / speed;
     final Offset dec = dir * friction;
@@ -496,8 +496,8 @@ class _BoundedInertialMotion extends Motion {
       _pos.y = _updatePosition(_pos.y, _vel.y, dec.y, state.elapsedTime, range.y, range.bottom);
     
     _applyPosition(_pos);
-    if (_moving != null)
-      _moving(_pos, state.currentTime);
+    if (_move != null)
+      _move(_pos, state.currentTime);
     
     if (_hor)
       _vel.x = _updateVelocity(_pos.x, _vel.x, dec.x, state.elapsedTime, range.x, range.right);
@@ -514,9 +514,9 @@ class _BoundedInertialMotion extends Motion {
   void onEnd(MotionState state) {
     if (_snapTo != null) {
       _snapMotion = new LinearPositionMotion(element, _pos, _snapTo,
-      moving: (MotionState ms, Offset pos, num x) {
-        if (_moving != null)
-          _moving(pos, ms.currentTime);
+      move: (MotionState ms, Offset pos, num x) {
+        if (_move != null)
+          _move(pos, ms.currentTime);
       }, end: (MotionState ms) {
         if (_end != null)
           _end();

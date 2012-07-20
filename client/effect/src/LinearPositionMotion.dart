@@ -3,12 +3,12 @@
 //Author: simon
 
 /**
- * An [EasingMotion] with action of moving an [Element] along a linear trajectory.
+ * An [EasingMotion] with action of move an [Element] along a linear trajectory.
  */
 class LinearPositionMotion extends EasingMotion {
   
   final Element element;
-  final Function _movingCB;
+  final Function _moveCB;
   final Offset origin, destination, _diff; 
   Offset _pos;
   
@@ -19,19 +19,19 @@ class LinearPositionMotion extends EasingMotion {
    */
   LinearPositionMotion(Element element, Offset origin, Offset destination, 
     [EasingFunction easing, String mode = "once", int duration = 500, MotionStart start, 
-    bool moving(MotionState state, Offset position, num x), 
+    bool move(MotionState state, Offset position, num x), 
     MotionEnd end, bool autorun = true]) :
     this.element = element, this.origin = origin, this.destination = destination, 
-    _diff = destination - origin, _movingCB = moving, 
+    _diff = destination - origin, _moveCB = move, 
     super(null, easing, mode, duration, start, end, autorun);
   
   bool doAction_(num x, MotionState state) {
     _pos = _diff * x + origin;
     element.style.left = CSS.px(_pos.left);
     element.style.top = CSS.px(_pos.top);
-    if (_movingCB == null)
+    if (_moveCB == null)
       return true;
-    bool result = _movingCB(state, _pos, x);
+    bool result = _moveCB(state, _pos, x);
     return result == null || result;
   }
   

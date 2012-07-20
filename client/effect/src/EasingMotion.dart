@@ -35,7 +35,7 @@ class EasingMotion extends Motion {
    */
   bool doAction_(num x, MotionState state) => action(x);
   
-  bool onMoving(MotionState state) {
+  bool onMove(MotionState state) {
     int curr = _easingInput(state.runningTime);
     final bool result = doAction_(doEasing_(curr / duration), state);
     return (mode == "alternate" || mode == "repeat" || curr < duration) && (result == null || result);

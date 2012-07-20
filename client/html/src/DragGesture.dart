@@ -85,7 +85,7 @@ interface DragGesture default _DragGesture {
    * If height is 0, the user can drag only horizontally.
    * If not specified, the whole screen is assumed.
    * If you'd like to limit the dragging to a shape other than rectangle,
-   * you have to specify [moving] and move the dragged element in the shape
+   * you have to specify [move] and move the dragged element in the shape
    * you want (and return true to ignore the default move).
    * Notice that if [transform] is true, the range's width and height shall
    * be negative (since the direction is opposite).
@@ -105,7 +105,7 @@ interface DragGesture default _DragGesture {
    */
   DragGesture(Element owner, [Element handle, bool transform,
     AsRectangle range, int movement,
-    DragGestureStart start, DragGestureMove end, DragGestureMove moving]);
+    DragGestureStart start, DragGestureMove end, DragGestureMove move]);
 
   /** Destroys this [DragGesture].
    * It shall be called to clean up the gesture, if it is no longer used.
@@ -166,7 +166,7 @@ class _DragGestureState implements DragGestureState {
 class _DragGesture implements DragGesture {
   final Element _owner, _handle;
   final DragGestureStart _start;
-  final DragGestureMove _end, _moving;
+  final DragGestureMove _end, _move;
   final AsRectangle _fnRange;
   final int _movement;
   _DragGestureState _state;
@@ -176,18 +176,18 @@ class _DragGesture implements DragGesture {
   factory _DragGesture(Element owner, [Element handle,
     bool transform=false, AsRectangle range, int movement=-1,
     DragGestureStart start, DragGestureMove end,
-    DragGestureMove moving]) {
+    DragGestureMove move]) {
     if (handle === null) handle = owner;
     return browser.touch ?
       new _TouchDragGesture(owner, handle, transform, range, movement,
-        start, end, moving):
+        start, end, move):
       new _MouseDragGesture(owner, handle, transform, range, movement,
-        start, end, moving);
+        start, end, move);
   }
   _DragGesture._init(Element this._owner, Element this._handle,
     bool this._transform, AsRectangle this._fnRange, int this._movement,
     DragGestureStart this._start, DragGestureMove this._end,
-    DragGestureMove this._moving) {
+    DragGestureMove this._move) {
     _listen();
   }
 
@@ -250,7 +250,7 @@ class _DragGesture implements DragGesture {
       }
       if (_state._touched !== null) {
         _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
-          pageX - initPgOfs.x, pageY - initPgOfs.y, time, _moving); 
+          pageX - initPgOfs.x, pageY - initPgOfs.y, time, _move); 
       }
     }
   }
@@ -304,8 +304,8 @@ class _TouchDragGesture extends _DragGesture {
   _TouchDragGesture(Element owner, [Element handle,
     bool transform, AsRectangle range, int movement,
     DragGestureStart start, DragGestureMove end,
-    DragGestureMove moving]):
-    super._init(owner, handle,  transform, range, movement, start, end, moving);
+    DragGestureMove move]):
+    super._init(owner, handle,  transform, range, movement, start, end, move);
 
   void _listen() {
     final ElementEvents on = handle.on;
@@ -347,8 +347,8 @@ class _MouseDragGesture extends _DragGesture {
   _MouseDragGesture(Element owner, [Element handle,
     bool transform, AsRectangle range, int movement,
     DragGestureStart start, DragGestureMove end,
-    DragGestureMove moving]):
-    super._init(owner, handle,  transform, range, movement, start, end, moving);
+    DragGestureMove move]):
+    super._init(owner, handle,  transform, range, movement, start, end, move);
 
   void _stop() {
     if (_captured) {

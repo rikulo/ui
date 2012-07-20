@@ -67,7 +67,7 @@ class TestAnimation2 extends Activity {
         return true;
       Offset unitv = vel / speed;
       Offset pos = new DOMQuery(element).offset;
-      motion = new Motion(moving: (MotionState mstate) {
+      motion = new Motion(move: (MotionState mstate) {
         int elapsed = mstate.elapsedTime;
         pos = range.snap(pos + (unitv * speed * elapsed));
         element.style.left = CSS.px(pos.left.toInt());
