@@ -178,11 +178,11 @@ class Activity {
    * By default, it creates [mainView] (if it was not created yet)
    * and has it to occupies the whole screen.
    *
-   * If the DOM element specified in [containerId] is found, [mainView]
+   * + [containerId] specifies the element's ID that the activity shall be displayed
+   * inside it. If the DOM element specified in [containerId] is found, [mainView]
    * will only occupy the DOM element. It is useful if you'd like
-   * to have multiple activities (i.e., Dart applications) running
-   * at the same time and each of them handles only a portion of the
-   * screen.
+   * to have the activity occuyping only a part of the screen. The DOM element
+   * containing this activity will be stored in [container].
    */
   void run([String containerId="v-main"]) {
     if (activity !== null) //TODO: switching activity (from another activity)
@@ -313,8 +313,9 @@ class _DialogInfo {
   _DialogInfo(View this.dialog, String this.maskClass);
   void createMask(Element parent) {
     if (maskClass !== null) {
+      final Size sz = browser.size;
       _maskNode = new Element.html(
-        '<div class="v- ${maskClass}" style="width:${browser.size.width}px;height:${browser.size.height}px"></div>');
+        '<div class="v- ${maskClass}" style="width:${sz.width}px;height:${sz.height}px"></div>');
       if (activity.container !== null) {
         _maskNode.style.position = "absolute";
       }
