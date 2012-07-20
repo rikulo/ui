@@ -13,7 +13,7 @@ class InputSamples extends Activity {
     for (final String type in
     ["text", "password", "multiline", "number", "tel", "date", "color"]) {
       View view = new View();
-      view.layout.text = "type: linear";
+      view.layout.text = "type: linear; align: center; spacing: 0 3";
       mainView.addChild(view);
 
       TextView label = new TextView(type);

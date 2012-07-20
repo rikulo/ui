@@ -26,6 +26,9 @@ body.rikulo {
   position: absolute;
   margin: 0;
 }
+div.v-TextView.v-html {
+  padding: 3px;
+}
 .v-button {
   font-weight: bold;
 }
