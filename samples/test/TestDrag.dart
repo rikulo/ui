@@ -10,12 +10,10 @@ class TestDrag extends Activity {
   void onCreate_() {
     _createBoxedDrag(mainView);
     _createSimpleDrag(mainView);
-  }
+ }
   View _createSimpleDrag(View parent) {
     View view = _createDragView(parent, "Simple Drag");
-    view.on.mount.add((event) {
-      new DragGesture(view.node);
-    });
+    new DragGesture(view.node);
     return view;
   }
   View _createBoxedDrag(View parent) {
@@ -26,14 +24,12 @@ class TestDrag extends Activity {
     parent.addChild(box);
 
     View view = _createDragView(box, "Boxed Drag");
-    view.on.mount.add((event) {
-      final DOMQuery qbox = new DOMQuery(box),
-        qview = new DOMQuery(view);
-      new DragGesture(view.node,
-        range: () => new Rectangle(0, 0,
-          qbox.innerWidth - qview.outerWidth,
-          qbox.innerHeight - qview.outerHeight));
-    });
+    final DOMQuery qbox = new DOMQuery(box),
+      qview = new DOMQuery(view);
+    new DragGesture(view.node,
+      range: () => new Rectangle(0, 0,
+        qbox.innerWidth - qview.outerWidth,
+        qbox.innerHeight - qview.outerHeight));
     return box;
   }
   TextView _createDragView(View parent, String label) {
