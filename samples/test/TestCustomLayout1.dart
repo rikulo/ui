@@ -16,7 +16,10 @@ class TestCustomLayout1 extends Activity {
     view.profile.location = "center center";
     view.profile.width = "70%";
     view.profile.height = "80%";
-    view.on.layout.add((event) {
+    var layoutListner;
+    view.on.layout.add(layoutListner = (event) {
+      view.on.layout.remove(layoutListner); //do only once
+
       TextView txt = new TextView("on.layout: A child at 10%, 10%");
       txt.style.border = "1px solid #663";
       txt.left = view.width ~/ 10;

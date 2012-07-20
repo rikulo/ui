@@ -505,6 +505,7 @@ class View implements Hashable {
       p.insertAdjacentHTML("beforeEnd", html);
 
     _mount();
+    requestLayout();
 
     if (location !== null)
       layoutManager.afterLayout(() {
@@ -545,7 +546,6 @@ class View implements Hashable {
     try {
       _mntInit();
       mount_();
-      requestLayout(descendantOnly: true);
     } finally {
       --_mntCnt;
     }
