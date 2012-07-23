@@ -7,6 +7,7 @@
 #import('../../client/html/html.dart');
 #import('../../client/util/util.dart');
 #import('../../client/event/event.dart');
+#import('../../client/gesture/gesture.dart');
 #import('../../client/effect/effect.dart');
 
 String createColor(num x) {

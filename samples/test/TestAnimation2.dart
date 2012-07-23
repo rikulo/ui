@@ -5,6 +5,7 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/html/html.dart');
+#import('../../client/gesture/gesture.dart');
 #import('../../client/util/util.dart');
 #import('../../client/event/event.dart');
 #import('../../client/effect/effect.dart');

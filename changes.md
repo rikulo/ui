@@ -3,6 +3,7 @@ Rikulo Changes
 
 **July 23, 2012**
 
+* HoldGesture, DragGesture and Scroller are move to the gesture package.
 * RadioGroupRenderer is removed and generalized as HTMLRenderer.
 * DropDownListRenderer is removed and generalized as StringRenderer.
 * Rename Motion/Scroller's onMoving to onMove and moving to move.

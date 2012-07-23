@@ -8,13 +8,8 @@
 
 #import("../view/view.dart");
 #import("../util/util.dart");
-#import("../effect/effect.dart");
 
-#source("src/Animator.dart");
 #source("src/Browser.dart");
 #source("src/CSS.dart");
 #source("src/DOMQuery.dart");
-#source("src/HoldGesture.dart");
-#source("src/DragGesture.dart");
-#source("src/Scroller.dart");
 #source("src/JSUtil.dart");

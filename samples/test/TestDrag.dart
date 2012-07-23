@@ -3,6 +3,7 @@
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/html/html.dart');
+#import('../../client/gesture/gesture.dart');
 #import('../../client/util/util.dart');
 
 class TestDrag extends Activity {

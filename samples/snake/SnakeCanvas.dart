@@ -3,8 +3,8 @@
 #import('dart:html');
 
 #import('../../client/app/app.dart');
-#import('../../client/html/html.dart');
 #import('../../client/view/view.dart');
+#import('../../client/gesture/gesture.dart');
 #import('../../client/effect/effect.dart');
 #import('../../client/event/event.dart');
 

@@ -7,6 +7,7 @@
 #import("dart:html");
 #import("../view/view.dart");
 #import("../html/html.dart");
+#import('../gesture/gesture.dart');
 #import("../util/util.dart");
 
 #source("src/ViewEvent.dart");
