@@ -5,9 +5,9 @@
 interface CameraOptions default _CameraOptions {
   /** The picture quality(0 ~ 100) */
   int quality;
-  /** The picture format(DestinationType) */
+  /** The picture format(see [DestinationType]) */
   int destinationType;
-  /** The picture source(PictureSourceType). */
+  /** The picture source(see [PictureSourceType]). */
   int sourceType;
   /** Whether allows simple editing before selection */
   bool allowEdit;
@@ -17,14 +17,17 @@ interface CameraOptions default _CameraOptions {
   int targetWidth;
   /** Height in pixels (retain scale ratio) */
   int targetHeight;
-  /** Media type(MediaType). Only when sourceType == PictureSourceType.PHOTOLIBRARY or sourceType == PictureSourceType.SAVEDPHOTOALBUM */
+  /** Media type(see [MediaType]). This field is meaningful only when
+   * sourceType == [PictureSourceType.PHOTOLIBRARY] or
+   * sourceType == [PictureSourceType.SAVEDPHOTOALBUM].
+   */
   int mediaType;
   /** Whether rotate the image to correct the orientation */
   bool correctOrientation;
   /** Whether save the image to photo album after capture */
   bool saveToPhotoAlbum;
-  
-  CameraOptions([int quality, 
+
+  CameraOptions([int quality,
       int destinationType,
       int sourceType,
       bool allowEdit,
@@ -59,7 +62,7 @@ class _CameraOptions implements CameraOptions {
   bool saveToPhotoAlbum;
 
   _CameraOptions([
-      int quality = 100, 
+      int quality = 100,
       int destinationType = DestinationType.FILE_URI,
       int sourceType = PictureSourceType.CAMERA,
       bool allowEdit,
@@ -71,6 +74,6 @@ class _CameraOptions implements CameraOptions {
       bool saveToPhotoAlbum]) :
         this.quality = quality, this.destinationType = destinationType, this.sourceType = sourceType,
         this.allowEdit = allowEdit, this.encodingType = encodingType, this.targetWidth = targetWidth,
-        this.targetHeight = targetHeight, this.mediaType = mediaType, 
+        this.targetHeight = targetHeight, this.mediaType = mediaType,
         this.correctOrientation = correctOrientation, this.saveToPhotoAlbum = saveToPhotoAlbum;
 }
