@@ -341,29 +341,29 @@ class _Scroller implements Scroller {
   }
   
   // scrolling mechanism //
-  bool onStart(int time) {
+  bool onStart(int time, [bool noCallback = false]) {
     if (_bim != null)
       _bim.stop();
     _state = new _ScrollerState(this, _fnViewPortSize, _fnContentSize, time);
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.start, _state);
-    if (_start == null)
+    if (noCallback || _start == null)
       return true;
     final bool res = _start(_state);
     return res == null || res;
   }
   
-  void onMove(Offset position, int time) {
+  void onMove(Offset position, int time, [bool noCallback = false]) {
     _state.snapshot(position, time);
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.move, _state);
-    if (_move != null)
+    if (!noCallback && _move != null)
       _move(_state);
     _applyPosition(position);
   }
   
-  void onEnd() {
-    if (_end != null)
+  void onEnd([bool noCallback = false]) {
+    if (!noCallback && _end != null)
       _end(_state);
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.end, _state);
@@ -402,21 +402,21 @@ class _Scroller implements Scroller {
   bool isScrolling() => _state != null;
   
   Offset get scrollPosition() => 
-      _state != null ? _state.position : new DOMQuery(owner).offset;
+      (_state != null ? _state.position : new DOMQuery(owner).offset) * -1;
   
   // control //
   void set scrollPosition(Offset position) => scrollTo(position, false);
   
-  void scrollTo(Offset position, [bool animate = true]) {
+  void scrollTo(Offset position, [bool animate = true]) { // TODO: noCallback
     position = position * -1;
     stop();
     if (animate) {
       _stm = new _ScrollToMotion(this, scrollPosition, position);
     } else {
       int time = new Date.now().millisecondsSinceEpoch;
-      onStart(time); // TODO: interrupt drag?
-      onMove(position, time);
-      onEnd();
+      onStart(time, noCallback: true); // TODO: interrupt drag?
+      onMove(position, time, noCallback: true);
+      onEnd(noCallback: true);
     }
   }
   
@@ -450,13 +450,13 @@ class _ScrollToMotion extends EasingMotion {
   _scroller = scroller, _initPos = initPos, _diffPos = destPos - initPos,
   super(null, start: (MotionState state) {
     // TODO: interrupt?
-    scroller.onStart(state.currentTime);
+    scroller.onStart(state.currentTime, noCallback: true);
   }, end: (MotionState state) {
-    scroller.onEnd();
+    scroller.onEnd(noCallback: true);
   });
   
   bool doAction_(num x, MotionState state) {
-    _scroller.onMove(_initPos + _diffPos * x, state.currentTime);
+    _scroller.onMove(_initPos + _diffPos * x, state.currentTime, noCallback: true);
     return true;
   }
   
