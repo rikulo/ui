@@ -2,9 +2,17 @@
 //History: Mon, Apr 23, 2012  6:02:46 PM
 // Author: tomyeh
 
-/** Renders the given data for the given [RadioGroup].
+/**
+ * A radio group.
  *
- * The simplest implementation is to return a string representing the given data.
+ * ##Events
+ *
+ * + select: an instance of [SelectEvent] indicates the selected item has been changed.
+ *
+ * ##Renderer
+ *
+ * The simplest implementation of a renderer is to return a string representing
+ * the given data.
  * If you'd like more complicated presentation, you can return a HTML fragment
  * (by use of [HTMLFragment.html]).
  *
@@ -14,23 +22,13 @@
  * Notice that the input's id attribute must be `"${group.uuid}-$index"`.
  * In additions, you have to render the selected and disabled attributes correctly.
  */
-typedef HTMLFragment RadioGroupRenderer(
-  RadioGroup group, var data, bool multiple, bool selected, bool disabled, int index);
-
-/**
- * A radio group.
- *
- * ##Events
- *
- * + select: an instance of [SelectEvent] indicates the selected item has been changed.
- */
 class RadioGroup<E> extends View {
   ListModel<E> _model;
   DataEventListener _dataListener;
-  RadioGroupRenderer _renderer;
+  HTMLRenderer _renderer;
   bool _modelSelUpdating = false; //whether it's updating model's selection
 
-  RadioGroup([ListModel<E> model, RadioGroupRenderer renderer]) {
+  RadioGroup([ListModel<E> model, HTMLRenderer renderer]) {
     _renderer = renderer;
     this.model = model;
   }
@@ -97,11 +95,11 @@ class RadioGroup<E> extends View {
    * it as the label of the radio button or check box (depending on if it allows
    * mulitple selection).
    */
-  RadioGroupRenderer get renderer() => _renderer;
+  HTMLRenderer get renderer() => _renderer;
   /** Sets the renderer used to render the given model ([model]).
    * If null, the default implementation is used.
    */
-  void set renderer(RadioGroupRenderer renderer) {
+  void set renderer(HTMLRenderer renderer) {
     if (_renderer !== renderer) {
       _renderer = renderer;
       if (_model !== null)
@@ -133,7 +131,7 @@ class RadioGroup<E> extends View {
     if (_model === null)
       return; //nothing to do
 
-    final RadioGroupRenderer renderer =
+    final HTMLRenderer renderer =
       _renderer !== null ? _renderer: _defRenderer();
     final model = _cast(_model);
     final bool multiple = model.multiple;
@@ -142,7 +140,8 @@ class RadioGroup<E> extends View {
       final obj = _model[i];
       final bool selected = model.isSelected(obj);
       final bool disabled = model is Disables && model.isDisabled(obj);
-      final HTMLFragment hf = renderer(this, obj, multiple, selected, disabled, i);
+      final HTMLFragment hf = renderer(
+        new RenderContext(this, _model, obj, selected, disabled, i));
 
       final AfterMount callback = hf.mount;
       if (callback !== null) {
@@ -171,13 +170,12 @@ class RadioGroup<E> extends View {
     }
   }
   static _cast(var v) => v; //TODO: replace with 'as' when Dart supports it
-  static RadioGroupRenderer _defRenderer() {
+  static HTMLRenderer _defRenderer() {
     if (_$defRenderer === null)
-      _$defRenderer = (RadioGroup group, var data, bool multiple, bool selected, bool disabled, int index)
-      => new HTMLFragment(data);
+      _$defRenderer = (RenderContext context) => new HTMLFragment(context.data);
     return _$defRenderer;
   }
-  static RadioGroupRenderer _$defRenderer;
+  static HTMLRenderer _$defRenderer;
   void _onCheck(int index, bool checked) {
     final Selection<E> selmodel = _cast(_model);
     _modelSelUpdating = true;

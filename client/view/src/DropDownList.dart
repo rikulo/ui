@@ -2,11 +2,6 @@
 //History: Wed, Jun 13, 2012  4:08:37 PM
 // Author: tomyeh
 
-/** Renders the given data for the given [DropDownList].
- */
-typedef String DropDownListRenderer(
-  DropDownList dlist, var data, bool multiple, bool selected, bool disabled, int index);
-
 /**
  * Represents a view that allows the user to select a single item
  * from a drop-down list.
@@ -20,12 +15,12 @@ typedef String DropDownListRenderer(
 class DropDownList<E> extends View {
   DataModel _model;
   DataEventListener _dataListener;
-  DropDownListRenderer _renderer;
+  StringRenderer _renderer;
   int _rows = 1;
   bool _modelSelUpdating = false; //whether it's updating model's selection
   bool _disabled = false, _autofocus = false;
 
-  DropDownList([DataModel model, DropDownListRenderer renderer]) {
+  DropDownList([DataModel model, StringRenderer renderer]) {
     _renderer = renderer;
     this.model = model;
   }
@@ -157,11 +152,11 @@ class DropDownList<E> extends View {
    *
    * The default implementation converts the given data to a string directly.
    */
-  DropDownListRenderer get renderer() => _renderer;
+  StringRenderer get renderer() => _renderer;
   /** Sets the renderer used to render the given model ([model]).
    * If null, the default implementation is used.
    */
-  void set renderer(DropDownListRenderer renderer) {
+  void set renderer(StringRenderer renderer) {
     if (_renderer !== renderer) {
       _renderer = renderer;
       if (_model !== null)
@@ -184,13 +179,13 @@ class DropDownList<E> extends View {
       sendEvent(new ViewEvent("render"));
     }
   }
-  static DropDownListRenderer _defRenderer() {
+  static StringRenderer _defRenderer() {
     if (_$defRenderer === null)
-      _$defRenderer = (DropDownList dlist, var data, bool multiple, bool selected, bool disabled, int index)
-        => HTMLFragment.getHTML(data, false); //handles TreeNode/Map; don't encode
+      _$defRenderer = (RenderContext context) 
+        => HTMLFragment.getHTML(context.data, false); //handles TreeNode/Map; don't encode
     return _$defRenderer;
   }
-  static DropDownListRenderer _$defRenderer;
+  static StringRenderer _$defRenderer;
 
   //@Override
   void mount_() {
@@ -261,7 +256,7 @@ class DropDownList<E> extends View {
       return; //nothing to do
 
     if (_model is ListModel) {
-      final DropDownListRenderer renderer =
+      final StringRenderer renderer =
         _renderer !== null ? _renderer: _defRenderer();
       final ListModel<E> model = _model;
       final bool multiple = _cast(_model).multiple;
@@ -272,7 +267,8 @@ class DropDownList<E> extends View {
         out.add('<option');
         _renderAttrs(out, selected, disabled);
         out.add('>')
-          .add(StringUtil.encodeXML(renderer(this, obj, multiple, selected, disabled, i)))
+          .add(StringUtil.encodeXML(renderer(
+            new RenderContext(this, _model, obj, selected, disabled, i))))
           .add('</option>');
         //Note: Firefox doesn't support <option label="xx">
       }
@@ -284,14 +280,15 @@ class DropDownList<E> extends View {
     }
   }
   void _renderTree(StringBuffer out, TreeModel<E> model,
-  DropDownListRenderer renderer, var node, int parentIndex) {
+  StringRenderer renderer, var node, int parentIndex) {
     final bool multiple = _cast(_model).multiple;
     for (int i = 0, len = model.getChildCount(node); i < len; ++i) {
       final E child = model.getChild(node, i);
       final bool selected = _cast(_model).isSelected(child);
       final bool disabled = _model is Disables && _cast(_model).isDisabled(child);
       final String label =
-        StringUtil.encodeXML(renderer(this, child, multiple, selected, disabled, i));
+        StringUtil.encodeXML(renderer(
+          new RenderContext(this, _model, child, selected, disabled, i)));
       if (model.isLeaf(child)) {
         out.add('<option');
         _renderAttrs(out, selected, disabled);

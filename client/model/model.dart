@@ -4,6 +4,7 @@
 #library("rikulo:model");
 
 #import("../util/util.dart");
+#import("../view/view.dart");
 
 #source("src/Selection.dart");
 #source("src/Disables.dart");
@@ -22,3 +23,4 @@
 #source("src/DefaultTreeModel.dart");
 #source("src/TreeNode.dart");
 #source("src/DefaultTreeNode.dart");
+#source("src/Renderer.dart");
