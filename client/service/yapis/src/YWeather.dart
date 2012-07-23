@@ -10,13 +10,14 @@ class YWeather {
   Map _channel; //cached channel if not expired yet.
   int _expireTime = 0;
   GFeed _feeder;
-  
+
   final String woeid;
   String _unit;
   String get unit() => _unit;
-  
+
   /**
    * Yahoo Weather for a woeid.
+   *
    * + [woeid] - The Yahoo woeid(Where On Earth ID) that represent a place; can use YPlaceFinder to get woeid.
    * + [unit] - Temperature unit; "c" for Celsius or "f" for Fahrenheit; default to "f".
    */
@@ -30,11 +31,11 @@ class YWeather {
       unit = "f";
     _unit = unit;
   }
-  
+
   /** Load Weather information in a Map via callback function [success].
    * See <http://developer.yahoo.com/weather/> for details.
-   * 
-   * Note that YWeather will return you the cached weather information if the information is 
+   *
+   * Note that YWeather will return you the cached weather information if the information is
    * not expired yet unless you force it to re-load from the internet.
    *
    * + [success(Map channel)] - Callback function if successfully get the Weather information.
@@ -43,7 +44,7 @@ class YWeather {
   void loadWeatherInfo(YWeatherSuccessCallback success, [bool force = false]) {
     //return cached channel if not expired yet!
     int now = new Date.now().millisecondsSinceEpoch;
-    if (!force && _channel !== null && now < _expireTime) { 
+    if (!force && _channel !== null && now < _expireTime) {
       success(_channel);
       return;
     }

@@ -20,7 +20,7 @@ interface Device {
   Accelerometer get accelerometer();
   /** The camera of this device.*/
   Camera get camera();
-  /** The capture. */
+  /** The capture facility for audio/image/video of this device. */
   Capture get capture();
   /** The compass of this device. */
   Compass get compass();
@@ -41,17 +41,17 @@ interface Device {
  * you shall instantiate it before invoking this method, such as
  *
  *     new FooApplication();
- *     initSimulator();
+ *     enableDeviceAccess();
  *
  * This method can be called multiple times, but the second invocation
  * will be ignored.
  *
- * + [serviceURI] the URI of the device access service uri; e.g. "cordova.js".
- * + [serviceNames] the name of the services you want to enable; e.g. "accelerometer", 
- * "camera", "capture", "compass", "connection", "contacts", "geolocation", "notification"; 
- *  default enable all device services. 
+ * + [serviceURI] - the URI of the device access service uri; e.g. "cordova.js".
+ * + [serviceNames] - the name of the services you want to enable; e.g. "accelerometer",
+ * "camera", "capture", "compass", "connection", "contacts", "geolocation", "notification";
+ *  default enable all device services.
  */
-void enableDeviceAccess([String serviceURI = "cordova.js", 
+void enableDeviceAccess([String serviceURI = "cordova.js",
   List<String> serviceNames = const ["accelerometer", "camera", "capture", "compass", "connection", "contacts", "geolocation", "notification"]]) {
   //Initilize Cordova device if not in simulator
   if (device === null) {
