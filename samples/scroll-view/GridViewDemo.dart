@@ -6,7 +6,7 @@
 #import('../../client/util/util.dart');
 #import('../../client/event/event.dart');
 
-class LinkedScrollViewDemo extends Activity {
+class GridViewDemo extends Activity {
 
   void onCreate_() {
     title = "Linked ScrollView Demo";
@@ -106,5 +106,5 @@ class LinkedScrollViewDemo extends Activity {
 }
 
 void main() {
-  new LinkedScrollViewDemo().run();
+  new GridViewDemo().run();
 }
