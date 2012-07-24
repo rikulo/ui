@@ -11,4 +11,4 @@
 #source("src/Animator.dart");
 #source("src/Motion.dart");
 #source("src/EasingMotion.dart");
-#source("src/LinearPositionMotion.dart");
+#source("src/LinearPathMotion.dart");
