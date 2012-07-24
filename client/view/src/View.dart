@@ -13,7 +13,7 @@ typedef void AfterMount(View view);
 
 /**
  * A view represents the basic building block for user interface.
- * A view defines a rectangular area on the screen and the
+ * A view occupies a rectangular area on the screen and the
  * interfaces for managing the content and event handling in the area.
  *
  * ##ID Space
