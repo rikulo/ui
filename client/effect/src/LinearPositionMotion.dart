@@ -5,7 +5,7 @@
 /**
  * An [EasingMotion] with action of move an [Element] along a linear trajectory.
  */
-class LinearPositionMotion extends EasingMotion {
+class LinearPathMotion extends EasingMotion {
   
   final Element element;
   final Function _moveCB;
@@ -17,7 +17,7 @@ class LinearPositionMotion extends EasingMotion {
    * +[origin] is the starting offset of the element.
    * +[destination] is the goal offset of the movement.
    */
-  LinearPositionMotion(Element element, Offset origin, Offset destination, 
+  LinearPathMotion(Element element, Offset origin, Offset destination, 
     [EasingFunction easing, String mode = "once", int duration = 500, MotionStart start, 
     bool move(MotionState state, Offset position, num x), 
     MotionEnd end, bool autorun = true]) :

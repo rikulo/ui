@@ -513,7 +513,7 @@ class _BoundedInertialMotion extends Motion {
   
   void onEnd(MotionState state) {
     if (_snapTo != null) {
-      _snapMotion = new LinearPositionMotion(element, _pos, _snapTo,
+      _snapMotion = new LinearPathMotion(element, _pos, _snapTo,
       move: (MotionState ms, Offset pos, num x) {
         if (_move != null)
           _move(pos, ms.currentTime);
