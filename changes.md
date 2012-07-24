@@ -2,7 +2,7 @@ Rikulo Changes
 ==============
 
 **July 24, 2012**
-* LinearPositionMotion is renamed to LinearPathMotion
+* LinearPositionMotion is renamed to LinearPathMotion.
 
 **July 23, 2012**
 
