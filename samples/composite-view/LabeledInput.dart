@@ -4,6 +4,7 @@
 #library('rikulo:samples/composite-view');
 
 #import('../../client/view/view.dart');
+#import('../../client/event/event.dart');
 
 /**
  * A composite view consisting of a label ([TextView]) and an input ([TextBox]).
@@ -16,6 +17,10 @@ class LabeledInput extends View {
     layout.type = "linear"; //use horizontal linear layout
     addChild(_label = new TextView(label));
     addChild(_input = new TextBox(value));
+
+    _input.on.change.add((ChangeEvent event) {
+      sendEvent(new ChangeEvent(event.value, target: this));
+      });
   }
   String get label() => _label.text;
   void set label(String label) {
@@ -25,4 +30,6 @@ class LabeledInput extends View {
   void set value(String value) {
     _value.value = value;
   }
+  //@Override
+  String get className() => "LabeledInput"; //TODO: replace with reflection if Dart supports it
 }

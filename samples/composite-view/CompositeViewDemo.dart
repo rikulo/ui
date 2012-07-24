@@ -12,6 +12,11 @@ class CompositeViewDemo extends Activity {
     mainView.layout.text = "type: linear; orient: vertical";
     mainView.addChild(new LabeledInput("username"));
     mainView.addChild(new LabeledInput("password"));
+
+    for (LabeledInput view in mainView.queryAll("LabeledInput"))
+      view.on.change.add((event) {
+        print("$event received");
+        });
   }
 }
 
