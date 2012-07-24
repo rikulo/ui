@@ -59,7 +59,7 @@ class GridViewDemo extends Activity {
     
     for (int x = 0; x < columnCount; x++) {
       for (int y = 0; y < rowCount; y++) {
-        TextView child = new TextView("(${x+1}, ${y+1})");
+        TextView child = new TextView("(${y+1}, ${x+1})");
         child.classes.add("list-item");
         child.style.userSelect = "none";
         child.style.lineHeight = CSS.px(cellSize - 2);
