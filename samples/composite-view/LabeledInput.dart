@@ -26,9 +26,9 @@ class LabeledInput extends View {
   void set label(String label) {
     _label.text = label;
   }
-  String get value() => _value.value;
+  String get value() => _input.value;
   void set value(String value) {
-    _value.value = value;
+    _input.value = value;
   }
   //@Override
   String get className() => "LabeledInput"; //TODO: replace with reflection if Dart supports it
