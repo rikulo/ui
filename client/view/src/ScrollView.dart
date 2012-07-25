@@ -112,15 +112,12 @@ class ScrollView extends View {
     super.mount_();
   }
   //@Override
-  void draw(StringBuffer out) {
-    final String tag = domTag_;
-    out.add('<').add(tag);
-    domAttrs_(out);
-    out.add('><div class="v-inner" style="${CSS.name('transform')}:translate3d(0px,0px,0px)" id="')
+  void domInner_(StringBuffer out) {
+    out.add('<div class="v-inner" style="${CSS.name('transform')}:translate3d(0px,0px,0px)" id="')
         //Note: we have to specify translate3d(0,0,0). otherwise, the offset will be wrong in Dartium (seems a bug)
       .add(uuid).add('-inner">');
-    domInner_(out);
-    out.add('</div></').add(tag).add('>');
+    super.domInner_(out);
+    out.add('</div>');
   }
   //@Override
   void insertChildToDocument_(View child, var childInfo, View beforeChild) {

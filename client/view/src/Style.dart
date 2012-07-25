@@ -81,7 +81,6 @@ class Style extends View {
 
   //@Override
   void draw(StringBuffer out) {
-    final String tag = domTag_;
     out.add('<div id="').add(uuid).add('" style="display:none">');
     domInner_(out);
     out.add('</div>');
