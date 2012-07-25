@@ -9,7 +9,7 @@
 class GridViewDemo extends Activity {
 
   void onCreate_() {
-    title = "Linked ScrollView Demo";
+    title = "Grid View Demo";
 
     final ScrollView view = new ScrollView();
     view.profile.text = "location: center center; width: 80%; height: 80%";
