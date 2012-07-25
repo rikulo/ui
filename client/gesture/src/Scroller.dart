@@ -447,13 +447,16 @@ class _ScrollToMotion extends EasingMotion {
   final Offset _initPos, _diffPos;
   
   _ScrollToMotion(_Scroller scroller, Offset initPos, Offset destPos) :
-  _scroller = scroller, _initPos = initPos, _diffPos = destPos - initPos,
-  super(null, start: (MotionState state) {
+  _scroller = scroller, _initPos = initPos, _diffPos = destPos - initPos, super(null);
+  
+  void onStart(MotionState state) {
     // TODO: interrupt?
-    scroller.onStart(state.currentTime, noCallback: true);
-  }, end: (MotionState state) {
-    scroller.onEnd(noCallback: true);
-  });
+    _scroller.onStart(state.currentTime, noCallback: true);
+  }
+  
+  void onEnd(MotionState state) {
+    _scroller.onEnd(noCallback: true);
+  }
   
   bool doAction_(num x, MotionState state) {
     _scroller.onMove(_initPos + _diffPos * x, state.currentTime, noCallback: true);
