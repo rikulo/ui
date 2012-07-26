@@ -17,7 +17,7 @@ class CheckBox extends TextView implements Input<bool> {
    * The text will be encoded to make sure it is valid HTML text.
    */
   CheckBox([String text, bool value]): super(text) {
-    _init(value);
+    _value = value !== null && value;
   }
   /** Instantiates with a HTML fragment.
    *
@@ -26,21 +26,7 @@ class CheckBox extends TextView implements Input<bool> {
    * unpreditable.
    */
   CheckBox.html(String html, [bool value]): super.html(html) {
-    _init(value);
-  }
-  void _init(bool value) {
     _value = value !== null && value;
-    _initCallback();
-  }
-  void _initCallback() {
-    _onInputClick = (Event event) {
-      final InputElement n = event.srcElement;
-      final bool cked = n.checked;
-      if (_value != cked) {
-        _value = cked;
-        onChange_();
-      }
-    };
   }
 
   //@Override
@@ -100,7 +86,14 @@ class CheckBox extends TextView implements Input<bool> {
   void mount_() {
     super.mount_();
 
-    inputNode.on.click.add(_onInputClick);
+    inputNode.on.click.add(_onInputClick = (Event event) {
+      final InputElement n = event.srcElement;
+      final bool cked = n.checked;
+      if (_value != cked) {
+        _value = cked;
+        onChange_();
+      }
+    });
   }
   //@Override
   void unmount_() {

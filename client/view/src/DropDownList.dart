@@ -17,6 +17,7 @@ class DropDownList<E> extends View {
   DataEventListener _dataListener;
   StringRenderer _renderer;
   int _rows = 1;
+  EventListener _onChange;
   bool _modelSelUpdating = false; //whether it's updating model's selection
   bool _disabled = false, _autofocus = false;
 
@@ -191,7 +192,7 @@ class DropDownList<E> extends View {
   void mount_() {
     super.mount_();
 
-    node.on.change.add((e) {
+    node.on.change.add(_onChange = (e) {
       final List<E> selValues = new List();
       int selIndex = -1;
       if (_model !== null) {
@@ -230,6 +231,10 @@ class DropDownList<E> extends View {
     });
 
      _fixIndex();
+  }
+  void unmount_() {
+    node.on.change.remove(_onChange);
+    super.unmount_();
   }
   void _fixIndex() { //it assumes inDocument
     if (_model !== null && _cast(_model).isSelectionEmpty()) {
