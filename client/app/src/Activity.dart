@@ -13,7 +13,7 @@ typedef void ViewSwitchEffect(View from, View to, Element mask);
 /**
  * An activity is a UI that the user can interact with.
  * Each activity has a main view called [mainView]. It is the root of
- * the hierarchy tree of views that the user can interact with.
+ * the hierarchy tree of views that builds the UI for an activity.
  *
  * To instantiate UI, you have to extend this class and override [onCreate_] to
  * compose your UI and attach it to [mainView] (or replace it).

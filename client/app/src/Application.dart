@@ -6,7 +6,17 @@
 typedef void ReadyCallback(Task then);
 
 /**
- * An application.
+ * An application. It is the base class for holding global application states.
+ *
+ * You can provide your own implementation by instantiating as follows:
+ *
+ *     application = new MyApp();
+ *
+ * Notice that you must initialize your custom application, before instantiating
+ * your first activity.
+ *
+ * Also notice that, instead of extending [Application], you can manage
+ * global application states in global variables. It is generally more convenient.
  */
 class Application {
   /** The name of the application.
@@ -31,8 +41,6 @@ class Application {
       viewConfig = new ViewConfig();
     if (layoutManager == null)
       layoutManager = new LayoutManager();
-
-    onCreate_();
   }
 
   /** Adds a ready callback which will be invoked to start the activity.
@@ -42,7 +50,7 @@ class Application {
    * A typical implementation of the callback:
    *
    *     (Task then) {
-   *       if (_ready) {
+   *       if (_checkIfReady()) {
    *         then(); //do it immediately
    *       } else {
    *         _doUntilReady(then); //queue then and call it when it is ready.
@@ -67,10 +75,6 @@ class Application {
     else then();
   }
 
-  /** Called when the application is starting.
-   */
-  void onCreate_() {
-  }
   /** Returns UUID representing this application.
    */
   int get uuid() {
@@ -99,7 +103,7 @@ class Application {
  *
  *     application = new MyApp();
  *
- * Notice that you must initialize your custom appliction, before instantiating
+ * Notice that you must initialize your custom application, before instantiating
  * your first activity.
  */
 Application get application() { //initialized by Activity
