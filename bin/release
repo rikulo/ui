@@ -57,35 +57,6 @@ fi
 #compile less
 bin/lesscss
 
-#compile dart
-function d2j {
-	for f in *; do
-		if [ -d $f ] ; then
-			if [ $f != dartdoc ] && [ $f != issues ] ; then
-				(
-				cd $f
-				d2j
-				)
-			fi
-		elif [ ${f%.dart} != $f ] ; then
-			grep -w 'main[(] *[)]' $f > /dev/null
-			if [ "$?" = "0" ] ; then #found
-				dart2js $f
-				if [ "$?" = "0" ] ; then
-					mv out.js ${f%.dart}.dart.js
-					mv out.js.map ${f%.dart}.dart.js.map
-				else
-					exit 1
-				fi
-			fi
-		fi
-	done
-}
-#Note to generate JS since it is too slow
-#(
-#	cd samples
-#	d2j
-#)
 #Clean *dart.js
 find -name '*.dart.js' | xargs rm -f
 find -name '*.dart.js.map' | xargs rm -f
