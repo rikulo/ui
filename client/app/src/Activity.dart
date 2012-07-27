@@ -207,7 +207,7 @@ class Activity {
     Set<String> clses = _container != null ? _container.classes: document.body.classes;
     clses.add("rikulo");
     clses.add(browser.name);
-    if (browser.mobile) clses.add("mobile");
+    if (browser.touch) clses.add("touch");
     if (browser.ios) clses.add("ios");
     else if (browser.android) clses.add("android");
 
@@ -226,12 +226,13 @@ class Activity {
   EventListener get _onResize() {
     if (browser.android) {
     //Android: resize will be fired when virtual keyboard showed up
-    //so we have to ignore this case (by detecting change of width)
-      int oldWd = new DOMQuery(window).innerWidth;
+    //so we have to ignore this case: width must be changed, or height is larger
+    //(since user might bring up kbd, rotate, and close kbd)
+      Size old = new DOMQuery(window).innerSize;
       return (event) { //DOM event
-          int wd;
-          if (oldWd != (wd = new DOMQuery(window).innerWidth)) {
-            oldWd = wd;
+          final cur = new DOMQuery(window).innerSize;
+          if (old.width != cur.width || old.height < cur.height) {
+            old = cur;
             updateSize();
           }
         };
