@@ -42,11 +42,9 @@ class ViewIterator implements Iterator<View> {
   
   View _seekNext() {
     _currCtx = _index < 0 ? _buildRootCtx() : _buildNextCtx();
-    //print(_currCtx); // TODO:DEBUGGER
-    
+
     while (_currCtx != null && !_currCtx.isMatched()) {
       _currCtx = _buildNextCtx();
-      //print(_currCtx); // TODO:DEBUGGER
     }
     if (_currCtx != null) {
       _index++;

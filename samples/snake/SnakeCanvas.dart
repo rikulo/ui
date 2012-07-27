@@ -73,8 +73,6 @@ class SnakeCanvas extends Activity {
 
       final int MINIMUM_DRAG_LENGTH = 5;
 
-      print("${state.delta.x}, ${state.delta.x}");
-
       if(state.delta.x.abs() > state.delta.y.abs() && 
          state.delta.x.abs() > MINIMUM_DRAG_LENGTH) {
         //horizontal swipe

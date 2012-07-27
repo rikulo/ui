@@ -70,15 +70,15 @@ class Activity {
   /** Sets the main view with an effect.
    */
   void setMainView(View main, [ViewSwitchEffect effect]) {
-    if (main === null)
+    if (main == null)
       throw const UIException("mainView can't be null");
     final View prevroot = _mainView;
     _mainView = main;
-    if (prevroot !== null) {
-      if (main.width === null)
-        main.width = prevroot.width;
-      if (main.height === null)
-        main.height = prevroot.height;
+    if (prevroot != null) {
+      if (main.width == null)
+        main.width = browser.size.width; //better to browser's size than prevroot's
+      if (main.height == null)
+        main.height = browser.size.height;
 
       if (prevroot.inDocument) {
         main.addToDocument(before: prevroot.node);
@@ -137,7 +137,7 @@ class Activity {
    */
   bool removeDialog([View dialog, ViewSwitchEffect effect]) {
     _DialogInfo dlgInfo;
-    if (dialog === null) {
+    if (dialog == null) {
       if (_dlgInfos.isEmpty())
         throw const UIException("No dialog at all");
 
@@ -181,13 +181,13 @@ class Activity {
    * + [containerId] specifies the element's ID that the activity shall be displayed
    * inside it. If the DOM element specified in [containerId] is found, [mainView]
    * will only occupy the DOM element. It is useful if you'd like
-   * to have the activity occuyping only a part of the screen. The DOM element
+   * to have the activity occupying only a part of the screen. The DOM element
    * containing this activity will be stored in [container].
    */
   void run([String containerId="v-main"]) {
-    if (activity !== null) //TODO: switching activity (from another activity)
+    if (activity != null) //TODO: switching activity (from another activity)
       throw const UIException("Only one activity is allowed");
-    if (_mainView !== null)
+    if (_mainView != null)
       throw const UIException("run() called twice?");
 
     activity = this;
@@ -202,22 +202,22 @@ class Activity {
   /** Initializes the browser window, such as registering the events.
    */
   void _init(String containerId) {
-    _container = containerId !== null ? document.query("#$containerId"): null;
+    _container = containerId != null ? document.query("#$containerId"): null;
 
-    Set<String> clses = _container !== null ? _container.classes: document.body.classes;
+    Set<String> clses = _container != null ? _container.classes: document.body.classes;
     clses.add("rikulo");
     clses.add(browser.name);
     if (browser.ios) clses.add("ios");
     else if (browser.android) clses.add("android");
 
-    if (_container !== null)
-      _updSize(true);
+    if (_container != null)
+      updateSize();
 
     _mainView = new Section();
     _mainView.width = browser.size.width;
     _mainView.height = browser.size.height;
     _mainView.style.overflow = "hidden"; //crop
-    _mainView.addToDocument(_container !== null ? _container: document.body);
+    _mainView.addToDocument(_container != null ? _container: document.body);
 
     (browser.mobile || application.inSimulator ?
       window.on.deviceOrientation: window.on.resize).add((event) { //DOM event
@@ -228,31 +228,39 @@ class Activity {
         broadcaster.sendEvent(new PopupEvent(event.target));
       });
   }
-  /** Handles resizing, including device's orientation is changed.
-   * It is called automatically, so the application rarely need to call it.
+  /** Updates the browser's size. It is called when the browser's size
+   * is changed (including device's orientation is changed).
+   *
+   * Notice that it is called automatically, so the application rarely need to call it.
    */
   void updateSize() {
-    _updSize(mainView !== null && mainView.width == browser.size.width
-      && mainView.height == browser.size.height);
-      //update mainView only if its size is the same as browser's size
-      //in other words, we don't update mainView if its size is set by application
-  }
-  void _updSize(bool updateMainView) {
-    final DOMQuery qcave = new DOMQuery(_container !== null ? _container: window);
+    final oldsz = new Size.from(browser.size);
+    final DOMQuery qcave = new DOMQuery(_container != null ? _container: window);
     browser.size.width = qcave.innerWidth;
     browser.size.height = qcave.innerHeight;
 
+    if (oldsz != browser.size) {
     //Note: we have to check if the size is changed, since deviceOrientation
-    //will be always fired when the listener is added.
-    if (updateMainView && (mainView.width != browser.size.width
-    || mainView.height != browser.size.height)) {
-      mainView.width = browser.size.width;
-      mainView.height = browser.size.height;
-      mainView.requestLayout();
-    }
-    for (_DialogInfo dlgInfo in _dlgInfos) {
-      dlgInfo.resizeMask();
-      dlgInfo.dialog.requestLayout();
+    //is fired continuously once the listener is added
+      if (mainView != null) {
+      //update mainView only if its size is the same as browser's size
+      //in other words, we don't update mainView if its size is set by application
+        bool changed = false;
+        if (mainView.width == null || mainView.width == oldsz.width) {
+          mainView.width = browser.size.width;
+          changed = true;
+        }
+        if (mainView.height == null || mainView.height == oldsz.height) {
+          mainView.height = browser.size.height;
+          changed = true;
+        }
+        if (changed)
+          mainView.requestLayout();
+      }
+      for (_DialogInfo dlgInfo in _dlgInfos) {
+        dlgInfo.resizeMask();
+        dlgInfo.dialog.requestLayout();
+      }
     }
   }
 
@@ -318,11 +326,11 @@ class _DialogInfo {
 
   _DialogInfo(View this.dialog, String this.maskClass);
   void createMask(Element parent) {
-    if (maskClass !== null) {
+    if (maskClass != null) {
       final Size sz = browser.size;
       _maskNode = new Element.html(
         '<div class="v- ${maskClass}" style="width:${sz.width}px;height:${sz.height}px"></div>');
-      if (activity.container !== null) {
+      if (activity.container != null) {
         _maskNode.style.position = "absolute";
       }
 
@@ -330,13 +338,13 @@ class _DialogInfo {
     }
   }
   void resizeMask() {
-    if (_maskNode !== null) {
+    if (_maskNode != null) {
       _maskNode.style.width = CSS.px(browser.size.width);
       _maskNode.style.height = CSS.px(browser.size.height);
     }
   }
   void removeMask() {
-    if (_maskNode !== null) {
+    if (_maskNode != null) {
       _maskNode.remove();
     }
   }
