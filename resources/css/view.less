@@ -3,6 +3,7 @@
 
 //Variables
 @content-font: normal 12px "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+@mobile-content-font-size: 15px;
 
 //Mixins
 .box-sizing (@value) {
@@ -47,6 +48,13 @@ body.rikulo {
 .rikulo {
   .text-size-adjust(none);
   font: @content-font;
+}
+.mobile {
+  font-size: @mobile-content-font-size;
+
+  input, textarea, select, button {
+    font-size: @mobile-content-font-size;
+  }
 }
 
 .rikulo * {

@@ -207,6 +207,7 @@ class Activity {
     Set<String> clses = _container != null ? _container.classes: document.body.classes;
     clses.add("rikulo");
     clses.add(browser.name);
+    if (browser.mobile) clses.add("mobile");
     if (browser.ios) clses.add("ios");
     else if (browser.android) clses.add("android");
 
@@ -219,15 +220,33 @@ class Activity {
     _mainView.style.overflow = "hidden"; //crop
     _mainView.addToDocument(_container != null ? _container: document.body);
 
-    (browser.mobile || application.inSimulator ?
-      window.on.deviceOrientation: window.on.resize).add((event) { //DOM event
-        updateSize();
-      });
-    (browser.touch ? document.on.touchStart: document.on.mouseDown).add(
-      (event) { //DOM event
-        broadcaster.sendEvent(new PopupEvent(event.target));
-      });
+    window.on.resize.add(_onResize);
+    (browser.touch ? document.on.touchStart: document.on.mouseDown).add(_onTouchStart);
   }
+  EventListener get _onResize() {
+    if (browser.android) {
+    //Android: resize will be fired when virtual keyboard showed up
+    //so we have to ignore this case (by detecting change of width)
+      int oldWd = new DOMQuery(window).innerWidth;
+      return (event) { //DOM event
+          int wd;
+          if (oldWd != (wd = new DOMQuery(window).innerWidth)) {
+            oldWd = wd;
+            updateSize();
+          }
+        };
+    } else {
+      return (event) { //DOM event
+          updateSize();
+        };
+    }
+  }
+  static EventListener get _onTouchStart() {
+    return (event) { //DOM event
+        broadcaster.sendEvent(new PopupEvent(event.target));
+      };
+  }
+
   /** Updates the browser's size. It is called when the browser's size
    * is changed (including device's orientation is changed).
    *
@@ -238,7 +257,6 @@ class Activity {
     final DOMQuery qcave = new DOMQuery(_container != null ? _container: window);
     browser.size.width = qcave.innerWidth;
     browser.size.height = qcave.innerHeight;
-
     if (oldsz != browser.size) {
     //Note: we have to check if the size is changed, since deviceOrientation
     //is fired continuously once the listener is added
