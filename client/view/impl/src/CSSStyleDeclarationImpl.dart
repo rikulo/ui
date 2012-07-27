@@ -13,21 +13,21 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
   }
 
   CSSStyleDeclaration get _css() {
-    if (_pcss === null)
+    if (_pcss == null)
       _pcss = new CSSStyleDeclaration();
     return _pcss;
   }
 
   String getPropertyValue(String propertyName) {
     _check(propertyName);
-    return _pcss !== null ? _unwrap(_pcss.getPropertyValue(CSS.name(propertyName))): "";
+    return _pcss != null ? _unwrap(_pcss.getPropertyValue(CSS.name(propertyName))): "";
   }
 
   String removeProperty(String propertyName) {
     propertyName = CSS.name(propertyName);
 
-    final String prev = _pcss !== null ? _pcss.removeProperty(propertyName): "";
-    if (_view !== null && _view.inDocument)
+    final String prev = _pcss != null ? _pcss.removeProperty(propertyName): "";
+    if (_view != null && _view.inDocument)
       _view.node.style.removeProperty(propertyName);
     return prev;
   }
@@ -36,35 +36,35 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
     _check(propertyName);
     propertyName = CSS.name(propertyName);
 
-    if (priority === null) {
+    if (priority == null) {
       _css.setProperty(propertyName, value);
 
-      if (_view !== null && _view.inDocument)
+      if (_view != null && _view.inDocument)
         _view.node.style.setProperty(propertyName, value);
     } else {
       _css.setProperty(propertyName, value, priority);
 
-      if (_view !== null && _view.inDocument)
+      if (_view != null && _view.inDocument)
         _view.node.style.setProperty(propertyName, value, priority);
     }
   }
 
-  String get cssText() => _pcss !== null ? _pcss.cssText: "";
+  String get cssText() => _pcss != null ? _pcss.cssText: "";
   void set cssText(String value) {
-    if (_pcss !== null || (value !== null && !value.isEmpty()))
+    if (_pcss != null || (value != null && !value.isEmpty()))
       _css.cssText = value;
 
-    if (_view !== null && _view.inDocument)
+    if (_view != null && _view.inDocument)
       _view.node.style.cssText = value;
   }
 
-  int get length() => _pcss !== null ? _pcss.length: 0;
+  int get length() => _pcss != null ? _pcss.length: 0;
 
-  CSSRule get parentRule() => _pcss !== null ? _pcss.parentRule: null;
+  CSSRule get parentRule() => _pcss != null ? _pcss.parentRule: null;
   CSSValue getPropertyCSSValue(String propertyName)
-    => _pcss !== null ? _pcss.getPropertyCSSValue(CSS.name(propertyName)): null;
+    => _pcss != null ? _pcss.getPropertyCSSValue(CSS.name(propertyName)): null;
   String getPropertyPriority(String propertyName)
-    => _pcss !== null ? _pcss.getPropertyPriority(CSS.name(propertyName)): "";
+    => _pcss != null ? _pcss.getPropertyPriority(CSS.name(propertyName)): "";
   String getPropertyShorthand(String propertyName)
     => _css.getPropertyShorthand(CSS.name(propertyName)); 
       //Not sure what to return by default
@@ -2533,7 +2533,7 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
   }
 
   static String get _browserPrefix() {
-    if (_cacheBrowserPrefix === null)
+    if (_cacheBrowserPrefix == null)
       _cacheBrowserPrefix = browser.webkit ? '-webkit-':
         browser.msie ? '-ms-': browser.firefox ? '-moz-': '';
     return _cacheBrowserPrefix;
@@ -2542,7 +2542,7 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
 
   //Checks if the property's name is allowed to access directly
   static void _check(String propertyName) {
-    if (_illnms === null) {
+    if (_illnms == null) {
       _illnms = new Set();
       for (final String nm in const [
         "left", "top", "right", "bottom", "width", "height", "display"]) {
@@ -2559,6 +2559,6 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
   static Set<String> _illnms;
 
   //Converts null to an empty string
-  String _unwrap(String value) => value !== null ? value: "";
+  String _unwrap(String value) => value != null ? value: "";
     //TODO: test helloworld to see if Dart fixes Issue 2154
 }

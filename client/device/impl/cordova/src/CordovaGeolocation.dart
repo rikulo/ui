@@ -17,16 +17,16 @@ class CordovaGeolocation extends AbstractGeolocation {
     var jsSuccess = JSUtil.toJSFunction((jsPos) => 
       success(new Position(new _Coordinates.from(JSUtil.toDartMap(jsPos.coords)), JSUtil.getJSValue(jsPos, "timestamp"))), 1);
     var jsError = JSUtil.toJSFunction((jsPosErr) {
-      if (error !== null) error(new _PositionError.from(JSUtil.toDartMap(jsPosErr)));}, 1);
+      if (error != null) error(new _PositionError.from(JSUtil.toDartMap(jsPosErr)));}, 1);
     JSUtil.jsCall(_GET_CURRENT_POSITION, [jsSuccess, jsError, JSUtil.toJSMap(_toMap(options))]);
   }
 
   _toMap(GeolocationOptions options) {
     return {
-      "frequency" : options.frequency === null ? 10000 : options.frequency,
-      "enableHighAccuracy" : options.enableHighAccuracy === null ? true : options.enableHighAccuracy,
-      "timeout" : options.timeout === null ? 10000 : options.timeout,
-      "maximumAge" : options.maximumAge === null ? 10000 : options.maximumAge
+      "frequency" : options.frequency == null ? 10000 : options.frequency,
+      "enableHighAccuracy" : options.enableHighAccuracy == null ? true : options.enableHighAccuracy,
+      "timeout" : options.timeout == null ? 10000 : options.timeout,
+      "maximumAge" : options.maximumAge == null ? 10000 : options.maximumAge
     };
   }
   
@@ -37,7 +37,7 @@ class CordovaGeolocation extends AbstractGeolocation {
   
   GeolocationErrorCallback wrapErrorListener_(PositionErrorEventListener listener) {   
     return (jsPosErr) {
-      if (listener !== null)  
+      if (listener != null)  
         listener(new PositionErrorEvent(this, new _PositionError.from(JSUtil.toDartMap(jsPosErr))));
     };
   }

@@ -18,14 +18,14 @@ class YPlaceFinder {
    */
   static void loadGeoInfo(Map locations, YPlaceFinderSuccessCallback success, [Map controls, String flags, String gflags]) {
     StringBuffer params = new StringBuffer(); 
-    if (locations !== null)
+    if (locations != null)
       locations.forEach((k,v) => params.isEmpty() ? params.add(k).add('=').add(v) : params.add('&').add(k).add('=').add(v));
-    if (controls !== null) { //skip flags key
+    if (controls != null) { //skip flags key
       controls.forEach((k,v) => 
           k.toLowerCase() == 'flags' ? params.add("") : params.isEmpty() ? 
               params.add(k).add('=').add(v) : params.add('&').add(k).add('=').add(v));
     }
-    if (flags !== null) {
+    if (flags != null) {
       if (!flags.isEmpty()) {
         //filter out "J" & "P" flag, always use XML
         flags = StringUtil.filterOut(flags, "JP");
@@ -36,7 +36,7 @@ class YPlaceFinder {
       }
     }
     
-    if (gflags !== null) {
+    if (gflags != null) {
       if (!gflags.isEmpty()) {
         if (params.isEmpty()) 
           params.add("gflags=").add(gflags);
@@ -52,7 +52,7 @@ class YPlaceFinder {
     req.on.readyStateChange.add((event){
       if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
         final Document doc = req.responseXML;
-        if (doc !== null) {
+        if (doc != null) {
           Map resultSet = JSUtil.xmlDocToDartMap(doc);
           success(resultSet);
         } else {

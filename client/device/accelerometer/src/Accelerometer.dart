@@ -26,7 +26,7 @@ class AbstractAccelerometer implements Accelerometer {
   AccelerationEvents _on;
   
   AccelerationEvents get on() {
-    if (_on === null)
+    if (_on == null)
       _on = new AccelerationEvents._init(this);
     return _on;
   }

@@ -112,9 +112,9 @@ class _HoldGesture implements HoldGesture {
     _stop();
 
     _state = new _HoldGestureState(this, touched, pageX, pageY);
-    if (_start !== null) {
+    if (_start != null) {
       final bool c = _start(_state);
-      if (c !== null && !c) {
+      if (c != null && !c) {
         _stop();
         return false; //don't start it
       }
@@ -124,7 +124,7 @@ class _HoldGesture implements HoldGesture {
     return true; //started
   }
   void _touchMove(int pageX, int pageY) {
-    if (_state !== null
+    if (_state != null
     && (pageX - _state._docOfs.x > _movement
     ||  pageY - _state._docOfs.y > _movement))
       _stop();
@@ -138,8 +138,8 @@ class _HoldGesture implements HoldGesture {
     _action(state);
   }
   void _stop() {
-    if (_state !== null) {
-      if (_state._timer !== null) {
+    if (_state != null) {
+      if (_state._timer != null) {
         window.clearTimeout(_state._timer);
         _state._timer = null;
       }
@@ -175,9 +175,9 @@ class _TouchHoldGesture extends _HoldGesture {
   }
   void _unlisten() {
     final ElementEvents on = owner.on;
-    if (_elStart !== null) on.touchStart.remove(_elStart);
-    if (_elMove !== null) on.touchMove.remove(_elMove);
-    if (_elEnd !== null) on.touchEnd.remove(_elEnd);
+    if (_elStart != null) on.touchStart.remove(_elStart);
+    if (_elMove != null) on.touchMove.remove(_elMove);
+    if (_elEnd != null) on.touchEnd.remove(_elEnd);
   }
 }
 /** The touch-and-hold handler for mouse-based devices.
@@ -204,8 +204,8 @@ class _MouseHoldGesture extends _HoldGesture {
   }
   void _unlisten() {
     final ElementEvents on = owner.on;
-    if (_elStart !== null) on.mouseDown.remove(_elStart);
-    if (_elMove !== null) on.mouseMove.remove(_elMove);
-    if (_elEnd !== null) on.mouseUp.remove(_elEnd);
+    if (_elStart != null) on.mouseDown.remove(_elStart);
+    if (_elMove != null) on.mouseMove.remove(_elMove);
+    if (_elEnd != null) on.mouseUp.remove(_elEnd);
   }
 }

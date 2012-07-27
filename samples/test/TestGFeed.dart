@@ -20,7 +20,7 @@ class TestGFeed extends Activity {
       Map item = channel['item'];
       log("item: $item");
       Map condition = item['yweather:condition'];
-      if (condition !== null) {
+      if (condition != null) {
         log(location['city']);
         log(location['country']);
         log(condition['text']);

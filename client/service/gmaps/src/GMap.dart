@@ -31,7 +31,7 @@ class GMap implements JSAgent {
    */
   GMap(String mapCanvas, [String version="3.9", Map options= const {"sensor":true}]) :
     _mapCanvas = mapCanvas, _version = version, _options = options {
-    if (_mapsModule === null) {
+    if (_mapsModule == null) {
       _mapsModule = new LoadableModule(_loadModule);
       _mapsModule.doWhenLoaded(null); //force loading module
     }
@@ -52,7 +52,7 @@ class GMap implements JSAgent {
   getMapTypeId() {
     String key = JSUtil.jsCall(_GET_MAP_TYPE_ID, [_jsMap]);
     MapTypeId typeid = MapTypeId._lookFrom(key);
-    return typeid !== null ? typeid : key;
+    return typeid != null ? typeid : key;
   }
   
   void setMapTypeId(var mapTypeId) { //MapTypeId or String
@@ -72,7 +72,7 @@ class GMap implements JSAgent {
     _initJSFunctions();
 
     StringBuffer sb = new StringBuffer();
-    if (_options !== null)
+    if (_options != null)
       _options.forEach((k, v) => sb.add(sb.isEmpty() ? "" : "&").add(k).add("=").add(v));
       
     Map options = new Map();
@@ -90,8 +90,8 @@ class GMap implements JSAgent {
    * + [onSuccess] - callback when the GMap is successfully initialized.
    */
   init(Map mapOptions, GMapSuccessCallback onSuccess) {
-    if (_jsMap === null)
-      _mapsModule.doWhenLoaded((){_init(mapOptions); if (onSuccess !== null) onSuccess(this);});
+    if (_jsMap == null)
+      _mapsModule.doWhenLoaded((){_init(mapOptions); if (onSuccess != null) onSuccess(this);});
   }
 
   //convert Dart Map to JavaScript options
@@ -101,9 +101,9 @@ class GMap implements JSAgent {
   
   //init the specified Maps
   void _init(Map mapOptions) {
-    if (_jsMap === null) {
+    if (_jsMap == null) {
       Element div = query("#$_mapCanvas");
-      if (div === null) {
+      if (div == null) {
         throw new IllegalArgumentException("mapCanvas: Cannot find the specified HTML element, $_mapCanvas");
       }
       _jsMap = JSUtil.jsCall(_NEW_MAP, [div, _toJSOptions(mapOptions)]); 

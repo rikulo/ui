@@ -11,7 +11,7 @@ class ListUtil {
    * If [list] is null, false is returned.
    */
   static bool remove(List list, var obj) {
-    if (list !== null) {
+    if (list != null) {
       final int j = list.indexOf(obj);
       if (j >= 0) {
         list.removeRange(j, 1);

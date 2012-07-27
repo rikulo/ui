@@ -26,11 +26,11 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
     _data = data;
     _leaf = leaf;
     _uuid = _$uuid++;
-    if (nodes !== null)
+    if (nodes != null)
       addAll(nodes);
   }
   static int _$uuid = 0;
-  DefaultTreeModel<E> get model() => _parent !== null ? _parent.model: _model;
+  DefaultTreeModel<E> get model() => _parent != null ? _parent.model: _model;
   void set model(DefaultTreeModel<E> model) {
     _model = model;
   }
@@ -41,22 +41,22 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
       _data = data;
 
       final DefaultTreeModel<E> m = model;
-      if (m !== null)
+      if (m != null)
         m.sendEvent(new TreeDataEvent(model, 'change', this));
     }
   }
 
-  bool isLeaf() => _leaf !== null ? _leaf: _children === null || _children.isEmpty();
+  bool isLeaf() => _leaf != null ? _leaf: _children == null || _children.isEmpty();
 
   TreeNode<E> operator[](int childIndex) {
     _init();
-    if (_children === null)
+    if (_children == null)
       throw new IndexOutOfRangeException(childIndex);
     return _children[childIndex];
   }
   int get length() {
      _init();
-    return _children !== null ? _children.length: 0;
+    return _children != null ? _children.length: 0;
   }
   TreeNode<E> get parent() => _parent;
 
@@ -68,7 +68,7 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
    * If the list is sorted, you can override this method to utilize it.
    */
   int get index() {
-    if (_parent === null)
+    if (_parent == null)
       return 0;
     if (_parent is! DefaultTreeNode)
       throw const ModelException("DefaultTreeNode expected");
@@ -79,15 +79,15 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
 
   void add(TreeNode<E> child, [int index]) {
     _init();
-    if (_leaf !== null && _leaf)
+    if (_leaf != null && _leaf)
       throw const UnsupportedOperationException("Leaf node doesn't allow child");
 
-    if (child.parent !== null)
+    if (child.parent != null)
       child.parent.remove(child.index);
 
-    if (_children === null)
+    if (_children == null)
       _children = new List();
-    _children.insertRange(index !== null ? index: _children.length, 1, child);
+    _children.insertRange(index != null ? index: _children.length, 1, child);
 
     if (child is DefaultTreeNode) {
       final DefaultTreeNode c = child;
@@ -95,13 +95,13 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
     }
 
     final DefaultTreeModel<E> m = model;
-    if (m !== null)
+    if (m != null)
       m.sendEvent(new TreeDataEvent(model, 'add', child));
   }
   void addAll(Collection nodes, [int index]) {
     _init();
-    if (index === null)
-      index = _children !== null ? _children.length: 0;
+    if (index == null)
+      index = _children != null ? _children.length: 0;
 
     for (final node in nodes)
       add(node is TreeNode ? node: new TreeNode(node), index++);
@@ -111,7 +111,7 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
     final DefaultTreeModel<E> m = model;
     TreeNode<E> child = this[index];
 
-    if (m !== null)
+    if (m != null)
       _cleanSelOpen(m, child);
 
     _children.removeRange(index, 1);
@@ -121,7 +121,7 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
       c._parent = null;
     }
 
-    if (m !== null)
+    if (m != null)
       m.sendEvent(new TreeDataEvent(model, 'remove', child));
     return child;
   }
@@ -137,16 +137,16 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
   }
   void clear() {
     _init();
-    if (_children !== null && !_children.isEmpty()) {
+    if (_children != null && !_children.isEmpty()) {
       final DefaultTreeModel<E> m = model;
-      if (m !== null) {
+      if (m != null) {
         for (final TreeNode<E> child in _children)
           _cleanSelOpen(m, child);
       }
 
       _children = null;
 
-      if (m !== null) {
+      if (m != null) {
         m.sendEvent(new TreeDataEvent(model, 'change', this));
       }
     }
@@ -156,7 +156,7 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
     if (!_loaded) {
       _loaded = true;
       _children = loadLazily_();
-      if (_children !== null) {
+      if (_children != null) {
         for (final TreeNode<E> child in _children) {
           if (child is DefaultTreeNode) {
             final DefaultTreeNode c = child;

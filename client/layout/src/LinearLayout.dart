@@ -11,21 +11,21 @@ class LinearLayout implements Layout {
 
   int measureWidth(MeasureContext mctx, View view) {
     int width = mctx.widths[view];
-    if (width !== null || mctx.widths.containsKey(view))
+    if (width != null || mctx.widths.containsKey(view))
       return width;
 
     return mctx.widths[view] = _getRealLayout(view).measureWidth(mctx, view);
   }
   int measureHeight(MeasureContext mctx, View view) {
     int height = mctx.heights[view];
-    if (height !== null || mctx.heights.containsKey(view))
+    if (height != null || mctx.heights.containsKey(view))
       return height;
 
     return mctx.heights[view] = _getRealLayout(view).measureHeight(mctx, view);
   }
   bool isProfileInherited() => true;
   void doLayout(MeasureContext mctx, View view) {
-    if (view.firstChild !== null) {
+    if (view.firstChild != null) {
       final AnchorRelation ar = new AnchorRelation(view);
 
       //1) layout independents

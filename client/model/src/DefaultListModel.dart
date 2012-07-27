@@ -21,7 +21,7 @@ class DefaultListModel<E> extends AbstractListModel<E> {
    */
   DefaultListModel(List<E> data,
   [Set<E> selection, Set<E> disables, bool multiple]):
-  super(selection, disables, multiple !== null && multiple), _data = data;
+  super(selection, disables, multiple != null && multiple), _data = data;
 
   //@Override
   /** Returns the object of the given index.

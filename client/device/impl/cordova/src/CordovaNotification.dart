@@ -15,14 +15,14 @@ class CordovaNotification implements XNotification {
     _initJSFunctions();
   }
   alert(String message, NotificationAlertCallback alertCallback, [String title, String buttonName]) {
-    if (title === null) title = "Alert";
-    if (buttonName === null) buttonName = "OK";
+    if (title == null) title = "Alert";
+    if (buttonName == null) buttonName = "OK";
     JSUtil.jsCall(_ALERT, [message, JSUtil.toJSFunction(alertCallback, 0), title, buttonName]);
   }
   
   confirm(String message, NotificationConfirmCallback confirmCallback, [String title, String buttonLabels]) {
-    if (title === null) title = "Confirm";
-    if (buttonLabels === null) buttonLabels = "OK,Cancel";
+    if (title == null) title = "Confirm";
+    if (buttonLabels == null) buttonLabels = "OK,Cancel";
     JSUtil.jsCall(_CONFIRM, [message, JSUtil.toJSFunction(confirmCallback, 1), title, buttonLabels]);
   }
   

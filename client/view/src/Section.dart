@@ -16,7 +16,7 @@ class Section extends View implements IdSpace {
 
   View getFellow(String id) => _fellows[id];
   void bindFellow_(String id, View fellow) {
-    if (fellow !== null) _fellows[id] = fellow;
+    if (fellow != null) _fellows[id] = fellow;
     else _fellows.remove(id);
   }
 

@@ -28,7 +28,7 @@ class CordovaMediaFile implements MediaFile, JSAgent {
   /** Returns format information of this Media file */
   void getFormatData(MediaFileDataSuccessCallback success, [MediaFileDataErrorCallback error]) {
     var jsSuccess = JSUtil.toJSFunction((jsData) => success(new MediaFileData.from(JSUtil.toDartMap(jsData))), 1);
-    var jsError = JSUtil.toJSFunction(() {if (error !== null) error();}, 0);
+    var jsError = JSUtil.toJSFunction(() {if (error != null) error();}, 0);
     JSUtil.jsCall(_GET_FORMAT_DATA, [_jsFile, jsSuccess, jsError]);
   }
   

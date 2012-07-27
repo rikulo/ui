@@ -54,10 +54,10 @@ class LayoutManager extends RunOnceViewManager {
       //Start the layout from parent only if necessary
       //Currently, we start from parent if with anchor, or in some layout,
       //or some dimension not set by app
-      if (parent !== null
-      && (view.profile.anchorView !== null || !parent.layout.type.isEmpty()
-        || MeasureContext._getSetByApp(view, view.width, 'rk.layout.w') === null
-        || MeasureContext._getSetByApp(view, view.height, 'rk.layout.h') === null))
+      if (parent != null
+      && (view.profile.anchorView != null || !parent.layout.type.isEmpty()
+        || MeasureContext._getSetByApp(view, view.width, 'rk.layout.w') == null
+        || MeasureContext._getSetByApp(view, view.height, 'rk.layout.h') == null))
         view = parent; //start from parent (slower performance but safer)
     }
 
@@ -82,7 +82,7 @@ class LayoutManager extends RunOnceViewManager {
     //ignore flush if not empty (_onImageLoaded will invoke it later)
     if (_imgWaits.isEmpty())
       super.flush(view);
-    else if (view !== null)
+    else if (view != null)
       queue(view); //do it later
   }
 
@@ -114,7 +114,7 @@ class LayoutManager extends RunOnceViewManager {
    */
   void doLayout(MeasureContext mctx, View view) {
     if (!view.hidden) {
-      if (view.parent === null && view.profile.anchorView === null) { //root without anchor
+      if (view.parent == null && view.profile.anchorView == null) { //root without anchor
         //handle profile since it has no parent to handel for it
         mctx.setWidthByProfile(view, () => browser.size.width);
         mctx.setHeightByProfile(view, () => browser.size.height);

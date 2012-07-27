@@ -27,7 +27,7 @@ class GFeed {
    */
   GFeed(String url, [String version="1", Map options]) :
     _url = url, _version = version, _options = options {
-    if (_feedModule === null) {
+    if (_feedModule == null) {
       _feedModule = new LoadableModule(_loadModule);
       _feedModule.doWhenLoaded(null); //force loading module
     }
@@ -37,7 +37,7 @@ class GFeed {
   void _loadModule(Function readyFn) {
     _initJSFunctions();
 
-    Map options = _options !== null ? new Map.from(_options) : new Map();
+    Map options = _options != null ? new Map.from(_options) : new Map();
     options["callback"] = readyFn; //callback after Feed API is loaded(used by loader)
     options["nocss"] = true;
     GLoader.load(GLoader.FEED, _version, options); //load Feed API
@@ -55,7 +55,7 @@ class GFeed {
     if (jsFeed == null) {
       jsFeed = JSUtil.jsCall(_NEW_FEED, [_url]);             
     }
-    var jsSuccess = JSUtil.toJSFunction((xmldoc) => success(xmldoc === null ? null : JSUtil.xmlDocToDartMap(xmldoc)), 1);
+    var jsSuccess = JSUtil.toJSFunction((xmldoc) => success(xmldoc == null ? null : JSUtil.xmlDocToDartMap(xmldoc)), 1);
     JSUtil.jsCall(_LOAD, [jsFeed, jsSuccess]);
   }
   

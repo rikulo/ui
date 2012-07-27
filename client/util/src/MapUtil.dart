@@ -28,24 +28,24 @@ class _OnDemandMap<K, V> implements Map<K,V> {
 
   _OnDemandMap(AsMap this._creator);
 
-  Map _init() => _map !== null ? _map: (_map = _creator());
+  Map _init() => _map != null ? _map: (_map = _creator());
 
-  V  operator[](K key) => _map !== null ? _map[key]: null;
+  V  operator[](K key) => _map != null ? _map[key]: null;
   void operator[]=(K key, V value) {
     _init()[key] = value;
   }
   void clear() {
-    if (_map !== null) _map.clear();
+    if (_map != null) _map.clear();
   }
-  bool containsKey(K key) => _map !== null && _map.containsKey(key);
-  bool containsValue(V value) => _map !== null && _map.containsValue(value);
+  bool containsKey(K key) => _map != null && _map.containsKey(key);
+  bool containsValue(V value) => _map != null && _map.containsValue(value);
   void forEach(void f(key, value)) {
-    if (_map !== null) _map.forEach(f);
+    if (_map != null) _map.forEach(f);
   }
-  Collection<K> getKeys() => _map !== null ? _map.getKeys(): ListUtil.emptyCollection;
-  Collection<V> getValues() => _map !== null ? _map.getValues(): ListUtil.emptyCollection;
-  bool isEmpty() => _map === null || _map.isEmpty();
-  int get length() => _map !== null ? _map.length: 0;
+  Collection<K> getKeys() => _map != null ? _map.getKeys(): ListUtil.emptyCollection;
+  Collection<V> getValues() => _map != null ? _map.getValues(): ListUtil.emptyCollection;
+  bool isEmpty() => _map == null || _map.isEmpty();
+  int get length() => _map != null ? _map.length: 0;
   V putIfAbsent(K key, V ifAbsent()) => _init().putIfAbsent(key, ifAbsent);
-  V remove(K key) => _map !== null ? _map.remove(key): null;
+  V remove(K key) => _map != null ? _map.remove(key): null;
 }

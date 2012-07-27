@@ -26,7 +26,7 @@ implements TreeSelectionModel<E> {
   Set<E> opens, bool multiple=false]):
   super(selection, disables, multiple) {
     _root = root;
-    _opens = opens !== null ? opens: new Set();
+    _opens = opens != null ? opens: new Set();
   }
 
   void _sendOpen() {
@@ -47,7 +47,7 @@ implements TreeSelectionModel<E> {
   }
 
   E getChildAt(List<int> path) {
-    if (path === null || path.length == 0)
+    if (path == null || path.length == 0)
       return root;
 
     E parent = root;
@@ -55,7 +55,7 @@ implements TreeSelectionModel<E> {
     int childCount = _childCount(parent);
     for (int i = 0; i < path.length; i++) {
       if (path[i] < 0 || path[i] > childCount //out of bound
-      || (node = getChild(parent, path[i])) === null //model is wrong
+      || (node = getChild(parent, path[i])) == null //model is wrong
       || ((childCount = _childCount(node)) <= 0 && i != path.length - 1)) //no more child
         return null;
 

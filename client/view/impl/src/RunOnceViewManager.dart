@@ -72,9 +72,9 @@ class RunOnceViewManager {
    */
   void flush([View view]) {
     if (!_ready(view)) {
-      if (view !== null)
+      if (view != null)
         _views.add(view);
-    } else if (view !== null) {
+    } else if (view != null) {
       _flushOne(view);
     } else {
       _flushAll();
@@ -101,7 +101,7 @@ class RunOnceViewManager {
       }
 
       if (_ignoreSubviews) {
-        for (View v = view; (v = v.parent) !== null;) {
+        for (View v = view; (v = v.parent) != null;) {
           if (_views.contains(v)) {//view is subview of v
             _views.remove(view);  //ignore subview (i.e., view)
             break;
@@ -120,7 +120,7 @@ class RunOnceViewManager {
   void _flushOne(View view) {
     _views.remove(view);
     if (!_ignoreDetached || view.inDocument) {
-      for (View v = view; (v = v.parent) !== null;) {
+      for (View v = view; (v = v.parent) != null;) {
         if (_views.contains(v)) //view is subview of v
           return; //no need to do since the parent will handle it (later)
       }
@@ -157,7 +157,7 @@ class _ModelRenderer extends RunOnceViewManager {
 
   factory _ModelRenderer() {
 		//dart2js can't handle closure in super()
-    if (_$renderTask === null)
+    if (_$renderTask == null)
       _$renderTask = (view) {view.renderModel_();};
     return new _ModelRenderer._init(_$renderTask);
   }

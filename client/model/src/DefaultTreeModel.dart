@@ -46,12 +46,12 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
    */
   DefaultTreeModel([TreeNode<E> root, Collection nodes, Set<TreeNode<E>> selection,
   Set<TreeNode<E>> disables, Set<TreeNode<E>> opens, bool multiple=false]):
-  super(root !== null ? root: (root = new TreeNode()), selection, disables, opens, multiple) {
+  super(root != null ? root: (root = new TreeNode()), selection, disables, opens, multiple) {
     final TreeNode<E> p = root.parent;
-    if (p !== null)
+    if (p != null)
       throw new ModelException("Only root node is allowed, not ${root}");
     root.model = this;
-    if (nodes !== null)
+    if (nodes != null)
       root.addAll(nodes);
   }
 
@@ -85,7 +85,7 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
     List<int> path = new List();
     for (;;) {
       final TreeNode<E> parent = child.parent;
-      if (parent === null)
+      if (parent == null)
         break; //child is not in the same model
 
       path.insertRange(0, 1, child.index);

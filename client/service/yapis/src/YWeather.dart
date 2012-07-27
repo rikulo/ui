@@ -22,10 +22,10 @@ class YWeather {
    * + [unit] - Temperature unit; "c" for Celsius or "f" for Fahrenheit; default to "f".
    */
   YWeather(this.woeid, [String unit='f']) {
-    if (woeid === null || woeid.isEmpty()) {
+    if (woeid == null || woeid.isEmpty()) {
       throw new IllegalArgumentException("woeid cannot be null/empty.");
     }
-    if (unit !== null)
+    if (unit != null)
       unit = StringUtil.filterIn(unit.toLowerCase(), "fc"); //only "f" or "c" is allowed
     else
       unit = "f";
@@ -44,20 +44,20 @@ class YWeather {
   void loadWeatherInfo(YWeatherSuccessCallback success, [bool force = false]) {
     //return cached channel if not expired yet!
     int now = new Date.now().millisecondsSinceEpoch;
-    if (!force && _channel !== null && now < _expireTime) {
+    if (!force && _channel != null && now < _expireTime) {
       success(_channel);
       return;
     }
-    if (_feeder === null) {
+    if (_feeder == null) {
       String url = "${_BASE_URI}w=${woeid}&u=${_unit}";
       _feeder = new GFeed(url);
     }
     _feeder.loadFeedInfo((Map result) {
       Map channel = result != null ? result["channel"] : null;
-      if (channel !== null) {
+      if (channel != null) {
         //check if the woeid correct
         String ttl = channel["ttl"];
-        if (ttl !== null) {
+        if (ttl != null) {
           _channel = channel; //cache the result
           _expireTime = Math.parseInt(ttl) * 60000 + now;
         }

@@ -47,7 +47,7 @@ class _AccelerationEventListenerList implements AccelerationEventListenerList {
   [AccelerationErrorEventListener error, AccelerometerOptions options]) {
     final watchID = _owner.watchAcceleration_(
       _owner.wrapSuccessListener_(success), _owner.wrapErrorListener_(error),
-      {"frequency" : options === null || options.frequency === null ? 3000 : options.frequency});
+      {"frequency" : options == null || options.frequency == null ? 3000 : options.frequency});
     _listeners.add(new _WatchIDInfo(success, watchID));
     return this;
   }
@@ -55,7 +55,7 @@ class _AccelerationEventListenerList implements AccelerationEventListenerList {
     for(int j = 0; j < _listeners.length; ++j) {
       if (_listeners[j].listener == success) {
         var watchID = _listeners[j].watchID;
-        if (watchID !== null) {
+        if (watchID != null) {
           _owner.clearWatch_(watchID);
         }
         break;

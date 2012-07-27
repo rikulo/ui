@@ -46,7 +46,7 @@ class DeclarationImpl implements Declaration {
    */
   String getPropertyValue(String propertyName) {
     final String value = _props[propertyName];
-    return value !== null ? value: "";
+    return value != null ? value: "";
   }
   /** Removes the property of the given name.
    */
@@ -59,7 +59,7 @@ class DeclarationImpl implements Declaration {
    * Notice: the value will be trimmed before saving.
    */
   void setProperty(String propertyName, String value) {
-    if (value === null || value.isEmpty())
+    if (value == null || value.isEmpty())
       removeProperty(propertyName);
     else
       _props[propertyName] = value.trim();

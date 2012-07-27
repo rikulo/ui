@@ -24,7 +24,7 @@ class SmartIP {
     StringBuffer params = new StringBuffer();
     String nm = "${_GEO_IP}${_fnnum++}";
     params.add("callback=_natives.${nm}");
-    if (host !== null && !host.isEmpty()) {
+    if (host != null && !host.isEmpty()) {
       params.add("&host=").add(host);
     }
     if (type != null && !type.isEmpty()) {

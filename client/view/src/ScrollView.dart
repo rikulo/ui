@@ -36,7 +36,7 @@ class ScrollView extends View {
    * children. Thus, if possible, it is encouraged to provide the content size.
    */
   Size get contentSize() {
-    if (_contentSize === null) {
+    if (_contentSize == null) {
       if (_contentSizeValue != null)
         _contentSize = _contentSizeValue;
       else {
@@ -121,7 +121,7 @@ class ScrollView extends View {
   }
   //@Override
   void insertChildToDocument_(View child, var childInfo, View beforeChild) {
-    if (beforeChild !== null)
+    if (beforeChild != null)
       super.insertChildToDocument_(child, childInfo, beforeChild);
     else if (childInfo is Element)
       contentNode.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement

@@ -38,10 +38,10 @@ class ViewEvent {
       throw const UIException("type required");
     this.target = currentTarget = target;
 
-    if (pageX !== null && pageY !== null) {
+    if (pageX != null && pageY != null) {
       _offset = new Offset(pageX, pageY);
     } else {
-      _offset = new Offset(offsetX !== null ? offsetX: 0, offsetY !== null ? offsetY: 0);
+      _offset = new Offset(offsetX != null ? offsetX: 0, offsetY != null ? offsetY: 0);
       _offsetReady = true;
     }
   }
@@ -61,7 +61,7 @@ class ViewEvent {
     if (!_offsetReady) {
       _offsetReady = true;
       try {
-        if (domEvent !== null) {
+        if (domEvent != null) {
           if (domEvent is! UIEvent)
             return _offset;
 

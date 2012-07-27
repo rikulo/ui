@@ -30,7 +30,7 @@ class TestDOMQuery extends Activity {
 
     final TextView textView = new TextView(text);
     textView.style.cssText = cssText;
-    if (classes !== null)
+    if (classes != null)
       for (String c in classes)
         textView.classes.add(c);
     textView.profile.width = "150";

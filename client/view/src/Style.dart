@@ -87,19 +87,19 @@ class Style extends View {
   }
   //@Override
   void domInner_(StringBuffer out) {
-    if (src !== null)
+    if (src != null)
       out.add('<link rel="stylesheet" type="text/css" href="').add(src).add('"');
     else
       out.add('<style');
 
-    if (media !== null)
+    if (media != null)
       out.add(' media="').add(media).add('"');
 
-    if (src !== null) {
+    if (src != null) {
       out.add('/>');
     } else {
       out.add('>');
-      if (content !== null)
+      if (content != null)
         out.add(content);
       out.add('</style>');
     }
@@ -109,5 +109,5 @@ class Style extends View {
    */
   bool isViewGroup() => false;
   //@Override
-  String toString() => "$className('${src !== null ? src: content}')";
+  String toString() => "$className('${src != null ? src: content}')";
 }

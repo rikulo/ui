@@ -23,7 +23,7 @@ class CordovaAccelerometer extends AbstractAccelerometer {
   }
   
   AccelerometerErrorCallback wrapErrorListener_(AccelerationErrorEventListener listener) {
-    return () {if (listener !== null) listener(new AccelerationErrorEvent(this));};
+    return () {if (listener != null) listener(new AccelerationErrorEvent(this));};
   }
   
   watchAcceleration_(AccelerometerSuccessCallback success, AccelerometerErrorCallback error, [Map options]) {

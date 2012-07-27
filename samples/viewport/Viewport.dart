@@ -90,7 +90,7 @@ class Viewport extends View {
       if (beforeChild === _toolbar)
         beforeChild = null;
 
-      if (beforeChild !== null)
+      if (beforeChild != null)
         super.insertChildToDocument_(child, childInfo, beforeChild);
       else if (childInfo is Element)
         contentNode.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement

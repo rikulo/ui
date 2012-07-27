@@ -52,7 +52,7 @@ class CordovaCapture implements Capture {
     return new ConfigurationData.from(JSUtil.toDartMap(jsData)); 
   }
   Map _audioOptionsToMap(CaptureAudioOptions options) {
-    if (options !== null) {
+    if (options != null) {
       return {
         "limit" : options.limit,
         "duration" : options.duration,
@@ -63,7 +63,7 @@ class CordovaCapture implements Capture {
     }
   }
   Map _imageOptionsToMap(CaptureImageOptions options) {
-    if (options !== null) {
+    if (options != null) {
       return {
         "limit" : options.limit,
         "mode" : JSUtil.toJSMap(_configurationDataToMap(options.mode))
@@ -73,7 +73,7 @@ class CordovaCapture implements Capture {
     }
   }
   Map _videoOptionsToMap(CaptureVideoOptions options) {
-    if (options !== null) {
+    if (options != null) {
       return {
         "limit" : options.limit,
         "duration" : options.duration,
@@ -84,7 +84,7 @@ class CordovaCapture implements Capture {
     }
   }
   Map _configurationDataToMap(ConfigurationData data) {
-    if (data !== null) {
+    if (data != null) {
       return {
         "type" : data.type,
         "height": data.height,

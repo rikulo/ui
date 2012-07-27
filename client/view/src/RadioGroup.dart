@@ -43,26 +43,26 @@ class RadioGroup<E> extends View {
   /** Sets the model.
    */
   void set model(ListModel<E> model) {
-    if (model !== null) {
+    if (model != null) {
       if (model is! Selection)
         throw new UIException("Selection required, $model");
 
       if (_model !== model) { //Note: it is not !=
-        if (_model !== null)
+        if (_model != null)
           _model.on.all.remove(_dataListener);
 
         _model = model;
         _model.on.all.add(_initDataListener());
       }
       modelRenderer.queue(this); //queue for later operation (=> renderModel_)
-    } else if (_model !== null) {
+    } else if (_model != null) {
       _model.on.all.remove(_dataListener);
       _model = null;
       modelRenderer.queue(this); //queue for later operation (=> renderModel_)
     }
   }
   DataEventListener _initDataListener() {
-    if (_dataListener === null) {
+    if (_dataListener == null) {
       _dataListener = (event) {
         if (event.type == 'select') {
           if (!_modelSelUpdating) {
@@ -102,7 +102,7 @@ class RadioGroup<E> extends View {
   void set renderer(HTMLRenderer renderer) {
     if (_renderer !== renderer) {
       _renderer = renderer;
-      if (_model !== null)
+      if (_model != null)
         modelRenderer.queue(this);
     }
   }
@@ -128,11 +128,11 @@ class RadioGroup<E> extends View {
   }  
 
   void _renderInner(StringBuffer out, List<AfterMount> callbacks) {
-    if (_model === null)
+    if (_model == null)
       return; //nothing to do
 
     final HTMLRenderer renderer =
-      _renderer !== null ? _renderer: _defRenderer();
+      _renderer != null ? _renderer: _defRenderer();
     final model = _cast(_model);
     final bool multiple = model.multiple;
     final String type = multiple ? "checkbox": "radio";
@@ -144,8 +144,8 @@ class RadioGroup<E> extends View {
         new RenderContext(this, _model, obj, selected, disabled, i));
 
       final AfterMount callback = hf.mount;
-      if (callback !== null) {
-        if (callbacks !== null)
+      if (callback != null) {
+        if (callbacks != null)
           callbacks.add(callback);
         else
           afterMount_(callback); //called by domInner_
@@ -171,7 +171,7 @@ class RadioGroup<E> extends View {
   }
   static _cast(var v) => v; //TODO: replace with 'as' when Dart supports it
   static HTMLRenderer _defRenderer() {
-    if (_$defRenderer === null)
+    if (_$defRenderer == null)
       _$defRenderer = (RenderContext context) => new HTMLFragment(context.data);
     return _$defRenderer;
   }

@@ -14,7 +14,7 @@ class CordovaContacts implements Contacts {
   }
   Contact create(Map properties) {
     return new CordovaContact._from(JSUtil.jsCall(_CREATE, 
-      [properties === null ? JSUtil.jsCall("{}") : JSUtil.toJSMap(properties)]));
+      [properties == null ? JSUtil.jsCall("{}") : JSUtil.toJSMap(properties)]));
   }
   
   void find(List<String> fields, ContactsSuccessCallback success, ContactsErrorCallback error, ContactsFindOptions contactOptions) {

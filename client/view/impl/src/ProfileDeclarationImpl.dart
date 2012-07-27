@@ -21,19 +21,19 @@ implements ProfileDeclaration {
 
   View get anchorView() {
     String anc;
-    return _anchorView !== null ? _anchorView:
+    return _anchorView != null ? _anchorView:
       (anc = anchor).isEmpty() ?
         location.isEmpty() ? null: _owner.parent: _owner.query(anc);
   }
   void set anchorView(View view) {
     String av;
-    if (view === null) {
+    if (view == null) {
       av = "";
     } else if (view === _owner.parent) {
       av = "parent";
     } else {
-      if (view !== null
-      && view.parent !== null && _owner.parent !== null //parent might not be assigned yet
+      if (view != null
+      && view.parent != null && _owner.parent != null //parent might not be assigned yet
       && view.parent !== _owner.parent)
         throw new UIException("Only parent or sibling allowed for an anchor, not $view");
       if (view === _owner)

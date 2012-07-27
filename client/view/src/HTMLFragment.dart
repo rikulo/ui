@@ -41,7 +41,7 @@ class HTMLFragment {
    * the receiver doesn't have to wrap with additional HTML tags.
    */
   HTMLFragment.html(String html, [AfterMount this.mount, bool complete]):
-  _html = html !== null ? html: "", _complete = complete !== null && complete;
+  _html = html != null ? html: "", _complete = complete != null && complete;
 
   final AfterMount mount;
 
@@ -66,7 +66,7 @@ class HTMLFragment {
       text = text.data;
     if (text is Map && text.contains("text"))
       text = text["text"];
-    return text !== null ?
-      encode !== null && encode ? "${StringUtil.encodeXML(text)}": "$text": "";
+    return text != null ?
+      encode != null && encode ? "${StringUtil.encodeXML(text)}": "$text": "";
   }
 }

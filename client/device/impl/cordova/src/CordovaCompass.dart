@@ -23,7 +23,7 @@ class CordovaCompass extends AbstractCompass {
   }
 
   CompassErrorCallback wrapErrorListener_(CompassHeadingErrorEventListener listener) {  
-    return () {if (listener !== null) listener(new CompassHeadingErrorEvent(this));};
+    return () {if (listener != null) listener(new CompassHeadingErrorEvent(this));};
   }
   
   watchHeading_(CompassSuccessCallback success, CompassErrorCallback error, [Map options]) {

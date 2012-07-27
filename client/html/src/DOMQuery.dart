@@ -13,7 +13,7 @@ class DOMQuery {
   factory DOMQuery(var v) {
     v = v is View ? v.node: v is String ? document.query(v): v;
     return v is Window ? new _WindowQuery(v):
-      v !== null ? new DOMQuery._init(v): new _NullQuery();
+      v != null ? new DOMQuery._init(v): new _NullQuery();
   }
 
   DOMQuery._init(this.node) {
@@ -116,7 +116,7 @@ class DOMQuery {
    * it is identical to this element.
    */
   bool isDescendantOf(Element parent) {
-    for (Element n = node; n !== null; n = n.parent) {
+    for (Element n = node; n != null; n = n.parent) {
       if (n === parent)
         return true;
     }
@@ -149,7 +149,7 @@ class DOMQuery {
    *    new DOMQuery(null).measureText(s, style);
    */
   Size measureText(String text, [CSSStyleDeclaration style]) {
-    if (_txtdiv === null) {
+    if (_txtdiv == null) {
       _txtdiv = new DivElement();
       _txtdiv.style.cssText =
         "left:-1000px;position:absolute;visibility:hidden;border:none";
@@ -158,9 +158,9 @@ class DOMQuery {
 
     final CSSStyleDeclaration dst = _txtdiv.style;
     _txtdiv.innerHTML = text;
-    if (node !== null)
+    if (node != null)
       CSS.cpTextStyles(dst, window.$dom_getComputedStyle(node, ""));
-    if (style !== null)
+    if (style != null)
       CSS.cpTextStyles(dst, style);
 
     final Size sz = new Size(_txtdiv.$dom_offsetWidth, _txtdiv.$dom_offsetHeight);

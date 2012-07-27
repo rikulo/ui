@@ -90,7 +90,7 @@ class DropDownList<E> extends View {
    * In other words, it renders only two levels of nodes.
    */
   void set model(DataModel model) {
-    if (model !== null) {
+    if (model != null) {
       if (model is! Selection)
         throw new UIException("Selection required, $model");
       if (model is! ListModel && model is! TreeModel)
@@ -98,12 +98,12 @@ class DropDownList<E> extends View {
     }
 
     if (_model !== model) { //Note: it is not !=
-      if (_model !== null)
+      if (_model != null)
         _model.on.all.remove(_dataListener);
 
       _model = model;
 
-      if (_model !== null) {
+      if (_model != null) {
         _model.on.all.add(_initDataListener());
 
         if (inDocument) {
@@ -117,7 +117,7 @@ class DropDownList<E> extends View {
   }
   static _cast(var v) => v; //TODO: replace with 'as' when Dart supports it
   DataEventListener _initDataListener() {
-    if (_dataListener === null) {
+    if (_dataListener == null) {
       _dataListener = (event) {
         switch (event.type) {
           case 'multiple':
@@ -160,7 +160,7 @@ class DropDownList<E> extends View {
   void set renderer(StringRenderer renderer) {
     if (_renderer !== renderer) {
       _renderer = renderer;
-      if (_model !== null)
+      if (_model != null)
         modelRenderer.queue(this);
     }
   }
@@ -181,7 +181,7 @@ class DropDownList<E> extends View {
     }
   }
   static StringRenderer _defRenderer() {
-    if (_$defRenderer === null)
+    if (_$defRenderer == null)
       _$defRenderer = (RenderContext context) 
         => HTMLFragment.getHTML(context.data, false); //handles TreeNode/Map; don't encode
     return _$defRenderer;
@@ -195,14 +195,14 @@ class DropDownList<E> extends View {
     node.on.change.add(_onChange = (e) {
       final List<E> selValues = new List();
       int selIndex = -1;
-      if (_model !== null) {
+      if (_model != null) {
         final SelectElement n = node;
         selIndex = n.selectedIndex;
         final ListModel model = _model is ListModel ? _model: null;
         if (_cast(_model).multiple) {
           for (OptionElement opt in n.options) {
             if (opt.selected) {
-              if (model !== null) {
+              if (model != null) {
                 selValues.add(model[opt.index]);
               } else {
                 selValues.add(_treeValueOf(opt));
@@ -211,7 +211,7 @@ class DropDownList<E> extends View {
           }
         } else {
           if (selIndex >= 0) {
-            if (model !== null) {
+            if (model != null) {
               selValues.add(model[selIndex]);
             } else {
               selValues.add(_treeValueOf(n.options[selIndex]));
@@ -237,7 +237,7 @@ class DropDownList<E> extends View {
     super.unmount_();
   }
   void _fixIndex() { //it assumes inDocument
-    if (_model !== null && _cast(_model).isSelectionEmpty()) {
+    if (_model != null && _cast(_model).isSelectionEmpty()) {
       final SelectElement n = node;
       n.selectedIndex = -1;
     }
@@ -251,18 +251,18 @@ class DropDownList<E> extends View {
       out.add(' disabled="disabled"');
     if (autofocus)
       out.add(' autofocus="autofocus"');
-    if (_model !== null && _cast(_model).multiple)
+    if (_model != null && _cast(_model).multiple)
       out.add(' multiple="multiple"');
     super.domAttrs_(out, noId, noStyle, noClass);
   }
   //@Override
   void domInner_(StringBuffer out) {
-    if (_model === null)
+    if (_model == null)
       return; //nothing to do
 
     if (_model is ListModel) {
       final StringRenderer renderer =
-        _renderer !== null ? _renderer: _defRenderer();
+        _renderer != null ? _renderer: _defRenderer();
       final ListModel<E> model = _model;
       final bool multiple = _cast(_model).multiple;
       for (int i = 0, len = model.length; i < len; ++i) {
@@ -279,9 +279,9 @@ class DropDownList<E> extends View {
       }
     } else {
       final TreeModel model = _model;
-      if (model.root !== null)
+      if (model.root != null)
         _renderTree(out, model,
-          _renderer !== null ? _renderer: _defRenderer(), model.root, -1);
+          _renderer != null ? _renderer: _defRenderer(), model.root, -1);
     }
   }
   void _renderTree(StringBuffer out, TreeModel<E> model,

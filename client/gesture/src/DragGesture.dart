@@ -148,7 +148,7 @@ class _DragGestureState implements DragGestureState {
   Element get dragged() => _dragged;
   Element get touched() => _touched;
   Rectangle get range() {
-    if (_range === null && _gesture._fnRange !== null)
+    if (_range == null && _gesture._fnRange != null)
       _range = _gesture._fnRange();
     return _range;
   }
@@ -177,7 +177,7 @@ class _DragGesture implements DragGesture {
     bool transform=false, AsRectangle range, int movement=-1,
     DragGestureStart start, DragGestureMove end,
     DragGestureMove move]) {
-    if (handle === null) handle = owner;
+    if (handle == null) handle = owner;
     return browser.touch ?
       new _TouchDragGesture(owner, handle, transform, range, movement,
         start, end, move):
@@ -217,8 +217,8 @@ class _DragGesture implements DragGesture {
     _state._touched = _state._pending;
     _state._pending = null;
     final Element dragged =
-      _state._dragged = _start !== null ?  _start(_state): owner;
-    if (dragged === null) { //not allowed
+      _state._dragged = _start != null ?  _start(_state): owner;
+    if (dragged == null) { //not allowed
       _stop();
       return;
     }
@@ -227,15 +227,15 @@ class _DragGesture implements DragGesture {
       CSS.offset3dOf(dragged.style.transform): new DOMQuery(dragged).offset;
   }
   void _touchMove(int pageX, int pageY, int time) {
-    if (_state !== null) {
+    if (_state != null) {
       final Offset initPgOfs = _state._initPgOfs;
-      if (_state._pending !== null) {
+      if (_state._pending != null) {
         int v;
         if ((v = pageX - initPgOfs.x) > _movement || v < -_movement
         || (v = pageY - initPgOfs.y) > _movement || v < -_movement)
           _activate();
       }
-      if (_state !== null && time != null) {
+      if (_state != null && time != null) {
         int diffTime;
         if (_snapTime != null) {
           diffTime = time - _snapTime;
@@ -248,20 +248,20 @@ class _DragGesture implements DragGesture {
           _snapY = pageY;
         }
       }
-      if (_state._touched !== null) {
+      if (_state._touched != null) {
         _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
           pageX - initPgOfs.x, pageY - initPgOfs.y, time, _move); 
       }
     }
   }
   void _touchEnd(int pageX, int pageY, int time) {
-    if (_state !== null && _snapTime != null && time != null) {
+    if (_state != null && _snapTime != null && time != null) {
       int diffTime = time - _snapTime;
       _state._velocity.x = diffTime > 250 ? 0 : (pageX - _snapX) / diffTime;
       _state._velocity.y = diffTime > 250 ? 0 : (pageY - _snapY) / diffTime;
       _snapTime = _snapX = _snapY = null;
     }
-    if (_state !== null && _state._touched !== null) {
+    if (_state != null && _state._touched != null) {
       _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
         pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, time, _end); 
     }
@@ -272,13 +272,13 @@ class _DragGesture implements DragGesture {
     final Offset initofs = _state._initTxOfs,
       move = _constraint(deltaX + initofs.x, deltaY + initofs.y);
     
-    if (callback !== null) {
+    if (callback != null) {
       _state._setOfs(ofsX, ofsY);
       _state._setDelta(move.x - initofs.x, move.y - initofs.y);
       _state._time = time;
       _state._moved = _state._moved || deltaX != 0 || deltaY != 0;
       bool done = callback(_state);
-      if (done !== null && done)
+      if (done != null && done)
         return; //no need to move
     }
     if (_transform) {
@@ -334,9 +334,9 @@ class _TouchDragGesture extends _DragGesture {
   }
   void _unlisten() {
     final ElementEvents on = handle.on;
-    if (_elStart !== null) on.touchStart.remove(_elStart);
-    if (_elMove !== null) on.touchMove.remove(_elMove);
-    if (_elEnd !== null) on.touchEnd.remove(_elEnd);
+    if (_elStart != null) on.touchStart.remove(_elStart);
+    if (_elMove != null) on.touchMove.remove(_elMove);
+    if (_elEnd != null) on.touchEnd.remove(_elEnd);
   }
 }
 
@@ -354,9 +354,9 @@ class _MouseDragGesture extends _DragGesture {
     if (_captured) {
       _captured = false;
       final ElementEvents on = document.on;
-      if (_elMove !== null)
+      if (_elMove != null)
         on.mouseMove.remove(_elMove);
-      if (_elEnd !== null)
+      if (_elEnd != null)
         on.mouseUp.remove(_elEnd);
     }
     super._stop();
@@ -378,7 +378,7 @@ class _MouseDragGesture extends _DragGesture {
     });
   }
   void _unlisten() {
-    if (_elStart !== null)
+    if (_elStart != null)
       handle.on.mouseDown.remove(_elStart);
   }
 }

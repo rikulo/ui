@@ -81,18 +81,18 @@ class ViewUtil {
   static Rectangle getRectangle(List<View> children) {
     final Rectangle r = new Rectangle(0,0,0,0);
     for (final View child in children) {
-      if ((child.parent === null || child.parent.shallLayout_(child))
-      && child.profile.anchorView === null) {
+      if ((child.parent == null || child.parent.shallLayout_(child))
+      && child.profile.anchorView == null) {
         final String pos = child.style.position;
         if (pos != "static" && pos != "fixed") {
           if (child.left < r.left) r.left = child.left;
           int val = child.width;
-          if (val !== null && (val += child.left) > r.right)
+          if (val != null && (val += child.left) > r.right)
             r.right = val;
 
           if (child.top < r.top) r.top = child.top;
           val = child.height;
-          if (val !== null && (val += child.top) > r.bottom)
+          if (val != null && (val += child.top) > r.bottom)
             r.bottom = val;
         }
       }

@@ -39,7 +39,7 @@ class CordovaDevice implements Device {
     _initJSFunctions();
     _initCordova(serviceURI);
     
-    if (serviceNames !== null) {
+    if (serviceNames != null) {
       services = new Map();
       for(String sname in serviceNames) {
         switch(sname) {
@@ -76,7 +76,7 @@ class CordovaDevice implements Device {
     };
     //init cordova
     JSUtil.doWhenReady(() => JSUtil.jsCall(_ADD_EVENT_LISTENER, ["deviceready", _toJSFn(_onDeviceReady), false]), 
-      () => JSUtil.jsCall(_INIT_CORDOVA) !== null, //until window.cordova exists (@see cordova.js)
+      () => JSUtil.jsCall(_INIT_CORDOVA) != null, //until window.cordova exists (@see cordova.js)
       (int msec) {if(msec == 0) print("Fail to load cordova.js!");},
       10, 180000); //try every 10 ms, try total 180 seconds. 
   }
@@ -106,12 +106,12 @@ class CordovaDevice implements Device {
   }
   
   void _onPause() {
-    if (activity !== null)
+    if (activity != null)
       activity.onPause_();
   }
   
   void _onResume() {
-    if (activity !== null)
+    if (activity != null)
       activity.onResume_();
   }
   
@@ -168,7 +168,7 @@ class CordovaDevice implements Device {
   }
   
   void _initCordova(String uri) {
-    if (JSUtil.jsCall(_INIT_CORDOVA) === null) {
+    if (JSUtil.jsCall(_INIT_CORDOVA) == null) {
       JSUtil.injectJavaScriptSrc(uri); //load asynchronously
     }
   }

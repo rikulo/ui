@@ -24,7 +24,7 @@ class AbstractGeolocation implements XGeolocation {
   PositionEvents _on;
   
   PositionEvents get on() {
-    if (_on === null)
+    if (_on == null)
       _on = new PositionEvents._init(this);
     return _on;
   }

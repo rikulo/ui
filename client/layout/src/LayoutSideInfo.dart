@@ -47,7 +47,7 @@ class LayoutSideInfo {
       bottom = defaultInfo.bottom;
       left = defaultInfo.left;
       right = defaultInfo.right;
-    } else if (defaultValue !== null) {
+    } else if (defaultValue != null) {
       top = bottom = left = right = defaultValue;
     }
   }

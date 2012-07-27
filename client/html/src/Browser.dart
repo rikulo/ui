@@ -84,7 +84,7 @@ class Browser {
     final String ua = window.navigator.userAgent.toLowerCase();
     final _BrowserMatch bm = (RegExp regex) {
       Match m = regex.firstMatch(ua);
-      if (m !== null) {
+      if (m != null) {
         name = m.group(1);
         version = _versionOf(m.group(2));
         return true;
@@ -94,10 +94,10 @@ class Browser {
 
     // os detection
     Match m2;
-    if ((m2 = _randroid.firstMatch(ua)) !== null) {
+    if ((m2 = _randroid.firstMatch(ua)) != null) {
       touch = mobile = android = true;
       androidVersion = _versionOf(m2.group(1));
-    } else if ((m2 = _rios.firstMatch(ua)) !== null) {
+    } else if ((m2 = _rios.firstMatch(ua)) != null) {
       touch = mobile = ios = true;
       iosVersion = _versionOf(m2.group(1), '_');
     }

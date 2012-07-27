@@ -18,8 +18,8 @@ implements Selection<E>, Disables<E> {
    * Unlike [set disables], it won't make a copy.
    */
   AbstractSelectionModel([Set<E> selection, Set<E> disables, bool multiple=false]) {
-    _selection = selection !== null ? selection: new Set();
-    _disables = disables !== null ? disables: new Set();
+    _selection = selection != null ? selection: new Set();
+    _disables = disables != null ? disables: new Set();
     _multiple = multiple;
   }
 

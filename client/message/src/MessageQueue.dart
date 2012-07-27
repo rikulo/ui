@@ -52,7 +52,7 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
 
   //@Override
   String get uuid() {
-    if (_uuid === null) {
+    if (_uuid == null) {
       final int appid = application.uuid;
       _uuid = StringUtil.encodeId(_uuidNext++,
         appid > 0 ? "q${StringUtil.encodeId(appid)}_": "q_");
@@ -79,7 +79,7 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
   //@Override
   void send(Message message) {
     for (final _ListenerInfo info in _listenerInfos) {
-      if (info.filter === null || (message = info.filter(message)) !== null) {
+      if (info.filter == null || (message = info.filter(message)) != null) {
         info.listener(message);
       }
     }

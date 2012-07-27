@@ -8,7 +8,7 @@
 class _HLayout implements _RealLinearLayout {
   int measureWidth(MeasureContext mctx, View view) {
     final int va = mctx.getWidthSetByApp(view);
-    if (va !== null)
+    if (va != null)
       return va;
 
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
@@ -16,13 +16,13 @@ class _HLayout implements _RealLinearLayout {
     final String defpwd = view.layout.width;
     int width = 0, prevSpacing;
     for (final View child in view.children) {
-      if (!view.shallLayout_(child) || child.profile.anchorView !== null)
+      if (!view.shallLayout_(child) || child.profile.anchorView != null)
         continue; //ignore anchored
 
       //add spacing to width
       final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
-      width += prevSpacing === null ? si.left: //first
-        gapinf.left !== null ? gapinf.left: Math.max(prevSpacing, si.left);
+      width += prevSpacing == null ? si.left: //first
+        gapinf.left != null ? gapinf.left: Math.max(prevSpacing, si.left);
       prevSpacing = si.right;
 
       final String pwd = child.profile.width;
@@ -41,12 +41,12 @@ class _HLayout implements _RealLinearLayout {
     }
 
     width += mctx.getBorderWidth(view) * 2
-      + (prevSpacing !== null ? prevSpacing: spcinf.left + spcinf.right);
+      + (prevSpacing != null ? prevSpacing: spcinf.left + spcinf.right);
     return width;
   }
   int measureHeight(MeasureContext mctx, View view) {
     final int va = mctx.getHeightSetByApp(view);
-    if (va !== null)
+    if (va != null)
       return va;
 
     final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
@@ -54,7 +54,7 @@ class _HLayout implements _RealLinearLayout {
     final int borderWd = mctx.getBorderWidth(view) << 1;
     int height;
     for (final View child in view.children) {
-      if (!view.shallLayout_(child) || child.profile.anchorView !== null)
+      if (!view.shallLayout_(child) || child.profile.anchorView != null)
         continue; //ignore anchored
 
       //add spacing to width
@@ -100,8 +100,8 @@ class _HLayout implements _RealLinearLayout {
 
       final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       childspcinfs[child] = si;
-      assigned += prevSpacing === null ? si.left: //first
-        gapinf.left !== null ? gapinf.left: Math.max(prevSpacing, si.left);
+      assigned += prevSpacing == null ? si.left: //first
+        gapinf.left != null ? gapinf.left: Math.max(prevSpacing, si.left);
       prevSpacing = si.right;
 
       final String pwd = child.profile.width;
@@ -155,8 +155,8 @@ class _HLayout implements _RealLinearLayout {
         continue;
 
       final LayoutSideInfo si = childspcinfs[child];
-      child.left = assigned += prevSpacing === null ? si.left: //first
-        gapinf.left !== null ? gapinf.left: Math.max(prevSpacing, si.left);
+      child.left = assigned += prevSpacing == null ? si.left: //first
+        gapinf.left != null ? gapinf.left: Math.max(prevSpacing, si.left);
       assigned += child.outerWidth;
       prevSpacing = si.right;
 

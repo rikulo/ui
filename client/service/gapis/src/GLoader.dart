@@ -45,7 +45,7 @@ class GLoader {
   }
   
   static _initGLoader() {
-    if (_loaderModule === null)
+    if (_loaderModule == null)
       _loaderModule = new LoadableModule(_loadModule);
   }
   

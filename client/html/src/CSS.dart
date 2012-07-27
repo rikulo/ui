@@ -20,19 +20,19 @@ class CSS {
    * Notice that it returns an empty string if [val] is null.
    */
   static String px(num val) {
-    return val !== null ? "${val}px": "";
+    return val != null ? "${val}px": "";
   }
   /** Converts a CSS value representing a color.
    */
   static String color(int red, int green, int blue, [num alpha]) {
-    return alpha !== null ? "rgba($red,$green,$blue,$alpha)":
+    return alpha != null ? "rgba($red,$green,$blue,$alpha)":
       "#${StringUtil.toHexString(red,2)}${StringUtil.toHexString(green,2)}${StringUtil.toHexString(blue,2)}";
   }
 
   /** Converts a CSS value presenting `translate3d` for the property called `transform`.
    */
   static String translate3d(int x, int y, [int z])
-  => "translate3d(${x}px,${y}px,${z !== null ? z: 0}px)";
+  => "translate3d(${x}px,${y}px,${z != null ? z: 0}px)";
   /** Converts a string of a 3-tuples to [Offset3d].
    * If it is 2-tuples, [Offset3d.z] will be zero.
    */
@@ -59,13 +59,13 @@ class CSS {
    */
   static int intOf(String value, [bool reportError]) {
     try {
-      if (value !== null && !value.isEmpty()) {
+      if (value != null && !value.isEmpty()) {
         final Match m = _reNum.firstMatch(value);
-        if (m !== null)
+        if (m != null)
           return Math.parseInt(m.group(0));
       }
     } catch (var e) {
-      if (reportError !== null && reportError)
+      if (reportError != null && reportError)
         throw e;
     }
     return 0;
@@ -76,7 +76,7 @@ class CSS {
     for (int j = _txtStyles.length; --j >= 0;) {
       final String nm = _txtStyles[j];
       final String val = src.getPropertyValue(nm);
-      dst.setProperty(nm, val !== null ? val: "");
+      dst.setProperty(nm, val != null ? val: "");
     }
   }
   static final _txtStyles = const [
@@ -92,7 +92,7 @@ class CSS {
    * Notice that the prefix is defined in [prefix].
    */
   static String name(String propertyName) {
-    if (_nsnms === null) {
+    if (_nsnms == null) {
       _nsnms = new Set();
       //TODO: no need to check null when Dart can compare null with number
       //TODO: check other attributes for non-standard properties (like we did for box-sizing)

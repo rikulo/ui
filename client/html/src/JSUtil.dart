@@ -19,7 +19,7 @@ class JSUtil {
    * + [dartdate] the dart Date
    */
   static toJSDate(Date dartdate) {
-    int msecs = dartdate !== null ? dartdate.millisecondsSinceEpoch : null;
+    int msecs = dartdate != null ? dartdate.millisecondsSinceEpoch : null;
     return msecs != null ? jsCall("newDate", [msecs]) : null;
   }
   
@@ -27,19 +27,19 @@ class JSUtil {
    * + [jsdate] the JavaScript Date
    */
   static Date toDartDate(jsdate) {
-    int msecs = jsdate !== null ? jsCall("getTime", [jsdate]) : null;
-    return msecs !== null ? new Date.fromMillisecondsSinceEpoch(msecs, false) : null; //use local timezone
+    int msecs = jsdate != null ? jsCall("getTime", [jsdate]) : null;
+    return msecs != null ? new Date.fromMillisecondsSinceEpoch(msecs, false) : null; //use local timezone
   }
     
   /** Convert Dart List to JavaScript array 
    * + [dartlist] the dart List
    */
   static toJSArray(List dartlist, [Function converter = null]) {
-    if (dartlist !== null) {
+    if (dartlist != null) {
       if (dartlist.length == 0) {
         return jsCall("[]"); //return empty JavaScript Array
       }
-      if (converter === null) { //tricky! optimize case: if no need to convert each item, compiled Dart List is a JavaScript Array
+      if (converter == null) { //tricky! optimize case: if no need to convert each item, compiled Dart List is a JavaScript Array
         return dartlist;
       } else {
         var result = [];
@@ -55,9 +55,9 @@ class JSUtil {
    * + [converter] the converter function that convert the JavaScript Object into Dart Object.
    */
   static List toDartList(var jsarray, [Function converter = null]) {
-    if (jsarray !== null) {
+    if (jsarray != null) {
       List result = new List();
-      if (converter !== null)
+      if (converter != null)
         jsCall("forEach", [jsarray, toJSFunction((v) => result.add(converter(v)), 1)]);
       else
         jsCall("forEach", [jsarray, toJSFunction((v) => result.add(v), 1)]);
@@ -75,7 +75,7 @@ class JSUtil {
         return jsCall("{}"); //return empty JavaScript map
       }
       var result = [];
-      if (converter !== null)
+      if (converter != null)
         dartmap.forEach((k,v) => jsCall("_newEntry", [result, k, converter(k,v)]));
       else
         dartmap.forEach((k,v) => jsCall("_newEntry", [result, k, v]));
@@ -88,9 +88,9 @@ class JSUtil {
    * + [jsmap] the JavaScript map
    */
   static Map toDartMap(var jsmap, [Function converter = null]) {
-    if (jsmap !== null) {
+    if (jsmap != null) {
       Map result = new Map();
-      if (converter !== null)
+      if (converter != null)
         jsCall("forEachKey", [jsmap, toJSFunction((k,v) => result[k] = converter(k,v), 2)]);
       else
         jsCall("forEachKey", [jsmap, toJSFunction((k,v) => result[k] = v, 2)]);
@@ -181,7 +181,7 @@ class JSUtil {
   /** Initialization of the [jsCall] function; must be called at least once before using [jsCall] method. 
    */
   static _JSCallX get _jsCallX() {
-    if (_$jsCallX === null) {
+    if (_$jsCallX == null) {
       final String newFn = '''  
         var _natives = {
           "newFn" : function(nm, args, body) {
@@ -307,7 +307,7 @@ class JSUtil {
    */
   static void removeJavaScriptSrc(String uri) {
     ScriptElement elm = query("script[src='${uri}']");
-    if (elm !== null)
+    if (elm != null)
       elm.remove();
   }
   
@@ -341,14 +341,14 @@ class JSUtil {
   static void _doWhen0(Function fn, Function ready, Function progress, int freq, final int end) {
     window.setTimeout(() {
       if (ready()) {
-        if (fn !== null) fn();
+        if (fn != null) fn();
       } else {
         int diff = end - new Date.now().millisecondsSinceEpoch;
         if (end < 0 || diff > 0) { //still have time to try it
-          if (progress !== null) progress(end < 0 ? -1 : diff); 
+          if (progress != null) progress(end < 0 ? -1 : diff); 
           _doWhen0(fn, ready, progress, freq, end); //try again
         } else {
-          if (progress !== null) progress(0); //timout. fail!
+          if (progress != null) progress(0); //timout. fail!
         }
       }
     }, freq);

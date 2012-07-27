@@ -47,20 +47,20 @@ class _PositionEventListenerList implements PositionEventListenerList {
   [PositionErrorEventListener error, GeolocationOptions options]) {
     final watchID = _owner.watchPosition_(
       _owner.wrapSuccessListener_(success), _owner.wrapErrorListener_(error),
-        options === null ? {
+        options == null ? {
           "frequency" : 10000,
           "enableHighAccuracy" : true,
           "timeout" : 10000,
           "maximumAge" : 10000
         }: {
           "frequency":
-            options.frequency === null ? 10000 : options.frequency,
+            options.frequency == null ? 10000 : options.frequency,
           "enableHighAccuracy":
-            options.enableHighAccuracy === null ? true : options.enableHighAccuracy,
+            options.enableHighAccuracy == null ? true : options.enableHighAccuracy,
           "timeout":
-            options.timeout === null ? 10000 : options.timeout,
+            options.timeout == null ? 10000 : options.timeout,
           "maximumAge":
-            options.maximumAge === null ? 10000 : options.maximumAge
+            options.maximumAge == null ? 10000 : options.maximumAge
         });
     _listeners.add(new _WatchIDInfo(success, watchID));
     return this;
@@ -69,7 +69,7 @@ class _PositionEventListenerList implements PositionEventListenerList {
     for(int j = 0; j < _listeners.length; ++j) {
       if (_listeners[j].listener == success) {
         var watchID = _listeners[j].watchID;
-        if (watchID !== null) {
+        if (watchID != null) {
           _owner.clearWatch_(watchID);
         }
         break;

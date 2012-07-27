@@ -31,7 +31,7 @@ class PopupEvent extends ViewEvent {
   /** Whether the given popup shall be closed.
    */
   bool shallClose(popup) {
-    if (source === null)
+    if (source == null)
       return true;
 
     var srcNode, popNode;

@@ -23,9 +23,9 @@ class Switch extends View implements Input<bool> {
   /** Instantaites a switch.
    */
   Switch([bool value, String onLabel, String offLabel]) {
-    _value = value !== null && value;
-    _onLabel = onLabel !== null ? onLabel: "ON";
-    _offLabel = offLabel !== null ? offLabel: "OFF";
+    _value = value != null && value;
+    _onLabel = onLabel != null ? onLabel: "ON";
+    _offLabel = offLabel != null ? offLabel: "OFF";
   }
   //@Override
   String get className() => "Switch"; //TODO: replace with reflection if Dart supports it

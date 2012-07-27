@@ -47,7 +47,7 @@ class _Animator implements Animator {
   _Animator(): _anims = new List() {
     _callback = (num now) {
       if (!_anims.isEmpty()) {
-        final int inow = now === null ? _now(): now.toInt();
+        final int inow = now == null ? _now(): now.toInt();
         final int diff = inow - _prevTime;
         _prevTime = inow;
 
@@ -108,7 +108,7 @@ class _Animator implements Animator {
     }
   }
   void remove(AnimatorTask animate) {
-    if (_tmpRemoved !== null) {
+    if (_tmpRemoved != null) {
       _tmpRemoved.add(animate); //handle it later
     } else {
       ListUtil.remove(_anims, animate);

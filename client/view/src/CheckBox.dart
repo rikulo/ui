@@ -17,7 +17,7 @@ class CheckBox extends TextView implements Input<bool> {
    * The text will be encoded to make sure it is valid HTML text.
    */
   CheckBox([String text, bool value]): super(text) {
-    _value = value !== null && value;
+    _value = value != null && value;
   }
   /** Instantiates with a HTML fragment.
    *
@@ -26,7 +26,7 @@ class CheckBox extends TextView implements Input<bool> {
    * unpreditable.
    */
   CheckBox.html(String html, [bool value]): super.html(html) {
-    _value = value !== null && value;
+    _value = value != null && value;
   }
 
   //@Override

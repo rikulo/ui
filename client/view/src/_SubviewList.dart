@@ -38,7 +38,7 @@ class _SubviewList extends AbstractList<View> {
   }
       
   void operator[]=(int index, View value) {
-    if (value === null)
+    if (value == null)
       throw const IllegalArgumentException("null");
 
     final View w = this[index];
@@ -68,7 +68,7 @@ class _SubviewList extends AbstractList<View> {
   void setRange(int start, int length, List<View> from, [int startFrom]) {
     if (length <= 0)
       return; //nothing to do
-    if (startFrom === null)
+    if (startFrom == null)
       startFrom = 0;
 
     if (start > this.length) {
@@ -92,7 +92,7 @@ class _SubviewList extends AbstractList<View> {
           w.removeFromParent();
           _owner.addChild(value, next);
         }
-        if (next === null)
+        if (next == null)
           break;
         w = next;
       }
@@ -107,7 +107,7 @@ class _SubviewList extends AbstractList<View> {
           w.removeFromParent();
           _owner.addChild(value, next);
         }
-        if (next === null)
+        if (next == null)
           break;
         w = next;
       }
@@ -129,7 +129,7 @@ class _SubviewList extends AbstractList<View> {
   void insertRange(int start, int length, [View initialValue]) {
     if (length != 1)
       throw const IllegalArgumentException("Allow only one view");
-    if (initialValue === null)
+    if (initialValue == null)
       throw const IllegalArgumentException("Require initialValue");
     if (start == this.length) {
       add(initialValue);
@@ -151,7 +151,7 @@ class _WCIterator implements Iterator<View> {
     return _next != null;
   }
   View next() {
-    if (_next === null)
+    if (_next == null)
       throw const NoMoreElementsException();
     View nxt = _next;
     _next = _next.nextSibling;

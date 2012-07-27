@@ -51,7 +51,7 @@ class Image extends View {
   void mount_() {
     super.mount_();
 
-    if (_src != null && (width === null || height === null))
+    if (_src != null && (width == null || height == null))
       layoutManager.waitImageLoaded(_src);
   }
 

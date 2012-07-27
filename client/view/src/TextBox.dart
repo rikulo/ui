@@ -13,8 +13,8 @@ class TextBox extends View implements Input<String> {
   bool _disabled = false, _autofocus = false, _autocomplete = true;
 
   TextBox([String value, String type]) {
-    _value = value !== null ? value: "";
-    _type = type !== null ? type: "text";
+    _value = value != null ? value: "";
+    _type = type != null ? type: "text";
   }
 
   //@Override
@@ -221,7 +221,7 @@ class TextBox extends View implements Input<String> {
   DOMEventDispatcher getDOMEventDispatcher_(String type)
   => type == "change" ? _getChangeDispatcher(): super.getDOMEventDispatcher_(type);
   static DOMEventDispatcher _getChangeDispatcher() {
-    if (_changeDispatcher === null)
+    if (_changeDispatcher == null)
       _changeDispatcher = (View target) => (event) {
         final TextBox t = target;
         t.sendEvent(new ChangeEvent<String>(t.value));

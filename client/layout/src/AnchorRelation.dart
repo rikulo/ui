@@ -48,7 +48,7 @@ class AnchorRelation {
   }
   void _layoutAnchored(MeasureContext mctx, View anchor) {
     final List<View> views = anchored[anchor];
-    if (views !== null && !views.isEmpty()) {
+    if (views != null && !views.isEmpty()) {
       for (final View view in views) {
         //1) size
         mctx.setWidthByProfile(view, () => _anchorWidth(anchor, view));
@@ -80,7 +80,7 @@ class AnchorRelation {
    * Please refer to [ViewUtil]'s `position` for more information.
    */
   static void position(View view, int x, int y, String location) {
-    if (location === null || location.isEmpty()) {
+    if (location == null || location.isEmpty()) {
       view.left = x;
       view.top = y;
     } else {

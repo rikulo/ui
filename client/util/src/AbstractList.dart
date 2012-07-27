@@ -73,10 +73,10 @@ class AbstractList<E> implements List<E> {
     DualPivotQuicksort.sort(this, compare);
   }
   int indexOf(E element, [int start]) {
-    return Arrays.indexOf(this, element, start !== null ? start: 0, this.length);
+    return Arrays.indexOf(this, element, start != null ? start: 0, this.length);
   }
   int lastIndexOf(E element, [int start]) {
-    if (start === null) start = length - 1;
+    if (start == null) start = length - 1;
     return Arrays.lastIndexOf(this, element, start);
   }
   void clear() {

@@ -62,7 +62,7 @@ class _ViewCut implements ViewCut {
       throw new UIException("Not in document: $view");
 
     final View parent = view.parent;
-    if (parent === null)
+    if (parent == null)
       throw new UIException("Root not allowed: $view");
 
     parent._removeChild(view, exit: false); //not to exit
@@ -79,7 +79,7 @@ class _ViewCut implements ViewCut {
     view._unmount();
   }
   void _check() {
-    if (view.parent !== null || !view.inDocument)
+    if (view.parent != null || !view.inDocument)
       throw const UIException("Unable to paste or drop twice");
   }
 }

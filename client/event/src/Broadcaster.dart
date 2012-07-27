@@ -21,7 +21,7 @@ interface Broadcaster {
 /** The broadcaster used to broadcast events.
  */
 Broadcaster get broadcaster() {
-  if (_broadcaster === null)
+  if (_broadcaster == null)
     _broadcaster = new _Broadcaster();
   return _broadcaster;
 }
@@ -78,7 +78,7 @@ class _BroadcastListeners {
    */
   bool isEmpty(String type) {
     List<ViewEventListener> ls;
-    return _listeners === null || (ls = _listeners[type]) === null || ls.isEmpty();
+    return _listeners == null || (ls = _listeners[type]) == null || ls.isEmpty();
   }
   /** Adds an event listener.  (Called by ViewEvents)
    */

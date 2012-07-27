@@ -16,25 +16,25 @@ class MapTypeId implements JSAgent {
   //built-in map types
   static MapTypeId _roadmap;
   static MapTypeId get ROADMAP() { //displays the default road map view
-    if (_roadmap === null)
+    if (_roadmap == null)
       _roadmap = new MapTypeId("ROADMAP");
     return _roadmap;
   }
   static MapTypeId _satellite;
   static MapTypeId get SATELLITE() { // displays Google Earth satellite images
-    if (_satellite === null)
+    if (_satellite == null)
       _satellite = new MapTypeId("SATELLITE");
     return _satellite;
   }
   static MapTypeId _hybrid;
   static MapTypeId get HYBRID() {  // displays a mixture of normal and satellite views
-    if (_hybrid === null)
+    if (_hybrid == null)
       _hybrid = new MapTypeId("HYBRID");
     return _hybrid;
   }
   static MapTypeId _terrain; 
   static MapTypeId get TERRAIN() { // displays a physical map based on terrain information.
-    if (_terrain === null)
+    if (_terrain == null)
       _terrain = new MapTypeId("TERRAIN");
     return _terrain;
   }
@@ -57,7 +57,7 @@ class MapTypeId implements JSAgent {
   }
   
   void _initJSFunctions() {
-    if (_builtInTypeIds !== null) return;
+    if (_builtInTypeIds != null) return;
     _builtInTypeIds = new Map();
     
     JSUtil.newJSFunction(_GET_BUILT_IN_MAP_TYPE_ID, ["key"], "return window.google.maps.MapTypeId[key];");

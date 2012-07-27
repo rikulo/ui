@@ -9,9 +9,9 @@ class _ViewImpl {
   //----//
   static void link(View view, View child, View beforeChild) {
     final _ChildInfo ci = view._initChildInfo();
-    if (beforeChild === null) {
+    if (beforeChild == null) {
       View p = ci.lastChild;
-      if (p !== null) {
+      if (p != null) {
         p._nextSibling = child;
         child._prevSibling = p;
         ci.lastChild = child;
@@ -20,7 +20,7 @@ class _ViewImpl {
       }
     } else {
       View p = beforeChild._prevSibling;
-      if (p !== null) {
+      if (p != null) {
         child._prevSibling = p;
         p._nextSibling = child;
       } else {
@@ -45,9 +45,9 @@ class _ViewImpl {
       removeFromIdSpaceDown(child, child.spaceOwner);
 
     var p = child._prevSibling, n = child._nextSibling;
-    if (p !== null) p._nextSibling = n;
+    if (p != null) p._nextSibling = n;
     else view._childInfo.firstChild = n;
-    if (n !== null) n._prevSibling = p;
+    if (n != null) n._prevSibling = p;
     else view._childInfo.lastChild = p;
     child._nextSibling = child._prevSibling = child._parent = null;
 
@@ -57,7 +57,7 @@ class _ViewImpl {
   //Event Handlign//
   //--------------//
   static DOMEventDispatcher getDOMEventDispatcher(String type) {
-    if (_domEvtDisps === null) {
+    if (_domEvtDisps == null) {
       _domEvtDisps = {};
       for (final String nm in
       const ["blur", "click", "focus",
@@ -90,7 +90,7 @@ class _ViewImpl {
       top = p;
     } while ((p = p.parent) != null);
 
-    if (top._virtIS === null)
+    if (top._virtIS == null)
       top._virtIS = new _VirtualIdSpace(top);
     return top._virtIS;
   }
@@ -99,14 +99,14 @@ class _ViewImpl {
   /** Checks the uniqueness in ID space when changing ID. */
   static void checkIdSpaces(View view, String newId) {
     IdSpace space = view.spaceOwner;
-    if (space.getFellow(newId) !== null)
+    if (space.getFellow(newId) != null)
       throw new UIException("Not unique in the ID space of $space: $newId");
 
     //we have to check one level up if view is IdSpace (i.e., unique in two ID spaces)
     View parent;
     if (view is IdSpace && (parent = view.parent) != null) {
       space = parent.spaceOwner;
-      if (space.getFellow(newId) !== null)
+      if (space.getFellow(newId) != null)
         throw new UIException("Not unique in the ID space of $space: $newId");
     }
   }
@@ -136,7 +136,7 @@ class _ViewImpl {
 
     if (view is! IdSpace) {
       final IdSpace vs = view._virtIS;
-      if (vs !== null) {
+      if (vs != null) {
         view._virtIS = null;
         for (final View child in vs.fellows)
           space.bindFellow_(child.id, child);
@@ -200,15 +200,15 @@ class _EventListenerInfo {
    */
   bool isEmpty(String type) {
     List<ViewEventListener> ls;
-    return _listeners === null || (ls = _listeners[type]) === null || ls.isEmpty();
+    return _listeners == null || (ls = _listeners[type]) == null || ls.isEmpty();
   }
   /** Adds an event listener. (Called by ViewEvents)
    */
   void add(String type, ViewEventListener listener) {
-    if (listener === null)
+    if (listener == null)
       throw const UIException("listener required");
 
-    if (_listeners === null)
+    if (_listeners == null)
       _listeners = {};
 
     bool first = false;
@@ -219,7 +219,7 @@ class _EventListenerInfo {
 
     DOMEventDispatcher disp;
     if (first && _owner.inDocument
-    && (disp = _owner.getDOMEventDispatcher_(type)) !== null)
+    && (disp = _owner.getDOMEventDispatcher_(type)) != null)
       _owner.domListen_(_owner.node, type, disp);
   }
   /** Removes an event listener. (Called by ViewEvents)
@@ -227,14 +227,14 @@ class _EventListenerInfo {
   bool remove(String type, ViewEventListener listener) {
     List<ViewEventListener> ls;
     bool found = false;
-    if (_listeners !== null && (ls = _listeners[type]) !== null) {
+    if (_listeners != null && (ls = _listeners[type]) != null) {
       int j = ls.indexOf(listener);
       if (j >= 0) {
         found = true;
 
         ls.removeRange(j, 1);
         if (ls.isEmpty() && _owner.inDocument
-        && _owner.getDOMEventDispatcher_(type) !== null)
+        && _owner.getDOMEventDispatcher_(type) != null)
           _owner.domUnlisten_(_owner.node, type);
       }
     }
@@ -264,7 +264,7 @@ class _EventListenerInfo {
   /** Called when _owner is mounted. */
   void mount() {
     //Listen the DOM element if necessary
-    if (_listeners !== null) {
+    if (_listeners != null) {
       final Element n = _owner.node;
       for (final String type in _listeners.getKeys()) {
         final DOMEventDispatcher disp = _owner.getDOMEventDispatcher_(type);
@@ -275,7 +275,7 @@ class _EventListenerInfo {
   }
   void unmount() {
     //Unlisten the DOM element if necessary
-    if (_listeners !== null) {
+    if (_listeners != null) {
       final Element n = _owner.node;
       for (final String type in _listeners.getKeys()) {
         if (_owner.getDOMEventDispatcher_(type) != null && !_listeners[type].isEmpty())
@@ -323,7 +323,7 @@ class _VirtualIdSpace implements IdSpace {
 
   View getFellow(String id) => _fellows[id];
   void bindFellow_(String id, View fellow) {
-    if (fellow !== null) _fellows[id] = fellow;
+    if (fellow != null) _fellows[id] = fellow;
     else _fellows.remove(id);
   }
   Collection<View> get fellows() => _fellows.getValues();

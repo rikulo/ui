@@ -33,11 +33,11 @@ class Application {
     this.name = name;
     _app = this;
 
-    this.inSimulator = document.query("#v-simulator") !== null;
+    this.inSimulator = document.query("#v-simulator") != null;
 
-    if (browser === null)
+    if (browser == null)
       browser = new Browser();
-    if (viewConfig === null)
+    if (viewConfig == null)
       viewConfig = new ViewConfig();
     if (layoutManager == null)
       layoutManager = new LayoutManager();
@@ -58,7 +58,7 @@ class Application {
    *     }
    */
   void addReadyCallback(ReadyCallback callback) {
-    if (_readyCB === null) {
+    if (_readyCB == null) {
       _readyCB = callback;
     } else {
       final ReadyCallback prev = _readyCB;
@@ -71,20 +71,20 @@ class Application {
   }
   //called by Activity to start an activity
   void _ready(Task then) {
-    if (_readyCB !== null) _readyCB(then);
+    if (_readyCB != null) _readyCB(then);
     else then();
   }
 
   /** Returns UUID representing this application.
    */
   int get uuid() {
-    if (_uuid === null) {
+    if (_uuid == null) {
       final Element body = document.body;
-      if (body === null)
+      if (body == null)
         throw const SystemException("document not ready yet");
 
       String sval = body.$dom_getAttribute(_APP_COUNT);
-      if (sval !== null) {
+      if (sval != null) {
         _uuid = Math.parseInt(sval);
         body.$dom_setAttribute(_APP_COUNT, (_uuid + 1).toString());
       } else {
@@ -107,7 +107,7 @@ class Application {
  * your first activity.
  */
 Application get application() { //initialized by Activity
-  if (_app === null)
+  if (_app == null)
     _app = new Application();
   return _app;
 }

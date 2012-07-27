@@ -171,7 +171,7 @@ class StringUtil {
    */
   static String encodeId(int v, [String prefix]) {
     final StringBuffer sb = new StringBuffer();
-    if (prefix !== null)
+    if (prefix != null)
       sb.add(prefix);
 
     do {

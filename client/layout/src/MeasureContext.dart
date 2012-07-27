@@ -33,7 +33,7 @@ class MeasureContext {
    */
   int getBorderWidth(View view) {
     int v = _borderWds[view];
-    if (v === null)
+    if (v == null)
       _borderWds[view] = v = new DOMQuery(view.node).borderWidth;
     return v;
   }
@@ -46,7 +46,7 @@ class MeasureContext {
    */
   String getProfile(View view, String name) {
     final String v = view.profile.getPropertyValue(name);
-    return !v.isEmpty() || view.parent === null
+    return !v.isEmpty() || view.parent == null
     || !layoutManager.getLayoutOfView(view.parent).isProfileInherited() ?
       v: view.parent.layout.getPropertyValue(name);
   }
@@ -72,7 +72,7 @@ class MeasureContext {
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           //Note: if NONE and app doesn't set width, it means content
-          if (amt.type == LayoutAmountType.NONE && getWidthSetByApp(view) !== null)
+          if (amt.type == LayoutAmountType.NONE && getWidthSetByApp(view) != null)
             break;
           final int wd = view.measureWidth_(this);
           if (wd != null)
@@ -102,7 +102,7 @@ class MeasureContext {
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           //Note: if NONE and app doesn't set height, it means content
-          if (amt.type == LayoutAmountType.NONE && getHeightSetByApp(view) !== null)
+          if (amt.type == LayoutAmountType.NONE && getHeightSetByApp(view) != null)
             break;
           final int hgh = view.measureHeight_(this);
           if (hgh != null)
@@ -131,7 +131,7 @@ class MeasureContext {
    */
   int measureWidthByContent(View view, bool autowidth) {
     final int wd = widths[view];
-    return wd !== null || widths.containsKey(view) ?
+    return wd != null || widths.containsKey(view) ?
       wd: _measureByContent(view, autowidth).width;
   }
   /** Measures the height based on the view's content.
@@ -144,7 +144,7 @@ class MeasureContext {
    */
   int measureHeightByContent(View view, bool autowidth) {
     final int hgh = heights[view];
-    return hgh !== null || heights.containsKey(view) ?
+    return hgh != null || heights.containsKey(view) ?
       hgh: _measureByContent(view, autowidth).height;
   }
   Size _measureByContent(View view, bool autowidth) {
@@ -158,7 +158,7 @@ class MeasureContext {
       final String pos = nodestyle.position;
       if (pos != "fixed" && pos != "static") {
         orgspace = nodestyle.whiteSpace;
-        if (orgspace === null) orgspace = ""; //TODO: no need if Dart handles it
+        if (orgspace == null) orgspace = ""; //TODO: no need if Dart handles it
         nodestyle.whiteSpace = "nowrap";
         //Node: an absolute DIV's width will be limited by its parent's width
         //so we have to unlimit it (by either nowrap or fixed/staic position)
@@ -174,21 +174,21 @@ class MeasureContext {
     final DOMQuery qview = new DOMQuery(view);
     final Size size = new Size(qview.outerWidth, qview.outerHeight);
 
-    if (orgspace !== null)
+    if (orgspace != null)
       nodestyle.whiteSpace = orgspace; //restore
-    if (orgwd !== null && !orgwd.isEmpty())
+    if (orgwd != null && !orgwd.isEmpty())
       nodestyle.width = orgwd;
-    if (orghgh !== null && !orghgh.isEmpty())
+    if (orghgh != null && !orghgh.isEmpty())
       nodestyle.height = orghgh;
 
     final AsInt parentInnerWidth =
-      () => view.parent !== null ? view.parent.innerWidth: browser.size.width;
+      () => view.parent != null ? view.parent.innerWidth: browser.size.width;
     final AsInt parentInnerHeight =
-      () => view.parent !== null ? view.parent.innerHeight: browser.size.height;
+      () => view.parent != null ? view.parent.innerHeight: browser.size.height;
 
     int limit = _amountOf(view.profile.maxWidth, parentInnerWidth);
     if ((autowidth && size.width > browser.size.width)
-    || (limit !== null && size.width > limit)) {
+    || (limit != null && size.width > limit)) {
       nodestyle.width = CSS.px(limit != null ? limit: browser.size.width);
 
       size.width = qview.outerWidth;
@@ -196,15 +196,15 @@ class MeasureContext {
       //Note: we don't restore the width such that browser will really limit the width
     }
 
-    if ((limit = _amountOf(view.profile.maxHeight, parentInnerHeight)) !== null
+    if ((limit = _amountOf(view.profile.maxHeight, parentInnerHeight)) != null
     && size.height > limit) {
       size.height = limit;
     }
-    if ((limit = _amountOf(view.profile.minWidth, parentInnerWidth)) !== null
+    if ((limit = _amountOf(view.profile.minWidth, parentInnerWidth)) != null
     && size.width < limit) {
       size.width = limit;
     }
-    if ((limit = _amountOf(view.profile.minHeight, parentInnerHeight)) !== null
+    if ((limit = _amountOf(view.profile.minHeight, parentInnerHeight)) != null
     && size.height < limit) {
       size.height = limit;
     }
@@ -251,5 +251,5 @@ class MeasureContext {
     }
   }
   static int _getSetByApp(View view, int val, String nm)
-  => val !== null && val != view.dataAttributes[nm] ? val: null;
+  => val != null && val != view.dataAttributes[nm] ? val: null;
 }

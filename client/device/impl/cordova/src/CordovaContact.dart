@@ -181,7 +181,7 @@ class CordovaContact implements Contact, JSAgent {
     this.birthday = JSUtil.toDartDate(JSUtil.getJSValue(_jsContact, "birthday"));
     //name
     ContactName val0 = JSUtil.getJSValue(_jsContact, "name");
-    if (val0 !== null)
+    if (val0 != null)
       this.name = new ContactName.from(JSUtil.toDartMap(val0));
     //addresses
     this.addresses = JSUtil.toDartList(JSUtil.getJSValue(_jsContact, "addresses"), (jsAddr) => new ContactAddress.from(JSUtil.toDartMap(jsAddr)));

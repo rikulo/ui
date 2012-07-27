@@ -46,9 +46,9 @@ class Canvas extends View {
   //@Override
   void domAttrs_(StringBuffer out,
   [bool noId=false, bool noStyle=false, bool noClass=false]) {
-    if (width !== null)
+    if (width != null)
       out.add('  width="').add(width).add('"');
-    if (height !== null)
+    if (height != null)
       out.add('  height="').add(height).add('"');
 
     super.domAttrs_(out, noId, noStyle, noClass);

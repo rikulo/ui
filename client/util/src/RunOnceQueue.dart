@@ -20,7 +20,7 @@ class RunOnceQueue {
   /** schedules a run-once task for execution.
    */
   void add(String key, void task(), [int timeout=0]) {
-    if (_tasks !== null)
+    if (_tasks != null)
       cancel(key);
     else
       _tasks = {};
@@ -34,7 +34,7 @@ class RunOnceQueue {
    */
   void cancel(String key) {
     final int tid = _tasks.remove(key);
-    if (tid !== null)
+    if (tid != null)
       window.clearTimeout(tid);
   }  
 }

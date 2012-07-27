@@ -78,12 +78,12 @@ class View implements Hashable {
   String get className() => "View"; //TODO: replace with reflection if Dart supports it
 
   _ChildInfo _initChildInfo() {
-    if (_childInfo === null)
+    if (_childInfo == null)
       _childInfo = new _ChildInfo();
     return _childInfo;
   }
   _EventListenerInfo _initEventListenerInfo() {
-    if (_evlInfo === null)
+    if (_evlInfo == null)
       _evlInfo = new _EventListenerInfo(this);
     return _evlInfo;
   }
@@ -91,7 +91,7 @@ class View implements Hashable {
   /** Returns the UUID of this component, never null.
    */
   String get uuid() {
-    if (_uuid === null)
+    if (_uuid == null)
       _uuid = StringUtil.encodeId(_uuidNext++, viewConfig.uuidPrefix);
     return _uuid;
   }
@@ -105,7 +105,7 @@ class View implements Hashable {
   /** Sets the ID of this view.
    */
   void set id(String id) {
-    if (id === null) id = "";
+    if (id == null) id = "";
     if (_id != id) {
       if (id.length > 0)
         _ViewImpl.checkIdSpaces(this, id);
@@ -122,7 +122,7 @@ class View implements Hashable {
    * It returns null if selector is null or empty.
    */
   View query(String selector) {
-    if (selector === null)
+    if (selector == null)
       return null;
     switch (selector) {
       case "": return null;
@@ -176,7 +176,7 @@ class View implements Hashable {
    * it is identical to this view.
    */
   bool isDescendantOf(View parent) {
-    for (View w = this; w !== null; w = w.parent) {
+    for (View w = this; w != null; w = w.parent) {
       if (w === parent)
         return true;
     }
@@ -187,7 +187,7 @@ class View implements Hashable {
    */
 /* TODO: wait until Dart supports reflection
   View getAncestorWith(Class type) {
-    for (View p = this; (p = p.parent) !== null;) {
+    for (View p = this; (p = p.parent) != null;) {
       if (p is type)
         return p;
     }
@@ -199,10 +199,10 @@ class View implements Hashable {
   View get parent() => _parent;
   /** Returns the first child, or null if this view has no child at all.
    */
-  View get firstChild() => _childInfo !== null ? _childInfo.firstChild: null;
+  View get firstChild() => _childInfo != null ? _childInfo.firstChild: null;
   /** Returns the last child, or null if this view has no child at all.
    */
-  View get lastChild() => _childInfo !== null ? _childInfo.lastChild: null;
+  View get lastChild() => _childInfo != null ? _childInfo.lastChild: null;
   /** Returns the next sibling, or null if this view is the last sibling.
    */
   View get nextSibling() => _nextSibling;
@@ -213,7 +213,7 @@ class View implements Hashable {
    */
   List<View> get children() {
     final _ChildInfo ci = _initChildInfo();
-    if (ci.children === null)
+    if (ci.children == null)
       ci.children = new _SubviewList(this);
     return ci.children;
   }
@@ -288,7 +288,7 @@ class View implements Hashable {
     if (!isViewGroup())
       throw new UIException("No child allowed in $this");
 
-    if (beforeChild !== null) {
+    if (beforeChild != null) {
       if (beforeChild.parent !== this)
         beforeChild = null;
       else if (child === beforeChild)
@@ -302,13 +302,13 @@ class View implements Hashable {
 
     if (parentChanged)
       child.beforeParentChanged_(this);
-    if (oldParent !== null)
+    if (oldParent != null)
       oldParent._removeChild(child, notifyChild:false);
 
     _ViewImpl.link(this, child, beforeChild);
 
     if (inDocument) {
-      if (childNode !== null) {
+      if (childNode != null) {
         insertChildToDocument_(child, childNode, beforeChild);
       } else {
         insertChildToDocument_(child, child._asHTML(), beforeChild);
@@ -338,7 +338,7 @@ class View implements Hashable {
    * If it is a root view, it will be detached from the document.
    */
   void removeFromParent() {
-    if (parent === null)
+    if (parent == null)
       throw new UIException("Unable to remove a root view, $this");
     parent._removeChild(this);
   }
@@ -393,7 +393,7 @@ class View implements Hashable {
    * a DOM element.
    */
   void insertChildToDocument_(View child, var childInfo, View beforeChild) {
-    if (beforeChild !== null) {
+    if (beforeChild != null) {
       if (childInfo is Element) {
         final Element before = beforeChild.node;
         before.parent.insertBefore(childInfo, before);
@@ -425,7 +425,7 @@ class View implements Hashable {
    * you might have to override [insertChildToDocument_] and/or
    * [removeChildFromDocument_] if they share the same DOM element.
    */
-  Element get node() => _node !== null ? _node: getNode(null);
+  Element get node() => _node != null ? _node: getNode(null);
   /** Returns the child element of the given sub-ID, or null if not found.
    * This method assumes the ID of the child element the concatenation of
    * uuid, dash ('-'), and subId.
@@ -475,7 +475,7 @@ class View implements Hashable {
    */
   void addToDocument([Element node, bool outer=false, bool inner=false,
   Element before, bool keepId=false, String location]) {
-    if (parent !== null || inDocument)
+    if (parent != null || inDocument)
       throw new UIException("No parent allowed, nor attached twice: $this");
 
     _addToDoc(node, outer, inner, before, keepId, location);
@@ -499,19 +499,19 @@ class View implements Hashable {
       nxt = before;
     }
 
-    if (nxt !== null)
+    if (nxt != null)
       nxt.insertAdjacentHTML("beforeBegin", html);
-    else if (p !== null)
+    else if (p != null)
       p.insertAdjacentHTML("beforeEnd", html);
 
     _mount();
     requestLayout();
 
-    if (location !== null)
+    if (location != null)
       layoutManager.afterLayout(() {
         final Element n = this.node;
         final Element pn = n.parent;
-        if (pn !== null) {
+        if (pn != null) {
           int x = 0, y = 0;
           if (pn.offsetParent == n.offsetParent) {
             x = pn.$dom_offsetLeft;
@@ -532,7 +532,7 @@ class View implements Hashable {
    * invoke [removeFromParent] or [Activity.removeDialog] instead.
    */
   void removeFromDocument() {
-    if (parent !== null || !inDocument)
+    if (parent != null || !inDocument)
       throw new UIException("No parent allowed, nor detached twice: $this");
 
     final Element n = node; //store first since _node will be cleared up later
@@ -551,7 +551,7 @@ class View implements Hashable {
     }
 
     if (_mntCnt == 0) {
-      if (_afters !== null && !_afters.isEmpty()) {
+      if (_afters != null && !_afters.isEmpty()) {
         final List<List> afters = new List.from(_afters); //to avoid one of callbacks mounts again
         _afters.clear();
         for (final List after in afters) {
@@ -577,9 +577,9 @@ class View implements Hashable {
    * this view is attached to the document. If not, [after] won't be called.
    */
   void afterMount_(AfterMount after) {
-    if (after === null)
+    if (after == null)
       throw const UIException("after required");
-    if (_afters === null)
+    if (_afters == null)
       _afters = new List();
     _afters.add([this, after]);
   }
@@ -615,7 +615,7 @@ class View implements Hashable {
       child.mount_();
     }
 
-    if (_evlInfo !== null)
+    if (_evlInfo != null)
       _evlInfo.mount();
 
     sendEvent(new ViewEvent("mount"));
@@ -630,7 +630,7 @@ class View implements Hashable {
   void unmount_() {
     sendEvent(new ViewEvent("unmount"));
 
-    if (_evlInfo !== null)
+    if (_evlInfo != null)
       _evlInfo.unmount();
 
     for (View child = firstChild; child != null; child = child.nextSibling) {
@@ -875,7 +875,7 @@ class View implements Hashable {
    * [width] is null.
    */
   int get outerWidth()
-  => _width !== null ? _width: inDocument ? new DOMQuery(node).outerWidth: 0;
+  => _width != null ? _width: inDocument ? new DOMQuery(node).outerWidth: 0;
     //for better performance, we don't need to get the outer width if _width is
     //assigned (because we use box-sizing: border-box)
   /** Returns the real height of this view shown on the document (never null).
@@ -883,7 +883,7 @@ class View implements Hashable {
    * [height] is null.
    */
   int get outerHeight()
-  => _height !== null ? _height: inDocument ? new DOMQuery(node).outerHeight: 0;
+  => _height != null ? _height: inDocument ? new DOMQuery(node).outerHeight: 0;
     //for better performance, we don't need to get the outer height if _height is
     //assigned (because we use box-sizing: border-box)
   /** Returns the viewable width of this view, excluding the borders, margins
@@ -896,7 +896,7 @@ class View implements Hashable {
    */
   int get innerWidth() {
     final int v = inDocument ? new DOMQuery(node).innerWidth:
-      (_width !== null ? _width: 0);
+      (_width != null ? _width: 0);
     return v > 0 ? v: 0;
   }
   /** Returns the viewable height of this view, excluding the borders, margins
@@ -909,7 +909,7 @@ class View implements Hashable {
    */
   int get innerHeight() {
     final int v = inDocument ? new DOMQuery(node).innerHeight:
-      (_height !== null ? _height: 0);
+      (_height != null ? _height: 0);
     return v > 0 ? v: 0;
   }
 
@@ -962,7 +962,7 @@ class View implements Hashable {
   /** Retuns the CSS style.
    */
   CSSStyleDeclaration get style() {
-    if (_style === null)
+    if (_style == null)
       _style =  new CSSStyleDeclarationImpl(this);
     return _style;
   }
@@ -1004,7 +1004,7 @@ class View implements Hashable {
    * Default: invoke each child view's [draw] sequentially.
    */
   void domInner_(StringBuffer out) {
-    for (View child = firstChild; child !== null; child = child.nextSibling) {
+    for (View child = firstChild; child != null; child = child.nextSibling) {
       child.draw(out);
     }
   }
@@ -1028,14 +1028,14 @@ class View implements Hashable {
       out.add("left:").add(left).add("px;");
     if (!noTop && top != 0)
       out.add("top:").add(top).add("px;");
-    if (!noWidth && _width !== null) //don't use width since it has special handling
+    if (!noWidth && _width != null) //don't use width since it has special handling
       out.add("width:").add(_width).add("px;");
-    if (!noHeight && _height !== null) //don't use height since it has special handling
+    if (!noHeight && _height != null) //don't use height since it has special handling
       out.add("height:").add(_height).add("px;");
     if (!noHidden && hidden)
       out.add("display:none;");
     String s;
-    if (!noStyle && _style !== null && !(s = _style.cssText).isEmpty())
+    if (!noStyle && _style != null && !(s = _style.cssText).isEmpty())
       out.add(StringUtil.encodeXML(s));
   }
 
@@ -1053,7 +1053,7 @@ class View implements Hashable {
   bool sendEvent(ViewEvent event, [String type]) {
     if (event.target == null)
       event.target = this;
-    return _evlInfo !== null && _evlInfo.send(event, type);
+    return _evlInfo != null && _evlInfo.send(event, type);
   }
   /** Posts an event to this view.
    * Unlike [sendEvent], [postEvent] puts the event in a queue and returns
@@ -1076,7 +1076,7 @@ class View implements Hashable {
   void domListen_(Element n, String type, DOMEventDispatcher disp) {
     final EventListener ln = disp(this); //must be non-null
     final _EventListenerInfo ei = _initEventListenerInfo();
-    if (ei.domListeners === null)
+    if (ei.domListeners == null)
       ei.domListeners = {};
     ei.domListeners[type] = ln;
     n.on[type.toLowerCase()].add(ln);
@@ -1084,9 +1084,9 @@ class View implements Hashable {
   /** Unlisten the given event type.
    */
   void domUnlisten_(Element n, String  type) {
-    if (_evlInfo !== null) {
+    if (_evlInfo != null) {
       final EventListener ln = _evlInfo.domListeners.remove(type);
-      if (ln !== null)
+      if (ln != null)
         n.on[type.toLowerCase()].remove(ln);
     }
   }
@@ -1100,7 +1100,7 @@ class View implements Hashable {
    * See also [mountAttributes].
    */
   Map<String, Object> get dataAttributes()
-  => _dataAttrs !== null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
+  => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
   /**
    * Returns a map of the application-specific data that exist only
    * if the view is attached to the document.
@@ -1115,7 +1115,7 @@ class View implements Hashable {
    * See also [dataAttributes].
    */
   Map<String, Object> get mountAttributes()
-  => _mntAttrs !== null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new Map());
+  => _mntAttrs != null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new Map());
 
   int hashCode() => uuid.hashCode(); //uuid is immutiable once assigned
   String toString() => "$className(${id.isEmpty() ? uuid: id})";

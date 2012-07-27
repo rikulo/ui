@@ -13,7 +13,7 @@ class LoadableModule {
   LoadFunction _loadModule;
   
   LoadableModule(this._loadModule) {
-    if (_callbacks === null) {
+    if (_callbacks == null) {
       _callbacks = new List();
     }
   }
@@ -23,7 +23,7 @@ class LoadableModule {
   }
   
   _execCallbacks() {
-    if (_callbacks !== null) {
+    if (_callbacks != null) {
       _callbacks.forEach((Function callback)=>callback());
       _callbacks.clear();
       _callbacks = null;
@@ -39,14 +39,14 @@ class LoadableModule {
   doWhenLoaded(Function fn) {
     switch(_loadStatus) {
       case _NONE:
-        if (fn !== null) _addCallback(fn);
+        if (fn != null) _addCallback(fn);
         _loadModule0();
         break;
       case _LOADING:
-        if (fn !== null) _addCallback(fn);
+        if (fn != null) _addCallback(fn);
         break;
       case _LOADED:
-        if (fn !== null) fn();
+        if (fn != null) fn();
         break;
     }
   }

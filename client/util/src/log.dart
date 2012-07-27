@@ -11,7 +11,7 @@
  * much performance overhead.
  */
 void log(var msg) {
-  if (_log === null)
+  if (_log == null)
     _log = new _Log();
   _log.log(msg);
 }
@@ -30,15 +30,15 @@ class _Log {
     _defer();
   }
   bool _ready() {
-    if (_node === null) {
+    if (_node == null) {
       final Element db = document.query("#v-dashboard");
-      if (db === null) { //not in simulator
+      if (db == null) { //not in simulator
         _node = new Element.html(
   '<div class="v-logView-x"></div>');
         document.body.elements.add(_node);
       } else { //running in simulator
         _node = db.query(".v-logView");
-        if (_node === null) {
+        if (_node == null) {
           _defer(); //later
           return false;
         }
@@ -75,7 +75,7 @@ class _Log {
   }
   HoldGestureStart _gestureStart() {
     return (HoldGestureState state)
-      => _popup === null
+      => _popup == null
       || !new DOMQuery(state.touched).isDescendantOf(_popup._node);
   }
 
@@ -96,7 +96,7 @@ class _Log {
       for (final _LogMsg msg in _msgs) {
         final Date time = msg.t;
         sb.add(time.hour).add(':').add(time.minute).add(':').add(time.second);
-        if (_lastLogTime !== null)
+        if (_lastLogTime != null)
           sb.add('>').add((time.millisecondsSinceEpoch - _lastLogTime)/1000);
         _lastLogTime = time.millisecondsSinceEpoch;
         sb.add(': ').add(msg.m).add('\n');
@@ -110,9 +110,9 @@ class _Log {
   static int _lastLogTime;
 
   void close() {
-    if (_popup !== null)
+    if (_popup != null)
       _popup.close();
-    if (_node !== null) {
+    if (_node != null) {
       _node.remove();
       _node = null;
     }
@@ -155,9 +155,9 @@ class _LogPopup {
     _owner._popup = null;
   }
   ViewEventListener _onPopup() {
-    if (_elPopup === null)
+    if (_elPopup == null)
       _elPopup = (PopupEvent event) {
-        if (_node !== null && event.shallClose(_node))
+        if (_node != null && event.shallClose(_node))
           close();
       };
     return _elPopup;

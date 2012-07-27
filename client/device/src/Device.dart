@@ -54,7 +54,7 @@ interface Device {
 void enableDeviceAccess([String serviceURI = "cordova.js",
   List<String> serviceNames = const ["accelerometer", "camera", "capture", "compass", "connection", "contacts", "geolocation", "notification"]]) {
   //Initilize Cordova device if not in simulator
-  if (device === null) {
+  if (device == null) {
     if (application.inSimulator)
       throw const SystemException("enableSimulator() must be called first");
     device = new CordovaDevice(serviceURI, serviceNames);
