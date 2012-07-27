@@ -68,6 +68,9 @@ default ProfileDeclarationImpl {
    * Syntax: `width: #n | content | flex | flex #n | #n %`
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
+   *
+   * Notice that the width will be adjusted against [minWidth] and
+   * [maxWidth] (if they are specified).
    */
   String width;
   /** The expected width of the associated view.
@@ -75,6 +78,9 @@ default ProfileDeclarationImpl {
    * Syntax: `height: #n | content | flex | flex #n | #n %`
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
+   *
+   * Notice that the height will be adjusted against [minHeight] and
+   * [maxHeight] (if they are specified).
    */
   String height;
 

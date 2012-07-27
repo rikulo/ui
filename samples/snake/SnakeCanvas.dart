@@ -131,7 +131,7 @@ class SnakeCanvas extends Activity {
   void gameOverDialog() {
     View dlg = new TextView("Game Over, your score was ${score}");
     dlg.style.cssText = "text-align: center; padding-top: 20px";
-    dlg.profile.text = "location: center center;width:30%;height:20%";
+    dlg.profile.text = "location: center center; width: 30%; min-height: 60; min-width: 200";
     dlg.classes.add("v-dialog");
     dlg.on.click.add((e) {
       removeDialog();

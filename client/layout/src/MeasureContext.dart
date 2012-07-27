@@ -61,13 +61,13 @@ class MeasureContext {
       final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "width"));
       switch (amt.type) {
         case LayoutAmountType.FIXED:
-          view.width = amt.value;
+          view.width = amt.value; //fixed has higher priority than min/max
           break;
         case LayoutAmountType.FLEX:
-          view.width = width();
+          view.width = _minMaxWd(view, width());
           break;
         case LayoutAmountType.RATIO:
-          view.width = (width() * amt.value).round().toInt();
+          view.width = _minMaxWd(view, (width() * amt.value).round().toInt());
           break;
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
@@ -76,7 +76,7 @@ class MeasureContext {
             break;
           final int wd = view.measureWidth_(this);
           if (wd != null)
-            view.width = wd;
+            view.width = wd; //no need to min/max since measureXxx shall handle it
           break;
       }
     }
@@ -91,13 +91,13 @@ class MeasureContext {
       final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "height"));
       switch (amt.type) {
         case LayoutAmountType.FIXED:
-          view.height = amt.value;
+          view.height = amt.value; //fixed has higher priority than min/max
           break;
         case LayoutAmountType.FLEX:
-          view.height = height();
+          view.height = _minMaxHgh(view, height());
           break;
         case LayoutAmountType.RATIO:
-          view.height = (height() * amt.value).round().toInt();
+          view.height = _minMaxHgh(view, (height() * amt.value).round().toInt());
           break;
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
@@ -106,10 +106,25 @@ class MeasureContext {
             break;
           final int hgh = view.measureHeight_(this);
           if (hgh != null)
-            view.height = hgh;
+            view.height = hgh; //no need to min/max since measureXxx shall handle it
           break;
       }
     }
+  }
+  int _minMaxWd(View view, int wd)
+  => _minMax(wd, getProfile(view, "min-width"), getProfile(view, "max-width"));
+  int _minMaxHgh(View view, int hgh)
+  => _minMax(hgh, getProfile(view, "min-height"), getProfile(view, "max-height"));
+  static int _minMax(int v, String min, String max) {
+    if (!min.isEmpty()) {
+      final int w = CSS.intOf(min);
+      if (v < w) v = w;
+    }
+    if (!max.isEmpty()) {
+      final int w = CSS.intOf(max);
+      if (w > 0 && v > w) v = w;
+    }
+    return v;
   }
 
   /** Measure the width of the given view.
