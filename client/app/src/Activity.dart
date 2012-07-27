@@ -211,7 +211,7 @@ class Activity {
     else if (browser.android) clses.add("android");
 
     if (_container !== null)
-      updateSize();
+      _updSize(true);
 
     _mainView = new Section();
     _mainView.width = browser.size.width;
@@ -232,13 +232,19 @@ class Activity {
    * It is called automatically, so the application rarely need to call it.
    */
   void updateSize() {
+    _updSize(mainView !== null && mainView.width == browser.size.width
+      && mainView.height == browser.size.height);
+      //update mainView only if its size is the same as browser's size
+      //in other words, we don't update mainView if its size is set by application
+  }
+  void _updSize(bool updateMainView) {
     final DOMQuery qcave = new DOMQuery(_container !== null ? _container: window);
     browser.size.width = qcave.innerWidth;
     browser.size.height = qcave.innerHeight;
 
     //Note: we have to check if the size is changed, since deviceOrientation
     //will be always fired when the listener is added.
-    if (mainView !== null && (mainView.width != browser.size.width
+    if (updateMainView && (mainView.width != browser.size.width
     || mainView.height != browser.size.height)) {
       mainView.width = browser.size.width;
       mainView.height = browser.size.height;

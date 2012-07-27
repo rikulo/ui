@@ -2,7 +2,7 @@
 # d2j
 #
 #	Purpose:
-#		Compile dart2js
+#		Compile dart to js
 #
 #Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 #
@@ -22,8 +22,7 @@ if [ $# = 0 ] ; then
 	echo d2j - Compile Dart to Javascript
 	echo
 	echo Usage:
-	echo "  d2j file.dart"
-	echo "  d2j directory"
+	echo "  d2j file1.dart directory1 file2.dart..."
 	echo
 	echo "If the directory is specified all dart files containing main() will be compiled"
 	exit 1
@@ -66,6 +65,7 @@ for f in $* ; do
 		warning=true
 		d2j "$f"
 	elif [ -d "$f" ] ; then
+		warning=false
 		(
 			cd "$f"
 			d2jx
