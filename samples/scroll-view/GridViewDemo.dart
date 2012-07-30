@@ -10,12 +10,22 @@ class GridViewDemo extends Activity {
 
   void onCreate_() {
     title = "Grid View Demo";
-
-    final ScrollView view = new ScrollView();
-    view.profile.text = "location: center center; width: 80%; height: 80%";
-    view.classes.add("list-view");
     
     final int barSize = 50, barInnerSize = 40;
+    final Size msize = new DOMQuery(mainView).innerSize;
+    bool compact = msize.width < 500 || msize.height < 500; // responsive
+    
+    final View container = new View();
+    final String occupation = compact ? "100%" : "80%";
+    container.profile.text = 
+        "location: center center; width: $occupation; height: $occupation";
+    mainView.addChild(container);
+    final csize = new DOMQuery(container).innerSize;
+    
+    final ScrollView view = new ScrollView();
+    view.profile.text = 
+        "location: bottom right; width: ${csize.width - barSize}; height: ${csize.height - barSize}";
+    view.classes.add("list-view");
     
     final ScrollView hbar = new ScrollView(direction: Dir.HORIZONTAL);
     hbar.profile.anchorView = view;
@@ -98,9 +108,9 @@ class GridViewDemo extends Activity {
     hbar.contentSize = new Size(contentSize.width, barSize);
     vbar.contentSize = new Size(barSize, contentSize.height);
     
-    mainView.addChild(view);
-    mainView.addChild(hbar);
-    mainView.addChild(vbar);
+    container.addChild(view);
+    container.addChild(hbar);
+    container.addChild(vbar);
   }
   
 }
