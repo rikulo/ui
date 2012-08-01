@@ -23,9 +23,14 @@ class GridViewDemo extends Activity {
     final csize = new DOMQuery(container).innerSize;
     
     final ScrollView view = new ScrollView();
-    view.profile.text = 
-        "location: bottom right; width: ${csize.width - barSize}; height: ${csize.height - barSize}";
+    view.profile.text = "location: bottom right";
     view.classes.add("list-view");
+    
+    view.on.preLayout.add((LayoutEvent event) {
+      final cs = new DOMQuery(container).innerSize;
+      view.width = cs.width - barSize;
+      view.height = cs.height - barSize;
+    });
     
     final ScrollView hbar = new ScrollView(direction: Dir.HORIZONTAL);
     hbar.profile.anchorView = view;
