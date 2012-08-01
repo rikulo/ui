@@ -147,8 +147,8 @@ class _ScrollerState implements ScrollerState {
   
   _ScrollerState(_Scroller scroller, this._fnViewPortSize, this._fnContentSize, this._time) : 
     this.scroller = scroller,
-    startPosition = new DOMQuery(scroller.owner).offset {
-    _pos = startPosition * -1;
+    startPosition = new DOMQuery(scroller.owner).offset * -1 {
+    _pos = startPosition;
     Size cs = contentSize, vs = viewPortSize;
     _hor = scroller._hasHor && cs.width > vs.width;
     _ver = scroller._hasVer && cs.height > vs.height;
@@ -319,15 +319,15 @@ class _Scroller implements Scroller {
     _dg = new DragGesture(this.owner, handle: handle,
     start: (DragGestureState state) => onStart(state.time) ? owner : null, // TODO: stop _stm
     move: (DragGestureState state) { 
-      onMove(_state.startPosition + state.delta, state.time);
-      return true; // custom movning handling
+      onMove(state.delta - _state.startPosition, state.time);
+      return true; // custom moving handling
     }, end: (DragGestureState state) {
       final Offset pos = new DOMQuery(owner).offset;
       final Rectangle range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
         _hor, _ver, onMove, onEnd, snap: snap);
-      return true; // custom movning handling
+      return true; // custom moving handling
     });
     
     // init scroll bar
