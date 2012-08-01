@@ -402,12 +402,12 @@ class _Scroller implements Scroller {
   bool isScrolling() => _state != null;
   
   Offset get scrollPosition() => 
-      (_state != null ? _state.position : new DOMQuery(owner).offset) * -1;
+      _state != null ? _state.position : (new DOMQuery(owner).offset * -1);
   
   // control //
   void set scrollPosition(Offset position) => scrollTo(position, false);
   
-  void scrollTo(Offset position, [bool animate = true]) { // TODO: noCallback
+  void scrollTo(Offset position, [bool animate = true]) {
     position = position * -1;
     stop();
     if (animate) {
