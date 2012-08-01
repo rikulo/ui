@@ -90,7 +90,7 @@ class ScrollView extends View {
   Scroller get scroller() => _scroller;
   
   //@Override
-  void onPreLayout_() {
+  void onPreLayout_(MeasureContext mctx) {
     //we have to decide the content size here, since its children might depend on it
     _contentSize = null; //force the calculation
     final Size sz = contentSize;
@@ -98,7 +98,7 @@ class ScrollView extends View {
     style.width = CSS.px(sz.width);
     style.height = CSS.px(sz.height);
 
-    super.onPreLayout_();
+    super.onPreLayout_(mctx);
   }
   //@Override
   void mount_() {

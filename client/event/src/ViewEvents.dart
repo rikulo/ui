@@ -75,14 +75,14 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
    * the layout of a view and all of its descendant views
    * have been changed.
    *
-   * The event is an instance of [ViewEvent].
+   * The event is an instance of [LayoutEvent].
    */
   ViewEventListenerList get layout();
   /** A list of event listeners for indicating
    * the layout of a view has been changed,
    * but before any of its child view been changed.
    *
-   * The event is an instance of [ViewEvent].
+   * The event is an instance of [LayoutEvent].
    */
   ViewEventListenerList get preLayout();
   /** A list of event listeners for indicating

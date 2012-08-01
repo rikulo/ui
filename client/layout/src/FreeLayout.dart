@@ -57,6 +57,7 @@ class FreeLayout implements Layout {
       final AsInt innerWidth = () => view.innerWidth,
         innerHeight = () => view.innerHeight; //future: introduce cache
       for (final View child in ar.indeps) {
+        child.onPreLayout_(mctx); //unlike onLayout_, the layout shall invoke onPreLayout_
         mctx.setWidthByProfile(child, innerWidth);
         mctx.setHeightByProfile(child, innerHeight);
       }

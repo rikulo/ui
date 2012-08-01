@@ -50,6 +50,9 @@ class AnchorRelation {
     final List<View> views = anchored[anchor];
     if (views != null && !views.isEmpty()) {
       for (final View view in views) {
+        //0) preLayout callback
+        view.onPreLayout_(mctx);
+
         //1) size
         mctx.setWidthByProfile(view, () => _anchorWidth(anchor, view));
         mctx.setHeightByProfile(view, () => _anchorHeight(anchor, view));

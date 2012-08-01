@@ -90,7 +90,9 @@ class LayoutManager extends RunOnceViewManager {
   void handle_(View view) {
     ++_inLayout;
     try {
-      doLayout(new MeasureContext(), view);
+      final mctx = new MeasureContext();
+      view.onPreLayout_(mctx);
+      doLayout(mctx, view);
     } finally {
       if (--_inLayout <= 0 && isQueueEmpty() && !_afters.isEmpty()) {
         final List<Task> afters = new List.from(_afters);
@@ -120,9 +122,8 @@ class LayoutManager extends RunOnceViewManager {
         mctx.setHeightByProfile(view, () => browser.size.height);
         AnchorRelation._positionRoot(view);
       }
-      view.onPreLayout_();
       getLayoutOfView(view).doLayout(mctx, view);
-      view.onLayout_();
+      view.onLayout_(mctx);
     }
   }
 

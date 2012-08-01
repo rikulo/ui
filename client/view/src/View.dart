@@ -245,20 +245,20 @@ class View implements Hashable {
   /** Called after the layout of this view and all its descendant views
    * have been handled.
    *
-   * Default: does nothing but fire a [ViewEvent] to itself.
+   * Default: does nothing but fire a [LayoutEvent] to itself.
    * The application can listen `layout` for this event.
    */
-  void onLayout_() {
-    sendEvent(new ViewEvent("layout"));
+  void onLayout_(MeasureContext mctx) {
+    sendEvent(new LayoutEvent(mctx));
   }
   /** Called after the layout of this view has been handled,
    * but before any of its child views has been handled.
    *
-   * Default: does nothing but fire a [ViewEvent] to itself.
+   * Default: does nothing but fire a [LayoutEvent] to itself.
    * The application can listen `preLayout` for this event.
    */
-  void onPreLayout_() {
-    sendEvent(new ViewEvent("preLayout"));
+  void onPreLayout_(MeasureContext mctx) {
+    sendEvent(new LayoutEvent(mctx, "preLayout"));
   }
 
   /** Returns whether this view is a vie group.

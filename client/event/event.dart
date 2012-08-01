@@ -5,8 +5,9 @@
 #library("rikulo:event");
 
 #import("dart:html");
-#import("../view/view.dart");
 #import("../html/html.dart");
+#import("../view/view.dart");
+#import("../layout/layout.dart");
 #import('../gesture/gesture.dart');
 #import("../util/util.dart");
 
@@ -17,3 +18,4 @@
 #source("src/ChangeEvent.dart");
 #source("src/SelectEvent.dart");
 #source("src/ScrollEvent.dart");
+#source("src/LayoutEvent.dart");
