@@ -326,7 +326,7 @@ class _Scroller implements Scroller {
       final Rectangle range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
-        _hor, _ver, move: onMove, end: onEnd, snap: snap);
+        _hor, _ver, onMove, onEnd, snap: snap);
       return true; // custom movning handling
     });
     
@@ -476,9 +476,8 @@ class _BoundedInertialMotion extends Motion {
   Motion _snapMotion;
   
   _BoundedInertialMotion(Element element, Offset velocity, this.range, 
-  this._hor, this._ver, 
-  [num friction = 0.0005, num bounce = 0.0002, num snapSpeedThreshold = 0.05,
-  void move(Offset position, int time), void end(), ScrollerSnap snap]) :
+  this._hor, this._ver, void move(Offset position, int time), void end(),
+  [num friction = 0.0005, num bounce = 0.0002, num snapSpeedThreshold = 0.05, ScrollerSnap snap]) :
   this.element = element, this.friction = friction, this.bounce = bounce,
   this.snapSpeedThreshold = snapSpeedThreshold, _move = move, _end = end, _snap = snap,
   _pos = new DOMQuery(element).offset, _vel = velocity, super(null) {
@@ -498,7 +497,6 @@ class _BoundedInertialMotion extends Motion {
     if (_ver)
       _pos.y = _updatePosition(_pos.y, _vel.y, dec.y, state.elapsedTime, range.y, range.bottom);
     
-    _applyPosition(_pos);
     if (_move != null)
       _move(_pos, state.currentTime);
     
@@ -556,13 +554,6 @@ class _BoundedInertialMotion extends Motion {
   
   bool _shallStop(num pos, num vel, num lbnd, num rbnd) =>
     lbnd <= pos && pos <= rbnd && vel == 0;
-  
-  void _applyPosition(Offset pos) {
-    if (_hor)
-      element.style.left = CSS.px(pos.left.toInt());
-    if (_ver)
-      element.style.top = CSS.px(pos.top.toInt());
-  }
   
   // snap //
   Offset _snapTo;
