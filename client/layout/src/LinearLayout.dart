@@ -29,8 +29,8 @@ class LinearLayout implements Layout {
       final AnchorRelation ar = new AnchorRelation(view);
 
       for (final View child in ar.indeps) {
-        child.onPreLayout_(mctx);
-        //unlike onLayout_, the layout shall invoke onPreLayout_
+        mctx.preLayout(child);
+        //unlike View.onLayout_, the layout shall invoke mctx.preLayout
       }
 
       //1) layout independents

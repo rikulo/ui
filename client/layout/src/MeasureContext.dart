@@ -267,4 +267,17 @@ class MeasureContext {
   }
   static int _getSetByApp(View view, int val, String nm)
   => val != null && val != view.dataAttributes[nm] ? val: null;
+
+  /** Calls back [View.onPreLayout_].
+   * The implementation of [Layout] shall invoke this method rather than 
+   * [View.onPreLayout_].
+   */
+  void preLayout(View view) {
+    ++layoutManager._inCallback;
+    try {
+      view.onPreLayout_(this);
+    } finally {
+      --layoutManager._inCallback;
+    }
+  }
 }

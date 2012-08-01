@@ -10,7 +10,7 @@ class LayoutManager extends RunOnceViewManager {
   final Map<String, Layout> _layouts;
   final Set<String> _imgWaits;
   final List<Task> _afters;
-  int _inLayout = 0;
+  int _inLayout = 0, _inCallback = 0;
 
   LayoutManager(): super(null), _layouts = {}, _imgWaits = new Set(), _afters = [] {
     addLayout("linear", new LinearLayout());
@@ -71,7 +71,7 @@ class LayoutManager extends RunOnceViewManager {
     //Note: we have to store the width in view since it is required if requestLayout
     //is called again (while _borderWds shall be dropped after layouted)
     final String nm = horizontal ? 'rk.layout.w': 'rk.layout.h'; //see also MeasureContext._getSetByApp
-    if (_inLayout > 0)
+    if (_inLayout > 0 && _inCallback <= 0)
       view.dataAttributes[nm] = value;
     else
       view.dataAttributes.remove(nm);
@@ -91,7 +91,7 @@ class LayoutManager extends RunOnceViewManager {
     ++_inLayout;
     try {
       final mctx = new MeasureContext();
-      view.onPreLayout_(mctx);
+      mctx.preLayout(view); //note: onLayout is called by doLayout
       doLayout(mctx, view);
     } finally {
       if (--_inLayout <= 0 && isQueueEmpty() && !_afters.isEmpty()) {
@@ -123,7 +123,12 @@ class LayoutManager extends RunOnceViewManager {
         AnchorRelation._positionRoot(view);
       }
       getLayoutOfView(view).doLayout(mctx, view);
-      view.onLayout_(mctx);
+      ++_inCallback;
+      try {
+        view.onLayout_(mctx);
+      } finally {
+        --_inCallback;
+      }
     }
   }
 
