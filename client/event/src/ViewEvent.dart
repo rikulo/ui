@@ -70,7 +70,7 @@ class ViewEvent {
           _offset.y = uievt.pageY;
         }
 
-        final Offset ofs = new DOMQuery(target).documentOffset;
+        final Offset ofs = new DOMQuery(target).pageOffset;
         _offset.left -= ofs.left;
         _offset.top -= ofs.top;
       } catch (final e) {

@@ -36,4 +36,5 @@
 #source("src/DropDownList.dart");
 #source("src/TextBox.dart");
 #source("src/ScrollView.dart");
+#source("src/PopupView.dart");
 #source("src/Canvas.dart");

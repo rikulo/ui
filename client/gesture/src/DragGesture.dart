@@ -134,7 +134,7 @@ class _DragGestureState implements DragGestureState {
   _gesture = gesture, _delta = new Offset(0, 0),
   _initPgOfs = new Offset(pageX, pageY),
   _velocity = new Offset(0, 0),
-  _ownerOfs = new DOMQuery(gesture.owner).documentOffset {
+  _ownerOfs = new DOMQuery(gesture.owner).pageOffset {
     _ofs = _initPgOfs - _ownerOfs;
   }
 

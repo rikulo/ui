@@ -94,17 +94,28 @@ class DOMQuery {
    */
   Offset get offset() => new Offset(node.$dom_offsetLeft, node.$dom_offsetTop);
 
-  /** Returns the offset of this node related to the document.
+  /** Returns the offset of this node relative to the document.
+   * It takes into account any horizontal scrolling of the page.
    */
-  Offset get documentOffset() {
-    final Offset ofs = new Offset(0, 0);
+  Offset get pageOffset() {
+    //1. adds up cumulative offsetLeft/offsetTop
+    final ofs = new Offset(0, 0);
     Element el = node;
     do {
       ofs.left += el.$dom_offsetLeft;
       ofs.top += el.$dom_offsetTop;
     } while (el.style.position != "fixed" && (el = el.offsetParent) != null);
-    //Note: no need to add widnow's innerLeft/Top if position is fixed.
-    //reason: we don't allow window-level scrolling (rather, mainView is scrolled)
+
+    //2. subtract cumulative scrollLeft/scrollTop
+    el = node;
+    do {
+      ofs.left -= el.$dom_scrollLeft;
+      ofs.top -= el.$dom_scrollTop;
+    } while ((el = el.parent) != null && el is! Document);
+
+    //3. add the browser's scroll offset
+    ofs.left += window.pageXOffset;
+    ofs.top += window.pageYOffset;
     return ofs;
   }
   /** Returns the final used values of all the CSS properties
@@ -182,7 +193,7 @@ class _WindowQuery extends DOMQuery {
   int get offsetLeft() => 0;
   int get offsetTop() => 0;
   Offset get offset() => new Offset(0, 0);
-  Offset get documentOffset() => offset;
+  Offset get pageOffset() => offset;
   bool isDescendantOf(Element parent) => false;
   CSSStyleDeclaration get computedStyle() => new CSSStyleDeclaration();
 }

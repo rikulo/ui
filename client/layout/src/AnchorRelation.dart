@@ -112,11 +112,12 @@ class AnchorRelation {
   }
   /** Returns the offset between two views.
    */
-  static Offset _getOffset(View anchor, View view) {
-    return view.style.position == "fixed" ? anchor.documentOffset:
+  static Offset _getOffset(View anchor, View view)
+    => view is PopupView ? anchor is PopupView ?
+        new Offset(anchor.left, anchor.top): anchor.pageOffset:
+      view.style.position == "fixed" ? anchor.pageOffset:
       anchor === view.parent ? new Offset(0, 0):
         new Offset(anchor.left, anchor.top);
-  }
 }
 final Map<String, List<int>> _locations = const {
   "north start": const [1, 0], "north center": const [2, 0], "north end": const [3, 0],
