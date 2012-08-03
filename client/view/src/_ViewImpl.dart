@@ -86,7 +86,7 @@ class _ViewImpl {
     View top, p = view;
     do {
       if (p is IdSpace)
-        return _cast(p);
+        return p;
       top = p;
     } while ((p = p.parent) != null);
 
@@ -94,7 +94,6 @@ class _ViewImpl {
       top._virtIS = new _VirtualIdSpace(top);
     return top._virtIS;
   }
-  static _cast(var v) => v; //TODO: remove it when Dart allows to cast to any type, not just downcast
 
   /** Checks the uniqueness in ID space when changing ID. */
   static void checkIdSpaces(View view, String newId) {
@@ -116,17 +115,13 @@ class _ViewImpl {
     if (id.length == 0)
       return;
 
-    if (!skipFirst) {
-      var space = _cast(view.spaceOwner);
-      space.bindFellow_(id, view);
-    }
+    if (!skipFirst)
+      (view.spaceOwner as Dynamic).bindFellow_(id, view);
 
     //we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
     View parent;
-    if (view is IdSpace && (parent = view.parent) != null) {
-      var space = _cast(parent.spaceOwner);
-      space.bindFellow_(id, view);
-    }
+    if (view is IdSpace && (parent = view.parent) != null)
+      (parent.spaceOwner as Dynamic).bindFellow_(id, view);
   }
   //Add the given view and all its children to the ID space
   static void addToIdSpaceDown(View view, var space) {
@@ -151,17 +146,13 @@ class _ViewImpl {
     if (id.length == 0)
       return;
 
-    if (!skipFirst) {
-      var space = _cast(view.spaceOwner);
-      space.bindFellow_(id, null);
-    }
+    if (!skipFirst)
+      (view.spaceOwner as Dynamic).bindFellow_(id, null);
 
     //we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
     View parent;
-    if (view is IdSpace && (parent = view.parent) != null) {
-      var space = _cast(parent.spaceOwner);
-      space.bindFellow_(id, null);
-    }
+    if (view is IdSpace && (parent = view.parent) != null)
+      (parent.spaceOwner as Dynamic).bindFellow_(id, null);
   }
   static void removeFromIdSpaceDown(View view, var space) {
     var id = view.id;
