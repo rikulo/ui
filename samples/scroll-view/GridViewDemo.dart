@@ -20,7 +20,6 @@ class GridViewDemo extends Activity {
     container.profile.text = 
         "location: center center; width: $occupation; height: $occupation";
     mainView.addChild(container);
-    final csize = new DOMQuery(container).innerSize;
     
     final ScrollView view = new ScrollView();
     view.profile.text = "location: bottom right";
