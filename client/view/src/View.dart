@@ -517,7 +517,7 @@ class View implements Hashable {
             x = pn.$dom_offsetLeft;
             y = pn.$dom_offsetTop;
           }
-          ViewUtil.position(this, x, y, location);
+          locateTo(location, x: x, y: y);
         }
       });
   }
@@ -666,6 +666,26 @@ class View implements Hashable {
       _unmount();
       _addToDoc(n, outer: true);
     }
+  }
+
+  /** Places this view at the given location.
+   *
+   * + [location] - one of the following. If not specified, "left top" is assumed.   
+   * "north start", "north center", "north end",
+   * "south start", "south center", "south end",
+   * "west start", "west center", "west end",
+   * "east start", "east center", "east end",
+   * "top left", "top center", "top right",
+   * "center left", "center center", "center right",
+   * "bottom left", "bottom center", and "bottom right"
+   * + [reference] - the reference view.
+   * + [x] - the reference point's X coordinate if [reference] is not specified.
+   * If [reference] is specified, [x] and [y] are ignored.
+   * + [y] - the reference point's Y coordinate if [reference] is not specified.
+   * If [reference] is specified, [x] and [y] are ignored.
+   */
+  void locateTo(String location, [View reference, int x=0, int y=0]) {
+    AnchorRelation.locate(this, location, reference, x, y);
   }
 
   /** Requests the layout manager to re-position the layout of this view.

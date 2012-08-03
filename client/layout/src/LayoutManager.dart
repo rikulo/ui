@@ -92,6 +92,12 @@ class LayoutManager extends RunOnceViewManager {
     try {
       final mctx = new MeasureContext();
       mctx.preLayout(view); //note: onLayout is called by doLayout
+      if (view.parent == null && view.profile.anchorView == null) { //root without anchor
+        //handle profile since it has no parent to handel for it
+        mctx.setWidthByProfile(view, () => browser.size.width);
+        mctx.setHeightByProfile(view, () => browser.size.height);
+        AnchorRelation._locateRoot(view);
+      }
       doLayout(mctx, view);
     } finally {
       if (--_inLayout <= 0 && isQueueEmpty() && !_afters.isEmpty()) {
@@ -116,12 +122,6 @@ class LayoutManager extends RunOnceViewManager {
    */
   void doLayout(MeasureContext mctx, View view) {
     if (!view.hidden) {
-      if (view.parent == null && view.profile.anchorView == null) { //root without anchor
-        //handle profile since it has no parent to handel for it
-        mctx.setWidthByProfile(view, () => browser.size.width);
-        mctx.setHeightByProfile(view, () => browser.size.height);
-        AnchorRelation._positionRoot(view);
-      }
       getLayoutOfView(view).doLayout(mctx, view);
       ++_inCallback;
       try {
