@@ -71,6 +71,13 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
    */
   ViewEventListenerList get render();
 
+  /** A list of event listeners for indicating a popup is about to be dismessed.
+   * The event is sent to the popup being dismissed.
+   *
+   * The event is an instance of [ViewEvent].
+   */
+  ViewEventListenerList get dismiss();
+
   /** A list of event listeners for indicating
    * the layout of a view and all of its descendant views
    * have been changed.
@@ -173,6 +180,8 @@ class _ViewEvents extends _ViewEventListenerMap implements ViewEvents {
   ViewEventListenerList get mouseUp() => _get('mouseUp');
   ViewEventListenerList get mouseWheel() => _get('mouseWheel');
   ViewEventListenerList get scroll() => _get('scroll');
+
+  ViewEventListenerList get dismiss() => _get("dismiss");
 
   ViewEventListenerList get layout() => _get("layout");
   ViewEventListenerList get preLayout() => _get("preLayout");

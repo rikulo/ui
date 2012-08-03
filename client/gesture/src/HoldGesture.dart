@@ -25,7 +25,7 @@ interface HoldGestureState {
   Offset get offset();
   /** The touch point's offset relative to the whole document.
    */
-  Offset get documentOffset();
+  Offset get pageOffset();
 
   /** Any data that the caller stores.
    */
@@ -62,20 +62,20 @@ interface HoldGesture default _HoldGesture {
 class _HoldGestureState implements HoldGestureState {
   final _HoldGesture _gesture;
   final Element _touched;
-  Offset _ofs, _docOfs;
+  Offset _ofs, _pgOfs;
   int _timer;
   var data;
 
   _HoldGestureState(_HoldGesture this._gesture,
     Element this._touched, int pageX, int pageY) {
-    _docOfs = new Offset(pageX, pageY);
-    _ofs = _docOfs - new DOMQuery(gesture.owner).documentOffset;
+    _pgOfs = new Offset(pageX, pageY);
+    _ofs = _pgOfs - new DOMQuery(gesture.owner).pageOffset;
   }
 
   HoldGesture get gesture() => _gesture;
   Element get touched() => _touched;
   Offset get offset() => _ofs;
-  Offset get documentOffset() => _docOfs;
+  Offset get pageOffset() => _pgOfs;
 }
 
 //abstract
@@ -125,8 +125,8 @@ class _HoldGesture implements HoldGesture {
   }
   void _touchMove(int pageX, int pageY) {
     if (_state != null
-    && (pageX - _state._docOfs.x > _movement
-    ||  pageY - _state._docOfs.y > _movement))
+    && (pageX - _state._pgOfs.x > _movement
+    ||  pageY - _state._pgOfs.y > _movement))
       _stop();
   }
   void _touchEnd() {

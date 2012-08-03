@@ -28,11 +28,11 @@ typedef void AfterMount(View view);
  *
  * ##Events
  *
- * + layout: an instance of [ViewEvent] indicates the layout of this view has been
+ * + `layout`: an instance of [ViewEvent] indicates the layout of this view has been
  * handled.
- * + mount: an instanceof [ViewEvent] indicates this view has been
+ * + `mount`: an instanceof [ViewEvent] indicates this view has been
  * added to the document.
- * + unmount: an instanceof [ViewEvent] indicates this view will be
+ * + `unmount`: an instanceof [ViewEvent] indicates this view will be
  * removed from the document.
  *
  *---
@@ -394,12 +394,12 @@ class View implements Hashable {
    */
   void insertChildToDocument_(View child, var childInfo, View beforeChild) {
     if (beforeChild != null) {
-      if (childInfo is Element) {
-        final Element before = beforeChild.node;
-        before.parent.insertBefore(childInfo, before);
-      } else {
-        beforeChild.node.insertAdjacentHTML("beforeBegin", childInfo);
-      }
+      final beforeNode =
+        beforeChild is PopupView ? (beforeChild as PopupView).refNode: beforeChild.node;
+      if (childInfo is Element)
+        beforeNode.parent.insertBefore(childInfo, beforeNode);
+      else
+        beforeNode.insertAdjacentHTML("beforeBegin", childInfo);
     } else {
       if (childInfo is Element)
         node.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement
@@ -733,8 +733,8 @@ class View implements Hashable {
   => isViewGroup() ? mctx.measureHeight(this): mctx.measureHeightByContent(this, true);
   /** Returns whether the given child shall be handled by the layout manager.
    *
-   * Default: return true if the child is visble and its position
-   * is absolute.
+   * Default: return true if the child is visble, its position
+   * is absolute, and not an instance of [PopupView].
    * Notice that, for better performance, it checks only [View.style], and
    * assumes the position defined in
    * CSS rules (aka., classes) is `absolute`.
@@ -750,7 +750,7 @@ class View implements Hashable {
    * will be still called to arrange the layout of the child's child views.
    */
   bool shallLayout_(View child) {
-    if (child.hidden)
+    if (child.hidden || child is PopupView)
       return false;
     final String v = child.style.position;
     return v.isEmpty() || v == "absolute";
@@ -779,7 +779,7 @@ class View implements Hashable {
 
   /**Shortcut of [draw].*/
   String _asHTML() {
-    StringBuffer out = new StringBuffer();
+    final out = new StringBuffer();
     draw(out);
     return out.toString();
   }
@@ -798,7 +798,7 @@ class View implements Hashable {
     if (_inDoc) {
       node.style.display = hidden ? "none": "";
       if (changed && !hidden)
-        requestLayout();
+        requestLayout(immediate: true);
     }
   }
 
@@ -915,26 +915,19 @@ class View implements Hashable {
 
   /** Returns the offset of this view relative to the left-top corner
    * of the document.
+   * It takes into account any horizontal scrolling of the page.
    */
-  Offset get documentOffset() {
+  Offset get pageOffset() {
+    if (_inDoc)
+      return new DOMQuery(node).pageOffset;
+
     final Offset ofs = new Offset(0, 0);
     for (View view = this;;) {
       ofs.left += view.left;
       ofs.top += view.top;
-      if (view.style.position == "fixed")
-        break; //done (no need to add innerX/innerY since mainView is full screen)
-
-      final View p = view.parent;
-      if (p == null) {
-        final Offset nofs = new DOMQuery(view.node).documentOffset;
-        ofs.left += nofs.left;
-        ofs.top += nofs.top;
-        break;
-      } else {
-        view = p;
-      }
+      if (view.style.position == "fixed" || (view = view.parent) == null)
+        return ofs;
     }
-    return ofs;
   }
   /** Returns the layout instruction of this view.
    *

@@ -1,6 +1,10 @@
 Rikulo Changes
 ==============
 
+**August 3, 2012**
+
+* documentOffset is renamed to pageOffset (since it is more consistent to UIEvent.pageX)
+
 **July 24, 2012**
 
 * LinearPositionMotion is renamed to LinearPathMotion.
