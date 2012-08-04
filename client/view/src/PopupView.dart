@@ -4,6 +4,8 @@
 
 /**
  * A popup view is a floating UI element that appears on the top of the screen.
+ * Unlike other views, it won't be cropped by its parent view even if 
+ * the parent view's CSS overflow is set.
  *
  * + A popup view won't be arranged by a layout, such as [LinearLayout].
  * + A popup view will be closed automatically when the user clicks an UI element

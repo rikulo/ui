@@ -42,9 +42,9 @@ class AnchorRelation {
    */
   void layoutAnchored(MeasureContext mctx) {
     _layoutAnchored(mctx, parent);
-    for (final View view in indeps) {
+
+    for (final View view in indeps)
       _layoutAnchored(mctx, view);
-    }
   }
   void _layoutAnchored(MeasureContext mctx, View anchor) {
     final List<View> views = anchored[anchor];
@@ -61,18 +61,23 @@ class AnchorRelation {
         locate(view, view.profile.location, anchor);
       }
 
-      for (final View view in views) {
+      for (final View view in views)
         _layoutAnchored(mctx, view); //recursive
-      }
     }
   }
   //called by LayoutManager
-  static void _locateRoot(View view) {
-    final String loc = view.profile.location;
+  static void _layoutRoot(MeasureContext mctx, View root) {
+    final anchor = root.profile.anchorView;
+    mctx.setWidthByProfile(root,
+      () => anchor != null ? _anchorWidth(anchor, root): browser.size.width);
+    mctx.setHeightByProfile(root,
+      () => anchor != null ? _anchorHeight(anchor, root): browser.size.height);
+
+    final String loc = root.profile.location;
     if (!loc.isEmpty()) { //nothing to do if empty (since no achor at all)
       final List<int> handlers = _getHandlers(loc);
-      _anchorXHandlers[handlers[0]](0, _anchorOfRoot, view);
-      _anchorYHandlers[handlers[1]](0, _anchorOfRoot, view);
+      _anchorXHandlers[handlers[0]](0, anchor != null ? anchor: _anchorOfRoot, root);
+      _anchorYHandlers[handlers[1]](0, anchor != null ? anchor: _anchorOfRoot, root);
     }
   }
   /** Locates the given view at the given offset.
