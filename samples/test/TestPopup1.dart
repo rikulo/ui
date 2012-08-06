@@ -50,11 +50,11 @@ class TestPopup1 extends Activity {
       });
     view.addChild(btn2);
 
-    Button btn3 = new Button("Create Popup 2");
+    Button btn3 = new Button("Create Popup 2 (timeout: 5s)");
     btn3.profile.anchorView = btn2;
     btn3.profile.location = "east start";
     btn3.on.click.add((event) {
-        final pp = new PopupView();
+        final pp = new PopupView(dismissTimeout: 5000, dismissOnClickOutside: false);
         pp.profile.anchorView = btn3;
         pp.profile.location = "south start";
         pp.width = 150;
