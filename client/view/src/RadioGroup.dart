@@ -67,7 +67,7 @@ class RadioGroup<E> extends View {
         if (event.type == 'select') {
           if (!_modelSelUpdating) {
             final String idPrefix = "$uuid-";
-            final Selection<E> selmodel = _cast(_model);
+            final Selection<E> selmodel = _model as Selection;
             final bool multiple = selmodel.multiple;
             int i = 0, len = _model.length;
             for (final InputElement inp in node.queryAll("input")) {
@@ -133,13 +133,13 @@ class RadioGroup<E> extends View {
 
     final HTMLRenderer renderer =
       _renderer != null ? _renderer: _defRenderer();
-    final model = _cast(_model);
-    final bool multiple = model.multiple;
+    final Selection<E> selmodel = _model as Selection;
+    final bool multiple = selmodel.multiple;
     final String type = multiple ? "checkbox": "radio";
     for (int i = 0, len = _model.length; i < len; ++i) {
       final obj = _model[i];
-      final bool selected = model.isSelected(obj);
-      final bool disabled = model is Disables && model.isDisabled(obj);
+      final bool selected = selmodel.isSelected(obj);
+      final bool disabled = _model is Disables && (_model as Disables).isDisabled(obj);
       final HTMLFragment hf = renderer(
         new RenderContext(this, _model, obj, selected, disabled, i));
 
@@ -169,7 +169,6 @@ class RadioGroup<E> extends View {
         out.add('</label> ');
     }
   }
-  static _cast(var v) => v; //TODO: replace with 'as' when Dart supports it
   static HTMLRenderer _defRenderer() {
     if (_$defRenderer == null)
       _$defRenderer = (RenderContext context) => new HTMLFragment(context.data);
@@ -177,7 +176,7 @@ class RadioGroup<E> extends View {
   }
   static HTMLRenderer _$defRenderer;
   void _onCheck(int index, bool checked) {
-    final Selection<E> selmodel = _cast(_model);
+    final Selection<E> selmodel = _model as Selection;
     _modelSelUpdating = true;
     try {
       if (checked)

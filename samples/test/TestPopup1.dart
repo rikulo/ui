@@ -36,21 +36,35 @@ class TestPopup1 extends Activity {
         popup.hidden = false;
       });
 
-    Button btn2 = new Button("Create Popup");
+    Button btn2 = new Button("Create Popup 1");
     btn2.profile.anchorView = btn;
     btn2.profile.location = "east start";
     btn2.on.click.add((event) {
         final pp = new PopupView();
-        pp.profile.anchorView = btn2;
-        pp.profile.location = "south start";
         pp.width = 200;
         pp.height = 150;
         pp.style.backgroundColor = "orange";
         pp.on.dismiss.add((e) {pp.removeFromParent();});
         view.addChild(pp, popup);
-        pp.requestLayout(immediate: true);
+        pp.locateTo("south start", btn2);
       });
     view.addChild(btn2);
+
+    Button btn3 = new Button("Create Popup 2");
+    btn3.profile.anchorView = btn2;
+    btn3.profile.location = "east start";
+    btn3.on.click.add((event) {
+        final pp = new PopupView();
+        pp.profile.anchorView = btn3;
+        pp.profile.location = "south start";
+        pp.width = 150;
+        pp.height = 100;
+        pp.style.backgroundColor = "#0ff";
+        pp.on.dismiss.add((e) {pp.removeFromParent();});
+        view.addChild(pp, popup);
+        pp.requestLayout(immediate: true);
+      });
+    view.addChild(btn3);
 
     mainView.addChild(view);
   }

@@ -42,9 +42,9 @@ class AnchorRelation {
    */
   void layoutAnchored(MeasureContext mctx) {
     _layoutAnchored(mctx, parent);
-    for (final View view in indeps) {
+
+    for (final View view in indeps)
       _layoutAnchored(mctx, view);
-    }
   }
   void _layoutAnchored(MeasureContext mctx, View anchor) {
     final List<View> views = anchored[anchor];
@@ -58,32 +58,47 @@ class AnchorRelation {
         mctx.setHeightByProfile(view, () => _anchorHeight(anchor, view));
 
         //2) position
-        final List<int> handlers = _getHandlers(view.profile.location);
-        final Offset offset = _getOffset(anchor, view);
-        _anchorXHandlers[handlers[0]](offset.left, anchor, view);
-        _anchorYHandlers[handlers[1]](offset.top, anchor, view);
+        locate(view, view.profile.location, anchor);
       }
 
-      for (final View view in views) {
+      for (final View view in views)
         _layoutAnchored(mctx, view); //recursive
-      }
     }
   }
   //called by LayoutManager
-  static void _positionRoot(View view) {
-    final String loc = view.profile.location;
+  static void _layoutRoot(MeasureContext mctx, View root) {
+    final anchor = root.profile.anchorView;
+    mctx.setWidthByProfile(root,
+      () => anchor != null ? _anchorWidth(anchor, root): browser.size.width);
+    mctx.setHeightByProfile(root,
+      () => anchor != null ? _anchorHeight(anchor, root): browser.size.height);
+
+    final String loc = root.profile.location;
     if (!loc.isEmpty()) { //nothing to do if empty (since no achor at all)
       final List<int> handlers = _getHandlers(loc);
-      _anchorXHandlers[handlers[0]](0, _anchorOfRoot, view);
-      _anchorYHandlers[handlers[1]](0, _anchorOfRoot, view);
+      _anchorXHandlers[handlers[0]](0, anchor != null ? anchor: _anchorOfRoot, root);
+      _anchorYHandlers[handlers[1]](0, anchor != null ? anchor: _anchorOfRoot, root);
     }
   }
-  /** Positions the given view at the given offset.
+  /** Locates the given view at the given offset.
    *
-   * Please refer to [ViewUtil]'s `position` for more information.
+   * Please refer to [View]'s `locateTo` for more information.
    */
-  static void position(View view, int x, int y, String location) {
-    if (location == null || location.isEmpty()) {
+  static void locate(View view, String location, View anchor, [int x=0, int y=0]) {
+    if (anchor != null) {
+      final handlers = _getHandlers(location);
+      final offset =
+        view is PopupView ?
+          anchor is PopupView ?
+            new Offset(anchor.left, anchor.top): anchor.pageOffset:
+        view.style.position == "fixed" ? anchor.pageOffset:
+        anchor === view.parent ? new Offset(0, 0): //parent
+        anchor.parent === view.parent ?
+          new Offset(anchor.left, anchor.top): //sibling (the same coordiante system)
+          anchor.pageOffset - view.pageOffset; //neither parent nor sibling
+      _anchorXHandlers[handlers[0]](offset.left, anchor, view);
+      _anchorYHandlers[handlers[1]](offset.top, anchor, view);
+    } else if (location == null || location.isEmpty()) {
       view.left = x;
       view.top = y;
     } else {
@@ -110,14 +125,6 @@ class AnchorRelation {
     }
     throw new UIException("Unknown loation ${loc}");
   }
-  /** Returns the offset between two views.
-   */
-  static Offset _getOffset(View anchor, View view)
-    => view is PopupView ? anchor is PopupView ?
-        new Offset(anchor.left, anchor.top): anchor.pageOffset:
-      view.style.position == "fixed" ? anchor.pageOffset:
-      anchor === view.parent ? new Offset(0, 0):
-        new Offset(anchor.left, anchor.top);
 }
 final Map<String, List<int>> _locations = const {
   "north start": const [1, 0], "north center": const [2, 0], "north end": const [3, 0],
@@ -180,7 +187,7 @@ List<_AnchorHandler> get _anchorYHandlers() {
 }
 List<_AnchorHandler> _$anchorYHandlers;
 
-//Used by _positionRoot to simulate an achor for root views
+//Used by _locateRoot to simulate an achor for root views
 class _AnchorOfRoot {
   const _AnchorOfRoot();
   int get outerWidth() => browser.size.width;

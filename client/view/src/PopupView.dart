@@ -4,10 +4,14 @@
 
 /**
  * A popup view is a floating UI element that appears on the top of the screen.
+ * Unlike other views, it won't be cropped by its parent view even if 
+ * the parent view's CSS overflow is set.
  *
  * + A popup view won't be arranged by a layout, such as [LinearLayout].
  * + A popup view will be closed automatically when the user clicks an UI element
  * that is not a descendant view of the popup view.
+ * + The coordinates of popup views are not relative to their parent. Rather,
+ * they are relative to the document (no matter what its parent view is).
  * + The z order among popup views all depends on the z-index of the CSS style.
  * In other words, a child popup view might appear under its parent popup if z-index
  * is not set correctly.

@@ -68,9 +68,7 @@ class _Log {
   }
   HoldGestureAction _gestureAction() {
     return (HoldGestureState state) {
-      (_popup = new _LogPopup(this)).open(
-        state.offset.x + _node.$dom_scrollLeft,
-        state.offset.y + _node.$dom_scrollTop);
+      (_popup = new _LogPopup(this)).open(state.offset.x, state.offset.y);
     };
   }
   HoldGestureStart _gestureStart() {

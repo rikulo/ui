@@ -56,22 +56,6 @@ class ViewUtil {
     layoutManager.flush();
   }
 
-  /** Positions the given view at the given location.
-   *
-   * + [x] - the reference's X coordinate
-   * + [y] - the reference's Y coordinate
-   * + [location] - one of the following. If not specified, "left top" is assumed.   
-   * "north start", "north center", "north end",
-   * "south start", "south center", "south end",
-   * "west start", "west center", "west end",
-   * "east start", "east center", "east end",
-   * "top left", "top center", "top right",
-   * "center left", "center center", "center right",
-   * "bottom left", "bottom center", and "bottom right"
-   */
-  static void position(View view, int x, int y, String location) {
-    AnchorRelation.position(view, x, y, location);
-  }
   /** Returns the rectangle enclosing all views in the given list.
    * Views in [children] must belong to the same parent.
    *

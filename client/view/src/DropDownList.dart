@@ -108,33 +108,32 @@ class DropDownList<E> extends View {
 
         if (inDocument) {
           final SelectElement n = node;
-          n.multiple = _cast(_model).multiple;
+          n.multiple = (_model as Selection).multiple;
         }
       }
 
       modelRenderer.queue(this); //queue even if _model is null (since cleanup is a bit tricky)
     }
   }
-  static _cast(var v) => v; //TODO: replace with 'as' when Dart supports it
   DataEventListener _initDataListener() {
     if (_dataListener == null) {
       _dataListener = (event) {
         switch (event.type) {
           case 'multiple':
             final SelectElement n = node;
-            n.multiple = _cast(_model).multiple;
+            n.multiple = (_model as Selection).multiple;
             sendEvent(new ViewEvent("render")); //send it since the look might be changed
             return; //no need to rerender
           case 'select':
             if (_modelSelUpdating)
               return;
             if (_model is ListModel) { //not easy/worth to optimize handling of TreeModel
-              final HTMLOptionsCollection options = _cast(node).options;
-              final ListModel<E> model = _cast(_model);
-              final Selection<E> selmodel = _cast(_model);
+              final HTMLOptionsCollection options = (node as SelectElement).options;
+              final ListModel<E> model = _model as ListModel;
+              final Selection<E> selmodel = _model as Selection;
               final bool multiple = selmodel.multiple;
               for (int i = 0, len = model.length; i < len; ++i) {
-                final bool seled = _cast(options[i]).selected = selmodel.isSelected(model[i]);
+                final bool seled = (options[i] as OptionElement).selected = selmodel.isSelected(model[i]);
                 if (!multiple && seled)
                   return; //done
               }
@@ -199,7 +198,7 @@ class DropDownList<E> extends View {
         final SelectElement n = node;
         selIndex = n.selectedIndex;
         final ListModel model = _model is ListModel ? _model: null;
-        if (_cast(_model).multiple) {
+        if ((_model as Selection).multiple) {
           for (OptionElement opt in n.options) {
             if (opt.selected) {
               if (model != null) {
@@ -221,7 +220,7 @@ class DropDownList<E> extends View {
 
         _modelSelUpdating = true;
         try {
-          _cast(_model).selection = selValues;
+          (_model as Selection).selection = selValues;
         } finally {
           _modelSelUpdating = false;
         }
@@ -237,7 +236,7 @@ class DropDownList<E> extends View {
     super.unmount_();
   }
   void _fixIndex() { //it assumes inDocument
-    if (_model != null && _cast(_model).isSelectionEmpty()) {
+    if (_model != null && (_model as Selection).isSelectionEmpty()) {
       final SelectElement n = node;
       n.selectedIndex = -1;
     }
@@ -251,7 +250,7 @@ class DropDownList<E> extends View {
       out.add(' disabled="disabled"');
     if (autofocus)
       out.add(' autofocus="autofocus"');
-    if (_model != null && _cast(_model).multiple)
+    if (_model != null && (_model as Selection).multiple)
       out.add(' multiple="multiple"');
     super.domAttrs_(out, noId, noStyle, noClass);
   }
@@ -264,11 +263,12 @@ class DropDownList<E> extends View {
       final StringRenderer renderer =
         _renderer != null ? _renderer: _defRenderer();
       final ListModel<E> model = _model;
-      final bool multiple = _cast(_model).multiple;
+      final Selection<E> selmodel = _model as Selection;
+      final bool multiple = selmodel.multiple;
       for (int i = 0, len = model.length; i < len; ++i) {
         final obj = model[i];
-        final bool selected = _cast(_model).isSelected(obj);
-        final bool disabled = _model is Disables && _cast(_model).isDisabled(obj);
+        final bool selected = selmodel.isSelected(obj);
+        final bool disabled = _model is Disables && (_model as Disables).isDisabled(obj);
         out.add('<option');
         _renderAttrs(out, selected, disabled);
         out.add('>')
@@ -286,11 +286,12 @@ class DropDownList<E> extends View {
   }
   void _renderTree(StringBuffer out, TreeModel<E> model,
   StringRenderer renderer, var node, int parentIndex) {
-    final bool multiple = _cast(_model).multiple;
+    final Selection<E> selmodel = _model as Selection;
+    final bool multiple = selmodel.multiple;
     for (int i = 0, len = model.getChildCount(node); i < len; ++i) {
       final E child = model.getChild(node, i);
-      final bool selected = _cast(_model).isSelected(child);
-      final bool disabled = _model is Disables && _cast(_model).isDisabled(child);
+      final bool selected = selmodel.isSelected(child);
+      final bool disabled = _model is Disables && (_model as Disables).isDisabled(child);
       final String label =
         StringUtil.encodeXML(renderer(
           new RenderContext(this, _model, child, selected, disabled, i)));
