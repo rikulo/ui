@@ -36,6 +36,25 @@
  * On the other hand, [node] is the real visual representation of this popup view.
  */
 class PopupView extends View {
+  /** Whether to dismiss this popup view when the user clicks outside
+   * of it.
+   *
+   * Default: true
+   */
+  final bool dismissOnClickOutside;
+  /** When to dismiss automatically when the given time elapsed.
+   *
+   * Default: 0 (means ignored; i.e., not to dismiss because of timeout)  
+   * Unit: milliseconds
+   */
+  final int dismissTimeout;
+
+  ViewEventListener _fnClickOutside;
+  int _idDismissTimeout;
+
+  /** Constructor.
+   */
+  PopupView([int this.dismissTimeout=0, bool this.dismissOnClickOutside=true]);
 
   //@Override
   String get className() => "PopupView"; //TODO: replace with reflection if Dart supports it
@@ -44,6 +63,17 @@ class PopupView extends View {
    * It is used as a reference to insert a sibling.
    */
   Element get refNode() => getNode("ref");
+  /** Dismisses the poup view.
+   *
+   * Default: sending the `dismiss` event to itself, and hide this view.
+   *
+   * To override the default behavior, you can listener to `dismiss` event
+   * or overrides this method.
+   */
+  void dismiss() {
+    sendEvent(new ViewEvent("dismiss"));
+    hidden = true;
+  }
 
   /** Override to render only an invisible and empty element ([refNode]).
    * The real visual representation ([node]) is done in [mount_].
@@ -56,12 +86,13 @@ class PopupView extends View {
     (activity.container != null ? activity.container: document.body)
       .insertAdjacentHTML("beforeEnd", _popupHTML());
 
-    broadcaster.on.popup.add((PopupEvent event) {
-        if (!hidden && event.shallClose(this)) {
-          sendEvent(new ViewEvent("dismiss"));
-          hidden = true;
-        }
-      });
+    if (dismissOnClickOutside)
+      broadcaster.on.popup.add(_fnClickOutside = (PopupEvent event) {
+          if (!hidden && inDocument && event.shallClose(this))
+            dismiss();
+        });
+    _startDismissTimeout();
+
     super.mount_();
   }
   String _popupHTML() {
@@ -69,8 +100,32 @@ class PopupView extends View {
     super.draw(out);
     return out.toString();
   }
+  void set hidden(bool hidden) {
+    super.hidden = hidden;
+
+    _startDismissTimeout();
+  }
   void unmount_() {
     refNode.remove();
+    if (_fnClickOutside != null) {
+      broadcaster.on.popup.remove(_fnClickOutside);
+      _fnClickOutside = null;
+    }
+    if (_idDismissTimeout != null) {
+      window.clearTimeout(_idDismissTimeout);
+      _idDismissTimeout = null;
+    }
+
     super.unmount_();
+  }
+  void _startDismissTimeout() {
+    if (_idDismissTimeout == null && dismissTimeout > 0
+    && !hidden && inDocument) {
+      _idDismissTimeout = window.setTimeout(() {
+          _idDismissTimeout = null;
+          if (!hidden && inDocument)
+            dismiss();
+        }, dismissTimeout);
+    }
   }
 }
