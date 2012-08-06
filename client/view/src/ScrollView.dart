@@ -113,9 +113,7 @@ class ScrollView extends View {
   }
   //@Override
   void domInner_(StringBuffer out) {
-    out.add('<div class="v-inner" style="${CSS.name('transform')}:translate3d(0px,0px,0px)" id="')
-        //Note: we have to specify translate3d(0,0,0). otherwise, the offset will be wrong in Dartium (seems a bug)
-      .add(uuid).add('-inner">');
+    out.add('<div class="v-inner" id="').add(uuid).add('-inner">');
     super.domInner_(out);
     out.add('</div>');
   }
