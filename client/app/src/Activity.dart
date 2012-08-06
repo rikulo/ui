@@ -261,20 +261,20 @@ class Activity {
     if (oldsz != browser.size) {
     //Note: we have to check if the size is changed, since deviceOrientation
     //is fired continuously once the listener is added
-      if (mainView != null) {
+      if (_mainView != null) {
       //update mainView only if its size is the same as browser's size
       //in other words, we don't update mainView if its size is set by application
         bool changed = false;
-        if (mainView.width == null || mainView.width == oldsz.width) {
-          mainView.width = browser.size.width;
+        if (_mainView.width == null || _mainView.width == oldsz.width) {
+          _mainView.width = browser.size.width;
           changed = true;
         }
-        if (mainView.height == null || mainView.height == oldsz.height) {
-          mainView.height = browser.size.height;
+        if (_mainView.height == null || _mainView.height == oldsz.height) {
+          _mainView.height = browser.size.height;
           changed = true;
         }
         if (changed)
-          mainView.requestLayout();
+          _mainView.requestLayout();
       }
       for (_DialogInfo dlgInfo in _dlgInfos) {
         dlgInfo.resizeMask();
