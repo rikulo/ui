@@ -1,0 +1,23 @@
+.black {
+	background-color: #000000;
+}
+.photo {
+	border: 5px solid #EEEEEE;
+}
+.screen-mask {
+	z-index: 50;
+}
+.photo-caption {
+	color: #EEEEEE;
+}
+.photo-caption a,
+.photo-caption a:visited {
+	color: #EEEEEE;
+}
+.arrow {
+	overflow: hidden;
+}
+.arrow-body {
+	border-radius: 20%;
+	background: #EEEEEE;
+}

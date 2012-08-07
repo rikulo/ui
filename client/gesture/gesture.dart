@@ -13,4 +13,5 @@
 
 #source("src/HoldGesture.dart");
 #source("src/DragGesture.dart");
+#source("src/SwipeGesture.dart");
 #source("src/Scroller.dart");
