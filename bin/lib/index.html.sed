@@ -3,7 +3,7 @@ s|<title>Dart Documentation / Dart Documentation</title>|<title>API Reference / 
 s|Dart Documentation</title>|API Reference / Rikulo</title>|
 s|<link rel="shortcut icon"[^>]*>|<link rel="shortcut icon" type="image/ico" href="http://rikulo.org/resource/img/favicon.ico" />|
 s|<h2>Dart Documentation</h2>|<h2>Rikulo API Reference</h2>|
-s|<a href=".*index.html"><div class="logo"></div></a>|<a href="http://rikulo.org"><img src="http://rikulo.org/resource/img/rikulo_api_logo.png" align="center"/></a>|
+s|<a href=".*index.html"><div class="logo"></div></a>|<a href="http://rikulo.org"><img src="http://rikulo.org/resource/img/rikulo_api_logo.png" align="center" border="0"/></a>|
 s|Dart Documentation</a>|API Reference</a>|
 s|</head>|<script type="text/javascript">\
   var _gaq = _gaq \|\| [];\
