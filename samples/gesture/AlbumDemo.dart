@@ -31,6 +31,7 @@ class AlbumDemo extends Activity {
   final int photoCount = 5;
   int frameSize, photoSize, photoOffset, arrowSize;
   View frameInner, arrowL, arrowR;
+  SwipeGesture gesture;
   
   void onCreate_() {
     title = "Alpaca Album Demo";
@@ -89,6 +90,7 @@ class AlbumDemo extends Activity {
     arrowR = createArrow(true);
     arrowL.profile.text = "location: center left";
     arrowR.profile.text = "location: center right";
+    updateArrow();
     
     // responsive sizing
     frame.on.preLayout.add((LayoutEvent event) {
@@ -114,14 +116,15 @@ class AlbumDemo extends Activity {
     mainView.addChild(arrowR);
     
     // hook gesture //
-    new SwipeGesture(mainView.node, (SwipeGestureState state) {
-      if (_moving)
-        return;
+    gesture = new SwipeGesture(mainView.node, (SwipeGestureState state) {
+      gesture.disable();
       final int diff = state.delta.x;
       if (diff < -50) // swipe left
         next();
       else if (diff > 50) // swipe right
         previous();
+      else
+        gesture.enable();
     });
     
   }
@@ -129,7 +132,6 @@ class AlbumDemo extends Activity {
   
   
   // business logic //
-  bool _moving = false; // flag to block gesture input
   int _index = 0;
   
   void next() => select(_index + 1);
@@ -137,17 +139,22 @@ class AlbumDemo extends Activity {
   void previous() => select(_index - 1);
   
   void select(int index) {
-    if (_moving || index < 0 || index >= photoCount)
+    if (index < 0 || index >= photoCount) {
+      gesture.enable();
       return;
-    _moving = true; // block other input
+    }
     final Offset origin = new Offset(-_index * frameSize, 0);
     final Offset dest = new Offset(-index * frameSize, 0);
     new LinearPathMotion(frameInner.node, origin, dest, end: (MotionState state) {
-      _moving = false;
       _index = index;
-      arrowL.hidden = _index == 0;
-      arrowR.hidden = _index == photoCount - 1;
+      updateArrow();
+      gesture.enable();
     }, easing: (num x) => x * x);
+  }
+  
+  void updateArrow() {
+    arrowL.hidden = _index == 0;
+    arrowR.hidden = _index == photoCount - 1;
   }
   
   // view helper //

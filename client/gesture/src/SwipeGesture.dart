@@ -41,6 +41,14 @@ interface SwipeGesture default _SwipeGesture {
    */
   void destroy();
   
+  /** Disable the gesture.
+   */
+  void disable();
+  
+  /** Enable the gesture.
+   */
+  void enable();
+  
   /** The element associated with this swipe gesture (never null).
    */
   Element get owner();
@@ -61,6 +69,16 @@ class _SwipeGesture implements SwipeGesture {
         swipe(new _SwipeGestureState.fromDrag(this, state));
       return true;
     });
+  }
+  
+  void disable() {
+    if (_drag != null)
+      _drag.disable();
+  }
+  
+  void enable() {
+    if (_drag != null)
+      _drag.enable();
   }
   
   void destroy() {

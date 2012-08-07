@@ -111,7 +111,15 @@ interface DragGesture default _DragGesture {
    * It shall be called to clean up the gesture, if it is no longer used.
    */
   void destroy();
-
+  
+  /** Disable the gesture.
+   */
+  void disable();
+  
+  /** Enable the gesture.
+   */
+  void enable();
+  
   /** The element that owns this drag gesture (never null).
    */
   Element get owner();
@@ -172,6 +180,7 @@ class _DragGesture implements DragGesture {
   _DragGestureState _state;
   final bool _transform;
   int _snapX, _snapY, _snapTime;
+  bool _disabled = false;
   
   factory _DragGesture(Element owner, [Element handle,
     bool transform=false, AsRectangle range, int movement=-1,
@@ -195,7 +204,16 @@ class _DragGesture implements DragGesture {
     _stop();
     _unlisten();
   }
-
+  
+  void disable() {
+    _stop();
+    _disabled = true;
+  }
+  
+  void enable() {
+    _disabled = false;
+  }
+  
   Element get owner() => _owner;
   Element get handle() => _handle;
 
@@ -206,6 +224,8 @@ class _DragGesture implements DragGesture {
     _state = null;
   }
   void _touchStart(Element touched, int pageX, int pageY, int time) {
+    if (_disabled)
+      return;
     _stop();
 
     _state = new _DragGestureState(this, pageX, pageY);
