@@ -95,7 +95,14 @@ class DOMQuery {
   Offset get offset() => new Offset(node.$dom_offsetLeft, node.$dom_offsetTop);
 
   /** Returns the offset of this node relative to the document.
-   * It takes into account any horizontal scrolling of the page.
+   * It takes into account any horizontal scrolling and the `transform` style.
+   *
+   * Notice that, for sake of performance, it checks only the `transform` property
+   * defined in the DOM element's style. It doesn't check the *computed* style
+   * (i.e., the style defined in CSS rules).
+   *
+   * In additions, it ignores the translation in z axis (i.e., it ignores
+   * the third argument of `translate3d`).
    */
   Offset get pageOffset() {
     //1. adds up cumulative offsetLeft/offsetTop
@@ -109,8 +116,10 @@ class DOMQuery {
     //2. subtract cumulative scrollLeft/scrollTop
     el = node;
     do {
-      ofs.left -= el.$dom_scrollLeft;
-      ofs.top -= el.$dom_scrollTop;
+      final txofs = CSS.offset3dOf(el.style.transform);
+        //for performance reason it doesn't handle computed style
+      ofs.left -= el.$dom_scrollLeft - txofs.left;
+      ofs.top -= el.$dom_scrollTop - txofs.top;
     } while ((el = el.parent) != null && el is! Document);
 
     //3. add the browser's scroll offset

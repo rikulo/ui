@@ -88,9 +88,6 @@ class AnchorRelation {
     if (anchor != null) {
       final handlers = _getHandlers(location);
       final offset =
-        view is PopupView ?
-          anchor is PopupView ?
-            new Offset(anchor.left, anchor.top): anchor.pageOffset:
         view.style.position == "fixed" ? anchor.pageOffset:
         anchor === view.parent ? new Offset(0, 0): //parent
         anchor.parent === view.parent ?

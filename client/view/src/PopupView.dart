@@ -4,17 +4,16 @@
 
 /**
  * A popup view is a floating UI element that appears on the top of the screen.
- * Unlike other views, it won't be cropped by its parent view even if 
+ * Unlike other views, it won't be cropped by its parent view, even if 
  * the parent view's CSS overflow is set.
  *
  * + A popup view won't be arranged by a layout, such as [LinearLayout].
- * + A popup view will be closed automatically when the user clicks an UI element
- * that is not a descendant view of the popup view.
- * + The coordinates of popup views are not relative to their parent. Rather,
- * they are relative to the document (no matter what its parent view is).
  * + The z order among popup views all depends on the z-index of the CSS style.
  * In other words, a child popup view might appear under its parent popup if z-index
  * is not set correctly.
+ * + A popup view will be closed automatically when the user clicks an UI element
+ * that is not a descendant view of the popup view if [dismissOnClickOutside]
+ * is true).
  *
  * ##Events
  * 
@@ -63,11 +62,11 @@ class PopupView extends View {
    * It is used as a reference to insert a sibling.
    */
   Element get refNode() => getNode("ref");
-  /** Dismisses the poup view.
+  /** Dismisses the popup view.
    *
    * Default: sending the `dismiss` event to itself, and hide this view.
    *
-   * To override the default behavior, you can listener to `dismiss` event
+   * To override the default behavior (hiding), you can listener to `dismiss` event
    * or overrides this method.
    */
   void dismiss() {
@@ -82,9 +81,40 @@ class PopupView extends View {
     out.add('<div id="').add(uuid).add('-ref" class="').add(viewConfig.classPrefix)
       .add('" style="display:none"></div>');
   }
+  //@Override to change left/top of DOM (since it is in diff coordinates)
+  void set left(int left) {
+    _left = left;
+
+    if (inDocument) {
+      if (parent != null)
+        left = new DOMQuery(refNode.parent).pageOffset.left + left;
+      node.style.left = CSS.px(left);
+    }
+  }
+  //@Override to change left/top of DOM (since it is in diff coordinates)
+  void set top(int top) {
+    _top = top;
+
+    if (inDocument) {
+      if (parent != null)
+        top = new DOMQuery(refNode.parent).pageOffset.top + top;
+      node.style.top = CSS.px(top);
+    }
+  }
+  //@Override
   void mount_() {
     (activity.container != null ? activity.container: document.body)
       .insertAdjacentHTML("beforeEnd", _popupHTML());
+
+    super.mount_();
+
+    //fix the left/top of DOM (since it is in diff coordinates)
+    if (parent != null) {
+      final ofs = new DOMQuery(refNode.parent).pageOffset;
+      final style = node.style;
+      style.left = CSS.px(ofs.left + left);
+      style.top = CSS.px(ofs.top + top);
+    }
 
     if (dismissOnClickOutside)
       broadcaster.on.popup.add(_fnClickOutside = (PopupEvent event) {
@@ -92,19 +122,19 @@ class PopupView extends View {
             dismiss();
         });
     _startDismissTimeout();
-
-    super.mount_();
   }
   String _popupHTML() {
     final out = new StringBuffer();
     super.draw(out);
     return out.toString();
   }
+  //@Override to start dismissTimeout if necessary
   void set hidden(bool hidden) {
     super.hidden = hidden;
 
     _startDismissTimeout();
   }
+  //@Override
   void unmount_() {
     refNode.remove();
     if (_fnClickOutside != null) {

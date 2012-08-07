@@ -313,6 +313,7 @@ class View implements Hashable {
       } else {
         insertChildToDocument_(child, child._asHTML(), beforeChild);
         child._mount();
+        //note: child.requestLayout won't be called (for sake of performance)
       }
     }
 
@@ -505,7 +506,6 @@ class View implements Hashable {
       p.insertAdjacentHTML("beforeEnd", html);
 
     _mount();
-    requestLayout();
 
     if (location != null)
       layoutManager.afterLayout(() {
@@ -520,6 +520,9 @@ class View implements Hashable {
           locateTo(location, x: x, y: y);
         }
       });
+
+    requestLayout(immediate: true);
+      //immediate: better feedback (and avoid ghost, i.e., showed at original place)
   }
   /** Removes this view from the document.
    * All of its descendant views are removed too.
@@ -562,9 +565,6 @@ class View implements Hashable {
           }
         }
       }
-
-      if (_mntCnt == 0)
-        layoutManager.flush(); //for better responsive, do it immediately
     }
   }
   /** Adds a task to be executed after all [mount_] are called.
