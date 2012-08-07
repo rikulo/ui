@@ -97,7 +97,7 @@ class LayoutManager extends RunOnceViewManager {
       } else if (view.profile.anchorView != null) {
         //including PopupView
         new AnchorRelation(parent)
-          ._layoutAnchored(mctx, view.profile.anchorView);
+          ._layoutAnchored(mctx, view.profile.anchorView, view);
       } else if (view is PopupView
       || parent.layout.type.isEmpty()) {
         mctx.setWidthByProfile(view, () => parent.innerWidth);

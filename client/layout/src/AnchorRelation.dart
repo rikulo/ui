@@ -46,26 +46,32 @@ class AnchorRelation {
     for (final View view in indeps)
       _layoutAnchored(mctx, view);
   }
-  void _layoutAnchored(MeasureContext mctx, View anchor) {
+  void _layoutAnchored(MeasureContext mctx, View anchor, [View thisViewOnly]) {
     final List<View> views = anchored[anchor];
     if (views != null && !views.isEmpty()) {
       for (final View view in views) {
-        //0) preLayout callback
-        mctx.preLayout(view);
+        if (thisViewOnly == null || view == thisViewOnly) {
+          //0) preLayout callback
+          mctx.preLayout(view);
 
-        //1) size
-        mctx.setWidthByProfile(view, () => _anchorWidth(anchor, view));
-        mctx.setHeightByProfile(view, () => _anchorHeight(anchor, view));
+          //1) size
+          mctx.setWidthByProfile(view, () => _anchorWidth(anchor, view));
+          mctx.setHeightByProfile(view, () => _anchorHeight(anchor, view));
 
-        //2) position
-        locate(view, view.profile.location, anchor);
+          //2) position
+          locate(view, view.profile.location, anchor);
+
+          if (thisViewOnly != null)
+            return; //done
+        }
       }
 
       for (final View view in views)
-        _layoutAnchored(mctx, view); //recursive
+        _layoutAnchored(mctx, view, thisViewOnly); //recursive
     }
   }
   //called by LayoutManager
+  //No need to call preLayout since LayoutManager will do it
   static void _layoutRoot(MeasureContext mctx, View root) {
     final anchor = root.profile.anchorView;
     mctx.setWidthByProfile(root,
