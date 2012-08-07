@@ -14,6 +14,7 @@ class InputSamples extends Activity {
     ["text", "password", "multiline", "number", "tel", "date", "color"]) {
       View view = new View();
       view.layout.text = "type: linear; align: center; spacing: 0 3";
+      view.profile.width = "flex";
       mainView.addChild(view);
 
       TextView label = new TextView(type);
