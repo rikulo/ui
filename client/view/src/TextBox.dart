@@ -147,13 +147,10 @@ class TextBox extends View implements Input<String> {
   void set cols(int cols) {
     _cols = cols;
     if (inDocument)
-      if (_multiline) {
-        final TextAreaElement inp = inputNode;
-        inp.cols = _cols;
-      } else {
-        final InputElement inp = inputNode;
-        inp.size = _cols;
-      }
+      if (_multiline)
+        (inputNode as TextAreaElement).cols = _cols;
+      else
+        (inputNode as InputElement).size = _cols;
   }
   /** Returns the height of this text box in number of lines.
    *
