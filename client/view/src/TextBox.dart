@@ -53,8 +53,7 @@ class TextBox extends View implements Input<String> {
           invalidate(true);
           //immeidate is true, since the user might modify other properties later
         } else {
-          final InputElement inp = inputNode; //no need to check _multiline since we need to silent compiler only
-          inp.type = type; //Unlike ButtonElement, it is OK to change directly
+          (inputNode as Dynamic).type = type; //Unlike ButtonElement, it is OK to change directly
         }
     }
   }
@@ -65,11 +64,7 @@ class TextBox extends View implements Input<String> {
   /** Returns the value of this text box.
    */
   String get value() {
-    if (inDocument) {
-      final InputElement inp = inputNode;
-      return inp.value;
-    }
-    return _value;
+    return inDocument ? (inputNode as Dynamic).value: _value;
   }
   /** Sets the value of this text box.
    *
@@ -77,9 +72,8 @@ class TextBox extends View implements Input<String> {
    */
   void set value(String value) {
     _value = value;
-    final InputElement inp = inputNode;
-    if (inp != null)
-      inp.value = value;
+    if (inDocument)
+      (inputNode as Dynamic).value = value;
   }
 
   /** Returns whether it is disabled.
@@ -91,9 +85,8 @@ class TextBox extends View implements Input<String> {
    */
   void set disabled(bool disabled) {
     _disabled = disabled;
-    final InputElement inp = inputNode;
-    if (inp != null)
-      inp.disabled = _disabled;
+    if (inDocument)
+      (inputNode as Dynamic).disabled = _disabled;
   }
 
   /** Returns whether this input should automatically get focus.
@@ -105,11 +98,8 @@ class TextBox extends View implements Input<String> {
    */
   void set autofocus(bool autofocus) {
     _autofocus = autofocus;
-    if (autofocus) {
-      final InputElement inp = inputNode;
-      if (inp != null)
-        inp.focus();
-    }
+    if (autofocus && inDocument)
+      (inputNode as Dynamic).focus();
   }
 
   /** Returns whether to predict the value based on ealier typed value.
@@ -124,9 +114,8 @@ class TextBox extends View implements Input<String> {
    */
   void set autocomplete(bool autocomplete) {
     _autocomplete = autocomplete;
-    final InputElement inp = inputNode;
-    if (inp != null)
-      inp.autocomplete = _autocomplete ? "on": "off";
+    if (!_multiline && inDocument) //TextArea doesn't support autocomplete
+      (inputNode as InputElement).autocomplete = _autocomplete ? "on": "off";
   }
 
   /** Returns a short hint that describes this text box.
@@ -142,9 +131,8 @@ class TextBox extends View implements Input<String> {
    */
   void set placeholder(String placeholder) {
     _placeholder = placeholder;
-    final InputElement inp = inputNode;
-    if (inp != null)
-      inp.placeholder = _placeholder;
+    if (inDocument)
+      (inputNode as Dynamic).placeholder = _placeholder;
   }
 
   /** Returns the width of this text box in average character width.
@@ -159,13 +147,10 @@ class TextBox extends View implements Input<String> {
   void set cols(int cols) {
     _cols = cols;
     if (inDocument)
-      if (_multiline) {
-        final TextAreaElement inp = inputNode;
-        inp.cols = _cols;
-      } else {
-        final InputElement inp = inputNode;
-        inp.size = _cols;
-      }
+      if (_multiline)
+        (inputNode as TextAreaElement).cols = _cols;
+      else
+        (inputNode as InputElement).size = _cols;
   }
   /** Returns the height of this text box in number of lines.
    *
@@ -182,11 +167,8 @@ class TextBox extends View implements Input<String> {
    */
   void set rows(int rows) {
     _rows = rows;
-    if (_multiline) {
-      final TextAreaElement inp = inputNode;
-      if (inp != null)
-        inp.rows = _rows;
-    }
+    if (_multiline && inDocument)
+      (inputNode as TextAreaElement).rows = _rows;
   }
 
   /** Returns the maximal allowed number of characters.
@@ -200,20 +182,18 @@ class TextBox extends View implements Input<String> {
    */
   void set maxLength(int maxLength) {
     _maxLength = maxLength;
-    final InputElement inp = inputNode;
-    if (inp != null)
-      inp.maxLength = _maxLength;
+    if (inDocument)
+      (inputNode as Dynamic).maxLength = _maxLength;
   }
 
   /** Returns the INPUT element in this view.
-   * It could be an instance of InputElement or TextArea
+   * It could be an instance of InputElement or TextAreaElement
    */
   Element get inputNode() => node;
 
   //@Override
   void unmount_() {
-    final InputElement inp = inputNode;
-    _value = inp.value; //store back
+    _value = (inputNode as Dynamic).value; //store back
 
     super.unmount_();
   }

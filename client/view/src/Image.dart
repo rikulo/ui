@@ -22,10 +22,8 @@ class Image extends View {
   void set src(String src) {
     _src = src;
 
-    if (inDocument) {
-      ImageElement n = node;
-      n.src = src != null ? src: ""; //TODO: a blank image
-    }
+    if (inDocument)
+      (node as ImageElement).src = src != null ? src: ""; //TODO: a blank image
   }
 
   void domAttrs_(StringBuffer out,

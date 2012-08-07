@@ -36,10 +36,8 @@ class DropDownList<E> extends View {
   void set disabled(bool disabled) {
     _disabled = disabled;
 
-    if (inDocument) {
-      final SelectElement n = node;
-      n.disabled = _disabled;
-    }
+    if (inDocument)
+      (node as SelectElement).disabled = _disabled;
   }
 
   /** Returns the number of visible rows.
@@ -52,10 +50,8 @@ class DropDownList<E> extends View {
   void set rows(int rows) {
     _rows = rows;
 
-    if (inDocument) {
-      final SelectElement n = node;
-      n.size = _rows;
-    }
+    if (inDocument)
+      (node as SelectElement).size = _rows;
   }
 
   /** Returns whether this button should automatically get focus.
@@ -67,10 +63,8 @@ class DropDownList<E> extends View {
    */
   void set autofocus(bool autofocus) {
     _autofocus = autofocus;
-    if (autofocus && inDocument) {
-      final SelectElement n = node;
-      n.focus();
-    }
+    if (autofocus && inDocument)
+      (node as SelectElement).focus();
   }
 
   //@Override
@@ -106,10 +100,8 @@ class DropDownList<E> extends View {
       if (_model != null) {
         _model.on.all.add(_initDataListener());
 
-        if (inDocument) {
-          final SelectElement n = node;
-          n.multiple = (_model as Selection).multiple;
-        }
+        if (inDocument)
+          (node as SelectElement).multiple = (_model as Selection).multiple;
       }
 
       modelRenderer.queue(this); //queue even if _model is null (since cleanup is a bit tricky)
@@ -120,8 +112,7 @@ class DropDownList<E> extends View {
       _dataListener = (event) {
         switch (event.type) {
           case 'multiple':
-            final SelectElement n = node;
-            n.multiple = (_model as Selection).multiple;
+            (node as SelectElement).multiple = (_model as Selection).multiple;
             sendEvent(new ViewEvent("render")); //send it since the look might be changed
             return; //no need to rerender
           case 'select':
@@ -236,10 +227,8 @@ class DropDownList<E> extends View {
     super.unmount_();
   }
   void _fixIndex() { //it assumes inDocument
-    if (_model != null && (_model as Selection).isSelectionEmpty()) {
-      final SelectElement n = node;
-      n.selectedIndex = -1;
-    }
+    if (_model != null && (_model as Selection).isSelectionEmpty())
+      (node as SelectElement).selectedIndex = -1;
   }
 
   //@Override
