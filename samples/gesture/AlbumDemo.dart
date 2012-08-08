@@ -149,8 +149,8 @@ class AlbumDemo extends Activity {
         photo.style.transform = "rotate(0deg)";
         photo.left = pos.left;
         photo.top = pos.top;
+        gesture.enable();
       });
-      gesture.enable();
       return;
     }
     final Offset origin = new Offset(-_index * frameSize, 0);
