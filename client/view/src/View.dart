@@ -28,8 +28,10 @@ typedef void AfterMount(View view);
  *
  * ##Events
  *
- * + `layout`: an instance of [ViewEvent] indicates the layout of this view has been
- * handled.
+ * + `layout`: an instance of [LayoutEvent] indicates the layout of this view
+ * has been handled.
+ * + `prelayout`: an instance of [LayoutEvent] indicates the layout of this view
+ * will be handled.
  * + `mount`: an instanceof [ViewEvent] indicates this view has been
  * added to the document.
  * + `unmount`: an instanceof [ViewEvent] indicates this view will be

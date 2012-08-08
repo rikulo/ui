@@ -7,8 +7,8 @@
  * Since it prints the time between two consecutive messages,
  * you can use it measure the performance of particular functions.
  *
- * + [printc] queues the message and displays it later, so there won't be
- * much performance overhead.
+ * Notice that [printc] queues the message and displays it later, so
+ * there won't be much performance overhead.
  */
 void printc(var msg) {
   if (_log == null)
