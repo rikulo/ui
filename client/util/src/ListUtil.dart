@@ -48,22 +48,22 @@ class ListUtil {
   static final Iterator emptyIterator = const _EmptyIter();
 }
 
-class _EmptyColl<E> implements Collection<E> {
+class _EmptyColl<T> implements Collection<T> {
   const _EmptyColl();
 
-  Iterator<E> iterator() => ListUtil.emptyIterator;
-  void forEach(void f(E element)) {}
-  Collection map(f(E element)) => ListUtil.emptyCollection;
-  Collection<E> filter(bool f(E element)) => ListUtil.emptyCollection;
-  bool every(bool f(E element)) => false;
-  bool some(bool f(E element)) => false;
+  Iterator<T> iterator() => ListUtil.emptyIterator;
+  void forEach(void f(T element)) {}
+  Collection map(f(T element)) => ListUtil.emptyCollection;
+  Collection<T> filter(bool f(T element)) => ListUtil.emptyCollection;
+  bool every(bool f(T element)) => false;
+  bool some(bool f(T element)) => false;
   bool isEmpty() => true;
   int get length() => 0;
 }
-class _EmptyIter<E> implements Iterator<E> {
+class _EmptyIter<T> implements Iterator<T> {
   const _EmptyIter();
 
-  E next() {
+  T next() {
     throw const NoMoreElementsException();
   }
   bool hasNext() => false;

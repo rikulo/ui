@@ -1,6 +1,7 @@
 //Sample Code: Test Animation
 
 #import('dart:html');
+#import("dart:math");
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
@@ -71,17 +72,17 @@ class TestAnimation extends Activity {
     Animator animator = new Animator();
     animator.add((int time, int elapsed) {
       if (!paused) {
-        cube.left = 300 + (150 * Math.cos((time - offset) / 200)).toInt();
-        cube.top = 100 + (50 * Math.sin((time - offset) / 100)).toInt();
+        cube.left = 300 + (150 * cos((time - offset) / 200)).toInt();
+        cube.top = 100 + (50 * sin((time - offset) / 100)).toInt();
       }
       return true;
     });
     */
     
     motion = new EasingMotion((num x) {
-      cube.left = 300 + (150 * Math.cos(x * 2 * Math.PI)).toInt();
-      cube.top = 100 + (50 * Math.sin(x * 4 * Math.PI)).toInt();
-    }, duration: (400 * Math.PI).toInt(), mode: "repeat");
+      cube.left = 300 + (150 * cos(x * 2 * PI)).toInt();
+      cube.top = 100 + (50 * sin(x * 4 * PI)).toInt();
+    }, duration: (400 * PI).toInt(), mode: "repeat");
     
   }
   

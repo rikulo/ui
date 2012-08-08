@@ -10,7 +10,7 @@ class VectorUtil {
   /**
    * Return the length (Euclidean distance) of an Offset as a vertor. 
    */
-  static num norm(Offset off) => Math.sqrt(off.x * off.x + off.y * off.y);
+  static num norm(Offset off) => sqrt(off.x * off.x + off.y * off.y);
   
   /**
    * Return the inner product of two Offsets as vertors. 

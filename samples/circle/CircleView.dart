@@ -1,6 +1,7 @@
 //Sample Code: Circles
 
 #import('dart:html');
+#import("dart:math");
 
 #import('../../client/app/app.dart');
 #import('../../client/html/html.dart');
@@ -27,8 +28,8 @@ class Ball {
   }
   void updatePosition(int time) {
     final double degree = time * speed / 1000;
-    view.left = centerX + (radius * Math.sin(degree)).toInt();
-    view.top = centerY + (radius * Math.cos(degree)).toInt();
+    view.left = centerX + (radius * sin(degree)).toInt();
+    view.top = centerY + (radius * cos(degree)).toInt();
   }
 }
 

@@ -5,6 +5,8 @@
 #library("rikulo:effect");
 
 #import("dart:html");
+#import("dart:math");
+
 #import("../html/html.dart");
 #import("../util/util.dart");
 

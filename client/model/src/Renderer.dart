@@ -8,8 +8,8 @@
  * Note: Which renderer to use depends on the view.
  * See also [HTMLRenderer], [StringRenderer] and [ViewRenderer].
  */
-interface RenderContext<E> default _RenderContext<E> {
-  RenderContext(View view, DataModel model, E data,
+interface RenderContext<T> default _RenderContext<T> {
+  RenderContext(View view, DataModel model, T data,
     bool selected, bool disabled,
     [int index, String column, int columnIndex]);
 
@@ -19,7 +19,7 @@ interface RenderContext<E> default _RenderContext<E> {
   final DataModel model;
   /** The data being rendered.
    */
-  final E data;
+  final T data;
   /** The index of data, or -1 if not applicable.
    */
   final int index;
@@ -69,17 +69,17 @@ typedef HTMLFragment HTMLRenderer(RenderContext context);
  */
 typedef View ViewRenderer(RenderContext context);
 
-class _RenderContext<E> implements RenderContext<E> {
+class _RenderContext<T> implements RenderContext<T> {
   final View view;
   final DataModel model;
-  final E data;
+  final T data;
   final int index;
   final bool selected;
   final bool disabled;
   final int columnIndex;
   final String column;
 
-  _RenderContext(View this.view, DataModel this.model, E this.data,
+  _RenderContext(View this.view, DataModel this.model, T this.data,
     bool this.selected, bool this.disabled,
     [int this.index = -1, String this.column, int this.columnIndex = -1]);
 }

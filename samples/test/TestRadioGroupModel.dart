@@ -2,6 +2,8 @@
 //History: Fri, May 25, 2012  5:00:33 PM
 // Author: tomyeh
 
+#import("dart:math");
+
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/model/model.dart');
@@ -65,7 +67,7 @@ class TestRadioGroupModel extends Activity {
     });
     TextBox box = new TextBox("1", type: "number");
     box.on.change.add((event) {
-      dlist.rows = Math.parseInt(box.value);
+      dlist.rows = parseInt(box.value);
       dlist.requestLayout();
     });
     mainView.addChild(box);

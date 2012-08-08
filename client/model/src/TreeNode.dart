@@ -9,7 +9,7 @@
  * Notice the tree node has to implement [Hashable] if the selection will be
  * used.
  */
-interface TreeNode<E> default DefaultTreeNode<E> {
+interface TreeNode<T> default DefaultTreeNode<T> {
   /** Constructor.
    *
    * + [nodes] is a collection of nodes to add. Any element of it can
@@ -18,11 +18,11 @@ interface TreeNode<E> default DefaultTreeNode<E> {
    * If null, whether this node is a leaf node is decided automatically
    * based on whether it has no child at all.
    */
-  TreeNode([E data, Collection nodes, bool leaf]);
+  TreeNode([T data, Collection nodes, bool leaf]);
 
   /** Returns the tree model this node belongs to.
    */
-  DefaultTreeModel<E> get model();
+  DefaultTreeModel<T> get model();
   /** Sets the tree model it belongs to.
    * This method is invoked automatically by [DefaultTreeModel],
    * so you don't have to invoke it.
@@ -30,14 +30,14 @@ interface TreeNode<E> default DefaultTreeNode<E> {
    * It can be called only if this node is a root. If a node has a parent,
    * its model shall be the same as its parent.
    */
-  void set model(DefaultTreeModel<E> model);
+  void set model(DefaultTreeModel<T> model);
 
   /** Returns the application-specific data held in this node.
    */
-  E get data();
+  T get data();
   /** Sets the application-specific data held in this node.
    */
-  void set data(E data);
+  void set data(T data);
 
   /** Returns true if this node is a leaf.
    */
@@ -46,7 +46,7 @@ interface TreeNode<E> default DefaultTreeNode<E> {
   /**
    * Returns the child ([TreeNode]) at the given index.
    */
-  TreeNode<E> operator[](int index);
+  TreeNode<T> operator[](int index);
   /**
    * Returns the number of children [TreeNode]s this node contains.
    */
@@ -54,7 +54,7 @@ interface TreeNode<E> default DefaultTreeNode<E> {
   /**
    * Returns the parent [TreeNode] of this node.
    */
-  TreeNode<E> get parent();
+  TreeNode<T> get parent();
   /**
    * Returns the index of this node.
    * If this node does not have any parent, 0 will be returned.
@@ -66,7 +66,7 @@ interface TreeNode<E> default DefaultTreeNode<E> {
    * + [index] the index that [child] will be added at.
    * If null, [child] will be added to the end.
    */
-  void add(TreeNode<E> child, [int index]);
+  void add(TreeNode<T> child, [int index]);
   /** Adds a collection of children nodes.
    *
    * Each element of the given [nodes] can be an instance of [TreeNode]
@@ -85,7 +85,7 @@ interface TreeNode<E> default DefaultTreeNode<E> {
    *
    * This method returns the tree node being removed.
    */
-  TreeNode<E> remove(int index);
+  TreeNode<T> remove(int index);
   /** Removes all children nodes.
    */
   void clear();

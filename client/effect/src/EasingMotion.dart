@@ -51,7 +51,7 @@ class EasingMotion extends Motion {
         return runningTime % duration;
       case "once":
       default:
-        return Math.min(runningTime, duration);
+        return min(runningTime, duration);
     }
   }
   

@@ -22,13 +22,13 @@
  * Notice that the input's id attribute must be `"${group.uuid}-$index"`.
  * In additions, you have to render the selected and disabled attributes correctly.
  */
-class RadioGroup<E> extends View {
-  ListModel<E> _model;
+class RadioGroup<T> extends View {
+  ListModel<T> _model;
   DataEventListener _dataListener;
   HTMLRenderer _renderer;
   bool _modelSelUpdating = false; //whether it's updating model's selection
 
-  RadioGroup([ListModel<E> model, HTMLRenderer renderer]) {
+  RadioGroup([ListModel<T> model, HTMLRenderer renderer]) {
     _renderer = renderer;
     this.model = model;
   }
@@ -39,10 +39,10 @@ class RadioGroup<E> extends View {
   //Model//
   /** Returns the model.
    */
-  ListModel<E> get model() => _model;
+  ListModel<T> get model() => _model;
   /** Sets the model.
    */
-  void set model(ListModel<E> model) {
+  void set model(ListModel<T> model) {
     if (model != null) {
       if (model is! Selection)
         throw new UIException("Selection required, $model");
@@ -67,7 +67,7 @@ class RadioGroup<E> extends View {
         if (event.type == 'select') {
           if (!_modelSelUpdating) {
             final String idPrefix = "$uuid-";
-            final Selection<E> selmodel = _model as Selection;
+            final Selection<T> selmodel = _model as Selection;
             final bool multiple = selmodel.multiple;
             int i = 0, len = _model.length;
             for (final InputElement inp in node.queryAll("input")) {
@@ -133,7 +133,7 @@ class RadioGroup<E> extends View {
 
     final HTMLRenderer renderer =
       _renderer != null ? _renderer: _defRenderer();
-    final Selection<E> selmodel = _model as Selection;
+    final Selection<T> selmodel = _model as Selection;
     final bool multiple = selmodel.multiple;
     final String type = multiple ? "checkbox": "radio";
     for (int i = 0, len = _model.length; i < len; ++i) {
@@ -176,7 +176,7 @@ class RadioGroup<E> extends View {
   }
   static HTMLRenderer _$defRenderer;
   void _onCheck(int index, bool checked) {
-    final Selection<E> selmodel = _model as Selection;
+    final Selection<T> selmodel = _model as Selection;
     _modelSelUpdating = true;
     try {
       if (checked)
@@ -204,7 +204,7 @@ class RadioGroup<E> extends View {
       final InputElement n = event.srcElement;
       final String id = n.id;
       final int i = id.lastIndexOf('-');
-      _onCheck(Math.parseInt(id.substring(i + 1)), n.checked);
+      _onCheck(parseInt(id.substring(i + 1)), n.checked);
     };
 
     final String idPrefix = "$uuid-";

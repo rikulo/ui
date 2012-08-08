@@ -5,6 +5,8 @@
 #library("rikulo:service/yapis");
 
 #import("dart:html");
+#import("dart:math");
+
 #import("../../util/util.dart");
 #import("../../html/html.dart");
 #import("../gapis/gapis.dart");

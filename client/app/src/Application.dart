@@ -85,7 +85,7 @@ class Application {
 
       String sval = body.$dom_getAttribute(_APP_COUNT);
       if (sval != null) {
-        _uuid = Math.parseInt(sval);
+        _uuid = parseInt(sval);
         body.$dom_setAttribute(_APP_COUNT, (_uuid + 1).toString());
       } else {
         _uuid = 0;

@@ -62,7 +62,7 @@ class CSS {
       if (value != null && !value.isEmpty()) {
         final Match m = _reNum.firstMatch(value);
         if (m != null)
-          return Math.parseInt(m.group(0));
+          return parseInt(m.group(0));
       }
     } catch (var e) {
       if (reportError != null && reportError)

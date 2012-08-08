@@ -140,7 +140,7 @@ class Browser {
         version = version.substring(0, j);
     }
     try {
-      return Math.parseDouble(version);
+      return parseDouble(version);
     } catch (var t) {
       return 1.0; //ignore it
     }

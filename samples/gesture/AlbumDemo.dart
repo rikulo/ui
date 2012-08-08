@@ -1,5 +1,7 @@
 //Sample Code: SwipeGesture
 
+#import("dart:math");
+
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/html/html.dart');
@@ -104,12 +106,12 @@ class AlbumDemo extends Activity {
     // responsive sizing
     frame.on.preLayout.add((LayoutEvent event) {
       Size msize = new DOMQuery(mainView).innerSize;
-      frameSize = Math.min(msize.width, msize.height);
-      photoSize = Math.min(frameSize - 50, 500);
+      frameSize = min(msize.width, msize.height);
+      photoSize = min(frameSize - 50, 500);
       photoOffset = ((frameSize - photoSize) / 2).toInt();
       final num byWidth = (msize.width - photoSize) / 2 - 5;
       final num byHeight = photoSize / 2;
-      arrowSize = Math.max(Math.min(byWidth, Math.min(byHeight, 50)), 0).toInt();
+      arrowSize = max(min(byWidth, min(byHeight, 50)), 0).toInt();
       
       frame.width = frame.height = frameInner.height = frameSize;
       frameInner.width = frameSize * photoCount;
@@ -162,7 +164,12 @@ class AlbumDemo extends Activity {
     }, easing: (num x) => x * x);
   }
   
-  int rand() => (Math.random() * 7).toInt() - 3;
+  static int rand() {
+    if (_rand == null)
+      _rand = new Random();
+	return _rand.nextInt(7) - 3;
+  }
+  static Random _rand;
   
   void updateArrow() {
     arrowL.hidden = _index == 0;

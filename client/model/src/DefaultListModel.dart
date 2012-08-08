@@ -5,8 +5,8 @@
 /**
  * The default implementation of [ListModel].
  */
-class DefaultListModel<E> extends AbstractListModel<E> {
-  final List<E> _data;
+class DefaultListModel<T> extends AbstractListModel<T> {
+  final List<T> _data;
 
   /** Constructor.
    *
@@ -19,14 +19,14 @@ class DefaultListModel<E> extends AbstractListModel<E> {
    * + [disables]: if not null, it will be used to hold the list of disabled items.
    * Unlike [set disables], it won't make a copy.
    */
-  DefaultListModel(List<E> data,
-  [Set<E> selection, Set<E> disables, bool multiple]):
+  DefaultListModel(List<T> data,
+  [Set<T> selection, Set<T> disables, bool multiple]):
   super(selection, disables, multiple != null && multiple), _data = data;
 
   //@Override
   /** Returns the object of the given index.
    */
-  E operator [](int index) => _data[index];
+  T operator [](int index) => _data[index];
   //@Override
   /** Returns the length of the list.
    */
@@ -42,12 +42,12 @@ class DefaultListModel<E> extends AbstractListModel<E> {
    * This method is designed for use in application. The impelmentation of a view
    * shall access API available in [TreeModel].
    */
-  int indexOf(E value) => _data.indexOf(value);
+  int indexOf(T value) => _data.indexOf(value);
 
   /** Assigns a value to the given index.
    */
-  void operator[]=(int index, E value) {
-    final E old = _data[index];
+  void operator[]=(int index, T value) {
+    final T old = _data[index];
     _data[index] = value;
 
     //Note: no need to send 'select' since 1) 'change' will update UI
@@ -64,21 +64,21 @@ class DefaultListModel<E> extends AbstractListModel<E> {
   }
   /** Adds a value to the end of the list.
    */
-  void add(E value) {
+  void add(T value) {
     _data.add(value);
     sendEvent(new ListDataEvent(this, 'add', length - 1, 1));
   }
   /** Removes the last value.
    */
-  E removeLast() {
-    final E value = _data.removeLast();
+  T removeLast() {
+    final T value = _data.removeLast();
     _selection.remove(value); //no need to fire select
     sendEvent(new ListDataEvent(this, 'remove', length, 1));
     return value;
   }
   /** Inserts a range of values to the given index.
    */
-  void insertRange(int start, int length, [E value]) {
+  void insertRange(int start, int length, [T value]) {
     _data.insertRange(start, length, value);
     sendEvent(new ListDataEvent(this, 'add', start, length));
   }

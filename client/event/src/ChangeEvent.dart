@@ -5,14 +5,14 @@
 /**
  * A change event. It is sent with [ViewEvents.change].
  */
-class ChangeEvent<E> extends ViewEvent {
-  final E _value;
-  ChangeEvent(E value, [String type="change", View target]):
+class ChangeEvent<T> extends ViewEvent {
+  final T _value;
+  ChangeEvent(T value, [String type="change", View target]):
   super(type, target), _value = value;
 
   /** Returns the value.
    */
-  E get value() => _value;
+  T get value() => _value;
 
   String toString() => "ChangeEvent($target,$value)";
 }

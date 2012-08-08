@@ -6,25 +6,25 @@
  * An event used to notify the listeners of a tree model ([TreeModel])
  * that the model has been changed.
  */
-interface TreeDataEvent<E> extends DataEvent default _TreeDataEvent<E> {
+interface TreeDataEvent<T> extends DataEvent default _TreeDataEvent<T> {
   /** Constructor.
    *
    * + [type]: `change`, `add` or `remove`.
    */
-  TreeDataEvent(TreeModel<E> model, String type, E node);
+  TreeDataEvent(TreeModel<T> model, String type, T node);
 
   /** Returns the first affected node.
    */
-  E get node();
+  T get node();
 }
 
-class _TreeDataEvent<E> extends _DataEvent implements TreeDataEvent<E> {
-  final E _node;
+class _TreeDataEvent<T> extends _DataEvent implements TreeDataEvent<T> {
+  final T _node;
 
-  _TreeDataEvent(TreeModel<E> model, String type, this._node):
+  _TreeDataEvent(TreeModel<T> model, String type, this._node):
   super(model, type);
 
-  E get node() => _node;
+  T get node() => _node;
 
   String toString() => "$type($node)";
 }

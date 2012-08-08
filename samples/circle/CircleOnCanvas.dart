@@ -1,6 +1,7 @@
 //Sample Code: Circles implemented in Canvas
 
 #import('dart:html');
+#import("dart:math");
 
 #import('../../client/app/app.dart');
 #import('../../client/html/html.dart');
@@ -23,9 +24,9 @@ class Ball {
     ctx2d.beginPath();
     ctx2d.fillStyle = color;
     ctx2d.arc(
-      (canvas.width >> 1) + radius * Math.sin(degree),
-      (canvas.height >> 1) + radius * Math.cos(degree), size,
-      0, Math.PI * 2, true);
+      (canvas.width >> 1) + radius * sin(degree),
+      (canvas.height >> 1) + radius * cos(degree), size,
+      0, PI * 2, true);
     ctx2d.closePath();
     ctx2d.fill();
   }

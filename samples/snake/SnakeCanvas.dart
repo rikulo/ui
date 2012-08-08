@@ -1,6 +1,7 @@
 //Sample Code: Circles implemented in Canvas
 
 #import('dart:html');
+#import("dart:math");
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');

@@ -40,7 +40,7 @@ typedef List AsList();
 /**
  * Represents an input that store a value.
  */
-interface Input<E> {
+interface Input<T> {
   /** The value. */
-  E value;
+  T value;
 }

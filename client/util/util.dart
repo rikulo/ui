@@ -4,6 +4,7 @@
 
 #import("dart:coreimpl");
 #import("dart:html");
+#import("dart:math");
 
 #import("../html/html.dart");
 #import("../gesture/gesture.dart");

@@ -5,8 +5,8 @@
 /**
  * A select event. It is sent with [ViewEvents.select].
  */
-class SelectEvent<E> extends ViewEvent {
-  final Collection<E> _selectedValues;
+class SelectEvent<T> extends ViewEvent {
+  final Collection<T> _selectedValues;
   final int _selectedIndex;
 
   /** Constructor.
@@ -15,15 +15,15 @@ class SelectEvent<E> extends ViewEvent {
    * + [selectedIndex] is the index of the first selected value, or -1
    * if [selectedValues] is empty.
    */
-  SelectEvent(Collection<E> selectedValues, int selectedIndex, [String type="select", View target]):
+  SelectEvent(Collection<T> selectedValues, int selectedIndex, [String type="select", View target]):
   super(type, target), _selectedValues = selectedValues, _selectedIndex = selectedIndex;
 
   /** Returns the selected values.
    */
-  Collection<E> get selectedValues() => _selectedValues;
+  Collection<T> get selectedValues() => _selectedValues;
   /** Returns the first selected value, or null if no selected value.
    */
-  E get selectedValue() => ListUtil.first(_selectedValues);
+  T get selectedValue() => ListUtil.first(_selectedValues);
 
   /** Returns the first selected index, or -1 if none is selected.
    *

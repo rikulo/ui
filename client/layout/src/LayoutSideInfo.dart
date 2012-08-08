@@ -16,7 +16,7 @@ class LayoutSideInfo {
     if (profile != null && !profile.isEmpty()) {
       List<int> wds = [];
       for (final Match m in _reWord.allMatches(profile)) {
-        wds.add(Math.parseInt(m.group(0)));
+        wds.add(parseInt(m.group(0)));
       }
 
       switch (wds.length) {

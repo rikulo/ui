@@ -115,13 +115,13 @@ class MeasureContext {
   => _minMax(wd, getProfile(view, "min-width"), getProfile(view, "max-width"));
   int _minMaxHgh(View view, int hgh)
   => _minMax(hgh, getProfile(view, "min-height"), getProfile(view, "max-height"));
-  static int _minMax(int v, String min, String max) {
-    if (!min.isEmpty()) {
-      final int w = CSS.intOf(min);
+  static int _minMax(int v, String vmin, String vmax) {
+    if (!vmin.isEmpty()) {
+      final int w = CSS.intOf(vmin);
       if (v < w) v = w;
     }
-    if (!max.isEmpty()) {
-      final int w = CSS.intOf(max);
+    if (!vmax.isEmpty()) {
+      final int w = CSS.intOf(vmax);
       if (w > 0 && v > w) v = w;
     }
     return v;

@@ -4,7 +4,7 @@
 
 /**
  * A data model representing a tree of data.
- * Each node of the tree can be anything and represented with the generic type, `E`.
+ * Each node of the tree can be anything and represented with the generic type, `T`.
  *
  * Instead of implementing this interface from scratch, it is suggested:
  *
@@ -43,7 +43,7 @@
  * ##Selection
  *
  * If you'd like to use [TreeModel] with a UI object that allows the user to select the data,
- * such as [DropDownList] and [TreeView]. You have to implement `Selection<E>`.
+ * such as [DropDownList] and [TreeView]. You have to implement `Selection<T>`.
  * Both [DefaultTreeModel] and [AbstractTreeModel] implements it, so you need to implement
  * it only if you implement [TreeModel] from scratch.
  *
@@ -53,31 +53,31 @@
  * one of the open nodes, the tree node will be opened, i.e., the child views
  * will be visible to the user.
  */
-interface TreeModel<E> extends DataModel {
+interface TreeModel<T> extends DataModel {
 	/**
 	 * Returns the root of the tree model.
 	 */
-	E get root();
+	T get root();
 	/**
 	 * Returns the child of the given parent at the given index where the index indicates
 	 * in the parent's child array.
 	 *
 	 * + [parent] is a node in the tree, obtained from [root] or [getChild].
 	 */
-	E getChild(E parent, int index);
+	T getChild(T parent, int index);
 	/**
 	 * Returns the number of children of the given parent.
 	 *
 	 * + [parent] is a node in the tree, obtained from [root] or [getChild].
 	 */
-	int getChildCount(E parent);
+	int getChildCount(T parent);
 	/**
 	 * Returns true if node is a leaf.
 	 * In file-system terminology, a leaf node is a file, while a non-leaf node is a folder.
 	 *
 	 * + [node] is the data returned by [root] or [getChild].
 	 */
-	bool isLeaf(E node);
+	bool isLeaf(T node);
 
 	/**
 	 * Returns the child at the given path where the path indicates the child is
@@ -86,7 +86,7 @@ interface TreeModel<E> extends DataModel {
 	 * + [path] is a list of the index at each level of the tree. For example, [0, 1, 2]
 	 * represents the first child's the second child's third child.
 	 */
-	E getChildAt(List<int> path);
+	T getChildAt(List<int> path);
 }
 
 /** A data model representing a tree of data and it allows the user to select any data of it.
@@ -95,5 +95,5 @@ interface TreeModel<E> extends DataModel {
  * directly. However, it is convenient that you can instantiate an instance
  * from it and access the methods in both interfaces.
  */
-interface TreeSelectionModel<E> extends TreeModel<E>, Selection<E>, Disables<E>, Opens<E> {
+interface TreeSelectionModel<T> extends TreeModel<T>, Selection<T>, Disables<T>, Opens<T> {
 }

@@ -1,6 +1,7 @@
 //Sample Code: Test Animation 2
 
 #import('dart:html');
+#import("dart:math");
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
@@ -34,8 +35,8 @@ View createCube(int size, String txt) {
 
 MotionAction _action(Element elem, Offset center) {
   return (num x) {
-    elem.style.left = CSS.px(center.x + 50 * Math.sin(x * 2 * Math.PI));
-    elem.style.top  = CSS.px(center.y - 50 * Math.cos(x * 2 * Math.PI));
+    elem.style.left = CSS.px(center.x + 50 * sin(x * 2 * PI));
+    elem.style.top  = CSS.px(center.y - 50 * cos(x * 2 * PI));
   };
 }
 

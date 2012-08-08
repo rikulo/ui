@@ -6,12 +6,12 @@
  * An event used to notify the listeners of a list model ([ListModel])
  * that the model has been changed.
  */
-interface ListDataEvent<E> extends DataEvent default _ListDataEvent {
+interface ListDataEvent<T> extends DataEvent default _ListDataEvent {
   /** Constructor.
    *
    * + [type]: `change`, `add` or `remove`.
    */
-  ListDataEvent(ListModel<E> model, String type, int index, int length);
+  ListDataEvent(ListModel<T> model, String type, int index, int length);
 
   /** Returns the starting index of the change range (nonnegative).
    */
@@ -22,10 +22,10 @@ interface ListDataEvent<E> extends DataEvent default _ListDataEvent {
   int get length();
 }
 
-class _ListDataEvent<E> extends _DataEvent implements ListDataEvent<E> {
+class _ListDataEvent<T> extends _DataEvent implements ListDataEvent<T> {
   final int _index, _length;
 
-  _ListDataEvent(ListModel<E> model, String type, this._index, this._length):
+  _ListDataEvent(ListModel<T> model, String type, this._index, this._length):
   super(model, type);
 
   int get index() => _index;

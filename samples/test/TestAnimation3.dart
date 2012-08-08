@@ -1,6 +1,7 @@
 //Sample Code: Test Animation 3
 
 #import('dart:html');
+#import("dart:math");
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
@@ -133,7 +134,7 @@ class TestAnimation3 extends Activity {
         pos = range.snap(pos);
         element.style.left = CSS.px(pos.left.toInt());
         element.style.top = CSS.px(pos.top.toInt());
-        speed = Math.max(0, speed - deceleration * elapsed);
+        speed = max(0, speed - deceleration * elapsed);
         return speed > 0;
       }, end: (MotionState mstate) {
         final num initSanity = sanity, diffSanity = 1 - initSanity;

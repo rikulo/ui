@@ -152,8 +152,8 @@ class StringUtil {
             new String.fromCharCodes(
               [/*TODO: wait until Dart support Hexadecimal parsing
                 txt[j + 2].toLowerCase() == 'x' ?
-                Math.parseInt(txt.substring(j + 3, l), 16):*/
-                Math.parseInt(txt.substring(j + 2, l))]):
+                parseInt(txt.substring(j + 3, l), 16):*/
+                parseInt(txt.substring(j + 2, l))]):
             _decs[txt.substring(j + 1, l)];
           if (dec != null) {
             out.add(txt.substring(k, j)).add(dec);

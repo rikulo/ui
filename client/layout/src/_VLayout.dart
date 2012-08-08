@@ -22,7 +22,7 @@ class _VLayout implements _RealLinearLayout {
       //add spacing to height
       final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       height += prevSpacing == null ? si.top: //first
-        gapinf.top != null ? gapinf.top: Math.max(prevSpacing, si.top);
+        gapinf.top != null ? gapinf.top: max(prevSpacing, si.top);
       prevSpacing = si.bottom;
 
       final String phgh = child.profile.height;
@@ -101,7 +101,7 @@ class _VLayout implements _RealLinearLayout {
       final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       childspcinfs[child] = si;
       assigned += prevSpacing == null ? si.top: //first
-        gapinf.top != null ? gapinf.top: Math.max(prevSpacing, si.top);
+        gapinf.top != null ? gapinf.top: max(prevSpacing, si.top);
       prevSpacing = si.bottom;
 
       final String phgh = child.profile.height;
@@ -156,7 +156,7 @@ class _VLayout implements _RealLinearLayout {
 
       final LayoutSideInfo si = childspcinfs[child];
       child.top = assigned += prevSpacing == null ? si.top: //first
-        gapinf.top != null ? gapinf.top: Math.max(prevSpacing, si.top);
+        gapinf.top != null ? gapinf.top: max(prevSpacing, si.top);
       assigned += child.outerHeight;
       prevSpacing = si.bottom;
 

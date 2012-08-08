@@ -1,6 +1,6 @@
 
 class Food {
-  
+
   int _x, _y;
   bool redraw = true;
   SnakeEnvironment snakeEnvironment;
@@ -18,11 +18,11 @@ class Food {
     _y = value;
     redraw = true;
   }
-  
+
   void relocate(List<SnakePoint> avoid) {
     
-    double suggestedX = Math.random()*((snakeEnvironment.width / SnakeEnvironment.adjustment) - 1);
-    double suggestedY = Math.random()*((snakeEnvironment.height / SnakeEnvironment.adjustment) - 1);
+    double suggestedX = _random()*((snakeEnvironment.width / SnakeEnvironment.adjustment) - 1);
+    double suggestedY = _random()*((snakeEnvironment.height / SnakeEnvironment.adjustment) - 1);
     
     suggestedX = suggestedX.floor() * SnakeEnvironment.adjustment;
     suggestedY = suggestedY.floor() * SnakeEnvironment.adjustment;
@@ -43,6 +43,12 @@ class Food {
       y = suggestedY.toInt();
     }
   }
+  static num _random() {
+    if (_rand == null)
+      _rand = new Random();
+    return _rand.nextDouble();
+  }
+  static Random _rand;
   
   void draw(CanvasRenderingContext2D context) {
     double smallSquareWidthAndHeight = SnakeEnvironment.adjustment / 3;

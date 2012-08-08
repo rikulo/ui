@@ -14,15 +14,15 @@
  * If you'd like to load children lazily (i.e., load the children nodes when it is used),
  * you can override [loadLazily_] and load the children nodes in the method.
  */
-class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
-  DefaultTreeModel<E> _model;
-  TreeNode<E> _parent;
-  List<TreeNode<E>> _children;
-  E _data;
+class DefaultTreeNode<T> implements TreeNode<T>, Hashable {
+  DefaultTreeModel<T> _model;
+  TreeNode<T> _parent;
+  List<TreeNode<T>> _children;
+  T _data;
   bool _leaf, _loaded = false;
   int _uuid;
 
-  DefaultTreeNode([E data, Collection nodes, bool leaf]) {
+  DefaultTreeNode([T data, Collection nodes, bool leaf]) {
     _data = data;
     _leaf = leaf;
     _uuid = _$uuid++;
@@ -30,17 +30,17 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
       addAll(nodes);
   }
   static int _$uuid = 0;
-  DefaultTreeModel<E> get model() => _parent != null ? _parent.model: _model;
-  void set model(DefaultTreeModel<E> model) {
+  DefaultTreeModel<T> get model() => _parent != null ? _parent.model: _model;
+  void set model(DefaultTreeModel<T> model) {
     _model = model;
   }
 
-  E get data() => _data;
-  void set data(E data) {
+  T get data() => _data;
+  void set data(T data) {
     if (_data !== data) {
       _data = data;
 
-      final DefaultTreeModel<E> m = model;
+      final DefaultTreeModel<T> m = model;
       if (m != null)
         m.sendEvent(new TreeDataEvent(model, 'change', this));
     }
@@ -48,7 +48,7 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
 
   bool isLeaf() => _leaf != null ? _leaf: _children == null || _children.isEmpty();
 
-  TreeNode<E> operator[](int childIndex) {
+  TreeNode<T> operator[](int childIndex) {
     _init();
     if (_children == null)
       throw new IndexOutOfRangeException(childIndex);
@@ -58,7 +58,7 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
      _init();
     return _children != null ? _children.length: 0;
   }
-  TreeNode<E> get parent() => _parent;
+  TreeNode<T> get parent() => _parent;
 
   /**
    * Returns the index of this child ([TreeNode]).
@@ -77,7 +77,7 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
     return p._children.indexOf(this);
   }
 
-  void add(TreeNode<E> child, [int index]) {
+  void add(TreeNode<T> child, [int index]) {
     _init();
     if (_leaf != null && _leaf)
       throw const UnsupportedOperationException("Leaf node doesn't allow child");
@@ -94,7 +94,7 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
       c._parent = this;
     }
 
-    final DefaultTreeModel<E> m = model;
+    final DefaultTreeModel<T> m = model;
     if (m != null)
       m.sendEvent(new TreeDataEvent(model, 'add', child));
   }
@@ -106,10 +106,10 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
     for (final node in nodes)
       add(node is TreeNode ? node: new TreeNode(node), index++);
   }
-  TreeNode<E> remove(int index) {
+  TreeNode<T> remove(int index) {
     _init();
-    final DefaultTreeModel<E> m = model;
-    TreeNode<E> child = this[index];
+    final DefaultTreeModel<T> m = model;
+    TreeNode<T> child = this[index];
 
     if (m != null)
       _cleanSelOpen(m, child);
@@ -138,9 +138,9 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
   void clear() {
     _init();
     if (_children != null && !_children.isEmpty()) {
-      final DefaultTreeModel<E> m = model;
+      final DefaultTreeModel<T> m = model;
       if (m != null) {
-        for (final TreeNode<E> child in _children)
+        for (final TreeNode<T> child in _children)
           _cleanSelOpen(m, child);
       }
 
@@ -157,7 +157,7 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
       _loaded = true;
       _children = loadLazily_();
       if (_children != null) {
-        for (final TreeNode<E> child in _children) {
+        for (final TreeNode<T> child in _children) {
           if (child is DefaultTreeNode) {
             final DefaultTreeNode c = child;
             c._parent = this;
@@ -174,7 +174,7 @@ class DefaultTreeNode<E> implements TreeNode<E>, Hashable {
    * If you'd like to load tree nodes lazily, you can override this method, and
    * return a collection of child nodes.
    */
-  Collection<TreeNode<E>> loadLazily_() => null;
+  Collection<TreeNode<T>> loadLazily_() => null;
   String toString() => "DefaultTreeNode($data)";
 
   int hashCode() => _uuid;

@@ -4,6 +4,8 @@
 #library("rikulo:layout");
 
 #import("dart:html");
+#import("dart:math");
+
 #import("../app/app.dart");
 #import("../view/view.dart");
 #import("../util/util.dart");

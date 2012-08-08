@@ -29,7 +29,7 @@
  * To implement Lazy Loading, you can implement a tree node by extending [DefaultTreeNode]
  * and then override [DefaultTreeNode.loadLazily_] to return the initial child nodes.
  */
-class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
+class DefaultTreeModel<T> extends AbstractTreeModel<TreeNode<T>> {
   /** Constructor.
    *
    * Notice that a tree node ([TreeNode]) can't be shared in two tree model.
@@ -44,10 +44,10 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
    * + [opens]: if not null, it will be used to hold the list of opened items.
    * Unlike [set opens], it won't make a copy.
    */
-  DefaultTreeModel([TreeNode<E> root, Collection nodes, Set<TreeNode<E>> selection,
-  Set<TreeNode<E>> disables, Set<TreeNode<E>> opens, bool multiple=false]):
+  DefaultTreeModel([TreeNode<T> root, Collection nodes, Set<TreeNode<T>> selection,
+  Set<TreeNode<T>> disables, Set<TreeNode<T>> opens, bool multiple=false]):
   super(root != null ? root: (root = new TreeNode()), selection, disables, opens, multiple) {
-    final TreeNode<E> p = root.parent;
+    final TreeNode<T> p = root.parent;
     if (p != null)
       throw new ModelException("Only root node is allowed, not ${root}");
     root.model = this;
@@ -55,9 +55,9 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
       root.addAll(nodes);
   }
 
-  TreeNode<E> getChild(TreeNode<E> parent, int index) => parent[index];
-  int getChildCount(TreeNode<E> parent) => parent.length;
-  bool isLeaf(TreeNode<E> node) => node.isLeaf();
+  TreeNode<T> getChild(TreeNode<T> parent, int index) => parent[index];
+  int getChildCount(TreeNode<T> parent) => parent.length;
+  bool isLeaf(TreeNode<T> node) => node.isLeaf();
 
   //Additional API//
 	/**
@@ -71,7 +71,7 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
 	 * + [parent] is a node in the tree, obtained from [root] or [getChild].
 	 * + [child] the node we are interested in 
 	 */
-  int getIndexOfChild(TreeNode<E> parent, TreeNode<E> child)
+  int getIndexOfChild(TreeNode<T> parent, TreeNode<T> child)
   => parent === child.parent ? child.index: -1;
 
 	/**
@@ -81,10 +81,10 @@ class DefaultTreeModel<E> extends AbstractTreeModel<TreeNode<E>> {
 	 * This method is designed for use in application. The impelmentation of a view
 	 * shall access API available in [TreeModel]
 	 */
-  List<int> getPath(TreeNode<E> child) { //optional but provided for better performance
+  List<int> getPath(TreeNode<T> child) { //optional but provided for better performance
     List<int> path = new List();
     for (;;) {
-      final TreeNode<E> parent = child.parent;
+      final TreeNode<T> parent = child.parent;
       if (parent == null)
         break; //child is not in the same model
 

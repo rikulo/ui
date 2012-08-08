@@ -11,7 +11,7 @@
  * Notice the default implementation is [DefaultListModel] that implements
  * [ListModel], [Selection] and [Disables].
  */
-interface ListModel<E> extends DataModel default DefaultListModel<E> {
+interface ListModel<T> extends DataModel default DefaultListModel<T> {
   /** Constructor.
    *
    * Notice that once [data] is assigned to a list model, you shall not
@@ -22,11 +22,11 @@ interface ListModel<E> extends DataModel default DefaultListModel<E> {
    * + [disables]: if not null, it will be used to hold the list of disabled items.
    * Unlike [set disables], it won't make a copy.
    */
-  ListModel(List<E> data, [Set<E> selection, Set<E> disables, bool multiple]);
+  ListModel(List<T> data, [Set<T> selection, Set<T> disables, bool multiple]);
 
   /** Returns the value at the specified index.
    */
-  E operator [](int index);
+  T operator [](int index);
   /** Returns the length of the list.
    */
   int get length();
@@ -39,8 +39,8 @@ interface ListModel<E> extends DataModel default DefaultListModel<E> {
  * directly. However, it is convenient that you can instantiate an instance
  * from it and access the methods in both interfaces.
  */
-interface ListSelectionModel<E> extends ListModel<E>, Selection<E>, Disables<E>
-default DefaultListModel<E> {
+interface ListSelectionModel<T> extends ListModel<T>, Selection<T>, Disables<T>
+default DefaultListModel<T> {
   /** Constructor.
    *
    * Notice that once [data] is assigned to a list model, you shall not
@@ -51,15 +51,15 @@ default DefaultListModel<E> {
    * + [disables]: if not null, it will be used to hold the list of disabled items.
    * Unlike [set disables], it won't make a copy.
    */
-  ListSelectionModel(List<E> data, [Set<E> selection, Set<E> disables, bool multiple]);
+  ListSelectionModel(List<T> data, [Set<T> selection, Set<T> disables, bool multiple]);
 }
 
 /**
  * A skeletal implementation of [ListModel].
  * It handles the data events ([ListDataEvent]) and the selection ([Selection]).
  */
-class AbstractListModel<E> extends AbstractSelectionModel<E>
-implements ListSelectionModel<E> {
+class AbstractListModel<T> extends AbstractSelectionModel<T>
+implements ListSelectionModel<T> {
   /** Constructor.
    *
    * + [selection]: if not null, it will be used to hold the selection.
@@ -67,6 +67,6 @@ implements ListSelectionModel<E> {
    * + [disables]: if not null, it will be used to hold the list of disabled items.
    * Unlike [set disables], it won't make a copy.
    */
-  AbstractListModel([Set<E> selection, Set<E> disables, bool multiple=false]):
+  AbstractListModel([Set<T> selection, Set<T> disables, bool multiple=false]):
   super(selection, disables, multiple);
 }

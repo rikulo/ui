@@ -1,5 +1,7 @@
 //Sample Code: Star Chart Demo
 
+#import("dart:math");
+
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
 #import('../../client/html/html.dart');
@@ -11,7 +13,7 @@ View _system(Offset pos, num maxsyssize, int rad, [String name]) {
   View sys = new View();
   sys.width = sys.height = 0;
   
-  final int shownRad = Math.max(3, rad).toInt();
+  final int shownRad = max(3, rad).toInt();
   sys.left = pos.left.toInt() - shownRad;
   sys.top = pos.top.toInt() - shownRad;
   sys.style.borderWidth = sys.style.borderRadius = CSS.px(shownRad);
@@ -22,8 +24,8 @@ View _system(Offset pos, num maxsyssize, int rad, [String name]) {
     int subsyssize = (maxsyssize * (1 + _rand()) / 2).toInt();
     int subrad = (rad * (_rand() * 2 + 1) / 3).toInt();
     num subdist = subsyssize + (maxsyssize - subsyssize) * 3 * _rand();
-    num subarg = _rand() * Math.PI * 2;
-    Offset subpos = new Offset(subdist * Math.cos(subarg), subdist * Math.sin(subarg));
+    num subarg = _rand() * PI * 2;
+    Offset subpos = new Offset(subdist * cos(subarg), subdist * sin(subarg));
     View subsys = _system(subpos, subsyssize, subrad);
     sys.addChild(subsys);
     sys.addChild(_line(subpos));
@@ -49,13 +51,13 @@ View _line(Offset pos, [num span = 1]) {
   if (absx > absy) {
     lv.width = absx.toInt();
     lv.height = 1;
-    lv.left = Math.min(0, pos.x).toInt();
+    lv.left = min(0, pos.x).toInt();
     lv.top = (pos.y / 2).toInt();
     lv.style.transform = "matrix(${pos.x < 0 ? -1 : 1},${pos.y/absx},0,1,0,0)";
   } else {
     lv.height = absy.toInt();
     lv.width = 1;
-    lv.top = Math.min(0, pos.y).toInt();
+    lv.top = min(0, pos.y).toInt();
     lv.left = (pos.x / 2).toInt();
     lv.style.transform = "matrix(1,0,${pos.x/absy},${pos.y < 0 ? -1 : 1},0,0)";
   }
@@ -93,7 +95,7 @@ class StarChartDemo extends Activity {
     view.classes.add("star-chart");
     
     final int sysnum = 30 + (10 * _rand()).toInt();
-    final num syssize = Math.sqrt(range.width * range.height / sysnum) * 0.3;
+    final num syssize = sqrt(range.width * range.height / sysnum) * 0.3;
     
     // roll for star system locations
     final List<Offset> syslocs = [];

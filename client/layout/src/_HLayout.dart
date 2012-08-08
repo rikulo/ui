@@ -22,7 +22,7 @@ class _HLayout implements _RealLinearLayout {
       //add spacing to width
       final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       width += prevSpacing == null ? si.left: //first
-        gapinf.left != null ? gapinf.left: Math.max(prevSpacing, si.left);
+        gapinf.left != null ? gapinf.left: max(prevSpacing, si.left);
       prevSpacing = si.right;
 
       final String pwd = child.profile.width;
@@ -101,7 +101,7 @@ class _HLayout implements _RealLinearLayout {
       final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       childspcinfs[child] = si;
       assigned += prevSpacing == null ? si.left: //first
-        gapinf.left != null ? gapinf.left: Math.max(prevSpacing, si.left);
+        gapinf.left != null ? gapinf.left: max(prevSpacing, si.left);
       prevSpacing = si.right;
 
       final String pwd = child.profile.width;
@@ -156,7 +156,7 @@ class _HLayout implements _RealLinearLayout {
 
       final LayoutSideInfo si = childspcinfs[child];
       child.left = assigned += prevSpacing == null ? si.left: //first
-        gapinf.left != null ? gapinf.left: Math.max(prevSpacing, si.left);
+        gapinf.left != null ? gapinf.left: max(prevSpacing, si.left);
       assigned += child.outerWidth;
       prevSpacing = si.right;
 

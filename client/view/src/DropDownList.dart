@@ -12,7 +12,7 @@
  * Notice that [SelectEvent.selectedItems] is always null. Use [SelectEvent.selectedValues]
  * instead.
  */
-class DropDownList<E> extends View {
+class DropDownList<T> extends View {
   DataModel _model;
   DataEventListener _dataListener;
   StringRenderer _renderer;
@@ -120,8 +120,8 @@ class DropDownList<E> extends View {
               return;
             if (_model is ListModel) { //not easy/worth to optimize handling of TreeModel
               final HTMLOptionsCollection options = (node as SelectElement).options;
-              final ListModel<E> model = _model as ListModel;
-              final Selection<E> selmodel = _model as Selection;
+              final ListModel<T> model = _model as ListModel;
+              final Selection<T> selmodel = _model as Selection;
               final bool multiple = selmodel.multiple;
               for (int i = 0, len = model.length; i < len; ++i) {
                 final bool seled = (options[i] as OptionElement).selected = selmodel.isSelected(model[i]);
@@ -183,7 +183,7 @@ class DropDownList<E> extends View {
     super.mount_();
 
     node.on.change.add(_onChange = (e) {
-      final List<E> selValues = new List();
+      final List<T> selValues = new List();
       int selIndex = -1;
       if (_model != null) {
         final SelectElement n = node;
@@ -251,8 +251,8 @@ class DropDownList<E> extends View {
     if (_model is ListModel) {
       final StringRenderer renderer =
         _renderer != null ? _renderer: _defRenderer();
-      final ListModel<E> model = _model;
-      final Selection<E> selmodel = _model as Selection;
+      final ListModel<T> model = _model;
+      final Selection<T> selmodel = _model as Selection;
       final bool multiple = selmodel.multiple;
       for (int i = 0, len = model.length; i < len; ++i) {
         final obj = model[i];
@@ -273,12 +273,12 @@ class DropDownList<E> extends View {
           _renderer != null ? _renderer: _defRenderer(), model.root, -1);
     }
   }
-  void _renderTree(StringBuffer out, TreeModel<E> model,
+  void _renderTree(StringBuffer out, TreeModel<T> model,
   StringRenderer renderer, var node, int parentIndex) {
-    final Selection<E> selmodel = _model as Selection;
+    final Selection<T> selmodel = _model as Selection;
     final bool multiple = selmodel.multiple;
     for (int i = 0, len = model.getChildCount(node); i < len; ++i) {
-      final E child = model.getChild(node, i);
+      final T child = model.getChild(node, i);
       final bool selected = selmodel.isSelected(child);
       final bool disabled = _model is Disables && (_model as Disables).isDisabled(child);
       final String label =
@@ -307,12 +307,12 @@ class DropDownList<E> extends View {
       }
     }
   }
-  E _treeValueOf(OptionElement option) {
+  T _treeValueOf(OptionElement option) {
     final List<int> path = new List();
     for (final String v in option.value.split('.'))
-      path.add(Math.parseInt(v));
+      path.add(parseInt(v));
 
-    final TreeModel<E> model = _model;
+    final TreeModel<T> model = _model;
     return model.getChildAt(path);
   }
   static void _renderAttrs(StringBuffer out, bool selected, bool disabled) {

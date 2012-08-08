@@ -4,6 +4,7 @@
 
 #import("dart:html");
 #import("dart:coreimpl");
+#import("dart:math");
 
 #import("../util/util.dart");
 #import("../app/app.dart");

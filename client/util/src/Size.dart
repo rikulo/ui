@@ -144,8 +144,8 @@ class _Rectangle extends _Offset implements Rectangle {
   
   Offset snap(Offset offset) => 
       new Offset(
-        Math.min(Math.max(offset.left, left), right), 
-        Math.min(Math.max(offset.top, top), bottom));
+        min(max(offset.left, left), right),
+        min(max(offset.top, top), bottom));
   
   int hashCode() => (left + top + right + bottom).toInt();
   String toString() => "($left, $top ,$right, $bottom)";

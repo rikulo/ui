@@ -6,9 +6,9 @@
  * A skeletal implementation of [DataModel], [Selection] and [Disables].
  */
 //abstract
-class AbstractSelectionModel<E> extends AbstractDataModel
-implements Selection<E>, Disables<E> {
-  Set<E> _selection, _disables;
+class AbstractSelectionModel<T> extends AbstractDataModel
+implements Selection<T>, Disables<T> {
+  Set<T> _selection, _disables;
   bool _multiple = false;
   /** Constructor.
    *
@@ -17,7 +17,7 @@ implements Selection<E>, Disables<E> {
    * + [disables]: if not null, it will be used to hold the list of disabled items.
    * Unlike [set disables], it won't make a copy.
    */
-  AbstractSelectionModel([Set<E> selection, Set<E> disables, bool multiple=false]) {
+  AbstractSelectionModel([Set<T> selection, Set<T> disables, bool multiple=false]) {
     _selection = selection != null ? selection: new Set();
     _disables = disables != null ? disables: new Set();
     _multiple = multiple;
@@ -32,10 +32,10 @@ implements Selection<E>, Disables<E> {
   }
 
   //Selection//
-  E get selectedValue() => ListUtil.first(_selection);
-  Set<E> get selection() => _selection;
+  T get selectedValue() => ListUtil.first(_selection);
+  Set<T> get selection() => _selection;
 
-  void set selection(Collection<E> selection) {
+  void set selection(Collection<T> selection) {
     if (!_equals(_selection, selection)) {
       if (!_multiple && selection.length > 1)
         throw new ModelException("Only one selection is allowed, $selection");
@@ -51,7 +51,7 @@ implements Selection<E>, Disables<E> {
   bool isSelectionEmpty() => _selection.isEmpty();
 
   //@Override
-  bool addToSelection(E obj) {
+  bool addToSelection(T obj) {
     if (_selection.contains(obj))
       return false;
 
@@ -86,7 +86,7 @@ implements Selection<E>, Disables<E> {
       sendEvent(new DataEvent(this, 'multiple'));
 
       if (!multiple && _selection.length > 1) {
-        final E v = _selection.iterator().next();
+        final T v = _selection.iterator().next();
         _selection.clear();
         _selection.add(v);
         _sendSelect();
@@ -95,8 +95,8 @@ implements Selection<E>, Disables<E> {
   }
 
   //Disables//
-  Set<E> get disables() => _disables;
-  void set disables(Collection<E> disables) {
+  Set<T> get disables() => _disables;
+  void set disables(Collection<T> disables) {
     if (!_equals(_disables, disables)) {
       _disables.clear();
       _disables.addAll(disables);
@@ -105,7 +105,7 @@ implements Selection<E>, Disables<E> {
   }
   bool isDisabled(Object obj)  => _disables.contains(obj);
   bool isDisablesEmpty() => _disables.isEmpty();
-  bool addToDisables(E obj) {
+  bool addToDisables(T obj) {
     if (_disables.contains(obj))
       return false;
 

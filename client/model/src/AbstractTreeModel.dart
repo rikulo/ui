@@ -8,10 +8,10 @@
  * and [isLeaf]. This class provides a default implementation for all other methods.
  */
 //abstract
-class AbstractTreeModel<E> extends AbstractSelectionModel<E>
-implements TreeSelectionModel<E> {
-  E _root;
-  Set<E> _opens;
+class AbstractTreeModel<T> extends AbstractSelectionModel<T>
+implements TreeSelectionModel<T> {
+  T _root;
+  Set<T> _opens;
 
   /** Constructor.
    *
@@ -22,8 +22,8 @@ implements TreeSelectionModel<E> {
    * + [opens]: if not null, it will be used to hold the list of opened items.
    * Unlike [set opens], it won't make a copy.
    */
-  AbstractTreeModel(E root, [Set<E> selection, Set<E> disables,
-  Set<E> opens, bool multiple=false]):
+  AbstractTreeModel(T root, [Set<T> selection, Set<T> disables,
+  Set<T> opens, bool multiple=false]):
   super(selection, disables, multiple) {
     _root = root;
     _opens = opens != null ? opens: new Set();
@@ -34,10 +34,10 @@ implements TreeSelectionModel<E> {
   }
 
   //TreeModel//
-  E get root() => _root;
+  T get root() => _root;
   /** Sets the root of the tree model.
    */
-  void set root(E root) {
+  void set root(T root) {
     if (_root !== root) {
       _root = root;
       _selection.clear();
@@ -46,12 +46,12 @@ implements TreeSelectionModel<E> {
     }
   }
 
-  E getChildAt(List<int> path) {
+  T getChildAt(List<int> path) {
     if (path == null || path.length == 0)
       return root;
 
-    E parent = root;
-    E node = null;
+    T parent = root;
+    T node = null;
     int childCount = _childCount(parent);
     for (int i = 0; i < path.length; i++) {
       if (path[i] < 0 || path[i] > childCount //out of bound
@@ -63,11 +63,11 @@ implements TreeSelectionModel<E> {
     }
     return node;
   }
-  int _childCount(E parent) => isLeaf(parent) ? 0: getChildCount(parent);
+  int _childCount(T parent) => isLeaf(parent) ? 0: getChildCount(parent);
 
   //Open//
-  Set<E> get opens() => _opens;
-  void set opens(Collection<E> opens) {
+  Set<T> get opens() => _opens;
+  void set opens(Collection<T> opens) {
     if (_opens != opens) {
       _opens.clear();
       _opens.addAll(opens);
@@ -75,10 +75,10 @@ implements TreeSelectionModel<E> {
     }
   }
 
-  bool isOpened(E node) => _opens.contains(node);
+  bool isOpened(T node) => _opens.contains(node);
   bool isOpensEmpty() => _opens.isEmpty();
 
-  bool addToOpens(E node) {
+  bool addToOpens(T node) {
     if (_opens.contains(node))
       return false;
 
@@ -86,7 +86,7 @@ implements TreeSelectionModel<E> {
      _sendOpen();
     return true;
   }
-  bool removeFromOpens(E node) {
+  bool removeFromOpens(T node) {
     if (_opens.remove(node)) {
       _sendOpen();
       return true;

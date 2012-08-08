@@ -5,6 +5,7 @@
 #library("rikulo:app");
 
 #import("dart:html");
+#import("dart:math");
 
 #import("../util/util.dart");
 #import("../view/view.dart");
