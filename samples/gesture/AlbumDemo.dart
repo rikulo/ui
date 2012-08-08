@@ -60,13 +60,6 @@ class AlbumDemo extends Activity {
       photoBox.addChild(photo);
       photoBox.addChild(mask);
       
-      // responsive sizing
-      photoBox.on.preLayout.add((LayoutEvent event) {
-        photoBox.width = photoBox.height = photoSize;
-        photoBox.left = photoOffset + i * frameSize;
-        photoBox.top = photoOffset;
-      });
-      
       mask.profile.text = photo.profile.text = 
           "location: top left; width: 100%; height: 100%";
       mask.classes.add("photo-mask");
@@ -92,24 +85,6 @@ class AlbumDemo extends Activity {
     arrowR.profile.text = "location: center right";
     updateArrow();
     
-    // responsive sizing
-    frame.on.preLayout.add((LayoutEvent event) {
-      Size msize = new DOMQuery(mainView).innerSize;
-      frameSize = Math.min(msize.width, msize.height);
-      photoSize = Math.min(frameSize - 50, 500);
-      photoOffset = ((frameSize - photoSize) / 2).toInt();
-      final num byWidth = (msize.width - photoSize) / 2 - 5;
-      final num byHeight = photoSize / 2;
-      arrowSize = Math.max(Math.min(byWidth, Math.min(byHeight, 50)), 0).toInt();
-      
-      frame.width = frame.height = frameInner.height = frameSize;
-      frameInner.width = frameSize * photoCount;
-      frameInner.left = -_index * frameSize;
-      
-      arrowL.width = arrowR.width = arrowSize;
-      arrowL.height = arrowR.height = arrowSize * 2;
-    });
-    
     mainView.classes.add("black");
     mainView.style.userSelect = "none";
     mainView.addChild(frame);
@@ -126,6 +101,31 @@ class AlbumDemo extends Activity {
         previous();
       else
         gesture.enable();
+    });
+    
+    // responsive sizing
+    frame.on.preLayout.add((LayoutEvent event) {
+      Size msize = new DOMQuery(mainView).innerSize;
+      frameSize = Math.min(msize.width, msize.height);
+      photoSize = Math.min(frameSize - 50, 500);
+      photoOffset = ((frameSize - photoSize) / 2).toInt();
+      final num byWidth = (msize.width - photoSize) / 2 - 5;
+      final num byHeight = photoSize / 2;
+      arrowSize = Math.max(Math.min(byWidth, Math.min(byHeight, 50)), 0).toInt();
+      
+      frame.width = frame.height = frameInner.height = frameSize;
+      frameInner.width = frameSize * photoCount;
+      frameInner.left = -_index * frameSize;
+      
+      for (int i = 0; i < photoCount; i++) {
+        View photoBox = frameInner.children[i];
+        photoBox.width = photoBox.height = photoSize;
+        photoBox.left = photoOffset + i * frameSize;
+        photoBox.top = photoOffset;
+      }
+      
+      arrowL.width = arrowR.width = arrowSize;
+      arrowL.height = arrowR.height = arrowSize * 2;
     });
     
   }
