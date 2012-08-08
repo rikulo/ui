@@ -111,6 +111,7 @@ class AlbumDemo extends Activity {
     });
     
     mainView.classes.add("black");
+    mainView.style.userSelect = "none";
     mainView.addChild(frame);
     mainView.addChild(arrowL);
     mainView.addChild(arrowR);
