@@ -207,7 +207,7 @@ class Activity {
     Set<String> clses = _container != null ? _container.classes: document.body.classes;
     clses.add("rikulo");
     clses.add(browser.name);
-    if (browser.touch) clses.add("touch");
+    clses.add(browser.touch ? "touch": "desktop");
     if (browser.ios) clses.add("ios");
     else if (browser.android) clses.add("android");
 

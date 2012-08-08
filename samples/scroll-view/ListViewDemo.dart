@@ -27,7 +27,6 @@ class ListViewDemo extends Activity {
       final int height = 50;
       child.classes.add("list-item");
       child.style.cssText = "line-height: ${height}px";
-      child.style.userSelect = "none";
       child.profile.width = "flex";
       child.top = x * height;
       child.height = height;

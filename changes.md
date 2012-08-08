@@ -1,6 +1,10 @@
 Rikulo Changes
 ==============
 
+**August 8, 2012**
+
+* View, by default, doesn't allow user-select, except TextView with HTML fragment.
+
 **August 3, 2012**
 
 * documentOffset is renamed to pageOffset (since it is more consistent to UIEvent.pageX)
