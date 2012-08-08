@@ -47,7 +47,6 @@ class AlbumDemo extends Activity {
     // layout structure //
     final View frame = new View();
     frameInner = new View();
-    frameInner.style.userSelect = "none";
     frame.style.overflow = "hidden";
     frame.addChild(frameInner);
     frame.profile.location = "center center";
@@ -64,7 +63,6 @@ class AlbumDemo extends Activity {
           "location: top left; width: 100%; height: 100%";
       mask.classes.add("photo-mask");
       photo.classes.add("photo");
-      mask.style.userSelect = "none";
       photo.src = "res/alpaca-0${i+1}.jpg";
       frameInner.addChild(photoBox);
       

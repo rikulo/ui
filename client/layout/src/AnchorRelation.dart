@@ -46,11 +46,11 @@ class AnchorRelation {
     for (final View view in indeps)
       _layoutAnchored(mctx, view);
   }
-  void _layoutAnchored(MeasureContext mctx, View anchor, [View thisViewOnly]) {
+  void _layoutAnchored(MeasureContext mctx, View anchor, [View thisOnly]) {
     final List<View> views = anchored[anchor];
     if (views != null && !views.isEmpty()) {
       for (final View view in views) {
-        if (thisViewOnly == null || view == thisViewOnly) {
+        if (thisOnly == null || view == thisOnly) {
           //0) preLayout callback
           mctx.preLayout(view);
 
@@ -61,13 +61,13 @@ class AnchorRelation {
           //2) position
           locate(view, view.profile.location, anchor);
 
-          if (thisViewOnly != null)
+          if (thisOnly != null)
             return; //done
         }
       }
 
       for (final View view in views)
-        _layoutAnchored(mctx, view, thisViewOnly); //recursive
+        _layoutAnchored(mctx, view, thisOnly); //recursive
     }
   }
   //called by LayoutManager

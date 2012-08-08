@@ -33,9 +33,24 @@ body.rikulo {
   box-sizing: border-box;
   position: absolute;
   margin: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-div.v-TextView.v-html {
+.v- textarea,
+.v- input {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+.v-TextView.v-html {
   padding: 3px 5px;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 .v-button {
   font-weight: bold;
@@ -49,10 +64,6 @@ div.v-TextView.v-html {
 }
 .v-ScrollView {
   overflow: hidden;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 .v-ScrollView > .v-inner {
   position: absolute;
@@ -71,10 +82,6 @@ div.v-TextView.v-html {
   border: 1px solid #999;
   box-shadow: inset 0 2px 2px 0 rgba(0, 0, 0, 0.3);
   background-color: white;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 .v-Switch > .v-bg {
   overflow: hidden;

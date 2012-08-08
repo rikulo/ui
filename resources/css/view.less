@@ -67,10 +67,16 @@ body.rikulo {
   .box-sizing(border-box);
   position: absolute;
   margin: 0; //turn off button and other's margin
+  .user-select(none);
+
+  textarea, input {
+    .user-select(text);
+  }
 }
 
-div.v-TextView.v-html { //used when TextView displays html
+.v-TextView.v-html { //used when TextView displays html
   padding: 3px 5px;
+  .user-select(text);
 }
 
 .v-button {
@@ -84,7 +90,6 @@ div.v-TextView.v-html { //used when TextView displays html
 }
 .v-ScrollView {
   overflow: hidden;
-  .user-select(none);
 }
 .v-ScrollView > .v-inner {
   position: absolute;
@@ -99,10 +104,6 @@ div.v-TextView.v-html { //used when TextView displays html
   border: 1px solid #999;
   box-shadow: inset 0 2px 2px 0 rgba(0,0,0,0.3);
   background-color: white;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 
   > .v-bg {
     overflow: hidden; width: 100%; height: 100%;

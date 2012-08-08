@@ -75,7 +75,6 @@ class GridViewDemo extends Activity {
       for (int y = 0; y < rowCount; y++) {
         TextView child = new TextView("(${y+1}, ${x+1})");
         child.classes.add("list-item");
-        child.style.userSelect = "none";
         child.style.lineHeight = CSS.px(cellSize - 2);
         child.width = child.height = cellSize;
         child.left = x * cellSize;
@@ -87,7 +86,6 @@ class GridViewDemo extends Activity {
     for (int x = 0; x < columnCount; x++) {
       TextView child = new TextView("Column ${x+1}");
       child.classes.add("list-item");
-      child.style.userSelect = "none";
       child.style.lineHeight = CSS.px(barInnerSize);
       child.width = cellSize;
       child.height = barInnerSize;
@@ -99,7 +97,6 @@ class GridViewDemo extends Activity {
     for (int y = 0; y < rowCount; y++) {
       TextView child = new TextView("R-${y+1}");
       child.classes.add("list-item");
-      child.style.userSelect = "none";
       child.style.lineHeight = CSS.px(cellSize - 2);
       child.height = cellSize;
       child.width = barInnerSize;

@@ -251,8 +251,7 @@ class View implements Hashable {
   void onLayout_(MeasureContext mctx) {
     sendEvent(new LayoutEvent(mctx));
   }
-  /** Called after the layout of this view has been handled,
-   * but before any of its child views has been handled.
+  /** Called before handling this view and any of its descendant views.
    *
    * Default: does nothing but fire a [LayoutEvent] to itself.
    * The application can listen `preLayout` for this event.
@@ -261,7 +260,7 @@ class View implements Hashable {
     sendEvent(new LayoutEvent(mctx, "preLayout"));
   }
 
-  /** Returns whether this view is a vie group.
+  /** Returns whether this view is a view group.
    * By view group we mean a view that a user can add child views
    * to it (by use of [addChild]).
    *
