@@ -4,6 +4,7 @@ Rikulo Changes
 **August 8, 2012**
 
 * View, by default, doesn't allow user-select, except TextView with HTML fragment.
+* Rename log() function to printc() to avoid conflict with the math log function in dart:math.
 
 **August 3, 2012**
 

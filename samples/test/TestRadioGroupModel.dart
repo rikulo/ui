@@ -19,13 +19,13 @@ class TestRadioGroupModel extends Activity {
     model.addToSelection("orange");
     model.addToDisables("juice");
     model.on.select.add((event) {
-      log("Selected: ${model.selection}");
+      printc("Selected: ${model.selection}");
     });
 
     //create first radio group
     createRadioGroup(model)
     .on.select.add((SelectEvent<String> event) {
-      log("RG) $event");
+      printc("RG) $event");
     });
 
     View buttons = new View();
@@ -58,7 +58,7 @@ class TestRadioGroupModel extends Activity {
     //Add the drop-down list that share the same model
     DropDownList dlist = createDropDownList(model);
     dlist.on.select.add((SelectEvent<String> event) {
-      log("DD) $event");
+      printc("DD) $event");
     });;
     dlist.on.render.add((event) {
       dlist.requestLayout(); //the change of multiple affects the look

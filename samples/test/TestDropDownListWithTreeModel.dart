@@ -26,7 +26,7 @@ class TestDropDownListWithTreeModel extends Activity {
     //create a drop-down list
     createDropDownList(model)
     .on.select.add((SelectEvent<String> event) {
-      log("DD) $event");
+      printc("DD) $event");
     });;
 
     //Add the 2nd drop-down list to share the same model
@@ -41,7 +41,7 @@ class TestDropDownListWithTreeModel extends Activity {
         ["Cromwell", "Queenstown"])]);
 //    model.addToSelection(model.root[1][2]);
     model.on.select.add((event) {
-      log("Selected: ${model.selection}");
+      printc("Selected: ${model.selection}");
     });
     return model;
   }

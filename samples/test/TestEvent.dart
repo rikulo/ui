@@ -44,7 +44,7 @@ class TestEvent extends Activity {
   
   void log_(String msg) {
     print(msg);
-    log(msg);
+    printc(msg);
   }
   
   void onCreate_() {

@@ -7,9 +7,9 @@ class TestGLoader extends Activity {
 
   void onCreate_() {
     GLoader.loadIPLatLng((double lat, double lng) {
-        log("lat: ${lat}, lng: ${lng}");
+        printc("lat: ${lat}, lng: ${lng}");
     });
-    GLoader.load(GLoader.FEED, "1", {"callback": ()=>log("Feed loaded")});
+    GLoader.load(GLoader.FEED, "1", {"callback": ()=>printc("Feed loaded")});
   }
 }
 

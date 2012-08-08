@@ -7,12 +7,12 @@
 class TestLog extends Activity {
 
   void onCreate_() {
-    log("Started");
-    log(null);
+    printc("Started");
+    printc(null);
     int count = 0;
     Button btn = new Button("Click Me!");
     btn.on.click.add((event) {
-      log("Clicked ${++count}");
+      printc("Clicked ${++count}");
     });
     mainView.addChild(btn);
   }

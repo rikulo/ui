@@ -8,7 +8,7 @@ class TestSmartIP extends Activity {
   void onCreate_() {
     SmartIP loader = new SmartIP();
     loader.loadIPGeoInfo((Map geoip) {
-        log('''
+        printc('''
           source: ${geoip['source']},
           host: ${geoip['host']},
           lang: ${geoip['lang']},

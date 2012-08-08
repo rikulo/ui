@@ -2,15 +2,15 @@
 //History: Fri, Apr 27, 2012  4:20:01 PM
 // Author: tomyeh
 
-/** Logs the information to the screen rather than console.
+/** Prints the information to the client's screen rather than console.
  *
- * Since it prints the time between two consecutive logs,
+ * Since it prints the time between two consecutive messages,
  * you can use it measure the performance of particular functions.
  *
- * + [log] queues the message and displays it later, so there won't be
+ * + [printc] queues the message and displays it later, so there won't be
  * much performance overhead.
  */
-void log(var msg) {
+void printc(var msg) {
   if (_log == null)
     _log = new _Log();
   _log.log(msg);

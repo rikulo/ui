@@ -25,7 +25,7 @@ class TestSwitch extends Activity {
     if (small)
       view.classes.add("v-small");
     view.on.change.add((event){
-      log("Switch${view.uuid}: ${view.value}");
+      printc("Switch${view.uuid}: ${view.value}");
     });
     return view;
   }
