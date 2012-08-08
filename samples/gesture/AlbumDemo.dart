@@ -78,6 +78,7 @@ class AlbumDemo extends Activity {
       TextView caption = 
           new TextView.html("By <a href='$link'>${authors[i]}</a> @ Flickr");
       caption.classes.add("photo-caption");
+      caption.style.userSelect = "none";
       caption.profile.text = "location: south center";
       photoBox.addChild(caption);
     }
