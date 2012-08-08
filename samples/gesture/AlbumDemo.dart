@@ -139,6 +139,17 @@ class AlbumDemo extends Activity {
   
   void select(int index) {
     if (index < 0 || index >= photoCount) {
+      final View photo = frameInner.children[_index];
+      final Offset pos = new DOMQuery(photo).offset;
+      new EasingMotion((num x) {
+        photo.style.transform = "rotate(${rand()}deg)";
+        photo.left = pos.left + rand();
+        photo.top = pos.top + rand();
+      }, end: (MotionState state) {
+        photo.style.transform = "rotate(0deg)";
+        photo.left = pos.left;
+        photo.top = pos.top;
+      });
       gesture.enable();
       return;
     }
@@ -150,6 +161,8 @@ class AlbumDemo extends Activity {
       gesture.enable();
     }, easing: (num x) => x * x);
   }
+  
+  int rand() => (Math.random() * 7).toInt() - 3;
   
   void updateArrow() {
     arrowL.hidden = _index == 0;
