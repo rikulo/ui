@@ -31,12 +31,13 @@
 class AlbumDemo extends Activity {
   
   final int photoCount = 5;
-  int frameSize, photoSize, photoOffset, arrowSize;
+  int frameSize;
   View frameInner, arrowL, arrowR;
   SwipeGesture gesture;
   
   void onCreate_() {
     title = "Alpaca Album Demo";
+    mainView.classes.add("black");
     
     final String flickerPrefix = "http://www.flickr.com/photos/";
     final List<String> authors = 
@@ -48,25 +49,24 @@ class AlbumDemo extends Activity {
     
     // layout structure //
     final View frame = new View();
-    frameInner = new View();
     frame.style.overflow = "hidden";
-    frame.addChild(frameInner);
     frame.profile.location = "center center";
+    
+    frameInner = new View();
+    frame.addChild(frameInner);
     
     // photo //
     for (int i = 0; i < photoCount; i++) {
       View photoBox = new View();
-      Image photo = new Image();
-      View mask = new View();
-      photoBox.addChild(photo);
-      photoBox.addChild(mask);
       
-      mask.profile.text = photo.profile.text = 
-          "location: top left; width: 100%; height: 100%";
-      mask.classes.add("photo-mask");
+      Image photo = new Image();
       photo.classes.add("photo");
+      photo.profile.text = "location: top left; width: 100%; height: 100%";
       photo.src = "res/alpaca-0${i+1}.jpg";
-      frameInner.addChild(photoBox);
+      
+      View mask = new View(); // to block browser's default image dragging
+      mask.classes.add("photo-mask");
+      mask.profile.text = "location: top left; width: 100%; height: 100%";
       
       // photo source link
       String link = "$flickerPrefix${authorURLs[i]}/${imgURLs[i]}";
@@ -75,7 +75,11 @@ class AlbumDemo extends Activity {
       caption.classes.add("photo-caption");
       caption.style.userSelect = "none";
       caption.profile.text = "location: south center";
+      
+      photoBox.addChild(photo);
+      photoBox.addChild(mask);
       photoBox.addChild(caption);
+      frameInner.addChild(photoBox);
     }
     
     // left/right arrows //
@@ -85,8 +89,6 @@ class AlbumDemo extends Activity {
     arrowR.profile.text = "location: center right";
     updateArrow();
     
-    mainView.classes.add("black");
-    mainView.style.userSelect = "none";
     mainView.addChild(frame);
     mainView.addChild(arrowL);
     mainView.addChild(arrowR);
@@ -105,13 +107,13 @@ class AlbumDemo extends Activity {
     
     // responsive sizing
     frame.on.preLayout.add((LayoutEvent event) {
-      Size msize = new DOMQuery(mainView).innerSize;
+      final Size msize = new DOMQuery(mainView).innerSize;
       frameSize = min(msize.width, msize.height);
-      photoSize = min(frameSize - 50, 500);
-      photoOffset = ((frameSize - photoSize) / 2).toInt();
+      final int photoSize = min(frameSize - 50, 500);
+      final int photoOffset = ((frameSize - photoSize) / 2).toInt();
       final num byWidth = (msize.width - photoSize) / 2 - 5;
       final num byHeight = photoSize / 2;
-      arrowSize = max(min(byWidth, min(byHeight, 50)), 0).toInt();
+      final int arrowSize = max(min(byWidth, min(byHeight, 50)), 0).toInt();
       
       frame.width = frame.height = frameInner.height = frameSize;
       frameInner.width = frameSize * photoCount;
