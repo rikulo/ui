@@ -488,7 +488,7 @@ class _BoundedInertialMotion extends Motion {
   }
   
   bool onMove(MotionState state) {
-    final num speed = VectorUtil.norm(_vel);
+    final num speed = _vel.norm();
     final Offset dir = speed == 0 ? new Offset(0, 0) : _vel / speed;
     final Offset dec = dir * friction;
     

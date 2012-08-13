@@ -64,7 +64,7 @@ class TestAnimation2 extends Activity {
       return element;
     }, end: (DragGestureState dstate) {
       final Offset vel = dstate.velocity;
-      num speed = VectorUtil.norm(vel);
+      num speed = vel.norm();
       if (speed == 0)
         return true;
       Offset unitv = vel / speed;

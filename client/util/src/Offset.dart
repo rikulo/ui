@@ -26,6 +26,11 @@ interface Offset extends Hashable default _Offset {
   Offset operator +(Offset other);
   Offset operator *(num scalar);
   Offset operator /(num scalar);
+  
+  /** The Euclidean norm of the offset as a vector.
+   */
+  num norm();
+  
 }
 /**
  * The 3D offset.
@@ -65,7 +70,9 @@ class _Offset implements Offset {
   => new Offset(left * scalar, top * scalar);
   Offset operator /(num scalar)
   => new Offset(left / scalar, top / scalar);
-
+  
+  num norm() => left == null || top == null ? null : sqrt(left * left + top * top);
+  
   int hashCode() => (left + top).toInt();
   String toString() => "($left, $top)";
 }
@@ -91,7 +98,10 @@ class _Offset3d extends _Offset implements Offset3d {
   => new Offset3d(left * scalar, top * scalar, zIndex * scalar);
   Offset3d operator /(num scalar)
   => new Offset3d(left / scalar, top / scalar, zIndex / scalar);
-
+  
+  num norm() => left == null || top == null || zIndex == null ? null : 
+    sqrt(left * left + top * top + zIndex * zIndex);
+  
   int hashCode() => (x + y + z).toInt();
   String toString() => "($x, $y, $z)";
 }

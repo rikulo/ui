@@ -104,7 +104,7 @@ class StarChartDemo extends Activity {
       // avoid collision (too close) to previously assigned positions
       bool collide = false;
       for (Offset ploc in syslocs) {
-        if (VectorUtil.norm(loc - ploc) < syssize * 1.5) {
+        if ((loc - ploc).norm() < syssize * 1.5) {
           collide = true;
           break; // comparison loop
         }

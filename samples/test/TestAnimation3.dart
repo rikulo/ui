@@ -108,7 +108,7 @@ class TestAnimation3 extends Activity {
       return element;
     }, end: (DragGestureState dstate) {
       final Offset vel = dstate.velocity;
-      num speed = VectorUtil.norm(vel);
+      num speed = vel.norm();
       if (speed == 0) {
         final num initSanity = sanity, diffSanity = 1 - initSanity;
         recoveryMotion = new EasingMotion((num x) {
