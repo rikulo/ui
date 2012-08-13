@@ -1,6 +1,10 @@
 Rikulo Changes
 ==============
 
+**August 13, 2012**
+
+* VectorUtil class is removed. norm() function is now a member function on Offset.
+
 **August 8, 2012**
 
 * View, by default, doesn't allow user-select, except TextView with HTML fragment.
@@ -16,7 +20,7 @@ Rikulo Changes
 
 **July 23, 2012**
 
-* HoldGesture, DragGesture and Scroller are move to the gesture package.
+* HoldGesture, DragGesture and Scroller are moved to the gesture package.
 * RadioGroupRenderer is removed and generalized as HTMLRenderer.
 * DropDownListRenderer is removed and generalized as StringRenderer.
 
