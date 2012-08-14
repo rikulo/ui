@@ -53,8 +53,8 @@ class TestZoom extends Activity {
       cf0.top  = sf0.top  = poss[0].top;
       cf1.left = sf1.left = poss[1].left;
       cf1.top  = sf1.top  = poss[1].top;
-      cf0.hidden = sf0.hidden = false;
-      cf1.hidden = sf1.hidden = false;
+      cf0.visible = sf0.visible = true;
+      cf1.visible = sf1.visible = true;
       
     }, move: (ZoomGestureState state) {
       List<Offset> poss = state.positions;
@@ -68,8 +68,8 @@ class TestZoom extends Activity {
       tr.html = "${state.transition}";
       
     }, end: (ZoomGestureState state) {
-      cf0.hidden = sf0.hidden = true;
-      cf1.hidden = sf1.hidden = true;
+      cf0.visible = sf0.visible = false;
+      cf1.visible = sf1.visible = false;
       
     });
     
