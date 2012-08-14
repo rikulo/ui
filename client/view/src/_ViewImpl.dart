@@ -21,7 +21,7 @@ class _IEVisiCtrl extends _VisiCtrl {
     node.style.display = visible ? "": "none";
   }
   void addHiddenStyle(StringBuffer out) {
-    out.add('display:none;')
+    out.add('display:none;');
   }
   void addHiddenAttr(StringBuffer out) {
     //does nothing
