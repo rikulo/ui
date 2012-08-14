@@ -87,7 +87,7 @@ View dot(String color, int zIndex) {
   d.style.borderRadius = "5px";
   d.style.boxShadow = "0 0 10px $color";
   d.style.zIndex = "$zIndex";
-  d.hidden = true;
+  d.visible = false;
   return d;
 }
 
