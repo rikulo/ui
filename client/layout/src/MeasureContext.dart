@@ -57,7 +57,7 @@ class MeasureContext {
    * It has no effect if view is not visible.
    */
   void setWidthByProfile(View view, AsInt width) {
-    if (!view.hidden) {
+    if (view.visible) {
       final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "width"));
       switch (amt.type) {
         case LayoutAmountType.FIXED:
@@ -87,7 +87,7 @@ class MeasureContext {
    * It has no effect if view is not visible.
    */
   void setHeightByProfile(View view, AsInt height) {
-    if (!view.hidden) {
+    if (view.visible) {
       final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "height"));
       switch (amt.type) {
         case LayoutAmountType.FIXED:
@@ -130,11 +130,11 @@ class MeasureContext {
   /** Measure the width of the given view.
    */
   int measureWidth(View view)
-  => view.hidden ? 0: layoutManager.getLayoutOfView(view).measureWidth(this, view);
+  => view.visible ? layoutManager.getLayoutOfView(view).measureWidth(this, view): 0;
   /** Measure the height of the given view.
    */
   int measureHeight(View view)
-  => view.hidden ? 0: layoutManager.getLayoutOfView(view).measureHeight(this, view);
+  => view.visible ? layoutManager.getLayoutOfView(view).measureHeight(this, view): 0;
 
   /** Measures the width based on the view's content.
    * It is an utility for implementing a view's [View.measureWidth_].
@@ -163,7 +163,7 @@ class MeasureContext {
       hgh: _measureByContent(view, autowidth).height;
   }
   Size _measureByContent(View view, bool autowidth) {
-    if (view.hidden)
+    if (!view.visible)
       return new Size(widths[view] = 0, heights[view] = 0);
 
     CSSStyleDeclaration nodestyle;

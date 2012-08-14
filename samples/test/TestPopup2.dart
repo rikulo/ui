@@ -28,11 +28,11 @@ class TestPopup2 extends Activity {
     popup.width = 300;
     popup.height = 200;
     popup.style.backgroundColor = "yellow";
-    popup.hidden = true;
+    popup.visible = false;
     view.addChild(popup);
 
     btn.on.click.add((event) {
-        popup.hidden = false;
+        popup.visible = true;
       });
 
     Button btn2 = new Button("Create Popup 1");

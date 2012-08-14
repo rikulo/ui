@@ -2,6 +2,38 @@
 //History: Tue, Mar 13, 2012  2:14:29 PM
 // Author: tomyeh
 
+/** Controls the visibility
+ */
+class _VisiCtrl {
+  void set(Element node, bool visible) {
+    node.hidden = !visible;
+  }
+  void addHiddenStyle(StringBuffer out) {
+    //does nothing
+  }
+  void addHiddenAttr(StringBuffer out) {
+    out.add(' hidden');
+  }
+}
+//IE (10 preview) doesn't support the hidden attribute
+class _IEVisiCtrl extends _VisiCtrl {
+  void set(Element node, bool visible) {
+    node.style.display = visible ? "": "none";
+  }
+  void addHiddenStyle(StringBuffer out) {
+    out.add('display:none;')
+  }
+  void addHiddenAttr(StringBuffer out) {
+    //does nothing
+  }
+}
+_VisiCtrl get _visiCtrl() {
+  if (_$visiCtrl == null)
+    _$visiCtrl = browser.msie ? new _IEVisiCtrl(): new _VisiCtrl();
+  return _$visiCtrl;
+}
+_VisiCtrl _$visiCtrl;
+
 /** Collection of utilities for View's implementation
  */
 class _ViewImpl {

@@ -18,7 +18,7 @@
  * ##Events
  * 
  * + `dismiss` - sent when this popup is asked to dismiss because of user's activity,
- * such as clicking on a view other than this popup. By default, it is hidden.
+ * such as clicking on a view other than this popup. By default, it will be hidden.
  * If you prefer to remove it, you can do as follows.
  *
  *     popup.on.dismiss.add((event) {
@@ -71,7 +71,7 @@ class PopupView extends View {
    */
   void dismiss() {
     sendEvent(new ViewEvent("dismiss"));
-    hidden = true;
+    visible = false;
   }
 
   /** Override to render only an invisible and empty element ([refNode]).
@@ -118,7 +118,7 @@ class PopupView extends View {
 
     if (dismissOnClickOutside)
       broadcaster.on.popup.add(_fnClickOutside = (PopupEvent event) {
-          if (!hidden && inDocument && event.shallClose(this))
+          if (visible && inDocument && event.shallClose(this))
             dismiss();
         });
     _startDismissTimeout();
@@ -129,8 +129,8 @@ class PopupView extends View {
     return out.toString();
   }
   //@Override to start dismissTimeout if necessary
-  void set hidden(bool hidden) {
-    super.hidden = hidden;
+  void set visible(bool visible) {
+    super.visible = visible;
 
     _startDismissTimeout();
   }
@@ -150,10 +150,10 @@ class PopupView extends View {
   }
   void _startDismissTimeout() {
     if (_idDismissTimeout == null && dismissTimeout > 0
-    && !hidden && inDocument) {
+    && visible && inDocument) {
       _idDismissTimeout = window.setTimeout(() {
           _idDismissTimeout = null;
-          if (!hidden && inDocument)
+          if (visible && inDocument)
             dismiss();
         }, dismissTimeout);
     }

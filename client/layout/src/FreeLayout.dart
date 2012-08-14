@@ -65,7 +65,7 @@ class FreeLayout implements Layout {
       ar.layoutAnchored(mctx);
 
       for (final View child in view.children) {
-        if (!child.hidden)
+        if (child.visible)
           child.doLayout_(mctx); //no matter shallLayout_
       }
     }
