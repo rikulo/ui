@@ -6,16 +6,14 @@
  * The offset (aka., position).
  */
 interface Offset extends Hashable default _Offset {
+  
   /** The left offset. */
   num left;
   /** The top offset. */
   num top;
-
-  /** The left offset (the same as [left], i.e., an alias).
-   */
+  /** The left offset (the same as [left], i.e., an alias). */
   num x;
-  /** The top offset (the same as [top], i.e., an alias).
-   */
+  /** The top offset (the same as [top], i.e., an alias). */
   num y;
 
   Offset(num left, num top);
@@ -30,6 +28,11 @@ interface Offset extends Hashable default _Offset {
   /** The Euclidean norm of the offset as a vector.
    */
   num norm();
+  
+  /** Return an Offset with the same direction but unit length. i.e. the unit
+   * vector of this Offset.
+   */
+  Offset unit();
   
 }
 /**
@@ -72,6 +75,11 @@ class _Offset implements Offset {
   => new Offset(left / scalar, top / scalar);
   
   num norm() => left == null || top == null ? null : sqrt(left * left + top * top);
+  
+  Offset unit() {
+    num n = norm();
+    return n != null && n > 0 ? this / n : null;
+  }
   
   int hashCode() => (left + top).toInt();
   String toString() => "($left, $top)";
