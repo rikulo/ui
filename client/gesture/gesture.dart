@@ -5,6 +5,7 @@
 #library("rikulo:gesture");
 
 #import("dart:html");
+#import("dart:math");
 
 #import("../view/view.dart");
 #import("../util/util.dart");
@@ -14,4 +15,5 @@
 #source("src/HoldGesture.dart");
 #source("src/DragGesture.dart");
 #source("src/SwipeGesture.dart");
+#source("src/ZoomGesture.dart");
 #source("src/Scroller.dart");
