@@ -27,10 +27,10 @@ class Image extends View {
   }
 
   void domAttrs_(StringBuffer out,
-  [bool noId=false, bool noStyle=false, bool noClass=false]) {
+  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
     if (_src != null)
       out.add(' src="').add(_src).add('"');
-    super.domAttrs_(out, noId, noStyle, noClass);
+    super.domAttrs_(out, noId, noStyle, noClass, noVisible);
   }
   /** Returns the HTML tag's name representing this widget.
    *

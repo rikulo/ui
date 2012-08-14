@@ -127,7 +127,7 @@ class LayoutManager extends RunOnceViewManager {
   /** Handles the layout of the given view.
    */
   void doLayout(MeasureContext mctx, View view) {
-    if (!view.hidden) {
+    if (view.visible) {
       getLayoutOfView(view).doLayout(mctx, view);
       ++_inCallback;
       try {

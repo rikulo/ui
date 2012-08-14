@@ -217,7 +217,6 @@ class Activity {
     _mainView = new Section();
     _mainView.width = browser.size.width;
     _mainView.height = browser.size.height;
-    _mainView.style.overflow = "hidden"; //crop
     _mainView.addToDocument(_container != null ? _container: document.body);
 
     window.on.resize.add(_onResize);

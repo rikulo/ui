@@ -12,12 +12,12 @@ class Issue5 extends Activity {
     mainView.addChild(btn);
 
     View myView = new View();
-    myView.hidden = true;
+    myView.visible = false;
     myView.layout.text = "type: linear; orient: vertical";
     mainView.addChild(myView);
 
     btn.on.click.add((event) {
-      myView.hidden = !myView.hidden;
+      myView.visible = !myView.visible;
     });
 
     myView.addChild(new Switch(true));

@@ -964,10 +964,10 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
     setProperty('direction', value, '');
   }
 
-  /** Not allowed. Please  use [View.hidden] instead. */
+  /** Gets the value of "display". */
   String get display() =>
     getPropertyValue('display');
-  /** Not allowed. Please  use [View.hidden] instead. */
+  /** Sets the value of "display". */
   void set display(var value) {
     setProperty('display', value, '');
   }
@@ -2545,13 +2545,13 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
     if (_illnms == null) {
       _illnms = new Set();
       for (final String nm in const [
-        "left", "top", "right", "bottom", "width", "height", "display"]) {
+        "left", "top", "right", "bottom", "width", "height"]) {
         _illnms.add(nm);
       }
     }
     
     if (_illnms.contains(propertyName))
-      throw new UIException("$propertyName not allowed. Please use View's API instead, such as left, width and hidden.");
+      throw new UIException("$propertyName not allowed. Please use View's API instead, such as left and width.");
     if (propertyName.startsWith("margin"))
       throw const UIException("You can't change margin");
   }

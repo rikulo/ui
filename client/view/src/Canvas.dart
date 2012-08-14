@@ -45,13 +45,13 @@ class Canvas extends View {
   }
   //@Override
   void domAttrs_(StringBuffer out,
-  [bool noId=false, bool noStyle=false, bool noClass=false]) {
+  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
     if (width != null)
       out.add('  width="').add(width).add('"');
     if (height != null)
       out.add('  height="').add(height).add('"');
 
-    super.domAttrs_(out, noId, noStyle, noClass);
+    super.domAttrs_(out, noId, noStyle, noClass, noVisible);
   }
   String get domTag_() => "canvas";
 }

@@ -223,7 +223,7 @@ class TextBox extends View implements Input<String> {
   }
   //@Override
   void domAttrs_(StringBuffer out,
-  [bool noId=false, bool noStyle=false, bool noClass=false]) {
+  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
     if (!_multiline) {
       out.add(' type="').add(type).add('"');
       if (!value.isEmpty())
@@ -234,16 +234,16 @@ class TextBox extends View implements Input<String> {
     if (cols != 2)
       out.add(' cols="').add(cols).add('"');
     if (disabled)
-      out.add(' disabled="disabled"');
+      out.add(' disabled');
     if (autofocus)
-      out.add(' autofocus="autofocus"');
+      out.add(' autofocus');
     if (!autocomplete)
       out.add(' autocomplete="off"');
     if (maxLength > 0)
       out.add(' maxlength="').add(maxLength).add('"');
     if (!placeholder.isEmpty())
       out.add(' placeholder="').add(StringUtil.encodeXML(placeholder)).add('"');
-    super.domAttrs_(out, noId, noStyle, noClass);
+    super.domAttrs_(out, noId, noStyle, noClass, noVisible);
   }
   //@Override
   /** Returns false to indicate this view doesn't allow any child views.

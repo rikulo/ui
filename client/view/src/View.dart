@@ -32,9 +32,9 @@ typedef void AfterMount(View view);
  * has been handled.
  * + `prelayout`: an instance of [LayoutEvent] indicates the layout of this view
  * will be handled.
- * + `mount`: an instanceof [ViewEvent] indicates this view has been
+ * + `mount`: an instance of [ViewEvent] indicates this view has been
  * added to the document.
- * + `unmount`: an instanceof [ViewEvent] indicates this view will be
+ * + `unmount`: an instance of [ViewEvent] indicates this view will be
  * removed from the document.
  *
  *---
@@ -65,7 +65,7 @@ class View implements Hashable {
   ProfileDeclaration _profile;
   LayoutDeclaration _layout;
 
-  bool _hidden = false, _inDoc = false;
+  bool _visible = true, _inDoc = false;
 
   /** Constructor.
    */
@@ -149,11 +149,11 @@ class View implements Hashable {
    * [bindFellow_].
    */
   View getFellow(String id) => spaceOwner.getFellow(id);
-  /** Returns a readoly collection of all fellows in the ID space
+  /** Returns a read-only collection of all fellows in the ID space
    * that this view belongs to.
    *
    * Note: don't modify the returned list. Otherwise, the result is
-   * unpreditable.
+   * unpredictable.
    */
   Collection<View> get fellows() => spaceOwner.fellows;
   /** Updates the fellow information.
@@ -376,7 +376,7 @@ class View implements Hashable {
    * Since the DOM element is kept intact, the performance is better
    * then remove-and-add (with [removeFromParent] and [addChild]).
    * However, unlike remove-and-add, you cannot modify the view after it
-   * is cut (until it is pasted back). Otherwise, the result is unpreditable.
+   * is cut (until it is pasted back). Otherwise, the result is unpredictable.
    *
    * Notice that, like [removeFromParent], it can't be called if this view
    * is a root view (i.e., it has no parent).
@@ -654,7 +654,7 @@ class View implements Hashable {
    *
    * Notice that, for better performance, the view won't be redrawn immediately.
    * Rather, it is queued and all queued invalidation will be drawn together later.
-   * If you'd like to rerender it immediately, you can specify [immediate] to true.
+   * If you'd like to re-render it immediately, you can specify [immediate] to true.
    *
    * See also [ViewUtil.flushInvalidated], which forces all queued invalidation
    * to be handle immediately (but you rarely need to call it).
@@ -726,7 +726,7 @@ class View implements Hashable {
    * It is called by [LayoutManager].
    *
    * Notice that, when this method is called, you can assume the layout of this view
-   * has been handled. Of couse, you can adjust it if you'd like.
+   * has been handled. Of course, you can adjust it if you'd like.
    *
    * Default: forward to [layoutManager] to handle it.
    * [onLayout_] will be called after the layout of the view has been handled.
@@ -771,7 +771,7 @@ class View implements Hashable {
    * will be still called to arrange the layout of the child's child views.
    */
   bool shallLayout_(View child) {
-    if (child.hidden || child is PopupView)
+    if (!child.visible || child is PopupView)
       return false;
     final String v = child.style.position;
     return v.isEmpty() || v == "absolute";
@@ -805,20 +805,20 @@ class View implements Hashable {
     return out.toString();
   }
 
-  /** Returns if this view is hidden.
+  /** Returns if this view is visible.
    */
-  bool get hidden() => _hidden;
-  /** Sets if this view is hidden.
+  bool get visible() => _visible;
+  /** Sets if this view is visible.
    *
    * Unlike most API, [requestLayout] will be called automatically if it is becoming visible.
    */
-  void set hidden(bool hidden) {
-    final bool changed = hidden != _hidden;
-    _hidden = hidden;
+  void set visible(bool visible) {
+    final bool changed = visible != _visible;
+    _visible = visible;
 
     if (_inDoc) {
-      node.style.display = hidden ? "none": "";
-      if (changed && !hidden)
+      _visiCtrl.set(node, visible);
+      if (changed && visible)
         requestLayout(immediate: true);
     }
   }
@@ -985,23 +985,25 @@ class View implements Hashable {
    */
   Set<String> get classes() => _classes;
 
-  /** Ouptuts all HTML attributes used for the DOM element of this view
+  /** Outputs all HTML attributes used for the DOM element of this view
    * to the given output.
    * It is called by [draw], and the deriving class can override it
    * to provide more attributes. Of course, if you override [draw]
    * directly, you can decide whether to call this method.
    */
   void domAttrs_(StringBuffer out,
-  [bool noId=false, bool noStyle=false, bool noClass=false]) {
+  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
     String s;
     if (!noId && !(s = uuid).isEmpty())
       out.add(' id="').add(s).add('"');
     if (!noStyle) {
       final StringBuffer stylesb = new StringBuffer();
-      domStyle_(stylesb);
+      domStyle_(stylesb, noVisible: noVisible);
       if (!stylesb.isEmpty())
           out.add(' style="').add(stylesb).add('"');
     }
+    if (!noVisible && !visible)
+      _visiCtrl.addHiddenAttr(out);
     if (!noClass) {
       final StringBuffer classsb = new StringBuffer();
       domClass_(classsb);
@@ -1024,7 +1026,7 @@ class View implements Hashable {
   }
   /** Outputs a list of the CSS classes for the DOM element of this view
    * to the given output. If there are multiple CSS classes, they will
-   * be seperated with whitespaces.
+   * be separated with white spaces.
    */
   void domClass_(StringBuffer out) {
     out.add(viewConfig.classPrefix);
@@ -1036,8 +1038,8 @@ class View implements Hashable {
   /** Output the CSS style for the DOM element of this view to the given outout.
    */
   void domStyle_(StringBuffer out, [bool noLeft=false, bool noTop=false,
-  bool noWidth=false, bool noHeight=false, bool noHidden=false,
-  bool noStyle=false]) {
+  bool noWidth=false, bool noHeight=false,
+  bool noStyle=false, bool noVisible=false]) {
     if (!noLeft && left != 0)
       out.add("left:").add(left).add("px;");
     if (!noTop && top != 0)
@@ -1046,8 +1048,8 @@ class View implements Hashable {
       out.add("width:").add(_width).add("px;");
     if (!noHeight && _height != null) //don't use height since it has special handling
       out.add("height:").add(_height).add("px;");
-    if (!noHidden && hidden)
-      out.add("display:none;");
+    if (!noVisible && !visible)
+      _visiCtrl.addHiddenStyle(out);
     String s;
     if (!noStyle && _style != null && !(s = _style.cssText).isEmpty())
       out.add(StringUtil.encodeXML(s));
@@ -1131,6 +1133,6 @@ class View implements Hashable {
   Map<String, Object> get mountAttributes()
   => _mntAttrs != null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new Map());
 
-  int hashCode() => uuid.hashCode(); //uuid is immutiable once assigned
+  int hashCode() => uuid.hashCode(); //uuid is immutable once assigned
   String toString() => "$className(${id.isEmpty() ? uuid: id})";
 }

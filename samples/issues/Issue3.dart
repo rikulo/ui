@@ -22,12 +22,12 @@ class Issue3 extends Activity {
 
     //right text
     TextView right = new TextView("SECOND TEXT");
-    right.hidden = true;
+    right.visible = false;
     hlayout.addChild(right);
     _right = right;
 
-    _left.on.click.add((event) {_left.hidden = true; _right.hidden = false; mainView.requestLayout();});
-    _right.on.click.add((event) {_left.hidden = false; _right.hidden = true; mainView.requestLayout();});
+    _left.on.click.add((event) {_left.visible = false; _right.visible = true; mainView.requestLayout();});
+    _right.on.click.add((event) {_left.visible = true; _right.visible = false; mainView.requestLayout();});
 
     mainView.addChild(new TextView.html('''
         <ul><li>Click FIRST TEXT and you shall see it disappears and SECOND TEXT shows up</li>

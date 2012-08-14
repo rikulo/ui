@@ -233,15 +233,15 @@ class DropDownList<T> extends View {
 
   //@Override
   void domAttrs_(StringBuffer out,
-  [bool noId=false, bool noStyle=false, bool noClass=false]) {
+  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
     out.add(' size="').add(rows).add('"');
     if (disabled)
-      out.add(' disabled="disabled"');
+      out.add(' disabled');
     if (autofocus)
-      out.add(' autofocus="autofocus"');
+      out.add(' autofocus');
     if (_model != null && (_model as Selection).multiple)
       out.add(' multiple="multiple"');
-    super.domAttrs_(out, noId, noStyle, noClass);
+    super.domAttrs_(out, noId, noStyle, noClass, noVisible);
   }
   //@Override
   void domInner_(StringBuffer out) {
@@ -317,9 +317,9 @@ class DropDownList<T> extends View {
   }
   static void _renderAttrs(StringBuffer out, bool selected, bool disabled) {
     if (selected)
-      out.add(' selected="selected"');
+      out.add(' selected');
     if (disabled)
-      out.add(' disabled="disabled"');
+      out.add(' disabled');
   }
 
   //@Override

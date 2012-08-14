@@ -1,8 +1,9 @@
 Rikulo Changes
 ==============
 
-**August 13, 2012**
+**August 14, 2012**
 
+* View.hidden is renamed to View.visible.
 * VectorUtil class is removed. norm() function is now a member function on Offset.
 
 **August 8, 2012**

@@ -174,8 +174,8 @@ class AlbumDemo extends Activity {
   static Random _rand;
   
   void updateArrow() {
-    arrowL.hidden = _index == 0;
-    arrowR.hidden = _index == photoCount - 1;
+    arrowL.visible = _index != 0;
+    arrowR.visible = _index != photoCount - 1;
   }
   
   // view helper //
