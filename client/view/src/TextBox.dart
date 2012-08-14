@@ -234,9 +234,9 @@ class TextBox extends View implements Input<String> {
     if (cols != 2)
       out.add(' cols="').add(cols).add('"');
     if (disabled)
-      out.add(' disabled="disabled"');
+      out.add(' disabled');
     if (autofocus)
-      out.add(' autofocus="autofocus"');
+      out.add(' autofocus');
     if (!autocomplete)
       out.add(' autocomplete="off"');
     if (maxLength > 0)

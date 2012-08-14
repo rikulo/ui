@@ -236,9 +236,9 @@ class DropDownList<T> extends View {
   [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
     out.add(' size="').add(rows).add('"');
     if (disabled)
-      out.add(' disabled="disabled"');
+      out.add(' disabled');
     if (autofocus)
-      out.add(' autofocus="autofocus"');
+      out.add(' autofocus');
     if (_model != null && (_model as Selection).multiple)
       out.add(' multiple="multiple"');
     super.domAttrs_(out, noId, noStyle, noClass, noVisible);
@@ -317,9 +317,9 @@ class DropDownList<T> extends View {
   }
   static void _renderAttrs(StringBuffer out, bool selected, bool disabled) {
     if (selected)
-      out.add(' selected="selected"');
+      out.add(' selected');
     if (disabled)
-      out.add(' disabled="disabled"');
+      out.add(' disabled');
   }
 
   //@Override

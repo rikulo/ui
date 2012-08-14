@@ -112,11 +112,11 @@ class CheckBox extends TextView implements Input<bool> {
     out.add('<input type="checkbox" id="').add(uuid).add('-inp"');
 
     if (_value)
-      out.add(' checked="checked"');
+      out.add(' checked');
     if (_disabled)
-      out.add(' disabled="disabled"');
+      out.add(' disabled');
     if (_autofocus)
-      out.add(' autofocus="autofocus"');
+      out.add(' autofocus');
     out.add('/><label for="').add(uuid).add('-inp" class="')
       .add(viewConfig.classPrefix).add('inner">').add(innerHTML_).add('</label>');
   }

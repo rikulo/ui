@@ -68,9 +68,9 @@ class Button extends TextView {
   [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
     out.add(' type="').add(type).add('"');
     if (disabled)
-      out.add(' disabled="disabled"');
+      out.add(' disabled');
     if (autofocus)
-      out.add(' autofocus="autofocus"');
+      out.add(' autofocus');
     super.domAttrs_(out, noId, noStyle, noClass, noVisible);
   }
   /** Returns the HTML tag's name representing this widget.

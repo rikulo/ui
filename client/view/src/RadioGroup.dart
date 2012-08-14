@@ -157,9 +157,9 @@ class RadioGroup<T> extends View {
         out.add('<input type="').add(type).add('" name="').add(uuid)
           .add('" id="').add(inpId).add('"');
         if (selected)
-          out.add(' checked="checked"');
+          out.add(' checked');
         if (disabled)
-          out.add(' disabled="disabled"');
+          out.add(' disabled');
         out.add('/><label for="').add(inpId).add('">');
       }
 
