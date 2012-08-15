@@ -14,13 +14,21 @@ interface ZoomGestureState {
    */
   List<Offset> get startPositions();
   
+  /** The midpoint of the two initial touch positions.
+   */
+  Offset get startMidpoint();
+  
   /** The timestamp at which the gesture starts.
    */
   int get startTime();
   
-  /** The current position of gesture touches.
+  /** The current positions of gesture touches.
    */
   List<Offset> get positions();
+  
+  /** The midpoint of the two current touch positions.
+   */
+  Offset get midpoint();
   
   /** The timestamp of the last update of the state.
    */
@@ -49,7 +57,7 @@ interface ZoomGestureState {
    * gesture state. The transformation origin is the midpoint of the start
    * positions.
    */
-  List<num> get matrix(); // TODO: shall supply better assistance
+  Transformation get transformation(); // TODO: shall supply better assistance
   
 }
 
@@ -86,9 +94,13 @@ class _ZoomGestureState implements ZoomGestureState {
   
   List<Offset> get positions() => [_pos0, _pos1];
   
+  Offset get startMidpoint() => _startMid;
+  
+  Offset get midpoint() => (_pos0 + _pos1) / 2;
+  
   int get time() => _time;
   
-  Offset get transition() => (_pos0 + _pos1) / 2 - _startMid;
+  Offset get transition() => midpoint - _startMid;
   
   num get scalar() => (_pos1 - _pos0).norm() / _scaleBase;
   
@@ -105,9 +117,9 @@ class _ZoomGestureState implements ZoomGestureState {
     return new Offset(cx*ix + cy*iy, cy*ix - cx*iy).unit();
   }
   
-  List<num> get matrix() {
+  Transformation get transformation() {
     final Offset tr = transition, ro = rotation * scalar;
-    return [ro.x, ro.y, -ro.y, ro.x, tr.x, tr.y];
+    return new Transformation(ro.x, -ro.y, tr.x, ro.y, ro.x, tr.y);
   }
   
 }

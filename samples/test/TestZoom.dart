@@ -10,9 +10,11 @@
 #import('../../client/util/util.dart');
 #import('../../client/event/event.dart');
 
-final int statusHeight = 100;
+final int statusHeight = 50;
 
 class TestZoom extends Activity {
+  
+  int statusHeight = 100;
   
   void onCreate_() {
     
