@@ -11,22 +11,22 @@
  * there won't be much performance overhead.
  */
 void printc(var msg) {
-  if (_log == null)
-    _log = new _Log();
-  _log.log(msg);
+  if (_printc == null)
+    _printc = new _Printc();
+  _printc.print(msg);
 }
-_Log _log;
+_Printc _printc;
 
-class _Log {
-  final List<_LogMsg> _msgs;
+class _Printc {
+  final List<_PrintcMsg> _msgs;
   Element _node;
-  _LogPopup _popup;
+  _PrintcPopup _popup;
 
-  _Log() : _msgs = new List() {
+  _Printc() : _msgs = new List() {
   }
 
-  void log(var msg) {
-    _msgs.add(new _LogMsg(msg));
+  void print(var msg) {
+    _msgs.add(new _PrintcMsg(msg));
     _defer();
   }
   bool _ready() {
@@ -34,10 +34,10 @@ class _Log {
       final Element db = document.query("#v-dashboard");
       if (db == null) { //not in simulator
         _node = new Element.html(
-  '<div class="v-logView-x"></div>');
+  '<div class="v-printView-x"></div>');
         document.body.elements.add(_node);
       } else { //running in simulator
-        _node = db.query(".v-logView");
+        _node = db.query(".v-printView");
         if (_node == null) {
           _defer(); //later
           return false;
@@ -46,17 +46,17 @@ class _Log {
 
       document.body.insertAdjacentHTML("afterBegin", '''
 <style>
-.v-logView-x {
+.v-printView-x {
  ${CSS.name('box-sizing')}: border-box;
  width:40%; height:30%; border:1px solid #332; background-color:#eec;
  overflow:auto; padding:3px; white-space:pre-wrap;
  font-size:11px; position:absolute; right:0; bottom:0;
 }
-.v-logView-pp {
+.v-printView-pp {
  position:absolute; border:1px solid #221; padding:1px; background-color:white;
  border-radius: 1px; box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
-.v-logView-pp div {
+.v-printView-pp div {
  display: inline-block; border:1px solid #553; border-radius: 3px;
  margin:2px; padding:0 2px; font-size:15px; cursor:pointer;
 }
@@ -68,7 +68,7 @@ class _Log {
   }
   HoldGestureAction _gestureAction() {
     return (HoldGestureState state) {
-      (_popup = new _LogPopup(this)).open(state.offset.x, state.offset.y);
+      (_popup = new _PrintcPopup(this)).open(state.offset.x, state.offset.y);
     };
   }
   HoldGestureStart _gestureStart() {
@@ -81,7 +81,7 @@ class _Log {
     window.setTimeout(_globalFlush, 100);
   }
   static void _globalFlush() {
-    _log._flush();
+    _printc._flush();
   }
   void _flush() {
     if (!_msgs.isEmpty()) {
@@ -91,7 +91,7 @@ class _Log {
       }
 
       final StringBuffer sb = new StringBuffer();
-      for (final _LogMsg msg in _msgs) {
+      for (final _PrintcMsg msg in _msgs) {
         final Date time = msg.t;
         sb.add(time.hour).add(':').add(time.minute).add(':').add(time.second);
         if (_lastLogTime != null)
@@ -116,21 +116,21 @@ class _Log {
     }
   }
 }
-class _LogMsg {
+class _PrintcMsg {
   final String m;
   final Date t;
-  _LogMsg(var msg): m = "$msg", t = new Date.now();
+  _PrintcMsg(var msg): m = "$msg", t = new Date.now();
     //we have to 'snapshot' the value since it might be changed later
 }
-class _LogPopup {
-  final _Log _owner;
+class _PrintcPopup {
+  final _Printc _owner;
   Element _node;
   ViewEventListener _elPopup;
 
-  _LogPopup(_Log this._owner) {
+  _PrintcPopup(_Printc this._owner) {
   }
   void open(int x, int y) {
-    _node = new Element.html('<div style="left:${x+2}px;top:${y+2}px" class="v-logView-pp"><div>[]</div><div>+</div><div>-</div><div>x</div></div>');
+    _node = new Element.html('<div style="left:${x+2}px;top:${y+2}px" class="v-printView-pp"><div>[]</div><div>+</div><div>-</div><div>x</div></div>');
 
     _node.elements[0].on.click.add((e) {_size("100%", "100%");});
     _node.elements[1].on.click.add((e) {_size("100%", "30%");});

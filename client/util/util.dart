@@ -10,7 +10,6 @@
 #import("../gesture/gesture.dart");
 #import("../event/event.dart");
 
-#source("src/log.dart");
 #source("src/StringUtil.dart");
 #source("src/ListUtil.dart");
 #source("src/MapUtil.dart");
@@ -19,3 +18,4 @@
 #source("src/Offset.dart");
 #source("src/Size.dart");
 #source("src/Utilities.dart");
+#source("src/printc.dart");
