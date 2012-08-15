@@ -28,7 +28,12 @@ class CSS {
     return alpha != null ? "rgba($red,$green,$blue,$alpha)":
       "#${StringUtil.toHexString(red,2)}${StringUtil.toHexString(green,2)}${StringUtil.toHexString(blue,2)}";
   }
-
+  
+  /** Converts a [Transformation] object to CSS value for property transform.
+   */
+  static String transform(Transformation t) => 
+      "matrix(${t[0][0]}, ${t[1][0]}, ${t[0][1]}, ${t[1][1]}, ${t[0][2]}, ${t[1][2]})";
+  
   /** Converts a CSS value presenting `translate3d` for the property called `transform`.
    */
   static String translate3d(int x, int y, [int z])
