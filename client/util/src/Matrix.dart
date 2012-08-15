@@ -194,8 +194,8 @@ class Transformation extends Matrix {
   /** Apply the tranformation on [offset].
    */
   Offset apply(Offset offset) => new Offset(
-    _en[0] * offset.x + _en[2] * offset.y + _en[4],
-    _en[1] * offset.x + _en[3] * offset.y + _en[5]);
+    _en[0] * offset.x + _en[1] * offset.y + _en[2],
+    _en[3] * offset.x + _en[4] * offset.y + _en[5]);
   
   /** Transformation composition, as a special case of [Matrix] multiplication.
    */
