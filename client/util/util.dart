@@ -17,5 +17,6 @@
 #source("src/AbstractList.dart");
 #source("src/RunOnceQueue.dart");
 #source("src/Offset.dart");
+#source("src/Matrix.dart");
 #source("src/Size.dart");
 #source("src/Utilities.dart");
