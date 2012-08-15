@@ -208,7 +208,7 @@ class Transformation extends Matrix {
   // TODO: supply its transition component as an Offset?
   
   /** Return a new transformation of the same linear map, but with respect to 
-   * a different [origin]. The is, effectively, a change of basis on the 
+   * a different [origin]. This is, effectively, a change of basis on the 
    * transformation.
    */
   Transformation originAt(Offset origin) => 

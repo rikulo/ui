@@ -24,6 +24,8 @@ class TestZoom2 extends Activity {
     panel.profile.text = "location: center center; width: 90%; height: 90%";
     
     Image img = new Image();
+    // http://www.flickr.com/photos/normanbleventhalmapcenter/2675391188/
+    // Creative Commons License
     img.src = "http://farm4.staticflickr.com/3140/2675391188_d42c03b423.jpg";
     img.profile.text = "location: center center";
     
