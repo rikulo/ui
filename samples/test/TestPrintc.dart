@@ -4,7 +4,7 @@
 #import('../../client/view/view.dart');
 #import('../../client/util/util.dart');
 
-class TestLog extends Activity {
+class TestPrintc extends Activity {
 
   void onCreate_() {
     printc("Started");
@@ -19,5 +19,5 @@ class TestLog extends Activity {
 }
 
 void main() {
-  new TestLog().run();
+  new TestPrintc().run();
 }
