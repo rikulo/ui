@@ -22,28 +22,16 @@ class AbstractList<T> implements List<T> {
   const AbstractList();
 
   //Collection//
-  bool every(bool f(T element)) {
-    return Collections.every(this, f);
-  }
-  Collection map(f(T element)) {
-    return Collections.map(this, [], f);
-  }
-  Collection filter(bool f(T element)) {
-    return Collections.filter(this, [], f);
-  }
-  void forEach(f(T element)) {
-    Collections.forEach(this, f);
-  }
-  bool isEmpty() {
-    return this.length === 0;
-  }
-  bool some(bool f(T element)) {
-    return Collections.some(this, f);
-  }
+  bool every(bool f(T element)) => Collections.every(this, f);
+  Collection map(f(T element)) => Collections.map(this, [], f);
+  Collection filter(bool f(T element)) => Collections.filter(this, [], f);
+  void forEach(f(T element)) => Collections.forEach(this, f);
+  Dynamic reduce(Dynamic initialValue, Dynamic combine(Dynamic previousValue, T element))
+  => Collections.reduce(this, initialValue, combine);
+  bool isEmpty() => this.length == 0;
+  bool some(bool f(T element)) => Collections.some(this, f);
 
   //List//
-  Iterator<T> iterator() => null; //TODO: remove it when dart2js supports it
-
   T operator[](int index) {
     ListUtil.rangeCheck(this, index, 1);
 
