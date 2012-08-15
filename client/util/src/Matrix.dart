@@ -171,6 +171,12 @@ class Transformation extends Matrix {
   Transformation(num m00, num m01, num m02, num m10, num m11, num m12) : 
     super(3, 3, [m00, m01, m02, m10, m11, m12, 0, 0, 1]);
   
+  /** Create a transformation by cloning the given [t].
+   */
+  Transformation.clone(Transformation t) :
+    this(t._get(0, 0), t._get(0, 1), t._get(0, 2), 
+         t._get(1, 0), t._get(1, 1), t._get(1, 2));
+  
   /** Create an identity transformation.
    */
   Transformation.identity() : 
@@ -205,14 +211,17 @@ class Transformation extends Matrix {
       _iprod(m, 1, 0, 3), _iprod(m, 1, 1, 3), _iprod(m, 1, 2, 3));
   }
   
-  // TODO: supply its transition component as an Offset?
+  /** Retrieve the transition part of this transformation, as an Offset.
+   */
+  Offset get transition() => new Offset(_get(0, 2), _get(1, 2));
   
   /** Return a new transformation of the same linear map, but with respect to 
    * a different [origin]. This is, effectively, a change of basis on the 
    * transformation.
    */
-  Transformation originAt(Offset origin) => 
-      new Transformation.transit(origin * -1) % 
-      this % new Transformation.transit(origin); // TODO: expand to save CPU
+  Transformation originAt(Offset origin) =>
+      new Transformation.clone(this)
+      .._set(0, 2, (_get(0,0)-1) * origin.x + _get(0,1) * origin.y + _get(0,2))
+      .._set(1, 2, _get(1,0) * origin.x + (_get(1,1)-1) * origin.y + _get(1,2));
   
 }
