@@ -1,7 +1,6 @@
 //Sample Code: Test ZoomGesture
 
 #import('dart:html');
-#import("dart:math");
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
@@ -10,8 +9,6 @@
 #import('../../client/util/util.dart');
 #import('../../client/event/event.dart');
 
-final int statusHeight = 100;
-
 class TestZoom2 extends Activity {
   
   void onCreate_() {
@@ -19,6 +16,7 @@ class TestZoom2 extends Activity {
     final int imgw = 500, imgh = 395;
     
     mainView.style.backgroundColor = "#000000";
+    mainView.style.overflow = "hidden";
     
     View panel = new View();
     panel.profile.text = "location: center center; width: 90%; height: 90%";
@@ -59,6 +57,16 @@ class TestZoom2 extends Activity {
       
     }, end: (ZoomGestureState state) {
       trans = state.transformation.originAt(diff) % trans;
+      
+    });
+    
+    new DragGesture(mainView.node, move: (DragGestureState state) {
+      img.style.transform = CSS.transform(new Transformation.transit(state.delta) % trans);
+      return true;
+      
+    }, end: (DragGestureState state) {
+      trans = new Transformation.transit(state.delta) % trans;
+      return true;
       
     });
     
