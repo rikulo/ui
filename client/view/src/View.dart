@@ -73,6 +73,18 @@ class View implements Hashable {
     _classes = new _ClassSet(this);
     _classes.add("${viewConfig.classPrefix}$className");
   }
+  /** Instantiates a view by using the given HTML tag.
+   * For example,
+   *
+   *     new View.tag("section");
+   *     new View.tag("table");
+   *
+   * It is useful if you'd like to encapsulate an element made of
+   * [Shadow DOM](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html#shadow-dom-section).
+   */
+  factory View.tag(String tag)
+  => new _TagView(tag);
+
   /** Returns the Dart class name.
    * The subclass shall override it.
    * However, it will be removed if Dart supports reflection.

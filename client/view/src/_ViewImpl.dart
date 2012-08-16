@@ -34,6 +34,15 @@ _VisiCtrl get _visiCtrl() {
 }
 _VisiCtrl _$visiCtrl;
 
+/** Used by View.tag
+ */
+class _TagView extends View {
+  final String _tag;
+  _TagView(String this._tag);
+
+  String get domTag_() => _tag;
+}
+
 /** Collection of utilities for View's implementation
  */
 class _ViewImpl {
