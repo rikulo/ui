@@ -6,6 +6,16 @@
 class TestViewTag extends Activity {
 
   void onCreate_() {
+    /* Notice that this is only for testing purpose. This sample is better to be
+       done by use of the TextView.html constructor as follows (not exactly
+       equalivalent but you got the point).
+
+       new TextView.html('''
+       <dl>
+        <li type="i" value="$index">This is the <b>$index</b> item</li>
+       </dl>
+       ''');
+     */
     View dl = new View.tag("dl");
     for (int i = 0; i < 10; ++i) {
       View li = new View.tag("li", {"type": "i", "value": i*2 + 1},

@@ -55,7 +55,7 @@ else
 fi
 
 #compile less
-bin/lesscss
+bin/l2c
 
 #Clean *dart.js
 find -name '*.dart.js' | xargs rm -f
