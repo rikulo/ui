@@ -77,13 +77,36 @@ class View implements Hashable {
    * For example,
    *
    *     new View.tag("section");
-   *     new View.tag("table");
+   *     new View.tag("header", {"conteneditable": true, "draggable": true});
+   *
+   * Notice that the view is positioned absolutely. It is different from
+   * the default behavior the most HTML elements. If you want to create a HTML fragment,
+   * you shall use [TextView.html] instead.
+   *
+   *     new TextView.html('''
+   *       <table cellapding="10" border="1"><tr><td>Cell 1.1</td></tr></table>
+   *       ''');
    *
    * It is useful if you'd like to encapsulate an element made of
    * [Shadow DOM](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html#shadow-dom-section).
+   *
+   * + [tag] specifies the HTML tag name, such as `section` and `article`.
+   * + [attributes] specifies a map of attributes to be assigned.
+   * The value will be converted to a string. If null, an empty string is assumed.  
+   * Notice that the key can't be `id`, `style` and `class`.
+   * Also notice that the value won't be encoded, so it is caller's job to avoid
+   * so-called *HTML injection*.
+   * + [innerHTML] specified the inner HTML fragment, such as "Drame come <i>true<i>".
+   * It won't be encoded, so it is caller's job to avoid so-called *HTML injection*.
+   * It will be generated before any child view's content.
+   * + [isViewGroup] specifies whether it is a view group ([isViewGroup]).
+   * Default: true. Notice that it affects how the width and height are measured.
+   * Basically if it doesn't allow any child view, it is better to specify false here.
+   * Please refer to [isViewGroup] for more information.
    */
-  factory View.tag(String tag)
-  => new _TagView(tag);
+  factory View.tag(String tag, [Map<String,Dynamic> attributes,
+    String innerHTML, bool isViewGroup=true])
+  => new _TagView(tag, attributes, innerHTML, isViewGroup);
 
   /** Returns the Dart class name.
    * The subclass shall override it.
@@ -282,6 +305,11 @@ class View implements Hashable {
    *
    * The deriving class shall override this method
    * to return false if it doesn't allow any child views.
+   *
+   * Notice if it also affects how [measureWidth_] and [measureHeight_] measures.
+   * If it returns false, the width and height are measured by on its content
+   * (i.e., it is decided by the browser). If it returns true, they are measured
+   * by the child views (i.e., decided by the layout and other factors).
    */
   bool isViewGroup() => true;
 

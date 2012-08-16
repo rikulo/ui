@@ -34,13 +34,40 @@ _VisiCtrl get _visiCtrl() {
 }
 _VisiCtrl _$visiCtrl;
 
-/** Used by View.tag
+/** Used by View.tag()
  */
 class _TagView extends View {
-  final String _tag;
-  _TagView(String this._tag);
+  final String _tag, _inner;
+  final Map<String, Dynamic> _attrs;
+  final bool _vgroup;
 
+  _TagView(this._tag, this._attrs, this._inner, this._vgroup);
+
+  bool isViewGroup() => _vgroup;
   String get domTag_() => _tag;
+  void domAttrs_(StringBuffer out,
+  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
+    super.domAttrs_(out, noId, noStyle, noClass, noVisible);
+
+    if (_attrs != null)
+      _attrs.forEach((key, value) {
+          switch (key) {
+            case "id":
+            case "style":
+            case "class":
+              throw new UIException("$key not allowed");
+          }
+          out.add(' ').add(key).add('="');
+          if (value != null)
+            out.add(value);
+          out.add('"');
+        });
+  }
+  void domInner_(StringBuffer out) {
+    if (_inner != null)
+      out.add(_inner); //no encoding (since it is HTML fragment)
+    super.domInner_(out);
+  }
 }
 
 /** Collection of utilities for View's implementation
