@@ -79,16 +79,16 @@ class View implements Hashable {
    *     new View.tag("section");
    *     new View.tag("header", {"conteneditable": true, "draggable": true});
    *
+   * It is useful if you'd like to encapsulate an element that is made of
+   * [Shadow DOM](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html#shadow-dom-section).
+   *
    * Notice that the view is positioned absolutely. It is different from
    * the default behavior the most HTML elements. If you want to create a HTML fragment,
-   * you shall use [TextView.html] instead.
+   * you can use [TextView.html] instead, since it is much simpler.
    *
    *     new TextView.html('''
    *       <table cellapding="10" border="1"><tr><td>Cell 1.1</td></tr></table>
    *       ''');
-   *
-   * It is useful if you'd like to encapsulate an element made of
-   * [Shadow DOM](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html#shadow-dom-section).
    *
    * + [tag] specifies the HTML tag name, such as `section` and `article`.
    * + [attributes] specifies a map of attributes to be assigned.
