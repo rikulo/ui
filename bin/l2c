@@ -1,5 +1,5 @@
 #!/bin/bash
-# lesscss
+# l2c
 #
 #	Purpose:
 #		Compile *.less to *.css
