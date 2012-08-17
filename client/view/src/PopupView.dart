@@ -9,8 +9,9 @@
  *
  * + A popup view won't be arranged by a layout, such as [LinearLayout].
  * + The z order among popup views all depends on the z-index of the CSS style.
- * In other words, a child popup view might appear under its parent popup if z-index
- * is not set correctly.
+ * In other words, a child popup view might appear under its parent popup or
+ * other sibling views if z-index is not set correctly.
+ * The default z-index for popup views is 1000.
  * + A popup view will be closed automatically when the user clicks an UI element
  * that is not a descendant view of the popup view if [dismissOnClickOutside]
  * is true).
@@ -25,14 +26,25 @@
  *       popup.removeFromParent();
  *     });
  *
- * ##Implementation Notes
+ * ##The associated DOM Element ([node])
  *
- * To make the DOM element appears on the top of all other views, two DOM elements
- * are actually created. One ([refNode]) is created as a child element like any other view
- * does. The other ([node]) is created as a direct element of [document.body].
+ * To make the DOM element appears on the top of all other views, [PopupView] creates
+ * two DOM elements. One (called [refNode]) is created as a child element of
+ * the parent view's DOM element, like any other view does. However, it is invisible
+ * and used only as a *reference* for inserting sibling views.
  *
- * [refNode] is always invisible and used only to work compatibly with other views.
- * On the other hand, [node] is the real visual representation of this popup view.
+ * The other element (called [node]) is created as a direct element of [document.body]
+ * (or [Activity.container] if not null).
+ * It is the real visual representation of this popup view.
+ *
+ * Notice that [node]'s `parent` is not the same as [parent]'s node.
+ * Use it only if the first approach doesn't work well under your environment.
+ *
+ * ###Why not using `position:fixed`
+ *
+ * It is too buggy. Different browsers have different problems, such as
+ * failed-to-be-used with transform:translate3d (cropping and position incorrectly),
+ * not support in iOS 4 (and ealier), etc.
  */
 class PopupView extends View {
   /** Whether to dismiss this popup view when the user clicks outside
@@ -41,7 +53,7 @@ class PopupView extends View {
    * Default: true
    */
   final bool dismissOnClickOutside;
-  /** When to dismiss automatically when the given time elapsed.
+  /** The number of milliseconds to wait before dismissing it automatically.
    *
    * Default: 0 (means ignored; i.e., not to dismiss because of timeout)  
    * Unit: milliseconds
@@ -52,6 +64,11 @@ class PopupView extends View {
   int _idDismissTimeout;
 
   /** Constructor.
+   *
+   * + [dismissTimeout] specifies whether to dismiss this popup view when
+   * the user clicks outside of it
+   * + [dismissOnClickOutside] specifies the number of milliseconds to wait
+   * before dismissing it automatically.
    */
   PopupView([int this.dismissTimeout=0, bool this.dismissOnClickOutside=true]);
 
@@ -137,6 +154,7 @@ class PopupView extends View {
   //@Override
   void unmount_() {
     refNode.remove();
+
     if (_fnClickOutside != null) {
       broadcaster.on.popup.remove(_fnClickOutside);
       _fnClickOutside = null;
