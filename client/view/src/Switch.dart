@@ -99,19 +99,20 @@ class Switch extends View implements Input<bool> {
     super.mount_();
 
     _setValue(_value);
+    int mgoff;
     _dg = new DragGesture(_sdNode, transform: true,
       range: () => new Rectangle(-_x_off, 0, 0, 0),
       start: (state) {
-        state.data = CSS.intOf(_bgNode.style.marginLeft) - _marginDiff;
+        mgoff = CSS.intOf(_bgNode.style.marginLeft) - _marginDiff;
         return state.gesture.owner;
       },
       move: (state) {
-        _updateBg(state.transition.x + state.data);
+        _updateBg(state.transition.x + mgoff);
         return false;
       },
       end: (state) {
         _setValue(state.moved ?
-					(state.transition.x + state.data) > (-(_x_off>>1)): !_value,
+					(state.transition.x + mgoff) > (-(_x_off>>1)): !_value,
 					true, true);
       });
   }

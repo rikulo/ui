@@ -73,8 +73,6 @@ interface DragGestureState {
    */
   bool get moved();
   
-  var data;
-  
 }
 
 /**
@@ -307,10 +305,10 @@ class _TouchDragGesture extends _DragGesture {
   void _listen() {
     final ElementEvents on = handle.on;
     on.touchStart.add(_elStart = (TouchEvent event) {
-      Touch t = event.touches[0];
       if (event.touches.length > 1)
         _touchEnd(); //ignore multiple fingers
       else {
+        Touch t = event.touches[0];
         _touchStart(event.target, new Offset(t.pageX, t.pageY), event.timeStamp);
         event.preventDefault();
       }
@@ -320,7 +318,6 @@ class _TouchDragGesture extends _DragGesture {
       _touchMove(new Offset(t.pageX, t.pageY), event.timeStamp);
     });
     on.touchEnd.add(_elEnd = (TouchEvent event) {
-      Touch t = event.touches[0];
       _touchEnd();
     });
   }
