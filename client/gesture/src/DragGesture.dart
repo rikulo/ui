@@ -32,7 +32,7 @@ interface MovementState {
   /** The number of pixels that a user has moved his finger
    * (since `start` was called).
    */
-  Offset get delta();
+  Offset get delta(); // TODO -> transition
   
   /** The current estimated velocity of movement.
    */
@@ -182,7 +182,7 @@ class _DragGesture implements DragGesture {
   int _snapX, _snapY, _snapTime;
   bool _disabled = false;
   
-  factory _DragGesture(Element owner, [Element handle,
+  factory _DragGesture(Element owner, [Element handle, // TODO: handle, transform, range to remove
     bool transform=false, AsRectangle range, int movement=-1,
     DragGestureStart start, DragGestureMove end,
     DragGestureMove move]) {
@@ -257,7 +257,7 @@ class _DragGesture implements DragGesture {
       }
       if (_state != null && time != null) {
         int diffTime;
-        if (_snapTime != null) {
+        if (_snapTime != null) { // TODO: move into state
           diffTime = time - _snapTime;
           _state._velocity.x = diffTime > 250 ? 0 : (pageX - _snapX) / diffTime;
           _state._velocity.y = diffTime > 250 ? 0 : (pageY - _snapY) / diffTime;
@@ -281,10 +281,8 @@ class _DragGesture implements DragGesture {
       _state._velocity.y = diffTime > 250 ? 0 : (pageY - _snapY) / diffTime;
       _snapTime = _snapX = _snapY = null;
     }
-    if (_state != null && _state._touched != null) {
-      _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
-        pageX - _state._initPgOfs.x, pageY - _state._initPgOfs.y, time, _end); 
-    }
+    if (_end != null)
+      _end(_state);
     _stop();
   }
   void _moveBy(int ofsX, int ofsY, int deltaX, int deltaY, int time,
