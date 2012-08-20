@@ -109,7 +109,7 @@ interface DragGesture default _DragGesture {
    * Default: -1 (unit: pixels)
    */
   DragGesture(Element owner, [Element handle, bool transform,
-    AsRectangle range, int movement,
+    AsRectangle range,
     DragGestureStart start, DragGestureMove move, DragGestureEnd end]);
 
   /** Destroys this [DragGesture].
@@ -141,14 +141,14 @@ class _DragGestureState implements DragGestureState {
   final int startTime;
   Offset _position, _initTxOfs;
   Rectangle _range;
-  Element _dragged, _touched, _pending;
+  Element _dragged, _touched;
   var data;
   bool _moved = false;
   int _time;
   
   _DragGestureState(DragGesture gesture, Offset position, int time):
-  _gesture = gesture, startPosition = position, startTime = time,
-  _vp = new VelocityProvider(position, time),
+  _gesture = gesture, startPosition = position, _position = position, 
+  startTime = time, _time = time, _vp = new VelocityProvider(position, time),
   _ownerOfs = new DOMQuery(gesture.owner).pageOffset;
 
   DragGesture get gesture() => _gesture;
@@ -180,23 +180,20 @@ class _DragGesture implements DragGesture {
   final DragGestureMove _move;
   final DragGestureEnd _end;
   final AsRectangle _fnRange;
-  final int _movement;
   _DragGestureState _state;
   final bool _transform;
   bool _disabled = false;
   
   factory _DragGesture(Element owner, [Element handle, // TODO: handle, transform, range to remove
-    bool transform=false, AsRectangle range, int movement=-1,
+    bool transform=false, AsRectangle range,
     DragGestureStart start, DragGestureMove move, DragGestureEnd end]) {
     if (handle == null) handle = owner;
     return browser.touch ?
-      new _TouchDragGesture(owner, handle, transform, range, movement,
-        start, move, end):
-      new _MouseDragGesture(owner, handle, transform, range, movement,
-        start, move, end);
+      new _TouchDragGesture(owner, handle, transform, range, start, move, end) :
+      new _MouseDragGesture(owner, handle, transform, range, start, move, end);
   }
   _DragGesture._init(Element this._owner, Element this._handle,
-    bool this._transform, AsRectangle this._fnRange, int this._movement,
+    bool this._transform, AsRectangle this._fnRange,
     DragGestureStart this._start, DragGestureMove this._move, 
     DragGestureEnd this._end) {
     _listen();
@@ -231,32 +228,19 @@ class _DragGesture implements DragGesture {
     _stop();
 
     _state = new _DragGestureState(this, position, time);
-    _state._pending = touched;
-    if (_movement < 0)
-      _activate();
-  }
-  void _activate() {
-    _state._touched = _state._pending;
-    _state._pending = null;
+    _state._touched = touched;
     final Element dragged =
       _state._dragged = _start != null ? _start(_state): owner;
     if (dragged == null) { //not allowed
       _stop();
-      return;
+    } else {
+      _state._initTxOfs = _transform ? 
+          CSS.offset3dOf(dragged.style.transform): new DOMQuery(dragged).offset;
     }
-
-    _state._initTxOfs = _transform ? 
-      CSS.offset3dOf(dragged.style.transform): new DOMQuery(dragged).offset;
   }
   void _touchMove(Offset position, int time) {
     if (_state != null) {
       final Offset initPgOfs = _state.startPosition;
-      if (_state._pending != null) {
-        int v;
-        if ((v = position.x - initPgOfs.x) > _movement || v < -_movement
-        || (v = position.y - initPgOfs.y) > _movement || v < -_movement)
-          _activate();
-      }
       _state.snapshot(position, time);
       
       if (_state._touched != null) {
@@ -298,9 +282,9 @@ class _TouchDragGesture extends _DragGesture {
   EventListener _elStart, _elMove, _elEnd;
   
   _TouchDragGesture(Element owner, [Element handle,
-    bool transform, AsRectangle range, int movement,
+    bool transform, AsRectangle range,
     DragGestureStart start, DragGestureMove move, DragGestureEnd end]):
-    super._init(owner, handle, transform, range, movement, start, move, end);
+    super._init(owner, handle, transform, range, start, move, end);
 
   void _listen() {
     final ElementEvents on = handle.on;
@@ -334,9 +318,9 @@ class _MouseDragGesture extends _DragGesture {
   bool _captured = false;
 
   _MouseDragGesture(Element owner, [Element handle,
-    bool transform, AsRectangle range, int movement,
+    bool transform, AsRectangle range,
     DragGestureStart start, DragGestureMove move, DragGestureEnd end]):
-    super._init(owner, handle, transform, range, movement, start, move, end);
+    super._init(owner, handle, transform, range, start, move, end);
 
   void _stop() {
     if (_captured) {
