@@ -277,14 +277,8 @@ class _DragGesture implements DragGesture {
       }
     }
   }
-  void _touchEnd(int pageX, int pageY, int time) {
-    if (_state != null && _snapTime != null && time != null) {
-      int diffTime = time - _snapTime;
-      _state._velocity.x = diffTime > 250 ? 0 : (pageX - _snapX) / diffTime;
-      _state._velocity.y = diffTime > 250 ? 0 : (pageY - _snapY) / diffTime;
-      _snapTime = _snapX = _snapY = null;
-    }
-    if (_end != null)
+  void _touchEnd() {
+    if (_state != null && _end != null)
       _end(_state);
     _stop();
   }
@@ -332,7 +326,7 @@ class _TouchDragGesture extends _DragGesture {
     on.touchStart.add(_elStart = (TouchEvent event) {
       Touch t = event.touches[0];
       if (event.touches.length > 1)
-        _touchEnd(t.pageX, t.pageY, event.timeStamp); //ignore multiple fingers
+        _touchEnd(); //ignore multiple fingers
       else {
         _touchStart(event.target, t.pageX, t.pageY, event.timeStamp);
         _pgx = t.pageX;
@@ -348,7 +342,7 @@ class _TouchDragGesture extends _DragGesture {
     });
     on.touchEnd.add(_elEnd = (TouchEvent event) {
       Touch t = event.touches[0];
-      _touchEnd(t == null ? _pgx : t.pageX, t == null ? _pgy : t.pageY, event.timeStamp);
+      _touchEnd();
       _pgx = _pgy = null;
     });
   }
@@ -387,7 +381,7 @@ class _MouseDragGesture extends _DragGesture {
       _touchMove(event.pageX, event.pageY, event.timeStamp);
     });
     on.mouseUp.add(_elEnd = (MouseEvent event) {
-      _touchEnd(event.pageX, event.pageY, event.timeStamp);
+      _touchEnd();
     });
   }
   void _listen() {
