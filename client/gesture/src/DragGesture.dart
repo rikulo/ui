@@ -272,8 +272,28 @@ class _DragGesture implements DragGesture {
         }
       }
       if (_state._touched != null) {
-        _moveBy(pageX - _state._ownerOfs.x, pageY - _state._ownerOfs.y,
-          pageX - initPgOfs.x, pageY - initPgOfs.y, time, _move); 
+        final int ofsX = pageX - _state._ownerOfs.x;
+        final int ofsY = pageY - _state._ownerOfs.y;
+        final int deltaX = pageX - initPgOfs.x;
+        final int deltaY = pageY - initPgOfs.y;
+        final Offset initofs = _state._initTxOfs,
+            move = _constraint(deltaX + initofs.x, deltaY + initofs.y);
+        
+        if (_move != null) {
+          _state._setOfs(ofsX, ofsY);
+          _state._setDelta(move.x - initofs.x, move.y - initofs.y);
+          _state._time = time;
+          _state._moved = _state._moved || deltaX != 0 || deltaY != 0;
+          bool done = _move(_state);
+          if (done != null && done)
+            return; //no need to move
+        }
+        if (_transform) {
+          _state._dragged.style.transform = CSS.translate3d(move.x, move.y);
+        } else {
+          _state._dragged.style.left = CSS.px(move.x);
+          _state._dragged.style.top = CSS.px(move.y);
+        }
       }
     }
   }
@@ -281,27 +301,6 @@ class _DragGesture implements DragGesture {
     if (_state != null && _end != null)
       _end(_state);
     _stop();
-  }
-  void _moveBy(int ofsX, int ofsY, int deltaX, int deltaY, int time,
-    DragGestureMove callback) {
-    final Offset initofs = _state._initTxOfs,
-      move = _constraint(deltaX + initofs.x, deltaY + initofs.y);
-    
-    if (callback != null) {
-      _state._setOfs(ofsX, ofsY);
-      _state._setDelta(move.x - initofs.x, move.y - initofs.y);
-      _state._time = time;
-      _state._moved = _state._moved || deltaX != 0 || deltaY != 0;
-      bool done = callback(_state);
-      if (done != null && done)
-        return; //no need to move
-    }
-    if (_transform) {
-      _state._dragged.style.transform = CSS.translate3d(move.x, move.y);
-    } else {
-      _state._dragged.style.left = CSS.px(move.x);
-      _state._dragged.style.top = CSS.px(move.y);
-    }
   }
   Offset _constraint(int x, y) {
     final Rectangle range = _state.range;
