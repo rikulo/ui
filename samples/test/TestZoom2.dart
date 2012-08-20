@@ -61,11 +61,11 @@ class TestZoom2 extends Activity {
     });
     
     new DragGesture(mainView.node, move: (DragGestureState state) {
-      img.style.transform = CSS.transform(new Transformation.transit(state.delta) % trans);
+      img.style.transform = CSS.transform(new Transformation.transit(state.transition) % trans);
       return true;
       
     }, end: (DragGestureState state) {
-      trans = new Transformation.transit(state.delta) % trans;
+      trans = new Transformation.transit(state.transition) % trans;
       
     });
     

@@ -96,7 +96,7 @@ class AlbumDemo extends Activity {
     // hook gesture //
     gesture = new SwipeGesture(mainView.node, (SwipeGestureState state) {
       gesture.disable();
-      final int diff = state.delta.x;
+      final int diff = state.transition.x;
       if (diff < -50) // swipe left
         next();
       else if (diff > 50) // swipe right

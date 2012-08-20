@@ -4,28 +4,48 @@
 
 /** The state of a [SwipeGesture].
  */
-interface SwipeGestureState extends MovementState {
+interface SwipeGestureState {
   
   /** Retrieve the associated [SwipeGesture].
    */
   SwipeGesture get gesture();
+  
+  /** The timestamp when the swipe starts.
+   */
+  int get startTime();
+  
+  /** The touched/cursor position at the start of swipe.
+   */
+  Offset get startPosition();
+  
+  /** The timestamp when the swipe ends.
+   */
+  int get time();
+  
+  /** The touched/cursor position at the end of swipe.
+   */
+  Offset get position();
+  
+  /** The displacement of the touched/cursor position of the swipe.
+   */
+  Offset get transition();
+  
+  /** The current estimated velocity of movement.
+   */
+  Offset get velocity();
   
 }
 
 class _SwipeGestureState implements SwipeGestureState {
   
   final SwipeGesture gesture;
-  final Offset offset, delta, velocity;
-  final Element touched;
-  final bool moved;
-  final int time;
+  final Offset startPosition, position, transition, velocity;
+  final int startTime, time;
   
-  var data;
-  
-  _SwipeGestureState.fromDrag(this.gesture, DragGestureState dragState) :
-  offset = dragState.offset, delta = dragState.delta, 
-  velocity = dragState.velocity, touched = dragState.touched,
-  moved = dragState.moved, time = dragState.time;
+  _SwipeGestureState.fromDrag(this.gesture, DragGestureState ds) :
+  startTime = ds.startTime, time = ds.time,
+  startPosition = ds.startPosition, position = ds.position,
+  transition = ds.transition, velocity = ds.velocity;
   
 }
 

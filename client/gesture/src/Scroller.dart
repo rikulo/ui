@@ -319,7 +319,7 @@ class _Scroller implements Scroller {
     _dg = new DragGesture(this.owner, handle: handle,
     start: (DragGestureState state) => onStart(state.time) ? owner : null, // TODO: stop _stm
     move: (DragGestureState state) { 
-      onMove(state.delta - _state.startPosition, state.time);
+      onMove(state.transition - _state.startPosition, state.time);
       return true; // custom moving handling
     }, end: (DragGestureState state) {
       final Offset pos = new DOMQuery(owner).offset;

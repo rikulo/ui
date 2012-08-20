@@ -106,12 +106,12 @@ class Switch extends View implements Input<bool> {
         return state.gesture.owner;
       },
       move: (state) {
-        _updateBg(state.delta.x + state.data);
+        _updateBg(state.transition.x + state.data);
         return false;
       },
       end: (state) {
         _setValue(state.moved ?
-					(state.delta.x + state.data) > (-(_x_off>>1)): !_value,
+					(state.transition.x + state.data) > (-(_x_off>>1)): !_value,
 					true, true);
       });
   }
