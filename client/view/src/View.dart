@@ -243,7 +243,7 @@ class View implements Hashable {
   /** Returns the next sibling, or null if this view is the last sibling.
    */
   View get nextSibling() => _nextSibling;
-  /** Returns the previous sibling, or null if this view is the previous sibling.
+  /** Returns the previous sibling, or null if this view is the first sibling.
    */
   View get previousSibling() => _prevSibling;
   /** Returns a list of child views.

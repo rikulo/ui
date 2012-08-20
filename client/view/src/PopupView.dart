@@ -42,9 +42,10 @@
  *
  * ###Why not using `position:fixed`
  *
- * It is too buggy. Different browsers have different problems, such as
- * failed-to-be-used with transform:translate3d (cropping and position incorrectly),
- * not support in iOS 4 (and ealier), etc.
+ * The browser's support of `position:fixed` is too buggy.
+ * Different browsers have different problems, such as
+ * not supporting `transform:translate3d` (cropping and position incorrectly),
+ * not supported in iOS 4 (and ealier), etc.
  */
 class PopupView extends View {
   /** Whether to dismiss this popup view when the user clicks outside
