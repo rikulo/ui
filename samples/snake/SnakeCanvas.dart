@@ -93,11 +93,7 @@ class SnakeCanvas extends Activity {
     };
   }
 
-  DragGestureMove _gestureEnd() {
-    return (DragGestureState state) {
-      return true;
-    };
-  }
+  DragGestureMove _gestureEnd() => (DragGestureState state) {};
   
   void startGame() {
 

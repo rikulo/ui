@@ -114,7 +114,7 @@ class TestAnimation3 extends Activity {
         recoveryMotion = new EasingMotion((num x) {
           setSanity(diffSanity * x + initSanity);
         }, easing: (num x) => x * x);
-        return true;
+        return;
       }
       Offset unitv = vel / speed;
       Offset pos = new DOMQuery(element).offset;
@@ -142,7 +142,6 @@ class TestAnimation3 extends Activity {
           setSanity(diffSanity * x + initSanity);
         }, easing: (num x) => x * x);
       });
-      return true;
     });
   }
 }

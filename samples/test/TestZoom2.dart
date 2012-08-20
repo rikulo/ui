@@ -66,7 +66,6 @@ class TestZoom2 extends Activity {
       
     }, end: (DragGestureState state) {
       trans = new Transformation.transit(state.delta) % trans;
-      return true;
       
     });
     

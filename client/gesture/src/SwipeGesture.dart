@@ -2,6 +2,8 @@
 //History: Fri, Aug 3, 2012 12:56:15 AM
 //Author: simonpai
 
+/** 
+ */
 interface SwipeGestureState extends MovementState {
   
   /** Retrieve the associated [SwipeGesture].
@@ -27,8 +29,7 @@ class _SwipeGestureState implements SwipeGestureState {
   
 }
 
-/**
- * 
+/** 
  */
 interface SwipeGesture default _SwipeGesture {
   
@@ -67,7 +68,6 @@ class _SwipeGesture implements SwipeGesture {
     end: (DragGestureState state) {
       if (swipe != null)
         swipe(new _SwipeGestureState.fromDrag(this, state));
-      return true;
     });
   }
   

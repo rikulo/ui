@@ -113,7 +113,6 @@ class Switch extends View implements Input<bool> {
         _setValue(state.moved ?
 					(state.delta.x + state.data) > (-(_x_off>>1)): !_value,
 					true, true);
-        return true; //no more move
       });
   }
   void unmount_() {

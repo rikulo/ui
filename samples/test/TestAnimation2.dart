@@ -66,7 +66,7 @@ class TestAnimation2 extends Activity {
       final Offset vel = dstate.velocity;
       num speed = vel.norm();
       if (speed == 0)
-        return true;
+        return;
       Offset unitv = vel / speed;
       Offset pos = new DOMQuery(element).offset;
       motion = new Motion(move: (MotionState mstate) {
@@ -77,7 +77,6 @@ class TestAnimation2 extends Activity {
         speed = max(0, speed - deceleration * elapsed);
         return speed > 0;
       });
-      return true;
     });
     
   }

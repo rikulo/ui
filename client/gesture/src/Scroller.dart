@@ -327,7 +327,6 @@ class _Scroller implements Scroller {
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
         _hor, _ver, onMove, onEnd, snap: snap);
-      return true; // custom moving handling
     });
     
     // init scroll bar
