@@ -2,7 +2,7 @@
 //History: Fri, Aug 3, 2012 12:56:15 AM
 //Author: simonpai
 
-/** 
+/** The state of a [SwipeGesture].
  */
 interface SwipeGestureState extends MovementState {
   
@@ -29,7 +29,7 @@ class _SwipeGestureState implements SwipeGestureState {
   
 }
 
-/** 
+/** The gesture of a swipe.
  */
 interface SwipeGesture default _SwipeGesture {
   
