@@ -2,17 +2,26 @@
 //History: Thu, May 03, 2012  1:06:33 PM
 // Author: tomyeh
 
-/**
- * The callback when [Scroller] tries to start the scrolling.
- * If it returns false, the scroller won't be activated (i.e., ignored).
+/** The callback invoked by [Scroller] when scrolling starts.
+ * 
+ * + If false is returned, the scrolling will be cancelled. In other cases 
+ * (true or null) the scrolling will continue.
  */
 typedef bool ScrollerStart(ScrollerState state);
-/** The callback that [Scroller] uses to indicate the user is scrolling.
+
+/** The callback invoked continuously by [Scroller] during scrolling.
+ * 
+ * + [updateScrollPosition] applies the new scroll position to the Element. You
+ * shall call it to attain the default behavior of Scroller.
+ * + If false is returned, the scrolling will stop. In other cases (true or null)
+ * the scrolling will continue.
  */
-typedef void ScrollerMove(ScrollerState state); // TODO: shall return bool
-/** The callback when [Scroller] ends the scrolling.
+typedef bool ScrollerMove(ScrollerState state, void updateScrollPosition());
+
+/** The callback invoked by [Scroller] when scrolling ends.
  */
 typedef void ScrollerEnd(ScrollerState state);
+
 /** The callback to snap the given position to, say, a grid line.
  */
 typedef Offset ScrollerSnap(Offset position);
@@ -357,9 +366,12 @@ class _Scroller implements Scroller {
     _state.snapshot(position, time);
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.move, _state);
-    if (!noCallback && _move != null)
-      _move(_state);
-    _applyPosition(position);
+    if (!noCallback && _move != null) {
+      if (_move(_state, () => _applyPosition(position)) === false) {
+        // TODO stop
+      }
+    } else
+      _applyPosition(position);
   }
   
   void onEnd([bool noCallback = false]) {

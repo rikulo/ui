@@ -3,13 +3,16 @@
 //Author: simonpai
 
 /** The callback invoked by [Dragger] when dragging starts.
+ * 
  * + If false is returned, the dragging will be cancelled. In other cases (true
  * or null) the dragging will proceed.
  */
 typedef bool DraggerStart(DraggerState state);
 
 /** The callback invoked continuously by [Dragger] during dragging.
- * + Call [updateElementPosition] to update dragged element position.
+ * 
+ * + [updateElementPosition] applies the position to the dragged Element. You
+ * shall call it to attain the default behavior of Dragger.
  * + If false is returned, the dragging will be stopped. In other cases (true
  * or null) the dragging will continue.
  */
