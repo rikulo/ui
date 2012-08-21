@@ -12,10 +12,11 @@ class TestDrag extends Activity {
   
   void onCreate_() {
     _createBoxedDrag(mainView);
-    _createSimpleDrag(mainView);
+    _createSimpleDrag(mainView, false);
+    _createSimpleDrag(mainView, true);
   }
-  View _createSimpleDrag(View parent) {
-    View view = _createDragView(parent, "Simple Drag");
+  View _createSimpleDrag(View parent, bool transform) {
+    View view = _createDragView(parent, transform ? "Simple Drag (T)" : "Simple Drag");
     new Dragger(view.node);
     return view;
   }

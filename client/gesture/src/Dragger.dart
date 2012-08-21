@@ -129,14 +129,17 @@ class _Dragger implements Dragger {
   final DraggerMove _move;
   final DraggerEnd _end;
   DragGesture _drag;
+  final bool _transform;
+  final num _threshold;
   
   bool _disabled = false;
   _DraggerState _state;
   
   _Dragger(this._owner, [Element dragged(), 
   Offset snap(Offset previousPosition, Offset position), 
-  num threshold = -1, bool transform,
+  num threshold = -1, bool transform = false,
   DraggerStart start, DraggerMove move, DraggerEnd end]) :
+  _threshold = threshold, _transform = transform, 
   _start = start, _move = move, _end = end {
     
     _drag = new DragGesture(owner, start: (DragGestureState state) {
@@ -185,12 +188,18 @@ class _Dragger implements Dragger {
     
   }
   
-  Offset _getElementPosition(Element target) => new DOMQuery(target).offset; // TODO: transform
+  Offset _getElementPosition(Element target) =>
+      _transform ? 
+      CSS.offset3dOf(target.style.transform) : 
+      new DOMQuery(target).offset;
   
   void _setElementPosition(Element target, Offset position) {
-    // TODO: transform
-    target.style.left = CSS.px(position.left);
-    target.style.top = CSS.px(position.top);
+    if (_transform) {
+      target.style.transform = CSS.translate3d(position.left, position.top);
+    } else {
+      target.style.left = CSS.px(position.left);
+      target.style.top = CSS.px(position.top);
+    }
   }
   
   void stop() {
