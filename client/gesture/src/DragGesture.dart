@@ -28,42 +28,38 @@ typedef void DragGestureEnd(DragGestureState state);
 /** The state of dragging.
  */
 interface DragGestureState {
-  /** Returns [DragGesture].
-   */
+  
+  /** The associated [DragGesture]. */
   DragGesture get gesture();
-
+  
+  /** The timestamp when the gesture starts. */
+  int get startTime();
+  
+  /** The latest timestamp of this dragging. */
+  int get time();
+  
+  /** The initial touch/cursor position. */
+  Offset get startPosition();
+  
+  /** The current touch/cursor position. */
+  Offset get position();
+  
+  /** The displacement of the touch/cursor position of this dragging. */
+  Offset get transition();
+  
+  /** The current estimated velocity of touched/cursor position movement. */
+  Offset get velocity();
+  
+  // TODO
   /** The element that was dragged, or null if the dragging is not started.
    * It is the element returned by [start], if specified.
    */
   Element get dragged();
+  
   /** The range that the user is allowed to drag, or null if there
    * is no limitation.
    */
   Rectangle get range();
-  
-  /** The time when the dragging starts.
-   */
-  int get startTime();
-  
-  /** The initial touched/cursor position.
-   */
-  Offset get startPosition();
-  
-  /** The latest updated time of this state.
-   */
-  int get time();
-  
-  /** The current touched/cursor position.
-   */
-  Offset get position();
-  
-  /** The displacement of the touched/cursor position of the swipe.
-   */
-  Offset get transition();
-  
-  /** The current estimated velocity of movement.
-   */
-  Offset get velocity();
   
   /** The element that the users touches at the beginning.
    */
