@@ -67,11 +67,11 @@ class _SwipeGesture implements SwipeGesture {
   final Element owner;
   DragGesture _drag;
   
-  _SwipeGesture(this.owner, void swipe(SwipeGestureState state)) {
+  _SwipeGesture(this.owner, void action(SwipeGestureState state)) {
     _drag = new DragGesture(owner, 
     end: (DragGestureState state) {
-      if (swipe != null)
-        swipe(new _SwipeGestureState(this, state));
+      if (action != null)
+        action(new _SwipeGestureState(this, state));
       
     });
   }
