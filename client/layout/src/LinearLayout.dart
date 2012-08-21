@@ -3,7 +3,9 @@
 // Author: tomyeh
 
 /**
- * The linear layout.
+ * The linear layout. It arranges the children of the associated view in
+ * a single column or a single row. The direction is controlled by
+ * [LayoutDeclaration.orient]. If not specified, it is default to `horizontal`.
  */
 class LinearLayout implements Layout {
   static _RealLinearLayout _getRealLayout(view) //horizontal is default

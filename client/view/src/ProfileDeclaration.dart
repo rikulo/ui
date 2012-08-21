@@ -90,8 +90,11 @@ default ProfileDeclarationImpl {
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
-   * Currently, it is supported only by [TextView], [Image] and their derives,
-   * when the width is being measured (i.e., the width depends on content).
+   * Currently, it is supported in the following cases:
+   *
+   * + Supported when measuring the width of a non-ViewGroup view such as
+   * [TextView] and [Image] (See also [View.isViewGroup]).
+   * + Supported by [TileLayout].
    *
    * Notice that, if, under your layout, the parent's width is decided by
    * the child, don't use flex or percentage at child's profile.
@@ -104,8 +107,11 @@ default ProfileDeclarationImpl {
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
-   * Currently, it is supported only by [TextView], [Image] and their derives,
-   * when the height is being measured (i.e., the height depends on content).
+   * Currently, it is supported in the following cases:
+   *
+   * + Supported when measuring the height of a non-ViewGroup view such as
+   * [TextView] and [Image] (See also [View.isViewGroup]).
+   * + Supported by [TileLayout].
    *
    * Notice that, if, under your layout, the parent's width is decided by
    * the child, don't use flex or percentage at child's profile.
@@ -119,8 +125,11 @@ default ProfileDeclarationImpl {
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
-   * Currently, it is supported only by [TextView], [Image] and their derives,
-   * when the width is being measured (i.e., the width depends on content).
+   * Currently, it is supported in the following cases:
+   *
+   * + Supported when measuring the width of a non-ViewGroup view such as
+   * [TextView] and [Image] (See also [View.isViewGroup]).
+   * + Supported by [TileLayout].
    *
    * Notice that, if, under your layout, the parent's width is decided by
    * the child, don't use flex or percentage at child's profile.
@@ -133,8 +142,11 @@ default ProfileDeclarationImpl {
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
-   * Currently, it is supported only by [TextView], [Image] and their derives,
-   * when the height is being measured (i.e., the height depends on content).
+   * Currently, it is supported in the following cases:
+   *
+   * + Supported when measuring the height of a non-ViewGroup view such as
+   * [TextView] and [Image] (See also [View.isViewGroup]).
+   * + Supported by [TileLayout].
    *
    * Notice that, if, under your layout, the parent's width is decided by
    * the child, don't use flex or percentage at child's profile.

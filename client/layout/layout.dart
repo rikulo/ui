@@ -19,6 +19,7 @@
 #source("src/LinearLayout.dart");
 #source("src/_HLayout.dart");
 #source("src/_VLayout.dart");
+#source("src/TileLayout.dart");
 #source("src/AnchorRelation.dart");
 #source("src/LayoutAmountInfo.dart");
 #source("src/LayoutSideInfo.dart");
