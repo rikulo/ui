@@ -8,6 +8,7 @@
 #import('../../client/gesture/gesture.dart');
 #import('../../client/effect/effect.dart');
 #import('../../client/event/event.dart');
+#import('../../client/util/util.dart');
 
 #source('SnakePoint.dart');
 #source('SnakeEnvironment.dart');
@@ -15,6 +16,7 @@
 #source('Snake.dart');
 
 class SnakeCanvas extends Activity {
+  final int MINIMUM_DRAG_LENGTH = 5;
   final int UPDATE = 100;
   final int height = 250, width = 400;
   
@@ -63,34 +65,20 @@ class SnakeCanvas extends Activity {
 
     ctx2d = canvas.context2D;
 
-    new DragGesture(this.canvas.node, move: _gestureMove());
+    new SwipeGesture(this.canvas.node, (SwipeGestureState state) {
+      final Offset tr = state.transition;
+      if (max(tr.x.abs(), tr.y.abs()) > MINIMUM_DRAG_LENGTH) {
+        environment.snake.direction = 
+            tr.x.abs() > tr.y.abs() ?
+                (tr.x > 0 ? Snake.RIGHT : Snake.LEFT) :
+                (tr.y > 0 ? Snake.DOWN  : Snake.UP);
+      }
+    });
     
     document.on.keyDown.add(onKeyDown);
     startGame();
   }
-
-  DragGestureMove _gestureMove() {
-    return (DragGestureState state) {
-
-      final int MINIMUM_DRAG_LENGTH = 5;
-
-      if (state.transition.x.abs() > state.transition.y.abs() && 
-         state.transition.x.abs() > MINIMUM_DRAG_LENGTH) {
-        //horizontal swipe
-        state.transition.x > 0 ? 
-          environment.snake.direction = Snake.RIGHT :
-          environment.snake.direction = Snake.LEFT;
-
-      } else if(state.transition.y.abs() > MINIMUM_DRAG_LENGTH) {
-        //vertical swipe
-        state.transition.y > 0 ?
-          environment.snake.direction = Snake.DOWN :
-          environment.snake.direction = Snake.UP;
-      }
-      
-    };
-  }
-
+  
   void startGame() {
 
     score = 0;
