@@ -20,16 +20,13 @@ typedef void DragGestureEnd(DragGestureState state);
 
 /** The state of dragging.
  */
-interface DragGestureState {
+interface DragGestureState extends GestureState {
   
   /** The associated [DragGesture]. */
   DragGesture get gesture();
   
   /** The timestamp when the gesture starts. */
   int get startTime();
-  
-  /** The latest timestamp of this dragging. */
-  int get time();
   
   /** The initial touch/cursor position. */
   Offset get startPosition();
@@ -79,6 +76,7 @@ class _DragGestureState implements DragGestureState {
   final int startTime;
   Offset _position;
   int _time;
+  var data;
   
   _DragGestureState(DragGesture gesture, Offset position, int time):
   _gesture = gesture, startPosition = position, _position = position, 

@@ -4,7 +4,7 @@
 
 /** The state of a [ZoomGesture].
  */
-interface ZoomGestureState {
+interface ZoomGestureState extends GestureState {
   
   /** The associated [ZoomGesture].
    */
@@ -29,10 +29,6 @@ interface ZoomGestureState {
   /** The midpoint of the two current touch positions.
    */
   Offset get midpoint();
-  
-  /** The timestamp of the last update of the state.
-   */
-  int get time();
   
   /** The transition component in the gesture, which is defined by the 
    * displacement of the middle point of the two fingers.
@@ -70,6 +66,7 @@ class _ZoomGestureState implements ZoomGestureState {
   Offset _startDir;
   num _scaleBase;
   final int startTime;
+  var data;
   
   Offset _pos0, _pos1;
   int _time;
@@ -126,14 +123,14 @@ class _ZoomGestureState implements ZoomGestureState {
 
 /** Called when the [ZoomGesture] starts.
  * 
- * If [false] is returned, the gesture will cancel; in other cases ([true] or 
+ * + If [false] is returned, the gesture will cancel; in other cases ([true] or 
  * [null]), the gesture will proceed.
  */
 typedef bool ZoomGestureStart(ZoomGestureState state);
 
 /** Called continuously during the [ZoomGesture].
  * 
- * If [false] is returned, the gesture will stop; in other cases ([true] or 
+ * + If [false] is returned, the gesture will stop; in other cases ([true] or 
  * [null]), the gesture will proceed.
  */
 typedef bool ZoomGestureMove(ZoomGestureState state);
@@ -149,7 +146,7 @@ typedef void ZoomGestureEnd(ZoomGestureState state);
  * + Rotation: the angular change of relative direction of the two fingers.
  * + Transition: the displacement of the midpoint of two fingers.
  */
-interface ZoomGesture default _ZoomGesture {
+interface ZoomGesture extends Gesture default _ZoomGesture {
   
   /** Create a zoom gesture.
    * 
@@ -165,19 +162,6 @@ interface ZoomGesture default _ZoomGesture {
   /** The element to which the gesture applies.
    */
   Element get owner();
-  
-  /** Destroy this gesture. It shall be called if the gesture is no longer
-   * in use.
-   */
-  void destroy();
-  
-  /** Disable the gesture.
-   */
-  void disable();
-  
-  /** Enable the gesture.
-   */
-  void enable();
   
 }
 
@@ -227,12 +211,12 @@ class _ZoomGesture implements ZoomGesture {
     on.touchEnd.add(_elEnd = (TouchEvent event) => onEnd(event.timeStamp));
   }
   
-  void _stop() {
+  void stop() {
     _state = null;
   }
   
   void destroy() {
-    _stop();
+    stop();
     
     // unlisten
     final ElementEvents on = owner.on;
@@ -245,7 +229,7 @@ class _ZoomGesture implements ZoomGesture {
   }
   
   void disable() {
-    _stop();
+    stop();
     _disabled = true;
   }
   
@@ -257,25 +241,25 @@ class _ZoomGesture implements ZoomGesture {
     if (_disabled)
       return;
     
-    _stop();
+    stop();
     _state = new _ZoomGestureState(this, pos0, pos1, time);
     
     if (_start != null && _start(_state) === false)
-      _stop();
+      stop();
   }
   
   void onMove(Offset pos0, Offset pos1, int time) {
     if (_state != null) {
       _state.snapshot(pos0, pos1, time);
       if (_move != null && _move(_state) === false)
-        _stop();
+        stop();
     }
   }
   
   void onEnd(int time) {
     if (_state != null && _end != null)
       _end(_state);
-    _stop();
+    stop();
   }
   
 }

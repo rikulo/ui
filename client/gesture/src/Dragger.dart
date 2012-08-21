@@ -24,7 +24,7 @@ typedef void DraggerEnd(DraggerState state);
 
 /** The state of a dragging movement of [Dragger].
  */
-interface DraggerState {
+interface DraggerState extends GestureState {
   
   /** The associated [Dragger]. */
   Dragger get dragger();
@@ -39,9 +39,6 @@ interface DraggerState {
   
   /** The timestamp when this dragging movement starts. */
   int get startTime();
-  
-  /** The latest timestamp of this dragging movement. */
-  int get time();
   
   /** The initial element position (offset with respect to parent). */
   Offset get elementStartPosition();
@@ -69,6 +66,7 @@ class _DraggerState implements DraggerState {
   VelocityProvider _vp;
   Offset _elementPosition;
   int _time;
+  var data;
   
   _DraggerState(this.dragger, Element target, Offset targetPosition, 
   DragGestureState gstate) :

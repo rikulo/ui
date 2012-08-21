@@ -86,7 +86,7 @@ interface Scroller default _Scroller {
  * The state in a scolling process, provided by [Scroller] in [ScrollerStart] and
  * [ScrollerMove] callback.
  */
-interface ScrollerState default _ScrollerState {
+interface ScrollerState extends GestureState default _ScrollerState {
   
   /** Returns the associated [Scroller].
    */
@@ -99,10 +99,6 @@ interface ScrollerState default _ScrollerState {
   /** Returns the current scrolling velocity.
    */
   Offset get velocity();
-  
-  /** Returns the latest timestamp at which the scroll position is updated.
-   */
-  int get time();
   
   /** Returns the size of view port.
    */
@@ -153,6 +149,7 @@ class _ScrollerState implements ScrollerState {
   bool _hor, _ver;
   Offset _pos, _ppos;
   int _time, _ptime;
+  var data;
   
   _ScrollerState(_Scroller scroller, this._fnViewPortSize, this._fnContentSize, this._time) : 
     this.scroller = scroller,

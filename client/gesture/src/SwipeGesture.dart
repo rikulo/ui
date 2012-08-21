@@ -4,7 +4,7 @@
 
 /** The state of a [SwipeGesture].
  */
-interface SwipeGestureState {
+interface SwipeGestureState extends GestureState {
   
   /** Retrieve the associated [SwipeGesture].
    */
@@ -17,10 +17,6 @@ interface SwipeGestureState {
   /** The touched/cursor position at the start of swipe.
    */
   Offset get startPosition();
-  
-  /** The timestamp when the swipe ends.
-   */
-  int get time();
   
   /** The touched/cursor position at the end of swipe.
    */
@@ -41,8 +37,9 @@ class _SwipeGestureState implements SwipeGestureState {
   final SwipeGesture gesture;
   final Offset startPosition, position, transition, velocity;
   final int startTime, time;
+  var data;
   
-  _SwipeGestureState.fromDrag(this.gesture, DragGestureState ds) :
+  _SwipeGestureState(this.gesture, DragGestureState ds) :
   startTime = ds.startTime, time = ds.time,
   startPosition = ds.startPosition, position = ds.position,
   transition = ds.transition, velocity = ds.velocity;
@@ -51,24 +48,11 @@ class _SwipeGestureState implements SwipeGestureState {
 
 /** The gesture of a swipe.
  */
-interface SwipeGesture default _SwipeGesture {
+interface SwipeGesture extends Gesture default _SwipeGesture {
   
   /** Construct a swipe gesture on [owner] with the given callback [swipe].
    */
   SwipeGesture(Element owner, void swipe(SwipeGestureState state));
-  
-  /** Destroys this [SwipeGesture].
-   * It shall be called to clean up the gesture, if it is no longer used.
-   */
-  void destroy();
-  
-  /** Disable the gesture.
-   */
-  void disable();
-  
-  /** Enable the gesture.
-   */
-  void enable();
   
   /** The element associated with this swipe gesture (never null).
    */
@@ -87,9 +71,14 @@ class _SwipeGesture implements SwipeGesture {
     _drag = new DragGesture(owner, 
     end: (DragGestureState state) {
       if (swipe != null)
-        swipe(new _SwipeGestureState.fromDrag(this, state));
+        swipe(new _SwipeGestureState(this, state));
       
     });
+  }
+  
+  void stop() {
+    if (_drag != null)
+      _drag.stop();
   }
   
   void disable() {

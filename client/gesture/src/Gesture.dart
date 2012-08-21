@@ -23,3 +23,15 @@ interface Gesture {
   void stop();
   
 }
+
+/** The common interface of state of [Gesture].
+ */
+interface GestureState {
+  
+  /** The latest timestamp of gesture. */
+  int get time();
+  
+  /** Custom data. */
+  var data;
+  
+}
