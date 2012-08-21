@@ -152,7 +152,7 @@ class _Dragger implements Dragger {
         return false;
       
       // TODO: threshold
-      _state = new _DraggerState(this, tar, _getElementPosition(tar), state);
+      _state = new _DraggerState(this, tar, getElementPosition_(tar), state);
       if (_start != null && _start(_state) === false) {
         _stop();
         return false;
@@ -171,12 +171,12 @@ class _Dragger implements Dragger {
         
         // callback, update element position
         if (_move != null) {
-          if (_move(_state, () => _setElementPosition(_state.target, elemPos)) === false) {
+          if (_move(_state, () => setElementPosition_(_state.target, elemPos)) === false) {
             _stop();
             return false; // stop gesture
           }
         } else
-          _setElementPosition(_state.target, elemPos);
+          setElementPosition_(_state.target, elemPos);
         
       }
       
@@ -188,12 +188,12 @@ class _Dragger implements Dragger {
     
   }
   
-  Offset _getElementPosition(Element target) =>
+  Offset getElementPosition_(Element target) =>
       _transform ? 
       CSS.offset3dOf(target.style.transform) : 
       new DOMQuery(target).offset;
   
-  void _setElementPosition(Element target, Offset position) {
+  void setElementPosition_(Element target, Offset position) {
     if (_transform) {
       target.style.transform = CSS.translate3d(position.left, position.top);
     } else {
