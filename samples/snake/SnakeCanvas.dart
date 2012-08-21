@@ -74,7 +74,7 @@ class SnakeCanvas extends Activity {
 
       final int MINIMUM_DRAG_LENGTH = 5;
 
-      if(state.transition.x.abs() > state.transition.y.abs() && 
+      if (state.transition.x.abs() > state.transition.y.abs() && 
          state.transition.x.abs() > MINIMUM_DRAG_LENGTH) {
         //horizontal swipe
         state.transition.x > 0 ? 
@@ -86,10 +86,8 @@ class SnakeCanvas extends Activity {
         state.transition.y > 0 ?
           environment.snake.direction = Snake.DOWN :
           environment.snake.direction = Snake.UP;
-
       }
-
-      return true;
+      
     };
   }
 

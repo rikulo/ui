@@ -114,12 +114,16 @@ interface Dragger extends Gesture default _Dragger {
   num threshold, bool transform, 
   DraggerStart start, DraggerMove move, DraggerEnd end]);
   
+  /** The owner of this Dragger. */
+  Element get owner();
+  
 }
 
 /** Default implementation of [Dragger].
  */
 class _Dragger implements Dragger {
   
+  final Element _owner;
   final DraggerStart _start;
   final DraggerMove _move;
   final DraggerEnd _end;
@@ -128,7 +132,7 @@ class _Dragger implements Dragger {
   bool _disabled = false;
   _DraggerState _state;
   
-  _Dragger(Element owner, [Element dragged(), 
+  _Dragger(this._owner, [Element dragged(), 
   Offset snap(Offset previousPosition, Offset position), 
   num threshold = -1, bool transform,
   DraggerStart start, DraggerMove move, DraggerEnd end]) :
@@ -136,20 +140,19 @@ class _Dragger implements Dragger {
     
     _drag = new DragGesture(owner, start: (DragGestureState state) {
       if (_disabled)
-        return; // TODO: return false 
-      stop();
+        return false; 
+      _stop();
       
       Element tar = dragged != null ? dragged() : owner;
       if (tar == null)
-        return; // TODO: return false
+        return false;
       
-      // TODO
+      // TODO: threshold
       _state = new _DraggerState(this, tar, _getElementPosition(tar), state);
       if (_start != null && _start(_state) === false) {
-        stop();
-        return; // TODO: return false
+        _stop();
+        return false;
       }
-      return tar; // TODO: remove when DragGesture spec fixed
       
     }, move: (DragGestureState state) {
       if (_state != null) {
@@ -164,12 +167,13 @@ class _Dragger implements Dragger {
         
         // callback, update element position
         if (_move != null) {
-          if (_move(_state, () => _setElementPosition(_state.target, elemPos)) === false)
+          if (_move(_state, () => _setElementPosition(_state.target, elemPos)) === false) {
+            _stop();
             return false; // stop gesture
+          }
         } else
           _setElementPosition(_state.target, elemPos);
         
-        return true; // TODO: remove when DragGesture spec fixed
       }
       
     }, end: (DragGestureState state) {
@@ -189,11 +193,13 @@ class _Dragger implements Dragger {
   }
   
   void stop() {
-    /*
     if (_drag != null)
-      _drag._stop();
-    */
-    _state == null;
+      _drag.stop();
+    _stop();
+  }
+  
+  void _stop() { // stop locally
+    _state = null;
   }
   
   void destroy() {
@@ -203,6 +209,7 @@ class _Dragger implements Dragger {
   }
   
   void disable() {
+    _stop();
     if (_drag != null)
       _drag.disable();
   }
@@ -212,6 +219,6 @@ class _Dragger implements Dragger {
       _drag.enable();
   }
   
-  Element get owner() => _drag.owner;
+  Element get owner() => _owner;
   
 }

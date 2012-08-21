@@ -9,7 +9,7 @@
 typedef bool ScrollerStart(ScrollerState state);
 /** The callback that [Scroller] uses to indicate the user is scrolling.
  */
-typedef void ScrollerMove(ScrollerState state);
+typedef void ScrollerMove(ScrollerState state); // TODO: shall return bool
 /** The callback when [Scroller] ends the scrolling.
  */
 typedef void ScrollerEnd(ScrollerState state);
@@ -316,17 +316,18 @@ class _Scroller implements Scroller {
   _hasVer = direction === Dir.VERTICAL || direction === Dir.BOTH,
   _start = start, _move = move, _end = end {
     
-    _dg = new DragGesture(this.owner, handle: handle,
-    start: (DragGestureState state) => onStart(state.time) ? owner : null, // TODO: stop _stm
-    move: (DragGestureState state) { 
+    _dg = new DragGesture(handle != null ? handle : owner,
+    start: (DragGestureState state) => onStart(state.time), // TODO: stop _stm
+    move: (DragGestureState state) {
       onMove(state.transition - _state.startPosition, state.time);
-      return true; // custom moving handling
+      
     }, end: (DragGestureState state) {
       final Offset pos = new DOMQuery(owner).offset;
       final Rectangle range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
         _hor, _ver, onMove, onEnd, snap: snap);
+      
     });
     
     // init scroll bar

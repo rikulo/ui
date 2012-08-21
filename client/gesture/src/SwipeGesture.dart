@@ -84,10 +84,11 @@ class _SwipeGesture implements SwipeGesture {
   DragGesture _drag;
   
   _SwipeGesture(this.owner, void swipe(SwipeGestureState state)) {
-    _drag = new DragGesture(owner, move: (DragGestureState state) => true, 
+    _drag = new DragGesture(owner, 
     end: (DragGestureState state) {
       if (swipe != null)
         swipe(new _SwipeGestureState.fromDrag(this, state));
+      
     });
   }
   

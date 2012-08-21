@@ -79,11 +79,9 @@ class Switch extends View implements Input<bool> {
         final int dofs = nofs - sofs;
         new EasingMotion((num x) {
           int cofs = sofs + (dofs * x).toInt();
-          _sdNode.style.transform = CSS.translate3d(cofs, 0);
           _updateBg(cofs);
         }, duration: 150);
       } else {
-        _sdNode.style.transform = CSS.translate3d(nofs, 0);
         _updateBg(nofs);
       }
     }
@@ -91,29 +89,31 @@ class Switch extends View implements Input<bool> {
       sendEvent(new ChangeEvent(_value));
   }
   void _updateBg(int delta) {
+    _sdNode.style.transform = CSS.translate3d(delta, 0);
     _bgNode.style.marginLeft = CSS.px(delta + _marginDiff);
   }
   int _translate3dXValue(String str) => str == null ? 0 : CSS.intOf(str.substring(12));
+  
+  int _snapDrag(num value) => max(min(value, 0), -_x_off).toInt();
   
   void mount_() {
     super.mount_();
 
     _setValue(_value);
+    bool moved = false;
     int mgoff;
-    _dg = new DragGesture(_sdNode, transform: true,
-      range: () => new Rectangle(-_x_off, 0, 0, 0),
+    _dg = new DragGesture(_sdNode,
       start: (state) {
         mgoff = CSS.intOf(_bgNode.style.marginLeft) - _marginDiff;
-        return state.gesture.owner;
-      },
-      move: (state) {
-        _updateBg(state.transition.x + mgoff);
-        return false;
-      },
-      end: (state) {
-        _setValue(state.moved ?
-					(state.transition.x + mgoff) > (-(_x_off>>1)): !_value,
-					true, true);
+        moved = false;
+        
+      }, move: (state) {
+        _updateBg(_snapDrag(state.transition.x + mgoff));
+        moved = true;
+        
+      }, end: (state) {
+        _setValue(moved ? (state.transition.x + mgoff) > (-(_x_off>>1)) : !_value, true, true);
+        
       });
   }
   void unmount_() {
