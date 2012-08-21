@@ -25,6 +25,7 @@ class MeasureContext {
    */
   final Map<View, int> heights;
   final Map<View, int> _borderWds;
+  Map<String, Dynamic> _dataAttrs;
 
   MeasureContext(): widths = new Map(), heights = new Map(),
   _borderWds = new Map() {
@@ -280,4 +281,14 @@ class MeasureContext {
       --layoutManager._inCallback;
     }
   }
+
+  /**
+   * Returns a map of the application-specific data. It is useful if you'd like to
+   * store something that will be cleaned up automatically when the layout is done.
+   *
+   * Note: the name of the attribute can't start with "rk.", which is reserved
+   * for internal use.
+   */
+  Map<String, Dynamic> get dataAttributes()
+  => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
 }

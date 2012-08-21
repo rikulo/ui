@@ -53,7 +53,7 @@ class View implements Hashable {
 
   _ChildInfo _childInfo;
   _EventListenerInfo _evlInfo;
-  Map<String, Object> _dataAttrs, _mntAttrs;
+  Map<String, Dynamic> _dataAttrs, _mntAttrs;
 
   //the classes; created on demand
   Set<String> _classes;
@@ -1155,7 +1155,7 @@ class View implements Hashable {
    *
    * See also [mountAttributes].
    */
-  Map<String, Object> get dataAttributes()
+  Map<String, Dynamic> get dataAttributes()
   => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
   /**
    * Returns a map of the application-specific data that exist only
@@ -1170,7 +1170,7 @@ class View implements Hashable {
    *
    * See also [dataAttributes].
    */
-  Map<String, Object> get mountAttributes()
+  Map<String, Dynamic> get mountAttributes()
   => _mntAttrs != null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new Map());
 
   int hashCode() => uuid.hashCode(); //uuid is immutable once assigned

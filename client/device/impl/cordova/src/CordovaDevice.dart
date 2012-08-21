@@ -20,7 +20,7 @@ class CordovaDevice implements Device {
   String get version() => JSUtil.jsCall(_VERSION); //operating system version of this device
   String get uuid() => JSUtil.jsCall(_UUID); //uuid of this device
 
-  Map<String, Object> services; //services
+  Map<String, Dynamic> services; //services
   
   Task _readyFunction;
   bool _ready; //indicate whether the device is ready for access
