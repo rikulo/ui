@@ -57,13 +57,13 @@ class TestAnimation2 extends Activity {
     final num deceleration = 0.0005;
     
     Motion motion;
-    DragGesture dg = new DragGesture(element, range: () => range, 
-    start: (DragGestureState dstate) {
+    new Dragger(element, snap: (Offset ppos, Offset pos) => range.snap(pos), 
+    start: (DraggerState dstate) {
       if (motion != null)
         motion.stop();
-      return element;
-    }, end: (DragGestureState dstate) {
-      final Offset vel = dstate.velocity;
+      
+    }, end: (DraggerState dstate) {
+      final Offset vel = dstate.elementVelocity;
       num speed = vel.norm();
       if (speed == 0)
         return;

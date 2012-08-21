@@ -1,5 +1,10 @@
 #Rikulo Changes
 
+**August 21, 2012**
+
+* DragGesture is splitted into DragGesture and Dragger.
+* Gesture models and APIs are organized and unified.
+
 **August 14, 2012**
 
 * View.hidden is renamed to View.visible.

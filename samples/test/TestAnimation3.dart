@@ -99,15 +99,15 @@ class TestAnimation3 extends Activity {
     
     Motion inertialMotion;
     EasingMotion recoveryMotion;
-    DragGesture dg = new DragGesture(element, range: () => range, 
-    start: (DragGestureState dstate) {
+    new Dragger(element, snap: (Offset ppos, Offset pos) => range.snap(pos), 
+    start: (DraggerState dstate) {
       if (inertialMotion != null)
         inertialMotion.stop();
       if (recoveryMotion != null)
         recoveryMotion.stop();
-      return element;
-    }, end: (DragGestureState dstate) {
-      final Offset vel = dstate.velocity;
+      
+    }, end: (DraggerState dstate) {
+      final Offset vel = dstate.elementVelocity;
       num speed = vel.norm();
       if (speed == 0) {
         final num initSanity = sanity, diffSanity = 1 - initSanity;
