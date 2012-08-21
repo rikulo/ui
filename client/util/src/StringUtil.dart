@@ -68,7 +68,7 @@ class StringUtil {
     }
   }
   /** TODO: use intializer below when Dart supports non-constant final
-  final int _CC_0 = '0'.charCodeAt(0), _CC_9 = _CC_0 + 9,
+  static final int _CC_0 = '0'.charCodeAt(0), _CC_9 = _CC_0 + 9,
     _CC_A = 'A'.charCodeAt(0), _CC_Z = _CC_A + 25,
     _CC_a = 'a'.charCodeAt(0), _CC_z = _CC_a + 25;*/
   static int _CC_0, _CC_9, _CC_A, _CC_Z, _CC_a, _CC_z;

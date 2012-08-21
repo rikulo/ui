@@ -8,22 +8,21 @@
 class LayoutAmountType {
   final String _name;
 
-//TODO: Wait until Issue 3342 is resolved (use LayoutAmountType rather than int)
   /** Represents none.
    */
-  static final int NONE = 0; //LayoutAmountType NONE = const LayoutAmountType("none");
+  static final LayoutAmountType NONE = const LayoutAmountType("none");
   /** Represents fixed.
    */
-  static final int FIXED = 1; //LayoutAmountType FIXED = const LayoutAmountType("fixed");
+  static final LayoutAmountType FIXED = const LayoutAmountType("fixed");
   /** Represents flex.
    */
-  static final int FLEX = 2; //LayoutAmountType FLEX = const LayoutAmountType("flex");
+  static final LayoutAmountType FLEX = const LayoutAmountType("flex");
   /** Represents ratio.
    */
-  static final int RATIO = 3; //LayoutAmountType RATIO = const LayoutAmountType("ratio");
+  static final LayoutAmountType RATIO = const LayoutAmountType("ratio");
   /** Represents content.
    */
-  static final int CONTENT = 4; //LayoutAmountType CONTENT = const LayoutAmountType("content");
+  static final LayoutAmountType CONTENT = const LayoutAmountType("content");
 
   const LayoutAmountType(String this._name);
 
@@ -40,7 +39,7 @@ class LayoutAmountType {
  * Format: `#n | content | flex | flex #n | #n %`
  */
 class LayoutAmountInfo {
-  int type; //LayoutAmountType type;
+  LayoutAmountType type;
   num value;
 
   /** Constructor.
