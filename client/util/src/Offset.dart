@@ -120,31 +120,23 @@ class _Offset3d extends _Offset implements Offset3d {
  */
 class VelocityProvider {
   
-  final int _threshold;
   Offset _pos, _vel = new Offset(0, 0);
   int _time;
   
-  /** Initialize the provider with current time and position, which guarantees
-   * to supply velocity value from calculation that uses a denominator greater 
-   * than the [threshold]. As a tradeoff, the velocity will only be updated
-   * roughly in a period of [threshold] milliseconds.
-   */
-  VelocityProvider(Offset position, int time, [int threshold = 0]) : 
-    _pos = position, _time = time, _threshold = max(threshold, 0);
+  /** Initialize the provider with current time and position. */
+  VelocityProvider(Offset position, int time) : _pos = position, _time = time;
   
-  /** Provide latest position and time.
-   */
+  /** Provide latest position and time. */
   void snapshot(Offset position, int time) {
     final int diffTime = time - _time;
-    if (diffTime > _threshold) {
+    if (diffTime > 0) {
       _vel = (position - _pos) / diffTime;
       _time = time;
       _pos = position;
     }
   }
   
-  /** Retrieve velocity.
-   */
+  /** Retrieve velocity. */
   Offset get velocity() => _vel;
   
 }
