@@ -60,7 +60,7 @@ class _DraggerState implements DraggerState {
   
   final Dragger dragger;
   final DragGestureState gestureState;
-  final Offset elementStartPosition;
+  final Offset elementStartPosition, _gestureStartPosition;
   final int startTime;
   final Element target;
   VelocityProvider _vp;
@@ -70,8 +70,9 @@ class _DraggerState implements DraggerState {
   
   _DraggerState(this.dragger, Element target, Offset targetPosition, 
   DragGestureState gstate) :
-  this.target = target, gestureState = gstate, startTime = gstate.startTime,
-  elementStartPosition = targetPosition {
+  this.target = target, gestureState = gstate, startTime = gstate.time,
+  elementStartPosition = targetPosition,
+  _gestureStartPosition = gstate.position {
     _vp = new VelocityProvider(elementStartPosition, startTime);
   }
   
@@ -98,13 +99,14 @@ interface Dragger extends Gesture default _Dragger {
   
   /** Construct a Dragger.
    * + [owner] is the Element which receives drag gesture.
-   * + if provided, [dragged] will determine the actual dragged Element. This 
+   * + If provided, [dragged] will determine the actual dragged Element. This 
    * is useful when you need to create a ghost Element for dragging instead of
    * moving the original one.
-   * + if provided, [snap] will patch the position applied to the Element. You
+   * + If provided, [snap] will patch the position applied to the Element. You
    * can use it to restrict the movement of the dragged Element.
-   * + [threshold] TODO
-   * + [transform] if true, the Element position will be updated by setting
+   * + [threshold] The minimal movement (away from starting potision) required
+   * to activate dragging. 
+   * + [transform] If true, the Element position will be updated by setting
    * its CSS transform attribute, rather than by left/top attributes.
    * + [start] Callback invoked when dragging starts.
    * + [move] Callback invoked continuously during dragging.
@@ -129,37 +131,38 @@ class _Dragger implements Dragger {
   final DraggerMove _move;
   final DraggerEnd _end;
   DragGesture _drag;
+  final bool _transform;
   
-  bool _disabled = false;
+  bool _disabled = false, _pending = false;
   _DraggerState _state;
   
   _Dragger(this._owner, [Element dragged(), 
   Offset snap(Offset previousPosition, Offset position), 
-  num threshold = -1, bool transform,
+  num threshold = -1, bool transform = false,
   DraggerStart start, DraggerMove move, DraggerEnd end]) :
-  _start = start, _move = move, _end = end {
+  _transform = transform, _start = start, _move = move, _end = end {
     
     _drag = new DragGesture(owner, start: (DragGestureState state) {
       if (_disabled)
         return false; 
       _stop();
       
-      Element tar = dragged != null ? dragged() : owner;
-      if (tar == null)
-        return false;
+      if (_pending = threshold > 0)
+        return true;
       
-      // TODO: threshold
-      _state = new _DraggerState(this, tar, _getElementPosition(tar), state);
-      if (_start != null && _start(_state) === false) {
-        _stop();
-        return false;
-      }
+      return _initState(dragged, state);
       
     }, move: (DragGestureState state) {
+      if (_pending && state.transition.norm() > threshold) {
+        _pending = false;
+        return _initState(dragged, state);
+      }
+      
       if (_state != null) {
         // calculate element position
         Offset oldElemPos = _state.elementPosition;
-        Offset elemPos = _state.elementStartPosition + state.transition;
+        Offset elemPos = 
+            _state.elementStartPosition + state.position - _state._gestureStartPosition;
         if (snap != null)
           elemPos = snap(oldElemPos, elemPos);
         
@@ -168,12 +171,12 @@ class _Dragger implements Dragger {
         
         // callback, update element position
         if (_move != null) {
-          if (_move(_state, () => _setElementPosition(_state.target, elemPos)) === false) {
+          if (_move(_state, () => setElementPosition_(_state.target, elemPos)) === false) {
             _stop();
             return false; // stop gesture
           }
         } else
-          _setElementPosition(_state.target, elemPos);
+          setElementPosition_(_state.target, elemPos);
         
       }
       
@@ -185,12 +188,35 @@ class _Dragger implements Dragger {
     
   }
   
-  Offset _getElementPosition(Element target) => new DOMQuery(target).offset; // TODO: transform
+  bool _initState(Element dragged(), DragGestureState state) {
+    Element tar = dragged != null ? dragged() : _owner;
+    if (tar == null)
+      return false;
+    
+    _state = new _DraggerState(this, tar, getElementPosition_(tar), state);
+    if (_start != null && _start(_state) === false) {
+      _stop();
+      return false;
+    }
+    
+    return true;
+  }
   
-  void _setElementPosition(Element target, Offset position) {
-    // TODO: transform
-    target.style.left = CSS.px(position.left);
-    target.style.top = CSS.px(position.top);
+  Offset getElementPosition_(Element target) {
+    if (_transform) {
+      Offset3d off3d = CSS.offset3dOf(target.style.transform);
+      return new Offset(off3d.x, off3d.y);
+    }
+    return new DOMQuery(target).offset;
+  }
+  
+  void setElementPosition_(Element target, Offset position) {
+    if (_transform) {
+      target.style.transform = CSS.translate3d(position.left, position.top);
+    } else {
+      target.style.left = CSS.px(position.left);
+      target.style.top = CSS.px(position.top);
+    }
   }
   
   void stop() {
@@ -201,6 +227,7 @@ class _Dragger implements Dragger {
   
   void _stop() { // stop locally
     _state = null;
+    _pending = false;
   }
   
   void destroy() {
