@@ -11,13 +11,25 @@ class TestDrag extends Activity {
   Rectangle range;
   
   void onCreate_() {
+    View d;
     _createBoxedDrag(mainView);
-    _createSimpleDrag(mainView, false);
-    _createSimpleDrag(mainView, true);
+    d = _createSimpleDrag(mainView, false);
+    d.left = d.top = 20;
+    d = _createSimpleDrag(mainView, true);
+    d.left = 170;
+    d.top = 20;
+    d = _createSimpleDrag(mainView, false, 100);
+    d.left = 320;
+    d.top = 20;
   }
-  View _createSimpleDrag(View parent, bool transform) {
-    View view = _createDragView(parent, transform ? "Simple Drag (T)" : "Simple Drag");
-    new Dragger(view.node);
+  View _createSimpleDrag(View parent, bool transform, [num threshold = -1]) {
+    String label = "Simple";
+    if (transform)
+      label = "$label (T)";
+    if (threshold > -1)
+      label = "$label ($threshold)";
+    View view = _createDragView(parent, label);
+    new Dragger(view.node, transform: transform, threshold: threshold);
     return view;
   }
   View _createBoxedDrag(View parent) {
@@ -25,7 +37,7 @@ class TestDrag extends Activity {
     box.classes.add("drag");
     box.profile.text = "location: center center; width: 70%; height: 70%";
     parent.addChild(box);
-    View view = _createDragView(box, "Boxed Drag");
+    View view = _createDragView(box, "Boxed");
     
     new Dragger(view.node, snap: (Offset ppos, Offset pos) => range.snap(pos));
     
