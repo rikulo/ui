@@ -58,7 +58,7 @@ class _EmptyColl<T> implements Collection<T> {
   bool every(bool f(T element)) => false;
   bool some(bool f(T element)) => false;
   Dynamic reduce(Dynamic initialValue, Dynamic combine(Dynamic previousValue, T element))
-  => Collections.reduce(this, initialValue, combine);
+  => initialValue;
   bool isEmpty() => true;
   int get length() => 0;
 }

@@ -21,6 +21,14 @@ interface Layout default FreeLayout {
    * (that is associated with [LinearLayout]).
    */
   bool isProfileInherited();
+  /** Returns whether its dimension depends on the parent.
+   * If `true` is returned, the default width of the associate view's
+   * [LayoutDeclaration] will be `flex` (rather than `content`).
+   *
+   * For example, [TileLayout] returns true since there is no way to measure
+   * the dimension without knowing the parent's dimension.
+   */
+  bool isFlex();
 
   /** Handles the layout of the given view.
    */

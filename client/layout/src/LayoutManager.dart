@@ -14,7 +14,8 @@ class LayoutManager extends RunOnceViewManager {
 
   LayoutManager(): super(null), _layouts = {}, _imgWaits = new Set(), _afters = [] {
     addLayout("linear", new LinearLayout());
-    FreeLayout freeLayout = new FreeLayout();
+    addLayout("tile", new TileLayout());
+    final freeLayout = new FreeLayout();
     addLayout("none", freeLayout);
     addLayout("", freeLayout);
   }

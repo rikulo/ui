@@ -26,6 +26,7 @@ class LinearLayout implements Layout {
     return mctx.heights[view] = _getRealLayout(view).measureHeight(mctx, view);
   }
   bool isProfileInherited() => true;
+  bool isFlex() => false;
   void doLayout(MeasureContext mctx, View view) {
     if (view.firstChild != null) {
       final AnchorRelation ar = new AnchorRelation(view);
@@ -48,12 +49,25 @@ class LinearLayout implements Layout {
       }
     }
   }
-
-  //Utilities//
-  static final int DEFAULT_SPACING = 3;
 }
+
 interface _RealLinearLayout {
   int measureWidth(MeasureContext mctx, View view);
   int measureHeight(MeasureContext mctx, View view);
   void doLayout(MeasureContext mctx, View view, List<View> children);
+}
+class _LinearUtil {
+  //Utilities//
+  static final int DEFAULT_SPACING = 3;
+  /** Returns the layout amount info for the given view.
+   */
+  static LayoutAmountInfo getLayoutAmountInfo(View view, String value) {
+    final amt = new LayoutAmountInfo(value);
+    if (amt.type == LayoutAmountType.NONE
+    && layoutManager.getLayoutOfView(view).isFlex()) {
+      amt.type = LayoutAmountType.FLEX;
+      amt.value = 1;
+    }
+    return amt;
+  }
 }

@@ -11,22 +11,22 @@ class _HLayout implements _RealLinearLayout {
     if (va != null)
       return va;
 
-    final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
-    final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
-    final String defpwd = view.layout.width;
+    final spcinf = new LayoutSideInfo(view.layout.spacing, _LinearUtil.DEFAULT_SPACING);
+    final gapinf = new LayoutSideInfo(view.layout.gap);
+    final defpwd = view.layout.width;
     int width = 0, prevSpacing;
     for (final View child in view.children) {
       if (!view.shallLayout_(child) || child.profile.anchorView != null)
         continue; //ignore anchored
 
       //add spacing to width
-      final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
+      final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       width += prevSpacing == null ? si.left: //first
         gapinf.left != null ? gapinf.left: max(prevSpacing, si.left);
       prevSpacing = si.right;
 
-      final String pwd = child.profile.width;
-      final LayoutAmountInfo amt = new LayoutAmountInfo(pwd.isEmpty() ? defpwd: pwd);
+      final pwd = child.profile.width;
+      final amt = _LinearUtil.getLayoutAmountInfo(child, pwd.isEmpty() ? defpwd: pwd);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           width += amt.value;
@@ -49,7 +49,7 @@ class _HLayout implements _RealLinearLayout {
     if (va != null)
       return va;
 
-    final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
+    final spcinf = new LayoutSideInfo(view.layout.spacing, _LinearUtil.DEFAULT_SPACING);
     final String defphgh = view.layout.height;
     final int borderWd = mctx.getBorderWidth(view) << 1;
     int height;
@@ -58,10 +58,10 @@ class _HLayout implements _RealLinearLayout {
         continue; //ignore anchored
 
       //add spacing to width
-      final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
+      final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       int hgh = si.top + si.bottom + borderWd; //spacing of border
-      final String phgh = child.profile.height;
-      final LayoutAmountInfo amt = new LayoutAmountInfo(phgh.isEmpty() ? defphgh: phgh);
+      final phgh = child.profile.height;
+      final amt = _LinearUtil.getLayoutAmountInfo(child, phgh.isEmpty() ? defphgh: phgh);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           hgh += amt.value;
@@ -84,8 +84,8 @@ class _HLayout implements _RealLinearLayout {
   void doLayout(MeasureContext mctx, View view, List<View> children) {
     //1) size
     final AsInt innerWidth = () => view.innerWidth;
-    final LayoutSideInfo spcinf = new LayoutSideInfo(view.layout.spacing, LinearLayout.DEFAULT_SPACING);
-    final LayoutSideInfo gapinf = new LayoutSideInfo(view.layout.gap);
+    final spcinf = new LayoutSideInfo(view.layout.spacing, _LinearUtil.DEFAULT_SPACING);
+    final gapinf = new LayoutSideInfo(view.layout.gap);
     final String defpwd = view.layout.width;
     final Map<View, LayoutSideInfo> childspcinfs = new Map();
     final List<View> flexViews = new List();
@@ -98,14 +98,14 @@ class _HLayout implements _RealLinearLayout {
         continue;
       }
 
-      final LayoutSideInfo si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
+      final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       childspcinfs[child] = si;
       assigned += prevSpacing == null ? si.left: //first
         gapinf.left != null ? gapinf.left: max(prevSpacing, si.left);
       prevSpacing = si.right;
 
-      final String pwd = child.profile.width;
-      final LayoutAmountInfo amt = new LayoutAmountInfo(pwd.isEmpty() ? defpwd: pwd);
+      final pwd = child.profile.width;
+      final amt = _LinearUtil.getLayoutAmountInfo(child, pwd.isEmpty() ? defpwd: pwd);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           assigned += child.width = amt.value;
@@ -154,7 +154,7 @@ class _HLayout implements _RealLinearLayout {
       if (!view.shallLayout_(child))
         continue;
 
-      final LayoutSideInfo si = childspcinfs[child];
+      final si = childspcinfs[child];
       child.left = assigned += prevSpacing == null ? si.left: //first
         gapinf.left != null ? gapinf.left: max(prevSpacing, si.left);
       assigned += child.outerWidth;

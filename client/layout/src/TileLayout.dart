@@ -3,7 +3,7 @@
 // Author: tomyeh
 
 /**
- * The title layout (not implemented yet).
+ * The title layout.
  * It arranges the child views of the associated view in rows and columns.
  *
  * Based on the given width, minWidth and maxWidth, it arranges views from left
@@ -21,4 +21,16 @@
  * arrange child views in additional rows, if they can't fit into a row.
  */
 class TileLayout implements Layout {
+  void doLayout(MeasureContext ctx, View view) {
+
+  }
+
+  int measureWidth(MeasureContext ctx, View view) {
+    throw const UIException("'content' not allowed in tile layout");
+  }
+  int measureHeight(MeasureContext ctx, View view) {
+    throw const UIException("'content' not allowed in tile layout");
+  }
+  bool isProfileInherited() => true;
+  bool isFlex() => true;
 }

@@ -46,10 +46,15 @@ class MeasureContext {
    * accessing [View]'s profile directly.
    */
   String getProfile(View view, String name) {
-    final String v = view.profile.getPropertyValue(name);
-    return !v.isEmpty() || view.parent == null
-    || !layoutManager.getLayoutOfView(view.parent).isProfileInherited() ?
-      v: view.parent.layout.getPropertyValue(name);
+    String v = view.profile.getPropertyValue(name);
+    if (v.isEmpty()) {
+      if (view.parent != null
+      && layoutManager.getLayoutOfView(view.parent).isProfileInherited())
+        v = view.parent.layout.getPropertyValue(name);
+      if (v.isEmpty() && layoutManager.getLayoutOfView(view).isFlex())
+        v = "flex";
+    }
+    return v;
   }
 
   /** Set the width of the given view based on its profile.
@@ -283,7 +288,7 @@ class MeasureContext {
   }
 
   /**
-   * Returns a map of the application-specific data. It is useful if you'd like to
+   * A map of application-specific data. It is useful if you'd like to
    * store something that will be cleaned up automatically when the layout is done.
    *
    * Note: the name of the attribute can't start with "rk.", which is reserved

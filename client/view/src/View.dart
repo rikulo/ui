@@ -1148,7 +1148,7 @@ class View implements Hashable {
   }
 
   /**
-   * Returns a map of the application-specific data.
+   * A map of application-specific data.
    *
    * Note: the name of the attribute can't start with "rk.", which is reserved
    * for internal use.
@@ -1158,11 +1158,9 @@ class View implements Hashable {
   Map<String, Dynamic> get dataAttributes()
   => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
   /**
-   * Returns a map of the application-specific data that exist only
-   * if the view is attached to the document.
-   *
-   * Notice that you can store any value here any time like [dataAttributes]
-   * does. However, the data stored here will be cleaned up when
+   * A map of application-specific data that exist only
+   * if the view is attached to the document. It is useful if you'd like to
+   * store something that will be cleaned up automatically when
    * the view is detached from the document.
    *
    * Note: the name of the attribute can't start with "rk.", which is reserved

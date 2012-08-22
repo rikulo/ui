@@ -51,9 +51,10 @@ class FreeLayout implements Layout {
     return hgh;
   }
   bool isProfileInherited() => false;
+  bool isFlex() => false;
   void doLayout(MeasureContext mctx, View view) {
     if (view.firstChild != null) {
-      final AnchorRelation ar = new AnchorRelation(view);
+      final ar = new AnchorRelation(view);
       final AsInt innerWidth = () => view.innerWidth,
         innerHeight = () => view.innerHeight; //future: introduce cache
       for (final View child in ar.indeps) {
