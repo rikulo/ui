@@ -60,7 +60,7 @@ class _EmptyColl<T> implements Collection<T> {
   Dynamic reduce(Dynamic initialValue, Dynamic combine(Dynamic previousValue, T element))
   => initialValue;
   bool isEmpty() => true;
-  int get length() => 0;
+  int get length => 0;
 }
 class _EmptyIter<T> implements Iterator<T> {
   const _EmptyIter();

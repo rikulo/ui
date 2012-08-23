@@ -21,7 +21,7 @@ class Dir {
   const Dir(String this._name);
 
   /** The name of this direction. */
-  String get name() => _name;
+  String get name => _name;
 
   operator==(other) => this === other;
   String toString() => _name;
@@ -120,11 +120,11 @@ class _Rectangle extends _Offset implements Rectangle {
   _Rectangle.from(Rectangle other)
   : this(other.left, other.top, other.right, other.bottom);
 
-  num get width() => right - left;
+  num get width => right - left;
   void set width(num width) {
     right = left + width;
   }
-  num get height() => bottom - top;
+  num get height => bottom - top;
   void set height(num height) {
     bottom = top + height;
   }

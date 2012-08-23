@@ -190,7 +190,7 @@ class _ModelRenderer extends RunOnceViewManager {
 /** The model rendering manager.
  * It assume the view implements a method called _renderModel.
  */
-RunOnceViewManager get modelRenderer() {
+RunOnceViewManager get modelRenderer {
   if (_modelRenderer == null)
     _modelRenderer = new _ModelRenderer();
   return _modelRenderer;

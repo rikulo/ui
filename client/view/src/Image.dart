@@ -12,11 +12,11 @@ class Image extends View {
   }
 
   //@Override
-  String get className() => "Image"; //TODO: replace with reflection if Dart supports it
+  String get className => "Image"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the source URI of the image, or null if not assigned yet.
    */
-  String get src() => _src;
+  String get src => _src;
   /** Sets the source URI of the image.
    */
   void set src(String src) {
@@ -36,7 +36,7 @@ class Image extends View {
    *
    * Default: `img`.
    */
-  String get domTag_() => "img";
+  String get domTag_ => "img";
   /** Returns false to indicate this view doesn't allow any child views.
    */
   bool isViewGroup() => false;

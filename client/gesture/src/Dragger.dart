@@ -27,30 +27,30 @@ typedef void DraggerEnd(DraggerState state);
 interface DraggerState extends GestureState {
   
   /** The associated [Dragger]. */
-  Dragger get dragger();
+  Dragger get dragger;
   
   /** The dragged Element. */
-  Element get target();
+  Element get target;
   
   /** The [DragGestureState] of the underlying [DragGesture], which supplies 
    * information of touch/cursor position, rather than element positions.
    */
-  DragGestureState get gestureState();
+  DragGestureState get gestureState;
   
   /** The timestamp when this dragging movement starts. */
-  int get startTime();
+  int get startTime;
   
   /** The initial element position (offset with respect to parent). */
-  Offset get elementStartPosition();
+  Offset get elementStartPosition;
   
   /** The current element position (offset with respect to parent). */
-  Offset get elementPosition();
+  Offset get elementPosition;
   
   /** The displacement of the touch/cursor position of this dragging. */
-  Offset get elementTransition();
+  Offset get elementTransition;
   
   /** The current estimated velocity of touch/cursor position movement. */
-  Offset get elementVelocity();
+  Offset get elementVelocity;
   
 }
 
@@ -76,13 +76,13 @@ class _DraggerState implements DraggerState {
     _vp = new VelocityProvider(elementStartPosition, startTime);
   }
   
-  int get time() => _time;
+  int get time => _time;
   
-  Offset get elementPosition() => _elementPosition;
+  Offset get elementPosition => _elementPosition;
   
-  Offset get elementTransition() => _elementPosition - elementStartPosition;
+  Offset get elementTransition => _elementPosition - elementStartPosition;
   
-  Offset get elementVelocity() => _vp.velocity;
+  Offset get elementVelocity => _vp.velocity;
   
   void snapshot(Offset position, int time) {
     _vp.snapshot(position, time);
@@ -118,7 +118,7 @@ interface Dragger extends Gesture default _Dragger {
   DraggerStart start, DraggerMove move, DraggerEnd end]);
   
   /** The owner of this Dragger. */
-  Element get owner();
+  Element get owner;
   
 }
 
@@ -247,6 +247,6 @@ class _Dragger implements Dragger {
       _drag.enable();
   }
   
-  Element get owner() => _owner;
+  Element get owner => _owner;
   
 }

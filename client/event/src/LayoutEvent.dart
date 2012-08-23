@@ -12,7 +12,7 @@ class LayoutEvent extends ViewEvent {
 
   /** Returns the context.
    */
-  MeasureContext get context() => _context;
+  MeasureContext get context => _context;
 
   String toString() => "LayoutEvent($target)";
 }

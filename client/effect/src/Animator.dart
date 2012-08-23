@@ -34,7 +34,7 @@ interface Animator default _Animator {
   void remove(AnimatorTask animate);
   /** Returns a readonly collection of all animation callbacks.
    */
-  Collection<AnimatorTask> get animates();
+  Collection<AnimatorTask> get animates;
 }
 
 class _Animator implements Animator {
@@ -114,7 +114,7 @@ class _Animator implements Animator {
       ListUtil.remove(_anims, animate);
     }
   }
-  Collection<AnimatorTask> get animates() => _anims;  //TODO: readonly
+  Collection<AnimatorTask> get animates => _anims;  //TODO: readonly
 
   static int _now() => new Date.now().millisecondsSinceEpoch;
 }

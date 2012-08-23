@@ -8,7 +8,7 @@ class CompassHeadingEvent {
   final Compass target;
   final CompassHeading heading;
   /** Returns the time stamp. */
-  int get timeStamp() => heading.timeStamp;
+  int get timeStamp => heading.timeStamp;
 }
 
 class CompassHeadingErrorEvent {

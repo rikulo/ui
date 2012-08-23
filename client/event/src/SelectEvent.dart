@@ -20,16 +20,16 @@ class SelectEvent<T> extends ViewEvent {
 
   /** Returns the selected values.
    */
-  Collection<T> get selectedValues() => _selectedValues;
+  Collection<T> get selectedValues => _selectedValues;
   /** Returns the first selected value, or null if no selected value.
    */
-  T get selectedValue() => ListUtil.first(_selectedValues);
+  T get selectedValue => ListUtil.first(_selectedValues);
 
   /** Returns the first selected index, or -1 if none is selected.
    *
    * Notice that [selectedIndex] is meaningless for [TreeModel].
    */
-  int get selectedIndex() => _selectedIndex;
+  int get selectedIndex => _selectedIndex;
 
   String toString() => "SelectEvent($target, $selectedValues, $selectedIndex)";
 }

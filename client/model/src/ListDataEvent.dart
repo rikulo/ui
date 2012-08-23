@@ -15,11 +15,11 @@ interface ListDataEvent<T> extends DataEvent default _ListDataEvent {
 
   /** Returns the starting index of the change range (nonnegative).
    */
-  int get index();
+  int get index;
   /** Returns the total number of items of the change range.
    * If -1, it means all items starting at [index].
    */
-  int get length();
+  int get length;
 }
 
 class _ListDataEvent<T> extends _DataEvent implements ListDataEvent<T> {
@@ -28,8 +28,8 @@ class _ListDataEvent<T> extends _DataEvent implements ListDataEvent<T> {
   _ListDataEvent(ListModel<T> model, String type, this._index, this._length):
   super(model, type);
 
-  int get index() => _index;
-  int get length() => _length;
+  int get index => _index;
+  int get length => _length;
 
   String toString() => "$type($index, $length)";
 }

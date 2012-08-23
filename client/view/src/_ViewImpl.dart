@@ -27,7 +27,7 @@ class _IEVisiCtrl extends _VisiCtrl {
     //does nothing
   }
 }
-_VisiCtrl get _visiCtrl() {
+_VisiCtrl get _visiCtrl {
   if (_$visiCtrl == null)
     _$visiCtrl = browser.msie ? new _IEVisiCtrl(): new _VisiCtrl();
   return _$visiCtrl;
@@ -44,7 +44,7 @@ class _TagView extends View {
   _TagView(this._tag, this._attrs, this._inner, this._vgroup);
 
   bool isViewGroup() => _vgroup;
-  String get domTag_() => _tag;
+  String get domTag_ => _tag;
   void domAttrs_(StringBuffer out,
   [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
     super.domAttrs_(out, noId, noStyle, noClass, noVisible);
@@ -385,11 +385,11 @@ class _VirtualIdSpace implements IdSpace {
     if (fellow != null) _fellows[id] = fellow;
     else _fellows.remove(id);
   }
-  Collection<View> get fellows() => _fellows.getValues();
+  Collection<View> get fellows => _fellows.getValues();
   String toString() => "_VirtualIdSpace($_owner: $_fellows)";
 }
 
-RunOnceViewManager get _invalidator() {
+RunOnceViewManager get _invalidator {
   if (_$invalidator == null)
     _$invalidator = new RunOnceViewManager((View view) {view.invalidate(true);});
   return _$invalidator;

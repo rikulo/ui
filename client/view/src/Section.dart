@@ -12,7 +12,7 @@ class Section extends View implements IdSpace {
   }
 
   //@Override
-  String get className() => "Section"; //TODO: replace with reflection if Dart supports it
+  String get className => "Section"; //TODO: replace with reflection if Dart supports it
 
   View getFellow(String id) => _fellows[id];
   void bindFellow_(String id, View fellow) {
@@ -24,5 +24,5 @@ class Section extends View implements IdSpace {
    *
    * Default: `section`.
    */
-  String get domTag_() => "section";
+  String get domTag_ => "section";
 }

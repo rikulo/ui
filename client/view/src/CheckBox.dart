@@ -30,13 +30,13 @@ class CheckBox extends TextView implements Input<bool> {
   }
 
   //@Override
-  String get className() => "CheckBox"; //TODO: replace with reflection if Dart supports it
+  String get className => "CheckBox"; //TODO: replace with reflection if Dart supports it
 
   /** Returns whether it is value.
    *
    * Default: false.
    */
-  bool get value() => _value;
+  bool get value => _value;
   /** Sets whether it is value.
    */
   void set value(bool value) {
@@ -50,7 +50,7 @@ class CheckBox extends TextView implements Input<bool> {
    *
    * Default: false.
    */
-  bool get disabled() => _disabled;
+  bool get disabled => _disabled;
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
@@ -64,7 +64,7 @@ class CheckBox extends TextView implements Input<bool> {
    *
    * Default: false.
    */
-  bool get autofocus() => _autofocus;
+  bool get autofocus => _autofocus;
   /** Sets whether this button should automatically get focus.
    */
   void set autofocus(bool autofocus) {
@@ -74,7 +74,7 @@ class CheckBox extends TextView implements Input<bool> {
   }
   /** Returns the INPUT element in this view.
    */
-  InputElement get inputNode() => getNode("inp");
+  InputElement get inputNode => getNode("inp");
 
   /** Callback when the user changes [value].
    */

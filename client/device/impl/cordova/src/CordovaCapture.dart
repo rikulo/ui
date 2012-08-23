@@ -16,15 +16,15 @@ class CordovaCapture implements Capture {
     _initJSFunctions();
   }
   /** Returns the audio formats supported by this device */
-  List<ConfigurationData> get supportedAudioModes() {
+  List<ConfigurationData> get supportedAudioModes {
     return JSUtil.toDartList(JSUtil.jsCall(_SUPPORTED_AUDIO_MODES), (jsData) => _wrapConfigurationData(jsData));
   }
   /** Returns the image formats/size supported by this device */
-  List<ConfigurationData> get supportedImageModes() {
+  List<ConfigurationData> get supportedImageModes {
     return JSUtil.toDartList(JSUtil.jsCall(_SUPPORTED_IMAGE_MODES), (jsData) => _wrapConfigurationData(jsData));
   }
   /** Returns the video formats/resolutions suupported by this device */
-  List<ConfigurationData> get supportedVideoModes() {
+  List<ConfigurationData> get supportedVideoModes {
     return JSUtil.toDartList(JSUtil.jsCall(_SUPPORTED_VIDEO_MODES), (jsData) => _wrapConfigurationData(jsData));
   }
   void captureAudio(CaptureSuccessCallback success, CaptureErrorCallback error, [CaptureAudioOptions options]) {

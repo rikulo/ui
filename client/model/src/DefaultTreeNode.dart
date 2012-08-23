@@ -30,12 +30,12 @@ class DefaultTreeNode<T> implements TreeNode<T>, Hashable {
       addAll(nodes);
   }
   static int _$uuid = 0;
-  DefaultTreeModel<T> get model() => _parent != null ? _parent.model: _model;
+  DefaultTreeModel<T> get model => _parent != null ? _parent.model: _model;
   void set model(DefaultTreeModel<T> model) {
     _model = model;
   }
 
-  T get data() => _data;
+  T get data => _data;
   void set data(T data) {
     if (_data !== data) {
       _data = data;
@@ -54,11 +54,11 @@ class DefaultTreeNode<T> implements TreeNode<T>, Hashable {
       throw new IndexOutOfRangeException(childIndex);
     return _children[childIndex];
   }
-  int get length() {
+  int get length {
      _init();
     return _children != null ? _children.length: 0;
   }
-  TreeNode<T> get parent() => _parent;
+  TreeNode<T> get parent => _parent;
 
   /**
    * Returns the index of this child ([TreeNode]).
@@ -67,7 +67,7 @@ class DefaultTreeNode<T> implements TreeNode<T>, Hashable {
    * performance might not be good if the list is big.
    * If the list is sorted, you can override this method to utilize it.
    */
-  int get index() {
+  int get index {
     if (_parent == null)
       return 0;
     if (_parent is! DefaultTreeNode)

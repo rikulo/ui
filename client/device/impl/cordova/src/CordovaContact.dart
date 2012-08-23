@@ -10,10 +10,10 @@ class CordovaContact implements Contact, JSAgent {
   static final String _REMOVE = "cont.2";
   static final String _SAVE = "cont.3";
   
-  String get id() => JSUtil.getJSValue(_jsContact, "id"); //global unique identifier
-  String get displayName() => JSUtil.getJSValue(_jsContact, "displayName"); //display name of this Contact
-  String get nickname() => JSUtil.getJSValue(_jsContact, "nickname"); //casual name of this Contact
-  String get note() => JSUtil.getJSValue(_jsContact, "note"); //note about this Contact
+  String get id => JSUtil.getJSValue(_jsContact, "id"); //global unique identifier
+  String get displayName => JSUtil.getJSValue(_jsContact, "displayName"); //display name of this Contact
+  String get nickname => JSUtil.getJSValue(_jsContact, "nickname"); //casual name of this Contact
+  String get note => JSUtil.getJSValue(_jsContact, "note"); //note about this Contact
 
   set id(var x) => JSUtil.setJSValue(_jsContact, "id", x); //global unique identifier
   set displayName(var x) => JSUtil.setJSValue(_jsContact, "displayName", x); //display name of this Contact

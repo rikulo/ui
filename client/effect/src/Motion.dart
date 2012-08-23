@@ -39,19 +39,19 @@ class MotionState {
   
   /** Return current time.
    */
-  int get currentTime() => _current;
+  int get currentTime => _current;
   
   /** Return elapsed time since the previous animation frame.
    */
-  int get elapsedTime() => _elapsed;
+  int get elapsedTime => _elapsed;
   
   /** Return paused time.
    */
-  int get pausedTime() => _paused;
+  int get pausedTime => _paused;
   
   /** Return the total running time since motion starts, excluding paused time.
    */
-  int get runningTime() => _current - startTime - _paused;
+  int get runningTime => _current - startTime - _paused;
   
   /** Return true if paused.
    */
@@ -134,11 +134,11 @@ class Motion {
   /**
    * The Animator associated with the motion.
    */
-  Animator get animator() => _getAnimator();
+  Animator get animator => _getAnimator();
   
   /** Retrieve the current [MotionState]. [null] if not running.
    */
-  MotionState get state() => _state;
+  MotionState get state => _state;
   
   /**
    * Called in the first animator iteration after the motion is added into animator.

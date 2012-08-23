@@ -12,7 +12,7 @@ interface Disables<T> {
    * It is readonly. Don't modify it directly. Otherwise, UI won't be
    * updated correctly.
    */
-  Set<T> get disables();
+  Set<T> get disables;
   /**
    * Replace the current list of disabled objects with the given set.
    *

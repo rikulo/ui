@@ -52,15 +52,15 @@ interface Scroller default _Scroller {
   
   /** Returns the direction that the scrolling is allowed.
    */
-  Dir get direction();
+  Dir get direction;
   
   /** Returns the owner that associates to the scroller.
    */
-  Element get owner();
+  Element get owner;
   
   /** Returns the handle element that associates to the scroller, if any.
    */
-  Element get handle();
+  Element get handle;
   
   /** Return true if it is currently scrolling.
    */
@@ -68,7 +68,7 @@ interface Scroller default _Scroller {
   
   /** Return the current scroll position.
    */
-  Offset get scrollPosition();
+  Offset get scrollPosition;
   
   /** Set the scroll position. The current scrolling motion, if any, will be stopped.
    */
@@ -90,23 +90,23 @@ interface ScrollerState extends GestureState default _ScrollerState {
   
   /** Returns the associated [Scroller].
    */
-  Scroller get scroller();
+  Scroller get scroller;
   
   /** Returns the current scroll offset.
    */
-  Offset get position();
+  Offset get position;
   
   /** Returns the current scrolling velocity.
    */
-  Offset get velocity();
+  Offset get velocity;
   
   /** Returns the size of view port.
    */
-  Size get viewPortSize();
+  Size get viewPortSize;
   
   /** Returns the content size.
    */
-  Size get contentSize();
+  Size get contentSize;
   
   /** Tell scroller state to re-determine view port and content sizes.
    */
@@ -160,7 +160,7 @@ class _ScrollerState implements ScrollerState {
     _ver = scroller._hasVer && cs.height > vs.height;
   }
   
-  Offset get position() => _pos;
+  Offset get position => _pos;
   
   void snapshot(Offset pos, int time) {
     if (_time == null || time > _time) {
@@ -171,16 +171,16 @@ class _ScrollerState implements ScrollerState {
     }
   }
   
-  Offset get velocity() => _ppos == null || _pos == null || _time == null || _ptime == null ? 
+  Offset get velocity => _ppos == null || _pos == null || _time == null || _ptime == null ? 
       new Offset(0, 0) : ((_pos - _ppos) / (_time - _ptime));
   
-  int get time() => _time;
+  int get time => _time;
   
   // size cache //
   Size _contentSizeCache, _viewPortSizeCache;
   Rectangle _dragRangeCache;
   
-  Rectangle get dragRange() {
+  Rectangle get dragRange {
     if (_dragRangeCache == null) {
       Size vsize = viewPortSize,
           csize = contentSize;
@@ -189,13 +189,13 @@ class _ScrollerState implements ScrollerState {
     return _dragRangeCache;
   }
   
-  Size get viewPortSize() {
+  Size get viewPortSize {
     if (_viewPortSizeCache == null)
       _viewPortSizeCache = _fnViewPortSize();
     return _viewPortSizeCache;
   }
   
-  Size get contentSize() {
+  Size get contentSize {
     if (_contentSizeCache == null)
       _contentSizeCache = _fnContentSize();
     return _contentSizeCache;
@@ -404,13 +404,13 @@ class _Scroller implements Scroller {
       f(true, state);
   }
   
-  bool get _hor() => _state != null ? _state._hor : _hasHor;
-  bool get _ver() => _state != null ? _state._ver : _hasVer;
+  bool get _hor => _state != null ? _state._hor : _hasHor;
+  bool get _ver => _state != null ? _state._ver : _hasVer;
   
   // query //
   bool isScrolling() => _state != null;
   
-  Offset get scrollPosition() => 
+  Offset get scrollPosition => 
       _state != null ? _state.position : (new DOMQuery(owner).offset * -1);
   
   // control //

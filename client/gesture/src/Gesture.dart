@@ -29,7 +29,7 @@ interface Gesture {
 interface GestureState {
   
   /** The latest timestamp of gesture. */
-  int get time();
+  int get time;
   
   /** Custom data. It is useful if you'd like to store something that
    * will be cleaned up automatically when the gesture is finished.

@@ -22,7 +22,7 @@ interface MessageQueue<Message> default _MessageQueueImpl<Message> {
 
   /** The UUID of this message queue.
    */
-  String get uuid();
+  String get uuid;
 
   /** Subscribes a message listener to this message queue with an optional filter.
    */
@@ -51,7 +51,7 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
   }
 
   //@Override
-  String get uuid() {
+  String get uuid {
     if (_uuid == null) {
       final int appid = application.uuid;
       _uuid = StringUtil.encodeId(_uuidNext++,

@@ -35,11 +35,11 @@ class TextView extends View {
   }
 
   //@Override
-  String get className() => "TextView"; //TODO: replace with reflection if Dart supports it
+  String get className => "TextView"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the text.
    */
-  String get text() => this._text;
+  String get text => this._text;
   /** Sets the text.
    */
   void set text(String text) {
@@ -49,7 +49,7 @@ class TextView extends View {
   }
   /** Returns the HTML text.
    */
-  String get html() => this._html;
+  String get html => this._html;
   /** Sets the HTML text.
    */
   void set html(String html) {
@@ -72,14 +72,14 @@ class TextView extends View {
    *
    * Default: it is the concatenation of [encodedText] and [html].
    */
-  String get innerHTML_() {
+  String get innerHTML_ {
     return "$encodedText$html";
   }
   /** Returns the encodes the text ([text]).
    *
    * Default: it encodes [text] by replacing linefeed with <br/>, if any.
    */
-  String get encodedText() => StringUtil.encodeXML(text, multiline:true);
+  String get encodedText => StringUtil.encodeXML(text, multiline:true);
 
   /** Outputs the inner content of this widget. It is everything
    *

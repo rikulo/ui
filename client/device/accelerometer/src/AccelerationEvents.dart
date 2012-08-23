@@ -12,7 +12,7 @@ interface AccelerationEvents default _AccelerationEvents {
 
   /** A list of event listeners for the accelerate event.
    */
-  AccelerationEventListenerList get accelerate();
+  AccelerationEventListenerList get accelerate;
 
   /** Tests if the given event type is listened.
    */
@@ -79,7 +79,7 @@ class _AccelerationEvents implements AccelerationEvents {
     final p = _lnlist[type];
     return p == null || p.isEmpty();
   }
-  AccelerationEventListenerList get accelerate() => _get("accelerate");
+  AccelerationEventListenerList get accelerate => _get("accelerate");
 }
 class _WatchIDInfo {
   final listener;

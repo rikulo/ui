@@ -47,7 +47,7 @@ class Activity {
   Element _container;
 
   Activity(): _dlgInfos = [] {
-    _title = application.name; //also force "get application()" to be called
+    _title = application.name; //also force "get application" to be called
   }
 
   /** Returns the main view.
@@ -61,7 +61,7 @@ class Activity {
    * (or the whole DOM element specified in the containerId parameter of [run] if
    * there is one).
    */
-  View get mainView() => _mainView;
+  View get mainView => _mainView;
   /** Sets the main view.
    */
   void set mainView(View main) {
@@ -96,7 +96,7 @@ class Activity {
    * any number of dialogs. To add a dialog, please use [addPopup].
    * The last added dialog will be on top of the rest, including [mainView].
    */
-  View get currentDialog() => _dlgInfos.isEmpty() ? null: _dlgInfos[0].dialog;
+  View get currentDialog => _dlgInfos.isEmpty() ? null: _dlgInfos[0].dialog;
   /** Adds a dialog. The dialog will become the topmost view and obscure
    * the other dialogs and [mainView].
    *
@@ -172,7 +172,7 @@ class Activity {
    * called. The DOM element is assumed to be the container, and the activity
    * will be limited to it.
    */
-  Element get container() => _container;
+  Element get container => _container;
 
   /** Starts the activity.
    * By default, it creates [mainView] (if it was not created yet)
@@ -222,7 +222,7 @@ class Activity {
     window.on.resize.add(_onResize);
     (browser.touch ? document.on.touchStart: document.on.mouseDown).add(_onTouchStart);
   }
-  EventListener get _onResize() {
+  EventListener get _onResize {
     if (browser.android) {
     //Android: resize will be fired when virtual keyboard showed up
     //so we have to ignore this case: width must be changed, or height is larger
@@ -241,7 +241,7 @@ class Activity {
         };
     }
   }
-  static EventListener get _onTouchStart() {
+  static EventListener get _onTouchStart {
     return (event) { //DOM event
         broadcaster.sendEvent(new PopupEvent(event.target));
       };
@@ -284,7 +284,7 @@ class Activity {
 
   /** Returns the title of this activity.
    */
-  String get title() => _title;
+  String get title => _title;
   /** Sets the title of this activity.
    */
   void set title(String title) {

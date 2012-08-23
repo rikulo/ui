@@ -26,7 +26,7 @@ class PopupEvent extends ViewEvent {
   /** Returns the UI object triggers this event.
    * It is either a view or a DOM element.
    */
-  get source() => _source;
+  get source => _source;
 
   /** Whether the given popup shall be closed.
    */

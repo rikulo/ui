@@ -12,7 +12,7 @@ interface CompassHeadingEvents default _CompassHeadingEvents {
 
   /** A list of event listeners for the heading event.
    */
-  CompassHeadingEventListenerList get heading();
+  CompassHeadingEventListenerList get heading;
 
   /** Tests if the given event type is listened.
    */
@@ -80,7 +80,7 @@ class _CompassHeadingEvents implements CompassHeadingEvents {
     final p = _lnlist[type];
     return p == null || p.isEmpty();
   }
-  CompassHeadingEventListenerList get heading() => _get("heading");
+  CompassHeadingEventListenerList get heading => _get("heading");
 }
 class _WatchIDInfo {
   final listener;

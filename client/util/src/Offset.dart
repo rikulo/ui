@@ -54,11 +54,11 @@ class _Offset implements Offset {
   _Offset(num this.left, num this.top);
   _Offset.from(Offset other): this(other.left, other.top);
 
-  num get x() => left;
+  num get x => left;
   void set x(num x) {
     left = x;
   }
-  num get y() => top;
+  num get y => top;
   void set y(num y) {
     top = y;
   }
@@ -91,7 +91,7 @@ class _Offset3d extends _Offset implements Offset3d {
   _Offset3d(num x, num y, num z): super(x, y), zIndex = z;
   _Offset3d.from(Offset3d other): this(other.x, other.y, other.z);
 
-  num get z() => zIndex;
+  num get z => zIndex;
   void set z(num z) {
     zIndex = z;
   }
@@ -137,6 +137,6 @@ class VelocityProvider {
   }
   
   /** Retrieve velocity. */
-  Offset get velocity() => _vel;
+  Offset get velocity => _vel;
   
 }

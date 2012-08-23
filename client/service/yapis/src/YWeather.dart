@@ -13,7 +13,7 @@ class YWeather {
 
   final String woeid;
   String _unit;
-  String get unit() => _unit;
+  String get unit => _unit;
 
   /**
    * Yahoo Weather for a woeid.

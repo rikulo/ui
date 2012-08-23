@@ -12,14 +12,14 @@ implements ProfileDeclaration {
 
   ProfileDeclarationImpl(View owner) : _owner = owner;
 
-  String get anchor()
+  String get anchor
     => getPropertyValue("anchor");
   void set anchor(String value) {
     setProperty("anchor", value);
     _anchorView = null;
   }
 
-  View get anchorView() {
+  View get anchorView {
     String anc;
     return _anchorView != null ? _anchorView:
       (anc = anchor).isEmpty() ?
@@ -44,55 +44,55 @@ implements ProfileDeclaration {
     _anchorView = view;
   }
 
-  String get location()
+  String get location
     => getPropertyValue("location");
   void set location(String value) {
     setProperty("location", value);
   }
 
-  String get align()
+  String get align
     => getPropertyValue("align");
   void set align(String value) {
     setProperty("align", value);
   }
 
-  String get spacing()
+  String get spacing
     => getPropertyValue("spacing");
   void set spacing(String value) {
     setProperty("spacing", value);
   }
 
-  String get width()
+  String get width
     => getPropertyValue("width");
   void set width(String value) {
     setProperty("width", value);
   }
 
-  String get height()
+  String get height
     => getPropertyValue("height");
   void set height(String value) {
     setProperty("height", value);
   }
 
-  String get minWidth()
+  String get minWidth
     => getPropertyValue("min-width");
   void set minWidth(String value) {
     setProperty("min-width", value);
   }
 
-  String get minHeight()
+  String get minHeight
     => getPropertyValue("min-height");
   void set minHeight(String value) {
     setProperty("min-height", value);
   }
 
-  String get maxWidth()
+  String get maxWidth
     => getPropertyValue("max-width");
   void set maxWidth(String value) {
     setProperty("max-width", value);
   }
 
-  String get maxHeight()
+  String get maxHeight
     => getPropertyValue("max-height");
   void set maxHeight(String value) {
     setProperty("max-height", value);

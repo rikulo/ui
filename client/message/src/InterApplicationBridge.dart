@@ -88,7 +88,7 @@ class InterApplicationBridge<Message> {
   /** Returns the name of this bridge.
    * Bridges with the same name are considered as the same group.
    */
-  String get name() => _name;
+  String get name => _name;
 
   /** Connects this bridge to a message queue such that the messages will
    * be forward to/from another applications if they also connect

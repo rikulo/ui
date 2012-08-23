@@ -34,7 +34,7 @@
 interface ViewCut {
   /** The view being cut.
    */
-  View get view();
+  View get view;
 
   /** Pastes the view kept in this [Viewcut] to the given parent view.
    * The view kept in this object will become a child of the given parent view.

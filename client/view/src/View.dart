@@ -112,7 +112,7 @@ class View implements Hashable {
    * The subclass shall override it.
    * However, it will be removed if Dart supports reflection.
    */
-  String get className() => "View"; //TODO: replace with reflection if Dart supports it
+  String get className => "View"; //TODO: replace with reflection if Dart supports it
 
   _ChildInfo _initChildInfo() {
     if (_childInfo == null)
@@ -127,7 +127,7 @@ class View implements Hashable {
 
   /** Returns the UUID of this component, never null.
    */
-  String get uuid() {
+  String get uuid {
     if (_uuid == null)
       _uuid = StringUtil.encodeId(_uuidNext++, viewConfig.uuidPrefix);
     return _uuid;
@@ -136,7 +136,7 @@ class View implements Hashable {
 
   /** Returns the ID of this view, or an empty string if not assigned.
    */
-  String get id() {
+  String get id {
     return _id;
   }
   /** Sets the ID of this view.
@@ -190,7 +190,7 @@ class View implements Hashable {
    * Note: don't modify the returned list. Otherwise, the result is
    * unpredictable.
    */
-  Collection<View> get fellows() => spaceOwner.fellows;
+  Collection<View> get fellows => spaceOwner.fellows;
   /** Updates the fellow information.
    *
    * Default: throw [UnsupportedOperationException].
@@ -207,7 +207,7 @@ class View implements Hashable {
    *
    * A virtual [IdSpace] is used if this view is a root but is not IdSpace.
    */
-  IdSpace get spaceOwner() => _ViewImpl.spaceOwner(this);
+  IdSpace get spaceOwner => _ViewImpl.spaceOwner(this);
 
   /** Returns if a view is a descendant of this view or
    * it is identical to this view.
@@ -233,22 +233,22 @@ class View implements Hashable {
 */
   /** Returns the parent, or null if this view does not have any parent.
    */
-  View get parent() => _parent;
+  View get parent => _parent;
   /** Returns the first child, or null if this view has no child at all.
    */
-  View get firstChild() => _childInfo != null ? _childInfo.firstChild: null;
+  View get firstChild => _childInfo != null ? _childInfo.firstChild: null;
   /** Returns the last child, or null if this view has no child at all.
    */
-  View get lastChild() => _childInfo != null ? _childInfo.lastChild: null;
+  View get lastChild => _childInfo != null ? _childInfo.lastChild: null;
   /** Returns the next sibling, or null if this view is the last sibling.
    */
-  View get nextSibling() => _nextSibling;
+  View get nextSibling => _nextSibling;
   /** Returns the previous sibling, or null if this view is the first sibling.
    */
-  View get previousSibling() => _prevSibling;
+  View get previousSibling => _prevSibling;
   /** Returns a list of child views.
    */
-  List<View> get children() {
+  List<View> get children {
     final _ChildInfo ci = _initChildInfo();
     if (ci.children == null)
       ci.children = new _SubviewList(this);
@@ -256,7 +256,7 @@ class View implements Hashable {
   }
   /** Returns the number of child views.
    */
-  int get childCount() => _childInfo != null ? _childInfo.nChild: 0;
+  int get childCount => _childInfo != null ? _childInfo.nChild: 0;
 
   /** Callback AFTER a child has been added.
    *
@@ -467,7 +467,7 @@ class View implements Hashable {
    * you might have to override [insertChildToDocument_] and/or
    * [removeChildFromDocument_] if they share the same DOM element.
    */
-  Element get node() => _node != null ? _node: getNode(null);
+  Element get node => _node != null ? _node: getNode(null);
   /** Returns the child element of the given sub-ID, or null if not found.
    * This method assumes the ID of the child element the concatenation of
    * uuid, dash ('-'), and subId.
@@ -482,7 +482,7 @@ class View implements Hashable {
   }
   /** Returns if this view has been attached to the document.
    */
-  bool get inDocument() => _inDoc;
+  bool get inDocument => _inDoc;
 
   /** Adds this view to the document (i.e., the screen that the user interacts with).
    * All of its descendant views are added too.
@@ -836,7 +836,7 @@ class View implements Hashable {
    *
    * Default: `div`.
    */
-  String get domTag_() => "div";
+  String get domTag_ => "div";
 
   /**Shortcut of [draw].*/
   String _asHTML() {
@@ -847,7 +847,7 @@ class View implements Hashable {
 
   /** Returns if this view is visible.
    */
-  bool get visible() => _visible;
+  bool get visible => _visible;
   /** Sets if this view is visible.
    *
    * Unlike most API, [requestLayout] will be called automatically if it is becoming visible.
@@ -867,7 +867,7 @@ class View implements Hashable {
    *
    * Default: 0
    */
-  int get left() => _left;
+  int get left => _left;
   /** Sets the left position of this view relative to its parent.
    */
   void set left(int left) {
@@ -880,7 +880,7 @@ class View implements Hashable {
    *
    * Default: 0
    */
-  int get top() => _top;
+  int get top => _top;
   /** Sets the top position of this view relative to its parent.
    */
   void set top(int top) {
@@ -896,7 +896,7 @@ class View implements Hashable {
    *
    * + To get the real width on the document, use [outerWidth].
    */
-  int get width() => _width;
+  int get width => _width;
   /** Sets the width of this view.
    *
    * Notice that, like most of APIs, if the change will affect the layout,
@@ -916,7 +916,7 @@ class View implements Hashable {
    *
    * + To get the real height on the document, use [outerWidth].
    */
-  int get height() => _height;
+  int get height => _height;
   /** Sets the height of this view.
    *
    * Notice that, like most of APIs, if the change will affect the layout,
@@ -935,7 +935,7 @@ class View implements Hashable {
    * Notice that the performance of this method is not good, if
    * [width] is null.
    */
-  int get outerWidth()
+  int get outerWidth
   => _width != null ? _width: inDocument ? new DOMQuery(node).outerWidth: 0;
     //for better performance, we don't need to get the outer width if _width is
     //assigned (because we use box-sizing: border-box)
@@ -943,7 +943,7 @@ class View implements Hashable {
    * Notice that the performance of this method is not good, if
    * [height] is null.
    */
-  int get outerHeight()
+  int get outerHeight
   => _height != null ? _height: inDocument ? new DOMQuery(node).outerHeight: 0;
     //for better performance, we don't need to get the outer height if _height is
     //assigned (because we use box-sizing: border-box)
@@ -955,7 +955,7 @@ class View implements Hashable {
    * (for performance reason). However, we might change it in the future, so it is better
    * not to call this method if the view is not attached.
    */
-  int get innerWidth() {
+  int get innerWidth {
     final int v = inDocument ? new DOMQuery(node).innerWidth:
       (_width != null ? _width: 0);
     return v > 0 ? v: 0;
@@ -968,7 +968,7 @@ class View implements Hashable {
    * (for performance reason). However, we might change it in the future, so it is better
    * not to call this method if the view is not attached.
    */
-  int get innerHeight() {
+  int get innerHeight {
     final int v = inDocument ? new DOMQuery(node).innerHeight:
       (_height != null ? _height: 0);
     return v > 0 ? v: 0;
@@ -978,7 +978,7 @@ class View implements Hashable {
    * of the document.
    * It takes into account any horizontal scrolling of the page.
    */
-  Offset get pageOffset() {
+  Offset get pageOffset {
     if (_inDoc)
       return new DOMQuery(node).pageOffset;
 
@@ -996,7 +996,7 @@ class View implements Hashable {
    * In additions, you can specify addition information in individual child
    * view's [profile].
    */
-  LayoutDeclaration get layout() {
+  LayoutDeclaration get layout {
     if (_layout == null)
       _layout = new LayoutDeclarationImpl(this);
     return _layout;
@@ -1007,7 +1007,7 @@ class View implements Hashable {
    *
    * + See also [layout].
    */
-  ProfileDeclaration get profile() {
+  ProfileDeclaration get profile {
     if (_profile == null)
       _profile = new ProfileDeclarationImpl(this);
     return _profile;
@@ -1015,7 +1015,7 @@ class View implements Hashable {
 
   /** Retuns the CSS style.
    */
-  CSSStyleDeclaration get style() {
+  CSSStyleDeclaration get style {
     if (_style == null)
       _style =  new CSSStyleDeclarationImpl(this);
     return _style;
@@ -1023,7 +1023,7 @@ class View implements Hashable {
 
   /** Returns the style classes.
    */
-  Set<String> get classes() => _classes;
+  Set<String> get classes => _classes;
 
   /** Outputs all HTML attributes used for the DOM element of this view
    * to the given output.
@@ -1097,7 +1097,7 @@ class View implements Hashable {
 
   /** Returns [ViewEvents] for adding or removing event listeners.
    */
-  ViewEvents get on() => _initEventListenerInfo().on;
+  ViewEvents get on => _initEventListenerInfo().on;
 
   /** Sends an event to this view.
    *
@@ -1155,7 +1155,7 @@ class View implements Hashable {
    *
    * See also [mountAttributes].
    */
-  Map<String, Dynamic> get dataAttributes()
+  Map<String, Dynamic> get dataAttributes
   => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
   /**
    * A map of application-specific data that exist only
@@ -1168,7 +1168,7 @@ class View implements Hashable {
    *
    * See also [dataAttributes].
    */
-  Map<String, Dynamic> get mountAttributes()
+  Map<String, Dynamic> get mountAttributes
   => _mntAttrs != null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new Map());
 
   int hashCode() => uuid.hashCode(); //uuid is immutable once assigned

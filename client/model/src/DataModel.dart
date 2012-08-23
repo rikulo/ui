@@ -7,7 +7,7 @@
 interface DataModel {
   /** Returns [DataEvents] for adding or removing event listeners.
    */
-  DataEvents get on();
+  DataEvents get on;
   /** Adds an event listener.
    * `addEventListener("select", listener)` is the same as
    * `on.select.add(listener)`.
@@ -49,7 +49,7 @@ class AbstractDataModel implements DataModel {
   }
 
   //Event Handling//
-  DataEvents get on() => _on;
+  DataEvents get on => _on;
 
   void addEventListener(String type, DataEventListener listener) {
     if (listener == null)

@@ -30,7 +30,7 @@ class DropDownList<T> extends View {
    *
    * Default: false.
    */
-  bool get disabled() => _disabled;
+  bool get disabled => _disabled;
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
@@ -44,7 +44,7 @@ class DropDownList<T> extends View {
    *
    * Default: 1
    */
-  int get rows() => _rows;
+  int get rows => _rows;
   /** Sets the number of visible rows.
    */
   void set rows(int rows) {
@@ -58,7 +58,7 @@ class DropDownList<T> extends View {
    *
    * Default: false.
    */
-  bool get autofocus() => _autofocus;
+  bool get autofocus => _autofocus;
   /** Sets whether this button should automatically get focus.
    */
   void set autofocus(bool autofocus) {
@@ -68,11 +68,11 @@ class DropDownList<T> extends View {
   }
 
   //@Override
-  String get className() => "DropDownList"; //TODO: replace with reflection if Dart supports it
+  String get className => "DropDownList"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the model.
    */
-  DataModel get model() => _model;
+  DataModel get model => _model;
   /** Sets the model.
    * The model must be an instance of [ListModel] or [TreeModel].
    *
@@ -143,7 +143,7 @@ class DropDownList<T> extends View {
    *
    * The default implementation converts the given data to a string directly.
    */
-  StringRenderer get renderer() => _renderer;
+  StringRenderer get renderer => _renderer;
   /** Sets the renderer used to render the given model ([model]).
    * If null, the default implementation is used.
    */
@@ -327,7 +327,7 @@ class DropDownList<T> extends View {
    *
    * Default: `select`.
    */
-  String get domTag_() => "select";
+  String get domTag_ => "select";
   //@Override
   /** Returns false to indicate this view doesn't allow any child views.
    */

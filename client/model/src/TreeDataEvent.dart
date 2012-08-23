@@ -15,7 +15,7 @@ interface TreeDataEvent<T> extends DataEvent default _TreeDataEvent<T> {
 
   /** Returns the first affected node.
    */
-  T get node();
+  T get node;
 }
 
 class _TreeDataEvent<T> extends _DataEvent implements TreeDataEvent<T> {
@@ -24,7 +24,7 @@ class _TreeDataEvent<T> extends _DataEvent implements TreeDataEvent<T> {
   _TreeDataEvent(TreeModel<T> model, String type, this._node):
   super(model, type);
 
-  T get node() => _node;
+  T get node => _node;
 
   String toString() => "$type($node)";
 }

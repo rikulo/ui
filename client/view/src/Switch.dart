@@ -28,13 +28,13 @@ class Switch extends View implements Input<bool> {
     _offLabel = offLabel != null ? offLabel: "OFF";
   }
   //@Override
-  String get className() => "Switch"; //TODO: replace with reflection if Dart supports it
+  String get className => "Switch"; //TODO: replace with reflection if Dart supports it
 
   /** Returns whether it is value (i.e., the switch is ON).
    *
    * Default: false.
    */
-  bool get value() => _value;
+  bool get value => _value;
   /** Sets whether it is value (i.e., the switch is ON).
    */
   void set value(bool value) {
@@ -45,7 +45,7 @@ class Switch extends View implements Input<bool> {
    *
    * Default: false.
    */
-  bool get disabled() => _disabled;
+  bool get disabled => _disabled;
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
@@ -59,16 +59,16 @@ class Switch extends View implements Input<bool> {
 
   /** Returns the label to indicate the switch is ON.
    */
-  String get onLabel() => _onLabel;
+  String get onLabel => _onLabel;
   /** Returns the label to indicate the switch is OFF.
    */
-  String get offLabel() => _offLabel;
+  String get offLabel => _offLabel;
 
-  Element get _sdNode() => getNode('sd');
-  Element get _bgNode() => getNode('bg');
-  int get _marginDiff() => 1 - (outerHeight >> 1); //-(radius - 1) (border)
+  Element get _sdNode => getNode('sd');
+  Element get _bgNode => getNode('bg');
+  int get _marginDiff => 1 - (outerHeight >> 1); //-(radius - 1) (border)
   /** X offset for the OFF label. */
-  int get _x_off() => outerWidth - outerHeight; //-(width - 2 * radius)
+  int get _x_off => outerWidth - outerHeight; //-(width - 2 * radius)
   void _setValue(bool value, [bool bAnimate=false, bool bSendEvent=false]) {
     final bool bChanged = _value != value;
     _value = value;

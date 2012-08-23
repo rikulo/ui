@@ -17,7 +17,7 @@ class _SubviewList extends AbstractList<View> {
   }
 
   //Collection//
-  int get length() => _owner.childCount;
+  int get length => _owner.childCount;
 
   //List//
   View operator[](int index) {

@@ -47,7 +47,7 @@ class HTMLFragment {
 
   /** Returns the HTML fragment stored in this object.
    */
-  String get html() => _html;
+  String get html => _html;
 
   /** Returns whether this fragment contains all information.
    * The use depends on the receiver. However, it usually means that

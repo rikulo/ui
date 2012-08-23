@@ -23,22 +23,22 @@ typedef void DragGestureEnd(DragGestureState state);
 interface DragGestureState extends GestureState {
   
   /** The associated [DragGesture]. */
-  DragGesture get gesture();
+  DragGesture get gesture;
   
   /** The timestamp when the gesture starts. */
-  int get startTime();
+  int get startTime;
   
   /** The initial touch/cursor position. */
-  Offset get startPosition();
+  Offset get startPosition;
   
   /** The current touch/cursor position. */
-  Offset get position();
+  Offset get position;
   
   /** The displacement of the touch/cursor position of this dragging. */
-  Offset get transition();
+  Offset get transition;
   
   /** The current estimated velocity of touched/cursor position movement. */
-  Offset get velocity();
+  Offset get velocity;
   
 }
 
@@ -65,7 +65,7 @@ interface DragGesture extends Gesture default _DragGesture {
   
   /** The element that owns this drag gesture (never null).
    */
-  Element get owner();
+  Element get owner;
   
 }
 
@@ -82,15 +82,15 @@ class _DragGestureState implements DragGestureState {
   _gesture = gesture, startPosition = position, _position = position, 
   startTime = time, _time = time, _vp = new VelocityProvider(position, time);
   
-  DragGesture get gesture() => _gesture;
+  DragGesture get gesture => _gesture;
   
-  Offset get position() => _position;
+  Offset get position => _position;
   
-  Offset get transition() => _position - startPosition;
+  Offset get transition => _position - startPosition;
   
-  Offset get velocity() => _vp.velocity;
+  Offset get velocity => _vp.velocity;
   
-  int get time() => _time;
+  int get time => _time;
   
   void snapshot(Offset position, int time) {
     _vp.snapshot(position, time);
@@ -139,7 +139,7 @@ class _DragGesture implements DragGesture {
     _state = null;
   }
   
-  Element get owner() => _owner;
+  Element get owner => _owner;
   
   abstract void _listen();
   abstract void _unlisten();

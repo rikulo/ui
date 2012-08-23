@@ -30,7 +30,7 @@ class DefaultListModel<T> extends AbstractListModel<T> {
   //@Override
   /** Returns the length of the list.
    */
-  int get length() => _data.length;
+  int get length => _data.length;
 
   //additional interface//
   /** Returns the index of the given data, or -1 if not found.

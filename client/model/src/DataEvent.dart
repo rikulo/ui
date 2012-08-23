@@ -13,10 +13,10 @@ interface DataEvent default _DataEvent {
 
   /** Returns the type of this event.
    */
-  String get type();
+  String get type;
   /** Returns the data model of this event.
    */
-  DataModel get model();
+  DataModel get model;
 }
 
 /** A list of [DataEvent] listeners.
@@ -56,48 +56,48 @@ interface DataEvents extends DataEventListenerMap default _DataEvents {
   /** Identifies listeners for all kind of data event type.
    * Listeners added here will be invoked no matter what [DataEvent] is received.
    */
-  DataEventListenerList get all();
+  DataEventListenerList get all;
   /** Identifies the addition of one or more contiguous items to the model.
    *
    * The event is an instance of [ListDataEvent] or [TreeDataEvent], depending
    * on the model.
    */
-  DataEventListenerList get add();
+  DataEventListenerList get add;
   /** Identifies the removal of one or more contiguous items from the model.
    *
    * The event is an instance of [ListDataEvent] or [TreeDataEvent], depending
    * on the model.
    */
-  DataEventListenerList get remove();
+  DataEventListenerList get remove;
   /** Identifies the structure of the lists has changed.
    *
    * The event is an instance of [DataEvent].
    */
-  DataEventListenerList get structure();
+  DataEventListenerList get structure;
   /** Identifies the selection of the lists has changed.
    *
    * It is applicable only if the model supports [Selection].
    * The event is an instance of [DataEvent].
    */
-  DataEventListenerList get select();
+  DataEventListenerList get select;
   /** Identified the change of whether the model allows mutiple selection.
    *
    * It is applicable only if the model supports [Selection].
    * The event is an instance of [DataEvent].
    */
-  DataEventListenerList get multiple();
+  DataEventListenerList get multiple;
   /** Identifies the list of disabled objects has changed.
    *
    * It is applicable only if the model supports [Disables].
    * The event is an instance of [DataEvent].
    */
-  DataEventListenerList get disable();
+  DataEventListenerList get disable;
   /** Identifies the change of the open statuses.
    *
    * It is applicable only if the model supports [Opens].
    * The event is an instance of [DataEvent].
    */
-  DataEventListenerList get open();
+  DataEventListenerList get open;
 }
 
 /** An implementation of [DataEvent].
@@ -110,10 +110,10 @@ class _DataEvent implements DataEvent {
 
   /** Returns the type of this event.
    */
-  String get type() => _type;
+  String get type => _type;
   /** Returns the data model of this event.
    */
-  DataModel get model() => _model;
+  DataModel get model => _model;
 
   String toString() => "$type()";
 }
@@ -168,13 +168,13 @@ class _DataEvents extends _DataEventListenerMap implements DataEvents {
   _DataEvents(var ptr): super(ptr) {
   }
 
-  DataEventListenerList get all() => _get('all');
-  DataEventListenerList get change() => _get('change');
-  DataEventListenerList get add() => _get('add');
-  DataEventListenerList get remove() => _get('remove');
-  DataEventListenerList get structure() => _get('structure');
-  DataEventListenerList get select() => _get('select');
-  DataEventListenerList get multiple() => _get('multiple');
-  DataEventListenerList get disable() => _get('disable');
-  DataEventListenerList get open() => _get('open');
+  DataEventListenerList get all => _get('all');
+  DataEventListenerList get change => _get('change');
+  DataEventListenerList get add => _get('add');
+  DataEventListenerList get remove => _get('remove');
+  DataEventListenerList get structure => _get('structure');
+  DataEventListenerList get select => _get('select');
+  DataEventListenerList get multiple => _get('multiple');
+  DataEventListenerList get disable => _get('disable');
+  DataEventListenerList get open => _get('open');
 }
