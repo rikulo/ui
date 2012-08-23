@@ -22,7 +22,7 @@ interface TreeNode<T> default DefaultTreeNode<T> {
 
   /** Returns the tree model this node belongs to.
    */
-  DefaultTreeModel<T> get model();
+  DefaultTreeModel<T> get model;
   /** Sets the tree model it belongs to.
    * This method is invoked automatically by [DefaultTreeModel],
    * so you don't have to invoke it.
@@ -34,7 +34,7 @@ interface TreeNode<T> default DefaultTreeNode<T> {
 
   /** Returns the application-specific data held in this node.
    */
-  T get data();
+  T get data;
   /** Sets the application-specific data held in this node.
    */
   void set data(T data);
@@ -50,16 +50,16 @@ interface TreeNode<T> default DefaultTreeNode<T> {
   /**
    * Returns the number of children [TreeNode]s this node contains.
    */
-  int get length();
+  int get length;
   /**
    * Returns the parent [TreeNode] of this node.
    */
-  TreeNode<T> get parent();
+  TreeNode<T> get parent;
   /**
    * Returns the index of this node.
    * If this node does not have any parent, 0 will be returned.
    */
-  int get index();
+  int get index;
 
   /** Adds child to this node.
    *

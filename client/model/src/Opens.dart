@@ -12,7 +12,7 @@ interface Opens<T> {
    * It is readonly. Don't modify it directly. Otherwise, UI won't be
    * updated correctly.
    */
-  Set<T> get opens();
+  Set<T> get opens;
   /**
    * Replace the current list of node that are opened with the given set.
    *

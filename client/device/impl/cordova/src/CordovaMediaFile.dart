@@ -8,11 +8,11 @@
 class CordovaMediaFile implements MediaFile, JSAgent {
   static final String _GET_FORMAT_DATA = "mf.1";
   
-  String get name() => JSUtil.getJSValue(_jsFile, "name");
-  String get fullPath() => JSUtil.getJSValue(_jsFile, "fullPath");
-  String get type() => JSUtil.getJSValue(_jsFile, "type");
-  Date get date() => JSUtil.toDartDate(JSUtil.getJSValue(_jsFile, "lastModifiedDate"));
-  int get size() => JSUtil.getJSValue(_jsFile, "size");
+  String get name => JSUtil.getJSValue(_jsFile, "name");
+  String get fullPath => JSUtil.getJSValue(_jsFile, "fullPath");
+  String get type => JSUtil.getJSValue(_jsFile, "type");
+  Date get date => JSUtil.toDartDate(JSUtil.getJSValue(_jsFile, "lastModifiedDate"));
+  int get size => JSUtil.getJSValue(_jsFile, "size");
   
   var _jsFile; //associated JavaScript object
   

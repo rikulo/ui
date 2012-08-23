@@ -30,7 +30,7 @@ class SnakeCanvas extends Activity {
   Canvas canvas;
   Button up, down, left, right;
   
-  num get score() => _score;
+  num get score => _score;
   set score(num score) {
     _score = score;
     scoreBar.text = "Your score is: ${score}";

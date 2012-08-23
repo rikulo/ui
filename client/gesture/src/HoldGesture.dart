@@ -14,18 +14,18 @@ typedef void HoldGestureAction(HoldGestureState state);
 /** The state of [HoldGesture].
  */
 interface HoldGestureState {
-  HoldGesture get gesture();
+  HoldGesture get gesture;
   /** The element that the user touches at the beginning.
    */
-  Element get touched();
+  Element get touched;
 
   /** The touch point's offset relative to
    * the left-top corner of the owner element.
    */
-  Offset get offset();
+  Offset get offset;
   /** The touch point's offset relative to the whole document.
    */
-  Offset get pageOffset();
+  Offset get pageOffset;
 
   /** Any data that the caller stores.
    */
@@ -56,7 +56,7 @@ interface HoldGesture default _HoldGesture {
 
   /** The element that owns this handler.
    */
-  Element get owner();
+  Element get owner;
 }
 
 class _HoldGestureState implements HoldGestureState {
@@ -72,10 +72,10 @@ class _HoldGestureState implements HoldGestureState {
     _ofs = _pgOfs - new DOMQuery(gesture.owner).pageOffset;
   }
 
-  HoldGesture get gesture() => _gesture;
-  Element get touched() => _touched;
-  Offset get offset() => _ofs;
-  Offset get pageOffset() => _pgOfs;
+  HoldGesture get gesture => _gesture;
+  Element get touched => _touched;
+  Offset get offset => _ofs;
+  Offset get pageOffset => _pgOfs;
 }
 
 //abstract
@@ -103,7 +103,7 @@ class _HoldGesture implements HoldGesture {
     _unlisten();
   }
 
-  Element get owner() => _owner;
+  Element get owner => _owner;
 
   abstract void _listen();
   abstract void _unlisten();

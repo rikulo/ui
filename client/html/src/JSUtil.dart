@@ -180,7 +180,7 @@ class JSUtil {
     
   /** Initialization of the [jsCall] function; must be called at least once before using [jsCall] method. 
    */
-  static _JSCallX get _jsCallX() {
+  static _JSCallX get _jsCallX {
     if (_$jsCallX == null) {
       final String newFn = '''  
         var _natives = {

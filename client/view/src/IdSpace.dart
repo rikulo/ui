@@ -20,5 +20,5 @@ interface IdSpace {
    * Note: don't modify the returned list. Otherwise, the result is
    * unpreditable.
    */
-  Collection<View> get fellows();
+  Collection<View> get fellows;
 }

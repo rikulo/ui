@@ -34,7 +34,7 @@ implements TreeSelectionModel<T> {
   }
 
   //TreeModel//
-  T get root() => _root;
+  T get root => _root;
   /** Sets the root of the tree model.
    */
   void set root(T root) {
@@ -66,7 +66,7 @@ implements TreeSelectionModel<T> {
   int _childCount(T parent) => isLeaf(parent) ? 0: getChildCount(parent);
 
   //Open//
-  Set<T> get opens() => _opens;
+  Set<T> get opens => _opens;
   void set opens(Collection<T> opens) {
     if (_opens != opens) {
       _opens.clear();

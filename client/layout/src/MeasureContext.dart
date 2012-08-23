@@ -294,6 +294,6 @@ class MeasureContext {
    * Note: the name of the attribute can't start with "rk.", which is reserved
    * for internal use.
    */
-  Map<String, Dynamic> get dataAttributes()
+  Map<String, Dynamic> get dataAttributes
   => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
 }

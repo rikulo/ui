@@ -32,8 +32,8 @@ implements Selection<T>, Disables<T> {
   }
 
   //Selection//
-  T get selectedValue() => ListUtil.first(_selection);
-  Set<T> get selection() => _selection;
+  T get selectedValue => ListUtil.first(_selection);
+  Set<T> get selection => _selection;
 
   void set selection(Collection<T> selection) {
     if (!_equals(_selection, selection)) {
@@ -78,7 +78,7 @@ implements Selection<T>, Disables<T> {
   }
 
   //@Override
-  bool get multiple() => _multiple;
+  bool get multiple => _multiple;
   //@Override
   void set multiple(bool multiple) {
     if (_multiple != multiple) {
@@ -95,7 +95,7 @@ implements Selection<T>, Disables<T> {
   }
 
   //Disables//
-  Set<T> get disables() => _disables;
+  Set<T> get disables => _disables;
   void set disables(Collection<T> disables) {
     if (!_equals(_disables, disables)) {
       _disables.clear();

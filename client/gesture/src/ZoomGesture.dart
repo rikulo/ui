@@ -8,52 +8,52 @@ interface ZoomGestureState extends GestureState {
   
   /** The associated [ZoomGesture].
    */
-  _ZoomGesture get gesture();
+  _ZoomGesture get gesture;
   
   /** The initial touch positions.
    */
-  List<Offset> get startPositions();
+  List<Offset> get startPositions;
   
   /** The midpoint of the two initial touch positions.
    */
-  Offset get startMidpoint();
+  Offset get startMidpoint;
   
   /** The timestamp at which the gesture starts.
    */
-  int get startTime();
+  int get startTime;
   
   /** The current positions of gesture touches.
    */
-  List<Offset> get positions();
+  List<Offset> get positions;
   
   /** The midpoint of the two current touch positions.
    */
-  Offset get midpoint();
+  Offset get midpoint;
   
   /** The transition component in the gesture, which is defined by the 
    * displacement of the middle point of the two fingers.
    */
-  Offset get transition();
+  Offset get transition;
   
   /** The scalar component in the gesture, which is defined by the ratio
    * between the current finger distance and the initial finger distance.
    */
-  num get scalar();
+  num get scalar;
   
   /** The rotation component in the gesture, which is defined as the unit 
    * vector representing the relative angular change between the fingers.
    */
-  Offset get rotation();
+  Offset get rotation;
   
   /** The rotation component in terms of angle, in the unit of radian.
    */
-  num get angle();
+  num get angle;
   
   /** The CSS-compatible martix representing the linear transformation of the
    * gesture state. The transformation origin is the midpoint of the start
    * positions.
    */
-  Transformation get transformation(); // TODO: shall supply better assistance
+  Transformation get transformation; // TODO: shall supply better assistance
   
 }
 
@@ -87,34 +87,34 @@ class _ZoomGestureState implements ZoomGestureState {
     }
   }
   
-  List<Offset> get startPositions() => [_startPos0, _startPos1];
+  List<Offset> get startPositions => [_startPos0, _startPos1];
   
-  List<Offset> get positions() => [_pos0, _pos1];
+  List<Offset> get positions => [_pos0, _pos1];
   
-  Offset get startMidpoint() => _startMid;
+  Offset get startMidpoint => _startMid;
   
-  Offset get midpoint() => (_pos0 + _pos1) / 2;
+  Offset get midpoint => (_pos0 + _pos1) / 2;
   
-  int get time() => _time;
+  int get time => _time;
   
-  Offset get transition() => midpoint - _startMid;
+  Offset get transition => midpoint - _startMid;
   
-  num get scalar() => (_pos1 - _pos0).norm() / _scaleBase;
+  num get scalar => (_pos1 - _pos0).norm() / _scaleBase;
   
-  num get angle() {
+  num get angle {
     Offset r = rotation;
     return r.x.abs() < r.y.abs() ? 
         (r.y < 0 ? -acos(r.x) : acos(r.x)) : 
         (r.x < 0 ? r.y < 0 ? -PI - asin(r.y) : PI - asin(r.y) : asin(r.y));
   }
   
-  Offset get rotation() {
+  Offset get rotation {
     final Offset diff = _pos1 - _pos0;
     final num cx = diff.x, cy = diff.y, ix = _startDir.x, iy = _startDir.y;
     return new Offset(cx*ix + cy*iy, cy*ix - cx*iy).unit();
   }
   
-  Transformation get transformation() {
+  Transformation get transformation {
     final Offset tr = transition, ro = rotation * scalar;
     return new Transformation(ro.x, -ro.y, tr.x, ro.y, ro.x, tr.y);
   }
@@ -161,7 +161,7 @@ interface ZoomGesture extends Gesture default _ZoomGesture {
   
   /** The element to which the gesture applies.
    */
-  Element get owner();
+  Element get owner;
   
 }
 

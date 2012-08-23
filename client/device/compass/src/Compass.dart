@@ -23,7 +23,7 @@ interface Compass {
 class AbstractCompass implements Compass {
   CompassHeadingEvents _on;
   
-  CompassHeadingEvents get on() {
+  CompassHeadingEvents get on {
     if (_on == null)
       _on = new CompassHeadingEvents._init(this);
     return _on;

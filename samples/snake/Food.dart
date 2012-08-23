@@ -7,13 +7,13 @@ class Food {
   
   Food(this.snakeEnvironment);
   
-  int get x() => _x;
+  int get x => _x;
   set x(int value) {
     _x = value;
     redraw = true;
   }
   
-  int get y() => _y;
+  int get y => _y;
   set y(int value) {
     _y = value;
     redraw = true;

@@ -22,9 +22,9 @@ class Viewport extends View {
   }
 
   //@Override
-  String get className() => "Viewport"; //TODO: replace with reflection if Dart supports it
+  String get className => "Viewport"; //TODO: replace with reflection if Dart supports it
 
-  String get title() => _title;
+  String get title => _title;
   void set title(String title) {
     if (title == null) title = "";
     _title = title;
@@ -33,7 +33,7 @@ class Viewport extends View {
       getNode("title").innerHTML = title;
   }
 
-  View get toolbar() => _toolbar;
+  View get toolbar => _toolbar;
   void set toolbar(View tbar) {
     if (_toolbar != null)
       _toolbar.removeFromParent();
@@ -54,7 +54,7 @@ class Viewport extends View {
   }
 
   //@Override to returns the element representing the inner element.
-  Element get contentNode() => getNode("inner");
+  Element get contentNode => getNode("inner");
   //@Override to skip the toolbar
   bool shallLayout_(View child) => child !== _toolbar && super.shallLayout_(child);
   //@Override
@@ -111,9 +111,9 @@ class Viewport extends View {
       _syncToolbar();
   }
   //@Override
-  int get innerWidth() => new DOMQuery(contentNode).innerWidth;
+  int get innerWidth => new DOMQuery(contentNode).innerWidth;
   //@Override
-  int get innerHeight() => new DOMQuery(contentNode).innerHeight;
+  int get innerHeight => new DOMQuery(contentNode).innerHeight;
   //@Override to adjust [contentNode]'s width accordingly
   void set width(int width) {
     super.width = width;

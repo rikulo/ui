@@ -15,25 +15,25 @@ class MapTypeId implements JSAgent {
   
   //built-in map types
   static MapTypeId _roadmap;
-  static MapTypeId get ROADMAP() { //displays the default road map view
+  static MapTypeId get ROADMAP { //displays the default road map view
     if (_roadmap == null)
       _roadmap = new MapTypeId("ROADMAP");
     return _roadmap;
   }
   static MapTypeId _satellite;
-  static MapTypeId get SATELLITE() { // displays Google Earth satellite images
+  static MapTypeId get SATELLITE { // displays Google Earth satellite images
     if (_satellite == null)
       _satellite = new MapTypeId("SATELLITE");
     return _satellite;
   }
   static MapTypeId _hybrid;
-  static MapTypeId get HYBRID() {  // displays a mixture of normal and satellite views
+  static MapTypeId get HYBRID {  // displays a mixture of normal and satellite views
     if (_hybrid == null)
       _hybrid = new MapTypeId("HYBRID");
     return _hybrid;
   }
   static MapTypeId _terrain; 
-  static MapTypeId get TERRAIN() { // displays a physical map based on terrain information.
+  static MapTypeId get TERRAIN { // displays a physical map based on terrain information.
     if (_terrain == null)
       _terrain = new MapTypeId("TERRAIN");
     return _terrain;
@@ -46,7 +46,7 @@ class MapTypeId implements JSAgent {
     _initJSFunctions();
   }
   
-  String get name() => this._key; 
+  String get name => this._key; 
   
   toJSObject() { //must make it a lazy initial to fit timing of maps module loading
     if (_jsMapTypeId == null) {

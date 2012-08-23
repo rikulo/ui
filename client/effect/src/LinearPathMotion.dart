@@ -37,6 +37,6 @@ class LinearPathMotion extends EasingMotion {
   
   /** Retrieve the current position of the element.
    */
-  Offset get currentPosition() => _pos;
+  Offset get currentPosition => _pos;
   
 }

@@ -145,7 +145,7 @@ int _anchorHeight(var anchor, View view)
 => anchor === view.parent ? anchor.innerHeight: anchor.outerHeight;
 
 //TODO: use const when Dart considers Closure as constant
-List<_AnchorHandler> get _anchorXHandlers() {
+List<_AnchorHandler> get _anchorXHandlers {
   if (_$anchorXHandlers == null)
     _$anchorXHandlers = [
       (int offset, var anchor, View view) { //outer left
@@ -167,7 +167,7 @@ List<_AnchorHandler> get _anchorXHandlers() {
   return _$anchorXHandlers;
 }
 List<_AnchorHandler> _$anchorXHandlers;
-List<_AnchorHandler> get _anchorYHandlers() {
+List<_AnchorHandler> get _anchorYHandlers {
   if (_$anchorYHandlers == null)
     _$anchorYHandlers = [
       (int offset, var anchor, View view) {
@@ -193,18 +193,18 @@ List<_AnchorHandler> _$anchorYHandlers;
 //Used by _locateRoot to simulate an achor for root views
 class _AnchorOfRoot {
   const _AnchorOfRoot();
-  int get outerWidth() => browser.size.width;
-  int get innerWidth() => browser.size.width;
-  int get outerHeight() => browser.size.height;
-  int get innerHeight() => browser.size.height;
+  int get outerWidth => browser.size.width;
+  int get innerWidth => browser.size.width;
+  int get outerHeight => browser.size.height;
+  int get innerHeight => browser.size.height;
 }
 final _anchorOfRoot = const _AnchorOfRoot();
 
 class _AnchorOfPoint {
   const _AnchorOfPoint();
-  int get outerWidth() => 0;
-  int get innerWidth() => 0;
-  int get outerHeight() => 0;
-  int get innerHeight() => 0;
+  int get outerWidth => 0;
+  int get innerWidth => 0;
+  int get outerHeight => 0;
+  int get innerHeight => 0;
 }
 final _anchorOfPoint = const _AnchorOfPoint();

@@ -8,7 +8,7 @@ class AccelerationEvent {
   final Accelerometer target;
   final Acceleration acceleration;
   /** Returns the time stamp. */
-  int get timeStamp() => acceleration.timeStamp;
+  int get timeStamp => acceleration.timeStamp;
 }
 
 class AccelerationErrorEvent {

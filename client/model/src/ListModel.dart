@@ -29,7 +29,7 @@ interface ListModel<T> extends DataModel default DefaultListModel<T> {
   T operator [](int index);
   /** Returns the length of the list.
    */
-  int get length();
+  int get length;
 }
 
 /** A data model representing a list of data and it allows the user

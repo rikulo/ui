@@ -14,25 +14,25 @@ class CordovaDevice implements Device {
   static final String _ADD_EVENT_LISTENER = "devi.6";
   static final String _INIT_CORDOVA = "devi.7";
   
-  String get name() => JSUtil.jsCall(_NAME); //name of this device
-//  String get cordovaVersion() => jsutil.jsCall(_CORDOVA); //version of Cordova running on the device
-  String get platform() => JSUtil.jsCall(_PLATFORM); //operating system name of this device
-  String get version() => JSUtil.jsCall(_VERSION); //operating system version of this device
-  String get uuid() => JSUtil.jsCall(_UUID); //uuid of this device
+  String get name => JSUtil.jsCall(_NAME); //name of this device
+//  String get cordovaVersion => jsutil.jsCall(_CORDOVA); //version of Cordova running on the device
+  String get platform => JSUtil.jsCall(_PLATFORM); //operating system name of this device
+  String get version => JSUtil.jsCall(_VERSION); //operating system version of this device
+  String get uuid => JSUtil.jsCall(_UUID); //uuid of this device
 
   Map<String, Dynamic> services; //services
   
   Task _readyFunction;
   bool _ready; //indicate whether the device is ready for access
 
-  Accelerometer get accelerometer() => services["accelerometer"];
-  Camera get camera() => services["camera"];
-  Capture get capture() => services["capture"];
-  Compass get compass() => services["compass"];
-  Connection get connection() => services["connection"];
-  Contacts get contacts() => services["contacts"];
-  XGeolocation get geolocation() => services["geolocation"];
-  XNotification get notification() => services["notification"];
+  Accelerometer get accelerometer => services["accelerometer"];
+  Camera get camera => services["camera"];
+  Capture get capture => services["capture"];
+  Compass get compass => services["compass"];
+  Connection get connection => services["connection"];
+  Contacts get contacts => services["contacts"];
+  XGeolocation get geolocation => services["geolocation"];
+  XNotification get notification => services["notification"];
   
   CordovaDevice([String serviceURI = "cordova.js", 
                 List<String> serviceNames = const ["accelerometer", "camera", "capture", "compass", "connection", "contacts", "geolocation", "notification"]]) {

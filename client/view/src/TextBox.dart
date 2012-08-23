@@ -18,11 +18,11 @@ class TextBox extends View implements Input<String> {
   }
 
   //@Override
-  String get className() => "TextBox"; //TODO: replace with reflection if Dart supports it
+  String get className => "TextBox"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the type of data being placed in this text box.
    */
-  String get type() => _type;
+  String get type => _type;
   /** Sets the type of data being placed in this text box.
    *
    * Default: text.
@@ -59,11 +59,11 @@ class TextBox extends View implements Input<String> {
   }
   /** Returns whether it allows the user to enter multiple lines of text.
    */
-  bool get _multiline() => _type == "multiline";
+  bool get _multiline => _type == "multiline";
 
   /** Returns the value of this text box.
    */
-  String get value() {
+  String get value {
     return inDocument ? (inputNode as Dynamic).value: _value;
   }
   /** Sets the value of this text box.
@@ -80,7 +80,7 @@ class TextBox extends View implements Input<String> {
    *
    * Default: false.
    */
-  bool get disabled() => _disabled;
+  bool get disabled => _disabled;
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
@@ -93,7 +93,7 @@ class TextBox extends View implements Input<String> {
    *
    * Default: false.
    */
-  bool get autofocus() => _autofocus;
+  bool get autofocus => _autofocus;
   /** Sets whether this input should automatically get focus.
    */
   void set autofocus(bool autofocus) {
@@ -109,7 +109,7 @@ class TextBox extends View implements Input<String> {
    *
    * Default: true (enabled).
    */
-  bool get autocomplete() => _autocomplete;
+  bool get autocomplete => _autocomplete;
   /** Sets whether to predict the value based on ealier typed value.
    */
   void set autocomplete(bool autocomplete) {
@@ -124,7 +124,7 @@ class TextBox extends View implements Input<String> {
    *
    * Default: an empty string.
    */
-  String get placeholder() => _placeholder;
+  String get placeholder => _placeholder;
   /** Returns a short hint that describes this text box.
    *
    * Default: an empty string.
@@ -139,7 +139,7 @@ class TextBox extends View implements Input<String> {
    *
    * Default: 20.
    */
-  int get cols() => _cols;
+  int get cols => _cols;
   /** Sets the width of this text box in average character width.
    *
    * Default: 20.
@@ -158,7 +158,7 @@ class TextBox extends View implements Input<String> {
    *
    * Notice that it is meaningful only if [type] is "multiline".
    */
-  int get rows() => _rows;
+  int get rows => _rows;
   /** Sets the height of this text box in number of lines.
    *
    * Default: 2.
@@ -175,7 +175,7 @@ class TextBox extends View implements Input<String> {
    *
    * Default: -1 (no limitation).
    */
-  int get maxLength() => _maxLength;
+  int get maxLength => _maxLength;
   /** Sets the maximal allowed number of characters.
    *
    * Default: 0 (no limitation).
@@ -189,7 +189,7 @@ class TextBox extends View implements Input<String> {
   /** Returns the INPUT element in this view.
    * It could be an instance of InputElement or TextAreaElement
    */
-  Element get inputNode() => node;
+  Element get inputNode => node;
 
   //@Override
   void unmount_() {
@@ -215,7 +215,7 @@ class TextBox extends View implements Input<String> {
    *
    * Default: `input` or `textarea` if [mulitline].
    */
-  String get domTag_() => _multiline ? "textarea": "input";
+  String get domTag_ => _multiline ? "textarea": "input";
   //@Override
   void domInner_(StringBuffer out) {
     if (_multiline)

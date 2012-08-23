@@ -57,7 +57,7 @@ interface TreeModel<T> extends DataModel {
 	/**
 	 * Returns the root of the tree model.
 	 */
-	T get root();
+	T get root;
 	/**
 	 * Returns the child of the given parent at the given index where the index indicates
 	 * in the parent's child array.

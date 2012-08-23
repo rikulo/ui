@@ -77,7 +77,7 @@ class Application {
 
   /** Returns UUID representing this application.
    */
-  int get uuid() {
+  int get uuid {
     if (_uuid == null) {
       final Element body = document.body;
       if (body == null)
@@ -106,7 +106,7 @@ class Application {
  * Notice that you must initialize your custom application, before instantiating
  * your first activity.
  */
-Application get application() { //initialized by Activity
+Application get application { //initialized by Activity
   if (_app == null)
     _app = new Application();
   return _app;

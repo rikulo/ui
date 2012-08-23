@@ -10,7 +10,7 @@ class DeclarationImpl implements Declaration {
 
   DeclarationImpl(): _props = new Map();
 
-  String get text() {
+  String get text {
     final StringBuffer sb = new StringBuffer();
     for (final String key in _props.getKeys())
       sb.add(key).add(':').add(_props[key]).add(';');

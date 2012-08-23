@@ -68,7 +68,7 @@ class Browser {
   /** Returns the URL of this page.
    * For example, "http://www.yourserver.com" and "file://".
    */
-  String get url() {
+  String get url {
     final Location l = window.location;
     final StringBuffer sb = new StringBuffer();
     sb.add(l.protocol).add("//").add(l.hostname);

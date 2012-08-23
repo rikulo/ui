@@ -7,7 +7,7 @@ class PositionEvent {
 
   final XGeolocation target;
   final Position position;
-  int get timeStamp() => position.timeStamp;
+  int get timeStamp => position.timeStamp;
 }
 
 class PositionErrorEvent {

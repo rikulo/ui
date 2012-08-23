@@ -45,7 +45,7 @@ class _OnDemandMap<K, V> implements Map<K,V> {
   Collection<K> getKeys() => _map != null ? _map.getKeys(): ListUtil.emptyCollection;
   Collection<V> getValues() => _map != null ? _map.getValues(): ListUtil.emptyCollection;
   bool isEmpty() => _map == null || _map.isEmpty();
-  int get length() => _map != null ? _map.length: 0;
+  int get length => _map != null ? _map.length: 0;
   V putIfAbsent(K key, V ifAbsent()) => _init().putIfAbsent(key, ifAbsent);
   V remove(K key) => _map != null ? _map.remove(key): null;
 }

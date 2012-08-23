@@ -27,7 +27,7 @@ class LayoutAmountType {
   const LayoutAmountType(String this._name);
 
   /** The name of this direction. */
-  String get name() => _name;
+  String get name => _name;
 
   operator==(other) => this === other;
   String toString() => _name;

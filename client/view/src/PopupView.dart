@@ -74,12 +74,12 @@ class PopupView extends View {
   PopupView([int this.dismissTimeout=0, bool this.dismissOnClickOutside=true]);
 
   //@Override
-  String get className() => "PopupView"; //TODO: replace with reflection if Dart supports it
+  String get className => "PopupView"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the reference DOM element that is placed under its parent's DOM element.
    * It is used as a reference to insert a sibling.
    */
-  Element get refNode() => getNode("ref");
+  Element get refNode => getNode("ref");
   /** Dismisses the popup view.
    *
    * Default: sending the `dismiss` event to itself, and hide this view.

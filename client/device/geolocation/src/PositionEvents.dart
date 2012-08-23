@@ -12,7 +12,7 @@ interface PositionEvents default _PositionEvents {
 
   /** A list of event listeners for the position event.
    */
-  PositionEventListenerList get position();
+  PositionEventListenerList get position;
 
   /** Tests if the given event type is listened.
    */
@@ -93,7 +93,7 @@ class _PositionEvents implements PositionEvents {
     final p = _lnlist[type];
     return p == null || p.isEmpty();
   }
-  PositionEventListenerList get position() => _get("position");
+  PositionEventListenerList get position => _get("position");
 }
 class _WatchIDInfo {
   final listener;

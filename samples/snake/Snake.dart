@@ -16,7 +16,7 @@ class Snake {
     }
   }
   
-  int get direction() => _direction;
+  int get direction => _direction;
   
   set direction(int value) {
     if((_direction + value) != 0) {

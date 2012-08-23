@@ -49,7 +49,7 @@ class GLoader {
       _loaderModule = new LoadableModule(_loadModule);
   }
   
-  static Map get _ipLatLng() {
+  static Map get _ipLatLng {
     if (_loc == null)
       _loc = JSUtil.toDartMap(JSUtil.jsCall(_IP_LOCATION));
     return _loc;

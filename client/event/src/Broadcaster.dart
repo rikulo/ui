@@ -8,7 +8,7 @@
 interface Broadcaster {
   /** Returns [BroadcastEvents] for adding or removing event listeners.
    */
-  BroadcastEvents get on();
+  BroadcastEvents get on;
   /** Broadcasts an event to all registered listeners.
    */
   bool sendEvent(ViewEvent event, [String type]);
@@ -20,7 +20,7 @@ interface Broadcaster {
 }
 /** The broadcaster used to broadcast events.
  */
-Broadcaster get broadcaster() {
+Broadcaster get broadcaster {
   if (_broadcaster == null)
     _broadcaster = new _Broadcaster();
   return _broadcaster;
@@ -35,7 +35,7 @@ interface BroadcastEvents extends ViewEventListenerMap default _BroadcastEvents 
 
   /** Listeners for the popup event ([PopupEvent]).
    */
-  ViewEventListenerList get popup();
+  ViewEventListenerList get popup;
 }
 
 /** An implementation of [BroadcastEvents].
@@ -43,7 +43,7 @@ interface BroadcastEvents extends ViewEventListenerMap default _BroadcastEvents 
 class _BroadcastEvents extends _ViewEventListenerMap implements BroadcastEvents {
   _BroadcastEvents(var ptr): super(ptr);
 
-  ViewEventListenerList get popup() => _get('popup');
+  ViewEventListenerList get popup => _get('popup');
 }
 
 /** An implementation of [Broadcaster].
@@ -57,7 +57,7 @@ class _Broadcaster implements Broadcaster {
     _on = new BroadcastEvents(_listeners);
   }
 
-  BroadcastEvents get on() => _on;
+  BroadcastEvents get on => _on;
 
   bool sendEvent(ViewEvent event, [String type])
   => _listeners.send(event, type);

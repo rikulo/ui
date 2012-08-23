@@ -35,27 +35,27 @@ interface ViewEventListenerMap default _ViewEventListenerMap {
 interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
   ViewEvents(var ptr);
 
-  ViewEventListenerList get blur();
-  ViewEventListenerList get change();
-  ViewEventListenerList get click();
-  ViewEventListenerList get focus();
-  ViewEventListenerList get keyDown();
-  ViewEventListenerList get keyPress();
-  ViewEventListenerList get keyUp();
-  ViewEventListenerList get mouseDown();
-  ViewEventListenerList get mouseMove();
-  ViewEventListenerList get mouseOut();
-  ViewEventListenerList get mouseOver();
-  ViewEventListenerList get mouseUp();
-  ViewEventListenerList get mouseWheel();
-  ViewEventListenerList get scroll();
+  ViewEventListenerList get blur;
+  ViewEventListenerList get change;
+  ViewEventListenerList get click;
+  ViewEventListenerList get focus;
+  ViewEventListenerList get keyDown;
+  ViewEventListenerList get keyPress;
+  ViewEventListenerList get keyUp;
+  ViewEventListenerList get mouseDown;
+  ViewEventListenerList get mouseMove;
+  ViewEventListenerList get mouseOut;
+  ViewEventListenerList get mouseOver;
+  ViewEventListenerList get mouseUp;
+  ViewEventListenerList get mouseWheel;
+  ViewEventListenerList get scroll;
 
   /** A list of event listeners for indicating
    * the selection state of a view is changed.
    *
    * The event is an instance of [SelectEvent].
    */
-  ViewEventListenerList get select();
+  ViewEventListenerList get select;
   /** A list of event listeners for indicating
    * a view has re-rendered itself because
    * its data model has been changed.
@@ -69,14 +69,14 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
    * For example, the height of [DropDownList] will be changed if
    * the multiple state is changed.
    */
-  ViewEventListenerList get render();
+  ViewEventListenerList get render;
 
   /** A list of event listeners for indicating a popup is about to be dismessed.
    * The event is sent to the popup being dismissed.
    *
    * The event is an instance of [ViewEvent].
    */
-  ViewEventListenerList get dismiss();
+  ViewEventListenerList get dismiss;
 
   /** A list of event listeners for indicating
    * the layout of a view and all of its descendant views
@@ -84,42 +84,42 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
    *
    * The event is an instance of [LayoutEvent].
    */
-  ViewEventListenerList get layout();
+  ViewEventListenerList get layout;
   /** A list of event listeners for indicating
    * the layout of a view is going to be handled.
    * It is sent before handling this view and any of its descendant views.
    *
    * The event is an instance of [LayoutEvent].
    */
-  ViewEventListenerList get preLayout();
+  ViewEventListenerList get preLayout;
   /** A list of event listeners for indicating
    * a view has been attached to a document.
    *
    * The event is an instance of [ViewEvent].
    */
-  ViewEventListenerList get mount();
+  ViewEventListenerList get mount;
   /** A list of event listeners for indicating
    * a view has been detached from a document.
    *
    * The event is an instance of [ViewEvent].
    */
-  ViewEventListenerList get unmount();
+  ViewEventListenerList get unmount;
   
   /** A list of event listeners for indicating the start of a scrolling.
    * The event is an instance of [ScrollEvent].
    */
-  ViewEventListenerList get scrollStart();
+  ViewEventListenerList get scrollStart;
   
   /** A list of event listeners for indicating the move of a scrolling.
    * The event is an instance of [ScrollEvent]. This event will be continuously
    * fired at each iteration where the scroll position is updated.
    */
-  ViewEventListenerList get scrollMove();
+  ViewEventListenerList get scrollMove;
   
   /** A list of event listeners for indicating the end of a scrolling.
    * The event is an instance of [ScrollEvent].
    */
-  ViewEventListenerList get scrollEnd();
+  ViewEventListenerList get scrollEnd;
   
 }
 
@@ -166,34 +166,34 @@ class _ViewEvents extends _ViewEventListenerMap implements ViewEvents {
   _ViewEvents(var ptr): super(ptr) {
   }
 
-  ViewEventListenerList get blur() => _get('blur');
-  ViewEventListenerList get change() => _get('change');
-  ViewEventListenerList get click() => _get('click');
-  ViewEventListenerList get focus() => _get('focus');
-  ViewEventListenerList get keyDown() => _get('keyDown');
-  ViewEventListenerList get keyPress() => _get('keyPress');
-  ViewEventListenerList get keyUp() => _get('keyUp');
-  ViewEventListenerList get mouseDown() => _get('mouseDown');
-  ViewEventListenerList get mouseMove() => _get('mouseMove');
-  ViewEventListenerList get mouseOut() => _get('mouseOut');
-  ViewEventListenerList get mouseOver() => _get('mouseOver');
-  ViewEventListenerList get mouseUp() => _get('mouseUp');
-  ViewEventListenerList get mouseWheel() => _get('mouseWheel');
-  ViewEventListenerList get scroll() => _get('scroll');
+  ViewEventListenerList get blur => _get('blur');
+  ViewEventListenerList get change => _get('change');
+  ViewEventListenerList get click => _get('click');
+  ViewEventListenerList get focus => _get('focus');
+  ViewEventListenerList get keyDown => _get('keyDown');
+  ViewEventListenerList get keyPress => _get('keyPress');
+  ViewEventListenerList get keyUp => _get('keyUp');
+  ViewEventListenerList get mouseDown => _get('mouseDown');
+  ViewEventListenerList get mouseMove => _get('mouseMove');
+  ViewEventListenerList get mouseOut => _get('mouseOut');
+  ViewEventListenerList get mouseOver => _get('mouseOver');
+  ViewEventListenerList get mouseUp => _get('mouseUp');
+  ViewEventListenerList get mouseWheel => _get('mouseWheel');
+  ViewEventListenerList get scroll => _get('scroll');
 
-  ViewEventListenerList get dismiss() => _get("dismiss");
+  ViewEventListenerList get dismiss => _get("dismiss");
 
-  ViewEventListenerList get layout() => _get("layout");
-  ViewEventListenerList get preLayout() => _get("preLayout");
-  ViewEventListenerList get mount() => _get("mount");
-  ViewEventListenerList get unmount() => _get("unmount");
+  ViewEventListenerList get layout => _get("layout");
+  ViewEventListenerList get preLayout => _get("preLayout");
+  ViewEventListenerList get mount => _get("mount");
+  ViewEventListenerList get unmount => _get("unmount");
 
-  ViewEventListenerList get check() => _get("check");
-  ViewEventListenerList get select() => _get("select");
-  ViewEventListenerList get render() => _get("render");
+  ViewEventListenerList get check => _get("check");
+  ViewEventListenerList get select => _get("select");
+  ViewEventListenerList get render => _get("render");
   
-  ViewEventListenerList get scrollStart() => _get("scrollStart");
-  ViewEventListenerList get scrollMove() => _get("scrollMove");
-  ViewEventListenerList get scrollEnd() => _get("scrollEnd");
+  ViewEventListenerList get scrollStart => _get("scrollStart");
+  ViewEventListenerList get scrollMove => _get("scrollMove");
+  ViewEventListenerList get scrollEnd => _get("scrollEnd");
   
 }

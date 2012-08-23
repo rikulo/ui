@@ -34,12 +34,12 @@ class RadioGroup<T> extends View {
   }
 
   //@Override
-  String get className() => "RadioGroup"; //TODO: replace with reflection if Dart supports it
+  String get className => "RadioGroup"; //TODO: replace with reflection if Dart supports it
 
   //Model//
   /** Returns the model.
    */
-  ListModel<T> get model() => _model;
+  ListModel<T> get model => _model;
   /** Sets the model.
    */
   void set model(ListModel<T> model) {
@@ -95,7 +95,7 @@ class RadioGroup<T> extends View {
    * it as the label of the radio button or check box (depending on if it allows
    * mulitple selection).
    */
-  HTMLRenderer get renderer() => _renderer;
+  HTMLRenderer get renderer => _renderer;
   /** Sets the renderer used to render the given model ([model]).
    * If null, the default implementation is used.
    */

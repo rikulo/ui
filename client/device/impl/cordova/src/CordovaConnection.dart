@@ -10,7 +10,7 @@ class CordovaConnection implements Connection {
   CordovaConnection() {
     _initJSFunctions();
   }
-  String get type() {
+  String get type {
     return JSUtil.jsCall(_TYPE);
   }
   

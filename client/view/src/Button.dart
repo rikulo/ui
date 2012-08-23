@@ -20,13 +20,13 @@ class Button extends TextView {
   Button.html(String html): super.html(html);
 
   //@Override
-  String get className() => "Button"; //TODO: replace with reflection if Dart supports it
+  String get className => "Button"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the button type.
    *
    * Default: "button".
    */
-  String get type() => _type;
+  String get type => _type;
   /** Sets the button type.
    *
    * + [type] can be either `button`, `submit` or `reset`.
@@ -41,7 +41,7 @@ class Button extends TextView {
    *
    * Default: false.
    */
-  bool get disabled() => _disabled;
+  bool get disabled => _disabled;
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
@@ -55,7 +55,7 @@ class Button extends TextView {
    *
    * Default: false.
    */
-  bool get autofocus() => _autofocus;
+  bool get autofocus => _autofocus;
   /** Sets whether this button should automatically get focus.
    */
   void set autofocus(bool autofocus) {
@@ -77,5 +77,5 @@ class Button extends TextView {
    *
    * Default: `button`.
    */
-  String get domTag_() => "button";
+  String get domTag_ => "button";
 }

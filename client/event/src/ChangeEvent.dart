@@ -12,7 +12,7 @@ class ChangeEvent<T> extends ViewEvent {
 
   /** Returns the value.
    */
-  T get value() => _value;
+  T get value => _value;
 
   String toString() => "ChangeEvent($target,$value)";
 }

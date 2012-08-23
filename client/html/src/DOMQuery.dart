@@ -24,30 +24,30 @@ class DOMQuery {
    *
    * Note for JavaScript programmers, it is called clientWidth in JavaScript.
    */
-  int get innerWidth() => node.$dom_clientWidth;
+  int get innerWidth => node.$dom_clientWidth;
   /** Returns the inner height of the given element, including padding
    * but not including border, margin and scroll bar.
    *
    * Note for JavaScript programmers, it is called clientHeight in JavaScript.
    */
-  int get innerHeight() => node.$dom_clientHeight;
+  int get innerHeight => node.$dom_clientHeight;
   /** Returns the inner size of the given element, including padding
    * but not border.
    */
-  Size get innerSize() => new Size(innerWidth, innerHeight);
+  Size get innerSize => new Size(innerWidth, innerHeight);
 
   /** Returns the outer width of the given element, including padding,
    * border and margin.
    */
-  int get outerWidth() => node.$dom_offsetWidth;
+  int get outerWidth => node.$dom_offsetWidth;
   /** Returns the outer width of the given element, including padding,
    * border and margin.
    */
-  int get outerHeight() => node.$dom_offsetHeight;
+  int get outerHeight => node.$dom_offsetHeight;
   /** Returns the outer size of the given element, including padding,
    * border and margin.
    */
-  Size get outerSize() => new Size(outerWidth, outerHeight);
+  Size get outerSize => new Size(outerWidth, outerHeight);
 
   /** Returns the total width of the given element's content, including padding
    * but not including border, margin and scroll bar.
@@ -57,7 +57,7 @@ class DOMQuery {
    *
    * Note for JavaScript programmers, it is called scrollWidth in JavaScript.
    */
-  int get contentWidth() => node.$dom_scrollWidth;
+  int get contentWidth => node.$dom_scrollWidth;
   /** Returns the total height of the given element's content, including padding
    * but not including border, margin and scroll bar.
    *
@@ -66,11 +66,11 @@ class DOMQuery {
    *
    * Note for JavaScript programmers, it is called scrollHeight in JavaScript.
    */
-  int get contentHeight() => node.$dom_scrollHeight;
+  int get contentHeight => node.$dom_scrollHeight;
   /** Returns the total size of the given element's content, including padding
    * but not including border, margin and scroll bar.
    */
-  Size get contentSize() => new Size(contentWidth, contentHeight);
+  Size get contentSize => new Size(contentWidth, contentHeight);
 
   /** Returns the closest ancestor elemento in the DOM hierachy from
    * which the position of the current element is calculated, or null
@@ -80,19 +80,19 @@ class DOMQuery {
    * the top-left corner of an object relative to the top-left corner
    * of its offset parent object.
    */
-  Element get offsetParent() => node.offsetParent;
+  Element get offsetParent => node.offsetParent;
   /** Returns the left position of this element relative to the left side of
    * its [offsetParent] element.
    */
-  int get offsetLeft() => node.$dom_offsetLeft;
+  int get offsetLeft => node.$dom_offsetLeft;
   /** Returns the top position of this element relative to the top side of
    * its [offsetParent] element.
    */
-  int get offsetTop() => node.$dom_offsetTop;
+  int get offsetTop => node.$dom_offsetTop;
   /** Returns the left-top position of this element relative to the top side of
    * its [offsetParent] element.
    */
-  Offset get offset() => new Offset(node.$dom_offsetLeft, node.$dom_offsetTop);
+  Offset get offset => new Offset(node.$dom_offsetLeft, node.$dom_offsetTop);
 
   /** Returns the offset of this node relative to the document.
    * It takes into account any horizontal scrolling and the `transform` style.
@@ -104,7 +104,7 @@ class DOMQuery {
    * In additions, it ignores the translation in z axis (i.e., it ignores
    * the third argument of `translate3d`).
    */
-  Offset get pageOffset() {
+  Offset get pageOffset {
     //1. adds up cumulative offsetLeft/offsetTop
     final ofs = new Offset(0, 0);
     Element el = node;
@@ -129,7 +129,7 @@ class DOMQuery {
   }
   /** Returns the final used values of all the CSS properties
    */
-  CSSStyleDeclaration get computedStyle() 
+  CSSStyleDeclaration get computedStyle 
   => window.$dom_getComputedStyle(node, "");
 
   /** Returns if a DOM element is a descendant of this element or
@@ -149,19 +149,19 @@ class DOMQuery {
   
   /** Returns the width of the border.
    */
-  int get borderWidth() => CSS.intOf(computedStyle.borderWidth);
+  int get borderWidth => CSS.intOf(computedStyle.borderWidth);
   /** Returns the size of the padding at left.
    */
-  int get paddingLeft() => CSS.intOf(computedStyle.paddingLeft);
+  int get paddingLeft => CSS.intOf(computedStyle.paddingLeft);
   /** Returns the size of the padding at right.
    */
-  int get paddingRight() => CSS.intOf(computedStyle.paddingRight);
+  int get paddingRight => CSS.intOf(computedStyle.paddingRight);
   /** Returns the size of the padding at top.
    */
-  int get paddingTop() => CSS.intOf(computedStyle.paddingTop);
+  int get paddingTop => CSS.intOf(computedStyle.paddingTop);
   /** Returns the size of the padding at bottom.
    */
-  int get paddingBottom() => CSS.intOf(computedStyle.paddingBottom);
+  int get paddingBottom => CSS.intOf(computedStyle.paddingBottom);
 
   /** Measure the size of the given text.
    *
@@ -196,26 +196,26 @@ class DOMQuery {
 class _WindowQuery extends DOMQuery {
   _WindowQuery(var v): super._init(v) {}
 
-  int get innerWidth() => node.innerWidth;
-  int get innerHeight() => node.innerHeight;
-  int get outerWidth() => node.outerWidth;
-  int get outerHeight() => node.outerHeight;
-  int get contentWidth() => node.innerWidth;
-  int get contentHeight() => node.innerHeight;
-  Element get offsetParent() => null;
-  int get offsetLeft() => 0;
-  int get offsetTop() => 0;
-  Offset get offset() => new Offset(0, 0);
-  Offset get pageOffset() => offset;
+  int get innerWidth => node.innerWidth;
+  int get innerHeight => node.innerHeight;
+  int get outerWidth => node.outerWidth;
+  int get outerHeight => node.outerHeight;
+  int get contentWidth => node.innerWidth;
+  int get contentHeight => node.innerHeight;
+  Element get offsetParent => null;
+  int get offsetLeft => 0;
+  int get offsetTop => 0;
+  Offset get offset => new Offset(0, 0);
+  Offset get pageOffset => offset;
   bool isDescendantOf(Element parent) => false;
-  CSSStyleDeclaration get computedStyle() => new CSSStyleDeclaration();
+  CSSStyleDeclaration get computedStyle => new CSSStyleDeclaration();
 }
 class _NullQuery extends _WindowQuery {
   _NullQuery(): super(null);
-  int get innerWidth() => 0;
-  int get innerHeight() => 0;
-  int get outerWidth() => 0;
-  int get outerHeight() => 0;
-  int get contentWidth() => 0;
-  int get contentHeight() => 0;
+  int get innerWidth => 0;
+  int get innerHeight => 0;
+  int get outerWidth => 0;
+  int get outerHeight => 0;
+  int get contentWidth => 0;
+  int get contentHeight => 0;
 }

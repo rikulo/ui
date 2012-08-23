@@ -19,12 +19,12 @@ class ScrollView extends View {
   _contentSizeValue = contentSize, _contentSize = contentSize;
 
   //@Override
-  String get className() => "ScrollView"; //TODO: replace with reflection if Dart supports it
+  String get className => "ScrollView"; //TODO: replace with reflection if Dart supports it
   
   /** Return the view port size, which is determined by the inner size of the
    * node.
    */
-  Size get viewPortSize() => new DOMQuery(node).innerSize;
+  Size get viewPortSize => new DOMQuery(node).innerSize;
   
   /** Returns the total size of the content.
    * It shall cover all sub views (excluding invisible, anchored views).
@@ -35,7 +35,7 @@ class ScrollView extends View {
    * the size. In the latter case, it could be slow if there are a lot of 
    * children. Thus, if possible, it is encouraged to provide the content size.
    */
-  Size get contentSize() {
+  Size get contentSize {
     if (_contentSize == null) {
       if (_contentSizeValue != null)
         _contentSize = _contentSizeValue;
@@ -63,7 +63,7 @@ class ScrollView extends View {
   
   /** Retrieve content node.
    */
-  Element get contentNode() => getNode("inner");
+  Element get contentNode => getNode("inner");
   
   /** Called when scrolling starts.
    */
@@ -89,7 +89,7 @@ class ScrollView extends View {
   /** Return the [Scroller] associated with this scroll view. It is available
    * after mount.
    */
-  Scroller get scroller() => _scroller;
+  Scroller get scroller => _scroller;
   
   //@Override
   void onPreLayout_(MeasureContext mctx) {

@@ -57,7 +57,7 @@ class ViewEvent {
 
   /** The offset relative to [target]'s coordinate.
    */
-  Offset get offset() {
+  Offset get offset {
     if (!_offsetReady) {
       _offsetReady = true;
       try {
@@ -89,12 +89,12 @@ class ViewEvent {
 
   /** The DOM event that causes this view event, or null if not available.
    */
-  Event get domEvent() => _domEvt;
+  Event get domEvent => _domEvt;
 
   /** Returns the time stamp. */
-  int get timeStamp() => _stamp;
+  int get timeStamp => _stamp;
   /** Returns the event's type. */
-  String get type() => _type;
+  String get type => _type;
 
   /** Returns whether this event's propagation is stopped.
    *

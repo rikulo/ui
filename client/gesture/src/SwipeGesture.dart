@@ -8,27 +8,27 @@ interface SwipeGestureState extends GestureState {
   
   /** Retrieve the associated [SwipeGesture].
    */
-  SwipeGesture get gesture();
+  SwipeGesture get gesture;
   
   /** The timestamp when the swipe starts.
    */
-  int get startTime();
+  int get startTime;
   
   /** The touched/cursor position at the start of swipe.
    */
-  Offset get startPosition();
+  Offset get startPosition;
   
   /** The touched/cursor position at the end of swipe.
    */
-  Offset get position();
+  Offset get position;
   
   /** The displacement of the touched/cursor position of the swipe.
    */
-  Offset get transition();
+  Offset get transition;
   
   /** The current estimated velocity of movement.
    */
-  Offset get velocity();
+  Offset get velocity;
   
 }
 
@@ -56,7 +56,7 @@ interface SwipeGesture extends Gesture default _SwipeGesture {
   
   /** The element associated with this swipe gesture (never null).
    */
-  Element get owner();
+  Element get owner;
   
 }
 

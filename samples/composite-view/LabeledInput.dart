@@ -22,14 +22,14 @@ class LabeledInput extends View {
       sendEvent(new ChangeEvent(event.value, target: this));
       });
   }
-  String get label() => _label.text;
+  String get label => _label.text;
   void set label(String label) {
     _label.text = label;
   }
-  String get value() => _input.value;
+  String get value => _input.value;
   void set value(String value) {
     _input.value = value;
   }
   //@Override
-  String get className() => "LabeledInput"; //TODO: replace with reflection if Dart supports it
+  String get className => "LabeledInput"; //TODO: replace with reflection if Dart supports it
 }

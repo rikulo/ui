@@ -10,7 +10,7 @@ class Canvas extends View {
   }
 
   //@Override
-  String get className() => "Canvas"; //TODO: replace with reflection if Dart supports it
+  String get className => "Canvas"; //TODO: replace with reflection if Dart supports it
 
   /** Returns a drawing context for 2D on the canvas.
    * A drawing context lets you draw on the canvas.
@@ -18,18 +18,18 @@ class Canvas extends View {
    * Notice that it will throw an exception if it is not attached. In other words,
    * [inDocument] must be true when calling this method.
    */
-  CanvasRenderingContext2D get context2D() => canvasNode.getContext("2d");
+  CanvasRenderingContext2D get context2D => canvasNode.getContext("2d");
   /** Returns a drawing context for WebGL on the canvas, or null
    * if the browser doesn't support WebGL.
    *
    * Notice that it will throw an exception if it is not attached. In other words,
    * [inDocument] must be true when calling this method.
    */
-  WebGLRenderingContext get contextWebGL() => canvasNode.getContext("experimental-webgl");
+  WebGLRenderingContext get contextWebGL => canvasNode.getContext("experimental-webgl");
 
   /** Returns the canvas element. It is the same as [node].
    */
-  CanvasElement get canvasNode() => node;
+  CanvasElement get canvasNode => node;
 
   //@Override
   void set width(int width) {
@@ -53,5 +53,5 @@ class Canvas extends View {
 
     super.domAttrs_(out, noId, noStyle, noClass, noVisible);
   }
-  String get domTag_() => "canvas";
+  String get domTag_ => "canvas";
 }

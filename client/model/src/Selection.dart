@@ -10,13 +10,13 @@ interface Selection<T> {
   /**
    * Returns the first selected value, or null if none is selected.
    */
-  T get selectedValue();
+  T get selectedValue;
   /**
    * Returns the current selection.
    * It is readonly. Don't modify it directly. Otherwise, UI won't be
    * updated correctly.
    */
-  Set<T> get selection();
+  Set<T> get selection;
   /**
    * Replace the current selection with the given set.
    *
@@ -56,5 +56,5 @@ interface Selection<T> {
   /**
    * Returns whether the current selection mode is multiple.
    */
-  bool get multiple();
+  bool get multiple;
 }
