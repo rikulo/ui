@@ -120,11 +120,13 @@ class _Offset3d extends _Offset implements Offset3d {
  */
 class VelocityProvider {
   
-  Offset _pos, _vel = new Offset(0, 0);
+  Offset _pos, _vel;
   int _time;
   
   /** Initialize the provider with current time and position. */
-  VelocityProvider(Offset position, int time) : _pos = position, _time = time;
+  VelocityProvider(Offset position, int time) : _pos = position, _time = time {
+    _vel = new Offset(0, 0);
+  }
   
   /** Provide latest position and time. */
   void snapshot(Offset position, int time) {
