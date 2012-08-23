@@ -29,7 +29,7 @@ class TestZoom2 extends Activity {
     
     panel.addChild(img);
     mainView.addChild(panel);
-    img.node.draggable = false; 
+    img.node.draggable = false;
     
     Offset diff;
     Transformation trans;

@@ -4,7 +4,7 @@
 .photo {
 	border: 5px solid #EEEEEE;
 }
-.screen-mask {
+.photo-mask {
 	z-index: 50;
 }
 .photo-caption {
