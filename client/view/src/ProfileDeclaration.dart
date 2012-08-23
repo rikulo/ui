@@ -15,12 +15,12 @@ default ProfileDeclarationImpl {
    * Syntax: `anchor: | a_CSS_selector | parent`
    *
    * Default: *an empty string*.  
-   * It measn parent if [location] is specified.  
+   * It means parent if [location] is specified.  
    * Otherwise, it means no anchor at all if both [location] and [anchor]
    * are empty (and [anchorView] is null).
    */
   String anchor;
-  /** The anchor view. There are two ways to assign an achor view:
+  /** The anchor view. There are two ways to assign an anchor view:
    *
    * 1. assign a value to [anchor]
    * 2. assign a view to [anchorView].
@@ -101,7 +101,7 @@ default ProfileDeclarationImpl {
    * Otherwise, it will become zero.
    */
   String minWidth;
-  /** The expected minmal allowed width of the associated view.
+  /** The expected minimal allowed width of the associated view.
    *
    * Syntax: `min-height: #n | flex | #n %`
    *
@@ -153,4 +153,21 @@ default ProfileDeclarationImpl {
    * Otherwise, it will become zero.
    */
   String maxHeight;
+
+  /** Which side of the view won't display another sibling.
+   *
+   * Syntax: `clear: left | right | both`
+   *
+   * Default: *an empty string*. It means there is no limitation.
+   *
+   * The real meaning depends on the layout. Currently, only the following
+   * layouts support this property.
+   *
+   * ##[TileLayout]
+   *
+   * If `clear` is `left`, the view must be the first view in the row.  
+   * If `right`, the view must be the last view in the row.  
+   * If `both`, the view must be the only view in the row.
+   */
+  String clear;
 }

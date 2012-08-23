@@ -7,7 +7,7 @@
  * a single column or a single row. The direction is controlled by
  * [LayoutDeclaration.orient]. If not specified, it is default to `horizontal`.
  */
-class LinearLayout implements Layout {
+class LinearLayout extends AbstractLayout {
   static _RealLinearLayout _getRealLayout(view) //horizontal is default
   => view.layout.orient != "vertical" ? new _HLayout(): new _VLayout();
 
@@ -25,30 +25,8 @@ class LinearLayout implements Layout {
 
     return mctx.heights[view] = _getRealLayout(view).measureHeight(mctx, view);
   }
-  bool isProfileInherited() => true;
-  bool isFlex() => false;
-  void doLayout(MeasureContext mctx, View view) {
-    if (view.firstChild != null) {
-      final AnchorRelation ar = new AnchorRelation(view);
-
-      for (final View child in ar.indeps) {
-        mctx.preLayout(child);
-        //unlike View.onLayout_, the layout shall invoke mctx.preLayout
-      }
-
-      //1) layout independents
-      _getRealLayout(view).doLayout(mctx, view, ar.indeps);
-
-      //2) do anchored
-      ar.layoutAnchored(mctx);
-
-      //3) pass control to children
-      for (final View child in view.children) {
-        if (child.visible)
-          child.doLayout_(mctx); //no matter shallLayout_(child)
-      }
-    }
-  }
+  void doLayout_(MeasureContext mctx, View view, List<View> children)
+  => _getRealLayout(view).doLayout(mctx, view, children);
 }
 
 interface _RealLinearLayout {

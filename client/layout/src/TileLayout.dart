@@ -3,7 +3,7 @@
 // Author: tomyeh
 
 /**
- * The title layout.
+ * The title layout (not implemented yet).
  * It arranges the child views of the associated view in rows and columns.
  *
  * Based on the given width, minWidth and maxWidth, it arranges views from left
@@ -14,15 +14,23 @@
  * each child view, if specified, controls how a child view is arranged different
  * including width, minWidth, minHeight, maxWidth and so on.
  *
- * In additions, you can control the alignment and spacing with `align`,
- * `spacing` and `gap`.
+ * In additions, you can control the alignment and spacing with the `align`,
+ * `spacing` and `gap` properties. If you want to arrange a view as the first or lat view
+ * of a row, you can control it with the `clear` property. Please refer to
+ * [ProfileDeclaration] for more information.
  *
  * It is useful for responsive Web design, since the tile layout will
  * arrange child views in additional rows, if they can't fit into a row.
  */
-class TileLayout implements Layout {
-  void doLayout(MeasureContext ctx, View view) {
-
+class TileLayout extends AbstractLayout {
+  void doLayout_(MeasureContext mctx, View view, List<View> children) {
+    for (final View child in children) {
+      if (!view.shallLayout_(child)) {
+        mctx.setWidthByProfile(child, () => view.innerWidth);
+        mctx.setHeightByProfile(child, () => view.innerHeight);
+        continue;
+      }
+    }
   }
 
   int measureWidth(MeasureContext ctx, View view) {
@@ -31,6 +39,5 @@ class TileLayout implements Layout {
   int measureHeight(MeasureContext ctx, View view) {
     throw const UIException("'content' not allowed in tile layout");
   }
-  bool isProfileInherited() => true;
   bool isFlex() => true;
 }

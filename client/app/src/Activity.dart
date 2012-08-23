@@ -45,6 +45,7 @@ class Activity {
   View _mainView;
   final List<_DialogInfo> _dlgInfos;
   Element _container;
+  bool _creating = true;
 
   Activity(): _dlgInfos = [] {
     _title = application.name; //also force "get application" to be called
@@ -81,7 +82,9 @@ class Activity {
         main.height = browser.size.height;
 
       if (prevroot.inDocument) {
-        main.addToDocument(before: prevroot.node);
+        main.addToDocument(before: prevroot.node,
+          shallLayout: !_creating || effect != null);
+          //no need to layout if no effect and in onCreate_
         prevroot.removeFromDocument();
         //TODO: effect
       }
@@ -196,6 +199,7 @@ class Activity {
       _init(containerId);
 
       onCreate_();
+      _creating = false;
       _mainView.requestLayout();
     });
   }
@@ -217,7 +221,7 @@ class Activity {
     _mainView = new Section();
     _mainView.width = browser.size.width;
     _mainView.height = browser.size.height;
-    _mainView.addToDocument(_container != null ? _container: document.body);
+    _mainView.addToDocument(_container != null ? _container: document.body, shallLayout: false);
 
     window.on.resize.add(_onResize);
     (browser.touch ? document.on.touchStart: document.on.mouseDown).add(_onTouchStart);

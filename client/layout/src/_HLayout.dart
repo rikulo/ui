@@ -83,7 +83,6 @@ class _HLayout implements _RealLinearLayout {
   //children contains only indepedent views
   void doLayout(MeasureContext mctx, View view, List<View> children) {
     //1) size
-    final AsInt innerWidth = () => view.innerWidth;
     final spcinf = new LayoutSideInfo(view.layout.spacing, _LinearUtil.DEFAULT_SPACING);
     final gapinf = new LayoutSideInfo(view.layout.gap);
     final String defpwd = view.layout.width;
@@ -116,7 +115,7 @@ class _HLayout implements _RealLinearLayout {
           flexViews.add(child);
           break;
         case LayoutAmountType.RATIO:
-          assigned += child.width = (innerWidth() * amt.value).round().toInt();
+          assigned += child.width = (view.innerWidth * amt.value).round().toInt();
           break;
         default:
           final int wd = child.measureWidth_(mctx);
@@ -133,7 +132,7 @@ class _HLayout implements _RealLinearLayout {
 
     //1a) size flex
     if (nflex > 0) {
-      int space = innerWidth() - assigned - prevSpacing; //prevSpacing not null here
+      int space = view.innerWidth - assigned - prevSpacing; //prevSpacing not null here
       double per = space / nflex;
       for (int j = 0, len = flexs.length - 1;; ++j) {
         if (j == len) { //last

@@ -44,57 +44,53 @@ implements ProfileDeclaration {
     _anchorView = view;
   }
 
-  String get location
-    => getPropertyValue("location");
+  String get location => getPropertyValue("location");
   void set location(String value) {
     setProperty("location", value);
   }
 
-  String get align
-    => getPropertyValue("align");
+  String get align => getPropertyValue("align");
   void set align(String value) {
     setProperty("align", value);
   }
 
-  String get spacing
-    => getPropertyValue("spacing");
+  String get spacing => getPropertyValue("spacing");
   void set spacing(String value) {
     setProperty("spacing", value);
   }
 
-  String get width
-    => getPropertyValue("width");
+  String get width => getPropertyValue("width");
   void set width(String value) {
     setProperty("width", value);
   }
 
-  String get height
-    => getPropertyValue("height");
+  String get height => getPropertyValue("height");
   void set height(String value) {
     setProperty("height", value);
   }
 
-  String get minWidth
-    => getPropertyValue("min-width");
+  String get minWidth => getPropertyValue("min-width");
   void set minWidth(String value) {
     setProperty("min-width", value);
   }
 
-  String get minHeight
-    => getPropertyValue("min-height");
+  String get minHeight => getPropertyValue("min-height");
   void set minHeight(String value) {
     setProperty("min-height", value);
   }
 
-  String get maxWidth
-    => getPropertyValue("max-width");
+  String get maxWidth => getPropertyValue("max-width");
   void set maxWidth(String value) {
     setProperty("max-width", value);
   }
 
-  String get maxHeight
-    => getPropertyValue("max-height");
+  String get maxHeight => getPropertyValue("max-height");
   void set maxHeight(String value) {
     setProperty("max-height", value);
+  }
+
+  String get clear => getPropertyValue("clear");
+  void set clear(String value) {
+    setProperty("clear", value);
   }
 }

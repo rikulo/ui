@@ -5,7 +5,7 @@
 /**
  * The free layout (default).
  */
-class FreeLayout implements Layout {
+class FreeLayout extends AbstractLayout {
   int measureWidth(MeasureContext mctx, View view) {
     int wd = mctx.widths[view];
     if (wd != null || mctx.widths.containsKey(view))
@@ -51,24 +51,12 @@ class FreeLayout implements Layout {
     return hgh;
   }
   bool isProfileInherited() => false;
-  bool isFlex() => false;
-  void doLayout(MeasureContext mctx, View view) {
-    if (view.firstChild != null) {
-      final ar = new AnchorRelation(view);
-      final AsInt innerWidth = () => view.innerWidth,
-        innerHeight = () => view.innerHeight; //future: introduce cache
-      for (final View child in ar.indeps) {
-        mctx.preLayout(child); //unlike onLayout_, the layout shall invoke mctx.preLayout
-        mctx.setWidthByProfile(child, innerWidth);
-        mctx.setHeightByProfile(child, innerHeight);
-      }
-
-      ar.layoutAnchored(mctx);
-
-      for (final View child in view.children) {
-        if (child.visible)
-          child.doLayout_(mctx); //no matter shallLayout_
-      }
+  void doLayout_(MeasureContext mctx, View view, List<View> children) {
+    final AsInt innerWidth = () => view.innerWidth,
+      innerHeight = () => view.innerHeight; //future: introduce cache
+    for (final View child in children) {
+      mctx.setWidthByProfile(child, innerWidth);
+      mctx.setHeightByProfile(child, innerHeight);
     }
   }
 }

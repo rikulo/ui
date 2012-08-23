@@ -514,16 +514,17 @@ class View implements Hashable {
    * It also means you have to specify either [node] or [before].
    *
    * Unlike most of API, [requestLayout] will be called automatically after mounted.
+   * If you prefer not to call it, you can specify [shallLayout] to false.
    */
   void addToDocument([Element node, bool outer=false, bool inner=false,
-  Element before, bool keepId=false, String location]) {
+  Element before, bool keepId=false, String location, bool shallLayout=true]) {
     if (parent != null || inDocument)
       throw new UIException("No parent allowed, nor attached twice: $this");
 
-    _addToDoc(node, outer, inner, before, keepId, location);
+    _addToDoc(node, outer, inner, before, keepId, location, shallLayout);
   }
   void _addToDoc(Element node, [bool outer=false, bool inner=false,
-  Element before, bool keepId=false, String location]) {
+  Element before, bool keepId=false, String location, bool shallLayout=true]) {
     if (outer && keepId && !node.id.isEmpty())
       _uuid = node.id;
 
@@ -562,7 +563,8 @@ class View implements Hashable {
         }
       });
 
-    requestLayout(immediate: true);
+    if (shallLayout)
+      requestLayout(immediate: true);
       //immediate: better feedback (and avoid ghost, i.e., showed at original place)
   }
   /** Removes this view from the document.
