@@ -145,7 +145,7 @@ class DOMQuery {
   
   /** Return true if the tagname of element is input.
    */
-  bool isInput() => node.tagName == 'INPUT';
+  bool isInput() => node.tagName == 'INPUT' || node.tagName == 'TEXTAREA';
   
   /** Returns the width of the border.
    */
