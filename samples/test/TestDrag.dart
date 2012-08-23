@@ -21,6 +21,16 @@ class TestDrag extends Activity {
     d = _createSimpleDrag(mainView, false, 100);
     d.left = 320;
     d.top = 20;
+    mainView.addChild(d = new View());
+    d.classes.add("drag");
+    d.width = 100;
+    d.height = 50;
+    TextBox t = new TextBox("Input");
+    t.profile.text = "location: top left; width: 50%; height: 100%";
+    d.addChild(t);
+    d.left = 470;
+    d.top = 20;
+    new Dragger(d.node);
   }
   View _createSimpleDrag(View parent, bool transform, [num threshold = -1]) {
     String label = "Simple";

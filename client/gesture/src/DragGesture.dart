@@ -186,7 +186,8 @@ class _TouchDragGesture extends _DragGesture {
       else {
         Touch t = event.touches[0];
         _touchStart(event.target, new Offset(t.pageX, t.pageY), event.timeStamp);
-        event.preventDefault();
+        if (!(event.target is Element) || !new DOMQuery(event.target as Element).isInput())
+          event.preventDefault();
       }
     });
     on.touchMove.add(_elMove = (TouchEvent event) {
@@ -238,6 +239,8 @@ class _MouseDragGesture extends _DragGesture {
     _owner.on.mouseDown.add(_elStart = (MouseEvent event) {
       _touchStart(event.target, new Offset(event.pageX, event.pageY), event.timeStamp);
       _capture();
+      if (!(event.target is Element) || !new DOMQuery(event.target as Element).isInput())
+        event.preventDefault();
     });
   }
   void _unlisten() {
