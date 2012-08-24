@@ -68,7 +68,8 @@ class _Printc {
   }
   HoldGestureAction _gestureAction() {
     return (HoldGestureState state) {
-      (_popup = new _PrintcPopup(this)).open(state.offset.x, state.offset.y);
+      Offset off = state.position - new DOMQuery(state.gesture.owner).pageOffset;
+      (_popup = new _PrintcPopup(this)).open(off.x, off.y);
     };
   }
   HoldGestureStart _gestureStart() {

@@ -6,36 +6,51 @@
  * gesture. If it returns false, the monitoring will be cancelled.
  */
 typedef bool HoldGestureStart(HoldGestureState state);
-/**
- * The callback when the touch-and-hold gesture is recognized and executed.
+
+/** The callback when the touch-and-hold gesture is recognized and executed.
  */
 typedef void HoldGestureAction(HoldGestureState state);
 
 /** The state of [HoldGesture].
  */
-interface HoldGestureState {
+interface HoldGestureState extends GestureState {
+  
+  /** The associated [HoldGesture]. */
   HoldGesture get gesture;
+  
   /** The element that the user touches at the beginning.
    */
   Element get touched;
-
-  /** The touch point's offset relative to
-   * the left-top corner of the owner element.
-   */
-  Offset get offset;
+  
   /** The touch point's offset relative to the whole document.
    */
-  Offset get pageOffset;
+  Offset get position;
+  
+}
 
-  /** Any data that the caller stores.
-   */
+class _HoldGestureState implements HoldGestureState {
+  
+  final HoldGesture gesture;
+  final Element _touched;
+  final int startTime;
+  int _timer, _time;
+  final Offset position;
   var data;
+  
+  _HoldGestureState(this.gesture, this._touched, int time, this.position) : 
+  _time = time, this.startTime = time;
+  
+  Element get touched => _touched;
+  
+  int get time => _time;
+  
 }
 
 /**
  * A touch-and-hold gesture handler.
  */
-interface HoldGesture default _HoldGesture {
+interface HoldGesture extends Gesture default _HoldGesture {
+  
   /** Constructor.
    *
    * + [start] is the callback before starting monitoring the touch-and-hold
@@ -43,99 +58,89 @@ interface HoldGesture default _HoldGesture {
    * + [action] is the callback when the touch-and-hold gesture is executed.
    * + [duration] is the duration that a user has to hold before calling the action.
    * Default: 1000 (unit: milliseconds)
-   * + [movement] is the allowed movement to consider if a user is holding a touch.
+   * + [movementLimit] is the allowed movement to consider if a user is holding a touch.
    * Default: 3 (unit: pixels)
    */
   HoldGesture(Element owner, HoldGestureAction action,
-  [HoldGestureStart start, int duration, int movement]);
-
-  /** Destroys the handler.
-   * It shall be called to clean up the handler, if it is no longer used.
-   */
-  void destroy();
-
+  [HoldGestureStart start, int duration, num movementLimit]);
+  
   /** The element that owns this handler.
    */
   Element get owner;
-}
-
-class _HoldGestureState implements HoldGestureState {
-  final _HoldGesture _gesture;
-  final Element _touched;
-  Offset _ofs, _pgOfs;
-  int _timer;
-  var data;
-
-  _HoldGestureState(_HoldGesture this._gesture,
-    Element this._touched, int pageX, int pageY) {
-    _pgOfs = new Offset(pageX, pageY);
-    _ofs = _pgOfs - new DOMQuery(gesture.owner).pageOffset;
-  }
-
-  HoldGesture get gesture => _gesture;
-  Element get touched => _touched;
-  Offset get offset => _ofs;
-  Offset get pageOffset => _pgOfs;
+  
 }
 
 //abstract
 class _HoldGesture implements HoldGesture {
-  final Element _owner;
+  
+  final Element owner;
   final int _duration;
-  final int _movement;
+  final int _movementLimit;
   final HoldGestureStart _start;
   final HoldGestureAction _action;
   _HoldGestureState _state;
+  bool _disabled = false;
 
   factory _HoldGesture(Element owner, HoldGestureAction action,
-  [HoldGestureStart start, int duration=1000, int movement=3]) {
+  [HoldGestureStart start, int duration = 1000, num movementLimit = 3]) {
     return browser.touch ?
-      new _TouchHoldGesture(owner, action, start, duration, movement):
-      new _MouseHoldGesture(owner, action, start, duration, movement);
+      new _TouchHoldGesture(owner, action, start, duration, movementLimit):
+      new _MouseHoldGesture(owner, action, start, duration, movementLimit);
   }
-  _HoldGesture._init(Element this._owner, HoldGestureAction this._action,
-  HoldGestureStart this._start, int this._duration, int this._movement) {
+  
+  _HoldGesture._init(this.owner, this._action, this._start, this._duration, 
+  this._movementLimit) {
     _listen();
   }
-
+  
   void destroy() {
     _stop();
     _unlisten();
   }
-
-  Element get owner => _owner;
-
+  
+  void stop() {
+    _stop();
+  }
+  
+  void disable() {
+    _stop();
+    _disabled = true;
+  }
+  
+  void enable() {
+    _disabled = false;
+  }
+  
   abstract void _listen();
   abstract void _unlisten();
-
-  bool _touchStart(Element touched, int pageX, int pageY) {
+  
+  void _touchStart(Element touched, int time, Offset position) {
+    if (_disabled)
+      return;
+    
     _stop();
-
-    _state = new _HoldGestureState(this, touched, pageX, pageY);
-    if (_start != null) {
-      final bool c = _start(_state);
-      if (c != null && !c) {
-        _stop();
-        return false; //don't start it
-      }
+    _state = new _HoldGestureState(this, touched, time, position);
+    
+    if (_start != null && _start(_state) === false) {
+      _stop();
+      return;
     }
-
+    
     _state._timer = window.setTimeout(_call, _duration);
-    return true; //started
   }
-  void _touchMove(int pageX, int pageY) {
-    if (_state != null
-    && (pageX - _state._pgOfs.x > _movement
-    ||  pageY - _state._pgOfs.y > _movement))
+  void _touchMove(int time, Offset position) {
+    if (_state != null && (position - _state.position).norm() > _movementLimit)
       _stop();
   }
-  void _touchEnd() {
-    _stop();
-  }
+  void _touchEnd() => _stop();
+  
   void _call() {
-    final HoldGestureState state = _state;
+    final _HoldGestureState state = _state;
     _stop();
-    _action(state);
+    if (_action != null && state != null) {
+      state._time = new Date.now().millisecondsSinceEpoch;
+      _action(state);
+    }
   }
   void _stop() {
     if (_state != null) {
@@ -154,22 +159,20 @@ class _TouchHoldGesture extends _HoldGesture {
   EventListener _elStart, _elMove, _elEnd;
 
   _TouchHoldGesture(Element owner, HoldGestureAction action,
-  HoldGestureStart start, int duration, int movement)
-  : super._init(owner, action, start, duration, movement) {
-  }
-
+  HoldGestureStart start, int duration, num movementLimit) : 
+  super._init(owner, action, start, duration, movementLimit);
+  
   void _listen() {
-    final ElementEvents on = owner.on;
-    on.touchStart.add(_elStart = (TouchEvent event) {
+    owner.on.touchStart.add(_elStart = (TouchEvent event) {
       if (event.touches.length > 1)
         _touchEnd(); //ignore multiple fingers
       else
-        _touchStart(event.target, event.pageX, event.pageY);
+        _touchStart(event.target, event.timeStamp, new Offset(event.pageX, event.pageY));
     });
-    on.touchMove.add(_elMove = (TouchEvent event) {
-      _touchMove(event.pageX, event.pageY);
+    document.on.touchMove.add(_elMove = (TouchEvent event) {
+      _touchMove(event.timeStamp, new Offset(event.pageX, event.pageY));
     });
-    on.touchEnd.add(_elEnd = (event) {
+    document.on.touchEnd.add(_elEnd = (event) {
       _touchEnd();
     });
   }
@@ -184,21 +187,19 @@ class _TouchHoldGesture extends _HoldGesture {
  */
 class _MouseHoldGesture extends _HoldGesture {
   EventListener _elStart, _elMove, _elEnd;
-
+  
   _MouseHoldGesture(Element owner, HoldGestureAction action,
-  HoldGestureStart start, int duration, int movement)
-  : super._init(owner, action, start, duration, movement) {
-  }
-
+  HoldGestureStart start, int duration, num movementLimit) : 
+  super._init(owner, action, start, duration, movementLimit);
+  
   void _listen() {
-    final ElementEvents on = owner.on;
-    on.mouseDown.add(_elStart = (MouseEvent event) {
-      _touchStart(event.target, event.pageX, event.pageY);
+    owner.on.mouseDown.add(_elStart = (MouseEvent event) {
+      _touchStart(event.target, event.timeStamp, new Offset(event.pageX, event.pageY));
     });
-    on.mouseMove.add(_elMove = (MouseEvent event) {
-      _touchMove(event.pageX, event.pageY);
+    document.on.mouseMove.add(_elMove = (MouseEvent event) {
+      _touchMove(event.timeStamp, new Offset(event.pageX, event.pageY));
     });
-    on.mouseUp.add(_elEnd = (event) {
+    document.on.mouseUp.add(_elEnd = (event) {
       _touchEnd();
     });
   }
