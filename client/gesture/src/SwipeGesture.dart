@@ -2,6 +2,10 @@
 //History: Fri, Aug 3, 2012 12:56:15 AM
 //Author: simonpai
 
+/** The callback invoked by [SwipeGesture].
+ */
+typedef void SwipeGestureAction(SwipeGestureState state);
+
 /** The state of a [SwipeGesture].
  */
 interface SwipeGestureState extends GestureState {
@@ -52,7 +56,7 @@ interface SwipeGesture extends Gesture default _SwipeGesture {
   
   /** Construct a swipe gesture on [owner] with the given callback [swipe].
    */
-  SwipeGesture(Element owner, void swipe(SwipeGestureState state));
+  SwipeGesture(Element owner, SwipeGestureAction action);
   
   /** The element associated with this swipe gesture (never null).
    */
@@ -67,7 +71,7 @@ class _SwipeGesture implements SwipeGesture {
   final Element owner;
   DragGesture _drag;
   
-  _SwipeGesture(this.owner, void action(SwipeGestureState state)) {
+  _SwipeGesture(this.owner, SwipeGestureAction action) {
     _drag = new DragGesture(owner, 
     end: (DragGestureState state) {
       if (action != null)
