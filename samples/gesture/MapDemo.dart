@@ -9,7 +9,7 @@
 #import('../../client/util/util.dart');
 #import('../../client/event/event.dart');
 
-class TestZoom2 extends Activity {
+class MapDemo extends Activity {
   
   void onCreate_() {
     
@@ -79,5 +79,5 @@ class TestZoom2 extends Activity {
 }
 
 void main() {
-  new TestZoom2().run();
+  new MapDemo().run();
 }
