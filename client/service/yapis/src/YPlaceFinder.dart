@@ -48,9 +48,9 @@ class YPlaceFinder {
     StringBuffer url = new StringBuffer(_BASE_URI);
     if (!params.isEmpty())
       url.add("?").add(params);
-    XMLHttpRequest req = new XMLHttpRequest();
+    HttpRequest req = new HttpRequest();
     req.on.readyStateChange.add((event){
-      if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
+      if (req.readyState == HttpRequest.DONE && req.status == 200) {
         final Document doc = req.responseXML;
         if (doc != null) {
           Map resultSet = JSUtil.xmlDocToDartMap(doc);
