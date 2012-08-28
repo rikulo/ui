@@ -44,7 +44,6 @@ class MapDemo extends Activity {
         img.width = (psize.height * imgw / imgh).toInt();
         img.height = psize.height.toInt();
       }
-      Size size = new DOMQuery(img).outerSize;
       trans = new Transformation.identity();
       img.style.transform = CSS.transform(trans);
       
