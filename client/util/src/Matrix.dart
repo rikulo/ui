@@ -57,29 +57,30 @@ class Matrix {
     return _generate(rows, columns, (int i) => _en[i] - m._en[i]);
   }
   
-  /** Scalar multiplication. */
-  Matrix operator *(num scalar) {
-    return _generate(rows, columns, (int i) => _en[i] * scalar);
+  /** Scalar or Matrix multiplication, if the operand is a number of Matrix, 
+   * respectively. In matrix multiplication case, the column count of the left 
+   * operand must be equal to the row count of the right operand.
+   */
+  Matrix operator *(var m) {
+    if (m is num)
+      return _generate(rows, columns, (int i) => _en[i] * m);
+    else if (m is Matrix) {
+      if (m.rows != columns)
+        throw new IllegalArgumentException(m);
+      final int k = m.rows, nrs = rows, ncs = m.columns;
+      Matrix res = new Matrix(nrs, ncs);
+      for (int r = 0; r < nrs; r++)
+        for (int c = 0; c < ncs; c++)
+          res._en[r * ncs + c] = _iprod(m, r, c, k);
+      return res;
+    } else
+      throw new IllegalArgumentException(m);
   }
   
   /** Scalar division. */
   Matrix operator /(num scalar) {
     // TODO: divide by zero exception
     return _generate(rows, columns, (int i) => _en[i] / scalar);
-  }
-  
-  /** Matrix multiplication. The column count of the left operand must be equal
-   * to the row count of the right operand.
-   */
-  Matrix operator %(Matrix m) {
-    if (m == null || m.rows != columns)
-      throw new IllegalArgumentException(m);
-    final int k = m.rows, nrs = rows, ncs = m.columns;
-    Matrix res = new Matrix(nrs, ncs);
-    for (int r = 0; r < nrs; r++)
-      for (int c = 0; c < ncs; c++)
-        res._en[r * ncs + c] = _iprod(m, r, c, k);
-    return res;
   }
   
   // TODO: supply .det(), using Gauss method
@@ -205,7 +206,7 @@ class Transformation extends Matrix {
   
   /** Transformation composition, as a special case of [Matrix] multiplication.
    */
-  Transformation operator %(Transformation m) {
+  Transformation operator *(Transformation m) {
     return new Transformation(
       _iprod(m, 0, 0, 3), _iprod(m, 0, 1, 3), _iprod(m, 0, 2, 3), 
       _iprod(m, 1, 0, 3), _iprod(m, 1, 1, 3), _iprod(m, 1, 2, 3));

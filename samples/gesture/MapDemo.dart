@@ -53,18 +53,18 @@ class MapDemo extends Activity {
       diff = center(img) - state.startMidpoint;
       
     }, move: (ZoomGestureState state) {
-      img.style.transform = CSS.transform(state.transformation.originAt(diff) % trans);
+      img.style.transform = CSS.transform(state.transformation.originAt(diff) * trans);
       
     }, end: (ZoomGestureState state) {
-      trans = state.transformation.originAt(diff) % trans;
+      trans = state.transformation.originAt(diff) * trans;
       
     });
     
     new DragGesture(mainView.node, move: (DragGestureState state) {
-      img.style.transform = CSS.transform(new Transformation.transit(state.transition) % trans);
+      img.style.transform = CSS.transform(new Transformation.transit(state.transition) * trans);
       
     }, end: (DragGestureState state) {
-      trans = new Transformation.transit(state.transition) % trans;
+      trans = new Transformation.transit(state.transition) * trans;
       
     });
     
