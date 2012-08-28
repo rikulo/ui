@@ -18,10 +18,6 @@ interface HoldGestureState extends GestureState {
   /** The associated [HoldGesture]. */
   HoldGesture get gesture;
   
-  /** The element that the user touches at the beginning.
-   */
-  Element get touched;
-  
   /** The touch point's offset relative to the whole document.
    */
   Offset get position;
@@ -31,16 +27,14 @@ interface HoldGestureState extends GestureState {
 class _HoldGestureState implements HoldGestureState {
   
   final HoldGesture gesture;
-  final Element _touched;
+  final EventTarget eventTarget;
   final int startTime;
   int _timer, _time;
   final Offset position;
   var data;
   
-  _HoldGestureState(this.gesture, this._touched, int time, this.position) : 
+  _HoldGestureState(this.gesture, this.eventTarget, int time, this.position) : 
   _time = time, this.startTime = time;
-  
-  Element get touched => _touched;
   
   int get time => _time;
   
@@ -114,12 +108,12 @@ class _HoldGesture implements HoldGesture {
   abstract void _listen();
   abstract void _unlisten();
   
-  void _touchStart(Element touched, int time, Offset position) {
+  void _touchStart(EventTarget target, int time, Offset position) {
     if (_disabled)
       return;
     
     _stop();
-    _state = new _HoldGestureState(this, touched, time, position);
+    _state = new _HoldGestureState(this, target, time, position);
     
     if (_start != null && _start(_state) === false) {
       _stop();

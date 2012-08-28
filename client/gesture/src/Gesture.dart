@@ -31,6 +31,9 @@ interface GestureState {
   /** The latest timestamp of gesture. */
   int get time;
   
+  /** The element which receives the event. */
+  EventTarget get eventTarget;
+  
   /** Custom data. It is useful if you'd like to store something that
    * will be cleaned up automatically when the gesture is finished.
    */

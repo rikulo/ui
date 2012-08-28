@@ -30,7 +30,7 @@ interface DraggerState extends GestureState {
   Dragger get dragger;
   
   /** The dragged Element. */
-  Element get target;
+  Element get draggedElement;
   
   /** The [DragGestureState] of the underlying [DragGesture], which supplies 
    * information of touch/cursor position, rather than element positions.
@@ -62,15 +62,16 @@ class _DraggerState implements DraggerState {
   final DragGestureState gestureState;
   final Offset elementStartPosition, _gestureStartPosition;
   final int startTime;
-  final Element target;
+  final EventTarget eventTarget;
+  final Element draggedElement;
   VelocityProvider _vp;
   Offset _elementPosition;
   int _time;
   var data;
   
-  _DraggerState(this.dragger, Element target, Offset targetPosition, 
+  _DraggerState(this.dragger, this.draggedElement, Offset targetPosition, 
   DragGestureState gstate) :
-  this.target = target, gestureState = gstate, startTime = gstate.time,
+  gestureState = gstate, eventTarget = gstate.eventTarget, startTime = gstate.time,
   elementStartPosition = targetPosition,
   _gestureStartPosition = gstate.position {
     _vp = new VelocityProvider(elementStartPosition, startTime);
@@ -171,12 +172,12 @@ class _Dragger implements Dragger {
         
         // callback, update element position
         if (_move != null) {
-          if (_move(_state, () => setElementPosition_(_state.target, elemPos)) === false) {
+          if (_move(_state, () => setElementPosition_(_state.draggedElement, elemPos)) === false) {
             _stop();
             return false; // stop gesture
           }
         } else
-          setElementPosition_(_state.target, elemPos);
+          setElementPosition_(_state.draggedElement, elemPos);
         
       }
       

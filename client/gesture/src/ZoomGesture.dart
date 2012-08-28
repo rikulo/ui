@@ -62,6 +62,7 @@ interface ZoomGestureState extends GestureState {
 class _ZoomGestureState implements ZoomGestureState {
   
   final _ZoomGesture gesture;
+  final EventTarget eventTarget;
   final Offset _startPos0, _startPos1, _startMid, _startDiff;
   Offset _startDir;
   num _scaleBase;
@@ -71,7 +72,7 @@ class _ZoomGestureState implements ZoomGestureState {
   Offset _pos0, _pos1;
   int _time;
   
-  _ZoomGestureState(this.gesture, Offset pos0, Offset pos1, int time) :
+  _ZoomGestureState(this.gesture, this.eventTarget, Offset pos0, Offset pos1, int time) :
   _startPos0 = pos0, _startPos1 = pos1, _pos0 = pos0, _pos1 = pos1,
   startTime = time, _time = time, _startMid = (pos0 + pos1) / 2, 
   _startDiff = pos1 - pos0 {
@@ -194,7 +195,7 @@ class _ZoomGesture implements ZoomGesture {
         Touch t1 = event.touches[1];
         // t0 and t1 have to be different
         if (t0.pageX != t1.pageX || t0.pageY != t1.pageY) {
-          onStart(new Offset(t0.pageX, t0.pageY), 
+          onStart(event.target, new Offset(t0.pageX, t0.pageY), 
             new Offset(t1.pageX, t1.pageY), event.timeStamp);
           event.preventDefault();
         }
@@ -237,12 +238,12 @@ class _ZoomGesture implements ZoomGesture {
     _disabled = false;
   }
   
-  void onStart(Offset pos0, Offset pos1, int time) {
+  void onStart(EventTarget target, Offset pos0, Offset pos1, int time) {
     if (_disabled)
       return;
     
     stop();
-    _state = new _ZoomGestureState(this, pos0, pos1, time);
+    _state = new _ZoomGestureState(this, target, pos0, pos1, time);
     
     if (_start != null && _start(_state) === false)
       stop();

@@ -39,12 +39,13 @@ interface SwipeGestureState extends GestureState {
 class _SwipeGestureState implements SwipeGestureState {
   
   final SwipeGesture gesture;
+  final EventTarget eventTarget;
   final Offset startPosition, position, transition, velocity;
   final int startTime, time;
   var data;
   
   _SwipeGestureState(this.gesture, DragGestureState ds) :
-  startTime = ds.startTime, time = ds.time,
+  eventTarget = ds.eventTarget, startTime = ds.startTime, time = ds.time,
   startPosition = ds.startPosition, position = ds.position,
   transition = ds.transition, velocity = ds.velocity;
   

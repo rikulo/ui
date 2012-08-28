@@ -72,13 +72,14 @@ interface DragGesture extends Gesture default _DragGesture {
 class _DragGestureState implements DragGestureState {
   final _DragGesture _gesture;
   final VelocityProvider _vp;
+  final EventTarget eventTarget;
   final Offset startPosition;
   final int startTime;
   Offset _position;
   int _time;
   var data;
   
-  _DragGestureState(DragGesture gesture, Offset position, int time):
+  _DragGestureState(DragGesture gesture, this.eventTarget, Offset position, int time):
   _gesture = gesture, startPosition = position, _position = position, 
   startTime = time, _time = time, _vp = new VelocityProvider(position, time);
   
@@ -144,12 +145,12 @@ class _DragGesture implements DragGesture {
   abstract void _listen();
   abstract void _unlisten();
   
-  void _touchStart(Element touched, Offset position, int time) {
+  void _touchStart(Element target, Offset position, int time) {
     if (_disabled)
       return;
     stop();
 
-    _state = new _DragGestureState(this, position, time);
+    _state = new _DragGestureState(this, target, position, time);
     if (_start != null && _start(_state) === false)
       stop();
   }

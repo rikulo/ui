@@ -75,7 +75,7 @@ class _Printc {
   HoldGestureStart _gestureStart() {
     return (HoldGestureState state)
       => _popup == null
-      || !new DOMQuery(state.touched).isDescendantOf(_popup._node);
+      || !new DOMQuery(state.eventTarget).isDescendantOf(_popup._node);
   }
 
   void _defer() {
