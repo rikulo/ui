@@ -77,3 +77,17 @@ class AbstractLayout implements Layout {
     }
   }
 }
+
+//Utilities//
+final int _DEFAULT_SPACING = 3;
+/** Returns the layout amount info for the given view.
+ */
+LayoutAmountInfo _getLayoutAmountInfo(View view, String value) {
+  final amt = new LayoutAmountInfo(value);
+  if (amt.type == LayoutAmountType.NONE
+  && layoutManager.getLayoutOfView(view).isFlex()) {
+    amt.type = LayoutAmountType.FLEX;
+    amt.value = 1;
+  }
+  return amt;
+}
