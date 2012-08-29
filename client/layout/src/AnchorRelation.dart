@@ -30,10 +30,11 @@ class AnchorRelation {
         if (av.parent !== view && av !== view)
           throw new UIException("Anchor can be parent or sibling, not $av");
 
-        List<View> deps = anchored[av];
-        if (deps == null)
-          anchored[av] = deps = new List();
-        deps.add(child);
+        final deps = anchored[av];
+        if (deps != null)
+          deps.add(child);
+        else
+          anchored[av] = [child];
       }
     }
   }
