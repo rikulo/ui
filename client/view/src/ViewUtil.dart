@@ -41,6 +41,15 @@ interface Declaration default DeclarationImpl {
  * A collection of [View] utitiles.
  */
 class ViewUtil {
+  /** Returns the view of the given UUID, or null if not found.
+   *
+   * Notice it searches only the mounted views, i.e.,
+   * `inDocument` is true.
+   */
+  static View getViewByUuid(String uuid) => _views[uuid];
+  static Map<String, View> _$views;
+  static Map<String, View> get _views => _$views != null ? _$views: (_$views = {});
+
   /** Redraws the invalidated views queued by [View.invalidate].
    *
    * Notice that it is static, i.e., all queued invalidation will be redrawn.

@@ -37,10 +37,14 @@ typedef void AfterMount(View view);
  * + `unmount`: an instance of [ViewEvent] indicates this view will be
  * removed from the document.
  *
- *---
+ * ##Default CSS classes
  *
  * Default [classes]: "v-$className"
  * (note: "v-" is actually [viewConfig.classPrefix])
+ *
+ * ##See Also
+ *
+ * + [ViewUtil]
  */
 class View implements Hashable {
   String _id = "";
@@ -683,8 +687,10 @@ class View implements Hashable {
   }
   void _mntInit() {
     _inDoc = true;
+    ViewUtil._views[uuid] = this;
   }
   void _mntClean() {
+    ViewUtil._views.remove(uuid);
     _mntAttrs = null; //clean up
     _inDoc = false;
     _node = null; //as the last step since node might be called in unmount_
