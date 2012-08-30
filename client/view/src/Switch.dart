@@ -77,7 +77,7 @@ class Switch extends View implements Input<bool> {
       if (bAnimate) {
         final int sofs = _translate3dXValue(_sdNode.style.transform);
         final int dofs = nofs - sofs;
-        new EasingMotion((num x) {
+        new EasingMotion((num x, MotionState state) {
           int cofs = sofs + (dofs * x).toInt();
           _updateBg(cofs);
         }, duration: 150);

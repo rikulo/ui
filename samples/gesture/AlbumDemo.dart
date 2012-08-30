@@ -145,7 +145,7 @@ class AlbumDemo extends Activity {
     if (index < 0 || index >= photoCount) {
       final View photo = frameInner.children[_index];
       final Offset pos = new DOMQuery(photo).offset;
-      new EasingMotion((num x) {
+      new EasingMotion((num x, MotionState state) {
         photo.style.transform = "rotate(${rand()}deg)";
         photo.left = pos.left + rand();
         photo.top = pos.top + rand();

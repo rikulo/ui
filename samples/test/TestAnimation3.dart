@@ -111,7 +111,7 @@ class TestAnimation3 extends Activity {
       num speed = vel.norm();
       if (speed == 0) {
         final num initSanity = sanity, diffSanity = 1 - initSanity;
-        recoveryMotion = new EasingMotion((num x) {
+        recoveryMotion = new EasingMotion((num x, MotionState state) {
           setSanity(diffSanity * x + initSanity);
         }, easing: (num x) => x * x);
         return;
@@ -138,7 +138,7 @@ class TestAnimation3 extends Activity {
         return speed > 0;
       }, end: (MotionState mstate) {
         final num initSanity = sanity, diffSanity = 1 - initSanity;
-        recoveryMotion = new EasingMotion((num x) {
+        recoveryMotion = new EasingMotion((num x, MotionState state) {
           setSanity(diffSanity * x + initSanity);
         }, easing: (num x) => x * x);
       });
