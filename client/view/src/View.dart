@@ -1016,6 +1016,14 @@ class View implements Hashable {
   }
 
   /** Retuns the CSS style.
+   *
+   * Notice that `getPropertyValue()` returns an empty string if the given style
+   * is not set (in the returned instance of CSSStyleDeclaration). On the other
+   * hand, the returned instance of DOM Element depends on the browser (unless Dart
+   * changed it). For example,
+   *
+   *     view.style.getProperty("width"); //return an empty string if not set
+   *     view.node.style.getProperty("width"); //return null in Webkit (while empty in others)
    */
   CSSStyleDeclaration get style {
     if (_style == null)
