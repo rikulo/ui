@@ -1,5 +1,9 @@
 #Rikulo Changes
 
+**August 30, 2012**
+
+* In EasingMotion, MotionAction now supplies MotionState in the arguments.
+
 **August 21, 2012**
 
 * DragGesture is splitted into DragGesture and Dragger.

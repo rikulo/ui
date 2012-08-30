@@ -9,7 +9,7 @@ typedef num EasingFunction(num time);
 
 /** The callback type that realizes an abstract position number. 
  */
-typedef bool MotionAction(num x);
+typedef bool MotionAction(num x, MotionState state);
 
 /** A fixed-duration motion constructed by an EasingFunction and a MotionAction.
  */
@@ -33,7 +33,7 @@ class EasingMotion extends Motion {
   
   /** Apply the position by [MotionAction];
    */
-  bool doAction_(num x, MotionState state) => action(x);
+  bool doAction_(num x, MotionState state) => action(x, state);
   
   bool onMove(MotionState state) {
     int curr = _easingInput(state.runningTime);

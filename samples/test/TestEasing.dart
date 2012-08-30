@@ -33,12 +33,12 @@ View createCube(int size, String txt) {
   return v;
 }
 
-MotionAction _action(Element elem, Offset center) {
-  return (num x) {
+MotionAction _action(Element elem, Offset center) => 
+  (num x, MotionState state) {
     elem.style.left = CSS.px(center.x + 50 * sin(x * 2 * PI));
     elem.style.top  = CSS.px(center.y - 50 * cos(x * 2 * PI));
   };
-}
+
 
 void blue(View v) {
   v.style.borderColor = "#3D4C99";
