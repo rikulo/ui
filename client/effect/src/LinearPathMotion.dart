@@ -13,13 +13,16 @@ class LinearPathMotion extends EasingMotion {
   Offset _pos;
   
   /** Construct a linear position motion.
-   * +[element] is the element to move.
-   * +[origin] is the starting offset of the element.
-   * +[destination] is the goal offset of the movement.
+   * + [element] is the element to move.
+   * + [origin] is the starting offset of the element.
+   * + [destination] is the goal offset of the movement.
+   * + [move] is invoked continuously during the motion, and if this callback is
+   * provided, updateElementPosition() shall be called to attain the default 
+   * behavior of LinearPathMotion.
    */
   LinearPathMotion(Element element, Offset origin, Offset destination, 
     [EasingFunction easing, String mode = "once", int duration = 500, MotionStart start, 
-    bool move(MotionState state, Offset position, num x), 
+    bool move(MotionState state, Offset position, num x, void updateElementPosition()), 
     MotionEnd end, bool autorun = true]) :
     this.element = element, this.origin = origin, this.destination = destination, 
     _diff = destination - origin, _moveCB = move, 
@@ -27,12 +30,16 @@ class LinearPathMotion extends EasingMotion {
   
   bool doAction_(num x, MotionState state) {
     _pos = _diff * x + origin;
+    if (_moveCB == null) {
+      _applyPosition();
+      return true;
+    }
+    return _moveCB(state, _pos, x, _applyPosition) !== false;
+  }
+  
+  void _applyPosition() {
     element.style.left = CSS.px(_pos.left);
     element.style.top = CSS.px(_pos.top);
-    if (_moveCB == null)
-      return true;
-    bool result = _moveCB(state, _pos, x);
-    return result == null || result;
   }
   
   /** Retrieve the current position of the element.

@@ -3,6 +3,7 @@
 **August 30, 2012**
 
 * In EasingMotion, MotionAction now supplies MotionState in the arguments.
+* In LinearPathMotion, the "move" argument takes an extra updateElementPosition() callback.  
 
 **August 21, 2012**
 
