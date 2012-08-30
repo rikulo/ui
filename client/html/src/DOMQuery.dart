@@ -12,7 +12,7 @@ class DOMQuery {
 
   factory DOMQuery(var v) {
     v = v is View ? v.node: v is String ? document.query(v): v;
-    return v is Window ? new _WindowQuery(v):
+    return v is Window ? new _WndQuery(v):
       v != null ? new DOMQuery._init(v): new _NullQuery();
   }
 
@@ -193,8 +193,8 @@ class DOMQuery {
   }
   static Element _txtdiv;
 }
-class _WindowQuery extends DOMQuery {
-  _WindowQuery(var v): super._init(v) {}
+class _WndQuery extends DOMQuery {
+  _WndQuery(var v): super._init(v) {}
 
   int get innerWidth => node.innerWidth;
   int get innerHeight => node.innerHeight;
@@ -210,7 +210,7 @@ class _WindowQuery extends DOMQuery {
   bool isDescendantOf(Element parent) => false;
   CSSStyleDeclaration get computedStyle => new CSSStyleDeclaration();
 }
-class _NullQuery extends _WindowQuery {
+class _NullQuery extends _WndQuery {
   _NullQuery(): super(null);
   int get innerWidth => 0;
   int get innerHeight => 0;
