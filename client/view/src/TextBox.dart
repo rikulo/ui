@@ -222,8 +222,7 @@ class TextBox extends View implements Input<String> {
       out.add(StringUtil.encodeXML(value));
   }
   //@Override
-  void domAttrs_(StringBuffer out,
-  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
+  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
     if (!_multiline) {
       out.add(' type="').add(type).add('"');
       if (!value.isEmpty())
@@ -243,7 +242,7 @@ class TextBox extends View implements Input<String> {
       out.add(' maxlength="').add(maxLength).add('"');
     if (!placeholder.isEmpty())
       out.add(' placeholder="').add(StringUtil.encodeXML(placeholder)).add('"');
-    super.domAttrs_(out, noId, noStyle, noClass, noVisible);
+    super.domAttrs_(out, ctrl);
   }
   //@Override
   /** Returns false to indicate this view doesn't allow any child views.

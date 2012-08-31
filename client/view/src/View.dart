@@ -69,7 +69,7 @@ class View implements Hashable {
   ProfileDeclaration _profile;
   LayoutDeclaration _layout;
 
-  bool _visible = true, _inDoc = false;
+  bool _visible = true, _draggable = false, _inDoc = false;
 
   /** Constructor.
    */
@@ -858,6 +858,8 @@ class View implements Hashable {
   bool get visible => _visible;
   /** Sets if this view is visible.
    *
+   * Default: true.
+   *
    * Unlike most API, [requestLayout] will be called automatically if it is becoming visible.
    */
   void set visible(bool visible) {
@@ -869,6 +871,19 @@ class View implements Hashable {
       if (changed && visible)
         requestLayout(immediate: true);
     }
+  }
+
+  /** Returns whether the view is draggable.
+   */
+  bool get draggable => _draggable;
+  /** Sets whether the view is draggable.
+   *
+   * Default: false.
+   */
+  void set draggable(bool draggable) {
+    _draggable = draggable;
+    if (_inDoc)
+      node.draggable = draggable;
   }
 
   /** Returns the left position of this view relative to its parent.
@@ -1047,20 +1062,23 @@ class View implements Hashable {
    * to provide more attributes. Of course, if you override [draw]
    * directly, you can decide whether to call this method.
    */
-  void domAttrs_(StringBuffer out,
-  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
+  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
+    final noCtrl = ctrl == null;
     String s;
-    if (!noId && !(s = uuid).isEmpty())
+    if ((noCtrl || !ctrl.noId) && !(s = uuid).isEmpty())
       out.add(' id="').add(s).add('"');
-    if (!noStyle) {
+    if ((noCtrl || !ctrl.noStyle)) {
       final StringBuffer stylesb = new StringBuffer();
-      domStyle_(stylesb, noVisible: noVisible);
+      domStyle_(stylesb,
+        new DOMStyleCtrl(noVisible: (noCtrl ||  ctrl.noVisible)));
       if (!stylesb.isEmpty())
           out.add(' style="').add(stylesb).add('"');
     }
-    if (!noVisible && !visible)
+    if ((noCtrl || !ctrl.noDraggable))
+      out.add(' draggable="').add(draggable).add('"');
+    if ((noCtrl || !ctrl.noVisible) && !visible)
       _visiCtrl.addHiddenAttr(out);
-    if (!noClass) {
+    if ((noCtrl || !ctrl.noClass)) {
       final StringBuffer classsb = new StringBuffer();
       domClass_(classsb);
       if (!classsb.isEmpty())
@@ -1093,21 +1111,20 @@ class View implements Hashable {
   }
   /** Output the CSS style for the DOM element of this view to the given outout.
    */
-  void domStyle_(StringBuffer out, [bool noLeft=false, bool noTop=false,
-  bool noWidth=false, bool noHeight=false,
-  bool noStyle=false, bool noVisible=false]) {
-    if (!noLeft && left != 0)
+  void domStyle_(StringBuffer out, [DOMStyleCtrl ctrl]) {
+    final noCtrl = ctrl == null;
+    if ((noCtrl || !ctrl.noLeft) && left != 0)
       out.add("left:").add(left).add("px;");
-    if (!noTop && top != 0)
+    if ((noCtrl || !ctrl.noTop) && top != 0)
       out.add("top:").add(top).add("px;");
-    if (!noWidth && _width != null) //don't use width since it has special handling
+    if ((noCtrl || !ctrl.noWidth) && _width != null) //don't use width since it has special handling
       out.add("width:").add(_width).add("px;");
-    if (!noHeight && _height != null) //don't use height since it has special handling
+    if ((noCtrl || !ctrl.noHeight) && _height != null) //don't use height since it has special handling
       out.add("height:").add(_height).add("px;");
-    if (!noVisible && !visible)
+    if ((noCtrl || !ctrl.noVisible) && !visible)
       _visiCtrl.addHiddenStyle(out);
     String s;
-    if (!noStyle && _style != null && !(s = _style.cssText).isEmpty())
+    if ((noCtrl || !ctrl.noStyle) && _style != null && !(s = _style.cssText).isEmpty())
       out.add(StringUtil.encodeXML(s));
   }
 

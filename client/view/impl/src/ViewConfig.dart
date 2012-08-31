@@ -31,3 +31,21 @@ class ViewConfig {
   static final String _PREFIX_COUNT = "data-rikuloPrefixCount";
 }
 ViewConfig viewConfig;
+
+/** Used with [View]'s `domAttrs_` to control which attributes to generate.
+ */
+class DOMAttrsCtrl {
+  bool noId, noStyle, noClass, noVisible, noDraggable;
+
+  DOMAttrsCtrl([bool this.noId=false, bool this.noStyle=false,
+    bool this.noClass=false, bool this.noVisible=false, bool this.noDraggable=false]);
+}
+/** Used with [View]'s `domStyle_` to control which styles to generate.
+ */
+class DOMStyleCtrl {
+  bool noLeft, noTop, noWidth, noHeight, noStyle, noVisible;
+
+  DOMStyleCtrl([bool this.noLeft=false, bool this.noTop=false,
+    bool this.noWidth=false, bool this.noHeight=false,
+    bool this.noStyle=false, bool this.noVisible=false]);
+}

@@ -26,11 +26,10 @@ class Image extends View {
       (node as ImageElement).src = src != null ? src: ""; //TODO: a blank image
   }
 
-  void domAttrs_(StringBuffer out,
-  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
+  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
     if (_src != null)
       out.add(' src="').add(_src).add('"');
-    super.domAttrs_(out, noId, noStyle, noClass, noVisible);
+    super.domAttrs_(out, ctrl);
   }
   /** Returns the HTML tag's name representing this widget.
    *

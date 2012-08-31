@@ -45,9 +45,8 @@ class _TagView extends View {
 
   bool isViewGroup() => _vgroup;
   String get domTag_ => _tag;
-  void domAttrs_(StringBuffer out,
-  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
-    super.domAttrs_(out, noId, noStyle, noClass, noVisible);
+  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
+    super.domAttrs_(out, ctrl);
 
     if (_attrs != null)
       _attrs.forEach((key, value) {

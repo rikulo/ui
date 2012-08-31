@@ -44,14 +44,13 @@ class Canvas extends View {
       canvasNode.height = height;
   }
   //@Override
-  void domAttrs_(StringBuffer out,
-  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
+  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
     if (width != null)
       out.add('  width="').add(width).add('"');
     if (height != null)
       out.add('  height="').add(height).add('"');
 
-    super.domAttrs_(out, noId, noStyle, noClass, noVisible);
+    super.domAttrs_(out, ctrl);
   }
   String get domTag_ => "canvas";
 }

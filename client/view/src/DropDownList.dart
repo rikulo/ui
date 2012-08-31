@@ -232,8 +232,7 @@ class DropDownList<T> extends View {
   }
 
   //@Override
-  void domAttrs_(StringBuffer out,
-  [bool noId=false, bool noStyle=false, bool noClass=false, bool noVisible=false]) {
+  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
     out.add(' size="').add(rows).add('"');
     if (disabled)
       out.add(' disabled');
@@ -241,7 +240,7 @@ class DropDownList<T> extends View {
       out.add(' autofocus');
     if (_model != null && (_model as Selection).multiple)
       out.add(' multiple="multiple"');
-    super.domAttrs_(out, noId, noStyle, noClass, noVisible);
+    super.domAttrs_(out, ctrl);
   }
   //@Override
   void domInner_(StringBuffer out) {
