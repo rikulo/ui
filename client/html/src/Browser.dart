@@ -141,7 +141,7 @@ class Browser {
     }
     try {
       return parseDouble(version);
-    } catch (var t) {
+    } catch (e) {
       return 1.0; //ignore it
     }
   }

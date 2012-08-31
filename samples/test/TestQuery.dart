@@ -76,7 +76,7 @@ class TestQuery extends Activity {
         if (r != result)
           logMsg("* Unexpected parse result: ${r} (expecting ${result})");
       }
-    } catch (SelectorParseException e) {
+    } on SelectorParseException catch (e) {
       logMsg("* Should be legal: ${src}");
     }
   }
@@ -85,7 +85,8 @@ class TestQuery extends Activity {
     try {
       List<Selector> selectors = Selectors.parse(src);
       logMsg("* Should be illegal: ${src}");
-    } catch (SelectorParseException e) {}
+    } on SelectorParseException catch (e) {
+    }
   }
   
   void logMsg(String msg) {

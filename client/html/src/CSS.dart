@@ -69,7 +69,7 @@ class CSS {
         if (m != null)
           return parseInt(m.group(0));
       }
-    } catch (var e) {
+    } catch (e) {
       if (reportError != null && reportError)
         throw e;
     }
