@@ -38,6 +38,13 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
   ViewEventListenerList get blur;
   ViewEventListenerList get change;
   ViewEventListenerList get click;
+  ViewEventListenerList get drag;
+  ViewEventListenerList get dragEnd;
+  ViewEventListenerList get dragEnter;
+  ViewEventListenerList get dragLeave;
+  ViewEventListenerList get dragOver;
+  ViewEventListenerList get dragStart;
+  ViewEventListenerList get drop;
   ViewEventListenerList get focus;
   ViewEventListenerList get keyDown;
   ViewEventListenerList get keyPress;
@@ -169,6 +176,13 @@ class _ViewEvents extends _ViewEventListenerMap implements ViewEvents {
   ViewEventListenerList get blur => _get('blur');
   ViewEventListenerList get change => _get('change');
   ViewEventListenerList get click => _get('click');
+  ViewEventListenerList get drag => _get('drag');
+  ViewEventListenerList get dragEnd => _get('dragEnd');
+  ViewEventListenerList get dragEnter => _get('dragEnter');
+  ViewEventListenerList get dragLeave => _get('dragLeave');
+  ViewEventListenerList get dragOver => _get('dragOver');
+  ViewEventListenerList get dragStart => _get('dragStart');
+  ViewEventListenerList get drop => _get('drop');
   ViewEventListenerList get focus => _get('focus');
   ViewEventListenerList get keyDown => _get('keyDown');
   ViewEventListenerList get keyPress => _get('keyPress');

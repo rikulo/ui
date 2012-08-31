@@ -127,7 +127,9 @@ class _ViewImpl {
     if (_domEvtDisps == null) {
       _domEvtDisps = {};
       for (final String nm in
-      const ["blur", "click", "focus",
+      const ["blur", "click",
+      "drag", "dragEnd", "dragEnter", "dragLeave", "dragOver", "dragStart", "drop",
+      "focus",
       "mouseDown", "mouseMove", "mouseOut", "mouseOver", "mouseUp", "mouseWheel",
       "scroll"]) {
       //Note: not including "change", since it shall be handled by View to use ChangeEvent instead
@@ -141,7 +143,11 @@ class _ViewImpl {
   static DOMEventDispatcher _domEvtDisp(String type) {
     return (View target) {
       return (Event event) {
-        target.sendEvent(new ViewEvent.dom(event, type: type, target: target));
+        var t = event.target;
+        if (t != null)
+          t = ViewUtil.getView(t);
+        target.sendEvent(new ViewEvent.dom(event, type: type,
+          target: t != null ? t: target));
       };
     };
   }

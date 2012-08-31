@@ -32,7 +32,8 @@ class ViewEvent {
    * If this event is constructed from a DOM event (UIEvent),
    * it is UIEvent.pageX and UIEvent.pageY.
    */
-  ViewEvent(String type, [View target, int pageX, int pageY, int offsetX, int offsetY]):
+  ViewEvent(String type, [View target,
+  int pageX, int pageY, int offsetX, int offsetY]):
   _domEvt = null, _type = type, _stamp = new Date.now().millisecondsSinceEpoch {
     if (type == null)
       throw const UIException("type required");
