@@ -259,8 +259,7 @@ class Activity {
   void updateSize() {
     final oldsz = new Size.from(browser.size);
     final DOMQuery qcave = new DOMQuery(_container != null ? _container: window);
-    browser.size.width = qcave.innerWidth;
-    browser.size.height = qcave.innerHeight;
+    browser.size = new Size(qcave.innerWidth, qcave.innerHeight);
     if (oldsz != browser.size) {
     //Note: we have to check if the size is changed, since deviceOrientation
     //is fired continuously once the listener is added

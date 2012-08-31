@@ -193,7 +193,7 @@ class MeasureContext {
     }
 
     final DOMQuery qview = new DOMQuery(view);
-    final Size size = new Size(qview.outerWidth, qview.outerHeight);
+    num width = qview.outerWidth, height = qview.outerHeight;
 
     if (orgspace != null)
       nodestyle.whiteSpace = orgspace; //restore
@@ -208,31 +208,31 @@ class MeasureContext {
       () => view.parent != null ? view.parent.innerHeight: browser.size.height;
 
     int limit = _amountOf(view.profile.maxWidth, parentInnerWidth);
-    if ((autowidth && size.width > browser.size.width)
-    || (limit != null && size.width > limit)) {
+    if ((autowidth && width > browser.size.width)
+    || (limit != null && width > limit)) {
       nodestyle.width = CSS.px(limit != null ? limit: browser.size.width);
 
-      size.width = qview.outerWidth;
-      size.height = qview.outerHeight;
+      width = qview.outerWidth;
+      height = qview.outerHeight;
       //Note: we don't restore the width such that browser will really limit the width
     }
 
     if ((limit = _amountOf(view.profile.maxHeight, parentInnerHeight)) != null
-    && size.height > limit) {
-      size.height = limit;
+    && height > limit) {
+      height = limit;
     }
     if ((limit = _amountOf(view.profile.minWidth, parentInnerWidth)) != null
-    && size.width < limit) {
-      size.width = limit;
+    && width < limit) {
+      width = limit;
     }
     if ((limit = _amountOf(view.profile.minHeight, parentInnerHeight)) != null
-    && size.height < limit) {
-      size.height = limit;
+    && height < limit) {
+      height = limit;
     }
 
-    widths[view] = size.width;
-    heights[view] = size.height;
-    return size;
+    widths[view] = width;
+    heights[view] = height;
+    return new Size(width, height);
   }
   static int _amountOf(String profile, AsInt parentInner) {
     final LayoutAmountInfo ai = new LayoutAmountInfo(profile);

@@ -49,20 +49,15 @@ interface Offset3d extends Offset default _Offset3d {
 }
 
 class _Offset implements Offset {
-  num left, top;
-
-  _Offset(this.left, this.top);
-  _Offset.from(Offset other): this(other.left, other.top);
-
+  
+  final num left, top;
+  
+  const _Offset(this.left, this.top);
+  _Offset.from(Offset other) : this(other.left, other.top);
+  
   num get x => left;
-  void set x(num x) {
-    left = x;
-  }
   num get y => top;
-  void set y(num y) {
-    top = y;
-  }
-
+  
   bool operator ==(Offset other)
   => other is Offset && left == other.left && top == other.top;
   Offset operator -(Offset other)
@@ -86,16 +81,14 @@ class _Offset implements Offset {
 }
 
 class _Offset3d extends _Offset implements Offset3d {
-  num zIndex;
-
-  _Offset3d(num x, num y, num z): super(x, y), zIndex = z;
-  _Offset3d.from(Offset3d other): this(other.x, other.y, other.z);
-
+  
+  final num zIndex;
+  
+  const _Offset3d(num x, num y, this.zIndex) : super(x, y);
+  _Offset3d.from(Offset3d other) : this(other.x, other.y, other.z);
+  
   num get z => zIndex;
-  void set z(num z) {
-    zIndex = z;
-  }
-
+  
   bool operator ==(Offset3d other)
   => other is Offset3d && left == other.left && top == other.top && zIndex == other.zIndex;
   Offset3d operator -(Offset3d other)
