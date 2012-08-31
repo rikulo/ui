@@ -56,7 +56,7 @@ class InterApplicationBridge<Message> {
 
         if (data["iabId"] != _name || (_origin != "*" && _origin != event.origin))
           return; //not matched
-      } catch (var e) {
+      } catch (e) {
         return; //ignored (since the message might not be recognizable)
       }
 

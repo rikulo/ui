@@ -70,7 +70,7 @@ class ViewEvent {
         }
         
         _offset = _offset - new DOMQuery(target).pageOffset;
-      } catch (final e) {
+      } catch (e) {
         print("Faile to get offset for $this, $e");
       }
     }
