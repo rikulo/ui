@@ -1,5 +1,9 @@
 #Rikulo Changes
 
+**August 31, 2012**
+
+* Offset and Offset3d objects are made immutable.
+
 **August 30, 2012**
 
 * In EasingMotion, MotionAction now supplies MotionState in the arguments.

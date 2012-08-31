@@ -40,9 +40,9 @@ interface Offset extends Hashable default _Offset {
  */
 interface Offset3d extends Offset default _Offset3d {
   /** The Z index. */
-  num zIndex;
+  num get zIndex;
   /** The Z index (the same as [zIndex], i.e., an alias). */
-  num z;
+  num get z;
 
   Offset3d(num x, num y, num z);
   Offset3d.from(Offset3d other);
