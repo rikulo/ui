@@ -106,11 +106,11 @@ class DOMQuery {
    */
   Offset get pageOffset {
     //1. adds up cumulative offsetLeft/offsetTop
-    final ofs = new Offset(0, 0);
+    int left = 0, top = 0;
     Element el = node;
     do {
-      ofs.left += el.$dom_offsetLeft;
-      ofs.top += el.$dom_offsetTop;
+      left += el.$dom_offsetLeft;
+      top += el.$dom_offsetTop;
     } while (el.style.position != "fixed" && (el = el.offsetParent) != null);
 
     //2. subtract cumulative scrollLeft/scrollTop
@@ -118,14 +118,14 @@ class DOMQuery {
     do {
       final txofs = CSS.offset3dOf(el.style.transform);
         //for performance reason it doesn't handle computed style
-      ofs.left -= el.$dom_scrollLeft - txofs.left;
-      ofs.top -= el.$dom_scrollTop - txofs.top;
+      left -= el.$dom_scrollLeft - txofs.left;
+      top -= el.$dom_scrollTop - txofs.top;
     } while ((el = el.parent) != null && el is! Document);
 
     //3. add the browser's scroll offset
-    ofs.left += window.pageXOffset;
-    ofs.top += window.pageYOffset;
-    return ofs;
+    left += window.pageXOffset;
+    top += window.pageYOffset;
+    return new Offset(left, top);
   }
   /** Returns the final used values of all the CSS properties
    */

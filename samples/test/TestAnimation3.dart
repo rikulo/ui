@@ -122,12 +122,12 @@ class TestAnimation3 extends Activity {
         int elapsed = mstate.elapsedTime;
         pos += unitv * speed * elapsed;
         if (pos.x < range.left || pos.x > range.right) {
-          unitv.x *= -1;
+          unitv = new Offset(-unitv.x, unitv.y);
           speed *= 0.8;
           setSanity(sanity * 0.8);
         }
         if (pos.y < range.top || pos.y > range.bottom) {
-          unitv.y *= -1;
+          unitv = new Offset(unitv.x, -unitv.y);
           speed *= 0.8;
           setSanity(sanity * 0.8);
         }

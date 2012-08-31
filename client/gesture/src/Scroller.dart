@@ -470,7 +470,7 @@ class _BoundedInertialMotion extends Motion {
   final num friction, bounce, snapSpeedThreshold;
   final Rectangle range;
   final Function _move, _end, _snap;
-  Offset _pos, _vel;
+  num _posx, _posy, _velx, _vely;
   Motion _snapMotion;
   
   _BoundedInertialMotion(Element element, Offset velocity, this.range, 
@@ -478,41 +478,43 @@ class _BoundedInertialMotion extends Motion {
   [num friction = 0.0005, num bounce = 0.0002, num snapSpeedThreshold = 0.05, ScrollerSnap snap]) :
   this.element = element, this.friction = friction, this.bounce = bounce,
   this.snapSpeedThreshold = snapSpeedThreshold, _move = move, _end = end, _snap = snap,
-  _pos = new DOMQuery(element).offset, _vel = velocity, super(null) {
-    if (!_hor)
-      _vel.x = 0;
-    if (!_ver)
-      _vel.y = 0;
+  super(null) {
+    final Offset pos = new DOMQuery(element).offset;
+    _posx = pos.x;
+    _posy = pos.y;
+    _velx = _hor ? velocity.x : 0;
+    _vely = _ver ? velocity.y : 0;
   }
   
   bool onMove(MotionState state) {
-    final num speed = _vel.norm();
-    final Offset dir = speed == 0 ? new Offset(0, 0) : _vel / speed;
+    final Offset vel = new Offset(_velx, _vely);
+    final num speed = vel.norm();
+    final Offset dir = speed == 0 ? new Offset(0, 0) : vel / speed;
     final Offset dec = dir * friction;
     
     if (_hor)
-      _pos.x = _updatePosition(_pos.x, _vel.x, dec.x, state.elapsedTime, range.x, range.right);
+      _posx = _updatePosition(_posx, _velx, dec.x, state.elapsedTime, range.x, range.right);
     if (_ver)
-      _pos.y = _updatePosition(_pos.y, _vel.y, dec.y, state.elapsedTime, range.y, range.bottom);
+      _posy = _updatePosition(_posy, _vely, dec.y, state.elapsedTime, range.y, range.bottom);
     
     if (_move != null)
-      _move(_pos, state.currentTime);
+      _move(new Offset(_posx, _posy), state.currentTime);
     
     if (_hor)
-      _vel.x = _updateVelocity(_pos.x, _vel.x, dec.x, state.elapsedTime, range.x, range.right);
+      _velx = _updateVelocity(_posx, _velx, dec.x, state.elapsedTime, range.x, range.right);
     if (_ver)
-      _vel.y = _updateVelocity(_pos.y, _vel.y, dec.y, state.elapsedTime, range.y, range.bottom);
+      _vely = _updateVelocity(_posy, _vely, dec.y, state.elapsedTime, range.y, range.bottom);
     
     if (_shallSnap())
       return false;
     
-    return (_hor && !_shallStop(_pos.x, _vel.x, range.x, range.right)) ||
-        (_ver && !_shallStop(_pos.y, _vel.y, range.y, range.bottom)); 
+    return (_hor && !_shallStop(_posx, _velx, range.x, range.right)) ||
+        (_ver && !_shallStop(_posy, _vely, range.y, range.bottom)); 
   }
   
   void onEnd(MotionState state) {
     if (_snapTo != null) {
-      _snapMotion = new LinearPathMotion(element, _pos, _snapTo,
+      _snapMotion = new LinearPathMotion(element, new Offset(_posx, _posy), _snapTo,
       move: (MotionState ms, Offset pos, num x, void updateElementPosition()) {
         updateElementPosition();
         if (_move != null)
@@ -560,13 +562,13 @@ class _BoundedInertialMotion extends Motion {
   bool _shallSnap() {
     // use max, not norm, as x/y motion should be considered independent
     // i.e. shall snap when both x & y motion are nearly stopped
-    if (_snap == null || _vel.x.abs() > snapSpeedThreshold || _vel.y.abs() > snapSpeedThreshold)
+    if (_snap == null || max(_velx.abs(), _vely.abs()) > snapSpeedThreshold)
       return false;
     // do not snap outside of the range
-    if ((!_hor || _pos.x < range.x || _pos.x > range.right) &&
-        (!_ver || _pos.y < range.y || _pos.y > range.bottom))
+    if ((!_hor || _posx < range.x || _posx > range.right) &&
+        (!_ver || _posy < range.y || _posy > range.bottom))
       return false;
-    Offset scrPos = _pos * -1, scrSnapPos = _snap(scrPos);
+    Offset scrPos = new Offset(-_posx, -_posy), scrSnapPos = _snap(scrPos);
     if (scrSnapPos == null)
       return false;
     scrSnapPos = range.snap(scrSnapPos * -1) * -1;

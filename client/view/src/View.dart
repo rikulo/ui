@@ -989,13 +989,13 @@ class View implements Hashable {
   Offset get pageOffset {
     if (_inDoc)
       return new DOMQuery(node).pageOffset;
-
-    final Offset ofs = new Offset(0, 0);
+    
+    int left = 0, top = 0;
     for (View view = this;;) {
-      ofs.left += view.left;
-      ofs.top += view.top;
+      left += view.left;
+      top += view.top;
       if (view.style.position == "fixed" || (view = view.parent) == null)
-        return ofs;
+        return new Offset(left, top);
     }
   }
   /** Returns the layout instruction of this view.

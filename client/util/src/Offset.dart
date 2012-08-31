@@ -8,13 +8,13 @@
 interface Offset extends Hashable default _Offset {
   
   /** The left offset. */
-  num left;
+  num get left;
   /** The top offset. */
-  num top;
+  num get top;
   /** The left offset (the same as [left], i.e., an alias). */
-  num x;
+  num get x;
   /** The top offset (the same as [top], i.e., an alias). */
-  num y;
+  num get y;
 
   Offset(num left, num top);
   Offset.from(Offset other);
@@ -51,7 +51,7 @@ interface Offset3d extends Offset default _Offset3d {
 class _Offset implements Offset {
   num left, top;
 
-  _Offset(num this.left, num this.top);
+  _Offset(this.left, this.top);
   _Offset.from(Offset other): this(other.left, other.top);
 
   num get x => left;

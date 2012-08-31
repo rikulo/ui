@@ -66,13 +66,10 @@ class ViewEvent {
             return _offset;
 
           final UIEvent uievt = domEvent;
-          _offset.x = uievt.pageX;
-          _offset.y = uievt.pageY;
+          _offset = new Offset(uievt.pageX, uievt.pageY);
         }
-
-        final Offset ofs = new DOMQuery(target).pageOffset;
-        _offset.left -= ofs.left;
-        _offset.top -= ofs.top;
+        
+        _offset = _offset - new DOMQuery(target).pageOffset;
       } catch (final e) {
         print("Faile to get offset for $this, $e");
       }
