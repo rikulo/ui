@@ -28,7 +28,7 @@ class MeasureContext {
   Map<String, Dynamic> _dataAttrs;
 
   MeasureContext(): widths = new Map(), heights = new Map(),
-  _borderWds = new Map(), _borderHghs = {} {
+  _borderWds = new Map(), _borderHghs = new Map() {
   }
   /** Returns the border's width (left border plus right border).
    */
@@ -37,6 +37,7 @@ class MeasureContext {
     if (v == null) {
       final qs = new DOMQuery(view.node).computedStyle;
       return _borderWds[view] = CSS.intOf(qs.borderLeftWidth) + CSS.intOf(qs.borderRightWidth);
+      //Note: qs.borderWidth is supported only by Chrome
     }
     return v;
   }
