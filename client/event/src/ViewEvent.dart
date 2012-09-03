@@ -15,6 +15,7 @@ class ViewEvent {
   final String _type;
   final int _stamp;
   Offset _offset;
+  final Clipboard _dataTransfer;
   bool _offsetReady = false;
   bool _propStop = false;
 
@@ -33,8 +34,9 @@ class ViewEvent {
    * it is UIEvent.pageX and UIEvent.pageY.
    */
   ViewEvent(String type, [View target,
-  int pageX, int pageY, int offsetX, int offsetY]):
-  _domEvt = null, _type = type, _stamp = new Date.now().millisecondsSinceEpoch {
+  int pageX, int pageY, int offsetX, int offsetY, Clipboard dataTransfer]):
+  _domEvt = null, _type = type, _stamp = new Date.now().millisecondsSinceEpoch,
+  _dataTransfer = dataTransfer {
     if (type == null)
       throw const UIException("type required");
     this.target = currentTarget = target;
@@ -51,7 +53,8 @@ class ViewEvent {
    */
   ViewEvent.dom(Event domEvent, [String type, View target]) : 
   _domEvt = domEvent, _type = type != null ? type: domEvent.type,
-  _stamp = domEvent.timeStamp {
+  _stamp = domEvent.timeStamp,
+  _dataTransfer = domEvent is MouseEvent ? (domEvent as MouseEvent).dataTransfer: null {
     this.target = currentTarget = target;
     _offset = new Offset(0, 0);
   }
@@ -94,6 +97,9 @@ class ViewEvent {
   /** Returns the event's type. */
   String get type => _type;
 
+  /** Returns the object used to transfer data, or null if not available.
+   */
+  Clipboard get dataTransfer => _dataTransfer;
   /** Returns whether this event's propagation is stopped.
    *
    * Default: false.
@@ -107,6 +113,17 @@ class ViewEvent {
    */
   void stopPropagation() {
     _propStop = true;
+    if (_domEvt != null)
+      _domEvt.stopPropagation();
+  }
+  /** Prevents the browser's default behavior.
+   *
+   * It does nothing if [domEvent] is null. In other words, it is meaningful
+   * only if this event is caused by a DOM event.
+   */
+  void preventDefault() {
+    if (_domEvt != null)
+      _domEvt.preventDefault();
   }
 
   String toString() => "ViewEvent($target,$type)";
