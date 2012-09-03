@@ -16,9 +16,12 @@ class TestDragAndDrop extends Activity {
       view.layout.text = "type: linear; spacing: 5";
       mainView.addChild(view);
     }
-    for (int i = 0; i < 3; ++i) {
-      final view = new TextView("View $i");
-      view.classes..add("box")..add("b$i");
+    final images = ["alpaca-01.jpg", "alpaca-02.jpg", "alpaca-03.jpg", "alpaca-04.jpg"];
+    for (int i = 0; i < images.length; ++i) {
+      final view = new Image("http://blog.rikulo.org/static/files/tutorial/swipe-album/res/${images[i]}");
+        //IE accepts only Image as draggable
+      view.width = view.height = 150;
+      view.classes..add("box");
       view.draggable = true;
       mainView.firstChild.addChild(view);
     }
@@ -27,7 +30,8 @@ class TestDragAndDrop extends Activity {
     //create drag effect
     ..dragStart.add((event) {
       event.target.classes.add("dragged");
-      event.dataTransfer.setData("dragged", event.target.uuid);
+      event.dataTransfer.setData("Text", event.target.uuid);
+        //IE accepts only "Text" and "URL" as the first argument (since it is format)
     })
     ..dragEnd.add((event) {
       event.target.classes.remove("dragged");
@@ -57,7 +61,7 @@ class TestDragAndDrop extends Activity {
       if (container != null) {
         container.classes.remove("dragover");
           //Chrome issue: dragLeave not called, so clean up here
-        container.addChild(ViewUtil.getView(event.dataTransfer.getData("dragged")));
+        container.addChild(ViewUtil.getView(event.dataTransfer.getData("Text")));
         container.requestLayout();
       }
     });
