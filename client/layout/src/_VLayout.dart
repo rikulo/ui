@@ -40,7 +40,7 @@ class _VLayout implements _RealLinearLayout {
       }
     }
 
-    height += mctx.getBorderWidth(view) * 2
+    height += mctx.getBorderHeight(view)
       + (prevSpacing != null ? prevSpacing: spcinf.top + spcinf.bottom);
     return height;
   }
@@ -51,7 +51,7 @@ class _VLayout implements _RealLinearLayout {
 
     final spcinf = new LayoutSideInfo(view.layout.spacing, _DEFAULT_SPACING);
     final defpwd = view.layout.width;
-    final int borderWd = mctx.getBorderWidth(view) << 1;
+    final int borderWd = mctx.getBorderWidth(view);
     int width;
     for (final View child in view.children) {
       if (!view.shallLayout_(child) || child.profile.anchorView != null)

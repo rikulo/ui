@@ -23,7 +23,7 @@ class FreeLayout extends AbstractLayout {
       }
 
       if (wd != null)
-        wd += mctx.getBorderWidth(view) << 1;
+        wd += mctx.getBorderWidth(view);
     }
     mctx.widths[view] = wd;
     return wd;
@@ -45,7 +45,7 @@ class FreeLayout extends AbstractLayout {
       }
 
       if (hgh != null)
-        hgh += mctx.getBorderWidth(view) << 1;
+        hgh += mctx.getBorderHeight(view);
     }
     mctx.heights[view] = hgh;
     return hgh;

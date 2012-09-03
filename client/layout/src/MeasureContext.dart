@@ -24,18 +24,30 @@ class MeasureContext {
    * to set the height.
    */
   final Map<View, int> heights;
-  final Map<View, int> _borderWds;
+  final Map<View, int> _borderWds, _borderHghs;
   Map<String, Dynamic> _dataAttrs;
 
   MeasureContext(): widths = new Map(), heights = new Map(),
-  _borderWds = new Map() {
+  _borderWds = new Map(), _borderHghs = {} {
   }
-  /** Returns the border's width.
+  /** Returns the border's width (left border plus right border).
    */
   int getBorderWidth(View view) {
-    int v = _borderWds[view];
-    if (v == null)
-      _borderWds[view] = v = new DOMQuery(view.node).borderWidth;
+    final v = _borderWds[view];
+    if (v == null) {
+      final qs = new DOMQuery(view.node).computedStyle;
+      return _borderWds[view] = CSS.intOf(qs.borderLeftWidth) + CSS.intOf(qs.borderRightWidth);
+    }
+    return v;
+  }
+  /** Returns the border's height (top border plus bottom border).
+   */
+  int getBorderHeight(View view) {
+    final v = _borderHghs[view];
+    if (v == null) {
+      final qs = new DOMQuery(view.node).computedStyle;
+      return _borderHghs[view] = CSS.intOf(qs.borderTopWidth) + CSS.intOf(qs.borderBottomWidth);
+    }
     return v;
   }
 

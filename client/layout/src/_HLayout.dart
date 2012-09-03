@@ -40,7 +40,7 @@ class _HLayout implements _RealLinearLayout {
       }
     }
 
-    width += mctx.getBorderWidth(view) * 2
+    width += mctx.getBorderWidth(view)
       + (prevSpacing != null ? prevSpacing: spcinf.left + spcinf.right);
     return width;
   }
@@ -51,7 +51,7 @@ class _HLayout implements _RealLinearLayout {
 
     final spcinf = new LayoutSideInfo(view.layout.spacing, _DEFAULT_SPACING);
     final String defphgh = view.layout.height;
-    final int borderWd = mctx.getBorderWidth(view) << 1;
+    final int borderHgh = mctx.getBorderHeight(view);
     int height;
     for (final View child in view.children) {
       if (!view.shallLayout_(child) || child.profile.anchorView != null)
@@ -59,7 +59,7 @@ class _HLayout implements _RealLinearLayout {
 
       //add spacing to width
       final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
-      int hgh = si.top + si.bottom + borderWd; //spacing of border
+      int hgh = si.top + si.bottom + borderHgh; //spacing of border
       final phgh = child.profile.height;
       final amt = _getLayoutAmountInfo(child, phgh.isEmpty() ? defphgh: phgh);
       switch (amt.type) {

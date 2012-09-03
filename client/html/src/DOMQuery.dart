@@ -147,9 +147,6 @@ class DOMQuery {
    */
   bool isInput() => node.tagName == 'INPUT' || node.tagName == 'TEXTAREA';
   
-  /** Returns the width of the border.
-   */
-  int get borderWidth => CSS.intOf(computedStyle.borderWidth);
   /** Returns the size of the padding at left.
    */
   int get paddingLeft => CSS.intOf(computedStyle.paddingLeft);

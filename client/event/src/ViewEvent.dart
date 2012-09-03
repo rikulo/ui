@@ -35,7 +35,7 @@ class ViewEvent {
    */
   ViewEvent(String type, [View target,
   int pageX, int pageY, int offsetX, int offsetY, Clipboard dataTransfer]):
-  _domEvt = null, _type = type, _stamp = new Date.now().millisecondsSinceEpoch,
+  _domEvt = null, _type = type, _stamp = _timeOfEvent(),
   _dataTransfer = dataTransfer {
     if (type == null)
       throw const UIException("type required");
@@ -53,7 +53,7 @@ class ViewEvent {
    */
   ViewEvent.dom(Event domEvent, [String type, View target]) : 
   _domEvt = domEvent, _type = type != null ? type: domEvent.type,
-  _stamp = domEvent.timeStamp,
+  _stamp = _timeOfEvent(domEvent),
   _dataTransfer = domEvent is MouseEvent ? (domEvent as MouseEvent).dataTransfer: null {
     this.target = currentTarget = target;
     _offset = new Offset(0, 0);
@@ -127,4 +127,13 @@ class ViewEvent {
   }
 
   String toString() => "ViewEvent($target,$type)";
+}
+
+int _timeOfEvent([Event event]) {
+  if (event != null)
+    try {
+      return event.timeStamp;
+    } catch (ex) { //it might happen (such as Opera with dart2js release 11394)
+    }
+  return new Date.now().millisecondsSinceEpoch;
 }
