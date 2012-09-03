@@ -14,19 +14,6 @@ class TestDragAndDrop extends Activity {
       final view = new View();
       view.classes.add("container");
       view.layout.text = "type: linear; spacing: 5";
-      view.on
-      ..dragOver.add((event) {
-        event.preventDefault(); //it means "allow drop"
-      })
-      ..drop.add((event) {
-        final view = getContainer(event.target);
-        if (view != null) {
-          view.classes.remove("dragover");
-            //Chrome issue: dragLeave not called, so clean up here
-          view.addChild(ViewUtil.getView(event.dataTransfer.getData("dragged")));
-          view.requestLayout();
-        }
-      });
       mainView.addChild(view);
     }
     for (int i = 0; i < 3; ++i) {
@@ -35,7 +22,9 @@ class TestDragAndDrop extends Activity {
       view.draggable = true;
       mainView.firstChild.addChild(view);
     }
+
     mainView.on
+    //create drag effect
     ..dragStart.add((event) {
       event.target.classes.add("dragged");
       event.dataTransfer.setData("dragged", event.target.uuid);
@@ -43,17 +32,34 @@ class TestDragAndDrop extends Activity {
     ..dragEnd.add((event) {
       event.target.classes.remove("dragged");
     })
+    //allow drop if it is in a container
+    ..dragOver.add((event) {
+      if (getContainer(event.target) != null)
+        event.preventDefault();
+        //calling preventDefault in dragOver means "allow drop"
+    })
+    //create allow-drop effect
     ..dragEnter.add((event) {
-      final view = getContainer(event.target);
-      if (view != null)
-        window.setTimeout((){view.classes.add("dragover");}, 0);
+      final container = getContainer(event.target);
+      if (container != null)
+        window.setTimeout((){container.classes.add("dragover");}, 0);
         //Chrome issue: prev.dragLeave is fired after nextdragEnter, so
         //we have to defer dragEnter to make the sequence: leave and then enter
     })
     ..dragLeave.add((event) {
-      final view = getContainer(event.target);
-      if (view != null)
-        view.classes.remove("dragover");
+      final container = getContainer(event.target);
+      if (container != null)
+        container.classes.remove("dragover");
+    })
+    //handle drop
+    ..drop.add((event) {
+      final container = getContainer(event.target);
+      if (container != null) {
+        container.classes.remove("dragover");
+          //Chrome issue: dragLeave not called, so clean up here
+        container.addChild(ViewUtil.getView(event.dataTransfer.getData("dragged")));
+        container.requestLayout();
+      }
     });
 
     mainView.addChild(new TextView("Drag views between two containers"));
