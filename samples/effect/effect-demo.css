@@ -1,0 +1,13 @@
+.black {
+	background-color: #000000;
+}
+
+.block {
+	text-align: center;
+	border-radius: 10px;
+	border: 2px solid #444444;
+	background-color: #CCCCCC;
+	color: #444444;
+	font-weight: bold;
+	font-size: 14px;
+}

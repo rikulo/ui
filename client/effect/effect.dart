@@ -14,3 +14,4 @@
 #source("src/Motion.dart");
 #source("src/EasingMotion.dart");
 #source("src/LinearPathMotion.dart");
+#source("src/BuzzEffect.dart");
