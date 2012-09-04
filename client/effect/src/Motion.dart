@@ -91,7 +91,6 @@ class Motion {
   
   MotionState _state;
   int _stateFlag = _MOTION_STATE_INIT;
-  var data;
   
   Motion([MotionStart start, MotionMove move, MotionEnd end, bool autorun = true]) : 
     _start = start, _move = move, _end = end {
