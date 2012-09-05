@@ -30,6 +30,34 @@ class EffectDemo extends Activity {
       });
     });
     
+    mainView.addChild(v = block("Glow", 200, 50));
+    
+    final num n = 0.3;
+    final Color c = new Color.hsv(210, 50, 100);
+    final Element glowNode = v.node;
+    bool glowing = false;
+    v.on.click.add((ViewEvent event) {
+      if (glowing)
+        return;
+      glowing = true;
+      new GlowEffect(glowNode, tempo: n, end: (MotionState state) {
+        glowing = false;
+      });
+    });
+    
+    mainView.addChild(v = block("Shake", 50, 200));
+    
+    bool shaking = false;
+    final Element shakeNode = v.node;
+    v.on.click.add((ViewEvent event) {
+      if (shaking)
+        return;
+      shaking = true;
+      new ShakeEffect(shakeNode, end: (MotionState state) {
+        shaking = false;
+      });
+    });
+    
   }
   
   TextView block(String text, int left, int top) {
