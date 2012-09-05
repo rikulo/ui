@@ -14,6 +14,7 @@ class TestDragAndDrop extends Activity {
       final view = new View();
       view.classes.add("container");
       view.layout.text = "type: linear; spacing: 5";
+      view.profile.text = "min-width: 156; min-height: 156";
       mainView.addChild(view);
     }
     final images = ["alpaca-01.jpg", "alpaca-02.jpg", "alpaca-03.jpg", "alpaca-04.jpg"];

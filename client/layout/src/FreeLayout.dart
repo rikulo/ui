@@ -7,11 +7,8 @@
  */
 class FreeLayout extends AbstractLayout {
   int measureWidth(MeasureContext mctx, View view) {
-    int wd = mctx.widths[view];
-    if (wd != null || mctx.widths.containsKey(view))
-      return wd;
-
-    if ((wd = mctx.getWidthSetByApp(view)) == null) {
+    int wd = mctx.getWidthSetByApp(view);
+    if (wd == null) {
       wd = view.innerWidth;
       for (final View child in view.children) {
         if (view.shallLayout_(child) && child.profile.anchorView == null) {
@@ -25,15 +22,11 @@ class FreeLayout extends AbstractLayout {
       if (wd != null)
         wd += mctx.getBorderWidth(view);
     }
-    mctx.widths[view] = wd;
     return wd;
   }
   int measureHeight(MeasureContext mctx, View view) {
-    int hgh = mctx.heights[view];
-    if (hgh != null || mctx.heights.containsKey(view))
-      return hgh;
-
-    if ((hgh = mctx.getHeightSetByApp(view)) == null) {
+    int hgh = mctx.getHeightSetByApp(view);
+    if (hgh == null) {
       hgh = view.innerHeight;
       for (final View child in view.children) {
         if (view.shallLayout_(child) && child.profile.anchorView == null) {
@@ -47,7 +40,6 @@ class FreeLayout extends AbstractLayout {
       if (hgh != null)
         hgh += mctx.getBorderHeight(view);
     }
-    mctx.heights[view] = hgh;
     return hgh;
   }
   bool isProfileInherited() => false;
