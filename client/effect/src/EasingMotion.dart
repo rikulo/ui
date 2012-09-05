@@ -17,15 +17,22 @@ class EasingMotion extends Motion {
   
   final MotionAction action;
   final EasingFunction easing;
-  final String mode;
-  final int duration;
+  final int period, repeat, duration;
   
   /** Construct an EasingMotion.
+   * 
+   * + [easing] is the easing function. Default: linear.
+   * + [period] is how long it takes to bring easing input from 0 to 1, in terms
+   * of milliseconds. Default: 500 milliseconds.
+   * + [repeat] is the number of times the motion repeats. If negative, the 
+   * motion loops forever until [MotionAction] returns false. Default: 1.
+   * + [start] is invoked when the motion starts.
+   * + [end] is invoked when the motion ends.
    */
-  EasingMotion(this.action, [EasingFunction easing, String mode = "once", 
-    int duration = 500, MotionStart start, MotionEnd end, bool autorun = true]) : 
-    this.mode = mode, this.duration = duration, this.easing = easing, 
-    super(start, null, end, autorun);
+  EasingMotion(this.action, [EasingFunction easing, int period = 500, 
+    int repeat = 1, MotionStart start, MotionEnd end, bool autorun = true]) : 
+    this.easing = easing, this.period = period, this.repeat = repeat, 
+    duration = repeat * period, super(start, null, end, autorun);
   
   /** Compute position value by [EasingFunction].
    */
@@ -36,24 +43,14 @@ class EasingMotion extends Motion {
   bool doAction_(num x, MotionState state) => action(x, state);
   
   bool onMove(MotionState state) {
-    int curr = _easingInput(state.runningTime);
-    final bool result = doAction_(doEasing_(curr / duration), state);
-    return (mode == "alternate" || mode == "repeat" || curr < duration) && (result == null || result);
+    final int runningTime = state.runningTime;
+    final int curr = _easingInput(runningTime);
+    final bool result = doAction_(doEasing_(curr / period), state);
+    return (repeat < 0 || runningTime < duration) && result !== false;
   }
   
-  num _easingInput(num runningTime) {
-    switch(mode) {
-      case "alternate":
-        final num d2 = 2 * duration;
-        final num t = runningTime % d2;
-        return t <= duration ? t : d2 - t;
-      case "repeat":
-        return runningTime % duration;
-      case "once":
-      default:
-        return min(runningTime, duration);
-    }
-  }
+  num _easingInput(num runningTime) => 
+      (duration < 0 ? runningTime : min(runningTime, duration)) % period;
   
   /** Skip to the end of motion.
    */

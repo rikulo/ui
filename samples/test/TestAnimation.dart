@@ -82,7 +82,7 @@ class TestAnimation extends Activity {
     motion = new EasingMotion((num x, MotionState state) {
       cube.left = 300 + (150 * cos(x * 2 * PI)).toInt();
       cube.top = 100 + (50 * sin(x * 4 * PI)).toInt();
-    }, duration: (400 * PI).toInt(), mode: "repeat");
+    }, period: (400 * PI).toInt(), repeat: -1);
     
   }
   

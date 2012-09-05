@@ -522,7 +522,7 @@ class _BoundedInertialMotion extends Motion {
       }, end: (MotionState ms) {
         if (_end != null)
           _end();
-      }, duration: 200, easing: (num x) => x * x);
+      }, period: 200, easing: (num x) => x * x);
     } else if (_end != null)
       _end();
   }

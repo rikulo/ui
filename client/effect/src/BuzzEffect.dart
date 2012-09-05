@@ -21,7 +21,7 @@ class BuzzEffect extends EasingMotion {
    * + [start]: Called when the effect starts.
    * + [end]: Called when the effect ends.
    */
-  BuzzEffect(Element element, [int duration = 500, num movement = 3, num rotation = 3, 
+  BuzzEffect(Element element, [int period = 500, num movement = 3, num rotation = 3, 
   MotionStart start, MotionEnd end]) : 
   this.element = element, 
   super((num x, MotionState state) {
@@ -37,7 +37,7 @@ class BuzzEffect extends EasingMotion {
     if (end != null)
       end(state);
     
-  }, duration: duration);
+  }, period: period);
   
   static Random _rand;
   static num nextDouble(num max) {
