@@ -1,5 +1,9 @@
 #Rikulo Changes
 
+**September 5, 2012**
+
+* In EasingMotion, duration is renamed to period, repeat parameter is introduced, and mode is removed.
+
 **August 31, 2012**
 
 * Offset and Offset3d objects are made immutable.

@@ -55,7 +55,7 @@ class TestEasing extends Activity {
   void onCreate_() {
     List<Offset> centers = 
         [new Offset(100, 100), new Offset(400, 100), new Offset(100, 400)];
-    List<String> modes = ["once", "alternate", "repeat"];
+    List<int> repeats = [1, 3, -1];
     
     List<View> cubes = [];
     for (int i = 0; i < 3; i++) {
@@ -90,7 +90,7 @@ class TestEasing extends Activity {
         motions[i] = new EasingMotion(_action(cubes[i].node, centers[i]), 
         end: (MotionState state) {
           blue(cubes[i]);
-        }, duration: 1000, mode: modes[i]);
+        }, period: 1000, repeat: repeats[i]);
       });
     }
   }
