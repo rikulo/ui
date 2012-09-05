@@ -13,7 +13,7 @@ interface Color default _Color {
    * + [alpha] should be a number between 0 (inclusive) and 1 (inclusive).
    * Default: 1
    */
-  const Color(num red, num green, num blue, [num alpha]);
+  Color(num red, num green, num blue, [num alpha]);
   
   /** Construct a Color object with given HSV and [alpha] (opacity) values.
    * 
@@ -23,7 +23,7 @@ interface Color default _Color {
    * + [alpha] should be a number between 0 (inclusive) and 1 (inclusive).
    * Default: 1
    */
-  const Color.hsv(num hue, num saturation, num value, [num alpha]);
+  Color.hsv(num hue, num saturation, num value, [num alpha]);
   
   /// The red component.
   num get red;
@@ -109,10 +109,10 @@ class _Color implements Color {
       b = x; r = ch;
     }
     final num red = (r + m) * 255, green = (g + m) * 255, blue = (b + m) * 255;
-    return const _Color._internal(red, green, blue, hue, saturation, value, alpha);
+    return new _Color._internal(red, green, blue, hue, saturation, value, alpha);
   }
   
-  const _Color._internal(this._red, this._green, this._blue, this._hue, this._sat, 
+  _Color._internal(this._red, this._green, this._blue, this._hue, this._sat, 
       this._val, this._alpha);
   
   // TODO: as utility, later
