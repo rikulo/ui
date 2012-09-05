@@ -4,6 +4,7 @@
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
+#import('../../client/event/event.dart');
 #import('../../client/util/util.dart');
 
 class TestDragAndDrop extends Activity {
@@ -70,7 +71,7 @@ class TestDragAndDrop extends Activity {
 
     mainView.addChild(new TextView("Drag views between two containers"));
   }
-  static View getContainer(Event event) {
+  static View getContainer(ViewEvent event) {
     //to protect the drop from other source, we have to check data first
     final data = event.dataTransfer.getData("Text");
     if (data != null && data.startsWith("uuid:"))
