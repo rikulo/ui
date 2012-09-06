@@ -88,9 +88,9 @@ class View implements Hashable {
    *
    * Notice that the view is positioned absolutely. It is different from
    * the default behavior the most HTML elements. If you want to create a HTML fragment,
-   * you can use [TextView.html] instead, since it is much simpler.
+   * you can use [TextView.fromHTML] instead, since it is much simpler.
    *
-   *     new TextView.html('''
+   *     new TextView.fromHTML('''
    *       <table cellapding="10" border="1"><tr><td>Cell 1.1</td></tr></table>
    *       ''');
    *

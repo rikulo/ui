@@ -17,7 +17,7 @@ class Button extends TextView {
    * Notie it must be a valid HTML fragment. Otherwise, the result is
    * unpreditable.
    */
-  Button.html(String html): super.html(html);
+  Button.fromHTML(String html): super.fromHTML(html);
 
   //@Override
   String get className => "Button"; //TODO: replace with reflection if Dart supports it

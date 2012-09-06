@@ -7,7 +7,7 @@
  *
  * Notice that there are two kinds of text: plain text and HTML fragment.
  * You can specify the normal text with [text], and the HTML fragment with [html].
- * If both are specified, [text] will be shown in front of [html].
+ * If both are specified (though not recommended), [text] will be shown in front of [html].
  *
  * When displaying HTML fragement, an extra CSS class called `v-html` will be added.
  * Thus, you can customize the look of embedding HTML fragment different from text.
@@ -28,7 +28,7 @@ class TextView extends View {
    * Notie it must be a valid HTML fragment. Otherwise, the result is
    * unpreditable.
    */
-  TextView.html(String html) {
+  TextView.fromHTML(String html) {
     _html = html != null ? html: "";
     _text = "";
     classes.add("v-html");
@@ -40,14 +40,14 @@ class TextView extends View {
   /** Returns the text.
    */
   String get text => this._text;
-  /** Sets the text.
+  /** Sets the text displayed in this view.
    */
   void set text(String text) {
     _text = text != null ? text: "";
     classes.remove("v-html");
     updateInner_();
   }
-  /** Returns the HTML text.
+  /** Returns the HTML text displayed in this view.
    */
   String get html => this._html;
   /** Sets the HTML text.

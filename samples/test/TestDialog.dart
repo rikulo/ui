@@ -24,7 +24,7 @@ class TestDialog extends Activity {
     btn = new Button("Replace the main View");
     btn.profile.location = "center right";
     btn.on.click.add((event) {
-      mainView = new TextView.html("<h1>New Main View</h1><p>The main view has been replaced</p>");
+      mainView = new TextView.fromHTML("<h1>New Main View</h1><p>The main view has been replaced</p>");
     });
     mainView.addChild(btn);
   }

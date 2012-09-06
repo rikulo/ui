@@ -8,7 +8,7 @@
 class TestEmbed extends Activity {
 
   void onCreate_() {
-    final TextView webView = new TextView.html('''
+    final TextView webView = new TextView.fromHTML('''
       <ul style="line-height: 23px">
         <li>Structured Web Apps <span style="float:right"></span></li>
         <li>Structured UI Model <span style="float:right"></span></li>

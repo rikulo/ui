@@ -9,7 +9,7 @@ class Issue7 extends Activity {
     div.profile.height = "flex";
     mainView.addChild(div);
 
-    TextView help = new TextView.html('''
+    TextView help = new TextView.fromHTML('''
         <ul>
         <li>Environment: dart2js and test it on Firefox and IE
         <li>You shall see the background is full of the search icons</li>

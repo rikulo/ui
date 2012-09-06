@@ -1,7 +1,8 @@
 #Rikulo Changes
 
-**September 5, 2012**
+**September 6, 2012**
 
+* The html contructor of TextView and HTMLFragment is renamed to fromHTML
 * In EasingMotion, duration is renamed to period, repeat parameter is introduced, and mode is removed.
 
 **August 31, 2012**

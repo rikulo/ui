@@ -25,7 +25,7 @@ class CheckBox extends TextView implements Input<bool> {
    * Notie it must be a valid HTML fragment. Otherwise, the result is
    * unpreditable.
    */
-  CheckBox.html(String html, [bool value]): super.html(html) {
+  CheckBox.fromHTML(String html, [bool value]): super.fromHTML(html) {
     _value = value != null && value;
   }
 

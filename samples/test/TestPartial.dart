@@ -9,7 +9,7 @@ class TestPartial extends Activity {
     TextView welcome = new TextView("Hello World!");
     welcome.profile.text = "location: center center";
     welcome.on.click.add((event) {
-      TextView v = new TextView.html('<ul><li>Dialog Popup</li><li>center center</li></ul>');
+      TextView v = new TextView.fromHTML('<ul><li>Dialog Popup</li><li>center center</li></ul>');
       v.classes.add("v-dialog");
       v.profile.location = "center center";
       addDialog(v);

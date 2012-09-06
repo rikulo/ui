@@ -12,7 +12,7 @@ class HTMLFragment {
   /** Constructs with a plain text. For example,
    *
    *    new HTMLFragment(any_data); //any_data will be encoded to a string
-   *    new HTMLFragment.html("<ul><li>HTML fragment</li></ul>");
+   *    new HTMLFragment.fromHTML("<ul><li>HTML fragment</li></ul>");
    *
    * + [text] specifies the data that will be encoded as a plain text.
    * Notice that it will be encoded to be a valid HTML text.
@@ -28,7 +28,7 @@ class HTMLFragment {
   /** Constructs with a HTML fragment. For example
    *
    *    new HTMLFragment(any_data); //any_data will be encoded to a string
-   *    new HTMLFragment.html("<ul><li>HTML fragment</li></ul>");
+   *    new HTMLFragment.fromHTML("<ul><li>HTML fragment</li></ul>");
    *
    * + [html] specifies a HTML fragment.
    * Notice that it must be a valid HTML fragment. Otherwise, the result
@@ -40,7 +40,7 @@ class HTMLFragment {
    * The use depends on the receiver. However, it usually means that
    * the receiver doesn't have to wrap with additional HTML tags.
    */
-  HTMLFragment.html(String html, [AfterMount this.mount, bool complete]):
+  HTMLFragment.fromHTML(String html, [AfterMount this.mount, bool complete]):
   _html = html != null ? html: "", _complete = complete != null && complete;
 
   final AfterMount mount;
