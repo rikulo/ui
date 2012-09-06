@@ -170,7 +170,7 @@ class View implements Hashable {
       case "parent": return parent;
       case "spaceOwner":
         var so = spaceOwner;
-        return so is View ? so: null;
+        return so is View ? so as View : null;
     }
 
     final Iterator<View> iter = queryAll(selector).iterator();
