@@ -17,13 +17,13 @@ class Style extends View {
   }
   /** Constructs a style from the given CSS content.
    */
-  Style.content(String content, [String media]) {
+  Style.fromContent(String content, [String media]) {
     _content = content;
     _media = media;
   }
   /** Constructs a style from the given URL containing the CSS content.
    */
-  Style.src(String src, [String media]) {
+  Style.fromSrc(String src, [String media]) {
     _src = src;
     _media = media;
   }

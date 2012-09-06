@@ -9,7 +9,7 @@ class TestCutPaste extends Activity {
   void onCreate_() {
     title = "Cut-and-Paste Test";
 
-    mainView.addChild(new Style.content('''
+    mainView.addChild(new Style.fromContent('''
 .round {
   border-radius: 6px;
   border: 5px solid #886;

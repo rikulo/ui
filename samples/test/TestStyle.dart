@@ -21,7 +21,7 @@ class TestStyle extends Activity {
   border: 1px solid #553;
 }
   ''';
-    Style style = new Style.content(style1);
+    Style style = new Style.fromContent(style1);
     mainView.addChild(style);
 
     View view = new View();
