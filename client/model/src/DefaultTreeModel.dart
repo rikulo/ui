@@ -46,13 +46,13 @@ class DefaultTreeModel<T> extends AbstractTreeModel<TreeNode<T>> {
    */
   DefaultTreeModel([TreeNode<T> root, Collection nodes, Set<TreeNode<T>> selection,
   Set<TreeNode<T>> disables, Set<TreeNode<T>> opens, bool multiple=false]):
-  super(root != null ? root: (root = new TreeNode()), selection, disables, opens, multiple) {
-    final TreeNode<T> p = root.parent;
+  super(root != null ? root: new TreeNode(), selection, disables, opens, multiple) {
+    final TreeNode<T> p = _root.parent; //don't use the root argument since it might be null
     if (p != null)
-      throw new ModelException("Only root node is allowed, not ${root}");
-    root.model = this;
+      throw new ModelException("Only root node is allowed, not ${_root}");
+    _root.model = this;
     if (nodes != null)
-      root.addAll(nodes);
+      _root.addAll(nodes);
   }
 
   TreeNode<T> getChild(TreeNode<T> parent, int index) => parent[index];
