@@ -4,6 +4,7 @@
 
 #import('../../client/app/app.dart');
 #import('../../client/view/view.dart');
+#import('../../client/event/event.dart');
 #import('../../client/util/util.dart');
 
 class TestDragAndDrop extends Activity {
@@ -14,6 +15,7 @@ class TestDragAndDrop extends Activity {
       final view = new View();
       view.classes.add("container");
       view.layout.text = "type: linear; spacing: 5";
+      view.profile.text = "min-width: 156; min-height: 156";
       mainView.addChild(view);
     }
     final images = ["alpaca-01.jpg", "alpaca-02.jpg", "alpaca-03.jpg", "alpaca-04.jpg"];
@@ -69,7 +71,7 @@ class TestDragAndDrop extends Activity {
 
     mainView.addChild(new TextView("Drag views between two containers"));
   }
-  static View getContainer(Event event) {
+  static View getContainer(ViewEvent event) {
     //to protect the drop from other source, we have to check data first
     final data = event.dataTransfer.getData("Text");
     if (data != null && data.startsWith("uuid:"))

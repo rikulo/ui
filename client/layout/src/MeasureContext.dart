@@ -148,12 +148,49 @@ class MeasureContext {
 
   /** Measure the width of the given view.
    */
-  int measureWidth(View view)
-  => view.visible ? layoutManager.getLayoutOfView(view).measureWidth(this, view): 0;
+  int measureWidth(View view) {
+    if (view.visible) {
+      int wd = widths[view];
+      if (wd != null || widths.containsKey(view))
+        return wd;
+
+      wd = layoutManager.getLayoutOfView(view).measureWidth(this, view);
+
+      final AsInt parentInnerWidth =
+        () => view.parent != null ? view.parent.innerWidth: browser.size.width;
+      int limit;
+      if ((limit = _amountOf(view.profile.maxWidth, parentInnerWidth)) != null
+      && (wd == null || wd > limit))
+        wd = limit;
+      if ((limit = _amountOf(view.profile.minWidth, parentInnerWidth)) != null
+      && (wd == null || wd < limit))
+        wd = limit;
+      return widths[view] = wd;
+    }
+    return 0;
+  }
   /** Measure the height of the given view.
    */
-  int measureHeight(View view)
-  => view.visible ? layoutManager.getLayoutOfView(view).measureHeight(this, view): 0;
+  int measureHeight(View view) {
+    if (view.visible) {
+      int hgh = heights[view];
+      if (hgh != null || heights.containsKey(view))
+        return hgh;
+
+      hgh = layoutManager.getLayoutOfView(view).measureHeight(this, view);
+      final AsInt parentInnerHeight =
+        () => view.parent != null ? view.parent.innerHeight: browser.size.height;
+      int limit;
+      if ((limit = _amountOf(view.profile.maxHeight, parentInnerHeight)) != null
+      && (hgh == null || hgh > limit))
+        hgh = limit;
+      if ((limit = _amountOf(view.profile.minHeight, parentInnerHeight)) != null
+      && (hgh == null || hgh < limit))
+        hgh = limit;
+      return heights[view] = hgh;
+    }
+    return 0;
+  }
 
   /** Measures the width based on the view's content.
    * It is an utility for implementing a view's [View.measureWidth_].
@@ -231,17 +268,14 @@ class MeasureContext {
     }
 
     if ((limit = _amountOf(view.profile.maxHeight, parentInnerHeight)) != null
-    && height > limit) {
+    && height > limit)
       height = limit;
-    }
     if ((limit = _amountOf(view.profile.minWidth, parentInnerWidth)) != null
-    && width < limit) {
+    && width < limit)
       width = limit;
-    }
     if ((limit = _amountOf(view.profile.minHeight, parentInnerHeight)) != null
-    && height < limit) {
+    && height < limit)
       height = limit;
-    }
 
     widths[view] = width;
     heights[view] = height;
@@ -257,7 +291,6 @@ class MeasureContext {
       case LayoutAmountType.RATIO:
         return (parentInner() * ai.value).round().toInt();
     }
-    return null;
   }
 
   /** Returns the width set by the applicaiton, or null if it is not set yet or set
