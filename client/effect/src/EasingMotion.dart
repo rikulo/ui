@@ -44,13 +44,12 @@ class EasingMotion extends Motion {
   
   bool onMove(MotionState state) {
     final int runningTime = state.runningTime;
-    final int curr = _easingInput(runningTime);
-    final bool result = doAction_(doEasing_(curr / period), state);
+    final bool result = doAction_(doEasing_(_easingInput(runningTime)), state);
     return (repeat < 0 || runningTime < duration) && result !== false;
   }
   
   num _easingInput(num runningTime) => 
-      (duration < 0 ? runningTime : min(runningTime, duration)) % period;
+      (duration < 0 || runningTime < duration) ? (runningTime / period) % 1 : 1;
   
   /** Skip to the end of motion.
    */
