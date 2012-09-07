@@ -11,12 +11,12 @@ typedef bool ScrollerStart(ScrollerState state);
 
 /** The callback invoked continuously by [Scroller] during scrolling.
  * 
- * + [updateScrollPosition] applies the new scroll position to the Element. You
+ * + [defaultAction] applies the new scroll position to the Element. You
  * shall call it to attain the default behavior of Scroller.
  * + If false is returned, the scrolling will stop. In other cases (true or null)
  * the scrolling will continue.
  */
-typedef bool ScrollerMove(ScrollerState state, void updateScrollPosition());
+typedef bool ScrollerMove(ScrollerState state, void defaultAction());
 
 /** The callback invoked by [Scroller] when scrolling ends.
  */

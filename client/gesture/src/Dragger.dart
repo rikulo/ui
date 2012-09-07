@@ -11,12 +11,12 @@ typedef bool DraggerStart(DraggerState state);
 
 /** The callback invoked continuously by [Dragger] during dragging.
  * 
- * + [updateElementPosition] applies the position to the dragged Element. You
+ * + [defaultAction] applies the position to the dragged Element. You
  * shall call it to attain the default behavior of Dragger.
  * + If false is returned, the dragging will be stopped. In other cases (true
  * or null) the dragging will continue.
  */
-typedef bool DraggerMove(DraggerState state, void updateElementPosition());
+typedef bool DraggerMove(DraggerState state, void defaultAction());
 
 /** The callback invoked by [Dragger] when dragging ends. 
  */

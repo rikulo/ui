@@ -74,8 +74,8 @@ class ScrollView extends View {
   
   /** Called during scrolling.
    */
-  bool onScrollMove_(ScrollerState state, void updateScrollPosition()) {
-    updateScrollPosition();
+  bool onScrollMove_(ScrollerState state, void defaultAction()) {
+    defaultAction();
     sendEvent(new ScrollEvent("scrollMove", this, state));
     return true;
   }
