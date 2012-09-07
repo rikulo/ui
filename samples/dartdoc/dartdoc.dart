@@ -13,6 +13,7 @@
 #import("../../client/device/notification/notification.dart");
 #import("../../client/effect/effect.dart");
 #import("../../client/event/event.dart");
+#import("../../client/gesture/gesture.dart");
 #import("../../client/html/html.dart");
 #import("../../client/layout/layout.dart");
 #import("../../client/message/message.dart");
@@ -22,6 +23,7 @@
 #import("../../client/service/gmaps/gmaps.dart");
 #import("../../client/service/yapis/yapis.dart");
 #import("../../client/util/util.dart");
+#import("../../client/uil/uil.dart");
 #import("../../client/view/view.dart");
 #import("../../client/view/impl/impl.dart");
 #import("../../client/view/select/select.dart");
