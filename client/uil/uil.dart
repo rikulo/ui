@@ -7,3 +7,4 @@
 #import("impl/impl.dart");
 
 #source("src/Template.dart");
+#source("src/Controller.dart");

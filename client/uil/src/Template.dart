@@ -99,21 +99,25 @@ class Template {
         name = "View"; //default
       view = uiFactory.newInstance(parent, before, name);
 
-      //4) assign properties
+      //4) instantiate controller
+      Controller ctrl;
+      if ((s = _getAttr(attrs, "apply")) != null) {
+        //TODO: instantiate and assign a variable if necessary
+      }
+
+      //5) assign properties
       for (String key in attrs.getKeys()) {
         switch (key) {
           case "class": case "forEach": case "data-forEach":
           case "if": case "data-if": case "unless": case "data-unless":
-            continue; //ignore (since they have been processed)
           case "apply": case "data-apply":
-            //TODO
-            continue;
+            continue; //ignore (since they have been processed)
         }
         uiFactory.setProperty(view,
           key.startsWith("data-") ? key.substring(5): key, attrs[key]);
       }
 
-      //5) handle the child nodes
+      //6) handle the child nodes
       bool handled = false;
       if (!view.isViewGroup()) {
         bool special = false;
@@ -137,6 +141,9 @@ class Template {
         for (Node n in node.nodes)
           _create(view, null, n, null);
 
+      //7) invoke controller at the end
+      if (ctrl != null)
+        ctrl.apply(view);
     } else if (node is Text) {
       final text = (node as Text).wholeText.trim();
       if (!text.isEmpty())
