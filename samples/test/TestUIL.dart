@@ -17,6 +17,14 @@ class TestUIL extends Activity {
       <View layout="type: linear">
         <CheckBox text="Apple"/>
         <CheckBox text="Orange"/>
+        <TextView data-class="list">
+          <attribute name="html">
+            <ul>
+              <li>This is the first item of TextView with HTML</li>
+              <li style="font-weight: bold">This is the second</li>
+            </ul>
+          </attribute>
+        </TextView>
       </View>
       ''').create(parent);
   }

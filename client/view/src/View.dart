@@ -58,6 +58,7 @@ class View implements Hashable {
   _ChildInfo _childInfo;
   _EventListenerInfo _evlInfo;
   Map<String, Dynamic> _dataAttrs, _mntAttrs;
+  Map<String, Template> _templs;
 
   //the classes; created on demand
   Set<String> _classes;
@@ -331,7 +332,7 @@ class View implements Hashable {
     if (isDescendantOf(child))
       throw new UIException("$child is an ancestor of $this");
     if (!isViewGroup())
-      throw new UIException("No child allowed in $this");
+      throw new UIException("No child allowed for $this");
 
     if (beforeChild != null) {
       if (beforeChild.parent !== this)
@@ -1203,6 +1204,13 @@ class View implements Hashable {
    */
   Map<String, Dynamic> get mountAttributes
   => _mntAttrs != null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new Map());
+
+  /** A map of templates.
+   * A template ([Template]) is a definition of UI that you can use to instantiate
+   * views.
+   */
+  Map<String, Template> get templates
+  => _templs != null ? _templs: MapUtil.onDemand(() => _templs = new Map());
 
   int hashCode() => uuid.hashCode(); //uuid is immutable once assigned
   String toString() => "$className(${id.isEmpty() ? uuid: id})";
