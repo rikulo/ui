@@ -14,7 +14,7 @@ interface UIFactory default DefaultUIFactory {
    *
    * Notice that the name is case-insensitive.
    */
-  View newInstance(View parent, View before, String name);
+  View newInstance(Mirrors mirrors, View parent, View before, String name);
   /** Instantiate a text.
    */
   View newText(View parent, View before, String text);
@@ -30,7 +30,7 @@ interface UIFactory default DefaultUIFactory {
 /** The default implementation that is based on mirror.
  */
 class DefaultUIFactory implements UIFactory {
-  View newInstance(View parent, View before, String name) {
+  View newInstance(Mirrors mirrors, View parent, View before, String name) {
   //TODO: replace with Dart mirror (and handle caseSensitive)
     View view;
     switch (name.toLowerCase()) {

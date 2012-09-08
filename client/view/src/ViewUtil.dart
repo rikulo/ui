@@ -2,6 +2,28 @@
 //History: Fri, May 11, 2012  6:16:53 PM
 // Author: tomyeh
 
+/**
+ * An ID space.
+ */
+interface IdSpace {
+  /** Searches and returns the first view that matches the given selector,
+   * or null if not found.
+   */
+  View query(String selector);
+  /** Searches and returns all views that matches the selector (never null).
+   */
+  List<View> queryAll(String selector);
+  /** Returns the view of the given ID, or null if not found.
+   */
+  View getFellow(String id);
+  /** Returns a readoly collection of all fellows in this ID space.
+   *
+   * Note: don't modify the returned list. Otherwise, the result is
+   * unpreditable.
+   */
+  Collection<View> get fellows;
+}
+
 /** An UI exception.
  */
 class UIException implements Exception {
@@ -37,6 +59,20 @@ interface Declaration default DeclarationImpl {
   void setProperty(String propertyName, String value);
 }
 
+/** Returns the value of the variable with the given name.
+ */
+typedef Resolver(String name);
+/** A template for instantiating views.
+ */
+interface Template {
+  /** Creates and returns the views based this template.
+   *
+   * + [parent] the parent. If null, the created view(s) won't have parent; nor attached.
+   * + [before] the child of the parent that new views will be inserted before.
+   * Ignored if null.
+   */
+  List<View> create([View parent, View before, Resolver resolver]);
+}
 /**
  * A collection of [View] utilities.
  */

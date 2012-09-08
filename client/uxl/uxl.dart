@@ -1,10 +1,12 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Sep. 06, 2012
-#library("rikulo:uil");
+#library("rikulo:uxl");
 
 #import("dart:html");
+#import("dart:mirrors");
+
 #import("../view/view.dart");
 #import("impl/impl.dart");
 
-#source("src/Template.dart");
+#source("src/UXLTemplate.dart");
 #source("src/Controller.dart");

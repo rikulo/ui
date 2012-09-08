@@ -14,7 +14,6 @@
 #import("../effect/effect.dart");
 #import("../layout/layout.dart");
 #import("../model/model.dart");
-#import("../uil/uil.dart");
 #import("impl/impl.dart");
 #import("select/select.dart");
 
@@ -22,7 +21,6 @@
 #source("src/ViewUtil.dart");
 #source("src/ViewCut.dart");
 #source("src/Style.dart");
-#source("src/IdSpace.dart");
 #source("src/_SubviewList.dart");
 #source("src/ProfileDeclaration.dart");
 #source("src/LayoutDeclaration.dart");

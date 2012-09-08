@@ -23,7 +23,7 @@
 #import("../../client/service/gmaps/gmaps.dart");
 #import("../../client/service/yapis/yapis.dart");
 #import("../../client/util/util.dart");
-#import("../../client/uil/uil.dart");
+#import("../../client/uxl/uxl.dart");
 #import("../../client/view/view.dart");
 #import("../../client/view/impl/impl.dart");
 #import("../../client/view/select/select.dart");
