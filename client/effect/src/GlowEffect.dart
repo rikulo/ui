@@ -21,7 +21,8 @@ class GlowEffect extends EasingMotion {
    * + [end]: Called when the effect ends.
    */
   GlowEffect(Element element, [int period = 1000, num tempo = 0.3, 
-  Color color, int blur = 10, int spread = 2, MotionStart start, MotionEnd end]) : 
+  Color color, int blur = 10, int spread = 2, 
+  MotionStart start, MotionEnd end, bool autorun = true]) : 
   this.element = element, 
   super(null, start: (MotionState state) {
     if (start != null)
@@ -33,7 +34,8 @@ class GlowEffect extends EasingMotion {
     if (end != null)
       end(state);
     
-  }, period: period, easing: (num t) => t < tempo ? (t * t / tempo / tempo) : (1 - t) / (1 - tempo)) {
+  }, period: period, autorun: autorun, 
+  easing: (num t) => t < tempo ? (t * t / tempo / tempo) : (1 - t) / (1 - tempo)) {
     
     final int r = color == null ? 255 : color.red.toInt();
     final int g = color == null ? 255 : color.green.toInt();

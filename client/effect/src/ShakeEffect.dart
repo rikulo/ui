@@ -20,7 +20,7 @@ class ShakeEffect extends EasingMotion {
    * + [end]: Called when the effect ends.
    */
   ShakeEffect(Element element, [int period = 500, int repeat = 1, num rotation = 10,
-  MotionStart start, MotionEnd end]) : 
+  MotionStart start, MotionEnd end, bool autorun = true]) : 
   this.element = element, 
   super((num x, MotionState state) {
     element.style.transform = "rotate(${rotation * x}deg)";
@@ -35,6 +35,6 @@ class ShakeEffect extends EasingMotion {
     if (end != null)
       end(state);
     
-  }, period: period, repeat: repeat, easing: (num t) => -sin(t * PI * 2));
+  }, period: period, repeat: repeat, autorun: autorun, easing: (num t) => -sin(t * PI * 2));
   
 }

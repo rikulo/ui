@@ -19,43 +19,28 @@ class EffectDemo extends Activity {
     View v;
     mainView.addChild(v = block("Buzz", 50, 50));
     
-    final Element buzzNode = v.node;
-    bool buzzing = false;
+    final Motion buzz = new BuzzEffect(v.node, autorun: false);
     v.on.click.add((ViewEvent event) {
-      if (buzzing)
-        return;
-      buzzing = true;
-      new BuzzEffect(buzzNode, end: (MotionState state) {
-        buzzing = false;
-      });
+      if (!buzz.isRunning())
+        buzz.run();
     });
     
     mainView.addChild(v = block("Glow", 200, 50));
     
     final num n = 0.3;
     //final Color c = const HSVColor(210, 50, 100).rgb();
-    final Element glowNode = v.node;
-    bool glowing = false;
+    final Motion glow = new GlowEffect(v.node, tempo: n, autorun: false);
     v.on.click.add((ViewEvent event) {
-      if (glowing)
-        return;
-      glowing = true;
-      new GlowEffect(glowNode, tempo: n, end: (MotionState state) {
-        glowing = false;
-      });
+      if (!glow.isRunning())
+        glow.run();
     });
     
     mainView.addChild(v = block("Shake", 50, 200));
     
-    bool shaking = false;
-    final Element shakeNode = v.node;
+    final Motion shake = new ShakeEffect(v.node, autorun: false);
     v.on.click.add((ViewEvent event) {
-      if (shaking)
-        return;
-      shaking = true;
-      new ShakeEffect(shakeNode, end: (MotionState state) {
-        shaking = false;
-      });
+      if (!shake.isRunning())
+        shake.run();
     });
     
   }
