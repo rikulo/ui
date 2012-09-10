@@ -33,7 +33,7 @@ class EffectDemo extends Activity {
     mainView.addChild(v = block("Glow", 200, 50));
     
     final num n = 0.3;
-    final Color c = new Color.hsv(210, 50, 100);
+    //final Color c = const HSVColor(210, 50, 100).rgb();
     final Element glowNode = v.node;
     bool glowing = false;
     v.on.click.add((ViewEvent event) {
