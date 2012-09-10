@@ -23,7 +23,9 @@ class _Mirrors implements Mirrors {
   final List<_MirrorsOfLib> _libs;
   final Set<String> _names;
 
-  _Mirrors() : _libs = [], _names = new Set();
+  _Mirrors() : _libs = [], _names = new Set() {
+    import("rikulo:view");
+  }
 
   void import(String name) {
     if (!_names.contains(name)) {
