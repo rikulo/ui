@@ -63,6 +63,8 @@ interface Declaration default DeclarationImpl {
  */
 typedef Resolver(String name);
 /** A template for instantiating views.
+ *
+ * See also [View.templates]
  */
 interface Template {
   /** Creates and returns the views based this template.
@@ -73,6 +75,21 @@ interface Template {
    */
   List<View> create([View parent, View before, Resolver resolver]);
 }
+
+/** An annotation for providing meta-information.
+ * The menaning depends on the tool or utility that interprets it.
+ *
+ * See also [View.annotations].
+ */
+interface Annotation {
+  /** The name of this annoataion.
+   */
+  String get name;
+  /** The attributes of this annoataion.
+   */
+  Map<String, List<String>> get attributes;
+}
+
 /**
  * A collection of [View] utilities.
  */

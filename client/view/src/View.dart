@@ -59,6 +59,7 @@ class View implements Hashable {
   _EventListenerInfo _evlInfo;
   Map<String, Dynamic> _dataAttrs, _mntAttrs;
   Map<String, Template> _templs;
+  Map<String, Annotation> _annos;
 
   //the classes; created on demand
   Set<String> _classes;
@@ -1211,6 +1212,13 @@ class View implements Hashable {
    */
   Map<String, Template> get templates
   => _templs != null ? _templs: MapUtil.onDemand(() => _templs = new Map());
+  /** A map of annotations.
+   * Annotations ([Annotation]) are the meta information providing
+   * additional information about how to handle a view.
+   * The meaning depends on the tool or utility that handles a view.
+   */
+  Map<String, Annotation> get annotations
+  => _annos != null ? _annos: MapUtil.onDemand(() => _annos = new Map());
 
   int hashCode() => uuid.hashCode(); //uuid is immutable once assigned
   String toString() => "$className(${id.isEmpty() ? uuid: id})";
