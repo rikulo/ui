@@ -79,7 +79,7 @@ class TextView extends View {
    *
    * Default: it encodes [text] by replacing linefeed with <br/>, if any.
    */
-  String get encodedText => StringUtil.encodeXML(text, multiline:true);
+  String get encodedText => XMLUtil.encode(text, multiline:true);
 
   /** Outputs the inner content of this widget. It is everything
    *

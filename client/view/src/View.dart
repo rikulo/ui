@@ -1127,7 +1127,7 @@ class View implements Hashable {
       _visiCtrl.addHiddenStyle(out);
     String s;
     if ((noCtrl || !ctrl.noStyle) && _style != null && !(s = _style.cssText).isEmpty())
-      out.add(StringUtil.encodeXML(s));
+      out.add(XMLUtil.encode(s));
   }
 
   /** Returns [ViewEvents] for adding or removing event listeners.

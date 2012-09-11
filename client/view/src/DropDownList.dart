@@ -260,7 +260,7 @@ class DropDownList<T> extends View {
         out.add('<option');
         _renderAttrs(out, selected, disabled);
         out.add('>')
-          .add(StringUtil.encodeXML(renderer(
+          .add(XMLUtil.encode(renderer(
             new RenderContext(this, _model, obj, selected, disabled, i))))
           .add('</option>');
         //Note: Firefox doesn't support <option label="xx">
@@ -280,9 +280,8 @@ class DropDownList<T> extends View {
       final T child = model.getChild(node, i);
       final bool selected = selmodel.isSelected(child);
       final bool disabled = _model is Disables && (_model as Disables).isDisabled(child);
-      final String label =
-        StringUtil.encodeXML(renderer(
-          new RenderContext(this, _model, child, selected, disabled, i)));
+      final String label = XMLUtil.encode(renderer(
+        new RenderContext(this, _model, child, selected, disabled, i)));
       if (model.isLeaf(child)) {
         out.add('<option');
         _renderAttrs(out, selected, disabled);
