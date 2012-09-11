@@ -5,6 +5,7 @@
 #import("dart:html");
 #import("dart:mirrors");
 
+#import("../util/util.dart");
 #import("../view/view.dart");
 #import("impl/impl.dart");
 

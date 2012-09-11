@@ -165,6 +165,63 @@ class StringUtil {
     return k == 0 ? txt:
       k < tl ? out.add(txt.substring(k)).toString(): out.toString();
   }
+  /** Returns the inner content of the given element.
+   * It is the same as [Element.innerHTML] if the element is part of [document].
+   * However, it also works if the given element is parsed from a XML document.
+   */
+  static String getInnerXML(Element elem) {
+    try {
+      return elem.innerHTML;
+    } catch (e) {
+      final sb = new StringBuffer();
+      _xmlToStr(sb, elem);
+      return sb.toString();
+    }
+  }
+  /** Returns the outer content of the given element.
+   * It is the same as [Element.outerHTML] if the element is part of [document].
+   * However, it also works if the given element is parsed from a XML document.
+   */
+  static String getOuterXML(Element elem) {
+    try {
+      return elem.outerHTML;
+    } catch (e) {
+      final sb = new StringBuffer();
+      _xmlBeg(sb, elem);
+      _xmlToStr(sb, elem);
+      _xmlEnd(sb, elem);
+      return sb.toString();
+    }
+  }
+  static void _xmlToStr(StringBuffer sb, Element elem) {
+    for (Node n in elem.nodes){
+      if (n is Element) {
+        final e = n as Element;
+        _xmlBeg(sb, e);
+        _xmlToStr(sb, e);
+        _xmlEnd(sb, e);
+      } else if (n is Text) {
+        sb.add((n as Text).wholeText);
+      } else if (n is ProcessingInstruction) {
+        final pi = n as ProcessingInstruction;
+        sb.add('<?').add(pi.target).add(' ').add(pi.data).add('?>');
+      } else if (n is Comment) {
+        sb.add('<!--').add((n as Comment).data).add('-->');
+      }//ignore unrecogized nodes (such as Entity, Notation...)
+    }
+  }
+  static void _xmlBeg(StringBuffer sb, Element elem) {
+    sb.add('<').add(elem.tagName);
+
+    final attrs = elem.attributes;
+    for (String key in attrs.getKeys())
+      sb.add(' ').add(key).add('="').add(attrs[key]).add('"');
+
+    sb.add('>');
+  }
+  static void _xmlEnd(StringBuffer sb, Element elem) {
+    sb.add('</').add(elem.tagName).add('>');
+  }
 
   /** Encodes an integer to a string consisting of alpanumeric characters
    * and underscore. With a prefix, it can be used as an identifier.
