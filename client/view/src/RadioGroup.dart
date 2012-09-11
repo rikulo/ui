@@ -109,13 +109,8 @@ class RadioGroup<T> extends View {
   /** callback by [modelRenderer] to render the model into views.
    */
   void renderModel_() {
-    final StringBuffer out = new StringBuffer();
     final List<AfterMount> callbacks = new List();
-    _renderInner(out,  callbacks);
-
-    node.innerHTML = out.toString();
-    _initRadios();
-
+    _renderInner(callbacks);
     for (final AfterMount callback in callbacks)
       callback(this);
 
@@ -124,13 +119,17 @@ class RadioGroup<T> extends View {
 
   //@override
   void domInner_(StringBuffer out) {
-    _renderInner(out, null);
+    modelRenderer.queue(this);
+      //defer to renderModel_ so _renderInner will be called only once
   }  
 
-  void _renderInner(StringBuffer out, List<AfterMount> callbacks) {
-    if (_model == null)
-      return; //nothing to do
+  void _renderInner(List<AfterMount> callbacks) {
+    if (_model == null) {
+      node.innerHTML = "";
+      return;
+    }
 
+    final StringBuffer out = new StringBuffer();
     final HTMLRenderer renderer =
       _renderer != null ? _renderer: _defRenderer();
     final Selection<T> selmodel = _model as Selection;
@@ -144,12 +143,8 @@ class RadioGroup<T> extends View {
         new RenderContext(this, _model, obj, selected, disabled, i));
 
       final AfterMount callback = hf.mount;
-      if (callback != null) {
-        if (callbacks != null)
+      if (callback != null)
           callbacks.add(callback);
-        else
-          afterMount_(callback); //called by domInner_
-      }
 
       final bool complete = hf.isComplete();
       if (!complete) {
@@ -168,6 +163,10 @@ class RadioGroup<T> extends View {
       if (!complete)
         out.add('</label> ');
     }
+
+    //Update DOM tree
+    node.innerHTML = out.toString();
+    _initRadios();
   }
   static HTMLRenderer _defRenderer() {
     if (_$defRenderer == null)

@@ -162,11 +162,7 @@ class DropDownList<T> extends View {
     if (browser.msie) { //IE/FF doesn't handle innerHTML well
       invalidate(true);
     } else {
-      final StringBuffer out = new StringBuffer();
-      domInner_(out);
-      node.innerHTML = out.toString();
-      _fixIndex();
-
+      _renderInner();
       sendEvent(new ViewEvent("render"));
     }
   }
@@ -219,16 +215,10 @@ class DropDownList<T> extends View {
 
       sendEvent(new SelectEvent(selValues, selIndex));
     });
-
-     _fixIndex();
   }
   void unmount_() {
     node.on.change.remove(_onChange);
     super.unmount_();
-  }
-  void _fixIndex() { //it assumes inDocument
-    if (_model != null && (_model as Selection).isSelectionEmpty())
-      (node as SelectElement).selectedIndex = -1;
   }
 
   //@Override
@@ -244,9 +234,17 @@ class DropDownList<T> extends View {
   }
   //@Override
   void domInner_(StringBuffer out) {
-    if (_model == null)
-      return; //nothing to do
+    modelRenderer.queue(this);
+      //defer to renderModel_ so _renderInner will be called only once
+  }
 
+  void _renderInner() {
+    if (_model == null) {
+      node.innerHTML = "";
+      return;
+    }
+
+    final StringBuffer out = new StringBuffer();
     if (_model is ListModel) {
       final StringRenderer renderer =
         _renderer != null ? _renderer: _defRenderer();
@@ -271,6 +269,11 @@ class DropDownList<T> extends View {
         _renderTree(out, model,
           _renderer != null ? _renderer: _defRenderer(), model.root, -1);
     }
+
+    //Update DOM tree
+    node.innerHTML = out.toString();
+    if ((_model as Selection).isSelectionEmpty())
+      (node as SelectElement).selectedIndex = -1;
   }
   void _renderTree(StringBuffer out, TreeModel<T> model,
   StringRenderer renderer, var node, int parentIndex) {
