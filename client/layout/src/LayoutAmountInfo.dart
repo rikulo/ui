@@ -29,7 +29,6 @@ class LayoutAmountType {
   /** The name of this direction. */
   String get name => _name;
 
-  operator==(other) => this === other;
   String toString() => _name;
 }
 
