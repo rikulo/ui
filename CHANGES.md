@@ -1,7 +1,8 @@
 #Rikulo Changes
 
-**September 6, 2012**
+**September 11, 2012**
 
+* Rename StringUtil.encodeXML/decodeXML to XMLUtil.encode/decode
 * The content/src constructor of Style is renamed to fromContent/fromSrc, respectively
 * The html constructor of TextView and HTMLFragment is renamed to fromHTML
 * In EasingMotion, duration is renamed to period, repeat parameter is introduced, and mode is removed.

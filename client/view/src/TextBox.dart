@@ -219,14 +219,14 @@ class TextBox extends View implements Input<String> {
   //@Override
   void domInner_(StringBuffer out) {
     if (_multiline)
-      out.add(StringUtil.encodeXML(value));
+      out.add(XMLUtil.encode(value));
   }
   //@Override
   void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
     if (!_multiline) {
       out.add(' type="').add(type).add('"');
       if (!value.isEmpty())
-        out.add(' value="').add(StringUtil.encodeXML(value)).add('"');
+        out.add(' value="').add(XMLUtil.encode(value)).add('"');
       if (rows != 2)
         out.add(' rows="').add(rows).add('"');
     }
@@ -241,7 +241,7 @@ class TextBox extends View implements Input<String> {
     if (maxLength > 0)
       out.add(' maxlength="').add(maxLength).add('"');
     if (!placeholder.isEmpty())
-      out.add(' placeholder="').add(StringUtil.encodeXML(placeholder)).add('"');
+      out.add(' placeholder="').add(XMLUtil.encode(placeholder)).add('"');
     super.domAttrs_(out, ctrl);
   }
   //@Override

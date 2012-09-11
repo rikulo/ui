@@ -80,7 +80,7 @@ class UXLTemplate implements Template {
       switch (name) {
       case "attribute":
         uiFactory.setProperty(parent,
-          _getAttr(attrs, "name", name), StringUtil.getInnerXML(elem));
+          _getAttr(attrs, "name", name), XMLUtil.getInner(elem));
         return; //done
       case "import":
         for (final n in _getAttr(attrs, "name", name).split(','))
@@ -88,7 +88,7 @@ class UXLTemplate implements Template {
         return;
       case "variable":
         //TODO: handle expression
-        ctx.setVariable(_getAttr(attrs, "name", name), StringUtil.getInnerXML(elem));
+        ctx.setVariable(_getAttr(attrs, "name", name), XMLUtil.getInner(elem));
         return;
       case "template":
         view.templates[_getAttr(attrs, "name", name)] = new UXLTemplate.fromNode(node);
@@ -147,7 +147,7 @@ class UXLTemplate implements Template {
         }
 
         if (!special) { //handle it only if no special UXL element
-          final text = StringUtil.getInnerXML(node).trim();
+          final text = XMLUtil.getInner(node).trim();
           if (!text.isEmpty())
             uiFactory.setDefaultText(view, text);
           handled = true;

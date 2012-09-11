@@ -59,7 +59,7 @@ class HTMLFragment {
 
   /** Converts the given object to valid HTML text.
    *
-   * + [encode] specifies whether to invoke [StringUtil.encodeXML].
+   * + [encode] specifies whether to invoke [XMLUtil.encode].
    */
   static String getHTML(var text, [bool encode=true]) {
     if (text is TreeNode)
@@ -67,6 +67,6 @@ class HTMLFragment {
     if (text is Map && text.contains("text"))
       text = text["text"];
     return text != null ?
-      encode != null && encode ? "${StringUtil.encodeXML(text)}": "$text": "";
+      encode != null && encode ? "${XMLUtil.encode(text)}": "$text": "";
   }
 }
