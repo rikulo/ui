@@ -72,7 +72,7 @@ class DOMQuery {
    */
   Size get contentSize => new Size(contentWidth, contentHeight);
 
-  /** Returns the closest ancestor elemento in the DOM hierachy from
+  /** Returns the closest ancestor element in the DOM hierarchy from
    * which the position of the current element is calculated, or null
    * if it is the topmost element.
    *
@@ -143,7 +143,7 @@ class DOMQuery {
     return false;
   }
   
-  /** Return true if the tagname of element is input.
+  /** Return true if the element is input.
    */
   bool isInput() => node.tagName == 'INPUT' || node.tagName == 'TEXTAREA';
   
@@ -163,7 +163,7 @@ class DOMQuery {
   /** Measure the size of the given text.
    *
    * If [node] is not null, the size will be based on it CSS style and
-   * the optinal [style]. If [node] is null, the size is based only
+   * the optional [style]. If [node] is null, the size is based only
    * only [style].
    *
    *    new DOMQuery(node_text_will_be_assigned).measureText(s);
