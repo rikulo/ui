@@ -939,7 +939,7 @@ class View implements Hashable {
    *
    * Default: null (means the height shall be calculated based on its content).
    *
-   * + To get the real height on the document, use [outerWidth].
+   * + To get the real height on the document, use [outerHeight].
    */
   int get height => _height;
   /** Sets the height of this view.
