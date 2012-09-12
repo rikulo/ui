@@ -5,10 +5,7 @@
 /** Controls the visibility
  */
 class _VisiCtrl {
-  void set(Element node, bool visible) {
-    node.hidden = !visible;
-  }
-  void addHiddenStyle(StringBuffer out) {
+ void addHiddenStyle(StringBuffer out) {
     //does nothing
   }
   void addHiddenAttr(StringBuffer out) {
@@ -17,9 +14,6 @@ class _VisiCtrl {
 }
 //IE (10 preview) doesn't support the hidden attribute
 class _IEVisiCtrl extends _VisiCtrl {
-  void set(Element node, bool visible) {
-    node.style.display = visible ? "": "none";
-  }
   void addHiddenStyle(StringBuffer out) {
     out.add('display:none;');
   }

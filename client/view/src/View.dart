@@ -869,7 +869,7 @@ class View implements Hashable {
     _visible = visible;
 
     if (_inDoc) {
-      _visiCtrl.set(node, visible);
+      new DOMQuery(node).visible = visible;
       if (changed && visible)
         requestLayout(immediate: true);
     }

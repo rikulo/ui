@@ -15,10 +15,9 @@ class DOMQuery {
     return v is Window ? new _WndQuery(v):
       v != null ? new DOMQuery._init(v): new _NullQuery();
   }
-
-  DOMQuery._init(this.node) {
-  }
-
+  
+  DOMQuery._init(this.node);
+  
   /** Returns the inner width of the given element, including padding
    * but not including border, margin and scroll bar.
    *
@@ -189,10 +188,29 @@ class DOMQuery {
     return sz;
   }
   static Element _txtdiv;
+  
+  /// show the element.
+  void show() {
+    visible = true;
+  }
+  
+  /// hide the element.
+  void hide() {
+    visible = false;
+  }
+  
+  /// set the visiblility of element
+  void set visible(bool visible) {
+    if (browser.msie)
+      node.hidden = !visible;
+    else
+      node.style.display = visible ? "": "none";
+  }
+  
 }
 class _WndQuery extends DOMQuery {
-  _WndQuery(var v): super._init(v) {}
-
+  _WndQuery(var v): super._init(v);
+  
   int get innerWidth => node.innerWidth;
   int get innerHeight => node.innerHeight;
   int get outerWidth => node.outerWidth;
@@ -206,6 +224,7 @@ class _WndQuery extends DOMQuery {
   Offset get pageOffset => offset;
   bool isDescendantOf(Element parent) => false;
   CSSStyleDeclaration get computedStyle => new CSSStyleDeclaration();
+  void set visible(bool visible) {}
 }
 class _NullQuery extends _WndQuery {
   _NullQuery(): super(null);
