@@ -26,11 +26,9 @@ class ViewEffectDemo extends Activity {
       if (mv1)
         return;
       mv1 = true;
-      v1.style.opacity = "0";
+      v1.visible = false;
       mainView.addChild(v1);
-      new EasingMotion((num x, MotionState state) {
-        v1.style.opacity = "$x";
-      }, end : (MotionState state) {
+      new FadeInEffect(v1.node, end: (MotionState state) {
         mv1 = false;
       });
     });
@@ -39,9 +37,7 @@ class ViewEffectDemo extends Activity {
       if (mv1)
         return;
       mv1 = true;
-      new EasingMotion((num x, MotionState state) {
-        v1.style.opacity = "${1-x}";
-      }, end: (MotionState state) {
+      new FadeOutEffect(v1.node, end: (MotionState state) {
         v1.removeFromParent();
         mv1 = false;
       });
@@ -55,13 +51,9 @@ class ViewEffectDemo extends Activity {
       if (mv2)
         return;
       mv2 = true;
-      v2.style.opacity = "0";
-      v2.style.transform = "scale(0)";
+      v2.visible = false;
       mainView.addChild(v2);
-      new EasingMotion((num x, MotionState state) {
-        v2.style.opacity = "$x";
-        v2.style.transform = "scale($x)";
-      }, end : (MotionState state) {
+      new ZoomInEffect(v2.node, end: (MotionState state) {
         mv2 = false;
       });
     });
@@ -70,10 +62,7 @@ class ViewEffectDemo extends Activity {
       if (mv2)
         return;
       mv2 = true;
-      new EasingMotion((num x, MotionState state) {
-        v2.style.opacity = "${1-x}";
-        v2.style.transform = "scale(${1-x})";
-      }, end: (MotionState state) {
+      new ZoomOutEffect(v2.node, end: (MotionState state) {
         v2.removeFromParent();
         mv2 = false;
       });
@@ -87,12 +76,9 @@ class ViewEffectDemo extends Activity {
       if (mv3)
         return;
       mv3 = true;
-      v3.height = 0;
+      v3.visible = false;
       mainView.addChild(v3);
-      new EasingMotion((num x, MotionState state) {
-        //v3.style.opacity = "$x";
-        v3.height = (x * 100).toInt();
-      }, end : (MotionState state) {
+      new SlideInEffect(v3.node, 100, end: (MotionState state) {
         mv3 = false;
       });
     });
@@ -101,10 +87,7 @@ class ViewEffectDemo extends Activity {
       if (mv3)
         return;
       mv3 = true;
-      new EasingMotion((num x, MotionState state) {
-        //v3.style.opacity = "${1-x}";
-        v3.height = ((1-x) * 100).toInt();
-      }, end: (MotionState state) {
+      new SlideOutEffect(v3.node, end: (MotionState state) {
         v3.removeFromParent();
         mv3 = false;
       });

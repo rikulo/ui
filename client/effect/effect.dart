@@ -17,3 +17,4 @@
 #source("src/BuzzEffect.dart");
 #source("src/GlowEffect.dart");
 #source("src/ShakeEffect.dart");
+#source("src/Effect.dart");
