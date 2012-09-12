@@ -202,9 +202,9 @@ class DOMQuery {
   /// set the visiblility of element
   void set visible(bool visible) {
     if (browser.msie)
-      node.hidden = !visible;
-    else
       node.style.display = visible ? "": "none";
+    else
+      node.hidden = !visible;
   }
   
 }
