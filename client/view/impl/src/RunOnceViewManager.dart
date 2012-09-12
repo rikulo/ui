@@ -67,6 +67,11 @@ class RunOnceViewManager {
     _views.add(view);
     _runQue.add("", () {flush();}, 5);
   }
+  /** Removes the given view from the queue, so the action won't take place.
+   */
+  void unqueue(View view) {
+    _views.remove(view);
+  }
   /** Hanldes the give view, if not null, or
    * all queued views, if the give view is null.
    */
