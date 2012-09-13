@@ -14,8 +14,47 @@ typedef void RunOnceViewTask(View view);
  *
  * The call that returns false shall invoke [continueTask] if it is OK to proceed later.
  * In other words, it is the callback's job to resume the handling if it returns false.
+ *
+ * + [force] whether to force the task to flush the queued task if any.
  */
-typedef bool RunOnceReadyCheck(View view, Task continueTask);
+typedef bool RunOnceReadyCheck(View view, Task continueTask, bool force);
+
+/**
+ * A task queue used to manage deferred run-once tasks.
+ * A run-once task is a task ([Task]) that needs to be executed only once.
+ * In other words, the result is the same no matter how many
+ * times they are executed.
+ *
+ * If a run-once task takes long to execute, you can create an instance
+ * of [RunOnceQueue], and schedule the task by invoking [add].
+ * Then, the second invocation of [add] with the same key will replace
+ * the previous task if it is not executed yet. In other words, the previous
+ * task will be dropped (and not executed).
+ */
+class RunOnceQueue {
+  Map<String, int> _tasks;
+
+  /** schedules a run-once task for execution.
+   */
+  void add(String key, void task(), [int timeout=0]) {
+    if (_tasks != null)
+      cancel(key);
+    else
+      _tasks = {};
+
+    _tasks[key] = window.setTimeout((){
+      _tasks.remove(key);
+      task();
+    }, timeout);
+  }
+  /** Cancels the scheduled task if it is still pending.
+   */
+  void cancel(String key) {
+    final int tid = _tasks.remove(key);
+    if (tid != null)
+      window.clearTimeout(tid);
+  }  
+}
 
 /**
  * A run-once view manager is used to manage the view-handling task in
@@ -50,7 +89,7 @@ class RunOnceViewManager {
    * + [ignoreDetached] specifies whether to ignore the views that are not attached
    * to the docuemnt (ie.., ignore views if [View.inDocument] is false).
    * + [ignoreSubviews] specifies whether to ignore the sub views. In other words,
-   * a view is ignored, if one of its ancestor has been queued for handling too.
+   * a view will be ignored, if one of its ancestor has been queued for handling too.
    */
   RunOnceViewManager(RunOnceViewTask task, [bool ignoreDetached=true, bool ignoreSubviews=true]):
   _runQue = new RunOnceQueue(), _views = new Set(), _readyChecks = new List(),
@@ -58,8 +97,19 @@ class RunOnceViewManager {
   }
 
   /** Returns if there is no view is queued.
+   *
+   * + [view] if specified, this method check only if the given view and its descendant
+   * views is in the queue.
    */
-  bool isQueueEmpty() => _views.isEmpty();
+  bool isQueueEmpty([View view]) {
+    if (view == null)
+      return _views.isEmpty();
+
+    for (final v in _views)
+      if (v.isDescendantOf(view))
+        return false;
+    return true;
+  }
   /** Adds the given view to the queue.
    */
   void queue(View view) {
@@ -74,13 +124,15 @@ class RunOnceViewManager {
   }
   /** Hanldes the give view, if not null, or
    * all queued views, if the give view is null.
+   *
+   * + [force] specifies whether to force the tasks registered with [addReadyCheck]
    */
-  void flush([View view]) {
-    if (!_ready(view)) {
+  void flush([View view, bool force=false]) {
+    if (!_ready(view, force)) {
       if (view != null)
         _views.add(view);
     } else if (view != null) {
-      _flushOne(view);
+      _flushOne(view, force);
     } else {
       _flushAll();
     }
@@ -115,28 +167,40 @@ class RunOnceViewManager {
       }
     }
 
-    final List<View> todo = new List.from(_views);
+    final List<View> todos = new List.from(_views);
     _views.clear();
 
-    for (final View view in todo) {
-      handle_(view);
-    }
+    for (final v in todos)
+      handle_(v);
   }
-  void _flushOne(View view) {
-    _views.remove(view);
+  void _flushOne(View view, bool force) {
+    final found = _views.remove(view);
     if (!_ignoreDetached || view.inDocument) {
-      for (View v = view; (v = v.parent) != null;) {
-        if (_views.contains(v)) //view is subview of v
-          return; //no need to do since the parent will handle it (later)
-      }
-
       if (_ignoreSubviews) {
-        for (final View v in _views) {
+        if (!force)
+          for (View v = view; (v = v.parent) != null;)
+            if (_views.contains(v)) //view is subview of v
+              return; //no need to do since the parent will handle it (later)
+
+        for (final View v in _views)
           if (v.isDescendantOf(view))
             _views.remove(v);
+
+        handle_(view);
+      } else {
+        List<View> todos = [];
+        if (found)
+          todos.add(view);
+
+        for (final v in _views)
+          if (v.isDescendantOf(view))
+            todos.add(v);
+
+        for (final v in todos) {
+          _views.remove(v);
+          handle_(v);
         }
       }
-      handle_(view);
     }
   }
   /** Adds a callback to check if this manager can handle the views (i.e.,
@@ -146,11 +210,11 @@ class RunOnceViewManager {
   void addReadyCheck(RunOnceReadyCheck ready) {
     _readyChecks.add(ready);
   }
-  bool _ready(View view) {
+  bool _ready(View view, bool force) {
     if (!_readyChecks.isEmpty()) {
-      final Task continueTask = () {flush(view);};
+      final Task continueTask = () {flush(view, force);};
       for (final RunOnceReadyCheck ready in _readyChecks)
-        if (!ready(view, continueTask))
+        if (!ready(view, continueTask, force))
           return false;
     }
     return true;
@@ -172,22 +236,25 @@ class _ModelRenderer extends RunOnceViewManager {
   _contTasks = new List() {
     //For better performance (though optional), we make layoutManager to
     //wait until all pending renderers are done
-    layoutManager.addReadyCheck(bool (View view, Task continueTask) {
-      if (isQueueEmpty())
+    layoutManager.addReadyCheck((View view, Task continueTask, bool force) {
+      if (force)
+        flush(view, true);
+
+      if (isQueueEmpty(view)) //just in case
         return true;
 
       _contTasks.add(continueTask);
       return false;
     });
   }
-  void flush([View view]) {
-    super.flush(view);
+  void flush([View view, bool force=false]) {
+    super.flush(view, force);
 
-    if (isQueueEmpty()) {
+    if (isQueueEmpty()) { //_contTasks runs only after all views are processed
       final List<Task> tasks = new List.from(_contTasks);
       _contTasks.clear();
 
-      for (final Task task in tasks)
+      for (final task in tasks)
         task();
     }
   }

@@ -15,7 +15,6 @@
 #source("src/ListUtil.dart");
 #source("src/MapUtil.dart");
 #source("src/AbstractList.dart");
-#source("src/RunOnceQueue.dart");
 #source("src/Offset.dart");
 #source("src/Matrix.dart");
 #source("src/Color.dart");

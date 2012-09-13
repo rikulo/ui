@@ -138,14 +138,14 @@ class ViewUtil {
    * Notice that it is static, i.e., all queued invalidation will be redrawn.
    */
   static void flushInvalidated() {
-    _invalidator.flush();
+    _invalidator.flush(force: true);
   }
   /** Handles the layouts of views queued by [View.requestLayout].
    *
    * Notice that it is static, i.e., all queued requests will be handled.
    */
   static void flushRequestedLayouts() {
-    layoutManager.flush();
+    layoutManager.flush(force: true);
   }
 
   /** Returns the rectangle enclosing all views in the given list.

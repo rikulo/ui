@@ -59,7 +59,7 @@ class LayoutManager extends RunOnceViewManager {
         view = parent; //start from parent (slower performance but safer)
     }
 
-    if (immediate) flush(view);
+    if (immediate) flush(view, true); //yes, force the depended task to flush too
     else queue(view);
   }
 
@@ -76,10 +76,10 @@ class LayoutManager extends RunOnceViewManager {
   }
 
   //@Override
-  void flush([View view]) {
+  void flush([View view, bool force=false]) {
     //ignore flush if not empty (_onImageLoaded will invoke it later)
     if (_imgWaits.isEmpty())
-      super.flush(view);
+      super.flush(view, force);
     else if (view != null)
       queue(view); //do it later
   }
