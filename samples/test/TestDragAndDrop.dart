@@ -20,7 +20,7 @@ class TestDragAndDrop extends Activity {
     }
     final images = ["alpaca-01.jpg", "alpaca-02.jpg", "alpaca-03.jpg", "alpaca-04.jpg"];
     for (int i = 0; i < images.length; ++i) {
-      final view = new Image("http://blog.rikulo.org/static/files/tutorial/swipe-album/res/${images[i]}");
+      final view = new Image("http://static.rikulo.org/blogs/tutorial/swipe-album/res/${images[i]}");
         //IE accepts only Image as draggable
       view.width = view.height = 150;
       view.classes..add("box");

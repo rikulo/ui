@@ -40,6 +40,7 @@ class AlbumDemo extends Activity {
     mainView.classes.add("black");
     
     final String flickerPrefix = "http://www.flickr.com/photos/";
+    final String alpacaPrefix = "http://static.rikulo.org/blogs/tutorial/swipe-album/res/";
     final List<String> authors = 
         ["Kim Carpenter", "sophie", "Kate", "Chris. P", "Kabacchi"];
     final List<String> authorURLs = 
@@ -62,7 +63,7 @@ class AlbumDemo extends Activity {
       Image photo = new Image();
       photo.classes.add("photo");
       photo.profile.text = "location: top left; width: 100%; height: 100%";
-      photo.src = "res/alpaca-0${i+1}.jpg";
+      photo.src = "${alpacaPrefix}alpaca-0${i+1}.jpg";
       
       View mask = new View(); // to block browser's default image dragging
       mask.classes.add("photo-mask");

@@ -24,7 +24,7 @@ class MapDemo extends Activity {
     Image img = new Image();
     // http://www.flickr.com/photos/normanbleventhalmapcenter/2675391188/
     // Creative Commons License
-    img.src = "res/dutch-west-india-company-map.jpg";
+    img.src = "http://static.rikulo.org/blogs/tutorial/zoom-map/res/dutch-west-india-company-map.jpg";
     img.profile.text = "location: center center";
     
     panel.addChild(img);
