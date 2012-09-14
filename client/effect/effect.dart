@@ -18,3 +18,6 @@
 #source("src/GlowEffect.dart");
 #source("src/ShakeEffect.dart");
 #source("src/Effect.dart");
+#source("src/FadeEffect.dart");
+#source("src/ZoomEffect.dart");
+#source("src/SlideEffect.dart");
