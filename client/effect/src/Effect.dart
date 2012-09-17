@@ -2,14 +2,22 @@
 //History: Wed, Sep 12, 2012 10:53:16 AM
 //Author: simonpai
 
-/**
+/** A skeleton implementation of transition effect to show an element. It is
+ * assumed the element is hidden before the effect starts, and the element will
+ * be shown when the effect ends.
  */
 class ShowEffect extends EasingMotion {
   
   /// The element to which this effect applies.
   final Element element;
   
-  /** 
+  /** Create an effect on [element] that applies [action] with easing input
+   * value from 0 to 1. The element will be shown at the very beginning of the
+   * effect.
+   * 
+   * + [period] determines how long the effect will take.
+   * + [start] is called when the effect starts.
+   * + [end] is called when the effect ends.
    */
   ShowEffect(Element element, MotionAction action, [int period = 500, 
   MotionStart start, MotionEnd end, bool autorun = true]) :
@@ -18,24 +26,32 @@ class ShowEffect extends EasingMotion {
   period: period, autorun: autorun);
   
   // dart2js bug: closure in intializer doesn't compile
-  static MotionStart _showEffectStart(Element element, MotionAction action, MotionStart start) =>
-      (MotionState state) {
-    if (start != null)
-      start(state);
-    action(0, state);
-    new DOMQuery(element).show();
-  };
+  static MotionStart _showEffectStart(Element element, MotionAction action, MotionStart start) {
+    return (MotionState state) {
+      if (start != null)
+        start(state);
+      action(0, state);
+      new DOMQuery(element).show();
+    };
+  }
   
 }
 
-/**
+/** A skeleton implementation of transition effect to show an element. It is 
+ * assuemd the element is visible before the effect starts, and the element
+ * will be hidden when the effect ends.
  */
 class HideEffect extends EasingMotion {
   
   /// The element to which this effect applies.
   final Element element;
   
-  /** 
+  /** Create an effect on [element] that applies [action] with easing input
+   * value from 0 to 1. The element will be hidden when the effect ends.
+   * 
+   * + [period] determines how long the effect will take.
+   * + [start] is called when the effect starts.
+   * + [end] is called when the effect ends.
    */
   HideEffect(Element element, MotionAction action, [int period = 500, 
   MotionStart start, MotionEnd end, bool autorun = true]) :
@@ -44,11 +60,96 @@ class HideEffect extends EasingMotion {
   period: period, autorun: autorun);
   
   // dart2js bug: closure in intializer doesn't compile
-  static MotionEnd _hideEffectEnd(Element element, MotionEnd end) =>
-      (MotionState state) {
-    new DOMQuery(element).hide();
-    if (end != null)
-      end(state);
-  };
+  static MotionEnd _hideEffectEnd(Element element, MotionEnd end) {
+    return (MotionState state) {
+      new DOMQuery(element).hide();
+      if (end != null)
+        end(state);
+    };
+  }
+  
+}
+
+/** A fade-in effect. See also [ShowEffect].
+ */
+class FadeInEffect extends ShowEffect {
+  
+  /** Create a fade-in effect on [element].
+   */
+  FadeInEffect(Element element, [int period = 500, 
+  MotionStart start, MotionEnd end, bool autorun = true]) : 
+  super(element, _fadeInAction(element), 
+  start: start, end: end, period: period, autorun: autorun);
+  
+  // dart2js bug: closure in intializer doesn't compile
+  static MotionAction _fadeInAction(Element element) {
+    return (num x, MotionState state) {
+      element.style.opacity = "$x";
+    };
+  }
+  
+}
+
+/** A fade-out effect. See also [HideEffect].
+ */
+class FadeOutEffect extends HideEffect {
+  
+  /** Create a fade-out effect on [element].
+   */
+  FadeOutEffect(Element element, [int period = 500, 
+  MotionStart start, MotionEnd end, bool autorun = true]) : 
+  super(element, _fadeOutAction(element), 
+  start: start, end: end, period: period, autorun: autorun);
+  
+  // dart2js bug: closure in intializer doesn't compile
+  static MotionAction _fadeOutAction(Element element) {
+    return (num x, MotionState state) {
+      element.style.opacity = "${1-x}";
+    };
+  }
+  
+}
+
+/** 
+ */
+class ZoomInEffect extends ShowEffect {
+  
+  /** 
+   */
+  ZoomInEffect(Element element, [int period = 500, bool fade = true, 
+  MotionStart start, MotionEnd end, bool autorun = true]) : 
+  super(element, _zoomInAction(element, fade), 
+  start: start, end: end, period: period, autorun: autorun);
+  
+  // dart2js bug: closure in intializer doesn't compile
+  static MotionAction _zoomInAction(Element element, bool fade) {
+    return (num x, MotionState state) {
+      element.style.transform = "scale($x)";
+      if (fade)
+        element.style.opacity = "$x";
+    };
+  }
+  
+}
+
+/** 
+ */
+class ZoomOutEffect extends HideEffect {
+  
+  /** 
+   */
+  ZoomOutEffect(Element element, [int period = 500, bool fade = true, 
+  MotionStart start, MotionEnd end, bool autorun = true]) : 
+  super(element, _zoomOutAction(element, fade), 
+  start: start, end: end, period: period, autorun: autorun);
+  
+  // dart2js bug: closure in intializer doesn't compile
+  static MotionAction _zoomOutAction(Element element, bool fade) {
+    return (num x, MotionState state) {
+      element.style.transform = "scale(${1-x})";
+      if (fade)
+        element.style.opacity = "${1-x}";
+    };
+  }
   
 }

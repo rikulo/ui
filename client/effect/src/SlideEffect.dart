@@ -27,11 +27,11 @@ class SlideDirection {
   
 }
 
-/** 
+/** A slide-in effect.
  */
 class SlideInEffect extends ShowEffect {
   
-  /** 
+  /** Create a 
    */
   SlideInEffect(Element element, [int size, int period = 500, bool fade = true,
   SlideDirection direction = SlideDirection.NORTH,
