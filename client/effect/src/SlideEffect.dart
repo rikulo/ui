@@ -36,10 +36,12 @@ class SlideInEffect extends ShowEffect {
   SlideInEffect(Element element, [int size, int period = 500, EasingFunction easing, 
   bool fade = true, SlideDirection direction = SlideDirection.NORTH,
   MotionStart start, MotionEnd end, bool autorun = true]) :
-  super(element, _slideInAction(element, size, fade, direction), 
+  super(element, createAction(element, size, fade, direction), 
   start: start, end: end, period: period, easing: easing, autorun: autorun);
   
-  static MotionAction _slideInAction(Element element, int size, bool fade, SlideDirection dir) {
+  /** Create a MotionAction for slide-in effect on the [element].
+   */
+  static MotionAction createAction(Element element, int size, bool fade, SlideDirection dir) {
     switch (dir) {
       case SlideDirection.EAST:
         final int destSize = size != null ? size : _SlideEffectUtil.widthOf(element);
@@ -90,10 +92,12 @@ class SlideOutEffect extends HideEffect {
   SlideOutEffect(Element element, [int period = 500, EasingFunction easing, 
   bool fade = true, SlideDirection direction = SlideDirection.NORTH,
   MotionStart start, MotionEnd end, bool autorun = true]) :
-  super(element, _slideOutAction(element, fade, direction), 
+  super(element, createAction(element, fade, direction), 
   start: start, end: end, period: period, easing: easing, autorun: autorun);
   
-  static MotionAction _slideOutAction(Element element, bool fade, SlideDirection dir) {
+  /** Create a MotionAction for slide-out effect on the [element].
+   */
+  static MotionAction createAction(Element element, bool fade, SlideDirection dir) {
     switch (dir) {
       case SlideDirection.EAST:
         final int size = new DOMQuery(element).outerWidth;

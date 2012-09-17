@@ -80,11 +80,12 @@ class FadeInEffect extends ShowEffect {
    */
   FadeInEffect(Element element, [int period = 500, EasingFunction easing,
   MotionStart start, MotionEnd end, bool autorun = true]) : 
-  super(element, _fadeInAction(element), 
+  super(element, createAction(element), 
   start: start, end: end, period: period, easing: easing, autorun: autorun);
   
-  // dart2js bug: closure in intializer doesn't compile
-  static MotionAction _fadeInAction(Element element) {
+  /** Create a MotionAction for fade-in effect on the [element].
+   */
+  static MotionAction createAction(Element element) {
     return (num x, MotionState state) {
       element.style.opacity = "$x";
     };
@@ -100,11 +101,12 @@ class FadeOutEffect extends HideEffect {
    */
   FadeOutEffect(Element element, [int period = 500, EasingFunction easing, 
   MotionStart start, MotionEnd end, bool autorun = true]) : 
-  super(element, _fadeOutAction(element), 
+  super(element, createAction(element), 
   start: start, end: end, period: period, easing: easing, autorun: autorun);
   
-  // dart2js bug: closure in intializer doesn't compile
-  static MotionAction _fadeOutAction(Element element) {
+  /** Create a MotionAction for fade-out effect on the [element].
+   */
+  static MotionAction createAction(Element element) {
     return (num x, MotionState state) {
       element.style.opacity = "${1-x}";
     };
@@ -120,11 +122,13 @@ class ZoomInEffect extends ShowEffect {
    */
   ZoomInEffect(Element element, [int period = 500, EasingFunction easing, 
   bool fade = true, MotionStart start, MotionEnd end, bool autorun = true]) : 
-  super(element, _zoomInAction(element, fade), 
+  super(element, createAction(element, fade), 
   start: start, end: end, period: period, easing: easing, autorun: autorun);
   
-  // dart2js bug: closure in intializer doesn't compile
-  static MotionAction _zoomInAction(Element element, bool fade) {
+  /** Create a MotionAction for zoom-in effect on the [element], with optional
+   * fade-in if [fade] is true.
+   */
+  static MotionAction createAction(Element element, bool fade) {
     return (num x, MotionState state) {
       element.style.transform = "scale($x)";
       if (fade)
@@ -142,11 +146,13 @@ class ZoomOutEffect extends HideEffect {
    */
   ZoomOutEffect(Element element, [int period = 500, EasingFunction easing, 
   bool fade = true, MotionStart start, MotionEnd end, bool autorun = true]) : 
-  super(element, _zoomOutAction(element, fade), 
+  super(element, createAction(element, fade), 
   start: start, end: end, period: period, easing: easing, autorun: autorun);
   
-  // dart2js bug: closure in intializer doesn't compile
-  static MotionAction _zoomOutAction(Element element, bool fade) {
+  /** Create a MotionAction for zoom-out effect on the [element], with optional
+   * fade-out if [fade] is true.
+   */
+  static MotionAction createAction(Element element, bool fade) {
     return (num x, MotionState state) {
       element.style.transform = "scale(${1-x})";
       if (fade)
