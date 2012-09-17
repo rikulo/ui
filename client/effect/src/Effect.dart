@@ -16,14 +16,15 @@ class ShowEffect extends EasingMotion {
    * effect.
    * 
    * + [period] determines how long the effect will take.
+   * + [easing] the easing function of the effect
    * + [start] is called when the effect starts.
    * + [end] is called when the effect ends.
    */
   ShowEffect(Element element, MotionAction action, [int period = 500, 
-  MotionStart start, MotionEnd end, bool autorun = true]) :
+  EasingFunction easing, MotionStart start, MotionEnd end, bool autorun = true]) :
   this.element = element, 
   super(action, start: _showEffectStart(element, action, start), end: end, 
-  period: period, autorun: autorun);
+  period: period, easing: easing, autorun: autorun);
   
   // dart2js bug: closure in intializer doesn't compile
   static MotionStart _showEffectStart(Element element, MotionAction action, MotionStart start) {
@@ -50,14 +51,15 @@ class HideEffect extends EasingMotion {
    * value from 0 to 1. The element will be hidden when the effect ends.
    * 
    * + [period] determines how long the effect will take.
+   * + [easing] the easing function of the effect
    * + [start] is called when the effect starts.
    * + [end] is called when the effect ends.
    */
   HideEffect(Element element, MotionAction action, [int period = 500, 
-  MotionStart start, MotionEnd end, bool autorun = true]) :
+  EasingFunction easing, MotionStart start, MotionEnd end, bool autorun = true]) :
   this.element = element, 
   super(action, start: start, end: _hideEffectEnd(element, end), 
-  period: period, autorun: autorun);
+  period: period, easing: easing, autorun: autorun);
   
   // dart2js bug: closure in intializer doesn't compile
   static MotionEnd _hideEffectEnd(Element element, MotionEnd end) {
@@ -74,12 +76,12 @@ class HideEffect extends EasingMotion {
  */
 class FadeInEffect extends ShowEffect {
   
-  /** Create a fade-in effect on [element].
+  /** Create a fade-in effect on the [element].
    */
-  FadeInEffect(Element element, [int period = 500, 
+  FadeInEffect(Element element, [int period = 500, EasingFunction easing,
   MotionStart start, MotionEnd end, bool autorun = true]) : 
   super(element, _fadeInAction(element), 
-  start: start, end: end, period: period, autorun: autorun);
+  start: start, end: end, period: period, easing: easing, autorun: autorun);
   
   // dart2js bug: closure in intializer doesn't compile
   static MotionAction _fadeInAction(Element element) {
@@ -94,12 +96,12 @@ class FadeInEffect extends ShowEffect {
  */
 class FadeOutEffect extends HideEffect {
   
-  /** Create a fade-out effect on [element].
+  /** Create a fade-out effect on the [element].
    */
-  FadeOutEffect(Element element, [int period = 500, 
+  FadeOutEffect(Element element, [int period = 500, EasingFunction easing, 
   MotionStart start, MotionEnd end, bool autorun = true]) : 
   super(element, _fadeOutAction(element), 
-  start: start, end: end, period: period, autorun: autorun);
+  start: start, end: end, period: period, easing: easing, autorun: autorun);
   
   // dart2js bug: closure in intializer doesn't compile
   static MotionAction _fadeOutAction(Element element) {
@@ -110,16 +112,16 @@ class FadeOutEffect extends HideEffect {
   
 }
 
-/** 
+/** A zoom-in effect to show an element. See [ShowEffect].
  */
 class ZoomInEffect extends ShowEffect {
   
-  /** 
+  /** Create a zoom-in effect on the [element].
    */
-  ZoomInEffect(Element element, [int period = 500, bool fade = true, 
-  MotionStart start, MotionEnd end, bool autorun = true]) : 
+  ZoomInEffect(Element element, [int period = 500, EasingFunction easing, 
+  bool fade = true, MotionStart start, MotionEnd end, bool autorun = true]) : 
   super(element, _zoomInAction(element, fade), 
-  start: start, end: end, period: period, autorun: autorun);
+  start: start, end: end, period: period, easing: easing, autorun: autorun);
   
   // dart2js bug: closure in intializer doesn't compile
   static MotionAction _zoomInAction(Element element, bool fade) {
@@ -132,16 +134,16 @@ class ZoomInEffect extends ShowEffect {
   
 }
 
-/** 
+/** A zoom-out effect to hide an element. See [HideEffect].
  */
 class ZoomOutEffect extends HideEffect {
   
-  /** 
+  /** Create a zoom-out effect on the [element].
    */
-  ZoomOutEffect(Element element, [int period = 500, bool fade = true, 
-  MotionStart start, MotionEnd end, bool autorun = true]) : 
+  ZoomOutEffect(Element element, [int period = 500, EasingFunction easing, 
+  bool fade = true, MotionStart start, MotionEnd end, bool autorun = true]) : 
   super(element, _zoomOutAction(element, fade), 
-  start: start, end: end, period: period, autorun: autorun);
+  start: start, end: end, period: period, easing: easing, autorun: autorun);
   
   // dart2js bug: closure in intializer doesn't compile
   static MotionAction _zoomOutAction(Element element, bool fade) {

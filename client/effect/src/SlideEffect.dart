@@ -27,17 +27,17 @@ class SlideDirection {
   
 }
 
-/** A slide-in effect.
+/** A slide-in effect. See also [ShowEffect].
  */
 class SlideInEffect extends ShowEffect {
   
-  /** Create a 
+  /** Create a slide-in effect on the [element].
    */
-  SlideInEffect(Element element, [int size, int period = 500, bool fade = true,
-  SlideDirection direction = SlideDirection.NORTH,
+  SlideInEffect(Element element, [int size, int period = 500, EasingFunction easing, 
+  bool fade = true, SlideDirection direction = SlideDirection.NORTH,
   MotionStart start, MotionEnd end, bool autorun = true]) :
   super(element, _slideInAction(element, size, fade, direction), 
-  start: start, end: end, period: period, autorun: autorun);
+  start: start, end: end, period: period, easing: easing, autorun: autorun);
   
   static MotionAction _slideInAction(Element element, int size, bool fade, SlideDirection dir) {
     switch (dir) {
@@ -81,17 +81,17 @@ class SlideInEffect extends ShowEffect {
   
 }
 
-/** 
+/** A slide-out effect. See also [HideEffect].
  */
 class SlideOutEffect extends HideEffect {
   
-  /** 
+  /** Create a slide-out effect on the given [element].
    */
-  SlideOutEffect(Element element, [int period = 500, bool fade = true,
-  SlideDirection direction = SlideDirection.NORTH,
+  SlideOutEffect(Element element, [int period = 500, EasingFunction easing, 
+  bool fade = true, SlideDirection direction = SlideDirection.NORTH,
   MotionStart start, MotionEnd end, bool autorun = true]) :
   super(element, _slideOutAction(element, fade, direction), 
-  start: start, end: end, period: period, autorun: autorun);
+  start: start, end: end, period: period, easing: easing, autorun: autorun);
   
   static MotionAction _slideOutAction(Element element, bool fade, SlideDirection dir) {
     switch (dir) {
