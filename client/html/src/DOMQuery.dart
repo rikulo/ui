@@ -126,6 +126,14 @@ class DOMQuery {
     top += window.pageYOffset;
     return new Offset(left, top);
   }
+  
+  /** Return the rectangular range of the node relative to the document.
+   */
+  Rectangle get rectangle {
+    final Offset off = pageOffset;
+    return new Rectangle(off.left, off.top, off.left + outerWidth, off.top + outerHeight);
+  }
+  
   /** Returns the final used values of all the CSS properties
    */
   CSSStyleDeclaration get computedStyle 
