@@ -30,7 +30,7 @@ class MainViewEffectDemo extends Activity {
     View w2 = block("Shift", 150, 0);
     container.addChild(w2);
     
-    View w3 = block("?", 0, 150);
+    View w3 = block("Collapse", 0, 150);
     container.addChild(w3);
     
     View w4 = block("N/A", 150, 150);
