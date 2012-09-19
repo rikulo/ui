@@ -50,15 +50,18 @@ class MainViewEffectDemo extends Activity {
     v2.addChild(bak);
     
     w1.on.click.add((ViewEvent event) {
+      v2.visible = false;
       _efac = (View vo, View vn, void end()) {
         new FadeInEffect(vn.node, start: (MotionState state) {
           vo.node.style.zIndex = "-1";
+          vn.visible = true;
         }, end: (MotionState state) => end());
       };
       setMainView(v2, _efac);
     });
     
     w2.on.click.add((ViewEvent event) {
+      v2.visible = false;
       _efac = (View vo, View vn, void end()) {
         final int width = browser.size.width;
         new EasingMotion((num x, MotionState state) {
@@ -74,6 +77,7 @@ class MainViewEffectDemo extends Activity {
           }
           vo.node.style.left = CSS.px(width);
           vn.node.style.left = "0";
+          vn.visible = true;
           
         }, end: (MotionState state) {
           final Element parent = vo.node.parent;
@@ -87,6 +91,7 @@ class MainViewEffectDemo extends Activity {
     });
     
     w3.on.click.add((ViewEvent event) {
+      v2.visible = false;
       _efac = (View vo, View vn, void end()) {
         final List<MotionAction> actions = new List<MotionAction>();
         
@@ -106,6 +111,7 @@ class MainViewEffectDemo extends Activity {
           
         }, start: (MotionState state) {
           vn.node.style.zIndex = "-1";
+          vn.visible = true;
           final Element parent = vo.node.parent;
           if (parent != null) {
             state.data = parent.style.overflow;
@@ -129,7 +135,11 @@ class MainViewEffectDemo extends Activity {
       setMainView(v2);
     });
     
-    bak.on.click.add((ViewEvent event) => setMainView(v1, _efac));
+    bak.on.click.add((ViewEvent event) {
+      if (_efac != null)
+        v1.visible = false;
+      setMainView(v1, _efac);
+    });
     
   }
   
