@@ -2,13 +2,11 @@
 //History: Fri, Mar 09, 2012  7:47:30 PM
 // Author: tomyeh
 
-/** A switching effect for hiding [from] and displaying [to],
- * such as fade-out and slide-in.
- *
- * + [mask] is the element inserted between [from] and [to]. It is used
- * to block the access of [from].
+/** An interface to handle visual effect of switching main view from [oldView]
+ * to [newView]. It is usually implemented by determining a [Motion]. At the 
+ * end of the effect, the callback [end] has to be invoked.
  */
-typedef void ViewSwitchEffect(View from, View to, Element mask);
+typedef void ViewSwitchEffect(View oldView, View newView, void end());
 
 /**
  * An activity is a UI that the user can interact with.
@@ -44,10 +42,11 @@ class Activity {
   String _title = "";
   View _mainView;
   final List<_DialogInfo> _dlgInfos;
+  final List<Mask> _masks;
   Element _container;
   bool _creating = true;
 
-  Activity(): _dlgInfos = [] {
+  Activity() : _dlgInfos = [], _masks = [] {
     _title = application.name; //also force "get application" to be called
   }
 
@@ -70,7 +69,7 @@ class Activity {
   }
   /** Sets the main view with an effect.
    */
-  void setMainView(View main, [ViewSwitchEffect effect]) {
+  void setMainView(View main, [ViewSwitchEffect efactory]) {
     if (main == null)
       throw const UIException("mainView can't be null");
     final View prevroot = _mainView;
@@ -82,15 +81,22 @@ class Activity {
         main.height = browser.size.height;
 
       if (prevroot.inDocument) {
+        Mask mask = efactory != null ? new Mask() : null;
         main.addToDocument(before: prevroot.node,
-          shallLayout: !_creating || effect != null);
+          shallLayout: !_creating || efactory != null);
           //no need to layout if no effect and in onCreate_
-        prevroot.removeFromDocument();
-        //TODO: effect
+        if (efactory != null) {
+          efactory(prevroot, main, () {
+            prevroot.removeFromDocument();
+            mask.destroy();
+          });
+        } else {
+          prevroot.removeFromDocument();
+        }
       }
     }
   }
-
+  
   /** Returns the topmost dialog, or null if no dialog at all.
    * A dialog is a view sitting on top of [mainView].
    * A dialog is also a root view, i.e., it has no parent.
@@ -282,6 +288,8 @@ class Activity {
         dlgInfo.resizeMask();
         dlgInfo.dialog.requestLayout();
       }
+      for (Mask mask in _masks)
+        mask.resize();
     }
   }
 
@@ -370,3 +378,70 @@ class _DialogInfo {
     }
   }
 }
+
+/** An utility class for masking a certain area in browser window.
+ */
+class Mask {
+  
+  Element _node;
+  final Element _masked;
+  
+  /** Create a mask to cover either full screen or a given [region].
+   */
+  Mask([Rectangle region, String maskClass]) : 
+  this._init(region, null, maskClass);
+  
+  /// The Element used as mask.
+  Element get node => _node;
+  
+  /** Create a mask to cover a given [element].
+   */
+  Mask.element(Element element, [String maskClass]) : 
+  this._init(new DOMQuery(element).rectangle, element, maskClass);
+  
+  Mask._init(Rectangle region, Element element, String maskClass) : 
+  _masked = element {
+    
+    final String c = maskClass == null ? "" : maskClass;
+    _node = new Element.html('<div class="v- $c" style="position:absolute;"></div>');
+    _updateRegion(_getRealRegion(region, element));
+    
+    activity._masks.add(this);
+    
+    Element ct = activity.container != null ? activity.container : document.body;
+    ct.$dom_appendChild(_node);
+  }
+  
+  static Rectangle _getRealRegion(Rectangle range, Element element) =>
+      range != null ? range : element != null ? new DOMQuery(element).rectangle : 
+        new Rectangle(0, 0, browser.size.width, browser.size.height);
+  
+  void _updateRegion(Rectangle range) {
+    if (_node != null) {
+      _node.style.left = CSS.px(range.left.toInt());
+      _node.style.top = CSS.px(range.top.toInt());
+      _node.style.width = CSS.px(range.width.toInt());
+      _node.style.height = CSS.px(range.height.toInt());
+    }
+  }
+  
+  /** Re-calculate and update the mask position and size.
+   */
+  void resize() {
+    if (_node != null && _masked != null)
+      _updateRegion(new DOMQuery(_masked).rectangle);
+  }
+  
+  /** Remove the mask.
+   */
+  void destroy() {
+    if (_node != null)
+      _node.remove();
+    _node = null;
+    
+    List<Mask> list = activity._masks;
+    list.removeRange(list.indexOf(this), 1);
+  }
+  
+}
+

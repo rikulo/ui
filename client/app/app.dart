@@ -13,6 +13,7 @@
 #import("../event/event.dart");
 #import("../html/html.dart");
 #import("../layout/layout.dart");
+#import("../effect/effect.dart");
 
 #source("src/Activity.dart");
 #source("src/Application.dart");
