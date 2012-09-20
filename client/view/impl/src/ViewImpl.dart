@@ -7,6 +7,39 @@
  */
 typedef EventListener DOMEventDispatcher(View target);
 
+/** Utilities for implemnetation.
+ */
+class ViewImpl {
+  /** Called to indicate the width or height is updated by layouts
+   * or other internal modules, rather than the application.
+   *
+   * Once called, [sizedByApp] will return true.
+   */
+  static void sizedInternally(View view, Dir dir) {
+    view.dataAttributes[_sbaAttr(dir)] = _sbaVal(view, dir);
+  }
+  /** Called to indicate the width or height is updated by the application.
+   *
+   * Once called, [sizedByApp] will return false.
+   */
+  static void sizedByApp(View view, Dir dir) {
+    view.dataAttributes.remove(_sbaAttr(dir));
+  }
+  /** Returns true if the width or height is set by the application.
+   *
+   * + [dir] can be either *HORIZONTAL* or *VERTICAL*. It can't be *BOTH*.
+   */
+  static bool isSizedByApp(View view, Dir dir) {
+    final val = _sbaVal(view, dir);
+    return val != null && val != view.dataAttributes[_sbaAttr(dir)];
+      //Note: if null is assigned, it is considered as set-internally
+  }
+  static int _sbaVal(View view, Dir dir)
+  => dir == Dir.HORIZONTAL ? view.width: view.height;
+  static String _sbaAttr(Dir dir)
+  => dir == Dir.HORIZONTAL ? 'rk.layout.hz': 'rk.layout.vt';
+}
+
 /**
  * The configuration of views.
  */

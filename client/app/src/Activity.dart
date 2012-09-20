@@ -75,10 +75,14 @@ class Activity {
     final View prevroot = _mainView;
     _mainView = main;
     if (prevroot != null) {
-      if (main.width == null)
+      if (!ViewImpl.isSizedByApp(main, Dir.HORIZONTAL)) {
         main.width = browser.size.width; //better to browser's size than prevroot's
-      if (main.height == null)
+        ViewImpl.sizedInternally(main, Dir.HORIZONTAL);
+      }
+      if (!ViewImpl.isSizedByApp(main, Dir.VERTICAL)) {
         main.height = browser.size.height;
+        ViewImpl.sizedInternally(main, Dir.VERTICAL);
+      }
 
       if (prevroot.inDocument) {
         Mask mask = efactory != null ? new Mask() : null;
@@ -206,7 +210,7 @@ class Activity {
 
       onCreate_();
       _creating = false;
-      _mainView.requestLayout();
+      _mainView.requestLayout(immediate: true); //to avoid 'flash' (caused by timeout)
     });
   }
   /** Initializes the browser window, such as registering the events.
@@ -227,6 +231,8 @@ class Activity {
     _mainView = new Section();
     _mainView.width = browser.size.width;
     _mainView.height = browser.size.height;
+    ViewImpl.sizedInternally(_mainView, Dir.HORIZONTAL);
+    ViewImpl.sizedInternally(_mainView, Dir.VERTICAL);
     _mainView.addToDocument(_container != null ? _container: document.body, shallLayout: false);
 
     window.on.resize.add(_onResize);
@@ -270,15 +276,15 @@ class Activity {
     //Note: we have to check if the size is changed, since deviceOrientation
     //is fired continuously once the listener is added
       if (_mainView != null) {
-      //update mainView only if its size is the same as browser's size
-      //in other words, we don't update mainView if its size is set by application
         bool changed = false;
-        if (_mainView.width == null || _mainView.width == oldsz.width) {
+        if (!ViewImpl.isSizedByApp(_mainView, Dir.HORIZONTAL)) {
           _mainView.width = browser.size.width;
+          ViewImpl.sizedInternally(_mainView, Dir.HORIZONTAL);
           changed = true;
         }
-        if (_mainView.height == null || _mainView.height == oldsz.height) {
+        if (!ViewImpl.isSizedByApp(_mainView, Dir.VERTICAL)) {
           _mainView.height = browser.size.height;
+          ViewImpl.sizedInternally(_mainView, Dir.VERTICAL);
           changed = true;
         }
         if (changed)

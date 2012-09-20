@@ -15,5 +15,5 @@
 #source("src/DeclarationImpl.dart");
 #source("src/LayoutDeclarationImpl.dart");
 #source("src/ProfileDeclarationImpl.dart");
-#source("src/ViewConfig.dart");
+#source("src/ViewImpl.dart");
 #source("src/RunOnceViewManager.dart");

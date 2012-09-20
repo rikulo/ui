@@ -932,7 +932,7 @@ class View implements Hashable {
 
     if (_inDoc) {
       node.style.width = CSS.px(width);
-      layoutManager.sizeUpdated(this, width, true);
+      layoutManager.sizeUpdated(this, Dir.HORIZONTAL);
     }
   }
   /** Returns the height of this view.
@@ -952,7 +952,7 @@ class View implements Hashable {
 
     if (_inDoc) {
       node.style.height = CSS.px(height);
-      layoutManager.sizeUpdated(this, height, false);
+      layoutManager.sizeUpdated(this, Dir.VERTICAL);
     }
   }
 

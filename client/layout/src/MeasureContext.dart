@@ -302,7 +302,7 @@ class MeasureContext {
       case LayoutAmountType.FIXED:
         return amtInf.value;
       case LayoutAmountType.NONE:
-        return _getSetByApp(view, view.width, 'rk.layout.w'); //see also LayoutManager.sizeUpdated
+        return ViewImpl.isSizedByApp(view, Dir.HORIZONTAL) ? view.width: null;
     }
   }
   /** Returns the height set by the applicaiton, or null if it is not set yet or set
@@ -314,11 +314,9 @@ class MeasureContext {
       case LayoutAmountType.FIXED:
         return amtInf.value;
       case LayoutAmountType.NONE:
-        return _getSetByApp(view, view.height, 'rk.layout.h'); //see also LayoutManager.sizeUpdated
+        return ViewImpl.isSizedByApp(view, Dir.VERTICAL) ? view.height: null;
     }
   }
-  static int _getSetByApp(View view, int val, String nm)
-  => val != null && val != view.dataAttributes[nm] ? val: null;
 
   /** Calls back [View.onPreLayout_].
    * The implementation of [Layout] shall invoke this method rather than 

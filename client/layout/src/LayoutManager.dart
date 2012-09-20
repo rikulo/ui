@@ -65,14 +65,13 @@ class LayoutManager extends RunOnceViewManager {
 
   /** Called by [View], when it changed the width or height.
    */
-  void sizeUpdated(View view, int value, bool horizontal) {
+  void sizeUpdated(View view, Dir dir) {
     //Note: we have to store the width in view since it is required if requestLayout
     //is called again (while _borderWds shall be dropped after layouted)
-    final String nm = horizontal ? 'rk.layout.w': 'rk.layout.h'; //see also MeasureContext._getSetByApp
     if (_inLayout > 0 && _inCallback <= 0)
-      view.dataAttributes[nm] = value;
+      ViewImpl.sizedInternally(view, dir);
     else
-      view.dataAttributes.remove(nm);
+      ViewImpl.sizedByApp(view, dir);
   }
 
   //@Override
