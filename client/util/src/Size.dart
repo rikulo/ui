@@ -10,13 +10,13 @@ class Dir {
 
   /** Represents the vertical direction.
    */
-  static final Dir VERTICAL = const Dir("vertical");
+  static const Dir VERTICAL = const Dir("vertical");
   /** Represents the horizontal direction.
    */
-  static final Dir HORIZONTAL = const Dir("horizontal");
+  static const Dir HORIZONTAL = const Dir("horizontal");
   /** Represents the both direction.
    */
-  static final Dir BOTH = const Dir("both");
+  static const Dir BOTH = const Dir("both");
 
   const Dir(String this._name);
 

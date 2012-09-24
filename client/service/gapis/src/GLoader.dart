@@ -7,20 +7,20 @@
  */
 class GLoader {
   //private JS operation
-  static final String _GLOADER_READY = "gload.1";
-  static final String _IP_LOCATION = "gload.2";
-  static final String _LOAD_MODULE = "gload.3";
+  static const String _GLOADER_READY = "gload.1";
+  static const String _IP_LOCATION = "gload.2";
+  static const String _LOAD_MODULE = "gload.3";
   
-  static final String _BASE_URI = "https://www.google.com/jsapi";
+  static const String _BASE_URI = "https://www.google.com/jsapi";
   
   //module names
-  static final String MAPS = "maps";
-  static final String SEARCH = "search";
-  static final String FEED = "feeds";
-  static final String EARTH = "earth";
-  static final String VISUALIZATION = "visualization";
-  static final String ORKUT = "orkut";
-  static final String PICKER = "picker";
+  static const String MAPS = "maps";
+  static const String SEARCH = "search";
+  static const String FEED = "feeds";
+  static const String EARTH = "earth";
+  static const String VISUALIZATION = "visualization";
+  static const String ORKUT = "orkut";
+  static const String PICKER = "picker";
   
   static LoadableModule _loaderModule;
   static Map<String, double> _loc;

@@ -6,12 +6,12 @@
  * A Cordova capture implementation.
  */
 class CordovaCapture implements Capture {
-  static final String _SUPPORTED_AUDIO_MODES = "capt.1";
-  static final String _SUPPORTED_IMAGE_MODES = "capt.2";
-  static final String _SUPPORTED_VIDEO_MODES = "capt.3";
-  static final String _CAPTURE_AUDIO = "capt.4";
-  static final String _CAPTURE_IMAGE = "capt.5";
-  static final String _CAPTURE_VIDEO = "capt.6";
+  static const String _SUPPORTED_AUDIO_MODES = "capt.1";
+  static const String _SUPPORTED_IMAGE_MODES = "capt.2";
+  static const String _SUPPORTED_VIDEO_MODES = "capt.3";
+  static const String _CAPTURE_AUDIO = "capt.4";
+  static const String _CAPTURE_IMAGE = "capt.5";
+  static const String _CAPTURE_VIDEO = "capt.6";
   CordovaCapture() {
     _initJSFunctions();
   }

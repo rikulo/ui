@@ -6,9 +6,9 @@
  * Accelerometer implementation for Cordova device.
  */
 class CordovaAccelerometer extends AbstractAccelerometer {
-  static final String _GET_CURRENT_ACCELERATION = "acce.1";
-  static final String _WATCH_ACCELERATION = "acce.2";
-  static final String _CLEAR_WATCH = "acce.3";
+  static const String _GET_CURRENT_ACCELERATION = "acce.1";
+  static const String _WATCH_ACCELERATION = "acce.2";
+  static const String _CLEAR_WATCH = "acce.3";
   CordovaAccelerometer() {
     _initJSFunctions();
   }

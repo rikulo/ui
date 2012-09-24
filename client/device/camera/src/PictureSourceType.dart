@@ -3,8 +3,8 @@
 // Author: henrichen
 
 interface PictureSourceType {
-  static final int PHOTOLIBRARY = 0;
-  static final int CAMERA = 1;
-  static final int SAVEDPHOTOALBUM = 2;
+  static const int PHOTOLIBRARY = 0;
+  static const int CAMERA = 1;
+  static const int SAVEDPHOTOALBUM = 2;
 }
 

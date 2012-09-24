@@ -6,8 +6,8 @@
  * A Cordova camera implementation.
  */
 class CordovaCamera implements Camera {
-  static final String _GET_PICTURE = "came.1";
-  static final String _CLEANUP = "came.2";
+  static const String _GET_PICTURE = "came.1";
+  static const String _CLEANUP = "came.2";
   CordovaCamera() {
     _initJSFunctions();
   }

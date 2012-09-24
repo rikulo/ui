@@ -38,10 +38,10 @@ class SimpleSelectorSequence {
   //Attribute _currAttr;
   //PseudoClass _currPseudoCls;
   
-  static final int COMB_DESCENDANT = 0; //
-  static final int COMB_CHILD = 1; // >
-  static final int COMB_ADJACENT_SIBLING = 2; // +
-  static final int COMB_GENERAL_SIBLING = 3; // ~
+  static const int COMB_DESCENDANT = 0; //
+  static const int COMB_CHILD = 1; // >
+  static const int COMB_ADJACENT_SIBLING = 2; // +
+  static const int COMB_GENERAL_SIBLING = 3; // ~
   
   String printCombinator() {
     switch (this.combinator) {

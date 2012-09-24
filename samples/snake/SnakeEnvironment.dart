@@ -1,8 +1,8 @@
 
 class SnakeEnvironment {
   
-  static final int SCORED=0, GAMEOVER=1, CONTINUE=2;
-  static final num adjustment = 10;
+  static const int SCORED=0, GAMEOVER=1, CONTINUE=2;
+  static const num adjustment = 10;
   
   num height,width;
   Snake snake;

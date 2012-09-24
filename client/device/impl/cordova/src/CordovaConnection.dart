@@ -6,7 +6,7 @@
  * A Cordova connection  implementation.
  */
 class CordovaConnection implements Connection {
-  static final String _TYPE = "conn.1";
+  static const String _TYPE = "conn.1";
   CordovaConnection() {
     _initJSFunctions();
   }

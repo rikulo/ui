@@ -8,10 +8,10 @@
  */
 
 class GAnalytics {
-  static final String _PUSH_COMMAND = "ga.0";
-  static final String _CREATE_TRACKER = "ga.1";
-  static final String _DISABLE_TRACKING = "ga.2";
-  static final String _GET_TRACKER_BY_NAME = "ga.3";
+  static const String _PUSH_COMMAND = "ga.0";
+  static const String _CREATE_TRACKER = "ga.1";
+  static const String _DISABLE_TRACKING = "ga.2";
+  static const String _GET_TRACKER_BY_NAME = "ga.3";
   
   /**
    * Push a List as a command with arguments to be executed by the Google Analytics engine.

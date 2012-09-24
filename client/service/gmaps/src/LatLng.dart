@@ -7,9 +7,9 @@
  * see <https://developers.google.com/maps/documentation/javascript/reference#LatLng> for details.
  */
 class LatLng implements JSAgent {
-  static final String _NEW_LAT_LNG = "latlng.0";
-  static final String _LNG = "latlng.1";
-  static final String _LAT = "latlng.2";
+  static const String _NEW_LAT_LNG = "latlng.0";
+  static const String _LNG = "latlng.1";
+  static const String _LAT = "latlng.2";
   
   final bool _noWrap;
   final double lat;

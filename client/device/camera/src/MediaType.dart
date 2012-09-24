@@ -3,7 +3,7 @@
 // Author: henrichen
 
 interface MediaType {
-  static final int PICTURE = 0;
-  static final int VIDEO = 1;
-  static final int ALLMEDIA = 2;
+  static const int PICTURE = 0;
+  static const int VIDEO = 1;
+  static const int ALLMEDIA = 2;
 }

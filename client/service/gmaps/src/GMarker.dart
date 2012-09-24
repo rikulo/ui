@@ -8,7 +8,7 @@
  */
 class GMarker implements JSAgent {
   //private JavaScript function
-  static final String _NEW_MARKER = "gmarker.0";
+  static const String _NEW_MARKER = "gmarker.0";
   
   var _gmarker; //JavaScript Marker object of Google Maps
   

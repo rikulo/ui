@@ -6,10 +6,10 @@
  * A Cordova notification implementation.
  */
 class CordovaNotification implements XNotification {
-  static final String _ALERT = "noti.1";
-  static final String _CONFIRM = "noti.2";
-  static final String _BEEP = "noti.3";
-  static final String _VIBRATE = "noti.4";
+  static const String _ALERT = "noti.1";
+  static const String _CONFIRM = "noti.2";
+  static const String _BEEP = "noti.3";
+  static const String _VIBRATE = "noti.4";
   
   CordovaNotification() {
     _initJSFunctions();

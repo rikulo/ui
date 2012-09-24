@@ -42,10 +42,10 @@ class ListUtil {
 
   /** A readonly and empty collection.
    */
-  static final Collection emptyCollection = const _EmptyColl();
+  static const Collection emptyCollection = const _EmptyColl();
   /** A readonly and empty iterator.
    */
-  static final Iterator emptyIterator = const _EmptyIter();
+  static const Iterator emptyIterator = const _EmptyIter();
 }
 
 class _EmptyColl<T> implements Collection<T> {

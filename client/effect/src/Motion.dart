@@ -80,9 +80,9 @@ class MotionState {
  */
 class Motion {
   
-  static final _MOTION_STATE_INIT = 0;
-  static final _MOTION_STATE_RUNNING = 1;
-  static final _MOTION_STATE_PAUSED = 2;
+  static const _MOTION_STATE_INIT = 0;
+  static const _MOTION_STATE_RUNNING = 1;
+  static const _MOTION_STATE_PAUSED = 2;
   
   final MotionStart _start;
   final MotionMove _move;

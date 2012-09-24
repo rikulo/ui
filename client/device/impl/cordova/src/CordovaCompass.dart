@@ -6,9 +6,9 @@
  * Compass implementation for Cordova device.
  */
 class CordovaCompass extends AbstractCompass {
-  static final String _GET_CURRENT_HEADING = "comp.1";
-  static final String _WATCH_HEADING = "comp.2";
-  static final String _CLEAR_WATCH = "comp.3";
+  static const String _GET_CURRENT_HEADING = "comp.1";
+  static const String _WATCH_HEADING = "comp.2";
+  static const String _CLEAR_WATCH = "comp.3";
   CordovaCompass() {
     _initJSFunctions();
   }

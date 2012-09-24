@@ -196,28 +196,26 @@ class Selectors {
         return false;
     }
   }
+    
+  static const int STATE_PRE_SLCT = 1;
+  static const int STATE_IN_SLCT = 9;
+  static const int STATE_POST_SLCT = 14;
+  static const int STATE_POST_COMB = 2;
+  static const int STATE_PRE_COMB = 3;
+  static const int STATE_POST_SEPR = 17;
   
+  static const int STATE_IN_TYPE = 4;
+  static const int STATE_IN_ID = 5;
+  static const int STATE_IN_CLASS = 6;
+  static const int STATE_IN_PSDOCLS = 7;
+  static const int STATE_PRE_PSDOCLS_PARAM = 8;
+  static const int STATE_IN_PSDOCLS_PARAM = 15;
+  static const int STATE_POST_PSDOCLS_PARAM = 16;
   
-  
-  static final int STATE_PRE_SLCT = 1;
-  static final int STATE_IN_SLCT = 9;
-  static final int STATE_POST_SLCT = 14;
-  static final int STATE_POST_COMB = 2;
-  static final int STATE_PRE_COMB = 3;
-  static final int STATE_POST_SEPR = 17;
-  
-  static final int STATE_IN_TYPE = 4;
-  static final int STATE_IN_ID = 5;
-  static final int STATE_IN_CLASS = 6;
-  static final int STATE_IN_PSDOCLS = 7;
-  static final int STATE_PRE_PSDOCLS_PARAM = 8;
-  static final int STATE_IN_PSDOCLS_PARAM = 15;
-  static final int STATE_POST_PSDOCLS_PARAM = 16;
-  
-  static final int STATE_PRE_ATTR_NAME = 10;
-  static final int STATE_PRE_ATTR_OP = 11;
-  static final int STATE_PRE_ATTR_VALUE = 12;
-  static final int STATE_POST_ATTR_VALUE = 13;
+  static const int STATE_PRE_ATTR_NAME = 10;
+  static const int STATE_PRE_ATTR_OP = 11;
+  static const int STATE_PRE_ATTR_VALUE = 12;
+  static const int STATE_POST_ATTR_VALUE = 13;
   
   /**
    * Tokenize the query string.
@@ -247,9 +245,9 @@ class Selectors {
     return tokens;
   }
   
-  static final int TOKEN_CLASS_LITERAL = 0;
-  static final int TOKEN_CLASS_WHITESPACE = 1;
-  static final int TOKEN_CLASS_OTHER = 2;
+  static const int TOKEN_CLASS_LITERAL = 0;
+  static const int TOKEN_CLASS_WHITESPACE = 1;
+  static const int TOKEN_CLASS_OTHER = 2;
   
   static int _getTokenClass(int c) {
     return _isWhitespace(c) ? TOKEN_CLASS_WHITESPACE : 

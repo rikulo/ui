@@ -94,7 +94,7 @@ class Application {
     }
     return _uuid;
   }
-  static final String _APP_COUNT = "data-rikuloAppCount";
+  static const String _APP_COUNT = "data-rikuloAppCount";
 
   String toString() => "Application($name, ${_uuid})";
 }

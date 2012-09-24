@@ -6,8 +6,8 @@
  * A Cordova Contacts implementation.
  */
 class CordovaContacts implements Contacts {
-  static final String _FIND = "conts.1";
-  static final String _CREATE = "conts.2";
+  static const String _FIND = "conts.1";
+  static const String _CREATE = "conts.2";
   
   CordovaContacts() {
     _initJSFunctions();

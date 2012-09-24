@@ -9,14 +9,14 @@
  * This is used when you need to write function to push into analytics command queue. 
  */
 class PageTracker implements JSAgent {
-  static final _GET_NAME = "pgtrk.0";
-  static final _GET_ACCOUNT = "pgtrk.1";
-  static final _GET_VERSION = "pgtrk.2";
-  static final _GET_VISITOR_VAR = "pgtrk.3";
-  static final _GET_LINKER_URL = "pgtrk.4";
-  static final _GET_CLIENT_INFO = "pgtrk.5";
-  static final _GET_DETECT_FLASH = "pgtrk.6";
-  static final _GET_DETECT_TITLE = "pgtrk.7";
+  static const _GET_NAME = "pgtrk.0";
+  static const _GET_ACCOUNT = "pgtrk.1";
+  static const _GET_VERSION = "pgtrk.2";
+  static const _GET_VISITOR_VAR = "pgtrk.3";
+  static const _GET_LINKER_URL = "pgtrk.4";
+  static const _GET_CLIENT_INFO = "pgtrk.5";
+  static const _GET_DETECT_FLASH = "pgtrk.6";
+  static const _GET_DETECT_TITLE = "pgtrk.7";
   
   var _tracker;
   PageTracker.from(this._tracker) {

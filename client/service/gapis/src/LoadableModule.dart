@@ -4,9 +4,9 @@
 
 /** For JavaScript module that is dynamically loaded and with a callback */
 class LoadableModule {
-  static final int _NONE = 0;
-  static final int _LOADING = 1; //loading but not loaded
-  static final int _LOADED = 2; //loaded
+  static const int _NONE = 0;
+  static const int _LOADING = 1; //loading but not loaded
+  static const int _LOADED = 2; //loaded
   
   int _loadStatus = _NONE;
   List<Function> _callbacks;

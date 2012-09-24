@@ -6,7 +6,7 @@
  * Bridge Dart to Yahoo Weather RSS Feed; see <http://developer.yahoo.com/weather/> for details.
  */
 class YWeather {
-  static final String _BASE_URI = "http://weather.yahooapis.com/forecastrss?";
+  static const String _BASE_URI = "http://weather.yahooapis.com/forecastrss?";
   Map _channel; //cached channel if not expired yet.
   int _expireTime = 0;
   GFeed _feeder;

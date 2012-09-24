@@ -6,7 +6,7 @@
  * XML Utilities.
  */
 class XMLUtil {
-  static final Map<String, String>
+  static const Map<String, String>
     _decs = const {'lt': '<', 'gt': '>', 'amp': '&', 'quot': '"'},
     _encs = const {'<': 'lt', '>': 'gt', '&': 'amp', '"': 'quot'};
 

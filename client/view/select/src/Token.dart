@@ -69,36 +69,36 @@ class Token {
   
   // TODO: maybe shall align with char code
   // selector body //
-  static final int TYPE_IDENTIFIER = 1;
-  static final int TYPE_UNIVERSAL  = 2; // *
+  static const int TYPE_IDENTIFIER = 1;
+  static const int TYPE_UNIVERSAL  = 2; // *
   // white space //
-  static final int TYPE_WHITESPACE       = 3;
-  static final int TYPE_MINOR_WHITESPACE = 4;
+  static const int TYPE_WHITESPACE       = 3;
+  static const int TYPE_MINOR_WHITESPACE = 4;
   // comma //
-  static final int TYPE_SELECTOR_SEPARATOR = 5; // ,
-  static final int TYPE_PARAM_SEPARATOR    = 6; // ,
+  static const int TYPE_SELECTOR_SEPARATOR = 5; // ,
+  static const int TYPE_PARAM_SEPARATOR    = 6; // ,
   // combinator //
-  static final int TYPE_CBN_CHILD            = 7; // >
-  static final int TYPE_CBN_ADJACENT_SIBLING = 8; // +
-  static final int TYPE_CBN_GENERAL_SIBLING  = 9; // ~
+  static const int TYPE_CBN_CHILD            = 7; // >
+  static const int TYPE_CBN_ADJACENT_SIBLING = 8; // +
+  static const int TYPE_CBN_GENERAL_SIBLING  = 9; // ~
   // selector notation //
-  static final int TYPE_NTN_ID      = 10; // #
-  static final int TYPE_NTN_CLASS   = 11; // .
-  static final int TYPE_NTN_PSDOCLS = 12; // :
+  static const int TYPE_NTN_ID      = 10; // #
+  static const int TYPE_NTN_CLASS   = 11; // .
+  static const int TYPE_NTN_PSDOCLS = 12; // :
   // attribute boolean operator //
-  static final int TYPE_OP_EQUAL      = 13; // =
-  static final int TYPE_OP_BEGIN_WITH = 14; // ^=
-  static final int TYPE_OP_END_WITH   = 15; // $=
-  static final int TYPE_OP_CONTAIN    = 16; // *=
+  static const int TYPE_OP_EQUAL      = 13; // =
+  static const int TYPE_OP_BEGIN_WITH = 14; // ^=
+  static const int TYPE_OP_END_WITH   = 15; // $=
+  static const int TYPE_OP_CONTAIN    = 16; // *=
   // pairwise //
-  static final int TYPE_SINGLE_QUOTE  = 17; // '
-  static final int TYPE_DOUBLE_QUOTE  = 18; // "
-  static final int TYPE_OPEN_BRACKET  = 19; // [
-  static final int TYPE_CLOSE_BRACKET = 20;  // ]
-  static final int TYPE_OPEN_PAREN    = 21; // (
-  static final int TYPE_CLOSE_PAREN   = 22; // )
+  static const int TYPE_SINGLE_QUOTE  = 17; // '
+  static const int TYPE_DOUBLE_QUOTE  = 18; // "
+  static const int TYPE_OPEN_BRACKET  = 19; // [
+  static const int TYPE_CLOSE_BRACKET = 20;  // ]
+  static const int TYPE_OPEN_PAREN    = 21; // (
+  static const int TYPE_CLOSE_PAREN   = 22; // )
   // unknown //
-  static final int TYPE_UNKNOWN_CHAR = -1;
+  static const int TYPE_UNKNOWN_CHAR = -1;
   
   
   

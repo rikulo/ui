@@ -6,9 +6,9 @@
  * Geolocation implementation for Cordova device.
  */
 class CordovaGeolocation extends AbstractGeolocation {
-  static final String _GET_CURRENT_POSITION = "geo.1";
-  static final String _WATCH_POSITION = "geo.2";
-  static final String _CLEAR_WATCH = "geo.3";
+  static const String _GET_CURRENT_POSITION = "geo.1";
+  static const String _WATCH_POSITION = "geo.2";
+  static const String _CLEAR_WATCH = "geo.3";
   
   CordovaGeolocation() {
     _initJSFunctions();

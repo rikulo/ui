@@ -10,19 +10,19 @@ class LayoutAmountType {
 
   /** Represents none.
    */
-  static final LayoutAmountType NONE = const LayoutAmountType("none");
+  static const LayoutAmountType NONE = const LayoutAmountType("none");
   /** Represents fixed.
    */
-  static final LayoutAmountType FIXED = const LayoutAmountType("fixed");
+  static const LayoutAmountType FIXED = const LayoutAmountType("fixed");
   /** Represents flex.
    */
-  static final LayoutAmountType FLEX = const LayoutAmountType("flex");
+  static const LayoutAmountType FLEX = const LayoutAmountType("flex");
   /** Represents ratio.
    */
-  static final LayoutAmountType RATIO = const LayoutAmountType("ratio");
+  static const LayoutAmountType RATIO = const LayoutAmountType("ratio");
   /** Represents content.
    */
-  static final LayoutAmountType CONTENT = const LayoutAmountType("content");
+  static const LayoutAmountType CONTENT = const LayoutAmountType("content");
 
   const LayoutAmountType(String this._name);
 

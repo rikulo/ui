@@ -8,13 +8,13 @@
  */
 class GMap implements JSAgent {
   //private JavaScript function
-  static final String _NEW_MAP = "gmaps.0";
-  static final String _GET_MAP_TYPE_ID = "gmaps.1";
-  static final String _SET_MAP_TYPE_ID = "gmaps.2";
-  static final String _GET_CENTER = "gmaps.3";
-  static final String _SET_CENTER = "gmaps.4";
-  static final String _RESIZE = "gmaps.5";
-  static final String _SET_OPTIONS = "gmaps.6";
+  static const String _NEW_MAP = "gmaps.0";
+  static const String _GET_MAP_TYPE_ID = "gmaps.1";
+  static const String _SET_MAP_TYPE_ID = "gmaps.2";
+  static const String _GET_CENTER = "gmaps.3";
+  static const String _SET_CENTER = "gmaps.4";
+  static const String _RESIZE = "gmaps.5";
+  static const String _SET_OPTIONS = "gmaps.6";
 
   static LoadableModule _mapsModule;
   

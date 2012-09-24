@@ -3,6 +3,6 @@
 // Author: henrichen
 
 interface EncodingType {
-  static final int JPEG = 0;
-  static final int PNG = 1;
+  static const int JPEG = 0;
+  static const int PNG = 1;
 }

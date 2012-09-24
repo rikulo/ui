@@ -8,7 +8,7 @@
  */
 class MapTypeId implements JSAgent {
   //private JS functions
-  static final String _GET_BUILT_IN_MAP_TYPE_ID = "maptyp.0";
+  static const String _GET_BUILT_IN_MAP_TYPE_ID = "maptyp.0";
   
   //control varables
   static Map _builtInTypeIds;

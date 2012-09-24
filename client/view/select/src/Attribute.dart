@@ -11,9 +11,8 @@ class Attribute {
   
   Attribute(this.name, this.op, this.value, this.quoted);
   
-  static final int OP_EQUALS = 0;
-  static final int OP_BEGINS_WITH = 1;
-  static final int OP_ENDS_WITH = 2;
-  static final int OP_CONTAINS = 3;
-  
+  static const int OP_EQUALS = 0;
+  static const int OP_BEGINS_WITH = 1;
+  static const int OP_ENDS_WITH = 2;
+  static const int OP_CONTAINS = 3;
 }

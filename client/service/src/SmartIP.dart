@@ -7,8 +7,8 @@
  * Retrieve Geo IP information per the provided host or IP address.
  */
 class SmartIP {
-  static final String _BASE_URI = "http://smart-ip.net/geoip-json?";
-  static final String _GEO_IP = "geoip";
+  static const String _BASE_URI = "http://smart-ip.net/geoip-json?";
+  static const String _GEO_IP = "geoip";
   static int _fnnum = 0;
 
   /** Load geo information per the specified [host]/IP in a Map via callback function [onSuccess].

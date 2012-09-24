@@ -6,7 +6,7 @@
  * A Cordova MediaFile implementation.
  */
 class CordovaMediaFile implements MediaFile, JSAgent {
-  static final String _GET_FORMAT_DATA = "mf.1";
+  static const String _GET_FORMAT_DATA = "mf.1";
   
   String get name => JSUtil.getJSValue(_jsFile, "name");
   String get fullPath => JSUtil.getJSValue(_jsFile, "fullPath");

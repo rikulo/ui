@@ -222,7 +222,7 @@ class _ScrollbarControl implements ScrollbarControl {
    * bar border: 1px
    * bar margin: 2px
    */
-  static final _mgs = 2, _bds = 1, _ins = 4;
+  static const _mgs = 2, _bds = 1, _ins = 4;
   
   void init(bool vertical) {
     if (vertical) {

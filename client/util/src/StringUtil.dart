@@ -21,7 +21,6 @@ class StringUtil {
    * If non-positive, it is ignored (i.e., any number is OK).
    */
   static String toHexString(num value, [int digits=0]) {
-    _init();
     final List<int> codes = new List();
     int val = value.toInt();
     if (val < 0) val = (0xffffffff + val) + 1;
@@ -50,8 +49,6 @@ class StringUtil {
    */
   static bool isChar(String cc, [bool digit=false, bool upper=false, bool lower=false,
   bool whitespace=false, String match=null]) {
-    _init();
-
     int v = cc.isEmpty() ? 0: cc.charCodeAt(0);
     return (digit && v >= _CC_0 && v <= _CC_9)
     || (upper && v >= _CC_A && v <= _CC_Z)
@@ -59,19 +56,10 @@ class StringUtil {
     || (whitespace && (cc == ' ' || cc == '\t' || cc == '\n' || cc == '\r'))
     || (match != null && match.indexOf(cc) >= 0);
   }
-  static void _init() {
-    //TODO: remove them if Dart supports non-constant final
-    if (_CC_0 == null) {
-      _CC_0 = '0'.charCodeAt(0); _CC_9 = _CC_0 + 9;
-      _CC_A = 'A'.charCodeAt(0); _CC_Z = _CC_A + 25;
-      _CC_a = 'a'.charCodeAt(0); _CC_z = _CC_a + 25;
-    }
-  }
-  /** TODO: use intializer below when Dart supports non-constant final
+  //** TODO: use intializer below when Dart supports non-constant final
   static final int _CC_0 = '0'.charCodeAt(0), _CC_9 = _CC_0 + 9,
     _CC_A = 'A'.charCodeAt(0), _CC_Z = _CC_A + 25,
-    _CC_a = 'a'.charCodeAt(0), _CC_z = _CC_a + 25;*/
-  static int _CC_0, _CC_9, _CC_A, _CC_Z, _CC_a, _CC_z;
+    _CC_a = 'a'.charCodeAt(0), _CC_z = _CC_a + 25;
 
   /** Encodes an integer to a string consisting of alpanumeric characters
    * and underscore. With a prefix, it can be used as an identifier.

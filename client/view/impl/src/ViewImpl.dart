@@ -61,7 +61,7 @@ class ViewConfig {
     if (appid > 0)
       uuidPrefix = "${StringUtil.encodeId(appid, 'v')}_";
   }
-  static final String _PREFIX_COUNT = "data-rikuloPrefixCount";
+  static const String _PREFIX_COUNT = "data-rikuloPrefixCount";
 }
 ViewConfig viewConfig;
 

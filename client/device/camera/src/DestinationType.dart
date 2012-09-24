@@ -4,8 +4,8 @@
 
 interface DestinationType {
   /** Returns image as base64 encoded string */
-  static final int DATA_URL = 0;
+  static const int DATA_URL = 0;
   /** Returns image as file URI */
-  static final int FILE_URI = 1;
+  static const int FILE_URI = 1;
 }
 

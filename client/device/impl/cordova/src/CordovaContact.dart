@@ -6,9 +6,9 @@
  * A Cordova Contact implementation.
  */
 class CordovaContact implements Contact, JSAgent {
-  static final String _CLONE = "cont.1";
-  static final String _REMOVE = "cont.2";
-  static final String _SAVE = "cont.3";
+  static const String _CLONE = "cont.1";
+  static const String _REMOVE = "cont.2";
+  static const String _SAVE = "cont.3";
   
   String get id => JSUtil.getJSValue(_jsContact, "id"); //global unique identifier
   String get displayName => JSUtil.getJSValue(_jsContact, "displayName"); //display name of this Contact

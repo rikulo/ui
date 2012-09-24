@@ -8,9 +8,9 @@
 
 class GFeed {
   //private JavaScript function
-  static final String _LOAD = "gfeed.1";
-  static final String _NUM_ENTRIES = "gfeed.2";
-  static final String _NEW_FEED = "gfeed.3";
+  static const String _LOAD = "gfeed.1";
+  static const String _NUM_ENTRIES = "gfeed.2";
+  static const String _NEW_FEED = "gfeed.3";
 
   static LoadableModule _feedModule;
   

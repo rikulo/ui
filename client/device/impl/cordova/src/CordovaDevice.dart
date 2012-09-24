@@ -6,13 +6,13 @@
  * A Cordova device implementation.
  */
 class CordovaDevice implements Device {
-  static final String _NAME = "devi.1";
-  static final String _CORDOVA = "devi.2";
-  static final String _PLATFORM = "devi.3";
-  static final String _VERSION = "devi.4";
-  static final String _UUID = "devi.5";
-  static final String _ADD_EVENT_LISTENER = "devi.6";
-  static final String _INIT_CORDOVA = "devi.7";
+  static const String _NAME = "devi.1";
+  static const String _CORDOVA = "devi.2";
+  static const String _PLATFORM = "devi.3";
+  static const String _VERSION = "devi.4";
+  static const String _UUID = "devi.5";
+  static const String _ADD_EVENT_LISTENER = "devi.6";
+  static const String _INIT_CORDOVA = "devi.7";
   
   String get name => JSUtil.jsCall(_NAME); //name of this device
 //  String get cordovaVersion => jsutil.jsCall(_CORDOVA); //version of Cordova running on the device

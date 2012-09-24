@@ -75,7 +75,7 @@ class CSS {
     }
     return 0;
   }
-  static final RegExp _reNum = const RegExp(@"([-]?[0-9]+)");
+  static const RegExp _reNum = const RegExp(@"([-]?[0-9]+)");
 
   static void cpTextStyles(CSSStyleDeclaration dst, CSSStyleDeclaration src) {
     for (int j = _txtStyles.length; --j >= 0;) {
@@ -84,7 +84,7 @@ class CSS {
       dst.setProperty(nm, val != null ? val: "");
     }
   }
-  static final _txtStyles = const [
+  static const _txtStyles = const [
       'font-family', 'font-size', 'font-weight', 'font-style',
       'letter-spacing', 'line-height', 'text-align', 'text-decoration',
       'text-indent', 'text-shadow', 'text-transform', 'text-overflow',

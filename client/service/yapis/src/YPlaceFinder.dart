@@ -6,7 +6,7 @@
  * Bridge Dart to Yahoo PlaceFinder API; see http://developer.yahoo.com/geo/placefinder/ for details.
  */
 class YPlaceFinder {
-  static final String _BASE_URI = "http://where.yahooapis.com/geocode";
+  static const String _BASE_URI = "http://where.yahooapis.com/geocode";
   
   /** Load geo information per the specified [location] parameters in a Map via callback function [success]; see 
    * <http://developer.yahoo.com/geo/placefinder/guide/responses.html> for details.
