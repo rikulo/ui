@@ -12,7 +12,7 @@ class CSS {
    * [name] instead.
    */
   static final String prefix = browser.webkit ? "-webkit-":
-    browser.msie ? "-ms-": browser.firefox ? "-moz-": "";
+    browser.msie ? "-ms-": browser.firefox ? "-moz-": browser.opera ? "-o-": "";
 
   /** Converts a CSS value representing a pixel.
    * In other words, it converts a number to a string appended with "px".

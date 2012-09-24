@@ -257,10 +257,15 @@ class Activity {
         };
     }
   }
-  static final EventListener _onTouchStart =
-    (event) { //DOM event
-        broadcaster.sendEvent(new PopupEvent(event.target));
-    };
+  static EventListener _$onTouchStart;
+  static EventListener get _onTouchStart {
+    if (_$onTouchStart == null)
+      _$onTouchStart = (event) { //DOM event
+          broadcaster.sendEvent(new PopupEvent(event.target));
+      };
+    return _$onTouchStart;
+  }
+  //TODO: use const if Dart considers closure as constants (also check Issue 3905)
 
   /** Updates the browser's size. It is called when the browser's size
    * is changed (including device's orientation is changed).

@@ -130,7 +130,7 @@ class ViewUtil {
     }
     return uuid;
   }
-  static final Map<String, View> _views = {};
+  static final Map<String, View> _views = new Map();
 
   /** Redraws the invalidated views queued by [View.invalidate].
    *

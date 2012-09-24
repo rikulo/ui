@@ -14,6 +14,7 @@ class Browser {
     _rchrome = const RegExp(@"(chrome)[ /]([\w.]+)"),
     _rmsie = const RegExp(@"(msie) ([\w.]+)"),
     _rmozilla = const RegExp(@"(mozilla)(?:.*? rv:([\w.]+))?"),
+    _ropera = const RegExp(@"(opera)(?:.*version)?[ /]([\w.]+)"),
     _rios = const RegExp(@"os[ /]([\w_]+) like mac os"),
     _randroid = const RegExp(@"android[ /]([\w.]+)");
 
@@ -32,6 +33,8 @@ class Browser {
   bool firefox = false;
   /** Whether it is WebKit-based. */
   bool webkit = false;
+  /** Whether it is Opera. */
+  bool opera = false;
 
   /** Whether it is running on iOS. */
   bool ios = false;
@@ -116,8 +119,10 @@ class Browser {
     } else if (bm(_rmsie)) {
       msie = true;
       touch = mobile = ua.indexOf("IEMobile") >= 0;
+    } else if (bm(_ropera)) {
+      opera = true;
     } else if (ua.indexOf("compatible") < 0 && bm(_rmozilla)) {
-      name = "firefox";
+      name = "firefox"; //rename it
       firefox = true;
     } else {
       name = "unknown";
