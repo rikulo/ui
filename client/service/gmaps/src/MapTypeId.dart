@@ -14,30 +14,14 @@ class MapTypeId implements JSAgent {
   static Map _builtInTypeIds;
   
   //built-in map types
-  static MapTypeId _roadmap;
-  static MapTypeId get ROADMAP { //displays the default road map view
-    if (_roadmap == null)
-      _roadmap = new MapTypeId("ROADMAP");
-    return _roadmap;
-  }
-  static MapTypeId _satellite;
-  static MapTypeId get SATELLITE { // displays Google Earth satellite images
-    if (_satellite == null)
-      _satellite = new MapTypeId("SATELLITE");
-    return _satellite;
-  }
-  static MapTypeId _hybrid;
-  static MapTypeId get HYBRID {  // displays a mixture of normal and satellite views
-    if (_hybrid == null)
-      _hybrid = new MapTypeId("HYBRID");
-    return _hybrid;
-  }
-  static MapTypeId _terrain; 
-  static MapTypeId get TERRAIN { // displays a physical map based on terrain information.
-    if (_terrain == null)
-      _terrain = new MapTypeId("TERRAIN");
-    return _terrain;
-  }
+  static final MapTypeId ROADMAP = new MapTypeId("ROADMAP");
+    //displays the default road map view
+  static final MapTypeId SATELLITE = new MapTypeId("SATELLITE");
+    // displays Google Earth satellite images
+  static final MapTypeId HYBRID = new MapTypeId("HYBRID");
+    // displays a mixture of normal and satellite views
+  static final MapTypeId TERRAIN = new MapTypeId("TERRAIN");
+    // displays a physical map based on terrain information.
   
   String _key;
   var _jsMapTypeId;

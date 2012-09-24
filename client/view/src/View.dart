@@ -603,7 +603,7 @@ class View implements Hashable {
     }
 
     if (_mntCnt == 0) {
-      if (_afters != null && !_afters.isEmpty()) {
+      if (!_afters.isEmpty()) {
         final List<List> afters = new List.from(_afters); //to avoid one of callbacks mounts again
         _afters.clear();
         for (final List after in afters) {
@@ -628,11 +628,9 @@ class View implements Hashable {
   void afterMount_(AfterMount after) {
     if (after == null)
       throw const UIException("after required");
-    if (_afters == null)
-      _afters = new List();
     _afters.add([this, after]);
   }
-  static List<List> _afters;
+  static final List<List> _afters = [];
   static int _mntCnt = 0;
   
   /** Unbinds the view.

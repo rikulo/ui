@@ -167,12 +167,8 @@ class AlbumDemo extends Activity {
     }, easing: (num x) => x * x);
   }
   
-  static int rand() {
-    if (_rand == null)
-      _rand = new Random();
-	return _rand.nextInt(7) - 3;
-  }
-  static Random _rand;
+  static int rand() => _rand.nextInt(7) - 3;
+  static final Random _rand = new Random();
   
   void updateArrow() {
     arrowL.visible = _index != 0;

@@ -8,7 +8,6 @@
 #import('../../client/view/view.dart');
 #import('../../client/effect/effect.dart');
 
-
 CanvasRenderingContext2D ctx2d;
 Canvas canvas;
 

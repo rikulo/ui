@@ -39,12 +39,8 @@ class BuzzEffect extends EasingMotion {
     
   }, period: period, autorun: autorun);
   
-  static Random _rand;
-  static num nextDouble(num max) {
-    if (_rand == null)
-      _rand = new Random();
-    return (_rand.nextDouble() * 2 - 1) * max;
-  }
+  static final Random _rand = new Random();
+  static num nextDouble(num max) => (_rand.nextDouble() * 2 - 1) * max;
   
   static Transformation _randomTransform(num move, num angle) {
     final num mx = nextDouble(move), my = nextDouble(move);

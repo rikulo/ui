@@ -43,12 +43,9 @@ class Food {
       y = suggestedY.toInt();
     }
   }
-  static num _random() {
-    if (_rand == null)
-      _rand = new Random();
-    return _rand.nextDouble();
-  }
-  static Random _rand;
+  static num _random()
+  => _rand.nextDouble();
+  static final Random _rand = new Random();
   
   void draw(CanvasRenderingContext2D context) {
     double smallSquareWidthAndHeight = SnakeEnvironment.adjustment / 3;

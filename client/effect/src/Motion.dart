@@ -17,13 +17,7 @@ typedef bool MotionMove(MotionState state);
  */
 typedef void MotionEnd(MotionState state);
 
-Animator _animator;
-
-Animator _getAnimator() {
-  if (_animator == null)
-    _animator = new Animator();
-  return _animator;
-}
+final Animator _animator = new Animator();
 
 /** The state in a [Motion].
  */
@@ -133,7 +127,7 @@ class Motion {
   /**
    * The Animator associated with the motion.
    */
-  Animator get animator => _getAnimator();
+  Animator get animator => _animator;
   
   /** Retrieve the current [MotionState]. [null] if not running.
    */
@@ -182,7 +176,7 @@ class Motion {
         _stateFlag = _MOTION_STATE_RUNNING; // resume
         break;
       case _MOTION_STATE_INIT:
-        _getAnimator().add(this._task);
+        animator.add(this._task);
     }
   }
   
@@ -199,7 +193,7 @@ class Motion {
    * Stop the motion and reset the internal states.
    */
   void stop() {
-    _getAnimator().remove(this._task);
+    animator.remove(this._task);
     _state = null;
     _stateFlag = _MOTION_STATE_INIT;
   }
@@ -213,5 +207,4 @@ class Motion {
    * Return true if the motion is at paused state.
    */
   bool isPaused() => _stateFlag == _MOTION_STATE_PAUSED;
-  
 }

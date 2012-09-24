@@ -19,13 +19,10 @@ interface Broadcaster {
   void postEvent(ViewEvent event, [String type]);
 }
 /** The broadcaster used to broadcast events.
+ *
+ * You can assign your own implementation if you'd like.
  */
-Broadcaster get broadcaster {
-  if (_broadcaster == null)
-    _broadcaster = new _Broadcaster();
-  return _broadcaster;
-}
-Broadcaster _broadcaster;
+Broadcaster broadcaster = new _Broadcaster();
 
 /**
  * A map of event listeners for handling the broadcasted events.

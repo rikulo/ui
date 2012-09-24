@@ -257,11 +257,10 @@ class Activity {
         };
     }
   }
-  static EventListener get _onTouchStart {
-    return (event) { //DOM event
+  static final EventListener _onTouchStart =
+    (event) { //DOM event
         broadcaster.sendEvent(new PopupEvent(event.target));
-      };
-  }
+    };
 
   /** Updates the browser's size. It is called when the browser's size
    * is changed (including device's orientation is changed).
@@ -448,6 +447,4 @@ class Mask {
     List<Mask> list = activity._masks;
     list.removeRange(list.indexOf(this), 1);
   }
-  
 }
-

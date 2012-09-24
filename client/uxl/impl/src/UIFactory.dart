@@ -92,10 +92,8 @@ class DefaultUIFactory implements UIFactory {
   }
 }
 
-//TODO: make it a read-writeable field when Dart allows non-comple-time constant
-UIFactory get uiFactory {
-  if (_uiFactory == null)
-    _uiFactory = new UIFactory();
-  return _uiFactory;
-}
-UIFactory _uiFactory;
+/** The UI factory.
+ *
+ * You can assign your own implementation if you'd like.
+ */
+UIFactory uiFactory = new UIFactory();

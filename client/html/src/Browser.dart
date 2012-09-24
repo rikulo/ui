@@ -104,7 +104,6 @@ class Browser {
     
     if (bm(_rwebkit)) {
       webkit = true;
-      CSS.prefix = "-webkit-";
       webkitVersion = version;
 
       if (bm(_rchrome)) {
@@ -115,15 +114,12 @@ class Browser {
 
       }
     } else if (bm(_rmsie)) {
-      CSS.prefix = "-ms-";
       msie = true;
       touch = mobile = ua.indexOf("IEMobile") >= 0;
     } else if (ua.indexOf("compatible") < 0 && bm(_rmozilla)) {
-      CSS.prefix = "-moz-";
       name = "firefox";
       firefox = true;
     } else {
-      CSS.prefix = "";
       name = "unknown";
       version = 1.0;
     }
@@ -147,6 +143,6 @@ class Browser {
   }
 }
 
-/** The current browser.
+/** The browser information.
  */
-Browser browser;
+final Browser browser = new Browser();
