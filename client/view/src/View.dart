@@ -62,7 +62,7 @@ class View implements Hashable {
   Map<String, Annotation> _annos;
 
   //the classes; created on demand
-  Set<String> _classes;
+  CSSClassSet _classes;
   //the CSS style; created on demand
   CSSStyleDeclaration _style;
   Element _node;
@@ -1054,7 +1054,7 @@ class View implements Hashable {
 
   /** Returns the style classes.
    */
-  Set<String> get classes => _classes;
+  CSSClassSet get classes => _classes;
 
   /** Outputs all HTML attributes used for the DOM element of this view
    * to the given output.

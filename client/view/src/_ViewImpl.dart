@@ -340,7 +340,7 @@ class _EventListenerInfo {
 
 /** The classes stored in a view.
  */
-class _ClassSet extends HashSetImplementation<String> {
+class _ClassSet extends HashSetImplementation<String> implements CSSClassSet {
   final View view;
 
   _ClassSet(View this.view);
@@ -361,6 +361,19 @@ class _ClassSet extends HashSetImplementation<String> {
     if (view.inDocument)
       view.node.classes.clear();
   }
+  bool toggle(String token) {
+    bool result = false;
+    if (super.contains(token)) {
+      super.remove(token);
+    } else {
+      super.add(token);
+      result = true;
+    }
+    if (view.inDocument)
+      view.node.classes.toggle(token);
+    return result;
+  }
+  bool get isFrozen => false;
 }
 
 /** A virtual ID space.
