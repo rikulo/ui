@@ -2,11 +2,16 @@
 //History: Fri, Mar 09, 2012  7:47:30 PM
 // Author: tomyeh
 
-/** An interface to handle visual effect of switching main view from [oldView]
+/** A callback to handle visual effect of switching main view from [oldView]
  * to [newView]. It is usually implemented by determining a [Motion]. At the 
  * end of the effect, the callback [end] has to be invoked.
  */
 typedef void ViewSwitchEffect(View oldView, View newView, void end());
+
+/** A callback to handle visual effect of creating and removing [dialog].
+ * At the end of the effect, the callback [end] has to be invoked.
+ */
+typedef void DialogEffect(View dialog, Element mask, void end());
 
 /**
  * An activity is a UI that the user can interact with.
@@ -69,7 +74,7 @@ class Activity {
   }
   /** Sets the main view with an effect.
    */
-  void setMainView(View main, [ViewSwitchEffect efactory]) {
+  void setMainView(View main, [ViewSwitchEffect effect]) {
     if (main == null)
       throw const UIException("mainView can't be null");
     final View prevroot = _mainView;
@@ -85,12 +90,12 @@ class Activity {
       }
 
       if (prevroot.inDocument) {
-        Mask mask = efactory != null ? new Mask() : null;
+        Mask mask = effect != null ? new Mask() : null;
         main.addToDocument(before: prevroot.node,
-          shallLayout: !_creating || efactory != null);
+          shallLayout: !_creating || effect != null);
           //no need to layout if no effect and in onCreate_
-        if (efactory != null) {
-          efactory(prevroot, main, () {
+        if (effect != null) {
+          effect(prevroot, main, () {
             prevroot.removeFromDocument();
             mask.destroy();
           });
@@ -123,7 +128,7 @@ class Activity {
    * `null` to [maskClass]. For example, if the dialog occupies
    * the whole screen, you don't have to generate the mask.
    */
-  void addDialog(View dialog, [ViewSwitchEffect effect, String maskClass="v-mask"]) {
+  void addDialog(View dialog, [DialogEffect effect, String maskClass="v-mask"]) {
     if (dialog.inDocument)
       throw new UIException("Can't be in document: ${dialog}");
 
@@ -137,10 +142,22 @@ class Activity {
     _mainView.node.parent.nodes.add(parent);
     dlgInfo.createMask(parent);
     dlgInfo.dialog.addToDocument(parent);
-    //TODO: effect
-
+    
+    if (effect != null) {
+      effect(dialog, dlgInfo.mask, () {
+        _addDlgEnd(dialog);
+      });
+    } else {
+      new DOMQuery(dlgInfo.mask).show();
+      _addDlgEnd(dialog);
+    }
+    
+  }
+  
+  static void _addDlgEnd(View dialog) {
     broadcaster.sendEvent(new PopupEvent(dialog));
   }
+  
   /** Removes the topmost dialog or the given dialog.
    * If [dialog] is not specified, the topmost one is assumed.
    * If specified, [effect] controls how to make the given dialog invisible,
@@ -148,7 +165,7 @@ class Activity {
    *
    * It returns false if the given dialog is not found.
    */
-  bool removeDialog([View dialog, ViewSwitchEffect effect]) {
+  bool removeDialog([View dialog, DialogEffect effect]) {
     _DialogInfo dlgInfo;
     if (dialog == null) {
       if (_dlgInfos.isEmpty())
@@ -169,15 +186,25 @@ class Activity {
         }
       }
     }
-
+    
+    if (effect != null) {
+      effect(dlgInfo.dialog, dlgInfo.mask, () {
+        _removeDlgEnd(dlgInfo);
+      });
+    } else
+      _removeDlgEnd(dlgInfo);
+    
+    return true;
+  }
+  
+  static void _removeDlgEnd(_DialogInfo dlgInfo) {
     final Element parent = dlgInfo.dialog.node.parent;
     dlgInfo.dialog.removeFromDocument();
     dlgInfo.removeMask();
     parent.remove();
     broadcaster.sendEvent(new PopupEvent(null));
-    return true;
   }
-
+  
   /** Returns the DOM element that contains this activity.
    * It is null (by default).
    *
@@ -357,9 +384,12 @@ Activity activity;
 class _DialogInfo {
   final View dialog;
   final String maskClass;
-  Element _maskNode;
-
+  Element _maskNode = null;
+  
   _DialogInfo(View this.dialog, String this.maskClass);
+  
+  Element get mask => _maskNode;
+  
   void createMask(Element parent) {
     if (maskClass != null) {
       final Size sz = browser.size;
@@ -368,21 +398,24 @@ class _DialogInfo {
       if (activity.container != null) {
         _maskNode.style.position = "absolute";
       }
-
+      new DOMQuery(_maskNode).hide(); // hide before appended to DOM for dialog effect
       parent.$dom_appendChild(_maskNode);
     }
   }
+  
   void resizeMask() {
     if (_maskNode != null) {
       _maskNode.style.width = CSS.px(browser.size.width);
       _maskNode.style.height = CSS.px(browser.size.height);
     }
   }
+  
   void removeMask() {
     if (_maskNode != null) {
       _maskNode.remove();
     }
   }
+  
 }
 
 /** An utility class for masking a certain area in browser window.

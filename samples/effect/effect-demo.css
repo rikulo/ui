@@ -23,3 +23,17 @@
 	font-weight: bold;
 	font-size: 14px;
 }
+
+.dialog-box {
+	overflow: hidden;
+	z-index: 15;
+	border-radius: 15px;
+	border: 5px solid #CCCCCC;
+	color: #CCCCCC;
+	background-color: #111111;
+}
+
+.dialog-button {
+	font-weight: bold;
+	font-size: 18px;
+}
