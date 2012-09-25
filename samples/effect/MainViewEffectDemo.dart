@@ -168,17 +168,15 @@ class MainViewEffectDemo extends Activity {
   static MotionAction randFly(Element element, Offset range) {
     final int initX = CSS.intOf(element.style.left);
     final int initY = CSS.intOf(element.style.top);
-    final num velX = (rand().nextDouble() * 2 - 1) * range.x;
-    final num velY = (rand().nextDouble() * 2 - 1) * range.y;
+    final num velX = (rand.nextDouble() * 2 - 1) * range.x;
+    final num velY = (rand.nextDouble() * 2 - 1) * range.y;
     return (num x, MotionState state) {
       element.style.left = CSS.px(initX + (velX * x).toInt());
       element.style.top =  CSS.px(initY + (velY * x).toInt());
     };
   }
-  
-  static Random _rand;
-  static Random rand() => _rand == null ? (_rand = new Random()) : _rand;
-  
+
+  static final Random rand = new Random();  
 }
 
 void main() {

@@ -199,16 +199,17 @@ class TextBox extends View implements Input<String> {
   }
   //@Override
   DOMEventDispatcher getDOMEventDispatcher_(String type)
-  => type == "change" ? _getChangeDispatcher(): super.getDOMEventDispatcher_(type);
-  static DOMEventDispatcher _getChangeDispatcher() {
-    if (_changeDispatcher == null)
-      _changeDispatcher = (View target) => (event) {
+  => type == "change" ? _changeDispatcher: super.getDOMEventDispatcher_(type);
+  static DOMEventDispatcher _$changeDispatcher;
+  static DOMEventDispatcher get _changeDispatcher {
+    if (_$changeDispatcher == null)
+      _$changeDispatcher = (target) => (event) {
         final TextBox t = target;
         t.sendEvent(new ChangeEvent<String>(t.value));
       };
-    return _changeDispatcher;
+    return _$changeDispatcher;
   }
-  static DOMEventDispatcher _changeDispatcher;
+  //TODO: use const if Dart considers closure as constants (also check Issue 3905)
 
   //@Override
   /** Returns the HTML tag's name representing this view.

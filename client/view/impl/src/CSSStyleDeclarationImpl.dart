@@ -75,8 +75,7 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
   String item(int index) => _css.item(index); //Not sure what to return by default
 
 
-  // TODO(jacobr): generate this list of properties using the existing script.
-    /** Gets the value of "animation" */
+  /** Gets the value of "animation" */
   String get animation => getPropertyValue('animation');
   /** Sets the value of "animation" */
   void set animation(var value) {
@@ -2225,31 +2224,16 @@ class CSSStyleDeclarationImpl implements CSSStyleDeclaration {
     setProperty('zoom', value, '');
   }
 
-  static String get _browserPrefix {
-    if (_cacheBrowserPrefix == null)
-      _cacheBrowserPrefix = browser.webkit ? '-webkit-':
-        browser.msie ? '-ms-': browser.firefox ? '-moz-': '';
-    return _cacheBrowserPrefix;
-  }
-  static String _cacheBrowserPrefix;
-
   //Checks if the property's name is allowed to access directly
   static void _check(String propertyName) {
-    if (_illnms == null) {
-      _illnms = new Set();
-      for (final String nm in const [
-        "left", "top", "right", "bottom", "width", "height"]) {
-        _illnms.add(nm);
-      }
-    }
-    
     if (_illnms.contains(propertyName))
       throw new UIException("$propertyName not allowed. Please use View's API instead, such as left and width.");
     if (propertyName.startsWith("margin"))
       throw const UIException("You can't change margin");
   }
   //Illegal names (that are not allowed to access directly
-  static Set<String> _illnms;
+  static final Set<String> _illnms = new Set.from(
+    ["left", "top", "right", "bottom", "width", "height"]);
 
   //Converts null to an empty string
   String _unwrap(String value) => value != null ? value: "";

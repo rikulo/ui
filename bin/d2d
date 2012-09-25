@@ -33,7 +33,7 @@ if [ -d $dstdir ] ; then
 fi
 mkdir -p $dstdir
 
-dartdoc=$SDK/pkg/dartdoc/dartdoc.dart
+dartdoc=$SDK/pkg/dartdoc/bin/dartdoc.dart
 if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
   dartdoc=$(cygpath -wa $dartdoc)
 fi

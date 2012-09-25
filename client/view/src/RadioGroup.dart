@@ -131,7 +131,7 @@ class RadioGroup<T> extends View {
 
     final StringBuffer out = new StringBuffer();
     final HTMLRenderer renderer =
-      _renderer != null ? _renderer: _defRenderer();
+      _renderer != null ? _renderer: _defRenderer;
     final Selection<T> selmodel = _model as Selection;
     final bool multiple = selmodel.multiple;
     final String type = multiple ? "checkbox": "radio";
@@ -168,12 +168,9 @@ class RadioGroup<T> extends View {
     node.innerHTML = out.toString();
     _initRadios();
   }
-  static HTMLRenderer _defRenderer() {
-    if (_$defRenderer == null)
-      _$defRenderer = (RenderContext context) => new HTMLFragment(context.data);
-    return _$defRenderer;
-  }
-  static HTMLRenderer _$defRenderer;
+  static final HTMLRenderer _defRenderer =
+    (RenderContext context) => new HTMLFragment(context.data);
+    //TODO: use const if Dart considered closure as const
   void _onCheck(int index, bool checked) {
     final Selection<T> selmodel = _model as Selection;
     _modelSelUpdating = true;

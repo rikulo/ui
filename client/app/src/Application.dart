@@ -31,16 +31,7 @@ class Application {
 
   Application([String name=""]) {
     this.name = name;
-    _app = this;
-
     this.inSimulator = document.query("#v-simulator") != null;
-
-    if (browser == null)
-      browser = new Browser();
-    if (viewConfig == null)
-      viewConfig = new ViewConfig();
-    if (layoutManager == null)
-      layoutManager = new LayoutManager();
   }
 
   /** Adds a ready callback which will be invoked to start the activity.
@@ -106,9 +97,4 @@ class Application {
  * Notice that you must initialize your custom application, before instantiating
  * your first activity.
  */
-Application get application { //initialized by Activity
-  if (_app == null)
-    _app = new Application();
-  return _app;
-}
-Application _app;
+Application application = new Application();

@@ -10,10 +10,9 @@ class CSS {
    * For example, it is `-webkit-` for a Webkit-based browser.
    * If you're not sure whether to prefix a CSS property, please use
    * [name] instead.
-   *
-   * Notice that it is intialized after [Browser] is ready.
    */
-  static String prefix;
+  static final String prefix = browser.webkit ? "-webkit-":
+    browser.msie ? "-ms-": browser.firefox ? "-moz-": browser.opera ? "-o-": "";
 
   /** Converts a CSS value representing a pixel.
    * In other words, it converts a number to a string appended with "px".
@@ -98,15 +97,7 @@ class CSS {
    */
   static String name(String propertyName) {
     if (_nsnms == null) {
-      _nsnms = new Set();
-      //TODO: check other attributes for non-standard properties (like we did for box-sizing)
-      //CONSIDER: auto-generate this file with a tool
-      if ((browser.ios && browser.iosVersion < 5)
-      || (browser.android && browser.androidVersion < 2.4)
-      || browser.firefox)
-        _nsnms.add('box-sizing');
-
-      for (final String nm in const [
+      _nsnms = new Set.from([
         'animation', 'animation-delay', 'animation-direction',
         'animation-duration', 'animation-fill-mode',
         'animation-iteration-count', 'animation-name',
@@ -178,9 +169,14 @@ class CSS {
         'transition', 'transition-delay', 'transition-duration',
         'transition-property', 'transition-timing-function',
         'user-drag', 'user-modify', 'user-select',
-        'wrap-shape', 'writing-mode']) {
-        _nsnms.add(nm);
-      }
+        'wrap-shape', 'writing-mode']);
+
+      //TODO: check other attributes for non-standard properties (like we did for box-sizing)
+      //CONSIDER: auto-generate this file with a tool
+      if ((browser.ios && browser.iosVersion < 5)
+      || (browser.android && browser.androidVersion < 2.4)
+      || browser.firefox)
+        _nsnms.add('box-sizing');
     }
     return _nsnms.contains(propertyName) ? "$prefix$propertyName": propertyName;
   }

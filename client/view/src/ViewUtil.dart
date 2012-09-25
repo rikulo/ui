@@ -130,8 +130,7 @@ class ViewUtil {
     }
     return uuid;
   }
-  static Map<String, View> _$views;
-  static Map<String, View> get _views => _$views != null ? _$views: (_$views = {});
+  static final Map<String, View> _views = new Map();
 
   /** Redraws the invalidated views queued by [View.invalidate].
    *

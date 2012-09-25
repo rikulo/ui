@@ -165,5 +165,7 @@ class LayoutManager extends RunOnceViewManager {
 }
 
 /** The layout manager.
+ *
+ * You can assign your own implementation if you'd like.
  */
-LayoutManager layoutManager;
+LayoutManager layoutManager = new LayoutManager();

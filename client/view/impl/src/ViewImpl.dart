@@ -63,7 +63,7 @@ class ViewConfig {
   }
   static const String _PREFIX_COUNT = "data-rikuloPrefixCount";
 }
-ViewConfig viewConfig;
+final ViewConfig viewConfig = new ViewConfig();
 
 /** Used with [View]'s `domAttrs_` to control which attributes to generate.
  */

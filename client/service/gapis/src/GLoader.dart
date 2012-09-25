@@ -23,7 +23,7 @@ class GLoader {
   static const String PICKER = "picker";
   
   static LoadableModule _loaderModule;
-  static Map<String, double> _loc;
+  static final Map<String, double> _ipLatLng = JSUtil.toDartMap(JSUtil.jsCall(_IP_LOCATION));
 
   /** Load Google JavaScript API module; see <https://developers.google.com/loader/#GoogleLoad> for details.
    * + [name] the module name
@@ -47,12 +47,6 @@ class GLoader {
   static _initGLoader() {
     if (_loaderModule == null)
       _loaderModule = new LoadableModule(_loadModule);
-  }
-  
-  static Map get _ipLatLng {
-    if (_loc == null)
-      _loc = JSUtil.toDartMap(JSUtil.jsCall(_IP_LOCATION));
-    return _loc;
   }
   
   static void _loadModule(Function readyFn) {

@@ -284,11 +284,15 @@ class Activity {
         };
     }
   }
+  static EventListener _$onTouchStart;
   static EventListener get _onTouchStart {
-    return (event) { //DOM event
-        broadcaster.sendEvent(new PopupEvent(event.target));
+    if (_$onTouchStart == null)
+      _$onTouchStart = (event) { //DOM event
+          broadcaster.sendEvent(new PopupEvent(event.target));
       };
+    return _$onTouchStart;
   }
+  //TODO: use const if Dart considers closure as constants (also check Issue 3905)
 
   /** Updates the browser's size. It is called when the browser's size
    * is changed (including device's orientation is changed).
@@ -481,6 +485,4 @@ class Mask {
     List<Mask> list = activity._masks;
     list.removeRange(list.indexOf(this), 1);
   }
-  
 }
-

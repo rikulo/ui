@@ -166,13 +166,10 @@ class DropDownList<T> extends View {
       sendEvent(new ViewEvent("render"));
     }
   }
-  static StringRenderer _defRenderer() {
-    if (_$defRenderer == null)
-      _$defRenderer = (RenderContext context) 
-        => HTMLFragment.getHTML(context.data, false); //handles TreeNode/Map; don't encode
-    return _$defRenderer;
-  }
-  static StringRenderer _$defRenderer;
+  static final StringRenderer _defRenderer =
+    (RenderContext context) => HTMLFragment.getHTML(context.data, false);
+    //handles TreeNode/Map; don't encode
+    //TODO: use const if Dart considered closure as const
 
   //@Override
   void mount_() {
@@ -247,7 +244,7 @@ class DropDownList<T> extends View {
     final StringBuffer out = new StringBuffer();
     if (_model is ListModel) {
       final StringRenderer renderer =
-        _renderer != null ? _renderer: _defRenderer();
+        _renderer != null ? _renderer: _defRenderer;
       final ListModel<T> model = _model;
       final Selection<T> selmodel = _model as Selection;
       final bool multiple = selmodel.multiple;
@@ -267,7 +264,7 @@ class DropDownList<T> extends View {
       final TreeModel model = _model;
       if (model.root != null)
         _renderTree(out, model,
-          _renderer != null ? _renderer: _defRenderer(), model.root, -1);
+          _renderer != null ? _renderer: _defRenderer, model.root, -1);
     }
 
     //Update DOM tree
