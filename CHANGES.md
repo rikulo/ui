@@ -1,5 +1,9 @@
 #Rikulo Changes
 
+**September 25, 2012**
+
+* Convert project structure to pub standard
+
 **September 11, 2012**
 
 * Rename StringUtil.encodeXML/decodeXML to XMLUtil.encode/decode

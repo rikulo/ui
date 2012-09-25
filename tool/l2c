@@ -1,0 +1,42 @@
+#!/bin/bash
+# l2c
+#
+#	Purpose:
+#		Compile *.less to *.css
+#
+#Copyright (C) 2012 Potix Corporation. All Rights Reserved.
+#
+cssdir=$0
+cssdir=${cssdir%/*}
+if [ "$cssdir" = "." ] ; then
+  cssdir=".."
+elif [ "$cssdir" = "${cssdir%/*}" ] ; then
+  cssdir="."
+else
+  cssdir=${cssdir%/*}
+fi
+if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
+  cssdir=$(cygpath -u $cssdir)
+fi
+
+jarfl=$cssdir/tool/lib/lesscss-engine-1.3.0-cli.jar
+if [ ! -f $jarfl ] ; then
+	echo $jarfl not found
+	exit 1
+fi
+
+if [ ! -d $cssdir/lib/src/resource/css ] ; then
+	echo $cssdir/lib/src/resource/css not found
+fi
+for f in $cssdir/lib/src/resource/css/*.less; do
+	echo Compile $f
+	dstfl=${f%.less}.css
+	java -jar $jarfl $f ${dstfl}.tmp
+
+	echo "/* DO NOT EDIT" > $dstfl
+	echo " * Auto-generated" >> $dstfl #not to generate timestamp to avoid redundant commits
+	echo " * Copyright (C) 2012 Potix Corporation. All Rights Reserved." >> $dstfl
+	echo " */" >> $dstfl
+	cat ${dstfl}.tmp >> $dstfl
+	rm ${dstfl}.tmp
+done
