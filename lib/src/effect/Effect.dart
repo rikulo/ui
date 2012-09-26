@@ -79,15 +79,17 @@ class FadeInEffect extends ShowEffect {
   /** Create a fade-in effect on the [element].
    */
   FadeInEffect(Element element, [int period = 500, EasingFunction easing,
-  MotionStart start, MotionEnd end, bool autorun = true]) : 
-  super(element, createAction(element), 
+  num minOpacity = 0, num maxOpacity = 1, 
+  MotionStart start, MotionEnd end, bool autorun = true]) :
+  super(element, createAction(element, minOpacity, maxOpacity), 
   start: start, end: end, period: period, easing: easing, autorun: autorun);
   
   /** Create a MotionAction for fade-in effect on the [element].
    */
-  static MotionAction createAction(Element element) {
+  static MotionAction createAction(Element element, num min, num max) {
+    final num diff = max - min;
     return (num x, MotionState state) {
-      element.style.opacity = "$x";
+      element.style.opacity = "${min + diff * x}";
     };
   }
   
@@ -100,15 +102,17 @@ class FadeOutEffect extends HideEffect {
   /** Create a fade-out effect on the [element].
    */
   FadeOutEffect(Element element, [int period = 500, EasingFunction easing, 
+  num minOpacity = 0, num maxOpacity = 1, 
   MotionStart start, MotionEnd end, bool autorun = true]) : 
-  super(element, createAction(element), 
+  super(element, createAction(element, minOpacity, maxOpacity), 
   start: start, end: end, period: period, easing: easing, autorun: autorun);
   
   /** Create a MotionAction for fade-out effect on the [element].
    */
-  static MotionAction createAction(Element element) {
+  static MotionAction createAction(Element element, num min, num max) {
+    final num diff = max - min;
     return (num x, MotionState state) {
-      element.style.opacity = "${1-x}";
+      element.style.opacity = "${max - diff * x}";
     };
   }
   
