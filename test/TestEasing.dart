@@ -90,7 +90,7 @@ class TestEasing extends Activity {
         motions[i] = new EasingMotion(_action(cubes[i].node, centers[i]), 
         end: (MotionState state) {
           blue(cubes[i]);
-        }, period: 1000, repeat: repeats[i]);
+        }, period: 1000, repeat: repeats[i])..run();
       });
     }
   }

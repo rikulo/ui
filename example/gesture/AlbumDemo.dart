@@ -155,7 +155,7 @@ class AlbumDemo extends Activity {
         photo.left = pos.left;
         photo.top = pos.top;
         gesture.enable();
-      });
+      }).run();
       return;
     }
     final Offset origin = new Offset(-_index * frameSize, 0);
@@ -164,7 +164,7 @@ class AlbumDemo extends Activity {
       _index = index;
       updateArrow();
       gesture.enable();
-    }, easing: (num x) => x * x);
+    }, easing: (num x) => x * x).run();
   }
   
   static int rand() => _rand.nextInt(7) - 3;

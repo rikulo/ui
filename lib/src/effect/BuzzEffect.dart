@@ -22,7 +22,7 @@ class BuzzEffect extends EasingMotion {
    * + [end]: Called when the effect ends.
    */
   BuzzEffect(Element element, [int period = 500, num movement = 3, num rotation = 3, 
-  MotionStart start, MotionEnd end, bool autorun = true]) : 
+  MotionStart start, MotionEnd end]) : 
   this.element = element, 
   super((num x, MotionState state) {
     element.style.transform = CSS.transform(_randomTransform(movement, rotation));
@@ -37,7 +37,7 @@ class BuzzEffect extends EasingMotion {
     if (end != null)
       end(state);
     
-  }, period: period, autorun: autorun);
+  }, period: period);
   
   static final Random _rand = new Random();
   static num nextDouble(num max) => (_rand.nextDouble() * 2 - 1) * max;

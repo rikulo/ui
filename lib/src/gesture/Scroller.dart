@@ -334,7 +334,7 @@ class _Scroller implements Scroller {
       final Rectangle range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
-        _hor, _ver, onMove, onEnd, snap: snap);
+        _hor, _ver, onMove, onEnd, snap: snap)..run();
       
     });
     
@@ -432,7 +432,7 @@ class _Scroller implements Scroller {
       }, end: (MotionState state) {
         onEnd(callback: false);
         
-      });
+      })..run();
       
     } else {
       int time = new Date.now().millisecondsSinceEpoch;
@@ -522,7 +522,7 @@ class _BoundedInertialMotion extends Motion {
       }, end: (MotionState ms) {
         if (_end != null)
           _end();
-      }, period: 200, easing: (num x) => x * x);
+      }, period: 200, easing: (num x) => x * x)..run();
     } else if (_end != null)
       _end();
   }

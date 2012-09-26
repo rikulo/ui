@@ -3,6 +3,7 @@
 **September 25, 2012**
 
 * Convert project structure to pub standard
+* Remove autorun flag in Motion.
 
 **September 11, 2012**
 

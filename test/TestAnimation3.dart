@@ -113,7 +113,7 @@ class TestAnimation3 extends Activity {
         final num initSanity = sanity, diffSanity = 1 - initSanity;
         recoveryMotion = new EasingMotion((num x, MotionState state) {
           setSanity(diffSanity * x + initSanity);
-        }, easing: (num x) => x * x);
+        }, easing: (num x) => x * x)..run();
         return;
       }
       Offset unitv = vel / speed;
@@ -140,8 +140,8 @@ class TestAnimation3 extends Activity {
         final num initSanity = sanity, diffSanity = 1 - initSanity;
         recoveryMotion = new EasingMotion((num x, MotionState state) {
           setSanity(diffSanity * x + initSanity);
-        }, easing: (num x) => x * x);
-      });
+        }, easing: (num x) => x * x)..run();
+      })..run();
     });
   }
 }

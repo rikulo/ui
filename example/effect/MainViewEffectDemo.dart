@@ -55,7 +55,7 @@ class MainViewEffectDemo extends Activity {
         new FadeInEffect(vn.node, start: (MotionState state) {
           vo.node.style.zIndex = "-1";
           vn.visible = true;
-        }, end: (MotionState state) => end());
+        }, end: (MotionState state) => end()).run();
       };
       setMainView(v2, _efac);
     });
@@ -85,7 +85,7 @@ class MainViewEffectDemo extends Activity {
             parent.style.overflow = state.data == null ? "" : state.data;
           end();
           
-        }, easing: (num t) => t * t);
+        }, easing: (num t) => t * t).run();
       };
       setMainView(v2, _efac);
     });
@@ -125,7 +125,7 @@ class MainViewEffectDemo extends Activity {
           vn.node.style.zIndex = "";
           end();
           
-        });
+        }).run();
       };
       setMainView(v2, _efac);
     });

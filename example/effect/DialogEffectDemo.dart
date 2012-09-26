@@ -46,28 +46,34 @@ class DialogEffectDemo extends Activity {
     
     v1.on.click.add((ViewEvent event) {
       addDialog(dialog, effect: (View d, Element m, void end()) {
-        new FadeInEffect(d.node, end: (MotionState state) => end());
+        new EasingMotion.join([new FadeInEffect(d.node), maskFadeIn(m)], 
+            end: (MotionState state) => end()).run();
       });
       _eff = (View d, Element m, void end()) {
-        new FadeOutEffect(d.node, end: (MotionState state) => end());
+        new EasingMotion.join([new FadeOutEffect(d.node), maskFadeOut(m)], 
+            end: (MotionState state) => end()).run();
       };
     });
     
     v2.on.click.add((ViewEvent event) {
       addDialog(dialog, effect: (View d, Element m, void end()) {
-        new ZoomInEffect(d.node, end: (MotionState state) => end());
+        new EasingMotion.join([new ZoomInEffect(d.node), maskFadeIn(m)], 
+            end: (MotionState state) => end()).run();
       });
       _eff = (View d, Element m, void end()) {
-        new ZoomOutEffect(d.node, end: (MotionState state) => end());
+        new EasingMotion.join([new ZoomOutEffect(d.node), maskFadeOut(m)], 
+            end: (MotionState state) => end()).run();
       };
     });
     
     v3.on.click.add((ViewEvent event) {
       addDialog(dialog, effect: (View d, Element m, void end()) {
-        new SlideInEffect(d.node, end: (MotionState state) => end());
+        new EasingMotion.join([new SlideInEffect(d.node), maskFadeIn(m)], 
+            end: (MotionState state) => end()).run();
       });
       _eff = (View d, Element m, void end()) {
-        new SlideOutEffect(d.node, end: (MotionState state) => end());
+        new EasingMotion.join([new SlideOutEffect(d.node), maskFadeOut(m)], 
+            end: (MotionState state) => end()).run();
       };
     });
     
@@ -77,6 +83,12 @@ class DialogEffectDemo extends Activity {
     });
     
   }
+  
+  static EasingMotion maskFadeIn(Element m) => 
+      new FadeInEffect(m, maxOpacity: 0.6);
+  
+  static EasingMotion maskFadeOut(Element m) => 
+      new FadeOutEffect(m, maxOpacity: 0.6);
   
   DialogEffect _eff = null;
   

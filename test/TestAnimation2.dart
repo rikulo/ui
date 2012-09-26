@@ -76,7 +76,7 @@ class TestAnimation2 extends Activity {
         element.style.top = CSS.px(pos.top.toInt());
         speed = max(0, speed - deceleration * elapsed);
         return speed > 0;
-      });
+      })..run();
     });
     
   }

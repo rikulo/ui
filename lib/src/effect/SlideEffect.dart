@@ -35,9 +35,9 @@ class SlideInEffect extends ShowEffect {
    */
   SlideInEffect(Element element, [int size, int period = 500, EasingFunction easing, 
   bool fade = true, SlideDirection direction = SlideDirection.NORTH,
-  MotionStart start, MotionEnd end, bool autorun = true]) :
+  MotionStart start, MotionEnd end]) :
   super(element, createAction(element, size, fade, direction), 
-  start: start, end: end, period: period, easing: easing, autorun: autorun);
+  start: start, end: end, period: period, easing: easing);
   
   /** Create a MotionAction for slide-in effect on the [element].
    */
@@ -91,9 +91,9 @@ class SlideOutEffect extends HideEffect {
    */
   SlideOutEffect(Element element, [int period = 500, EasingFunction easing, 
   bool fade = true, SlideDirection direction = SlideDirection.NORTH,
-  MotionStart start, MotionEnd end, bool autorun = true]) :
+  MotionStart start, MotionEnd end]) :
   super(element, createAction(element, fade, direction), 
-  start: start, end: end, period: period, easing: easing, autorun: autorun);
+  start: start, end: end, period: period, easing: easing);
   
   /** Create a MotionAction for slide-out effect on the [element].
    */

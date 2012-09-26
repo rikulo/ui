@@ -33,7 +33,7 @@ class ViewEffectDemo extends Activity {
       container.addChild(v1);
       new FadeInEffect(v1.node, end: (MotionState state) {
         mv1 = false;
-      });
+      }).run();
     });
     
     v1.on.click.add((ViewEvent event) {
@@ -43,7 +43,7 @@ class ViewEffectDemo extends Activity {
       new FadeOutEffect(v1.node, end: (MotionState state) {
         v1.removeFromParent();
         mv1 = false;
-      });
+      }).run();
     });
     
     vs = blocks("Zoom", 150, 0);
@@ -58,7 +58,7 @@ class ViewEffectDemo extends Activity {
       container.addChild(v2);
       new ZoomInEffect(v2.node, end: (MotionState state) {
         mv2 = false;
-      });
+      }).run();
     });
     
     v2.on.click.add((ViewEvent event) {
@@ -68,7 +68,7 @@ class ViewEffectDemo extends Activity {
       new ZoomOutEffect(v2.node, end: (MotionState state) {
         v2.removeFromParent();
         mv2 = false;
-      });
+      }).run();
     });
     
     vs = blocks("Slide", 0, 150);
@@ -93,7 +93,7 @@ class ViewEffectDemo extends Activity {
       container.addChild(v3);
       new SlideInEffect(v3.node, direction: _dir, end: (MotionState state) {
         mv3 = false;
-      });
+      }).run();
     });
     
     v3.on.click.add((ViewEvent event) {
@@ -103,7 +103,7 @@ class ViewEffectDemo extends Activity {
       new SlideOutEffect(v3.node, direction: _dir, end: (MotionState state) {
         v3.removeFromParent();
         mv3 = false;
-      });
+      }).run();
     });
     
     vs = blocks("N/A", 150, 150);

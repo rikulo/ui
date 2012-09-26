@@ -80,7 +80,7 @@ class Switch extends View implements Input<bool> {
         new EasingMotion((num x, MotionState state) {
           int cofs = sofs + (dofs * x).toInt();
           _updateBg(cofs);
-        }, period: 150);
+        }, period: 150).run();
       } else {
         _updateBg(nofs);
       }

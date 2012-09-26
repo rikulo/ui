@@ -19,7 +19,7 @@ class EffectDemo extends Activity {
     View v;
     mainView.addChild(v = block("Buzz", 50, 50));
     
-    final Motion buzz = new BuzzEffect(v.node, autorun: false);
+    final Motion buzz = new BuzzEffect(v.node);
     v.on.click.add((ViewEvent event) {
       if (!buzz.isRunning())
         buzz.run();
@@ -29,7 +29,7 @@ class EffectDemo extends Activity {
     
     final num n = 0.3;
     //final Color c = const HSVColor(210, 50, 100).rgb();
-    final Motion glow = new GlowEffect(v.node, tempo: n, autorun: false);
+    final Motion glow = new GlowEffect(v.node, tempo: n);
     v.on.click.add((ViewEvent event) {
       if (!glow.isRunning())
         glow.run();
@@ -37,7 +37,7 @@ class EffectDemo extends Activity {
     
     mainView.addChild(v = block("Shake", 50, 200));
     
-    final Motion shake = new ShakeEffect(v.node, autorun: false);
+    final Motion shake = new ShakeEffect(v.node);
     v.on.click.add((ViewEvent event) {
       if (!shake.isRunning())
         shake.run();

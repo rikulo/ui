@@ -21,10 +21,10 @@ class ShowEffect extends EasingMotion {
    * + [end] is called when the effect ends.
    */
   ShowEffect(Element element, MotionAction action, [int period = 500, 
-  EasingFunction easing, MotionStart start, MotionEnd end, bool autorun = true]) :
+  EasingFunction easing, MotionStart start, MotionEnd end]) :
   this.element = element, 
   super(action, start: _showEffectStart(element, action, start), end: end, 
-  period: period, easing: easing, autorun: autorun);
+  period: period, easing: easing);
   
   // dart2js bug: closure in intializer doesn't compile
   static MotionStart _showEffectStart(Element element, MotionAction action, MotionStart start) {
@@ -56,10 +56,10 @@ class HideEffect extends EasingMotion {
    * + [end] is called when the effect ends.
    */
   HideEffect(Element element, MotionAction action, [int period = 500, 
-  EasingFunction easing, MotionStart start, MotionEnd end, bool autorun = true]) :
+  EasingFunction easing, MotionStart start, MotionEnd end]) :
   this.element = element, 
   super(action, start: start, end: _hideEffectEnd(element, end), 
-  period: period, easing: easing, autorun: autorun);
+  period: period, easing: easing);
   
   // dart2js bug: closure in intializer doesn't compile
   static MotionEnd _hideEffectEnd(Element element, MotionEnd end) {
@@ -80,9 +80,9 @@ class FadeInEffect extends ShowEffect {
    */
   FadeInEffect(Element element, [int period = 500, EasingFunction easing,
   num minOpacity = 0, num maxOpacity = 1, 
-  MotionStart start, MotionEnd end, bool autorun = true]) :
+  MotionStart start, MotionEnd end]) :
   super(element, createAction(element, minOpacity, maxOpacity), 
-  start: start, end: end, period: period, easing: easing, autorun: autorun);
+  start: start, end: end, period: period, easing: easing);
   
   /** Create a MotionAction for fade-in effect on the [element].
    */
@@ -103,9 +103,9 @@ class FadeOutEffect extends HideEffect {
    */
   FadeOutEffect(Element element, [int period = 500, EasingFunction easing, 
   num minOpacity = 0, num maxOpacity = 1, 
-  MotionStart start, MotionEnd end, bool autorun = true]) : 
+  MotionStart start, MotionEnd end]) : 
   super(element, createAction(element, minOpacity, maxOpacity), 
-  start: start, end: end, period: period, easing: easing, autorun: autorun);
+  start: start, end: end, period: period, easing: easing);
   
   /** Create a MotionAction for fade-out effect on the [element].
    */
@@ -125,9 +125,9 @@ class ZoomInEffect extends ShowEffect {
   /** Create a zoom-in effect on the [element].
    */
   ZoomInEffect(Element element, [int period = 500, EasingFunction easing, 
-  bool fade = true, MotionStart start, MotionEnd end, bool autorun = true]) : 
+  bool fade = true, MotionStart start, MotionEnd end]) : 
   super(element, createAction(element, fade), 
-  start: start, end: end, period: period, easing: easing, autorun: autorun);
+  start: start, end: end, period: period, easing: easing);
   
   /** Create a MotionAction for zoom-in effect on the [element], with optional
    * fade-in if [fade] is true.
@@ -149,9 +149,9 @@ class ZoomOutEffect extends HideEffect {
   /** Create a zoom-out effect on the [element].
    */
   ZoomOutEffect(Element element, [int period = 500, EasingFunction easing, 
-  bool fade = true, MotionStart start, MotionEnd end, bool autorun = true]) : 
+  bool fade = true, MotionStart start, MotionEnd end]) : 
   super(element, createAction(element, fade), 
-  start: start, end: end, period: period, easing: easing, autorun: autorun);
+  start: start, end: end, period: period, easing: easing);
   
   /** Create a MotionAction for zoom-out effect on the [element], with optional
    * fade-out if [fade] is true.

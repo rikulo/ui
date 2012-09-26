@@ -26,7 +26,7 @@ class NaturalEffectDemo extends Activity {
       element.style.transform = "scale(${1 + x / 10})";
       
     }, period: 5000, repeat: -1, 
-    easing: (num t) => (1 - cos(t < n ? t * PI / n : (1 - t) * PI / (1 - n))) / 2);
+    easing: (num t) => (1 - cos(t < n ? t * PI / n : (1 - t) * PI / (1 - n))) / 2).run();
     
   }
   
