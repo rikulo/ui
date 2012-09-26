@@ -177,6 +177,7 @@ class Motion {
         break;
       case _MOTION_STATE_INIT:
         animator.add(this._task);
+        break;
     }
   }
   
