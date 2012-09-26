@@ -14,7 +14,6 @@
 #source("src/util/XMLUtil.dart");
 #source("src/util/ListUtil.dart");
 #source("src/util/MapUtil.dart");
-#source("src/util/AbstractList.dart");
 #source("src/util/Offset.dart");
 #source("src/util/Matrix.dart");
 #source("src/util/Color.dart");

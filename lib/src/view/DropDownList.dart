@@ -130,6 +130,7 @@ class DropDownList<T> extends View {
               }
               return;
             }
+            break;
         }
 
         modelRenderer.queue(this);

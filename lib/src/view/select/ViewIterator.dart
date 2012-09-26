@@ -195,6 +195,7 @@ class ViewIterator implements Iterator<View> {
           ctx.qualify(i, j+1, ctx.isQualified(i, j) && 
               match(selector, ctx, j+1));
           ctx.qualify(i, j, false);
+          break;
         }
       }
     }

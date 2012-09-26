@@ -21,7 +21,6 @@
 #source("src/view/ViewUtil.dart");
 #source("src/view/ViewCut.dart");
 #source("src/view/Style.dart");
-#source("src/view/_SubviewList.dart");
 #source("src/view/ProfileDeclaration.dart");
 #source("src/view/LayoutDeclaration.dart");
 #source("src/view/_ViewImpl.dart");
