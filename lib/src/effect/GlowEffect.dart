@@ -11,8 +11,6 @@ class GlowEffect extends EasingMotion {
    */
   final Element element;
   
-  String _shadowPrefix;
-  
   /** Create a GlowEffect of given [period] in milliseconds, which assigns
    * a CSS white shadow on the element.
    * 
@@ -24,7 +22,7 @@ class GlowEffect extends EasingMotion {
   Color color, int blur = 10, int spread = 2, 
   MotionStart start, MotionEnd end]) : 
   this.element = element, 
-  super(null, start: (MotionState state) {
+  super(createAction(element, color, blur, spread), start: (MotionState state) {
     if (start != null)
       start(state);
     state.data = element.style.boxShadow;
@@ -35,16 +33,18 @@ class GlowEffect extends EasingMotion {
       end(state);
     
   }, period: period, 
-  easing: (num t) => t < tempo ? (t * t / tempo / tempo) : (1 - t) / (1 - tempo)) {
-    
+  easing: (num t) => t < tempo ? (t * t / tempo / tempo) : (1 - t) / (1 - tempo));
+  
+  /** Create a glowing MotionAction by applying a color shadow on [element].
+   */
+  static MotionAction createAction(Element element, Color color, int blur, int spread) {
     final int r = color == null ? 255 : color.red.toInt();
     final int g = color == null ? 255 : color.green.toInt();
     final int b = color == null ? 255 : color.blue.toInt();
-    _shadowPrefix = "0 0 ${blur}px ${spread}px rgba($r, $g, $b, ";
-  }
-  
-  bool doAction_(num x, MotionState state) {
-    element.style.boxShadow = "$_shadowPrefix$x)";
+    final String pref = "0 0 ${blur}px ${spread}px rgba($r, $g, $b, ";
+    return (num x, MotionState state) {
+      element.style.boxShadow = "$pref$x)";
+    };
   }
   
 }

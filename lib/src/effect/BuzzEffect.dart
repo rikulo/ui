@@ -24,10 +24,7 @@ class BuzzEffect extends EasingMotion {
   BuzzEffect(Element element, [int period = 500, num movement = 3, num rotation = 3, 
   MotionStart start, MotionEnd end]) : 
   this.element = element, 
-  super((num x, MotionState state) {
-    element.style.transform = CSS.transform(_randomTransform(movement, rotation));
-    
-  }, start: (MotionState state) {
+  super(createAction(element, movement, rotation), start: (MotionState state) {
     if (start != null)
       start(state);
     state.data = element.style.transform;
@@ -38,6 +35,14 @@ class BuzzEffect extends EasingMotion {
       end(state);
     
   }, period: period);
+  
+  /** Create a MotionAction which applies random movement and rotation to [element].
+   */
+  static MotionAction createAction(Element element, num movement, num rotation) {
+    return (num x, MotionState state) {
+      element.style.transform = CSS.transform(_randomTransform(movement, rotation));
+    };
+  }
   
   static final Random _rand = new Random();
   static num nextDouble(num max) => (_rand.nextDouble() * 2 - 1) * max;
