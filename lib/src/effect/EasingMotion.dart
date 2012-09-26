@@ -34,6 +34,41 @@ class EasingMotion extends Motion {
     this.easing = easing, this.period = period, this.repeat = repeat, 
     duration = repeat * period, super(start, null, end, autorun);
   
+  /** Construct an EasingMotion by joining multiple EasingMotion.
+   */
+  EasingMotion.join(List<EasingMotion> motions, [EasingFunction easing, 
+  int period = 500, int repeat = 1, MotionStart start, MotionEnd end, bool autorun = true]) :
+  this(_jointAction(motions), easing: easing, period: period, repeat: repeat,
+  start: _jointStart(motions, start), end: _jointEnd(motions, end), autorun: autorun);
+  
+  static MotionAction _jointAction(List<EasingMotion> motions) {
+    return (num x, MotionState state) {
+      for (EasingMotion em in motions)
+        if (em.action(x, state) === false)
+          return false;
+    };
+  }
+  
+  static MotionStart _jointStart(List<EasingMotion> motions, MotionStart start) {
+    return (MotionState state) {
+      if (start != null)
+        start(state);
+      for (EasingMotion em in motions)
+        if (em._start != null)
+          em._start(state);
+    };
+  }
+  
+  static MotionEnd _jointEnd(List<EasingMotion> motions, MotionEnd end) {
+    return (MotionState state) {
+      for (EasingMotion em in motions)
+        if (em._end != null)
+          em._end(state);
+      if (end != null)
+        end(state);
+    };
+  }
+  
   /** Compute position value by [EasingFunction].
    */
   num doEasing_(num t) => easing != null ? easing(t) : t;
