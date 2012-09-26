@@ -17,12 +17,12 @@ class LinearPathMotion extends EasingMotion {
    * + [origin] is the starting offset of the element.
    * + [destination] is the goal offset of the movement.
    * + [move] is invoked continuously during the motion, and if this callback is
-   * provided, updateElementPosition() shall be called to attain the default 
+   * provided, [defaultAction] shall be called to attain the default 
    * behavior of LinearPathMotion.
    */
   LinearPathMotion(Element element, Offset origin, Offset destination, 
     [EasingFunction easing, int period = 500, MotionStart start, 
-    bool move(MotionState state, Offset position, num x, void updateElementPosition()), 
+    bool move(MotionState state, Offset position, num x, void defaultAction()), 
     MotionEnd end]) :
     this.element = element, this.origin = origin, this.destination = destination, 
     _diff = destination - origin, _moveCB = move, 
