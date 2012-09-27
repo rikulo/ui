@@ -30,4 +30,4 @@ If you are new to Git or GitHub, please read [this guide](https://help.github.co
 
 ###Compile LESS to CSS
 
-Rikulo CSS rules are written in [view.less](https://github.com/rikulo/rikulo/blob/master/resources/css/view.less). If you modify it, you have to invoke [tool/l2c](https://github.com/rikulo/rikulo/blob/master/tool/l2c) to generate [view.css](https://github.com/rikulo/rikulo/blob/master/resources/css/view.css) (under Linux or Cygwin bash).
+Rikulo CSS rules are placed in [view.less](https://github.com/rikulo/rikulo/blob/master/lib/resource/css/view.less). They are written in [LESS](http://lesscss.org/). If you modify it, you have to invoke [tool/l2c](https://github.com/rikulo/rikulo/blob/master/tool/l2c) to generate [view.css](https://github.com/rikulo/rikulo/blob/master/lib/resource/css/view.css) (under Linux or Cygwin bash).
