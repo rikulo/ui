@@ -10,7 +10,7 @@
 class LayoutSideInfo {
   int top, bottom, left, right;
 
-  static const RegExp _reWord = const RegExp(@"(\w+)");
+  static const RegExp _reWord = const RegExp(r"(\w+)");
 
   LayoutSideInfo(String profile, [int defaultValue, LayoutSideInfo defaultInfo]) {
     if (profile != null && !profile.isEmpty()) {

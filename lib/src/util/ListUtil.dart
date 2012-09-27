@@ -124,11 +124,7 @@ class AbstractList<T> implements List<T> {
     removeRange(index, 1);
     return v;
   }
-  T removeLast() {
-    final T e = last();
-    removeRange(length - 1, 1);
-    return e;
-  }
+  T removeLast() => removeAt(length - 1);
   T last() {
     return this[length - 1];
   }

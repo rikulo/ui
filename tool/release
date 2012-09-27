@@ -1,4 +1,4 @@
-#!/bin/bash
+g#!/bin/bash
 # release
 #
 #	Purpose:
@@ -37,7 +37,7 @@ echo "$stamp working at $maindir"
 
 target=$1
 
-if [ ! -d client ] ; then
+if [ ! -f pubspec.yaml ] ; then
   echo "Wrong working directory"
   exit
 fi
@@ -67,4 +67,4 @@ echo Generating $flnm
 
 mkdir -p out
 rm -f $flnm
-zip -qr9 $flnm LICENSE README.md CHANGES.md lib test example
+zip -qr9 $flnm LICENSE README.md CHANGES.md lib example
