@@ -14,7 +14,11 @@ class DialogEffectDemo extends Activity {
   
   void onCreate_() {
     title = "View Effect Demo";
-    mainView.style.background = "#000000";
+    mainView.style.backgroundPosition = "center center";
+    // photo by dcysurfer / Dave Young @ flickr, under Creative Commons license
+    // http://www.flickr.com/photos/dcysurfer/3779922157/
+    mainView.style.backgroundImage = "url('http://static.rikulo.org/example/luna.jpg')";
+    mainView.style.backgroundColor = "#000000";
     View container = new View()..width = 250..height = 250;
     container.profile.location = "center center";
     mainView.addChild(container);
@@ -47,33 +51,33 @@ class DialogEffectDemo extends Activity {
     v1.on.click.add((ViewEvent event) {
       addDialog(dialog, effect: (View d, Element m, void end()) {
         new EasingMotion.join([new FadeInEffect(d.node), maskFadeIn(m)], 
-            end: (MotionState state) => end()).run();
+            end: (MotionState state) => end(), easing: (num t) => t * t).run();
       });
       _eff = (View d, Element m, void end()) {
         new EasingMotion.join([new FadeOutEffect(d.node), maskFadeOut(m)], 
-            end: (MotionState state) => end()).run();
+            end: (MotionState state) => end(), easing: (num t) => t * t).run();
       };
     });
     
     v2.on.click.add((ViewEvent event) {
       addDialog(dialog, effect: (View d, Element m, void end()) {
         new EasingMotion.join([new ZoomInEffect(d.node), maskFadeIn(m)], 
-            end: (MotionState state) => end()).run();
+            end: (MotionState state) => end(), easing: (num t) => t * t).run();
       });
       _eff = (View d, Element m, void end()) {
         new EasingMotion.join([new ZoomOutEffect(d.node), maskFadeOut(m)], 
-            end: (MotionState state) => end()).run();
+            end: (MotionState state) => end(), easing: (num t) => t * t).run();
       };
     });
     
     v3.on.click.add((ViewEvent event) {
       addDialog(dialog, effect: (View d, Element m, void end()) {
         new EasingMotion.join([new SlideInEffect(d.node), maskFadeIn(m)], 
-            end: (MotionState state) => end()).run();
+            end: (MotionState state) => end(), easing: (num t) => t * t).run();
       });
       _eff = (View d, Element m, void end()) {
         new EasingMotion.join([new SlideOutEffect(d.node), maskFadeOut(m)], 
-            end: (MotionState state) => end()).run();
+            end: (MotionState state) => end(), easing: (num t) => t * t).run();
       };
     });
     
