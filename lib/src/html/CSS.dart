@@ -74,7 +74,7 @@ class CSS {
     }
     return 0;
   }
-  static const RegExp _reNum = const RegExp(@"([-]?[0-9]+)");
+  static const RegExp _reNum = const RegExp(r"([-]?[0-9]+)");
 
   static void cpTextStyles(CSSStyleDeclaration dst, CSSStyleDeclaration src) {
     for (int j = _txtStyles.length; --j >= 0;) {
