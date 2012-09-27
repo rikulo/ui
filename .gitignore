@@ -16,3 +16,6 @@ out
 ~$*.pptx
 ~$*.doc
 ~$*.xlsx
+packages
+packages/
+pubspec.lock
