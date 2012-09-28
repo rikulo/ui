@@ -23,7 +23,6 @@
 #import('../../lib/service/gmaps.dart');
 #import('../../lib/service/yapis.dart');
 #import('../../lib/util.dart');
-#import('../../lib/uxl.dart');
 #import('../../lib/view.dart');
 #import('../../lib/view/impl.dart');
 #import('../../lib/view/select.dart');
