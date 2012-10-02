@@ -35,7 +35,7 @@ class DefaultTreeNode<T> implements TreeNode<T> {
 
   T get data => _data;
   void set data(T data) {
-    if (_data !== data) {
+    if (!identical(_data, data)) {
       _data = data;
 
       final DefaultTreeModel<T> m = model;

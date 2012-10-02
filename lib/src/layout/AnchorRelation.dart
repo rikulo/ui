@@ -27,7 +27,7 @@ class AnchorRelation {
       if (av == null) {
         indeps.add(child);
       } else {
-        if (av.parent !== view && av !== view)
+        if (!identical(av.parent, view) && !identical(av, view))
           throw new UIException("Anchor can be parent or sibling, not $av");
 
         final deps = anchored[av];
@@ -96,8 +96,8 @@ class AnchorRelation {
       final handlers = _getHandlers(location);
       final offset =
         view.style.position == "fixed" ? anchor.pageOffset:
-        anchor === view.parent ? new Offset(0, 0): //parent
-        anchor.parent === view.parent ?
+        identical(anchor, view.parent) ? new Offset(0, 0): //parent
+        identical(anchor.parent, view.parent) ?
           new Offset(anchor.left, anchor.top): //sibling (the same coordiante system)
           anchor.pageOffset - view.pageOffset; //neither parent nor sibling
       _anchorXHandlers[handlers[0]](offset.left, anchor, view);
@@ -141,9 +141,9 @@ final Map<String, List<int>> _locations = const {
 };
 
 int _anchorWidth(var anchor, View view)
-=> anchor === view.parent ? anchor.innerWidth: anchor.outerWidth;
+=> identical(anchor, view.parent) ? anchor.innerWidth: anchor.outerWidth;
 int _anchorHeight(var anchor, View view)
-=> anchor === view.parent ? anchor.innerHeight: anchor.outerHeight;
+=> identical(anchor, view.parent) ? anchor.innerHeight: anchor.outerHeight;
 
 //TODO: use const when Dart considers Closure as constant
 List<_AnchorHandler> get _anchorXHandlers {

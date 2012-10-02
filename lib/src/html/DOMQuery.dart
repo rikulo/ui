@@ -144,7 +144,7 @@ class DOMQuery {
    */
   bool isDescendantOf(Element parent) {
     for (Element n = node; n != null; n = n.parent) {
-      if (n === parent)
+      if (identical(n, parent))
         return true;
     }
     return false;

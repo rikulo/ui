@@ -150,7 +150,7 @@ abstract class _DragGesture implements DragGesture {
     stop();
 
     _state = new _DragGestureState(this, target, position, time);
-    if (_start != null && _start(_state) === false)
+    if (_start != null && identical(_start(_state), false))
       stop();
   }
   
@@ -158,7 +158,7 @@ abstract class _DragGesture implements DragGesture {
     if (_state != null) {
       _state.snapshot(position, time);
       
-      if (_move != null && _move(_state) === false)
+      if (_move != null && identical(_move(_state), false))
         stop();
     }
   }

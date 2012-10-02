@@ -220,7 +220,7 @@ class View {
    */
   bool isDescendantOf(View parent) {
     for (View w = this; w != null; w = w.parent) {
-      if (w === parent)
+      if (identical(w, parent))
         return true;
     }
     return false;
@@ -336,15 +336,15 @@ class View {
       throw new UIException("No child allowed for $this");
 
     if (beforeChild != null) {
-      if (beforeChild.parent !== this)
+      if (!identical(beforeChild.parent, this))
         beforeChild = null;
-      else if (child === beforeChild)
+      else if (identical(child, beforeChild))
         return; //nothing to change
     }
 
     final View oldParent = child.parent;
-    final bool parentChanged = oldParent !== this;
-    if (!parentChanged && beforeChild === child.nextSibling)
+    final bool parentChanged = !identical(oldParent, this);
+    if (!parentChanged && identical(beforeChild, child.nextSibling))
       return; //nothing to change
 
     if (parentChanged)
@@ -391,7 +391,7 @@ class View {
     parent._removeChild(this);
   }
   void _removeChild(View child, [bool notifyChild=true, bool exit=true]) {
-    if (child.parent !== this)
+    if (!identical(child.parent, this))
       return;
 
     beforeChildRemoved_(child);

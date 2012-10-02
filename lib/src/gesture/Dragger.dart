@@ -172,7 +172,7 @@ class _Dragger implements Dragger {
         
         // callback, update element position
         if (_move != null) {
-          if (_move(_state, () => setElementPosition_(_state.draggedElement, elemPos)) === false) {
+          if (identical(_move(_state, () => setElementPosition_(_state.draggedElement, elemPos)), false)) {
             _stop();
             return false; // stop gesture
           }
@@ -195,7 +195,7 @@ class _Dragger implements Dragger {
       return false;
     
     _state = new _DraggerState(this, tar, getElementPosition_(tar), state);
-    if (_start != null && _start(_state) === false) {
+    if (_start != null && identical(_start(_state), false)) {
       _stop();
       return false;
     }

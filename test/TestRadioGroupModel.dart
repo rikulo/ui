@@ -67,7 +67,7 @@ class TestRadioGroupModel extends Activity {
     });
     TextBox box = new TextBox("1", type: "number");
     box.on.change.add((event) {
-      dlist.rows = parseInt(box.value);
+      dlist.rows = int.parse(box.value);
       dlist.requestLayout();
     });
     mainView.addChild(box);

@@ -59,7 +59,7 @@ class YWeather {
         String ttl = channel["ttl"];
         if (ttl != null) {
           _channel = channel; //cache the result
-          _expireTime = parseInt(ttl) * 60000 + now;
+          _expireTime = int.parse(ttl) * 60000 + now;
         }
       }
       success(channel);

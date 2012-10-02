@@ -37,7 +37,7 @@ implements TreeSelectionModel<T> {
   /** Sets the root of the tree model.
    */
   void set root(T root) {
-    if (_root !== root) {
+    if (!identical(_root, root)) {
       _root = root;
       _selection.clear();
       _opens.clear();

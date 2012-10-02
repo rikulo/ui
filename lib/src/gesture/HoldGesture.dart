@@ -114,7 +114,7 @@ abstract class _HoldGesture implements HoldGesture {
     _stop();
     _state = new _HoldGestureState(this, target, time, position);
     
-    if (_start != null && _start(_state) === false) {
+    if (_start != null && identical(_start(_state), false)) {
       _stop();
       return;
     }

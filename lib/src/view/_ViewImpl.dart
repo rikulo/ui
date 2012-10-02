@@ -436,7 +436,7 @@ class _SubviewList extends AbstractList<View> {
       throw const IllegalArgumentException("null");
 
     final View w = this[index];
-    if (w !== value) {
+    if (!identical(w, value)) {
       final View next = w.nextSibling;
       w.removeFromParent();
       _owner.addChild(value, next);
@@ -482,7 +482,7 @@ class _SubviewList extends AbstractList<View> {
       while (--length >= 0) { //replace
         View value = it.next();
         final View next = w.nextSibling;
-        if (w !== value) {
+        if (!identical(w, value)) {
           w.removeFromParent();
           _owner.addChild(value, next);
         }
@@ -497,7 +497,7 @@ class _SubviewList extends AbstractList<View> {
       while (--length >= 0) { //replace
         View value = from[startFrom++];
         final View next = w.nextSibling;
-        if (w !== value) {
+        if (!identical(w, value)) {
           w.removeFromParent();
           _owner.addChild(value, next);
         }

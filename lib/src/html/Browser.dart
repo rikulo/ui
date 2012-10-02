@@ -141,7 +141,7 @@ class Browser {
         version = version.substring(0, j);
     }
     try {
-      return parseDouble(version);
+      return double.parse(version);
     } catch (e) {
       return 1.0; //ignore it
     }

@@ -23,7 +23,7 @@ class Dir {
   /** The name of this direction. */
   String get name => _name;
 
-  operator==(other) => this === other;
+  operator==(other) => identical(this, other);
   String toString() => _name;
 }
 

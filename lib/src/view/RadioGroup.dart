@@ -47,7 +47,7 @@ class RadioGroup<T> extends View {
       if (model is! Selection)
         throw new UIException("Selection required, $model");
 
-      if (_model !== model) { //Note: it is not !=
+      if (!identical(_model, model)) { //Note: it is not !=
         if (_model != null)
           _model.on.all.remove(_dataListener);
 
@@ -100,7 +100,7 @@ class RadioGroup<T> extends View {
    * If null, the default implementation is used.
    */
   void set renderer(HTMLRenderer renderer) {
-    if (_renderer !== renderer) {
+    if (!identical(_renderer, renderer)) {
       _renderer = renderer;
       if (_model != null)
         modelRenderer.queue(this);
@@ -200,7 +200,7 @@ class RadioGroup<T> extends View {
       final InputElement n = event.srcElement;
       final String id = n.id;
       final int i = id.lastIndexOf('-');
-      _onCheck(parseInt(id.substring(i + 1)), n.checked);
+      _onCheck(int.parse(id.substring(i + 1)), n.checked);
     };
 
     final String idPrefix = "$uuid-";

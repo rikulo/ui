@@ -57,7 +57,7 @@ class Viewport extends View {
   //@Override to returns the element representing the inner element.
   Element get contentNode => getNode("inner");
   //@Override to skip the toolbar
-  bool shallLayout_(View child) => child !== _toolbar && super.shallLayout_(child);
+  bool shallLayout_(View child) => !identical(child, _toolbar) && super.shallLayout_(child);
   //@Override
   void domInner_(StringBuffer out) {
     out.add('<div class="v-Viewport-title" id="')
@@ -74,7 +74,7 @@ class Viewport extends View {
       .add(uuid).add('-inner">');
 
     for (View child = firstChild; child != null; child = child.nextSibling) {
-      if (child !== _toolbar)
+      if (!identical(child, _toolbar))
         child.draw(out);
     }
 
@@ -82,13 +82,13 @@ class Viewport extends View {
   }
   //@Override to insert the toolbar to getNode("toolbar"), and others into contentNode
   void insertChildToDocument_(View child, var childInfo, View beforeChild) {
-    if (child === _toolbar) {
+    if (identical(child, _toolbar)) {
       if (childInfo is Element)
         getNode("toolbar").insertBefore(childInfo, null); //note: Firefox not support insertAdjacentElement
       else
         getNode("toolbar").insertAdjacentHTML("beforeEnd", childInfo);
     } else {
-      if (beforeChild === _toolbar)
+      if (identical(beforeChild, _toolbar))
         beforeChild = null;
 
       if (beforeChild != null)

@@ -320,8 +320,8 @@ class _Scroller implements Scroller {
   [Element handle, Dir direction = Dir.BOTH, bool scrollbar = true, 
   ScrollerSnap snap, ScrollerStart start, ScrollerMove move, ScrollerEnd end]) :
   this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
-  _hasHor = direction === Dir.HORIZONTAL || direction === Dir.BOTH,
-  _hasVer = direction === Dir.VERTICAL || direction === Dir.BOTH,
+  _hasHor = identical(direction, Dir.HORIZONTAL) || identical(direction, Dir.BOTH),
+  _hasVer = identical(direction, Dir.VERTICAL) || identical(direction, Dir.BOTH),
   _start = start, _move = move, _end = end {
     
     _dg = new DragGesture(handle != null ? handle : owner,
@@ -366,7 +366,7 @@ class _Scroller implements Scroller {
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.move, _state);
     if (callback && _move != null) {
-      if (_move(_state, () => _applyPosition(position)) === false) {
+      if (identical(_move(_state, () => _applyPosition(position)), false)) {
         // TODO stop
       }
     } else

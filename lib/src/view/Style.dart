@@ -40,7 +40,7 @@ class Style extends View {
    */
   void set src(String src) {
     _content = null;
-    if (_src !== src) {
+    if (!identical(_src, src)) {
       _src = src;
       invalidate();
     }

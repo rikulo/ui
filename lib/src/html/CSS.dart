@@ -66,7 +66,7 @@ class CSS {
       if (value != null && !value.isEmpty()) {
         final Match m = _reNum.firstMatch(value);
         if (m != null)
-          return parseInt(m.group(0));
+          return int.parse(m.group(0));
       }
     } catch (e) {
       if (reportError != null && reportError)

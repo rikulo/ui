@@ -85,7 +85,7 @@ class CordovaContact implements Contact, JSAgent {
   }
 
   Contact _initContact0(jsContact) {
-    if (jsContact !==  null)
+    if (jsContact !=  null)
       this._jsContact = jsContact;
     return this;
   }

@@ -91,7 +91,7 @@ class DropDownList<T> extends View {
         throw new UIException("Only ListModel or TreeModel allowed, not $model");
     }
 
-    if (_model !== model) { //Note: it is not !=
+    if (!identical(_model, model)) { //Note: it is not !=
       if (_model != null)
         _model.on.all.remove(_dataListener);
 
@@ -149,7 +149,7 @@ class DropDownList<T> extends View {
    * If null, the default implementation is used.
    */
   void set renderer(StringRenderer renderer) {
-    if (_renderer !== renderer) {
+    if (!identical(_renderer, renderer)) {
       _renderer = renderer;
       if (_model != null)
         modelRenderer.queue(this);
@@ -309,7 +309,7 @@ class DropDownList<T> extends View {
   T _treeValueOf(OptionElement option) {
     final List<int> path = new List();
     for (final String v in option.value.split('.'))
-      path.add(parseInt(v));
+      path.add(int.parse(v));
 
     final TreeModel<T> model = _model;
     return model.getChildAt(path);

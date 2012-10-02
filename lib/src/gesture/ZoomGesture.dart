@@ -245,14 +245,14 @@ class _ZoomGesture implements ZoomGesture {
     stop();
     _state = new _ZoomGestureState(this, target, pos0, pos1, time);
     
-    if (_start != null && _start(_state) === false)
+    if (_start != null && identical(_start(_state), false))
       stop();
   }
   
   void onMove(Offset pos0, Offset pos1, int time) {
     if (_state != null) {
       _state.snapshot(pos0, pos1, time);
-      if (_move != null && _move(_state) === false)
+      if (_move != null && identical(_move(_state), false))
         stop();
     }
   }

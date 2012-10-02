@@ -70,7 +70,7 @@ class JSUtil {
    * + [dartmap] the Dart Map
    */
   static toJSMap(Map dartmap, [Function converter = null]) {
-    if (dartmap !==  null) {
+    if (dartmap !=  null) {
       if (dartmap.length == 0) {
         return jsCall("{}"); //return empty JavaScript map
       }

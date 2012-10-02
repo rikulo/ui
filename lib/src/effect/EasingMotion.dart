@@ -44,7 +44,7 @@ class EasingMotion extends Motion {
   static MotionAction _jointAction(List<EasingMotion> motions) {
     return (num x, MotionState state) {
       for (EasingMotion em in motions)
-        if (em.action(x, state) === false)
+        if (identical(em.action(x, state), false))
           return false;
     };
   }
@@ -80,7 +80,7 @@ class EasingMotion extends Motion {
   bool onMove(MotionState state) {
     final int runningTime = state.runningTime;
     final bool result = doAction_(doEasing_(_easingInput(runningTime)), state);
-    return (repeat < 0 || runningTime < duration) && result !== false;
+    return (repeat < 0 || runningTime < duration) && !identical(result, false);
   }
   
   num _easingInput(num runningTime) => 

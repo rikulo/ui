@@ -50,11 +50,11 @@ class LayoutAmountInfo {
       type = LayoutAmountType.CONTENT;
     } else if (profile.startsWith("flex")) {
       type = LayoutAmountType.FLEX;
-      value = profile.length > 4 ? parseInt(profile.substring(4).trim()): 1;
+      value = profile.length > 4 ? int.parse(profile.substring(4).trim()): 1;
       if (value < 1) value = 1;
     } else if (profile.endsWith("%")) {
       type = LayoutAmountType.RATIO;
-      value= parseDouble(profile.substring(0, profile.length - 1).trim()) / 100;
+      value= double.parse(profile.substring(0, profile.length - 1).trim()) / 100;
     } else {
       type = LayoutAmountType.FIXED;
       value = CSS.intOf(profile, true); //report error if no number at all

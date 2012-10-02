@@ -34,7 +34,7 @@ class LinearPathMotion extends EasingMotion {
       _applyPosition();
       return true;
     }
-    return _moveCB(state, _pos, x, _applyPosition) !== false;
+    return !identical(_moveCB(state, _pos, x, _applyPosition), false);
   }
   
   void _applyPosition() {

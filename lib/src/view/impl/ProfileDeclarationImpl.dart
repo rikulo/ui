@@ -29,14 +29,14 @@ implements ProfileDeclaration {
     String av;
     if (view == null) {
       av = "";
-    } else if (view === _owner.parent) {
+    } else if (identical(view, _owner.parent)) {
       av = "parent";
     } else {
       if (view != null
       && view.parent != null && _owner.parent != null //parent might not be assigned yet
-      && view.parent !== _owner.parent)
+      && !identical(view.parent, _owner.parent))
         throw new UIException("Only parent or sibling allowed for an anchor, not $view");
-      if (view === _owner)
+      if (identical(view, _owner))
         throw const UIException("The anchor can't be itself.");
       av = view.id.isEmpty() ? "": "#${view.id}";
     }

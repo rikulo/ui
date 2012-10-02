@@ -72,7 +72,7 @@ class DefaultTreeModel<T> extends AbstractTreeModel<TreeNode<T>> {
 	 * + [child] the node we are interested in 
 	 */
   int getIndexOfChild(TreeNode<T> parent, TreeNode<T> child)
-  => parent === child.parent ? child.index: -1;
+  => identical(parent, child.parent) ? child.index: -1;
 
 	/**
 	 * Returns the path from the given child, where the path indicates the child is
