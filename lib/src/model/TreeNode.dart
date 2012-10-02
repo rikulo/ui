@@ -5,9 +5,6 @@
 /**
  * Represents a tree node that can be used with [DefaultTreeModel].
  * [DefaultTreeModel] assumes each node is an instance of [TreeNode].
- *
- * Notice the tree node has to implement [Hashable] if the selection will be
- * used.
  */
 interface TreeNode<T> default DefaultTreeNode<T> {
   /** Constructor.

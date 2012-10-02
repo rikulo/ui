@@ -14,18 +14,16 @@
  * If you'd like to load children lazily (i.e., load the children nodes when it is used),
  * you can override [loadLazily_] and load the children nodes in the method.
  */
-class DefaultTreeNode<T> implements TreeNode<T>, Hashable {
+class DefaultTreeNode<T> implements TreeNode<T> {
   DefaultTreeModel<T> _model;
   TreeNode<T> _parent;
   List<TreeNode<T>> _children;
   T _data;
   bool _leaf, _loaded = false;
-  int _uuid;
 
   DefaultTreeNode([T data, Collection nodes, bool leaf]) {
     _data = data;
     _leaf = leaf;
-    _uuid = _$uuid++;
     if (nodes != null)
       addAll(nodes);
   }
@@ -176,6 +174,4 @@ class DefaultTreeNode<T> implements TreeNode<T>, Hashable {
    */
   Collection<TreeNode<T>> loadLazily_() => null;
   String toString() => "DefaultTreeNode($data)";
-
-  int hashCode() => _uuid;
 }

@@ -46,7 +46,7 @@ typedef void AfterMount(View view);
  *
  * + [ViewUtil]
  */
-class View implements Hashable {
+class View {
   String _id = "";
   String _uuid;
 

@@ -5,7 +5,7 @@
 /**
  * The offset (aka., position).
  */
-interface Offset extends Hashable default _Offset {
+interface Offset default _Offset {
   
   /** The left offset. */
   num get left;
@@ -33,7 +33,6 @@ interface Offset extends Hashable default _Offset {
    * vector of this Offset.
    */
   Offset unit();
-  
 }
 /**
  * The 3D offset.
