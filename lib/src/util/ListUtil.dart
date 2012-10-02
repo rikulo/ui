@@ -66,8 +66,7 @@ class ListUtil {
  * For mutable list, you shall override [operator[]=], [set length],
  * [add], [setRange], [insertRange], and [removeRange].
  */
-//abstract
-class AbstractList<T> implements List<T> {
+abstract class AbstractList<T> implements List<T> {
   const AbstractList();
 
   //Collection//
@@ -109,9 +108,8 @@ class AbstractList<T> implements List<T> {
   void sort(int compare(T a, T b)) {
     DualPivotQuicksort.sort(this, compare);
   }
-  int indexOf(T element, [int start]) {
-    return Arrays.indexOf(this, element, start != null ? start: 0, this.length);
-  }
+  int indexOf(T element, [int start=0])
+  => Arrays.indexOf(this, element, start, this.length);
   int lastIndexOf(T element, [int start]) {
     if (start == null) start = length - 1;
     return Arrays.lastIndexOf(this, element, start);
@@ -125,9 +123,7 @@ class AbstractList<T> implements List<T> {
     return v;
   }
   T removeLast() => removeAt(length - 1);
-  T last() {
-    return this[length - 1];
-  }
+  T last() => this[length - 1];
   List<T> getRange(int start, int length) {
     if (length == 0) return [];
     ListUtil.rangeCheck(this, start, length);

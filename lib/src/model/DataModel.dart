@@ -38,7 +38,6 @@ class ModelException implements Exception {
 /**
  * A skeletal implementation of [DataModel], [Selection] and [Disables].
  */
-//abstract
 class AbstractDataModel implements DataModel {
   DataEvents _on;
   Map<String, List<DataEventListener>> _listeners;

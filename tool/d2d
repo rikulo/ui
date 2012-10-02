@@ -13,25 +13,24 @@ if [ ! -d $SDK ] ; then
   echo "Please link /usr/dart to Dart Editor's folder."
   exit
 fi
-srcpath=$0
-srcpath=${srcpath%/*}
-if [ "$srcpath" = "." ] ; then
-  srcpath=".."
-elif [ "$srcpath" = "${srcpath%/*}" ] ; then
-  srcpath="."
+homedir=$0
+homedir=${homedir%/*}
+if [ "$homedir" = "." ] ; then
+  homedir=".."
+elif [ "$homedir" = "${homedir%/*}" ] ; then
+  homedir="."
 else
-  srcpath=${srcpath%/*}
+  homedir=${homedir%/*}
 fi
 if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
-  srcpath=$(cygpath -u $srcpath)
+  homedir=$(cygpath -u $homedir)
 fi
-dstdir=$srcpath/docs
-srcpath=$srcpath/example/dartdoc/dartdoc.dart
+outdir=$homedir/out
+srcfl=$homedir/example/dartdoc/dartdoc.dart
 
-if [ -d $dstdir ] ; then
-	rm -rf $dstdir/*
+if [ -d $outdir ] ; then
+	rm -rf $outdir/docs
 fi
-mkdir -p $dstdir
 
 dartdoc=$SDK/pkg/dartdoc/bin/dartdoc.dart
 if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
@@ -39,11 +38,19 @@ if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
 fi
 
 PATH=$PATH:$SDK/bin
-dart.exe $dartdoc $srcpath
+echo Compiling $srcfl
+dart.exe $dartdoc $srcfl
+if [ -d $homedir/docs ] ; then
+	mkdir -p $outdir
+	mv $homedir/docs $outdir
+else
+	echo $homedir/docs not found. Failed?
+	exit 1
+fi
 
-cd $dstdir
+cd $outdir/docs
 echo Process HTML files at $(pwd)
-libdir=../tool/lib
+libdir=../../tool/lib
 
 #Fix the redundant page: _____.html
 rm -rf _____.html
@@ -75,7 +82,7 @@ function doHTML {
 }
 
 if [ -f index.html ] ; then
-	doHTML ../tool/lib/index.html.sed
+	doHTML $libdir/index.html.sed
 else
 	echo index.html not found in $(pwd)
 fi

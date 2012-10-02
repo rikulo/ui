@@ -373,7 +373,7 @@ class _ClassSet extends HashSetImplementation<String> implements CSSClassSet {
       view.node.classes.toggle(token);
     return result;
   }
-  bool get isFrozen => false;
+  bool get frozen => false;
 }
 
 /** A virtual ID space.

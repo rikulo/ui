@@ -2,7 +2,6 @@ debug
 codegen
 *.local
 *.class
-docs
 Thumbs.db
 .project
 .children

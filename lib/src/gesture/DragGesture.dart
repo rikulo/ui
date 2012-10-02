@@ -101,8 +101,7 @@ class _DragGestureState implements DragGestureState {
   
 }
 
-//abstract
-class _DragGesture implements DragGesture {
+abstract class _DragGesture implements DragGesture {
   final Element _owner;
   final DragGestureStart _start;
   final DragGestureMove _move;

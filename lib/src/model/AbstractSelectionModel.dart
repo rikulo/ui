@@ -5,7 +5,6 @@
 /**
  * A skeletal implementation of [DataModel], [Selection] and [Disables].
  */
-//abstract
 class AbstractSelectionModel<T> extends AbstractDataModel
 implements Selection<T>, Disables<T> {
   Set<T> _selection, _disables;

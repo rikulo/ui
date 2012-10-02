@@ -64,8 +64,7 @@ interface HoldGesture extends Gesture default _HoldGesture {
   
 }
 
-//abstract
-class _HoldGesture implements HoldGesture {
+abstract class _HoldGesture implements HoldGesture {
   
   final Element owner;
   final int _duration;

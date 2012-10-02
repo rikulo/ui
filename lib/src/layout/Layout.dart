@@ -43,7 +43,7 @@ interface Layout default FreeLayout {
  * callback, anchored views and the recursive callback of [doLayout] of sub views.
  * The derive shall override [doLayout_] and handle only the give sub views.
  */
-class AbstractLayout implements Layout {
+abstract class AbstractLayout implements Layout {
   /** Arranges the layout of non-anchored views.
    * Instead of overriding [doLayout], it is simpler to override this method.
    */

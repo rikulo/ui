@@ -21,8 +21,7 @@ interface Accelerometer {
 
 /** A skeletal implementation of [Accelerometer].
  */
-//abstract
-class AbstractAccelerometer implements Accelerometer {
+abstract class AbstractAccelerometer implements Accelerometer {
   AccelerationEvents _on;
   
   AccelerationEvents get on {

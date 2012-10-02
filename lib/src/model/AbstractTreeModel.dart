@@ -7,8 +7,7 @@
  * To extend from this class, you have to implement [getChild], [getChildCount]
  * and [isLeaf]. This class provides a default implementation for all other methods.
  */
-//abstract
-class AbstractTreeModel<T> extends AbstractSelectionModel<T>
+abstract class AbstractTreeModel<T> extends AbstractSelectionModel<T>
 implements TreeSelectionModel<T> {
   T _root;
   Set<T> _opens;

@@ -19,8 +19,7 @@ interface XGeolocation { //rename to XGeolocation to avoid name confilct with da
     [GeolocationErrorCallback error, GeolocationOptions options]);
 }
 
-//abstract
-class AbstractGeolocation implements XGeolocation {
+abstract class AbstractGeolocation implements XGeolocation {
   PositionEvents _on;
   
   PositionEvents get on {

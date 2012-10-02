@@ -19,8 +19,7 @@ interface Compass {
   void getCurrentHeading(CompassSuccessCallback success, CompassErrorCallback error);
 }
 
-//abstract
-class AbstractCompass implements Compass {
+abstract class AbstractCompass implements Compass {
   CompassHeadingEvents _on;
   
   CompassHeadingEvents get on {
