@@ -6,7 +6,7 @@
  */
 interface Color default _Color {
   
-  /** Construct a Color object with given RGB and [alpha] (opacity) values.
+  /** Construct a Color object with given RGB and alpha (i.e., opacity) values.
    * 
    * + [red], [green], [blue] should be numbers between 0 (inclusive) and 255 
    * (inclusive);
@@ -108,7 +108,7 @@ class _Color implements Color {
 /// An HSV based color object.
 interface HSVColor default _HSVColor {
   
-  /** Construct a Color object with given HSV and [alpha] (opacity) values.
+  /** Construct a Color object with given HSV and alpha (i.e., opacity) values.
    * 
    * + [hue] should be a number between 0 (inclusive) and 360 (exclusive).
    * + [saturation] and [value] should be numbers between 0 (inclusive) and 

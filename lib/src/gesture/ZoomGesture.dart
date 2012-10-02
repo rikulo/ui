@@ -8,7 +8,7 @@ interface ZoomGestureState extends GestureState {
   
   /** The associated [ZoomGesture].
    */
-  _ZoomGesture get gesture;
+  ZoomGesture get gesture;
   
   /** The initial touch positions.
    */
