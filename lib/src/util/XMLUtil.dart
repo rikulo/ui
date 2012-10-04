@@ -107,7 +107,7 @@ class XMLUtil {
       return elem.innerHTML;
     } catch (e) {
       final sb = new StringBuffer();
-      _xmlToStr(sb, elem);
+      _xmlInner(sb, elem);
       return sb.toString();
     }
   }
@@ -121,17 +121,17 @@ class XMLUtil {
     } catch (e) {
       final sb = new StringBuffer();
       _xmlBeg(sb, elem);
-      _xmlToStr(sb, elem);
+      _xmlInner(sb, elem);
       _xmlEnd(sb, elem);
       return sb.toString();
     }
   }
-  static void _xmlToStr(StringBuffer sb, Element elem) {
+  static void _xmlInner(StringBuffer sb, Element elem) {
     for (Node n in elem.nodes){
       if (n is Element) {
         final e = n as Element;
         _xmlBeg(sb, e);
-        _xmlToStr(sb, e);
+        _xmlInner(sb, e);
         _xmlEnd(sb, e);
       } else if (n is Text) {
         sb.add((n as Text).wholeText);
