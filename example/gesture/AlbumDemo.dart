@@ -111,7 +111,7 @@ class AlbumDemo extends Activity {
       final Size msize = new DOMQuery(mainView).innerSize;
       frameSize = min(msize.width, msize.height);
       final int photoSize = min(frameSize - 50, 500);
-      final int photoOffset = ((frameSize - photoSize) / 2).toInt();
+      final int photoOffset = (frameSize - photoSize) ~/ 2;
       final num byWidth = (msize.width - photoSize) / 2 - 5;
       final num byHeight = photoSize / 2;
       final int arrowSize = max(min(byWidth, min(byHeight, 50)), 0).toInt();

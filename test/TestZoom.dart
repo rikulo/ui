@@ -66,7 +66,7 @@ class TestZoom extends Activity {
       cf1.top  = poss[1].top;
       
       sc.html = "${(state.scalar * 10000).toInt() / 100}%";
-      ro.html = "${(state.angle * 1800 / PI).toInt() / 10}&deg;";
+      ro.html = "${(state.angle * 1800 ~/ PI) / 10}&deg;";
       tr.html = "${state.transition}";
       
     }, end: (ZoomGestureState state) {
@@ -94,7 +94,7 @@ View dot(String color, int zIndex) {
 }
 
 TextView label([String text]) {
-  final int fontSize = (statusHeight / 2).toInt();
+  final int fontSize = statusHeight ~/ 2;
   TextView lb = new TextView();
   lb.profile.text = "height: 100%; width: flex";
   lb.style.fontSize = CSS.px(fontSize);

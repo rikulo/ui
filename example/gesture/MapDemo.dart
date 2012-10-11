@@ -39,9 +39,9 @@ class MapDemo extends Activity {
       Size psize = new DOMQuery(panel).innerSize;
       if (psize.width / imgw < psize.height / imgh) {
         img.width = psize.width.toInt();
-        img.height = (psize.width * imgh / imgw).toInt();
+        img.height = psize.width * imgh ~/ imgw;
       } else {
-        img.width = (psize.height * imgw / imgh).toInt();
+        img.width = psize.height * imgw ~/ imgh;
         img.height = psize.height.toInt();
       }
       trans = new Transformation.identity();

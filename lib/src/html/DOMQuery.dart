@@ -108,8 +108,8 @@ class DOMQuery {
     int left = 0, top = 0;
     Element el = node;
     do {
-      left += el.$dom_offsetLeft;
-      top += el.$dom_offsetTop;
+      left += el.offsetLeft;
+      top += el.offsetTop;
     } while (el.style.position != "fixed" && (el = el.offsetParent) != null);
 
     //2. subtract cumulative scrollLeft/scrollTop
@@ -117,8 +117,8 @@ class DOMQuery {
     do {
       final txofs = CSS.offset3dOf(el.style.transform);
         //for performance reason it doesn't handle computed style
-      left -= el.$dom_scrollLeft - txofs.left;
-      top -= el.$dom_scrollTop - txofs.top;
+      left -= el.scrollLeft - txofs.left;
+      top -= el.scrollTop - txofs.top;
     } while ((el = el.parent) != null && el is! Document);
 
     //3. add the browser's scroll offset
@@ -191,7 +191,7 @@ class DOMQuery {
     if (style != null)
       CSS.cpTextStyles(dst, style);
 
-    final Size sz = new Size(_txtdiv.$dom_offsetWidth, _txtdiv.$dom_offsetHeight);
+    final Size sz = new Size(_txtdiv.offsetWidth, _txtdiv.offsetHeight);
     _txtdiv.innerHTML = "";
     return sz;
   }

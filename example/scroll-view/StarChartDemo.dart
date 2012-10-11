@@ -46,7 +46,7 @@ View _line(Offset pos, [num span = 1]) {
   View lv = new View();
   lv.style.backgroundColor = "#FFFFFF";
   
-  final absx = pos.x.abs(), absy = pos.y.abs();
+  final num absx = pos.x.abs(), absy = pos.y.abs();
   
   if (absx > absy) {
     lv.width = absx.toInt();

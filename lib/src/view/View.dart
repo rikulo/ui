@@ -562,8 +562,8 @@ class View {
         if (pn != null) {
           int x = 0, y = 0;
           if (pn.offsetParent == n.offsetParent) {
-            x = pn.$dom_offsetLeft;
-            y = pn.$dom_offsetTop;
+            x = pn.offsetLeft;
+            y = pn.offsetTop;
           }
           locateTo(location, x: x, y: y);
         }

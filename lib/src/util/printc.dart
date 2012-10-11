@@ -103,7 +103,7 @@ class _Printc {
       _msgs.clear();
 
       _node.insertAdjacentHTML("beforeEnd", XMLUtil.encode(sb.toString()));;
-      _node.$dom_scrollTop = 30000;
+      _node.scrollTop = 30000;
     }
   }
   static int _lastLogTime;

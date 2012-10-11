@@ -270,7 +270,7 @@ class ViewIterator implements Iterator<View> {
           max = i;
       }
     }
-    return ((max + 1) / 2).toInt();
+    return (max + 1) ~/ 2;
   }
   
   static bool _isAllIds(List<Selector> list, int offset) {

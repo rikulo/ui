@@ -25,7 +25,7 @@ List<View> createCube(int size) {
   v.style.userSelect = "none";
   v.style.zIndex = "10";
   
-  int s = ((size - 4) / 8).toInt();
+  int s = (size - 4) ~/ 8;
   View brow1 = new View();
   View brow2 = new View();
   brow1.width = brow2.width = s * 2;
