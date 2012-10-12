@@ -1,7 +1,7 @@
 //Sample Code: Hello World!
 
-#import('../../lib/app.dart');
-#import('../../lib/view.dart');
+#import('package:rikulo/app.dart');
+#import('package:rikulo/view.dart');
 
 class HelloWorld extends Activity {
 

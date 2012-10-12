@@ -1,8 +1,8 @@
 //Test Code: TestDOMQuery
 
-#import('../lib/app.dart');
-#import('../lib/view.dart');
-#import('../lib/html.dart');
+#import('package:rikulo/app.dart');
+#import('package:rikulo/view.dart');
+#import('package:rikulo/html.dart');
 
 class TestDOMQuery extends Activity {
 

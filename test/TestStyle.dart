@@ -2,8 +2,8 @@
 //History: Fri, May 25, 2012  5:00:33 PM
 // Author: tomyeh
 
-#import('../lib/app.dart');
-#import('../lib/view.dart');
+#import('package:rikulo/app.dart');
+#import('package:rikulo/view.dart');
 
 class TestStyle extends Activity {
 

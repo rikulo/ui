@@ -4,9 +4,9 @@
 
 #import("dart:math");
 
-#import('../../lib/app.dart');
-#import('../../lib/view.dart');
-#import('../../lib/model.dart');
+#import('package:rikulo/app.dart');
+#import('package:rikulo/view.dart');
+#import('package:rikulo/model.dart');
 
 class Issue13 extends Activity {
 

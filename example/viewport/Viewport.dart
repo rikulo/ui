@@ -5,8 +5,8 @@
 
 #import("dart:html");
 
-#import('../../lib/view.dart');
-#import('../../lib/html.dart');
+#import('package:rikulo/view.dart');
+#import('package:rikulo/html.dart');
 
 /**
  * A view port that demostrates how to implement a view that the origin of

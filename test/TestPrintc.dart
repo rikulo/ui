@@ -1,8 +1,8 @@
 //Sample Code: Test Log
 
-#import('../lib/app.dart');
-#import('../lib/view.dart');
-#import('../lib/util.dart');
+#import('package:rikulo/app.dart');
+#import('package:rikulo/view.dart');
+#import('package:rikulo/util.dart');
 
 class TestPrintc extends Activity {
 

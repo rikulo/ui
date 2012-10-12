@@ -1,7 +1,7 @@
 //Sample Code: activity is just a part of whole HTML page
 
-#import('../lib/app.dart');
-#import('../lib/view.dart');
+#import('package:rikulo/app.dart');
+#import('package:rikulo/view.dart');
 
 class TestPartial extends Activity {
 

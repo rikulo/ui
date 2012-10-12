@@ -1,8 +1,8 @@
-#import('../../lib/app.dart');
-#import('../../lib/view.dart');
-#import('../../lib/model.dart');
-#import('../../lib/event.dart');
-#import('../../lib/util.dart');
+#import('package:rikulo/app.dart');
+#import('package:rikulo/view.dart');
+#import('package:rikulo/model.dart');
+#import('package:rikulo/event.dart');
+#import('package:rikulo/util.dart');
 
 class Issue5 extends Activity {
 
