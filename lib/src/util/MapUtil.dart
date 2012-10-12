@@ -42,8 +42,8 @@ class _OnDemandMap<K, V> implements Map<K,V> {
   void forEach(void f(key, value)) {
     if (_map != null) _map.forEach(f);
   }
-  Collection<K> getKeys() => _map != null ? _map.getKeys(): ListUtil.emptyCollection;
-  Collection<V> getValues() => _map != null ? _map.getValues(): ListUtil.emptyCollection;
+  Collection<K> getKeys() => _map != null ? _map.getKeys(): ListUtil.EMPTY_LIST;
+  Collection<V> getValues() => _map != null ? _map.getValues(): ListUtil.EMPTY_LIST;
   bool isEmpty() => _map == null || _map.isEmpty();
   int get length => _map != null ? _map.length: 0;
   V putIfAbsent(K key, V ifAbsent()) => _init().putIfAbsent(key, ifAbsent);

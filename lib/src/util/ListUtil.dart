@@ -42,13 +42,10 @@ class ListUtil {
 
   /** A readonly and empty list.
    */
-  static const List emptyList = const [];
-  /** A readonly and empty collection.
-   */
-  static const Collection emptyCollection = emptyList;
+  static const List EMPTY_LIST = const [];
   /** A readonly and empty iterator.
    */
-  static const Iterator emptyIterator = const _EmptyIter();
+  static const Iterator EMPTY_ITERATOR = const _EmptyIter();
 }
 
 /**
