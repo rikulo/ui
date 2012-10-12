@@ -23,13 +23,13 @@ class DOMQuery {
    *
    * Note for JavaScript programmers, it is called clientWidth in JavaScript.
    */
-  int get innerWidth => node.$dom_clientWidth;
+  int get innerWidth => node.clientWidth;
   /** Returns the inner height of the given element, including padding
    * but not including border, margin and scroll bar.
    *
    * Note for JavaScript programmers, it is called clientHeight in JavaScript.
    */
-  int get innerHeight => node.$dom_clientHeight;
+  int get innerHeight => node.clientHeight;
   /** Returns the inner size of the given element, including padding
    * but not border.
    */
@@ -38,11 +38,11 @@ class DOMQuery {
   /** Returns the outer width of the given element, including padding,
    * border and margin.
    */
-  int get outerWidth => node.$dom_offsetWidth;
+  int get outerWidth => node.offsetWidth;
   /** Returns the outer width of the given element, including padding,
    * border and margin.
    */
-  int get outerHeight => node.$dom_offsetHeight;
+  int get outerHeight => node.offsetHeight;
   /** Returns the outer size of the given element, including padding,
    * border and margin.
    */
@@ -56,7 +56,7 @@ class DOMQuery {
    *
    * Note for JavaScript programmers, it is called scrollWidth in JavaScript.
    */
-  int get contentWidth => node.$dom_scrollWidth;
+  int get contentWidth => node.scrollWidth;
   /** Returns the total height of the given element's content, including padding
    * but not including border, margin and scroll bar.
    *
@@ -65,7 +65,7 @@ class DOMQuery {
    *
    * Note for JavaScript programmers, it is called scrollHeight in JavaScript.
    */
-  int get contentHeight => node.$dom_scrollHeight;
+  int get contentHeight => node.scrollHeight;
   /** Returns the total size of the given element's content, including padding
    * but not including border, margin and scroll bar.
    */
@@ -83,15 +83,15 @@ class DOMQuery {
   /** Returns the left position of this element relative to the left side of
    * its [offsetParent] element.
    */
-  int get offsetLeft => node.$dom_offsetLeft;
+  int get offsetLeft => node.offsetLeft;
   /** Returns the top position of this element relative to the top side of
    * its [offsetParent] element.
    */
-  int get offsetTop => node.$dom_offsetTop;
+  int get offsetTop => node.offsetTop;
   /** Returns the left-top position of this element relative to the top side of
    * its [offsetParent] element.
    */
-  Offset get offset => new Offset(node.$dom_offsetLeft, node.$dom_offsetTop);
+  Offset get offset => new Offset(node.offsetLeft, node.offsetTop);
 
   /** Returns the offset of this node relative to the document.
    * It takes into account any horizontal scrolling and the `transform` style.
