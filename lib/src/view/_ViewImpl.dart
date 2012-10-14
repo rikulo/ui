@@ -81,12 +81,22 @@ class _ViewImpl {
           if (old.width != cur.width || old.height < cur.height) {
             old = cur;
             browser.updateSize();
+            _updRootSize();
           }
         };
     } else {
       return (event) { //DOM event
           browser.updateSize();
+          _updRootSize();
         };
+    }
+  }
+  static void _updRootSize() {
+    for (View v in ViewUtil.rootViews) {
+      final dlgInfo = DialogInfo.get(v);
+      if (dlgInfo != null)
+        dlgInfo.updateSize();
+      v.requestLayout();
     }
   }
   static EventListener _$onTouchStart;
@@ -179,6 +189,28 @@ class _ViewImpl {
     };
   }
   static Map<String, DOMEventDispatcher> _domEvtDisps;
+
+  //utilities//
+  /** Creates a dialog encloser.
+   */
+  static DialogInfo createDialog(Element node, [String maskClass="v-mask"]) {
+    Size size = node == document.body ?
+      browser.innerSize: new DOMQuery(node).innerSize;
+
+    final parent = new DivElement();
+    parent.style.position = "relative";
+      //we have to create a relative element to enclose dialog
+      //since layout assumes it (test case: TestPartial.html)
+    node.nodes.add(parent);
+
+    //creat mask
+    final mask = new Element.html(
+      '<div class="v- ${maskClass}" style="width:${size.width}px;height:${size.height}px"></div>');
+    if (node != document.body)
+      mask.style.position = "absolute";
+    parent.$dom_appendChild(mask);
+    return new DialogInfo(parent, mask);
+  }
 
   //IdSpace//
   //-------//

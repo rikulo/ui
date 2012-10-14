@@ -149,10 +149,12 @@ typedef void RootLayout(MeasureContext mctx, View root);
 /** The function used to handle the layout of the root views.
  */
 RootLayout rootLayout(MeasureContext mctx, View root) {
-  Element cave = root.node.parent;
+  final node = root.node;
+  final dlgInfo = DialogInfo.get(root);
+  Element cave = dlgInfo != null ? dlgInfo.cave.parent: node.parent;
   if (cave == document.body)
     cave = null;
-  Size size = cave == null ? browser.innerSize: new DOMQuery(cave).innerSize;
+  final size = cave == null ? browser.innerSize: new DOMQuery(cave).innerSize;
 
   final anchor = root.profile.anchorView;
   mctx.setWidthByProfile(root,
@@ -161,14 +163,17 @@ RootLayout rootLayout(MeasureContext mctx, View root) {
     () => anchor != null ? _anchorHeight(anchor, root): size.height);
 
   String loc = root.profile.location;
-  final locators = _getLocators(loc);
   final ref = anchor != null ? anchor:
-    cave != null ? new DOMQuery(cave): _anchorOfRoot;
+    cave != null ? new _AnchorOfNode(cave): _anchorOfRoot;
   final ofs = anchor != null ?
     cave != anchor.parent ? anchor.pageOffset - root.pageOffset:
       new Offset(anchor.left, anchor.top):
-    cave != null ? new DOMQuery(cave).offset:
+    cave != null ?
+      node.offsetParent == node.parent ? //if parent is relative/absolute/fixed
+        new Offset(0,0): new DOMQuery(cave).offset:
     browser.innerOffset;
+
+  final locators = _getLocators(loc);
   _anchorXLocators[locators[0]](ofs.left, ref, root);
   _anchorYLocators[locators[1]](ofs.top, ref, root);
 }
@@ -181,3 +186,12 @@ class _AnchorOfRoot { //mimic View API
   int get innerHeight => browser.innerSize.height;
 }
 final _anchorOfRoot = const _AnchorOfRoot();
+
+class _AnchorOfNode { //mimic View API
+  final DOMQuery _q;
+  _AnchorOfNode(Element n): _q = new DOMQuery(n);
+  int get realWidth => _q.width;
+  int get innerWidth => _q.innerWidth;
+  int get realHeight => _q.height;
+  int get innerHeight => _q.innerHeight;
+}

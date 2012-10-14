@@ -1,23 +1,17 @@
 //Sample Code: activity is just a part of whole HTML page
 
-#import('package:rikulo/app.dart');
 #import('package:rikulo/view.dart');
 
-class TestPartial extends Activity {
-
-  void onCreate_() {
-    TextView welcome = new TextView("Hello World!");
-    welcome.profile.text = "location: center center";
-    welcome.on.click.add((event) {
-      TextView v = new TextView.fromHTML('<ul><li>Dialog Popup</li><li>center center</li></ul>');
-      v.classes.add("v-dialog");
-      v.profile.location = "center center";
-      addDialog(v);
-    });
-    mainView.addChild(welcome);
-  }
-}
-
 void main() {
-  new TestPartial().run();
+  TextView welcome = new TextView.fromHTML("<h1>Click Me</h1>");
+  welcome.profile.text = "location: center center";
+  welcome.on.click.add((event) {
+    TextView dlg = new TextView.fromHTML('<ul><li>Dialog Popup</li><li>center center</li></ul>');
+    dlg.classes.add("v-dialog");
+    dlg.addToDocument(mode: "dialog");
+    dlg.on.click.add((e) {
+      dlg.removeFromDocument();
+    });
+  });
+  new View()..addChild(welcome)..addToDocument();
 }

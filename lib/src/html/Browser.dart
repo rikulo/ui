@@ -177,10 +177,10 @@ class Browser {
     if (_innerOfs == null) {
       final cs = new DOMQuery(document.body).computedStyle;
       final pos = cs.position;
-      _innerOfs = pos == "absolute" || pos == "relative" || pos == "fixed" ?
-        new Offset(0, 0):
+      _innerOfs = pos == "static" || pos == "" ?
         new Offset(CSS.intOf(cs.marginLeft) + CSS.intOf(cs.borderLeft),
-          CSS.intOf(cs.marginTop) + CSS.intOf(cs.borderTop));
+          CSS.intOf(cs.marginTop) + CSS.intOf(cs.borderTop)):
+        new Offset(0, 0);
     }
     return _innerOfs;
   }
@@ -198,9 +198,6 @@ class Browser {
       size = newsz;
       _innerSize = null;
       _innerOfs = null;
-
-      for (View v in ViewUtil.rootViews)
-        v.requestLayout();
     }
   }
 }

@@ -115,7 +115,7 @@ class RunOnceViewManager {
   void queue(View view) {
     //we don't check view.inDocument here since it might be attached later
     _views.add(view);
-    _runQue.add("", () {flush();}, 5);
+    _runQue.add("", () {flush();}, 0);
   }
   /** Removes the given view from the queue, so the action won't take place.
    */

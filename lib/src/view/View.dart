@@ -505,6 +505,10 @@ class View {
    * `document.body` is assumed.
    * + [mode] specifies how to add this view. The allowed values include:
    *    + `child` (default): add as a child of the given node.
+   *    + `dialog`: add as a child and makes it looks like a dialog (a mask
+   * is inserted to keep user from accessing other views).
+   * In additions, if its `profile.location` is not speciifed, `"center center"`
+   * will be assigned (i.e., it will be placed at the center).
    *    + `before`: insert before the given node
    *    + `replace`: replace the given node. Notice if the give node has an ID,
    * it will be assigned to this view's UUID.
@@ -542,6 +546,13 @@ class View {
       case "inner":
         node.innerHTML = html;
         break;//done (and no need to assign p and nxt)
+      case "dialog":
+        final dlgInfo = _ViewImpl.createDialog(node);
+        DialogInfo.set(this, dlgInfo);
+        p = dlgInfo.cave;
+        if (profile.location.isEmpty())
+          profile.location = "center center";
+        break;
       default:
         p = node;
         break;
@@ -576,7 +587,9 @@ class View {
     final Element n = node; //store first since _node will be cleared up later
     _unmount();
     ListUtil.remove(ViewUtil.rootViews, this);
-    n.remove();
+
+    final dlgInfo = DialogInfo.get(this);
+    (dlgInfo != null ? dlgInfo.cave: n).remove();
   }
   /** Binds the view.
    */

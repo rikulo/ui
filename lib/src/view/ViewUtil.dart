@@ -203,5 +203,5 @@ class ViewUtil {
     return _appId;
   }
   static int _appId;
-  static const String _APP_COUNT = "data-rikuloApp";
+  static const String _APP_COUNT = "data-rkAppCount";
 }

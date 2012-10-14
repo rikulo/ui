@@ -40,6 +40,39 @@ class ViewImpl {
   => dir == Dir.HORIZONTAL ? 'rk.layout.hz': 'rk.layout.vt';
 }
 
+/** The dialog information.
+ */
+class DialogInfo {
+  /** The cave node that contains the mask node and the view's node.
+   */
+  final Element cave;
+  /** The mask node. */
+  final Element mask;
+  DialogInfo(this.cave, this.mask);
+
+  void updateSize() {
+    final p = cave.parent;
+    final size = p == document.body || p == null ?
+      browser.innerSize: new DOMQuery(p).innerSize;
+    mask.style
+      ..width = CSS.px(size.width)
+      ..height = CSS.px(size.height);
+  }
+
+  /** Returns the dialog info of the given root view, or null if it is not
+   * a dialog.
+   */
+  static DialogInfo get(View root)
+  => _infs[root];
+  /** Sets the dialog information to the given root.
+   * If [dlgInfo] is null, the dialog information is cleared.
+   */
+  static void set(View root, DialogInfo dlgInfo) {
+    _infs[root] = dlgInfo;
+  }
+  static final Map<View, DialogInfo> _infs = new Map();
+}
+
 /**
  * The configuration of views.
  */
