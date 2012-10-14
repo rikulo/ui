@@ -372,9 +372,6 @@ class View {
   /** Removes this view from its parent.
    *
    * If this view has no parent, [UIException] will be thrown.
-   * Rather, if you'd like to remove [Activity.mainView], assign another view
-   * to [Activity.mainView]. If you'd like to remove a dialog, use [Activity.removeDialog]
-   * instead.
    *
    * If the view is in the document ([inDocument] is true), the DOM
    * element will be removed too. Furthermore, if the view is added back
@@ -384,6 +381,9 @@ class View {
    * cut-and-paste. It won't re-create the DOM element, so the performance
    * is better. Please refer to [cut] for more information.
    * If it is a root view, it will be detached from the document.
+   *
+   * > If you add a root view to the document with [addToDocument],
+   * you shall invoke [removeFromDocument] to remove it instead.
    */
   void removeFromParent() {
     if (parent == null)
@@ -483,7 +483,7 @@ class View {
    */
   Element getNode(String subId) {
     if (!_inDoc)
-      throw new UIException("Not in document, $this. Don't access node in Activity.onCreate_().");
+      throw new UIException("Not in document, $this.");
     return document.query(subId != null && subId.length > 0 ? "#$uuid-$subId": "#$uuid");
   }
   /** Returns if this view has been attached to the document.
@@ -493,59 +493,58 @@ class View {
   /** Adds this view to the document (i.e., the screen that the user interacts with).
    * All of its descendant views are added too.
    *
-   * You rarely need to invoke this method directly. In most cases,
-   * you shall invoke [addChild] instead. If you'd like to add a dialog, you shall
-   * use [Activity.addDialog] instead. To make a view as the main view, you shall
-   * set it to [Activity.mainView] instead.
+   * You need to invoke this method to add a root view to the document
+   * (so called attach).
+   * On the other hand, the child views are added to the document automatically
+   * once the root has been attached.
    *
-   * This method is designed used to mix the use of HTML
-   * elements and views. For example, you can use it if you'd like to add
-   * a view to the content of [TextView] and its derives. For example, you want
-   * replace a portion of [TextView] with a view (, say, to provide some behavior).
+   * > [UIException] is thrown if this view is not a root view (i.e., it has a parent).
    *
-   * Notice that this method can be called only if this view has no parent.
-   * If a view has a parent, whether it is attached to the document
-   * shall be controlled by its parent.
-   *
-   * + If [outer] is true, [node] will be replaced. Furthermore, you can specify
-   * [keepId] to whether to use node's ID as view's UUID. By default, UUID won't be
-   * changed. If you specify [keepId] to true, you have to make sure [node]'s ID
-   * is unique in the whole browser window.
-   * + If [inner] is true, the view will be added as the last child element of [node].
-   * + If neither [outer] nor [inner] is true, you can specify [before] to
-   * a DOM element that the view will be inserted before.
-   *
-   * Notice: if you specify [before], you don't have to specify [node].
-   * On the other hand, [node] is required if you don't specify [before].
-   * It also means you have to specify either [node] or [before].
-   *
-   * Unlike most of API, [requestLayout] will be called automatically after mounted.
-   * If you prefer not to call it, you can specify [shallLayout] to false.
+   * + [node] specifies the DOM element to add this view. If not specified,
+   * it will look for an element whose id is "v-main". If not found,
+   * `document.body` is assumed.
+   * + [mode] specifies how to add this view. The allowed values include:
+   *    + `child` (default): add as a child of the given node.
+   *    + `before`: insert before the given node
+   *    + `replace`: replace the given node. Notice if the give node has an ID,
+   * it will be assigned to this view's UUID.
+   *    + `inner`: replace the inner content. In other words, all children
+   * are removed and this view will become its only child.
+   * + [layout] specifies whether to invoke [requestLayout].
+   * If true, `requestLayout(immediate: true)` will be called.
+   * If omitted (i.e., null), `requestLayout()` will be called.
+   * If false, [requestLayout] won't be called at all.
    */
-  void addToDocument([Element node, bool outer=false, bool inner=false,
-  Element before, bool keepId=false, String location, bool shallLayout=true]) {
+  void addToDocument([Element node, String mode, bool layout]) {
     if (parent != null || inDocument)
       throw new UIException("No parent allowed, nor attached twice: $this");
 
-    _addToDoc(node, outer, inner, before, keepId, location, shallLayout);
+    _ViewImpl.init();
+    _addToDoc(node != null ? node:
+      (node = document.query("#v-main")) != null ? node: document.body,
+      mode, layout);
   }
-  void _addToDoc(Element node, [bool outer=false, bool inner=false,
-  Element before, bool keepId=false, String location, bool shallLayout=true]) {
-    if (outer && keepId && !node.id.isEmpty())
-      _uuid = node.id;
-
+  void _addToDoc(Element node, [String mode, bool layout]) {
     String html = _asHTML();
     Element p, nxt;
-    if (inner) {
-      node.innerHTML = html;
-      //done (and no need to assign p and nxt)
-    } else if (outer) {
-      p = node.parent;
-      nxt = node.nextElementSibling;
-      node.remove();
-    } else {
-      p = node;
-      nxt = before;
+    switch (mode) {
+      case "before":
+        p = node.parent;
+        nxt = node;
+        break;
+      case "replace":
+        if (!node.id.isEmpty())
+          _uuid = node.id;
+        p = node.parent;
+        nxt = node.nextElementSibling;
+        node.remove();
+        break;
+      case "inner":
+        node.innerHTML = html;
+        break;//done (and no need to assign p and nxt)
+      default:
+        p = node;
+        break;
     }
 
     if (nxt != null)
@@ -554,23 +553,11 @@ class View {
       p.insertAdjacentHTML("beforeEnd", html);
 
     _mount();
+    this.node.classes.addAll(_rootClasses);
+    ViewUtil.rootViews.add(this);
 
-    if (location != null)
-      layoutManager.afterLayout(() {
-        final Element n = this.node;
-        final Element pn = n.parent;
-        if (pn != null) {
-          int x = 0, y = 0;
-          if (pn.offsetParent == n.offsetParent) {
-            x = pn.offsetLeft;
-            y = pn.offsetTop;
-          }
-          locateTo(location, x: x, y: y);
-        }
-      });
-
-    if (shallLayout)
-      requestLayout(immediate: true);
+    if (layout != false)
+      requestLayout(immediate: layout == true);
       //immediate: better feedback (and avoid ghost, i.e., showed at original place)
   }
   /** Removes this view from the document.
@@ -580,8 +567,7 @@ class View {
    * the attachment made by [addToDocument].
    * Like [addToDocument], this method can be called only if this view has no parent.
    *
-   * If you add a child by [addChild] or [Activity.addDialog], you shall
-   * invoke [removeFromParent] or [Activity.removeDialog] instead.
+   * > If you add a child by [addChild], you shall invoke [removeFromParent] instead.
    */
   void removeFromDocument() {
     if (parent != null || !inDocument)
@@ -589,6 +575,7 @@ class View {
 
     final Element n = node; //store first since _node will be cleared up later
     _unmount();
+    ListUtil.remove(ViewUtil.rootViews, this);
     n.remove();
   }
   /** Binds the view.
@@ -713,7 +700,7 @@ class View {
     } else if (inDocument) {
       final Element n = node; //cache it since _unmount will clean _node
       _unmount();
-      _addToDoc(n, outer: true);
+      _addToDoc(n, mode: "replace");
     }
   }
 

@@ -62,7 +62,10 @@ class Browser {
    */
   double androidVersion;
 
-  /** The screen size. */
+  /** The browser size (outer), including the margins and borders.
+   *
+   * For the inner size, please use [innerSize] instead.
+   */
   Size size;
 
   Browser() {
@@ -129,9 +132,8 @@ class Browser {
       version = 1.0;
     }
 
-		//We don't consider v-main here since Activity will handle it
-    final DOMQuery qcave = new DOMQuery(window);
-    size = new Size(qcave.innerWidth, qcave.innerHeight);
+    final q = new DOMQuery(window);
+    size = new Size(q.innerWidth, q.innerHeight);
   }
   static double _versionOf(String version, [String separator='.']) {
     int j = version.indexOf(separator);
@@ -144,6 +146,61 @@ class Browser {
       return double.parse(version);
     } catch (e) {
       return 1.0; //ignore it
+    }
+  }
+
+  /** Returns the inner size of the browser, excluding
+   * the margin and border.
+   *
+   * Notice that, for better performance, the inner size is cached.
+   * If you changed `document.body`'s margin or border, you shall invoke
+   * [updateSize] to reset the cache.
+   */
+  Size get innerSize {
+    if (_innerSize == null) {
+      final cs = new DOMQuery(document.body).computedStyle;
+      _innerSize = new Size(
+        size.width - CSS.intOf(cs.marginLeft) - CSS.intOf(cs.marginRight)
+        - CSS.intOf(cs.borderLeft) - CSS.intOf(cs.borderRight),
+        size.height - CSS.intOf(cs.marginTop) - CSS.intOf(cs.marginBottom)
+        - CSS.intOf(cs.borderTop) - CSS.intOf(cs.borderBottom));
+
+    }
+    return _innerSize;
+  }
+  Size _innerSize;
+  /** Returns the inner offset.
+   * If `document.body`'s position is absolute, relative or fixed, it is (0, 0).
+   * Otherwise, it is the sum of margin and border width.
+   */
+  Offset get innerOffset {
+    if (_innerOfs == null) {
+      final cs = new DOMQuery(document.body).computedStyle;
+      final pos = cs.position;
+      _innerOfs = pos == "absolute" || pos == "relative" || pos == "fixed" ?
+        new Offset(0, 0):
+        new Offset(CSS.intOf(cs.marginLeft) + CSS.intOf(cs.borderLeft),
+          CSS.intOf(cs.marginTop) + CSS.intOf(cs.borderTop));
+    }
+    return _innerOfs;
+  }
+  Offset _innerOfs;
+  /** Updates the browser's size. It is called when the browser's size
+   * is changed (including device's orientation is changed).
+   *
+   * Notice that it is called automatically, so the application rarely need to call it
+   * unless it changed the margin or border of `document.body`.
+   */
+  void updateSize() {
+    final q = new DOMQuery(window);
+    final newsz = new Size(q.innerWidth, q.innerHeight);
+    if (newsz != size) {
+      size = newsz;
+      _innerSize = null;
+      _innerOfs = null;
+
+      for (View v in ViewUtil.rootViews)
+        v.requestLayout();
     }
   }
 }

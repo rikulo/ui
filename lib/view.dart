@@ -7,7 +7,6 @@
 #import("dart:math");
 
 #import("util.dart");
-#import("app.dart");
 #import("event.dart");
 #import("html.dart");
 #import('gesture.dart');

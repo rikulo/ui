@@ -61,6 +61,44 @@ class _TagView extends View {
 /** Collection of utilities for View's implementation
  */
 class _ViewImpl {
+  //System Initialization//
+  static void init() {
+    if (!_inited) {
+      _inited = true;
+      window.on.resize.add(_onResize);
+      (browser.touch ? document.on.touchStart: document.on.mouseDown).add(_onTouchStart);
+    }
+  }
+  static bool _inited = false;
+  static EventListener get _onResize {
+    if (browser.android) {
+    //Android: resize will be fired when virtual keyboard showed up
+    //so we have to ignore this case: width must be changed, or height is larger
+    //(since user might bring up kbd, rotate, and close kbd)
+      Size old = new DOMQuery(window).innerSize;
+      return (event) { //DOM event
+          final cur = new DOMQuery(window).innerSize;
+          if (old.width != cur.width || old.height < cur.height) {
+            old = cur;
+            browser.updateSize();
+          }
+        };
+    } else {
+      return (event) { //DOM event
+          browser.updateSize();
+        };
+    }
+  }
+  static EventListener _$onTouchStart;
+  static EventListener get _onTouchStart {
+    if (_$onTouchStart == null)
+      _$onTouchStart = (event) { //DOM event
+        broadcaster.sendEvent(new PopupEvent(event.target));
+      };
+    return _$onTouchStart;
+  }
+  //TODO: use const if Dart considers closure as constants (also check Issue 3905)
+
   //Link//
   //----//
   static void link(View view, View child, View beforeChild) {
@@ -534,6 +572,8 @@ class _SubviewList extends AbstractList<View> {
   }
 }
 
+/** _SubviewList's iterator.
+ */
 class _SVIterator implements Iterator<View> {
   View _next;
 
@@ -555,3 +595,19 @@ class _SVIterator implements Iterator<View> {
 
 final RunOnceViewManager _invalidator =
   new RunOnceViewManager((View view) {view.invalidate(true);});
+
+/** The classes to add to the root node
+ */
+List<String> get _rootClasses {
+  if (_$rootClasses == null) {
+    _$rootClasses = ["rikulo", browser.name];
+    if (browser.touch)
+      _$rootClasses.add("touch");
+    if (browser.ios)
+      _$rootClasses.add("ios");
+    else if (browser.android)
+      _$rootClasses.add("android");
+  }
+  return _$rootClasses;
+}
+List<String> _$rootClasses;

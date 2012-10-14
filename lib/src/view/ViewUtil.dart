@@ -132,6 +132,12 @@ class ViewUtil {
   }
   static final Map<String, View> _views = new Map();
 
+  /** A readonly list of root views.
+   *
+   * > Don't modify it directly. The result is unpredictable.
+   */
+  static final List<View> rootViews = new List();
+
   /** Redraws the invalidated views queued by [View.invalidate].
    *
    * Notice that it is static, i.e., all queued invalidation will be redrawn.
@@ -174,4 +180,28 @@ class ViewUtil {
     }
     return new Rectangle(left, top, right, bottom);
   }
+
+  /** Returns an ID that uniquely identifying this application.
+   * In other words, every dart application in the same browser
+   * will have an unique [appId].
+   */
+  static int get appId {
+    if (_appId == null) {
+      final Element body = document.body;
+      if (body == null)
+        throw const UIException("document not ready yet");
+
+      String sval = body.$dom_getAttribute(_APP_COUNT);
+      if (sval != null) {
+        _appId = int.parse(sval);
+        body.$dom_setAttribute(_APP_COUNT, (_appId + 1).toString());
+      } else {
+        _appId = 0;
+        body.$dom_setAttribute(_APP_COUNT, "1");
+      }
+    }
+    return _appId;
+  }
+  static int _appId;
+  static const String _APP_COUNT = "data-rikuloApp";
 }

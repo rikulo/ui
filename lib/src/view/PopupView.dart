@@ -33,8 +33,7 @@
  * the parent view's DOM element, like any other view does. However, it is invisible
  * and used only as a *reference* for inserting sibling views.
  *
- * The other element (called [node]) is created as a direct element of [document.body]
- * (or [Activity.container] if not null).
+ * The other element (called [node]) is created as a direct element of [document.body].
  * It is the real visual representation of this popup view.
  *
  * Notice that [node]'s `parent` is not the same as [parent]'s node.
@@ -121,8 +120,7 @@ class PopupView extends View {
   }
   //@Override
   void mount_() {
-    (activity.container != null ? activity.container: document.body)
-      .insertAdjacentHTML("beforeEnd", _popupHTML());
+    document.body.insertAdjacentHTML("beforeEnd", _popupHTML());
 
     super.mount_();
 

@@ -167,10 +167,17 @@ class RunOnceViewManager {
       }
     }
 
-    final List<View> todos = new List.from(_views);
+    //1. handle non-achored roots, 2. handle anchored root, 3. handle others
+    final root1 = [], root2 = [], others = [];
+    for (final v in _views)
+      (v.parent != null ? others: v.profile.anchorView == null ? root1: root2).add(v);
     _views.clear();
 
-    for (final v in todos)
+    for (final v in root1)
+      handle_(v);
+    for (final v in root2)
+      handle_(v);
+    for (final v in others)
       handle_(v);
   }
   void _flushOne(View view, bool force) {

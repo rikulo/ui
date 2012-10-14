@@ -2,26 +2,40 @@
 
 #import('dart:html');
 
-#import('package:rikulo/app.dart');
 #import('package:rikulo/view.dart');
 
-class TestEmbed extends Activity {
-
-  void onCreate_() {
-    final TextView webView = new TextView.fromHTML('''
-      <ul style="line-height: 23px">
-        <li>Structured Web Apps <span style="float:right"></span></li>
-        <li>Structured UI Model <span style="float:right"></span></li>
-      </ul>
-      ''');
-    webView.width = 250;
-    mainView.addChild(webView);
-
-    for (Element n in webView.node.queryAll("span"))
-      new Switch(true).addToDocument(n, location: "right top");
-  }
-}
-
 void main() {
-  new TestEmbed().run();
+  final webView = new TextView.fromHTML('''
+    <style>
+    span.box {
+      display:inline-block;width:64px;height:20px;
+    }
+    </style>
+    <div>
+      Here is in DIV: <span class="box">&nbsp;</span>
+    </div>
+    <ul style="line-height: 23px">
+      <li>Structured Web Apps <span class="box"></span></li>
+      <li>Structured UI Model <span class="box"></span></li>
+    </ul>
+    ''')
+    ..width = 500
+    ..top = 30;
+  new Section()
+    ..addChild(new Button("Click Me")..on.click.add((event) {
+        webView.top += 50;
+      }))
+    ..addChild(webView)
+    ..addToDocument();
+
+  for (Element n in webView.node.queryAll("span"))
+    new Switch(true).addToDocument(n);
+
+  var tv = new TextView.fromHTML("<b>Right Top</b>")
+    ..profile.location = "right top"
+    ..addToDocument();
+  new TextView.fromHTML("<b>South End</b>")
+    ..profile.location = "south end"
+    ..profile.anchorView = tv
+    ..addToDocument();
 }

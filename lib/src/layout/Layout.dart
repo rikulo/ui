@@ -8,10 +8,10 @@
 interface Layout default FreeLayout {
   /** Measure the width of the given view.
    */
-  int measureWidth(MeasureContext ctx, View view);
+  int measureWidth(MeasureContext mctx, View view);
   /** Measure the height of the given view.
    */
-  int measureHeight(MeasureContext ctx, View view);
+  int measureHeight(MeasureContext mctx, View view);
 
   /** Returns whether the subview's profile shall inherit the layout of
    * its parent.
@@ -32,7 +32,7 @@ interface Layout default FreeLayout {
 
   /** Handles the layout of the given view.
    */
-  void doLayout(MeasureContext ctx, View view);
+  void doLayout(MeasureContext mctx, View view);
 }
 
 /** A skeletal implementation of [Layout].
@@ -91,3 +91,95 @@ LayoutAmountInfo _getLayoutAmountInfo(View view, String value) {
   }
   return amt;
 }
+
+/**
+ * The free layout (default).
+ */
+class FreeLayout extends AbstractLayout {
+  int measureWidth(MeasureContext mctx, View view) {
+    int wd = mctx.getWidthSetByApp(view);
+    if (wd == null) {
+      wd = view.innerWidth;
+      for (final View child in view.children) {
+        if (view.shallLayout_(child) && child.profile.anchorView == null) {
+          int subsz = child.measureWidth_(mctx);
+          subsz = child.left + (subsz != null ? subsz: 0);
+          if (wd == null || subsz > wd)
+            wd = subsz;
+        }
+      }
+
+      if (wd != null)
+        wd += mctx.getBorderWidth(view);
+    }
+    return wd;
+  }
+  int measureHeight(MeasureContext mctx, View view) {
+    int hgh = mctx.getHeightSetByApp(view);
+    if (hgh == null) {
+      hgh = view.innerHeight;
+      for (final View child in view.children) {
+        if (view.shallLayout_(child) && child.profile.anchorView == null) {
+          int subsz = child.measureHeight_(mctx);
+          subsz = child.top + (subsz != null ? subsz: 0);
+          if (hgh == null || subsz > hgh)
+            hgh = subsz;
+        }
+      }
+
+      if (hgh != null)
+        hgh += mctx.getBorderHeight(view);
+    }
+    return hgh;
+  }
+  bool isProfileInherited() => false;
+  void doLayout_(MeasureContext mctx, View view, List<View> children) {
+    final AsInt innerWidth = () => view.innerWidth,
+      innerHeight = () => view.innerHeight; //future: introduce cache
+    for (final View child in children) {
+      mctx.setWidthByProfile(child, innerWidth);
+      mctx.setHeightByProfile(child, innerHeight);
+    }
+  }
+}
+
+/** The function type used to handle the layout of the root views.
+ */
+typedef void RootLayout(MeasureContext mctx, View root);
+/** The function used to handle the layout of the root views.
+ */
+RootLayout rootLayout(MeasureContext mctx, View root) {
+  Element cave = root.node.parent;
+  if (cave == document.body)
+    cave = null;
+  Size size = cave == null ? browser.innerSize: new DOMQuery(cave).innerSize;
+
+  final anchor = root.profile.anchorView;
+  mctx.setWidthByProfile(root,
+    () => anchor != null ? _anchorWidth(anchor, root): size.width);
+  mctx.setHeightByProfile(root,
+    () => anchor != null ? _anchorHeight(anchor, root): size.height);
+
+  String loc = root.profile.location;
+  final locators = _getLocators(loc);
+  final ref = anchor != null ? anchor:
+    cave != null ? new DOMQuery(cave): _anchorOfRoot;
+if (anchor != null)
+print("${anchor.pageOffset}, ${root.pageOffset}, ${anchor.left}");
+  final ofs = anchor != null ?
+    cave != anchor.parent ? anchor.pageOffset - root.pageOffset:
+      new Offset(anchor.left, anchor.top):
+    cave != null ? new DOMQuery(cave).offset:
+    browser.innerOffset;
+  _anchorXLocators[locators[0]](ofs.left, ref, root);
+  _anchorYLocators[locators[1]](ofs.top, ref, root);
+}
+//Used by _locateRoot to simulate an achor for root views
+class _AnchorOfRoot {
+  const _AnchorOfRoot();
+  int get outerWidth => browser.innerSize.width;
+  int get innerWidth => browser.innerSize.width;
+  int get outerHeight => browser.innerSize.height;
+  int get innerHeight => browser.innerSize.height;
+}
+final _anchorOfRoot = const _AnchorOfRoot();

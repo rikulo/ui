@@ -1,16 +1,6 @@
 //List all packages that shall be part of Rikulo API Reference
 #library('_____');
 
-#import('package:rikulo/app.dart');
-#import('package:rikulo/device.dart');
-#import('package:rikulo/device/accelerometer.dart');
-#import('package:rikulo/device/camera.dart');
-#import('package:rikulo/device/capture.dart');
-#import('package:rikulo/device/connection.dart');
-#import('package:rikulo/device/compass.dart');
-#import('package:rikulo/device/contacts.dart');
-#import('package:rikulo/device/geolocation.dart');
-#import('package:rikulo/device/notification.dart');
 #import('package:rikulo/effect.dart');
 #import('package:rikulo/event.dart');
 #import('package:rikulo/gesture.dart');

@@ -2,7 +2,7 @@
 //History: Mon, Apr 02, 2012  6:31:09 PM
 // Author: tomyeh
 
-typedef void _AnchorHandler(int offset, var anchor, View view);
+typedef void _AnchorLocator(int offset, var anchor, View view);
 
 /**
  * The anchor relationship.
@@ -71,66 +71,49 @@ class AnchorRelation {
         _layoutAnchored(mctx, view, thisOnly); //recursive
     }
   }
-  //called by LayoutManager
-  //No need to call preLayout since LayoutManager will do it
-  static void _layoutRoot(MeasureContext mctx, View root) {
-    final anchor = root.profile.anchorView;
-    mctx.setWidthByProfile(root,
-      () => anchor != null ? _anchorWidth(anchor, root): browser.size.width);
-    mctx.setHeightByProfile(root,
-      () => anchor != null ? _anchorHeight(anchor, root): browser.size.height);
-
-    final String loc = root.profile.location;
-    if (!loc.isEmpty()) { //nothing to do if empty (since no achor at all)
-      final List<int> handlers = _getHandlers(loc);
-      _anchorXHandlers[handlers[0]](0, anchor != null ? anchor: _anchorOfRoot, root);
-      _anchorYHandlers[handlers[1]](0, anchor != null ? anchor: _anchorOfRoot, root);
-    }
-  }
   /** Locates the given view at the given offset.
    *
    * Please refer to [View]'s `locateTo` for more information.
    */
   static void locate(View view, String location, View anchor, [int x=0, int y=0]) {
     if (anchor != null) {
-      final handlers = _getHandlers(location);
+      final locators = _getLocators(location);
       final offset =
         view.style.position == "fixed" ? anchor.pageOffset:
         identical(anchor, view.parent) ? new Offset(0, 0): //parent
         identical(anchor.parent, view.parent) ?
           new Offset(anchor.left, anchor.top): //sibling (the same coordiante system)
           anchor.pageOffset - view.pageOffset; //neither parent nor sibling
-      _anchorXHandlers[handlers[0]](offset.left, anchor, view);
-      _anchorYHandlers[handlers[1]](offset.top, anchor, view);
+      _anchorXLocators[locators[0]](offset.left, anchor, view);
+      _anchorYLocators[locators[1]](offset.top, anchor, view);
     } else if (location == null || location.isEmpty()) {
       view.left = x;
       view.top = y;
     } else {
-      final List<int> handlers = _getHandlers(location);
-      _anchorXHandlers[handlers[0]](x, _anchorOfPoint, view);
-      _anchorYHandlers[handlers[1]](y, _anchorOfPoint, view);
+      final locators = _getLocators(location);
+      _anchorXLocators[locators[0]](x, _anchorOfPoint, view);
+      _anchorYLocators[locators[1]](y, _anchorOfPoint, view);
     }
-  }
-
-  static List<int> _getHandlers(String loc) {
-    if (loc.isEmpty()) //assume a value if empty since there is an anchor
-      loc = "top left";
-
-    List<int> handlers = _locations[loc];
-    if (handlers != null)
-      return handlers;
-
-    final int j = loc.indexOf(' ');
-    if (j > 0) {
-      final String loc2 = "${loc.substring(j + 1)} ${loc.substring(0, j)}";
-      handlers = _locations[loc2];
-      if (handlers != null)
-        return handlers;
-    }
-    throw new UIException("Unknown loation ${loc}");
   }
 }
-final Map<String, List<int>> _locations = const {
+List<int> _getLocators(String loc) {
+  if (loc.isEmpty()) //assume a value if empty since there is an anchor
+    loc = "top left";
+
+  List<int> locators = _locators[loc];
+  if (locators != null)
+    return locators;
+
+  final int j = loc.indexOf(' ');
+  if (j > 0) {
+    final String loc2 = "${loc.substring(j + 1)} ${loc.substring(0, j)}";
+    locators = _locators[loc2];
+    if (locators != null)
+      return locators;
+  }
+  throw new UIException("Unknown loation ${loc}");
+}
+final Map<String, List<int>> _locators = const {
   "north start": const [1, 0], "north center": const [2, 0], "north end": const [3, 0],
   "south start": const [1, 4], "south center": const [2, 4], "south end": const [3, 4],
   "west start": const [0, 1], "west center": const [0, 2], "west end": const [0, 3],
@@ -146,9 +129,9 @@ int _anchorHeight(var anchor, View view)
 => identical(anchor, view.parent) ? anchor.innerHeight: anchor.outerHeight;
 
 //TODO: use const when Dart considers Closure as constant
-List<_AnchorHandler> get _anchorXHandlers {
-  if (_$anchorXHandlers == null)
-    _$anchorXHandlers = [
+List<_AnchorLocator> get _anchorXLocators {
+  if (_$anchorXLocators == null)
+    _$anchorXLocators = [
       (int offset, var anchor, View view) { //outer left
         view.left = offset - view.outerWidth;
       },
@@ -165,12 +148,12 @@ List<_AnchorHandler> get _anchorXHandlers {
         view.left = offset + _anchorWidth(anchor, view);
       }
     ];
-  return _$anchorXHandlers;
+  return _$anchorXLocators;
 }
-List<_AnchorHandler> _$anchorXHandlers;
-List<_AnchorHandler> get _anchorYHandlers {
-  if (_$anchorYHandlers == null)
-    _$anchorYHandlers = [
+List<_AnchorLocator> _$anchorXLocators;
+List<_AnchorLocator> get _anchorYLocators {
+  if (_$anchorYLocators == null)
+    _$anchorYLocators = [
       (int offset, var anchor, View view) {
         view.top = offset - view.outerHeight;
       },
@@ -187,19 +170,9 @@ List<_AnchorHandler> get _anchorYHandlers {
         view.top = offset + _anchorHeight(anchor, view);
       }
     ];
-  return _$anchorYHandlers;
+  return _$anchorYLocators;
 }
-List<_AnchorHandler> _$anchorYHandlers;
-
-//Used by _locateRoot to simulate an achor for root views
-class _AnchorOfRoot {
-  const _AnchorOfRoot();
-  int get outerWidth => browser.size.width;
-  int get innerWidth => browser.size.width;
-  int get outerHeight => browser.size.height;
-  int get innerHeight => browser.size.height;
-}
-final _anchorOfRoot = const _AnchorOfRoot();
+List<_AnchorLocator> _$anchorYLocators;
 
 class _AnchorOfPoint {
   const _AnchorOfPoint();

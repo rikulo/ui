@@ -78,6 +78,12 @@ class MeasureContext {
   void setWidthByProfile(View view, AsInt width) {
     if (view.visible) {
       final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "width"));
+
+      //if view is root and a view group, we use flex
+      if (view.parent == null && view.isViewGroup() && amt.type == LayoutAmountType.NONE
+      && width() > 0)
+        amt.type = LayoutAmountType.FLEX;
+
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           view.width = amt.value; //fixed has higher priority than min/max
@@ -108,6 +114,12 @@ class MeasureContext {
   void setHeightByProfile(View view, AsInt height) {
     if (view.visible) {
       final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "height"));
+
+      //if view is root and a view group, we use flex
+      if (view.parent == null && view.isViewGroup() && amt.type == LayoutAmountType.NONE
+      && height() > 0)
+        amt.type = LayoutAmountType.FLEX;
+
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           view.height = amt.value; //fixed has higher priority than min/max

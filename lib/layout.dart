@@ -6,7 +6,6 @@
 #import("dart:html");
 #import("dart:math");
 
-#import("app.dart");
 #import("view.dart");
 #import("util.dart");
 #import("html.dart");
@@ -15,10 +14,7 @@
 #source("src/layout/LayoutManager.dart");
 #source("src/layout/Layout.dart");
 #source("src/layout/MeasureContext.dart");
-#source("src/layout/FreeLayout.dart");
 #source("src/layout/LinearLayout.dart");
-#source("src/layout/_HLayout.dart");
-#source("src/layout/_VLayout.dart");
 #source("src/layout/TileLayout.dart");
 #source("src/layout/AnchorRelation.dart");
 #source("src/layout/LayoutAmountInfo.dart");

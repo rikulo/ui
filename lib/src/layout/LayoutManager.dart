@@ -15,6 +15,7 @@ class LayoutManager extends RunOnceViewManager {
   LayoutManager(): super(null), _layouts = {}, _imgWaits = new Set(), _afters = [] {
     addLayout("linear", new LinearLayout());
     addLayout("tile", new TileLayout());
+
     final freeLayout = new FreeLayout();
     addLayout("none", freeLayout);
     addLayout("", freeLayout);
@@ -74,7 +75,7 @@ class LayoutManager extends RunOnceViewManager {
       ViewImpl.sizedByApp(view, dir);
   }
 
-  //@Override
+  //@override
   void flush([View view, bool force=false]) {
     //ignore flush if not empty (_onImageLoaded will invoke it later)
     if (_imgWaits.isEmpty())
@@ -83,7 +84,7 @@ class LayoutManager extends RunOnceViewManager {
       queue(view); //do it later
   }
 
-  //@Override RunOnceViewManager
+  //@override
   void handle_(View view) {
     ++_inLayout;
     try {
@@ -93,7 +94,7 @@ class LayoutManager extends RunOnceViewManager {
       final parent = view.parent;
       if (parent == null) { //root without anchor
         //including anchored
-        AnchorRelation._layoutRoot(mctx, view);
+        rootLayout(mctx, view);
       } else if (view.profile.anchorView != null) {
         //including PopupView
         new AnchorRelation(parent)

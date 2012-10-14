@@ -154,19 +154,6 @@ class DOMQuery {
    */
   bool isInput() => node.tagName == 'INPUT' || node.tagName == 'TEXTAREA';
   
-  /** Returns the size of the padding at left.
-   */
-  int get paddingLeft => CSS.intOf(computedStyle.paddingLeft);
-  /** Returns the size of the padding at right.
-   */
-  int get paddingRight => CSS.intOf(computedStyle.paddingRight);
-  /** Returns the size of the padding at top.
-   */
-  int get paddingTop => CSS.intOf(computedStyle.paddingTop);
-  /** Returns the size of the padding at bottom.
-   */
-  int get paddingBottom => CSS.intOf(computedStyle.paddingBottom);
-
   /** Measure the size of the given text.
    *
    * If [node] is not null, the size will be based on it CSS style and

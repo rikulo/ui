@@ -1,14 +1,13 @@
 //Sample Code: Custom Layout Demo
 
-#import('package:rikulo/app.dart');
 #import('package:rikulo/view.dart');
 #import('package:rikulo/event.dart');
 
-class CustomLayoutDemo extends Activity {
-  View anchor;
+class CustomLayoutDemo {
+  View anchor, mainView;
 
-  void onCreate_() {
-    title = "Custom Layout Demo";
+  void run() {
+    mainView = new View()..addToDocument();
 
     TextView text = new TextView("Touch Anywhere You like");
     text.profile.text = "location: center center";

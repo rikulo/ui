@@ -1,5 +1,11 @@
 #Rikulo Changes
 
+**October 13, 2012**
+
+* Activity and Application were removed. Use View.addToDocument() instead.
+* View.addToDocument() was simplified.
+* Cordova is moved to another repository, rikulo_gap.
+
 **September 25, 2012**
 
 * Convert project structure to pub standard

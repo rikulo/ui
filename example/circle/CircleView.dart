@@ -3,7 +3,6 @@
 #import('dart:html');
 #import("dart:math");
 
-#import('package:rikulo/app.dart');
 #import('package:rikulo/html.dart');
 #import('package:rikulo/view.dart');
 #import('package:rikulo/effect.dart');
@@ -33,18 +32,13 @@ class Ball {
   }
 }
 
-class Circle extends Activity {
-  void onCreate_() {
-    title = "Circles";
-    animator = new Animator();
-    mainView.addChild(new Ball(50, 2.0, 6, "red").view);
-    mainView.addChild(new Ball(30, 1.3, 6, "blue").view);
-    mainView.addChild(new Ball(70, 1.6, 10, "green").view);
-    mainView.addChild(new Ball(100, 1.0, 13, "yellow").view);
-    mainView.addChild(new Ball(130, 0.8, 8, "#0ff").view);
-  }
-}
-
 void main() {
-  new Circle().run();
+  animator = new Animator();
+  new View()
+    ..addChild(new Ball(50, 2.0, 6, "red").view)
+    ..addChild(new Ball(30, 1.3, 6, "blue").view)
+    ..addChild(new Ball(70, 1.6, 10, "green").view)
+    ..addChild(new Ball(100, 1.0, 13, "yellow").view)
+    ..addChild(new Ball(130, 0.8, 8, "#0ff").view)
+    ..addToDocument();
 }

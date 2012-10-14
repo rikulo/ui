@@ -3,7 +3,6 @@
 #import('dart:html');
 #import("dart:math");
 
-#import('package:rikulo/app.dart');
 #import('package:rikulo/html.dart');
 #import('package:rikulo/view.dart');
 #import('package:rikulo/effect.dart');
@@ -31,15 +30,12 @@ class Ball {
   }
 }
 
-class CanvasCircle extends Activity {
+class CanvasCircle {
   List<Ball> balls;
 
-  void onCreate_() {
-    title = "Circles";
-
-    canvas = new Canvas();
-    canvas.profile.text = "anchor: parent; width: flex; height: flex";
-    mainView.addChild(canvas);
+  void run() {
+    canvas = new Canvas()
+      ..addToDocument(layout: true);
 
     balls = [new Ball(50, 2.0, 6, "red"),
       new Ball(30, 1.3, 6, "blue"),

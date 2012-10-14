@@ -7,8 +7,8 @@
 #import("dart:html");
 #import("dart:json");
 
-#import("app.dart");
 #import("html.dart");
+#import("view.dart");
 #import("util.dart");
 
 #source("src/message/MessageQueue.dart");
