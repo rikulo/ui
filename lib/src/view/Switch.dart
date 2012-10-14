@@ -66,9 +66,9 @@ class Switch extends View implements Input<bool> {
 
   Element get _sdNode => getNode('sd');
   Element get _bgNode => getNode('bg');
-  int get _marginDiff => 1 - (outerHeight >> 1); //-(radius - 1) (border)
+  int get _marginDiff => 1 - (realHeight >> 1); //-(radius - 1) (border)
   /** X offset for the OFF label. */
-  int get _x_off => outerWidth - outerHeight; //-(width - 2 * radius)
+  int get _x_off => realWidth - realHeight; //-(width - 2 * radius)
   void _setValue(bool value, [bool bAnimate=false, bool bSendEvent=false]) {
     final bool bChanged = _value != value;
     _value = value;

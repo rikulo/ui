@@ -255,7 +255,7 @@ class MeasureContext {
     }
 
     final DOMQuery qview = new DOMQuery(view);
-    num width = qview.outerWidth, height = qview.outerHeight;
+    num width = qview.width, height = qview.height;
 
     if (orgspace != null)
       nodestyle.whiteSpace = orgspace; //restore
@@ -274,8 +274,8 @@ class MeasureContext {
     || (limit != null && width > limit)) {
       nodestyle.width = CSS.px(limit != null ? limit: browser.size.width);
 
-      width = qview.outerWidth;
-      height = qview.outerHeight;
+      width = qview.width;
+      height = qview.height;
       //Note: we don't restore the width such that browser will really limit the width
     }
 

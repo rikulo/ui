@@ -124,25 +124,25 @@ final Map<String, List<int>> _locators = const {
 };
 
 int _anchorWidth(var anchor, View view)
-=> identical(anchor, view.parent) ? anchor.innerWidth: anchor.outerWidth;
+=> identical(anchor, view.parent) ? anchor.innerWidth: anchor.realWidth;
 int _anchorHeight(var anchor, View view)
-=> identical(anchor, view.parent) ? anchor.innerHeight: anchor.outerHeight;
+=> identical(anchor, view.parent) ? anchor.innerHeight: anchor.realHeight;
 
 //TODO: use const when Dart considers Closure as constant
 List<_AnchorLocator> get _anchorXLocators {
   if (_$anchorXLocators == null)
     _$anchorXLocators = [
       (int offset, var anchor, View view) { //outer left
-        view.left = offset - view.outerWidth;
+        view.left = offset - view.realWidth;
       },
       (int offset, var anchor, View view) { //inner left
         view.left = offset;
       },
       (int offset, var anchor, View view) { //center
-        view.left = offset + (_anchorWidth(anchor, view) - view.outerWidth) ~/ 2;
+        view.left = offset + (_anchorWidth(anchor, view) - view.realWidth) ~/ 2;
       },
       (int offset, var anchor, View view) { //inner right
-        view.left = offset + _anchorWidth(anchor, view) - view.outerWidth;
+        view.left = offset + _anchorWidth(anchor, view) - view.realWidth;
       },
       (int offset, var anchor, View view) { //outer right
         view.left = offset + _anchorWidth(anchor, view);
@@ -155,16 +155,16 @@ List<_AnchorLocator> get _anchorYLocators {
   if (_$anchorYLocators == null)
     _$anchorYLocators = [
       (int offset, var anchor, View view) {
-        view.top = offset - view.outerHeight;
+        view.top = offset - view.realHeight;
       },
       (int offset, var anchor, View view) {
         view.top = offset;
       },
       (int offset, var anchor, View view) {
-        view.top = offset + (_anchorHeight(anchor, view) - view.outerHeight) ~/ 2;
+        view.top = offset + (_anchorHeight(anchor, view) - view.realHeight) ~/ 2;
       },
       (int offset, var anchor, View view) { //inner bottom
-        view.top = offset + _anchorHeight(anchor, view) - view.outerHeight;
+        view.top = offset + _anchorHeight(anchor, view) - view.realHeight;
       },
       (int offset, var anchor, View view) { //bottom
         view.top = offset + _anchorHeight(anchor, view);
@@ -174,11 +174,11 @@ List<_AnchorLocator> get _anchorYLocators {
 }
 List<_AnchorLocator> _$anchorYLocators;
 
-class _AnchorOfPoint {
+class _AnchorOfPoint { //mimic View API
   const _AnchorOfPoint();
-  int get outerWidth => 0;
+  int get realWidth => 0;
   int get innerWidth => 0;
-  int get outerHeight => 0;
+  int get realHeight => 0;
   int get innerHeight => 0;
 }
 final _anchorOfPoint = const _AnchorOfPoint();

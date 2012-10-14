@@ -52,7 +52,7 @@ class TestDrag extends Activity {
     new Dragger(view.node, snap: (Offset ppos, Offset pos) => range.snap(pos));
     
     view.on.layout.add((event) {
-      final Size vs = new DOMQuery(view).outerSize;
+      final Size vs = new DOMQuery(view).size;
       final Size bs = new DOMQuery(box).innerSize;
       range = new Rectangle(0, 0, bs.width - vs.width, bs.height - vs.height);
       final Offset vpos = range.snap(new DOMQuery(view).offset);

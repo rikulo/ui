@@ -904,7 +904,7 @@ class View {
    *
    * Default: null (means the width shall be calculated based on its content).
    *
-   * + To get the real width on the document, use [outerWidth].
+   * + To get the real width on the document, use [realWidth].
    */
   int get width => _width;
   /** Sets the width of this view.
@@ -924,7 +924,7 @@ class View {
    *
    * Default: null (means the height shall be calculated based on its content).
    *
-   * + To get the real height on the document, use [outerHeight].
+   * + To get the real height on the document, use [realHeight].
    */
   int get height => _height;
   /** Sets the height of this view.
@@ -945,16 +945,16 @@ class View {
    * Notice that the performance of this method is not good, if
    * [width] is null.
    */
-  int get outerWidth
-  => _width != null ? _width: inDocument ? new DOMQuery(node).outerWidth: 0;
+  int get realWidth
+  => _width != null ? _width: inDocument ? new DOMQuery(node).width: 0;
     //for better performance, we don't need to get the outer width if _width is
     //assigned (because we use box-sizing: border-box)
   /** Returns the real height of this view shown on the document (never null).
    * Notice that the performance of this method is not good, if
    * [height] is null.
    */
-  int get outerHeight
-  => _height != null ? _height: inDocument ? new DOMQuery(node).outerHeight: 0;
+  int get realHeight
+  => _height != null ? _height: inDocument ? new DOMQuery(node).height: 0;
     //for better performance, we don't need to get the outer height if _height is
     //assigned (because we use box-sizing: border-box)
   /** Returns the viewable width of this view, excluding the borders, margins

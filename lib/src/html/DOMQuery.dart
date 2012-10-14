@@ -35,18 +35,18 @@ class DOMQuery {
    */
   Size get innerSize => new Size(innerWidth, innerHeight);
 
-  /** Returns the outer width of the given element, including padding,
+  /** Returns the (outer) width of the given element, including padding,
    * border and margin.
    */
-  int get outerWidth => node.offsetWidth;
-  /** Returns the outer width of the given element, including padding,
+  int get width => node.offsetWidth;
+  /** Returns the (outer) width of the given element, including padding,
    * border and margin.
    */
-  int get outerHeight => node.offsetHeight;
-  /** Returns the outer size of the given element, including padding,
+  int get height => node.offsetHeight;
+  /** Returns the (outer) size of the given element, including padding,
    * border and margin.
    */
-  Size get outerSize => new Size(outerWidth, outerHeight);
+  Size get size => new Size(width, height);
 
   /** Returns the total width of the given element's content, including padding
    * but not including border, margin and scroll bar.
@@ -131,7 +131,7 @@ class DOMQuery {
    */
   Rectangle get rectangle {
     final Offset off = pageOffset;
-    return new Rectangle(off.left, off.top, off.left + outerWidth, off.top + outerHeight);
+    return new Rectangle(off.left, off.top, off.left + width, off.top + height);
   }
   
   /** Returns the final used values of all the CSS properties
@@ -205,11 +205,11 @@ class DOMQuery {
 }
 class _WndQuery extends DOMQuery {
   _WndQuery(var v): super._init(v);
-  
+
   int get innerWidth => node.innerWidth;
   int get innerHeight => node.innerHeight;
-  int get outerWidth => node.outerWidth;
-  int get outerHeight => node.outerHeight;
+  int get width => node.innerWidth;
+  int get height => node.innerHeight;
   int get contentWidth => node.innerWidth;
   int get contentHeight => node.innerHeight;
   Element get offsetParent => null;
@@ -225,8 +225,8 @@ class _NullQuery extends _WndQuery {
   _NullQuery(): super(null);
   int get innerWidth => 0;
   int get innerHeight => 0;
-  int get outerWidth => 0;
-  int get outerHeight => 0;
+  int get width => 0;
+  int get height => 0;
   int get contentWidth => 0;
   int get contentHeight => 0;
 }

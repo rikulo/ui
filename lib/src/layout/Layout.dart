@@ -164,8 +164,6 @@ RootLayout rootLayout(MeasureContext mctx, View root) {
   final locators = _getLocators(loc);
   final ref = anchor != null ? anchor:
     cave != null ? new DOMQuery(cave): _anchorOfRoot;
-if (anchor != null)
-print("${anchor.pageOffset}, ${root.pageOffset}, ${anchor.left}");
   final ofs = anchor != null ?
     cave != anchor.parent ? anchor.pageOffset - root.pageOffset:
       new Offset(anchor.left, anchor.top):
@@ -175,11 +173,11 @@ print("${anchor.pageOffset}, ${root.pageOffset}, ${anchor.left}");
   _anchorYLocators[locators[1]](ofs.top, ref, root);
 }
 //Used by _locateRoot to simulate an achor for root views
-class _AnchorOfRoot {
+class _AnchorOfRoot { //mimic View API
   const _AnchorOfRoot();
-  int get outerWidth => browser.innerSize.width;
+  int get realWidth => browser.innerSize.width;
   int get innerWidth => browser.innerSize.width;
-  int get outerHeight => browser.innerSize.height;
+  int get realHeight => browser.innerSize.height;
   int get innerHeight => browser.innerSize.height;
 }
 final _anchorOfRoot = const _AnchorOfRoot();

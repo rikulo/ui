@@ -100,7 +100,7 @@ class SlideOutEffect extends HideEffect {
   static MotionAction createAction(Element element, bool fade, SlideDirection dir) {
     switch (dir) {
       case SlideDirection.EAST:
-        final int size = new DOMQuery(element).outerWidth;
+        final int size = new DOMQuery(element).width;
         final int initLeft = new DOMQuery(element).offsetLeft;
         return (num x, MotionState state) {
           final int w = (x * size).toInt();
@@ -110,14 +110,14 @@ class SlideOutEffect extends HideEffect {
             element.style.opacity = "${1-x}";
         };
       case SlideDirection.WEST:
-        final int size = new DOMQuery(element).outerWidth;
+        final int size = new DOMQuery(element).width;
         return (num x, MotionState state) {
           element.style.width = CSS.px(((1-x) * size).toInt());
           if (fade)
             element.style.opacity = "${1-x}";
         };
       case SlideDirection.SOUTH:
-        final int size = new DOMQuery(element).outerHeight;
+        final int size = new DOMQuery(element).height;
         final int initTop = new DOMQuery(element).offsetTop;
         return (num x, MotionState state) {
           final int h = (x * size).toInt();
@@ -128,7 +128,7 @@ class SlideOutEffect extends HideEffect {
         };
       case SlideDirection.NORTH:
       default:
-        final int size = new DOMQuery(element).outerHeight;
+        final int size = new DOMQuery(element).height;
         return (num x, MotionState state) {
           element.style.height = CSS.px(((1-x) * size).toInt());
           if (fade)
@@ -148,10 +148,10 @@ class _SlideEffectUtil {
       _valueOf(element, element.style.top, (DOMQuery dq) => dq.offsetTop);
   
   static int widthOf(Element element) => 
-      _valueOf(element, element.style.width, (DOMQuery dq) => dq.outerWidth);
+      _valueOf(element, element.style.width, (DOMQuery dq) => dq.width);
   
   static int heightOf(Element element) => 
-      _valueOf(element, element.style.height, (DOMQuery dq) => dq.outerHeight);
+      _valueOf(element, element.style.height, (DOMQuery dq) => dq.height);
   
   static int _valueOf(Element elem, String stxt, int f(DOMQuery dq)) => 
       stxt != null && stxt.endsWith("px") ? CSS.intOf(stxt) : f(new DOMQuery(elem));

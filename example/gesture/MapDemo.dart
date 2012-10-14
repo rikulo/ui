@@ -71,7 +71,7 @@ class MapDemo extends Activity {
   }
   
   Offset center(View v) {
-    Size size = new DOMQuery(v).outerSize;
+    Size size = new DOMQuery(v).size;
     return new DOMQuery(v).pageOffset + new Offset(size.width / 2, size.height / 2);
   }
   
