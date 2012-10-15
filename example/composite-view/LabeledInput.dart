@@ -1,10 +1,10 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Tue, Jul 24, 2012 12:47:44 PM
 // Author: tomyeh
-#library('rikulo:samples/composite-view');
+library rikulo_example_compositeView;
 
-#import('package:rikulo/view.dart');
-#import('package:rikulo/event.dart');
+import 'package:rikulo/view.dart';
+import 'package:rikulo/event.dart';
 
 /**
  * A composite view consisting of a label ([TextView]) and an input ([TextBox]).

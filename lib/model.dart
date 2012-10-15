@@ -1,26 +1,26 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu Feb 16 14:51:22 TST 2012
 
-#library("rikulo:model");
+library rikulo_model;
 
-#import("util.dart");
-#import("view.dart");
+import "util.dart";
+import "view.dart";
 
-#source("src/model/Selection.dart");
-#source("src/model/Disables.dart");
-#source("src/model/Opens.dart");
-#source("src/model/DataEvent.dart");
-#source("src/model/DataModel.dart");
-#source("src/model/AbstractSelectionModel.dart");
+part "src/model/Selection.dart";
+part "src/model/Disables.dart";
+part "src/model/Opens.dart";
+part "src/model/DataEvent.dart";
+part "src/model/DataModel.dart";
+part "src/model/AbstractSelectionModel.dart";
 
-#source("src/model/ListModel.dart");
-#source("src/model/ListDataEvent.dart");
-#source("src/model/DefaultListModel.dart");
+part "src/model/ListModel.dart";
+part "src/model/ListDataEvent.dart";
+part "src/model/DefaultListModel.dart";
 
-#source("src/model/TreeModel.dart");
-#source("src/model/TreeDataEvent.dart");
-#source("src/model/AbstractTreeModel.dart");
-#source("src/model/DefaultTreeModel.dart");
-#source("src/model/TreeNode.dart");
-#source("src/model/DefaultTreeNode.dart");
-#source("src/model/Renderer.dart");
+part "src/model/TreeModel.dart";
+part "src/model/TreeDataEvent.dart";
+part "src/model/AbstractTreeModel.dart";
+part "src/model/DefaultTreeModel.dart";
+part "src/model/TreeNode.dart";
+part "src/model/DefaultTreeNode.dart";
+part "src/model/Renderer.dart";

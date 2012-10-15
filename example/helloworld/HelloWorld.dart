@@ -1,6 +1,6 @@
 //Sample Code: Hello World!
 
-#import('package:rikulo/view.dart');
+import 'package:rikulo/view.dart';
 
 void main() {
   final welcome = new TextView("Hello World!");

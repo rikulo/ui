@@ -1,14 +1,14 @@
 //Sample Code: SwipeGesture
 
-#import("dart:html");
-#import("dart:math");
+import "dart:html";
+import "dart:math";
 
-#import('package:rikulo/app.dart');
-#import('package:rikulo/view.dart');
-#import('package:rikulo/html.dart');
-#import('package:rikulo/util.dart');
-#import('package:rikulo/event.dart');
-#import('package:rikulo/effect.dart');
+import 'package:rikulo/app.dart';
+import 'package:rikulo/view.dart';
+import 'package:rikulo/html.dart';
+import 'package:rikulo/util.dart';
+import 'package:rikulo/event.dart';
+import 'package:rikulo/effect.dart';
 
 class EffectDemo extends Activity {
   

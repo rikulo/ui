@@ -1,8 +1,8 @@
 //Sample Code: ScrollView
 
-#import('package:rikulo/app.dart');
-#import('package:rikulo/view.dart');
-#import('package:rikulo/html.dart');
+import 'package:rikulo/app.dart';
+import 'package:rikulo/view.dart';
+import 'package:rikulo/html.dart';
 
 class ScrollViewDemo extends Activity {
 

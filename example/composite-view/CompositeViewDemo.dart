@@ -1,9 +1,9 @@
 //Sample Code: CompositeViewDemo
 
-#import('package:rikulo/app.dart');
-#import('package:rikulo/view.dart');
+import 'package:rikulo/app.dart';
+import 'package:rikulo/view.dart';
 
-#import('LabeledInput.dart');
+import 'LabeledInput.dart';
 
 class CompositeViewDemo extends Activity {
   void onCreate_() {

@@ -1,19 +1,19 @@
 //Sample Code: Circles implemented in Canvas
 
-#import('dart:html');
-#import("dart:math");
+import 'dart:html';
+import "dart:math";
 
-#import('package:rikulo/app.dart');
-#import('package:rikulo/view.dart');
-#import('package:rikulo/gesture.dart');
-#import('package:rikulo/effect.dart');
-#import('package:rikulo/event.dart');
-#import('package:rikulo/util.dart');
+import 'package:rikulo/app.dart';
+import 'package:rikulo/view.dart';
+import 'package:rikulo/gesture.dart';
+import 'package:rikulo/effect.dart';
+import 'package:rikulo/event.dart';
+import 'package:rikulo/util.dart';
 
-#source('SnakePoint.dart');
-#source('SnakeEnvironment.dart');
-#source('Food.dart');
-#source('Snake.dart');
+part 'SnakePoint.dart';
+part 'SnakeEnvironment.dart';
+part 'Food.dart';
+part 'Snake.dart';
 
 class SnakeCanvas extends Activity {
   final int MINIMUM_DRAG_LENGTH = 5;

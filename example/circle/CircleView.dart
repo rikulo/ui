@@ -1,11 +1,11 @@
 //Sample Code: Circles
 
-#import('dart:html');
-#import("dart:math");
+import 'dart:html';
+import "dart:math";
 
-#import('package:rikulo/html.dart');
-#import('package:rikulo/view.dart');
-#import('package:rikulo/effect.dart');
+import 'package:rikulo/html.dart';
+import 'package:rikulo/view.dart';
+import 'package:rikulo/effect.dart';
 
 Animator animator;
 

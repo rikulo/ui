@@ -2,12 +2,12 @@
 //History: Wed, Jun 20, 2012  05:21:28 PM
 // Author: hernichen
 
-#library("rikulo:service");
+library rikulo_service;
 
-#import("dart:html");
-#import("dart:json");
+import "dart:html";
+import "dart:json";
 
-#import("html.dart");
-#import("util.dart");
+import "html.dart";
+import "util.dart";
 
-#source("src/service/SmartIP.dart");
+part "src/service/SmartIP.dart";

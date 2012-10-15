@@ -1,9 +1,9 @@
 //Sample Code: Viewport
 
-#import('package:rikulo/app.dart');
-#import('package:rikulo/view.dart');
+import 'package:rikulo/app.dart';
+import 'package:rikulo/view.dart';
 
-#import('Viewport.dart');
+import 'Viewport.dart';
 
 class ViewportDemo extends Activity {
 

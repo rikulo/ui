@@ -1,12 +1,12 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, Apr 13, 2012  2:40:15 PM
 // Author: tomyeh
-#library('rikulo:samples/viewport');
+library rikulo_example_viewport;
 
-#import("dart:html");
+import "dart:html";
 
-#import('package:rikulo/view.dart');
-#import('package:rikulo/html.dart');
+import 'package:rikulo/view.dart';
+import 'package:rikulo/html.dart';
 
 /**
  * A view port that demostrates how to implement a view that the origin of

@@ -1,7 +1,7 @@
 //Sample Code: Custom Layout Demo
 
-#import('package:rikulo/view.dart');
-#import('package:rikulo/event.dart');
+import 'package:rikulo/view.dart';
+import 'package:rikulo/event.dart';
 
 class CustomLayoutDemo {
   View anchor, mainView;

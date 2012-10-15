@@ -1,21 +1,21 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Wed, Mar 14, 2012  5:36:59 PM
 // Author: tomyeh
-#library("rikulo:layout");
+library rikulo_layout;
 
-#import("dart:html");
-#import("dart:math");
+import "dart:html";
+import "dart:math";
 
-#import("view.dart");
-#import("util.dart");
-#import("html.dart");
-#import("view/impl.dart");
+import "view.dart";
+import "util.dart";
+import "html.dart";
+import "view/impl.dart";
 
-#source("src/layout/LayoutManager.dart");
-#source("src/layout/Layout.dart");
-#source("src/layout/MeasureContext.dart");
-#source("src/layout/LinearLayout.dart");
-#source("src/layout/TileLayout.dart");
-#source("src/layout/AnchorRelation.dart");
-#source("src/layout/LayoutAmountInfo.dart");
-#source("src/layout/LayoutSideInfo.dart");
+part "src/layout/LayoutManager.dart";
+part "src/layout/Layout.dart";
+part "src/layout/MeasureContext.dart";
+part "src/layout/LinearLayout.dart";
+part "src/layout/TileLayout.dart";
+part "src/layout/AnchorRelation.dart";
+part "src/layout/LayoutAmountInfo.dart";
+part "src/layout/LayoutSideInfo.dart";

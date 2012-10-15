@@ -2,15 +2,15 @@
 //History: Fri, May 04, 2012 11:20:47 AM
 // Author: tomyeh
 
-#library("rikulo:html");
+library rikulo_html;
 
-#import("dart:html");
-#import("dart:math");
+import "dart:html";
+import "dart:math";
 
-#import("view.dart");
-#import("util.dart");
+import "view.dart";
+import "util.dart";
 
-#source("src/html/Browser.dart");
-#source("src/html/CSS.dart");
-#source("src/html/DOMQuery.dart");
-#source("src/html/JSUtil.dart");
+part "src/html/Browser.dart";
+part "src/html/CSS.dart";
+part "src/html/DOMQuery.dart";
+part "src/html/JSUtil.dart";

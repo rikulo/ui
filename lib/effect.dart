@@ -2,20 +2,20 @@
 //History: Wed, May 09, 2012 11:36:24 AM
 // Author: tomyeh
 
-#library("rikulo:effect");
+library rikulo_effect;
 
-#import("dart:html");
-#import("dart:math");
+import "dart:html";
+import "dart:math";
 
-#import("html.dart");
-#import("util.dart");
+import "html.dart";
+import "util.dart";
 
-#source("src/effect/Animator.dart");
-#source("src/effect/Motion.dart");
-#source("src/effect/EasingMotion.dart");
-#source("src/effect/LinearPathMotion.dart");
-#source("src/effect/BuzzEffect.dart");
-#source("src/effect/GlowEffect.dart");
-#source("src/effect/ShakeEffect.dart");
-#source("src/effect/Effect.dart");
-#source("src/effect/SlideEffect.dart");
+part "src/effect/Animator.dart";
+part "src/effect/Motion.dart";
+part "src/effect/EasingMotion.dart";
+part "src/effect/LinearPathMotion.dart";
+part "src/effect/BuzzEffect.dart";
+part "src/effect/GlowEffect.dart";
+part "src/effect/ShakeEffect.dart";
+part "src/effect/Effect.dart";
+part "src/effect/SlideEffect.dart";
