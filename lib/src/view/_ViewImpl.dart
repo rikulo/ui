@@ -632,13 +632,13 @@ final RunOnceViewManager _invalidator =
  */
 List<String> get _rootClasses {
   if (_$rootClasses == null) {
-    _$rootClasses = ["rikulo", browser.name];
+    _$rootClasses = ["rikulo", "v-${browser.name}"];
     if (browser.touch)
-      _$rootClasses.add("touch");
+      _$rootClasses.add("v-touch");
     if (browser.ios)
-      _$rootClasses.add("ios");
+      _$rootClasses.add("v-ios");
     else if (browser.android)
-      _$rootClasses.add("android");
+      _$rootClasses.add("v-android");
   }
   return _$rootClasses;
 }
