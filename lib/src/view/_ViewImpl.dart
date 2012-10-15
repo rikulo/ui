@@ -92,8 +92,8 @@ class _ViewImpl {
     }
   }
   static void _updRootSize() {
-    for (View v in ViewUtil.rootViews) {
-      final dlgInfo = DialogInfo.get(v);
+    for (View v in rootViews) {
+      final dlgInfo = dialogInfos[v];
       if (dlgInfo != null)
         dlgInfo.updateSize();
       v.requestLayout();

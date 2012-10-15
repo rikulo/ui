@@ -59,19 +59,12 @@ class DialogInfo {
       ..height = CSS.px(size.height);
   }
 
-  /** Returns the dialog info of the given root view, or null if it is not
-   * a dialog.
-   */
-  static DialogInfo get(View root)
-  => _infs[root];
-  /** Sets the dialog information to the given root.
-   * If [dlgInfo] is null, the dialog information is cleared.
-   */
-  static void set(View root, DialogInfo dlgInfo) {
-    _infs[root] = dlgInfo;
-  }
-  static final Map<View, DialogInfo> _infs = new Map();
 }
+/** A map of dialog information.
+ * If a root view is attached with `mode: "dialog"` (`View.addToDocument`),
+ * it will be added to this map automatically.
+ */
+final Map<View, DialogInfo> dialogInfos = new Map();
 
 /**
  * The configuration of views.

@@ -90,6 +90,14 @@ interface Annotation {
   Map<String, List<String>> get attributes;
 }
 
+/** A readonly list of root views that are attached to the document.
+ * In other words, if a root view's `addToDocument` is called, it will be
+ * added to this list automatically.
+ *
+ * > Don't modify it directly. The result is unpredictable.
+ */
+final List<View> rootViews = new List();
+
 /**
  * A collection of [View] utilities.
  */
@@ -131,12 +139,6 @@ class ViewUtil {
     return uuid;
   }
   static final Map<String, View> _views = new Map();
-
-  /** A readonly list of root views.
-   *
-   * > Don't modify it directly. The result is unpredictable.
-   */
-  static final List<View> rootViews = new List();
 
   /** Redraws the invalidated views queued by [View.invalidate].
    *

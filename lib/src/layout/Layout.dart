@@ -150,7 +150,7 @@ typedef void RootLayout(MeasureContext mctx, View root);
  */
 RootLayout rootLayout(MeasureContext mctx, View root) {
   final node = root.node;
-  final dlgInfo = DialogInfo.get(root);
+  final dlgInfo = dialogInfos[root];
   Element cave = dlgInfo != null ? dlgInfo.cave.parent: node.parent;
   if (cave == document.body)
     cave = null;

@@ -547,8 +547,7 @@ class View {
         node.innerHTML = html;
         break;//done (and no need to assign p and nxt)
       case "dialog":
-        final dlgInfo = _ViewImpl.createDialog(node);
-        DialogInfo.set(this, dlgInfo);
+        final dlgInfo = dialogInfos[this] = _ViewImpl.createDialog(node);
         p = dlgInfo.cave;
         if (profile.location.isEmpty())
           profile.location = "center center";
@@ -565,7 +564,7 @@ class View {
 
     _mount();
     this.node.classes.addAll(_rootClasses);
-    ViewUtil.rootViews.add(this);
+    rootViews.add(this);
 
     if (layout != false)
       requestLayout(immediate: layout == true);
@@ -586,9 +585,9 @@ class View {
 
     final Element n = node; //store first since _node will be cleared up later
     _unmount();
-    ListUtil.remove(ViewUtil.rootViews, this);
+    ListUtil.remove(rootViews, this);
 
-    final dlgInfo = DialogInfo.get(this);
+    final dlgInfo = dialogInfos.remove(this);
     (dlgInfo != null ? dlgInfo.cave: n).remove();
   }
   /** Binds the view.
