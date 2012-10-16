@@ -36,8 +36,6 @@ class SnakeCanvas {
   }
   
   void run() {
-    document.title = "Snake";
-
     final View mainView = new View()..addToDocument();
     mainView.width = 572;
     mainView.height = 396;

@@ -21,8 +21,6 @@ View newSubview() {
 }
 
 void main() {
-  document.title = "Cut-and-Paste Test";
-  
   final View mainView = new View()..addToDocument();
   mainView.addChild(new Style.fromContent('''
 .round {

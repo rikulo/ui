@@ -40,11 +40,11 @@ fi
 PATH=$PATH:$SDK/bin
 echo Compiling $srcfl
 dart.exe $dartdoc $srcfl
-if [ -d $homedir/docs ] ; then
+if [ -f $homedir/docs/index.html ] ; then
 	mkdir -p $outdir
 	mv $homedir/docs $outdir
 else
-	echo $homedir/docs not found. Failed?
+	echo $homedir/docs/index.html not found. Failed?
 	exit 1
 fi
 

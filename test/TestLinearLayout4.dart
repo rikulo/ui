@@ -73,7 +73,6 @@ void _addTextWithMaxWidth(View view, int maxWd) {
 }
 
 void main() {
-  document.title = "Test 4: hlayout in hlayout";
   final View mainView = new View()..addToDocument();
   
   View view = new View();

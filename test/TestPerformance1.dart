@@ -4,8 +4,6 @@ import 'dart:html';
 import 'package:rikulo/view.dart';
 
 void main() {
-  document.title = "Test 1: Performance Test";
-  
   final View mainView = new View()..addToDocument();
   mainView.layout.text = "type: linear; orient: vertical";
 

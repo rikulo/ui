@@ -5,8 +5,6 @@ import 'package:rikulo/view.dart';
 import 'LabeledInput.dart';
 
 void main() {
-  document.title = "Composite View Demo";
-  
   final View mainView = new View()..addToDocument();
   mainView.layout.text = "type: linear; orient: vertical";
   mainView.addChild(new LabeledInput("username"));

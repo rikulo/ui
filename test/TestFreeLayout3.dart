@@ -33,8 +33,6 @@ void addContent(View parent) {
 }
 
 void main() {
-  document.title = "Free Layout Demo";
-  
   final View mainView = new View()..addToDocument();
   mainView.style.backgroundColor = "#cca";
   
