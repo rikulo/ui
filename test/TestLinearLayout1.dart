@@ -66,8 +66,6 @@ void test2(View parent, int left, int top) {
 }
 
 void main() {
-  document.title = "Test 1: Horizontal Linear Layout";
-  
   final View mainView = new View()..addToDocument();
   mainView.style.backgroundColor = "#cca";
 

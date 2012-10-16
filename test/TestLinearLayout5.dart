@@ -4,8 +4,6 @@ import 'dart:html';
 import 'package:rikulo/view.dart';
 
 void main() {
-  document.title = "Test 5: Virtual Linear Layout";
-  
   final View mainView = new View()..addToDocument();
   mainView.layout.text = "type: linear; orient: vertical";
   mainView.addChild(new TextView("You shall see two buttons arranged vertically, and the width shall be best-fit"));

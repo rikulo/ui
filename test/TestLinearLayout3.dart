@@ -22,8 +22,6 @@ void test1(View parent) {
 }
 
 void main() {
-  document.title = "Test 3: Linear Layout in Achored View";
-  
   final View mainView = new View()..addToDocument();
   mainView.style.backgroundColor = "#cca";
 

@@ -4,8 +4,6 @@ import 'dart:html';
 import 'package:rikulo/view.dart';
 
 void main() {
-  document.title = "Test 1: Free Layout";
-  
   final View mainView = new View()..addToDocument();
   mainView.style.backgroundColor = "#cca";
 
