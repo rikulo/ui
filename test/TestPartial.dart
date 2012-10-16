@@ -1,6 +1,6 @@
 //Sample Code: activity is just a part of whole HTML page
 
-#import('package:rikulo/view.dart');
+import 'package:rikulo/view.dart';
 
 void main() {
   TextView welcome = new TextView.fromHTML("<h1>Click Me</h1>");

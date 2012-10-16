@@ -1,6 +1,6 @@
 //Sample Code: Test Log
 
-#import('package:rikulo/view.dart');
+import 'package:rikulo/view.dart';
 
 void main() {
   View view = new View();

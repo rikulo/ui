@@ -1,14 +1,12 @@
 //Sample Code: Test Animation 2
 
-#import('dart:html');
-#import("dart:math");
-
-#import('package:rikulo/app.dart');
-#import('package:rikulo/view.dart');
-#import('package:rikulo/html.dart');
-#import('package:rikulo/util.dart');
-#import('package:rikulo/event.dart');
-#import('package:rikulo/effect.dart');
+import 'dart:html';
+import 'dart:math';
+import 'package:rikulo/view.dart';
+import 'package:rikulo/html.dart';
+import 'package:rikulo/util.dart';
+import 'package:rikulo/event.dart';
+import 'package:rikulo/effect.dart';
 
 View createCube(int size, String txt) {
   View v = new View();
@@ -50,52 +48,47 @@ void green(View v) {
   v.style.backgroundColor = "#5CE55C";
 }
 
-class TestEasing extends Activity {
-  
-  void onCreate_() {
-    List<Offset> centers = 
-        [new Offset(100, 100), new Offset(400, 100), new Offset(100, 400)];
-    List<int> repeats = [1, 3, -1];
-    
-    List<View> cubes = [];
-    for (int i = 0; i < 3; i++) {
-      View c = createCube(50, "Cube $i");
-      c.left = centers[i].left;
-      c.top = centers[i].top - 50;
-      cubes.add(c);
-      mainView.addChild(c);
-    }
-    
-    List<EasingMotion> motions = [null, null, null];
-    List<Button> stops = [];
-    
-    for (int i = 0; i < 3; i++) {
-      Button b = new Button("Stop $i");
-      b.left = 350;
-      b.top = 350 + 50 * i;
-      mainView.addChild(b);
-      b.on.click.add((ViewEvent event) {
-        EasingMotion m = motions[i];
-        if (m != null)
-          m.stop();
-        blue(cubes[i]);
-      });
-    }
-    
-    for (int i = 0; i < 3; i++) {
-      cubes[i].on.click.add((ViewEvent event) {
-        if (motions[i] != null && motions[i].isRunning())
-          return;
-        green(cubes[i]);
-        motions[i] = new EasingMotion(_action(cubes[i].node, centers[i]), 
-        end: (MotionState state) {
-          blue(cubes[i]);
-        }, period: 1000, repeat: repeats[i])..run();
-      });
-    }
-  }
-}
-
 void main() {
-  new TestEasing().run();
+  final View mainView = new View()..addToDocument();
+  
+  List<Offset> centers = 
+      [new Offset(100, 100), new Offset(400, 100), new Offset(100, 400)];
+  List<int> repeats = [1, 3, -1];
+  
+  List<View> cubes = [];
+  for (int i = 0; i < 3; i++) {
+    View c = createCube(50, "Cube $i");
+    c.left = centers[i].left;
+    c.top = centers[i].top - 50;
+    cubes.add(c);
+    mainView.addChild(c);
+  }
+  
+  List<EasingMotion> motions = [null, null, null];
+  List<Button> stops = [];
+  
+  for (int i = 0; i < 3; i++) {
+    Button b = new Button("Stop $i");
+    b.left = 350;
+    b.top = 350 + 50 * i;
+    mainView.addChild(b);
+    b.on.click.add((ViewEvent event) {
+      EasingMotion m = motions[i];
+      if (m != null)
+        m.stop();
+      blue(cubes[i]);
+    });
+  }
+  
+  for (int i = 0; i < 3; i++) {
+    cubes[i].on.click.add((ViewEvent event) {
+      if (motions[i] != null && motions[i].isRunning())
+        return;
+      green(cubes[i]);
+      motions[i] = new EasingMotion(_action(cubes[i].node, centers[i]), 
+          end: (MotionState state) {
+            blue(cubes[i]);
+          }, period: 1000, repeat: repeats[i])..run();
+    });
+  }
 }

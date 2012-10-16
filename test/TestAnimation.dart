@@ -1,13 +1,12 @@
 //Sample Code: Test Animation
 
-#import('dart:html');
-#import("dart:math");
+import 'dart:html';
+import 'dart:math';
 
-#import('package:rikulo/app.dart');
-#import('package:rikulo/view.dart');
-#import('package:rikulo/event.dart');
-#import('package:rikulo/html.dart');
-#import('package:rikulo/effect.dart');
+import 'package:rikulo/view.dart';
+import 'package:rikulo/event.dart';
+import 'package:rikulo/html.dart';
+import 'package:rikulo/effect.dart';
 
 View createCube(int size, String txt) {
   View v = new View();
@@ -32,62 +31,54 @@ View createCube(int size, String txt) {
   return v;
 }
 
-class TestAnimation extends Activity {
-  
-  View cube;
-  Motion motion;
-  
-  void onCreate_() {
-    cube = createCube(100, "Catch Me");
-    cube.left = 300;
-    cube.top = 100;
-    
-    /*
-    int pauseStart = 0;
-    int offset = 0;
-    bool paused = false;
-    */
-    
-    cube.on.mouseDown.add((ViewEvent event) {
-      motion.pause();
-      /*
-      pauseStart = new Date.now().millisecondsSinceEpoch;
-      paused = true;
-      */
-    });
-    
-    mainView.on.mouseUp.add((ViewEvent event) {
-      motion.run();
-      /*
-      if (paused) {
-        offset += new Date.now().millisecondsSinceEpoch - pauseStart;
-        paused = false;
-      }
-      */
-    });
-    
-    mainView.addChild(cube);
-    
-    /*
-    Animator animator = new Animator();
-    animator.add((int time, int elapsed) {
-      if (!paused) {
-        cube.left = 300 + (150 * cos((time - offset) / 200)).toInt();
-        cube.top = 100 + (50 * sin((time - offset) / 100)).toInt();
-      }
-      return true;
-    });
-    */
-    
-    motion = new EasingMotion((num x, MotionState state) {
-      cube.left = 300 + (150 * cos(x * 2 * PI)).toInt();
-      cube.top = 100 + (50 * sin(x * 4 * PI)).toInt();
-    }, period: (400 * PI).toInt(), repeat: -1)..run();
-    
-  }
-  
-}
-
 void main() {
-  new TestAnimation().run();
+  final View mainView = new View()..addToDocument();
+  final View cube = createCube(100, "Catch Me");
+  cube.left = 300;
+  cube.top = 100;
+  
+  final Motion motion = new EasingMotion((num x, MotionState state) {
+    cube.left = 300 + (150 * cos(x * 2 * PI)).toInt();
+    cube.top = 100 + (50 * sin(x * 4 * PI)).toInt();
+  }, period: (400 * PI).toInt(), repeat: -1);
+  
+  /*
+  int pauseStart = 0;
+  int offset = 0;
+  bool paused = false;
+  */
+  
+  cube.on.mouseDown.add((ViewEvent event) {
+    motion.pause();
+    /*
+    pauseStart = new Date.now().millisecondsSinceEpoch;
+    paused = true;
+     */
+  });
+  
+  mainView.on.mouseUp.add((ViewEvent event) {
+    motion.run();
+    /*
+    if (paused) {
+    offset += new Date.now().millisecondsSinceEpoch - pauseStart;
+    paused = false;
+    }
+     */
+  });
+  
+  mainView.addChild(cube);
+  
+  /*
+  Animator animator = new Animator();
+  animator.add((int time, int elapsed) {
+  if (!paused) {
+  cube.left = 300 + (150 * cos((time - offset) / 200)).toInt();
+  cube.top = 100 + (50 * sin((time - offset) / 100)).toInt();
+  }
+  return true;
+  });
+  */
+  
+  motion.run();
+  
 }

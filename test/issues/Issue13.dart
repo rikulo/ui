@@ -2,40 +2,33 @@
 //History: Fri, May 25, 2012  5:00:33 PM
 // Author: tomyeh
 
-#import("dart:math");
+import 'dart:math';
 
-#import('package:rikulo/app.dart');
-#import('package:rikulo/view.dart');
-#import('package:rikulo/model.dart');
+import 'package:rikulo/view.dart';
+import 'package:rikulo/model.dart';
 
-class Issue13 extends Activity {
+void main() {
+  final View mainView = new View()..addToDocument();
+  mainView.layout.text = "type: linear; orient: vertical";
 
-  void onCreate_() {
-    mainView.layout.text = "type: linear; orient: vertical";
+  //prepare data
+  final DefaultListModel<String> model
+  = new DefaultListModel(["apple", "orange", "lemon", "juice"]);
+  model.addToSelection("orange");
+  model.addToDisables("juice");
 
-    //prepare data
-    final DefaultListModel<String> model
-      = new DefaultListModel(["apple", "orange", "lemon", "juice"]);
-    model.addToSelection("orange");
-    model.addToDisables("juice");
+  final rg = new RadioGroup();
+  mainView.addChild(rg);
 
-    final rg = new RadioGroup();
-    mainView.addChild(rg);
-
-    final btn = new Button("test");
-    btn.on.click.add((event) {
-      rg.model = model;
-      mainView.requestLayout(immediate: true);
-      mainView.addChild(
+  final btn = new Button("test");
+  btn.on.click.add((event) {
+    rg.model = model;
+    mainView.requestLayout(immediate: true);
+    mainView.addChild(
         new TextView(rg.node.query('input') != null ?
           "Success!":
           "Wrong! requestLayout+immediate shall force model to render immediately"));
-      mainView.requestLayout();
-    });
-    mainView.addChild(btn);
-  }
-}
-
-void main() {
-  new Issue13().run();
+    mainView.requestLayout();
+  });
+  mainView.addChild(btn);
 }
