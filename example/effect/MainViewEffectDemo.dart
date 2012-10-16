@@ -1,22 +1,20 @@
 //Sample Code: SwipeGesture
 
-import "dart:html";
-import "dart:math";
+import 'dart:html';
+import 'dart:math';
 
-import 'package:rikulo/app.dart';
 import 'package:rikulo/view.dart';
 import 'package:rikulo/html.dart';
 import 'package:rikulo/util.dart';
 import 'package:rikulo/event.dart';
 import 'package:rikulo/effect.dart';
 
+/*
 class MainViewEffectDemo extends Activity {
   
   ViewSwitchEffect _efac;
   
   void onCreate_() {
-    title = "Main View Switch Effect Demo";
-    
     View v1 = mainView;
     
     v1.style.background = "#000000";
@@ -178,7 +176,8 @@ class MainViewEffectDemo extends Activity {
 
   static final Random rand = new Random();  
 }
+*/
 
 void main() {
-  new MainViewEffectDemo().run();
+  //new MainViewEffectDemo().run();
 }

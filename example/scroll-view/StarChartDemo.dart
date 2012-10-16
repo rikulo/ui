@@ -1,9 +1,8 @@
 //Sample Code: Star Chart Demo
 
-import "dart:math";
+import 'dart:math';
 import 'dart:crypto';
 
-import 'package:rikulo/app.dart';
 import 'package:rikulo/view.dart';
 import 'package:rikulo/html.dart';
 import 'package:rikulo/util.dart';
@@ -83,43 +82,35 @@ int _rollc() => 65 + (26 * _rand()).toInt();
 String _rollName() => 
   "${new String.fromCharCodes([_rollc(),_rollc(),_rollc()])}-${(1000*_rand()).toInt()}";
 
-class StarChartDemo extends Activity {
-
-  void onCreate_() {
-    title = "Star Chart Demo";
-
-    final Size range = new Size(1500, 1500);
-    final View view = new ScrollView(contentSize: range);
-    view.profile.text = "location: center center; width: 80%; height: 80%";
-    view.classes.add("star-chart");
-    
-    final int sysnum = 30 + (10 * _rand()).toInt();
-    final num syssize = sqrt(range.width * range.height / sysnum) * 0.3;
-    
-    // roll for star system locations
-    final List<Offset> syslocs = [];
-    for (; syslocs.length < sysnum;) {
-      Offset loc = _rollLoc(range, syssize);
-      // avoid collision (too close) to previously assigned positions
-      bool collide = false;
-      for (Offset ploc in syslocs) {
-        if ((loc - ploc).norm() < syssize * 1.5) {
-          collide = true;
-          break; // comparison loop
-        }
-      }
-      if (collide)
-        continue;
-      syslocs.add(loc);
-    }
-    
-    for (int i = 0; i < sysnum; i++)
-      view.addChild(_system(syslocs[i], syssize, (10 * _rand() + 5).toInt(), name: _rollName()));
-    
-    mainView.addChild(view);
-  }
-}
-
 void main() {
-  new StarChartDemo().run();
+  final Size range = new Size(1500, 1500);
+  final View view = new ScrollView(contentSize: range);
+  view.profile.text = "location: center center; width: 80%; height: 80%";
+  view.classes.add("star-chart");
+  
+  final int sysnum = 30 + (10 * _rand()).toInt();
+  final num syssize = sqrt(range.width * range.height / sysnum) * 0.3;
+  
+  // roll for star system locations
+  final List<Offset> syslocs = [];
+  for (; syslocs.length < sysnum;) {
+    Offset loc = _rollLoc(range, syssize);
+    // avoid collision (too close) to previously assigned positions
+    bool collide = false;
+    for (Offset ploc in syslocs) {
+      if ((loc - ploc).norm() < syssize * 1.5) {
+        collide = true;
+        break; // comparison loop
+      }
+    }
+    if (collide)
+      continue;
+    syslocs.add(loc);
+  }
+  
+  for (int i = 0; i < sysnum; i++)
+    view.addChild(_system(syslocs[i], syssize, (10 * _rand() + 5).toInt(), name: _rollName()));
+  
+  final View mainView = new View()..addToDocument();
+  mainView.addChild(view);
 }

@@ -1,9 +1,8 @@
 //Sample Code: Circles implemented in Canvas
 
 import 'dart:html';
-import "dart:math";
+import 'dart:math';
 
-import 'package:rikulo/app.dart';
 import 'package:rikulo/view.dart';
 import 'package:rikulo/gesture.dart';
 import 'package:rikulo/effect.dart';
@@ -15,7 +14,7 @@ part 'SnakeEnvironment.dart';
 part 'Food.dart';
 part 'Snake.dart';
 
-class SnakeCanvas extends Activity {
+class SnakeCanvas {
   final int MINIMUM_DRAG_LENGTH = 5;
   final int UPDATE = 100;
   final int height = 250, width = 400;
@@ -36,9 +35,10 @@ class SnakeCanvas extends Activity {
     scoreBar.text = "Your score is: ${score}";
   }
   
-  void onCreate_() {
-    title = "Snake";
+  void run() {
+    document.title = "Snake";
 
+    final View mainView = new View()..addToDocument();
     mainView.width = 572;
     mainView.height = 396;
     mainView.style.backgroundImage = "url('http://blog.rikulo.org/static/files/tutorial/creating-snake/res/snake_bg.png')";
@@ -115,7 +115,7 @@ class SnakeCanvas extends Activity {
     dlg.profile.text = "location: center center; width: 30%; min-height: 60; min-width: 200";
     dlg.classes.add("v-dialog");
     dlg.on.click.add((e) {
-      removeDialog();
+      dlg.removeFromDocument();
       
       //reset the canvas
       ctx2d.save();
@@ -126,7 +126,7 @@ class SnakeCanvas extends Activity {
       startGame();
     });
     
-    addDialog(dlg);
+    dlg.addToDocument(mode: "dialog");
   }
 
   void onKeyDown(KeyboardEvent event) {
