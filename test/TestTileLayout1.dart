@@ -5,8 +5,6 @@ import 'package:rikulo/view.dart';
 import 'package:rikulo/html.dart';
 
 void main() {
-  document.title = "Test Tile Layout";
-
   View view = new ScrollView();
   view.style.backgroundColor = "#cca";
   view.layout.text = "type: tile; width: 50px; height: 50px";
@@ -19,4 +17,8 @@ void main() {
     }
   }
   view.addToDocument();
+
+  new TextView.fromHTML("<h1>Tile layout is not implemented yet</h1")
+    ..classes.add("v-dialog")
+    ..addToDocument(mode: "dialog");
 }

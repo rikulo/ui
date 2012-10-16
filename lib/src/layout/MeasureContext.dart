@@ -78,30 +78,29 @@ class MeasureContext {
   void setWidthByProfile(View view, AsInt width) {
     if (view.visible) {
       final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "width"));
-
-      //if view is root and a view group, we use flex
-      if (view.parent == null && view.isViewGroup() && amt.type == LayoutAmountType.NONE
-      && width() > 0)
-        amt.type = LayoutAmountType.FLEX;
-
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           view.width = amt.value; //fixed has higher priority than min/max
           break;
         case LayoutAmountType.FLEX:
-          view.width = _minMaxWd(view, width());
+          _flexWd(view, width());
           break;
         case LayoutAmountType.RATIO:
           view.width = _minMaxWd(view, (width() * amt.value).round().toInt());
           break;
-        case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
-          //Note: if NONE and app doesn't set width, it means content
-          if (amt.type == LayoutAmountType.NONE && getWidthSetByApp(view) != null)
-            break;
-          final int wd = view.measureWidth_(this);
-          if (wd != null)
-            view.width = wd; //no need to min/max since measureXxx shall handle it
+          _contentWd(view);
+          break;
+        case LayoutAmountType.NONE:
+        //Note: if NONE and app doesn't set width, it means content
+          if (getWidthSetByApp(view) == null) {
+            //if view is root and a view group, we use flex
+            int wd;
+            if (view.parent == null && view.isViewGroup() && (wd = width()) > 0)
+              _flexWd(view, wd); //FLEX
+            else
+              _contentWd(view); //CONTENT
+          }
           break;
       }
     }
@@ -114,33 +113,48 @@ class MeasureContext {
   void setHeightByProfile(View view, AsInt height) {
     if (view.visible) {
       final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "height"));
-
-      //if view is root and a view group, we use flex
-      if (view.parent == null && view.isViewGroup() && amt.type == LayoutAmountType.NONE
-      && height() > 0)
-        amt.type = LayoutAmountType.FLEX;
-
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           view.height = amt.value; //fixed has higher priority than min/max
           break;
         case LayoutAmountType.FLEX:
-          view.height = _minMaxHgh(view, height());
+          _flexHgh(view, height());
           break;
         case LayoutAmountType.RATIO:
           view.height = _minMaxHgh(view, (height() * amt.value).round().toInt());
           break;
-        case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
-          //Note: if NONE and app doesn't set height, it means content
-          if (amt.type == LayoutAmountType.NONE && getHeightSetByApp(view) != null)
-            break;
-          final int hgh = view.measureHeight_(this);
-          if (hgh != null)
-            view.height = hgh; //no need to min/max since measureXxx shall handle it
+          _contentHgh(view);
+          break;
+        case LayoutAmountType.NONE:
+        //Note: if NONE and app doesn't set height, it means content
+          if (getHeightSetByApp(view) == null) {
+            //if view is root and a view group, we use flex
+            int hgh;
+            if (view.parent == null && view.isViewGroup() && (hgh = height()) > 0)
+              _flexHgh(view, hgh); //FLEX
+            else
+              _contentHgh(view); //CONTENT
+          }
           break;
       }
     }
+  }
+  void _flexWd(View view, int width) {
+    view.width = _minMaxWd(view, width);
+  }
+  void _flexHgh(View view, int height) {
+    view.height = _minMaxHgh(view, height);
+  }
+  void _contentWd(View view) {
+    final wd = view.measureWidth_(this);
+    if (wd != null)
+      view.width = wd; //no need to min/max since measureXxx shall handle it
+  }
+  void _contentHgh(View view) {
+    final hgh = view.measureHeight_(this);
+    if (hgh != null)
+      view.height = hgh; //no need to min/max since measureXxx shall handle it
   }
   int _minMaxWd(View view, int wd)
   => _minMax(wd, getProfile(view, "min-width"), getProfile(view, "max-width"));
