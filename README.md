@@ -12,6 +12,32 @@ any plug-in. You can also build it as a native mobile application accessing the 
 
 Rikulo is distributed under an Apache 2.0 License.
 
+##Installation
+
+Add this to your `pubspec.yaml` (or create it):
+
+    dependencies:
+      rikulo: any
+
+Then run the [Pub Package Manager](http://www.dartlang.org/docs/pub-package-manager/) (comes with the Dart SDK):
+
+    pub install
+
+For more information, please refer to [Pub: Getting Started](http://www.dartlang.org/docs/pub-package-manager/) and [Rikulo Getting Started](http://docs.rikulo.org/rikulo/latest/Getting_Started/).
+
+##Usage
+
+Creating UI in Rikulo is straightforward.
+
+    import 'package:rikulo/view.dart';
+
+    void main() {
+      new TextView("Hello World!") //create UI
+        .addToDocument(); //make it available to the browser
+    }
+
+For more information, please refer to [the Hello World sample application](http://docs.rikulo.org/rikulo/latest/Getting_Started/Hello_World.html).
+
 ##Notes to Contributors
 
 ###Create Addons
