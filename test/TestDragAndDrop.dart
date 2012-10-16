@@ -71,7 +71,11 @@ void main() {
       container.classes.remove("dragover");
       //Chrome issue: dragLeave not called, so clean up here
       final data = event.dataTransfer.getData("Text");
-      container.addChild(ViewUtil.getView(data.substring(5).trim())); //trim uuid:
+      final dragged = ViewUtil.getView(data.substring(5).trim()); //trim uuid:
+      dragged.classes.remove("dragged");
+        //we have to do dragEnd here since the dragEnd event might not be fired
+        //(it is caused by our modification of DOM tree below (addChild)
+      container.addChild(dragged);
       container.requestLayout();
     }
   });
