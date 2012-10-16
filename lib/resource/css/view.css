@@ -13,13 +13,13 @@ body.rikulo {
   text-size-adjust: none;
   font: normal 12px "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
-.rikulo.touch {
+.rikulo.v-touch {
   font-size: 15px;
 }
-.rikulo.touch input,
-.rikulo.touch textarea,
-.rikulo.touch select,
-.rikulo.touch button {
+.rikulo.v-touch input,
+.rikulo.v-touch textarea,
+.rikulo.v-touch select,
+.rikulo.v-touch button {
   font-size: 15px;
 }
 .rikulo * {

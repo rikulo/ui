@@ -58,7 +58,7 @@ class _HLayout implements _RealLinearLayout {
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           final int wd = child.measureWidth_(mctx);
-          width += wd != null ? wd: child.width;
+          width += wd != null ? wd: child.realWidth;
           break;
         //default: if flex/%, don't count
       }
@@ -93,7 +93,7 @@ class _HLayout implements _RealLinearLayout {
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           final int h = child.measureHeight_(mctx);
-          hgh += h != null ? h: child.height;
+          hgh += h != null ? h: child.realHeight;
           break;
         default:
           continue; //ignore if flex or ratio is used
@@ -146,7 +146,7 @@ class _HLayout implements _RealLinearLayout {
           if (wd != null)
             assigned += child.width = wd;
           else
-            assigned += child.width;
+            assigned += child.realWidth;
           break;
       }
 
@@ -180,7 +180,7 @@ class _HLayout implements _RealLinearLayout {
       final si = childspcinfs[child];
       child.left = assigned += prevSpacing == null ? si.left: //first
         gapinf.left != null ? gapinf.left: max(prevSpacing, si.left);
-      assigned += child.width;
+      assigned += child.realWidth;
       prevSpacing = si.right;
 
       String align = child.profile.align;
@@ -189,7 +189,7 @@ class _HLayout implements _RealLinearLayout {
       switch (align) {
         case "center":
         case "end":
-          int delta = view.innerHeight - si.top - si.bottom - child.height;
+          int delta = view.innerHeight - si.top - si.bottom - child.realHeight;
           if (align == "center") delta ~/= 2;
           child.top = space + delta;
           break; 
@@ -232,7 +232,7 @@ class _VLayout implements _RealLinearLayout {
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           final int hgh = child.measureHeight_(mctx);
-          height += hgh != null ? hgh: child.height;
+          height += hgh != null ? hgh: child.realHeight;
           break;
         //default: if flex/%, don't count
       }
@@ -267,7 +267,7 @@ class _VLayout implements _RealLinearLayout {
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           final int w = child.measureWidth_(mctx);
-          wd += w != null ? w: child.width;
+          wd += w != null ? w: child.realWidth;
           break;
         default:
           continue; //ignore if flex or ratio is used
@@ -320,7 +320,7 @@ class _VLayout implements _RealLinearLayout {
           if (hgh != null)
             assigned += child.height = hgh;
           else
-            assigned += child.height;
+            assigned += child.realHeight;
           break;
       }
 
@@ -354,7 +354,7 @@ class _VLayout implements _RealLinearLayout {
       final si = childspcinfs[child];
       child.top = assigned += prevSpacing == null ? si.top: //first
         gapinf.top != null ? gapinf.top: max(prevSpacing, si.top);
-      assigned += child.height;
+      assigned += child.realHeight;
       prevSpacing = si.bottom;
 
       String align = child.profile.align;
@@ -363,7 +363,7 @@ class _VLayout implements _RealLinearLayout {
       switch (align) {
         case "center":
         case "end":
-          int delta = view.innerWidth - si.left - si.right - child.width;
+          int delta = view.innerWidth - si.left - si.right - child.realWidth;
           if (align == "center") delta ~/= 2;
           child.left = space + delta;
           break; 

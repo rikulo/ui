@@ -67,4 +67,4 @@ echo Generating $flnm
 
 mkdir -p out
 rm -f $flnm
-zip -qr9 $flnm LICENSE README.md CHANGES.md lib example test
+zip -qr9 $flnm LICENSE README.md CHANGES.md lib example test -x '*/packages/*' '*/*.local/*' '*/Thumbs.db'
