@@ -23,7 +23,7 @@ Then run the [Pub Package Manager](http://www.dartlang.org/docs/pub-package-mana
 
     pub install
 
-For more information, please refer to [Pub: Getting Started](http://www.dartlang.org/docs/pub-package-manager/) and [Rikulo Getting Started](http://docs.rikulo.org/rikulo/latest/Getting_Started/).
+For more information, please refer to [Rikulo: Getting Started](http://docs.rikulo.org/rikulo/latest/Getting_Started/) and [Pub: Getting Started](http://www.dartlang.org/docs/pub-package-manager/).
 
 ##Usage
 
