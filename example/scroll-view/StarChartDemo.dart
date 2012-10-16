@@ -1,8 +1,6 @@
 //Sample Code: Star Chart Demo
 
 import 'dart:math';
-import 'dart:crypto';
-
 import 'package:rikulo/view.dart';
 import 'package:rikulo/html.dart';
 import 'package:rikulo/util.dart';
@@ -63,14 +61,8 @@ View _line(Offset pos, [num span = 1]) {
   return lv;
 }
 
-int _v = 0;
-double _rand() {
-  num r = 0;
-  for (int v in new SHA1().update([new Date.now().millisecondsSinceEpoch + _v]).digest())
-    r = (r + v) / 2;
-  _v = (r * 1000).toInt();
-  return r % 1;
-}
+Random _r = new Random();
+double _rand() => _r.nextDouble();
 
 Offset _rollLoc(Size range, num margin) => new Offset(
   margin + (range.width  - 2 * margin) * _rand(),
