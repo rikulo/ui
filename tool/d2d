@@ -24,9 +24,12 @@ else
 fi
 if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
   homedir=$(cygpath -u $homedir)
+  dartcmd=dart.exe
+else
+  dartcmd=dart
 fi
 outdir=$homedir/out
-srcfl=$homedir/example/dartdoc/dartdoc.dart
+srcfl=$homedir/dartdoc/dartdoc.dart
 
 if [ -d $outdir ] ; then
 	rm -rf $outdir/docs
@@ -39,11 +42,8 @@ fi
 
 PATH=$PATH:$SDK/bin
 echo Compiling $srcfl
-dart.exe $dartdoc $srcfl
-if [ -f $homedir/docs/index.html ] ; then
-	mkdir -p $outdir
-	mv $homedir/docs $outdir
-else
+$dartcmd $dartdoc --exclude-lib _____ --out $homedir/out/docs $srcfl
+if [ ! -f $homedir/out/docs/index.html ] ; then
 	echo $homedir/docs/index.html not found. Failed?
 	exit 1
 fi
@@ -51,15 +51,6 @@ fi
 cd $outdir/docs
 echo Process HTML files at $(pwd)
 libdir=../../tool/lib
-
-#Fix the redundant page: _____.html
-rm -rf _____.html
-if [ -f nav.json ] ; then
-	sed -f $libdir/nav.json.sed nav.json > dd.tmp
-	mv -f dd.tmp nav.json
-else
-	echo nav.json not found
-fi
 
 function doHTML {
 	sedfl=$1
