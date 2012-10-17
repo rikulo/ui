@@ -1,20 +1,20 @@
 //List all packages that shall be part of Rikulo API Reference
 library _____;
 
-import '../../lib/effect.dart';
-import '../../lib/event.dart';
-import '../../lib/gesture.dart';
-import '../../lib/html.dart';
-import '../../lib/layout.dart';
-import '../../lib/message.dart';
-import '../../lib/model.dart';
-import '../../lib/service.dart';
-import '../../lib/service/gapis.dart';
-import '../../lib/service/gmaps.dart';
-import '../../lib/service/yapis.dart';
-import '../../lib/util.dart';
-import '../../lib/view.dart';
-import '../../lib/view/impl.dart';
-import '../../lib/view/select.dart';
+import 'package:rikulo/effect.dart';
+import 'package:rikulo/event.dart';
+import 'package:rikulo/gesture.dart';
+import 'package:rikulo/html.dart';
+import 'package:rikulo/layout.dart';
+import 'package:rikulo/message.dart';
+import 'package:rikulo/model.dart';
+import 'package:rikulo/service.dart';
+import 'package:rikulo/service/gapis.dart';
+import 'package:rikulo/service/gmaps.dart';
+import 'package:rikulo/service/yapis.dart';
+import 'package:rikulo/util.dart';
+import 'package:rikulo/view.dart';
+import 'package:rikulo/view/impl.dart';
+import 'package:rikulo/view/select.dart';
 
 void main() {}
