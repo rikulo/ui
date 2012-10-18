@@ -29,7 +29,7 @@ else
   dartcmd=dart
 fi
 outdir=$homedir/out
-srcfl=$homedir/dartdoc/dartdoc.dart
+srcfl=$homedir/tool/dartdoc/dartdoc.dart
 
 if [ -d $outdir ] ; then
 	rm -rf $outdir/docs
