@@ -17,13 +17,13 @@ Rikulo is distributed under an Apache 2.0 License.
 Add this to your `pubspec.yaml` (or create it):
 
     dependencies:
-      rikulo: any
+      rikulo:
 
-Then run the [Pub Package Manager](http://www.dartlang.org/docs/pub-package-manager/) (comes with the Dart SDK):
+Then run the [Pub Package Manager](http://pub.dartlang.org/doc) (comes with the Dart SDK):
 
     pub install
 
-For more information, please refer to [Rikulo: Getting Started](http://docs.rikulo.org/rikulo/latest/Getting_Started/) and [Pub: Getting Started](http://www.dartlang.org/docs/pub-package-manager/).
+For more information, please refer to [Rikulo: Getting Started](http://docs.rikulo.org/rikulo/latest/Getting_Started/) and [Pub: Getting Started](http://pub.dartlang.org/doc).
 
 ##Usage
 

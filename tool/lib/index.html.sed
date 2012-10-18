@@ -1,4 +1,3 @@
-s|<h4><a href="_____.html">_____</a></h4>||
 s|<title>Dart Documentation / Dart Documentation</title>|<title>API Reference / Rikulo</title>|
 s|Dart Documentation</title>|API Reference / Rikulo</title>|
 s|<link rel="shortcut icon"[^>]*>|<link rel="shortcut icon" type="image/ico" href="http://rikulo.org/resource/img/favicon.ico" />|
