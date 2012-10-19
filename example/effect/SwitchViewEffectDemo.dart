@@ -18,12 +18,15 @@ void replace(View vo, View vn, SwitchViewEffect effect) {
     vn.addToDocument(node: p);
     
   } else {
+    final bool vnv = vn.visible;
+    final bool vov = vo.visible;
     vn.visible = false;
     vn.addToDocument(node: vo.node.parent);
     vn.requestLayout(true);
     effect(vo, vn, () {
       vo.removeFromDocument();
-      vo.visible = true;
+      vo.visible = vov;
+      vn.visible = vnv;
     });
     
   }
