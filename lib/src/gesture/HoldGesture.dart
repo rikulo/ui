@@ -56,7 +56,7 @@ interface HoldGesture extends Gesture default _HoldGesture {
    * Default: 3 (unit: pixels)
    */
   HoldGesture(Element owner, HoldGestureAction action,
-  [HoldGestureStart start, int duration, num movementLimit]);
+  {HoldGestureStart start, int duration, num movementLimit});
   
   /** The element that owns this handler.
    */
@@ -75,7 +75,7 @@ abstract class _HoldGesture implements HoldGesture {
   bool _disabled = false;
 
   factory _HoldGesture(Element owner, HoldGestureAction action,
-  [HoldGestureStart start, int duration = 1000, num movementLimit = 3]) {
+  {HoldGestureStart start, int duration: 1000, num movementLimit: 3}) {
     return browser.touch ?
       new _TouchHoldGesture(owner, action, start, duration, movementLimit):
       new _MouseHoldGesture(owner, action, start, duration, movementLimit);

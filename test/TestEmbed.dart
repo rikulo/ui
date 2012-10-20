@@ -28,7 +28,7 @@ void main() {
     ..addToDocument();
 
   for (Element n in webView.node.queryAll("span"))
-    new Switch(true).addToDocument(n);
+    new Switch(true).addToDocument(node: n);
 
   var tv = new TextView.fromHTML("<b>Right Top</b>")
     ..profile.location = "right top"

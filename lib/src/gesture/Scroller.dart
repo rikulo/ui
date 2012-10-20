@@ -37,8 +37,8 @@ interface Scroller default _Scroller {
    * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
    */
   Scroller(Element owner, AsSize viewPortSize, AsSize contentSize,
-    [Element handle, Dir direction, bool scrollbar, ScrollerSnap snap, 
-      ScrollerStart start, ScrollerMove move, ScrollerEnd end]);
+    {Element handle, Dir direction, bool scrollbar, ScrollerSnap snap, 
+      ScrollerStart start, ScrollerMove move, ScrollerEnd end});
   // TODO: inertial, bounce
   
   /** Stop current scrolling.
@@ -317,8 +317,8 @@ class _Scroller implements Scroller {
   ScrollbarControl _scrollbarCtrl;
   
   _Scroller(this.owner, this._fnViewPortSize, AsSize this._fnContentSize,
-  [Element handle, Dir direction = Dir.BOTH, bool scrollbar = true, 
-  ScrollerSnap snap, ScrollerStart start, ScrollerMove move, ScrollerEnd end]) :
+  {Element handle, Dir direction: Dir.BOTH, bool scrollbar: true, 
+  ScrollerSnap snap, ScrollerStart start, ScrollerMove move, ScrollerEnd end}) :
   this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
   _hasHor = identical(direction, Dir.HORIZONTAL) || identical(direction, Dir.BOTH),
   _hasVer = identical(direction, Dir.VERTICAL) || identical(direction, Dir.BOTH),

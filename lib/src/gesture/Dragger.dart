@@ -113,10 +113,10 @@ interface Dragger extends Gesture default _Dragger {
    * + [move] Callback invoked continuously during dragging.
    * + [end] Callback invoked when dragging ends.
    */
-  Dragger(Element owner, [Element dragged(), 
+  Dragger(Element owner, {Element dragged(), 
   Offset snap(Offset previousPosition, Offset position), 
   num threshold, bool transform, 
-  DraggerStart start, DraggerMove move, DraggerEnd end]);
+  DraggerStart start, DraggerMove move, DraggerEnd end});
   
   /** The owner of this Dragger. */
   Element get owner;
@@ -137,10 +137,10 @@ class _Dragger implements Dragger {
   bool _disabled = false, _pending = false;
   _DraggerState _state;
   
-  _Dragger(this._owner, [Element dragged(), 
+  _Dragger(this._owner, {Element dragged(), 
   Offset snap(Offset previousPosition, Offset position), 
-  num threshold = -1, bool transform = false,
-  DraggerStart start, DraggerMove move, DraggerEnd end]) :
+  num threshold: -1, bool transform: false,
+  DraggerStart start, DraggerMove move, DraggerEnd end}) :
   _transform = transform, _start = start, _move = move, _end = end {
     
     _drag = new DragGesture(owner, start: (DragGestureState state) {

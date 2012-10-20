@@ -4,6 +4,7 @@
 
 **October 20, 2012**
 
+* View.addToDocument() is changed to use named parameters
 * Rename DOMQuery to DOMAgent
 * Move printc() to the view library
 

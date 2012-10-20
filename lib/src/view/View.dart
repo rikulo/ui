@@ -519,7 +519,7 @@ class View {
    * If omitted (i.e., null), `requestLayout()` will be called.
    * If false, [requestLayout] won't be called at all.
    */
-  void addToDocument([Element node, String mode, bool layout]) {
+  void addToDocument({Element node, String mode, bool layout}) {
     if (parent != null || inDocument)
       throw new UIException("No parent allowed, nor attached twice: $this");
 
@@ -528,7 +528,7 @@ class View {
       (node = document.query("#v-main")) != null ? node: document.body,
       mode, layout);
   }
-  void _addToDoc(Element node, [String mode, bool layout]) {
+  void _addToDoc(Element node, String mode, [bool layout]) {
     String html = _asHTML();
     Element p, nxt;
     switch (mode) {
@@ -712,7 +712,7 @@ class View {
     } else if (inDocument) {
       final Element n = node; //cache it since _unmount will clean _node
       _unmount();
-      _addToDoc(n, mode: "replace");
+      _addToDoc(n, "replace");
     }
   }
 
