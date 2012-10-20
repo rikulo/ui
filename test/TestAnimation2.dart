@@ -66,7 +66,7 @@ void main() {
     if (speed == 0)
       return;
     Offset unitv = vel / speed;
-    Offset pos = new DOMQuery(element).offset;
+    Offset pos = new DOMAgent(element).offset;
     motion = new Motion(move: (MotionState mstate) {
       int elapsed = mstate.elapsedTime;
       pos = range.snap(pos + (unitv * speed * elapsed));

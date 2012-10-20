@@ -132,7 +132,7 @@ class Browser {
       version = 1.0;
     }
 
-    final q = new DOMQuery(window);
+    final q = new WindowAgent(window);
     size = new Size(q.innerWidth, q.innerHeight);
   }
   static double _versionOf(String version, [String separator='.']) {
@@ -158,7 +158,7 @@ class Browser {
    */
   Size get innerSize {
     if (_innerSize == null) {
-      final cs = new DOMQuery(document.body).computedStyle;
+      final cs = new DOMAgent(document.body).computedStyle;
       _innerSize = new Size(
         size.width - CSS.intOf(cs.marginLeft) - CSS.intOf(cs.marginRight)
         - CSS.intOf(cs.borderLeft) - CSS.intOf(cs.borderRight),
@@ -175,7 +175,7 @@ class Browser {
    */
   Offset get innerOffset {
     if (_innerOfs == null) {
-      final cs = new DOMQuery(document.body).computedStyle;
+      final cs = new DOMAgent(document.body).computedStyle;
       final pos = cs.position;
       _innerOfs = pos == "static" || pos == "" ?
         new Offset(CSS.intOf(cs.marginLeft) + CSS.intOf(cs.borderLeft),
@@ -192,7 +192,7 @@ class Browser {
    * unless it changed the margin or border of `document.body`.
    */
   void updateSize() {
-    final q = new DOMQuery(window);
+    final q = new WindowAgent(window);
     final newsz = new Size(q.innerWidth, q.innerHeight);
     if (newsz != size) {
       size = newsz;

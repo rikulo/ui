@@ -12,7 +12,7 @@ any plug-in. You can also build it as a native mobile application accessing the 
 
 Rikulo is distributed under an Apache 2.0 License.
 
-##Installation
+##Install from Dart Pub Repository
 
 Add this to your `pubspec.yaml` (or create it):
 
@@ -24,6 +24,16 @@ Then run the [Pub Package Manager](http://pub.dartlang.org/doc) (comes with the 
     pub install
 
 For more information, please refer to [Rikulo: Getting Started](http://docs.rikulo.org/rikulo/latest/Getting_Started/) and [Pub: Getting Started](http://pub.dartlang.org/doc).
+
+##Install from Github for Bleeding Edge Stuff
+
+To install stuff that is still in development, add this to your `pubspec.yam`:
+
+    dependencies:
+      rikulo:
+        git: git@github.com:rikulo/rikulo.git
+
+For more information, please refer to [Pub: Dependencies](http://pub.dartlang.org/doc/pubspec.html#dependencies).
 
 ##Usage
 

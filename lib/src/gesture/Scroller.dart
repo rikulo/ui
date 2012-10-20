@@ -155,7 +155,7 @@ class _ScrollerState implements ScrollerState {
   _ScrollerState(_Scroller scroller, this.eventTarget, 
   this._fnViewPortSize, this._fnContentSize, this._time) : 
   this.scroller = scroller,
-  startPosition = new DOMQuery(scroller.owner).offset * -1 {
+  startPosition = new DOMAgent(scroller.owner).offset * -1 {
     _pos = startPosition;
     Size cs = contentSize, vs = viewPortSize;
     _hor = scroller._hasHor && cs.width > vs.width;
@@ -330,7 +330,7 @@ class _Scroller implements Scroller {
       onMove(state.transition - _state.startPosition, state.time);
       
     }, end: (DragGestureState state) {
-      final Offset pos = new DOMQuery(owner).offset;
+      final Offset pos = new DOMAgent(owner).offset;
       final Rectangle range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
@@ -413,7 +413,7 @@ class _Scroller implements Scroller {
   bool isScrolling() => _state != null;
   
   Offset get scrollPosition => 
-      _state != null ? _state.position : (new DOMQuery(owner).offset * -1);
+      _state != null ? _state.position : (new DOMAgent(owner).offset * -1);
   
   // control //
   void set scrollPosition(Offset position) => scrollTo(position, false);
@@ -479,7 +479,7 @@ class _BoundedInertialMotion extends Motion {
   this.element = element, this.friction = friction, this.bounce = bounce,
   this.snapSpeedThreshold = snapSpeedThreshold, _move = move, _end = end, _snap = snap,
   super(null) {
-    final Offset pos = new DOMQuery(element).offset;
+    final Offset pos = new DOMAgent(element).offset;
     _posx = pos.x;
     _posy = pos.y;
     _velx = _hor ? velocity.x : 0;

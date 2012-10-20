@@ -8,7 +8,7 @@ import 'package:rikulo/event.dart';
 void main() {
   final View mainView = new View()..addToDocument();
   final int barSize = 50, barInnerSize = 40;
-  final Size msize = new DOMQuery(mainView).innerSize;
+  final Size msize = new DOMAgent(mainView.node).innerSize;
   bool compact = msize.width < 500 || msize.height < 500; // responsive
   
   final View container = new View();
@@ -22,7 +22,7 @@ void main() {
   view.classes.add("list-view");
   
   view.on.preLayout.add((LayoutEvent event) {
-    final cs = new DOMQuery(container).innerSize;
+    final cs = new DOMAgent(container.node).innerSize;
     view.width = cs.width - barSize;
     view.height = cs.height - barSize;
   });

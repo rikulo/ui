@@ -35,7 +35,7 @@ class MeasureContext {
   int getBorderWidth(View view) {
     final v = _borderWds[view];
     if (v == null) {
-      final qs = new DOMQuery(view.node).computedStyle;
+      final qs = new DOMAgent(view.node).computedStyle;
       return _borderWds[view] = CSS.intOf(qs.borderLeftWidth) + CSS.intOf(qs.borderRightWidth);
       //Note: qs.borderWidth is supported only by Chrome
     }
@@ -46,7 +46,7 @@ class MeasureContext {
   int getBorderHeight(View view) {
     final v = _borderHghs[view];
     if (v == null) {
-      final qs = new DOMQuery(view.node).computedStyle;
+      final qs = new DOMAgent(view.node).computedStyle;
       return _borderHghs[view] = CSS.intOf(qs.borderTopWidth) + CSS.intOf(qs.borderBottomWidth);
     }
     return v;
@@ -268,7 +268,7 @@ class MeasureContext {
       nodestyle.height = "";
     }
 
-    final DOMQuery qview = new DOMQuery(view);
+    final DOMAgent qview = new DOMAgent(view.node);
     num width = qview.width, height = qview.height;
 
     if (orgspace != null)

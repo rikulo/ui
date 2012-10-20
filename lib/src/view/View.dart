@@ -866,7 +866,7 @@ class View {
     _visible = visible;
 
     if (_inDoc) {
-      new DOMQuery(node).visible = visible;
+      new DOMAgent(node).visible = visible;
       if (changed && visible)
         requestLayout(immediate: true);
     }
@@ -958,7 +958,7 @@ class View {
    * [width] is null.
    */
   int get realWidth
-  => _width != null ? _width: inDocument ? new DOMQuery(node).width: 0;
+  => _width != null ? _width: inDocument ? new DOMAgent(node).width: 0;
     //for better performance, we don't need to get the outer width if _width is
     //assigned (because we use box-sizing: border-box)
   /** Returns the real height of this view shown on the document (never null).
@@ -966,7 +966,7 @@ class View {
    * [height] is null.
    */
   int get realHeight
-  => _height != null ? _height: inDocument ? new DOMQuery(node).height: 0;
+  => _height != null ? _height: inDocument ? new DOMAgent(node).height: 0;
     //for better performance, we don't need to get the outer height if _height is
     //assigned (because we use box-sizing: border-box)
   /** Returns the viewable width of this view, excluding the borders, margins
@@ -978,7 +978,7 @@ class View {
    * not to call this method if the view is not attached.
    */
   int get innerWidth {
-    final int v = inDocument ? new DOMQuery(node).innerWidth:
+    final int v = inDocument ? new DOMAgent(node).innerWidth:
       (_width != null ? _width: 0);
     return v > 0 ? v: 0;
   }
@@ -991,7 +991,7 @@ class View {
    * not to call this method if the view is not attached.
    */
   int get innerHeight {
-    final int v = inDocument ? new DOMQuery(node).innerHeight:
+    final int v = inDocument ? new DOMAgent(node).innerHeight:
       (_height != null ? _height: 0);
     return v > 0 ? v: 0;
   }
@@ -1002,7 +1002,7 @@ class View {
    */
   Offset get pageOffset {
     if (_inDoc)
-      return new DOMQuery(node).pageOffset;
+      return new DOMAgent(node).pageOffset;
     
     int left = 0, top = 0;
     for (View view = this;;) {

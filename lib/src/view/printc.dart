@@ -68,14 +68,14 @@ class _Printc {
   }
   HoldGestureAction _gestureAction() {
     return (HoldGestureState state) {
-      Offset off = state.position - new DOMQuery(state.gesture.owner).pageOffset;
+      Offset off = state.position - new DOMAgent(state.gesture.owner).pageOffset;
       (_popup = new _PrintcPopup(this)).open(off.x, off.y);
     };
   }
   HoldGestureStart _gestureStart() {
     return (HoldGestureState state)
       => _popup == null
-      || !new DOMQuery(state.eventTarget).isDescendantOf(_popup._node);
+      || !new DOMAgent(state.eventTarget).isDescendantOf(_popup._node);
   }
 
   void _defer() {

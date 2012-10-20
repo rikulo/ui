@@ -117,7 +117,7 @@ void main() {
       return;
     }
     Offset unitv = vel / speed;
-    Offset pos = new DOMQuery(element).offset;
+    Offset pos = new DOMAgent(element).offset;
     inertialMotion = new Motion(move: (MotionState mstate) {
       int elapsed = mstate.elapsedTime;
       pos += unitv * speed * elapsed;

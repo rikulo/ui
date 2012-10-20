@@ -2,12 +2,17 @@
 
 ##0.6.0
 
+**October 20, 2012**
+
+* Rename DOMQuery to DOMAgent
+* Move printc() to the view library
+
 **October 15, 2012**
 
 * Activity and Application were removed. Use View.addToDocument() instead.
 * View.addToDocument() was simplified.
 * View.outerWidth and outerHeight were renamed to realWidth and realHeight
-* DOMQuery.outerWidth, outerHeight and outerSize were renamed to width, height and size
+* DOMAgent.outerWidth, outerHeight and outerSize were renamed to width, height and size
 * Cordova is moved to another repository, [rikulo_gap](https://github.com/rikulo/rikulo-gap).
 
 ##0.6.1

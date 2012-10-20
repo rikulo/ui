@@ -100,8 +100,8 @@ class SlideOutEffect extends HideEffect {
   static MotionAction createAction(Element element, bool fade, SlideDirection dir) {
     switch (dir) {
       case SlideDirection.EAST:
-        final int size = new DOMQuery(element).width;
-        final int initLeft = new DOMQuery(element).offsetLeft;
+        final int size = new DOMAgent(element).width;
+        final int initLeft = new DOMAgent(element).offsetLeft;
         return (num x, MotionState state) {
           final int w = (x * size).toInt();
           element.style.left = CSS.px(initLeft + w);
@@ -110,15 +110,15 @@ class SlideOutEffect extends HideEffect {
             element.style.opacity = "${1-x}";
         };
       case SlideDirection.WEST:
-        final int size = new DOMQuery(element).width;
+        final int size = new DOMAgent(element).width;
         return (num x, MotionState state) {
           element.style.width = CSS.px(((1-x) * size).toInt());
           if (fade)
             element.style.opacity = "${1-x}";
         };
       case SlideDirection.SOUTH:
-        final int size = new DOMQuery(element).height;
-        final int initTop = new DOMQuery(element).offsetTop;
+        final int size = new DOMAgent(element).height;
+        final int initTop = new DOMAgent(element).offsetTop;
         return (num x, MotionState state) {
           final int h = (x * size).toInt();
           element.style.top = CSS.px(initTop + h);
@@ -128,7 +128,7 @@ class SlideOutEffect extends HideEffect {
         };
       case SlideDirection.NORTH:
       default:
-        final int size = new DOMQuery(element).height;
+        final int size = new DOMAgent(element).height;
         return (num x, MotionState state) {
           element.style.height = CSS.px(((1-x) * size).toInt());
           if (fade)
@@ -142,18 +142,18 @@ class SlideOutEffect extends HideEffect {
 class _SlideEffectUtil {
   
   static int leftOf(Element element) => 
-      _valueOf(element, element.style.left, (DOMQuery dq) => dq.offsetLeft);
+      _valueOf(element, element.style.left, (DOMAgent dq) => dq.offsetLeft);
   
   static int topOf(Element element) => 
-      _valueOf(element, element.style.top, (DOMQuery dq) => dq.offsetTop);
+      _valueOf(element, element.style.top, (DOMAgent dq) => dq.offsetTop);
   
   static int widthOf(Element element) => 
-      _valueOf(element, element.style.width, (DOMQuery dq) => dq.width);
+      _valueOf(element, element.style.width, (DOMAgent dq) => dq.width);
   
   static int heightOf(Element element) => 
-      _valueOf(element, element.style.height, (DOMQuery dq) => dq.height);
+      _valueOf(element, element.style.height, (DOMAgent dq) => dq.height);
   
-  static int _valueOf(Element elem, String stxt, int f(DOMQuery dq)) => 
-      stxt != null && stxt.endsWith("px") ? CSS.intOf(stxt) : f(new DOMQuery(elem));
+  static int _valueOf(Element elem, String stxt, int f(DOMAgent dq)) => 
+      stxt != null && stxt.endsWith("px") ? CSS.intOf(stxt) : f(new DOMAgent(elem));
   
 }

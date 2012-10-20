@@ -208,7 +208,7 @@ class _Dragger implements Dragger {
       Offset3d off3d = CSS.offset3dOf(target.style.transform);
       return new Offset(off3d.x, off3d.y);
     }
-    return new DOMQuery(target).offset;
+    return new DOMAgent(target).offset;
   }
   
   void setElementPosition_(Element target, Offset position) {

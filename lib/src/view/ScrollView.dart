@@ -24,7 +24,7 @@ class ScrollView extends View {
   /** Return the view port size, which is determined by the inner size of the
    * node.
    */
-  Size get viewPortSize => new DOMQuery(node).innerSize;
+  Size get viewPortSize => new DOMAgent(node).innerSize;
   
   /** Returns the total size of the content.
    * It shall cover all sub views (excluding invisible, anchored views).

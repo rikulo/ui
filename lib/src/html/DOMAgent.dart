@@ -6,17 +6,14 @@
  * A DOM query agent used to provide the additional utilities
  * for handling DOM.
  */
-class DOMQuery {
+class DOMAgent {
   /** The DOM element in query. */
   final node;
 
-  factory DOMQuery(var v) {
-    v = v is View ? v.node: v is String ? document.query(v): v;
-    return v is Window ? new _WndQuery(v):
-      v != null ? new DOMQuery._init(v): new _NullQuery();
-  }
-  
-  DOMQuery._init(this.node);
+  factory DOMAgent(Element e)
+  => e != null ? new DOMAgent._as(e): new _NullAgent();
+  DOMAgent.query(String s): this(document.query(s));
+  DOMAgent._as(this.node);
   
   /** Returns the inner width of the given element, including padding
    * but not including border, margin and scroll bar.
@@ -160,8 +157,8 @@ class DOMQuery {
    * the optional [style]. If [node] is null, the size is based only
    * only [style].
    *
-   *    new DOMQuery(node_text_will_be_assigned).measureText(s);
-   *    new DOMQuery(null).measureText(s, style);
+   *    new DOMAgent(node_text_will_be_assigned).measureText(s);
+   *    new DOMAgent(null).measureText(s, style);
    */
   Size measureText(String text, [CSSStyleDeclaration style]) {
     if (_txtdiv == null) {
@@ -203,8 +200,14 @@ class DOMQuery {
   }
   
 }
-class _WndQuery extends DOMQuery {
-  _WndQuery(var v): super._init(v);
+/**
+ * A window query agent used to provide the additional utilities
+ * for handling window.
+ */
+class WindowAgent extends DOMAgent {
+  factory WindowAgent(Window w)
+  => w != null ? new WindowAgent._as(w): new _NullAgent();
+  WindowAgent._as(var v): super._as(v);
 
   int get innerWidth => node.innerWidth;
   int get innerHeight => node.innerHeight;
@@ -221,8 +224,8 @@ class _WndQuery extends DOMQuery {
   CSSStyleDeclaration get computedStyle => new CSSStyleDeclaration();
   void set visible(bool visible) {}
 }
-class _NullQuery extends _WndQuery {
-  _NullQuery(): super(null);
+class _NullAgent extends WindowAgent {
+  _NullAgent(): super._as(null);
   int get innerWidth => 0;
   int get innerHeight => 0;
   int get width => 0;
