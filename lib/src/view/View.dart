@@ -326,7 +326,7 @@ class View {
    * If this view is attached to the document, this method will attach the child
    * to the document.
    */
-  void addChild(View child, [View beforeChild]) {
+  void addChild(View child, [View beforeChild]) { // TODO: visible
     _addChild(child, beforeChild);
   }
   void _addChild(View child, View beforeChild, [Element childNode]) {
@@ -486,6 +486,10 @@ class View {
       throw new UIException("Not in document, $this.");
     return document.query(subId != null && subId.length > 0 ? "#$uuid-$subId": "#$uuid");
   }
+  /** Retrieve the mask node if the view is added to the document as a dialog, 
+   * or null otherwise.
+   */
+  Element get maskNode => dialogInfos[this].mask;
   /** Returns if this view has been attached to the document.
    */
   bool get inDocument => _inDoc;
@@ -519,16 +523,16 @@ class View {
    * If omitted (i.e., null), `requestLayout()` will be called.
    * If false, [requestLayout] won't be called at all.
    */
-  void addToDocument([Element node, String mode, bool layout]) {
+  void addToDocument([Element node, String mode, bool layout, bool visible = true]) {
     if (parent != null || inDocument)
       throw new UIException("No parent allowed, nor attached twice: $this");
 
     _ViewImpl.init();
     _addToDoc(node != null ? node:
       (node = document.query("#v-main")) != null ? node: document.body,
-      mode, layout);
+      mode, layout, visible);
   }
-  void _addToDoc(Element node, [String mode, bool layout]) {
+  void _addToDoc(Element node, [String mode, bool layout, bool visible = true]) {
     String html = _asHTML();
     Element p, nxt;
     switch (mode) {
@@ -547,7 +551,9 @@ class View {
         node.innerHTML = html;
         break;//done (and no need to assign p and nxt)
       case "dialog":
-        final dlgInfo = dialogInfos[this] = _ViewImpl.createDialog(node);
+      case "dialog-effect":
+        final dlgInfo = dialogInfos[this] = 
+          _ViewImpl.createDialog(node, hide: mode == "dialog-effect");
         p = dlgInfo.cave;
         if (profile.location.isEmpty())
           profile.location = "center center";

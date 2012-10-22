@@ -4,6 +4,7 @@ import "dart:html";
 import 'dart:math';
 
 import 'package:rikulo/view.dart';
+import 'package:rikulo/view/impl.dart';
 import 'package:rikulo/html.dart';
 import 'package:rikulo/util.dart';
 import 'package:rikulo/event.dart';
@@ -15,9 +16,6 @@ EasingMotion maskFadeIn(Element m) =>
 EasingMotion maskFadeOut(Element m) => 
     new FadeOutEffect(m, maxOpacity: 0.6);
 
-/*
-DialogEffect _eff = null;
-
 TextView block(String text, int left, int top) {
   TextView tv = new TextView(text)..width = 100..height = 100;
   tv.left = left;
@@ -26,9 +24,8 @@ TextView block(String text, int left, int top) {
   tv.style.lineHeight = "96px";
   return tv;
 }
-*/
+
 void main() {
-  /*
   document.body.style.margin = "0";
   
   final View mainView = new View()..addToDocument();
@@ -62,46 +59,68 @@ void main() {
   btn.style.borderRadius = "50px";
   dialog.addChild(btn);
   
+  bool removeReady = false;
+  EasingMotion removeMotion;
+  
   btn.on.click.add((ViewEvent event) {
-    removeDialog(dialog, _eff);
+    if (removeReady) {
+      removeReady = false;
+      if (removeMotion == null)
+        dialog.removeFromDocument();
+      else
+        removeMotion.run();
+    }
   });
   
   v1.on.click.add((ViewEvent event) {
-    addDialog(dialog, effect: (View d, Element m, void end()) {
-      new EasingMotion.join([new FadeInEffect(d.node), maskFadeIn(m)], 
-          end: (MotionState state) => end(), easing: (num t) => t * t).run();
-    });
-    _eff = (View d, Element m, void end()) {
-      new EasingMotion.join([new FadeOutEffect(d.node), maskFadeOut(m)], 
-          end: (MotionState state) => end(), easing: (num t) => t * t).run();
-    };
+    dialog.addToDocument(mode: "dialog-effect");
+    final Element mask = dialogInfos[dialog].mask;
+    
+    new EasingMotion.join([new FadeInEffect(dialog.node), maskFadeIn(mask)], 
+    end: (MotionState state) {
+      removeReady = true;
+    }, easing: (num t) => t * t).run();
+    
+    removeMotion = new EasingMotion.join([new FadeOutEffect(dialog.node), maskFadeOut(mask)], 
+    end: (MotionState state) {
+      dialog.removeFromDocument();
+    }, easing: (num t) => t * t);
   });
   
   v2.on.click.add((ViewEvent event) {
-    addDialog(dialog, effect: (View d, Element m, void end()) {
-      new EasingMotion.join([new ZoomInEffect(d.node), maskFadeIn(m)], 
-          end: (MotionState state) => end(), easing: (num t) => t * t).run();
-    });
-    _eff = (View d, Element m, void end()) {
-      new EasingMotion.join([new ZoomOutEffect(d.node), maskFadeOut(m)], 
-          end: (MotionState state) => end(), easing: (num t) => t * t).run();
-    };
+    dialog.addToDocument(mode: "dialog-effect");
+    final Element mask = dialogInfos[dialog].mask;
+    
+    new EasingMotion.join([new ZoomInEffect(dialog.node), maskFadeIn(mask)], 
+    end: (MotionState state) {
+      removeReady = true;
+    }, easing: (num t) => t * t).run();
+    
+    removeMotion = new EasingMotion.join([new ZoomOutEffect(dialog.node), maskFadeOut(mask)], 
+    end: (MotionState state) {
+      dialog.removeFromDocument();
+    }, easing: (num t) => t * t);
   });
   
   v3.on.click.add((ViewEvent event) {
-    addDialog(dialog, effect: (View d, Element m, void end()) {
-      new EasingMotion.join([new SlideInEffect(d.node), maskFadeIn(m)], 
-          end: (MotionState state) => end(), easing: (num t) => t * t).run();
-    });
-    _eff = (View d, Element m, void end()) {
-      new EasingMotion.join([new SlideOutEffect(d.node), maskFadeOut(m)], 
-          end: (MotionState state) => end(), easing: (num t) => t * t).run();
-    };
+    dialog.addToDocument(mode: "dialog-effect");
+    final Element mask = dialogInfos[dialog].mask;
+    
+    new EasingMotion.join([new SlideInEffect(dialog.node), maskFadeIn(mask)], 
+    end: (MotionState state) {
+      removeReady = true;
+    }, easing: (num t) => t * t).run();
+    
+    removeMotion = new EasingMotion.join([new SlideOutEffect(dialog.node), maskFadeOut(mask)], 
+    end: (MotionState state) {
+      dialog.removeFromDocument();
+    }, easing: (num t) => t * t);
   });
   
   v4.on.click.add((ViewEvent event) {
-    addDialog(dialog);
-    _eff = null;
+    dialog.addToDocument(mode: "dialog");
+    removeReady = true;
+    removeMotion = null;
   });
-  */
+  
 }
