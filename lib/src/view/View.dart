@@ -488,8 +488,15 @@ class View {
   }
   /** Retrieve the mask node if the view is added to the document as a dialog, 
    * or null otherwise.
+   *
+   * The mask node is generated when a view was invoked with [addToDocument]
+   * with `mode: dialog`. It is placed under [node] and occupies the whole area to
+   * prevent the user from accessing any UI other than this view.
    */
-  Element get maskNode => dialogInfos[this].mask;
+  Element get maskNode {
+    final di = dialogInfos[this];
+    return di != null ? di.mask: null;
+  }
   /** Returns if this view has been attached to the document.
    */
   bool get inDocument => _inDoc;
