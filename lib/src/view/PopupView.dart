@@ -104,7 +104,7 @@ class PopupView extends View {
 
     if (inDocument) {
       if (parent != null)
-        left = new DOMQuery(refNode.parent).pageOffset.left + left;
+        left = new DOMAgent(refNode.parent).pageOffset.left + left;
       node.style.left = CSS.px(left);
     }
   }
@@ -114,7 +114,7 @@ class PopupView extends View {
 
     if (inDocument) {
       if (parent != null)
-        top = new DOMQuery(refNode.parent).pageOffset.top + top;
+        top = new DOMAgent(refNode.parent).pageOffset.top + top;
       node.style.top = CSS.px(top);
     }
   }
@@ -126,7 +126,7 @@ class PopupView extends View {
 
     //fix the left/top of DOM (since it is in diff coordinates)
     if (parent != null) {
-      final ofs = new DOMQuery(refNode.parent).pageOffset;
+      final ofs = new DOMAgent(refNode.parent).pageOffset;
       final style = node.style;
       style.left = CSS.px(ofs.left + left);
       style.top = CSS.px(ofs.top + top);

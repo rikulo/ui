@@ -7,8 +7,6 @@ import "dart:html";
 import "dart:math";
 
 import "html.dart";
-import "gesture.dart";
-import "event.dart";
 
 part "src/util/StringUtil.dart";
 part "src/util/XMLUtil.dart";
@@ -19,4 +17,3 @@ part "src/util/Matrix.dart";
 part "src/util/Color.dart";
 part "src/util/Size.dart";
 part "src/util/Utilities.dart";
-part "src/util/printc.dart";

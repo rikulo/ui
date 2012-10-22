@@ -36,3 +36,4 @@ part "src/view/TextBox.dart";
 part "src/view/ScrollView.dart";
 part "src/view/PopupView.dart";
 part "src/view/Canvas.dart";
+part "src/view/printc.dart";

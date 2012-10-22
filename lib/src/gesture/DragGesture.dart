@@ -60,8 +60,8 @@ interface DragGesture extends Gesture default _DragGesture {
    * as the touch starts.
    * Default: -1 (unit: pixels)
    */
-  DragGesture(Element owner, [DragGestureStart start, DragGestureMove move, 
-    DragGestureEnd end]);
+  DragGesture(Element owner, {DragGestureStart start, DragGestureMove move, 
+    DragGestureEnd end});
   
   /** The element that owns this drag gesture (never null).
    */
@@ -109,8 +109,8 @@ abstract class _DragGesture implements DragGesture {
   _DragGestureState _state;
   bool _disabled = false;
   
-  factory _DragGesture(Element owner, [DragGestureStart start, 
-  DragGestureMove move, DragGestureEnd end]) {
+  factory _DragGesture(Element owner, {DragGestureStart start, 
+  DragGestureMove move, DragGestureEnd end}) {
     return browser.touch ?
       new _TouchDragGesture(owner, start, move, end) :
       new _MouseDragGesture(owner, start, move, end);
@@ -174,8 +174,8 @@ abstract class _DragGesture implements DragGesture {
 class _TouchDragGesture extends _DragGesture {
   EventListener _elStart, _elMove, _elEnd;
   
-  _TouchDragGesture(Element owner, [DragGestureStart start, 
-  DragGestureMove move, DragGestureEnd end]):
+  _TouchDragGesture(Element owner, {DragGestureStart start, 
+  DragGestureMove move, DragGestureEnd end}):
     super._init(owner, start, move, end);
 
   void _listen() {
@@ -186,7 +186,7 @@ class _TouchDragGesture extends _DragGesture {
       else {
         Touch t = event.touches[0];
         _touchStart(event.target, new Offset(t.pageX, t.pageY), event.timeStamp);
-        if (!new DOMQuery(event.target).isInput())
+        if (!new DOMAgent(event.target).isInput())
           event.preventDefault();
       }
     });
@@ -210,8 +210,8 @@ class _MouseDragGesture extends _DragGesture {
   EventListener _elStart, _elMove, _elEnd;
   bool _captured = false;
 
-  _MouseDragGesture(Element owner, [DragGestureStart start, 
-  DragGestureMove move, DragGestureEnd end]):
+  _MouseDragGesture(Element owner, {DragGestureStart start, 
+  DragGestureMove move, DragGestureEnd end}):
     super._init(owner, start, move, end);
 
   void stop() {
@@ -239,7 +239,7 @@ class _MouseDragGesture extends _DragGesture {
     _owner.on.mouseDown.add(_elStart = (MouseEvent event) {
       _touchStart(event.target, new Offset(event.pageX, event.pageY), event.timeStamp);
       _capture();
-      if (!new DOMQuery(event.target).isInput())
+      if (!new DOMAgent(event.target).isInput())
         event.preventDefault();
     });
   }

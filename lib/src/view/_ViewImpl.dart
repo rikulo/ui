@@ -75,9 +75,9 @@ class _ViewImpl {
     //Android: resize will be fired when virtual keyboard showed up
     //so we have to ignore this case: width must be changed, or height is larger
     //(since user might bring up kbd, rotate, and close kbd)
-      Size old = new DOMQuery(window).innerSize;
+      Size old = new WindowAgent(window).innerSize;
       return (event) { //DOM event
-          final cur = new DOMQuery(window).innerSize;
+          final cur = new WindowAgent(window).innerSize;
           if (old.width != cur.width || old.height < cur.height) {
             old = cur;
             browser.updateSize();
@@ -195,7 +195,7 @@ class _ViewImpl {
    */
   static DialogInfo createDialog(Element node, [String maskClass="v-mask", bool hide = false]) {
     Size size = node == document.body ?
-      browser.innerSize: new DOMQuery(node).innerSize;
+      browser.innerSize: new DOMAgent(node).innerSize;
 
     final parent = new DivElement();
     parent.style.position = "relative";
@@ -209,7 +209,7 @@ class _ViewImpl {
     if (node != document.body)
       mask.style.position = "absolute";
     if (hide)
-      new DOMQuery(mask).hide();
+      new DOMAgent(mask).hide();
     parent.$dom_appendChild(mask);
     return new DialogInfo(parent, mask);
   }

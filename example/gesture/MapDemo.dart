@@ -8,8 +8,9 @@ import 'package:rikulo/util.dart';
 import 'package:rikulo/event.dart';
 
 Offset center(View v) {
-  Size size = new DOMQuery(v).size;
-  return new DOMQuery(v).pageOffset + new Offset(size.width / 2, size.height / 2);
+  final dq = new DOMAgent(v.node);
+  Size size = dq.size;
+  return dq.pageOffset + new Offset(size.width / 2, size.height / 2);
 }
 
 void main() {
@@ -37,7 +38,7 @@ void main() {
   
   // sizing
   img.on.preLayout.add((LayoutEvent event) {
-    Size psize = new DOMQuery(panel).innerSize;
+    Size psize = new DOMAgent(panel.node).innerSize;
     if (psize.width / imgw < psize.height / imgh) {
       img.width = psize.width.toInt();
       img.height = psize.width * imgh ~/ imgw;

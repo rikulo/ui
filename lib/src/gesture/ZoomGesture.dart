@@ -157,8 +157,8 @@ interface ZoomGesture extends Gesture default _ZoomGesture {
    * + [end] is called when a finger leaves, or when a third finger joins in 
    * the touch events.
    */
-  ZoomGesture(Element owner, [ZoomGestureStart start, ZoomGestureMove move, 
-    ZoomGestureEnd end]);
+  ZoomGesture(Element owner, {ZoomGestureStart start, ZoomGestureMove move, 
+    ZoomGestureEnd end});
   
   /** The element to which the gesture applies.
    */
@@ -180,8 +180,8 @@ class _ZoomGesture implements ZoomGesture {
   
   final Element owner;
   
-  _ZoomGesture(this.owner, [ZoomGestureStart start, ZoomGestureMove move, 
-  ZoomGestureEnd end]) : _start = start, _move = move, _end = end {
+  _ZoomGesture(this.owner, {ZoomGestureStart start, ZoomGestureMove move, 
+  ZoomGestureEnd end}) : _start = start, _move = move, _end = end {
     
     // listen
     final ElementEvents on = owner.on;

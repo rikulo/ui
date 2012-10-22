@@ -66,7 +66,7 @@ void main() {
   
   // sizing
   panel.on.preLayout.add((LayoutEvent e) {
-    panel.height = new DOMQuery(mainView).innerHeight - statusHeight;
+    panel.height = new DOMAgent(mainView.node).innerHeight - statusHeight;
   });
   
   // zoom gesture

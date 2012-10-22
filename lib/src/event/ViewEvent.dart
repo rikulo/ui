@@ -73,7 +73,7 @@ class ViewEvent {
           _offset = new Offset(uievt.pageX, uievt.pageY);
         }
         
-        _offset = _offset - new DOMQuery(target).pageOffset;
+        _offset = _offset - new DOMAgent(target.node).pageOffset;
       } catch (e) {
         print("Faile to get offset for $this, $e");
       }

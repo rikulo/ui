@@ -48,7 +48,7 @@ class Viewport extends View {
   }
   void _syncToolbar() {
     if (inDocument) {
-      final DOMQuery qtbar = new DOMQuery(getNode("toolbar"));
+      final DOMAgent qtbar = new DOMAgent(getNode("toolbar"));
       _toolbar.left = qtbar.offsetLeft;
       _toolbar.top = qtbar.offsetTop;
     }
@@ -112,9 +112,9 @@ class Viewport extends View {
       _syncToolbar();
   }
   //@Override
-  int get innerWidth => new DOMQuery(contentNode).innerWidth;
+  int get innerWidth => new DOMAgent(contentNode).innerWidth;
   //@Override
-  int get innerHeight => new DOMQuery(contentNode).innerHeight;
+  int get innerHeight => new DOMAgent(contentNode).innerHeight;
   //@Override to adjust [contentNode]'s width accordingly
   void set width(int width) {
     super.width = width;
@@ -128,11 +128,11 @@ class Viewport extends View {
       _adjustHeight();
   }
   void _adjustWidth() {
-    int v = new DOMQuery(node).innerWidth - _spacingLeft - _spacingRight;
+    int v = new DOMAgent(node).innerWidth - _spacingLeft - _spacingRight;
     contentNode.style.width = CSS.px(v > 0 ? v: 0);
   }
   void _adjustHeight() {
-    int v = new DOMQuery(node).innerHeight - _spacingTop - _spacingBottom;
+    int v = new DOMAgent(node).innerHeight - _spacingTop - _spacingBottom;
     contentNode.style.height = CSS.px(v > 0 ? v: 0);
   }
 }

@@ -32,7 +32,7 @@ class ShowEffect extends EasingMotion {
       if (start != null)
         start(state);
       action(0, state);
-      new DOMQuery(element).show();
+      new DOMAgent(element).show();
     };
   }
   
@@ -64,7 +64,7 @@ class HideEffect extends EasingMotion {
   // dart2js bug: closure in intializer doesn't compile
   static MotionEnd _hideEffectEnd(Element element, MotionEnd end) {
     return (MotionState state) {
-      new DOMQuery(element).hide();
+      new DOMAgent(element).hide();
       if (end != null)
         end(state);
     };
