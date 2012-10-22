@@ -326,10 +326,10 @@ class View {
    * If this view is attached to the document, this method will attach the child
    * to the document.
    */
-  void addChild(View child, [View beforeChild]) { // TODO: visible
-    _addChild(child, beforeChild);
+  void addChild(View child, [View beforeChild, bool visible = true]) {
+    _addChild(child, beforeChild, visible);
   }
-  void _addChild(View child, View beforeChild, [Element childNode]) {
+  void _addChild(View child, View beforeChild, bool visible, [Element childNode]) {
     if (isDescendantOf(child))
       throw new UIException("$child is an ancestor of $this");
     if (!isViewGroup())
@@ -357,8 +357,12 @@ class View {
     if (inDocument) {
       if (childNode != null) {
         insertChildToDocument_(child, childNode, beforeChild);
+        if (!visible)
+          new DOMAgent(child.node).hide();
       } else {
         insertChildToDocument_(child, child._asHTML(), beforeChild);
+        if (!visible)
+          new DOMAgent(child.node).hide();
         child._mount();
         //note: child.requestLayout won't be called (for sake of performance)
       }
@@ -551,9 +555,8 @@ class View {
         node.innerHTML = html;
         break;//done (and no need to assign p and nxt)
       case "dialog":
-      case "dialog-effect":
         final dlgInfo = dialogInfos[this] = 
-          _ViewImpl.createDialog(node, hide: mode == "dialog-effect");
+          _ViewImpl.createDialog(node, visible: visible);
         p = dlgInfo.cave;
         if (profile.location.isEmpty())
           profile.location = "center center";
@@ -567,7 +570,10 @@ class View {
       nxt.insertAdjacentHTML("beforeBegin", html);
     else if (p != null)
       p.insertAdjacentHTML("beforeEnd", html);
-
+    
+    if (inDocument && !visible)
+      new DOMAgent(this.node).hide();
+    
     _mount();
     this.node.classes.addAll(_rootClasses);
     rootViews.add(this);

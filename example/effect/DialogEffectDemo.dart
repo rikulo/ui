@@ -73,7 +73,7 @@ void main() {
   });
   
   v1.on.click.add((ViewEvent event) {
-    dialog.addToDocument(mode: "dialog-effect");
+    dialog.addToDocument(mode: "dialog", visible: false);
     final Element mask = dialogInfos[dialog].mask;
     
     new EasingMotion.join([new FadeInEffect(dialog.node), maskFadeIn(mask)], 
@@ -88,7 +88,7 @@ void main() {
   });
   
   v2.on.click.add((ViewEvent event) {
-    dialog.addToDocument(mode: "dialog-effect");
+    dialog.addToDocument(mode: "dialog", visible: false);
     final Element mask = dialogInfos[dialog].mask;
     
     new EasingMotion.join([new ZoomInEffect(dialog.node), maskFadeIn(mask)], 
@@ -103,7 +103,7 @@ void main() {
   });
   
   v3.on.click.add((ViewEvent event) {
-    dialog.addToDocument(mode: "dialog-effect");
+    dialog.addToDocument(mode: "dialog", visible: false);
     final Element mask = dialogInfos[dialog].mask;
     
     new EasingMotion.join([new SlideInEffect(dialog.node), maskFadeIn(mask)], 

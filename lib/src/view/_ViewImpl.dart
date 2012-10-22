@@ -193,7 +193,7 @@ class _ViewImpl {
   //utilities//
   /** Creates a dialog encloser.
    */
-  static DialogInfo createDialog(Element node, [String maskClass="v-mask", bool hide = false]) {
+  static DialogInfo createDialog(Element node, [bool visible = true, String maskClass="v-mask"]) {
     Size size = node == document.body ?
       browser.innerSize: new DOMAgent(node).innerSize;
 
@@ -203,12 +203,12 @@ class _ViewImpl {
       //since layout assumes it (test case: TestPartial.html)
     node.nodes.add(parent);
 
-    //creat mask
+    //create mask
     final mask = new Element.html(
       '<div class="v- ${maskClass}" style="width:${size.width}px;height:${size.height}px"></div>');
     if (node != document.body)
       mask.style.position = "absolute";
-    if (hide)
+    if (!visible)
       new DOMAgent(mask).hide();
     parent.$dom_appendChild(mask);
     return new DialogInfo(parent, mask);
