@@ -3,8 +3,8 @@
 //Author: simonpai
 
 /** A skeleton implementation of transition effect to show an element. It is
- * assumed the element is hidden before the effect starts, and the element will
- * be shown when the effect ends.
+ * assumed the element's CSS visibility attribute is 'hidden' before the effect 
+ * starts, and the element will be shown when the effect ends.
  */
 class ShowEffect extends EasingMotion {
   
@@ -12,8 +12,8 @@ class ShowEffect extends EasingMotion {
   final Element element;
   
   /** Create an effect on [element] that applies [action] with easing input
-   * value from 0 to 1. The element will be shown at the very beginning of the
-   * effect.
+   * value from 0 to 1. The element's CSS visibility attribute will be set to
+   * 'visible' at the very beginning of the effect.
    * 
    * + [period] determines how long the effect will take.
    * + [easing] the easing function of the effect
@@ -32,15 +32,15 @@ class ShowEffect extends EasingMotion {
       if (start != null)
         start(state);
       action(0, state);
-      new DOMAgent(element).show();
+      element.style.visibility = "";
     };
   }
   
 }
 
 /** A skeleton implementation of transition effect to show an element. It is 
- * assuemd the element is visible before the effect starts, and the element
- * will be hidden when the effect ends.
+ * assumed the element's CSS visibility attribute is 'visible' (default value) 
+ * before the effect starts, and the element will be hidden when the effect ends.
  */
 class HideEffect extends EasingMotion {
   
@@ -48,7 +48,8 @@ class HideEffect extends EasingMotion {
   final Element element;
   
   /** Create an effect on [element] that applies [action] with easing input
-   * value from 0 to 1. The element will be hidden when the effect ends.
+   * value from 0 to 1. The element's CSS visibility attribute will be set to 
+   * 'hidden' when the effect ends.
    * 
    * + [period] determines how long the effect will take.
    * + [easing] the easing function of the effect
@@ -64,7 +65,7 @@ class HideEffect extends EasingMotion {
   // dart2js bug: closure in intializer doesn't compile
   static MotionEnd _hideEffectEnd(Element element, MotionEnd end) {
     return (MotionState state) {
-      new DOMAgent(element).hide();
+      element.style.visibility = 'hidden';
       if (end != null)
         end(state);
     };

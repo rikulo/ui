@@ -9,7 +9,7 @@ import 'package:rikulo/util.dart';
 import 'package:rikulo/event.dart';
 import 'package:rikulo/effect.dart';
 
-typedef void SwitchViewEffect(View vo, View vn, void end());
+typedef void SwitchViewEffect(Element n1, Element n2, void end());
 
 void replace(View vo, View vn, SwitchViewEffect effect) {
   if (effect == null) {
@@ -18,12 +18,12 @@ void replace(View vo, View vn, SwitchViewEffect effect) {
     vn.addToDocument(node: p);
     
   } else {
-    final bool vov = vo.visible;
-    vn.addToDocument(node: vo.node.parent, visible: false);
+    vn.style.visibility = "hidden";
+    vn.addToDocument(node: vo.node.parent);
     vn.requestLayout(true);
-    effect(vo, vn, () {
+    effect(vo.node, vn.node, () {
       vo.removeFromDocument();
-      vo.visible = vov;
+      vn.style.visibility = vo.style.visibility = "";
     });
     
   }
@@ -37,11 +37,11 @@ TextView block(String text, int left, int top) {
   return tv;
 }
 
-void addFly(View view, Offset range, List<MotionAction> actions) {
-  if (view.children.isEmpty())
-    actions.add(randFly(view.node, range));
+void addFly(Element element, Offset range, List<MotionAction> actions) {
+  if (element.$dom_children.isEmpty())
+    actions.add(randFly(element, range));
   else
-    for (View c in view.children)
+    for (Element c in element.$dom_children)
       addFly(c, range, actions);
 }
 
@@ -96,34 +96,33 @@ void main() {
   SwitchViewEffect _eff;
   
   w1.on.click.add((ViewEvent event) {
-    replace(v1, v2, _eff = (View vo, View vn, void end()) {
-      new FadeInEffect(vn.node, start: (MotionState state) {
-        vo.node.style.zIndex = "-1";
-        vn.visible = true;
+    replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
+      new FadeInEffect(n2, start: (MotionState state) {
+        n1.style.zIndex = "-1";
       }, end: (MotionState state) => end()).run();
     });
   });
   
   w2.on.click.add((ViewEvent event) {
-    replace(v1, v2, _eff = (View vo, View vn, void end()) {
+    replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
       final int width = browser.size.width;
       new EasingMotion((num x, MotionState state) {
         final int l = (width * x).toInt();
-        vo.node.style.left = CSS.px(-l);
-        vn.node.style.left = CSS.px(width - l);
+        n1.style.left = CSS.px(-l);
+        n2.style.left = CSS.px(width - l);
         
       }, start: (MotionState state) {
-        final Element parent = vo.node.parent;
+        final Element parent = n1.parent;
         if (parent != null) {
           state.data = parent.style.overflow;
           parent.style.overflow = "hidden";
         }
-        vo.node.style.left = CSS.px(width);
-        vn.node.style.left = "0";
-        vn.visible = true;
+        n1.style.left = CSS.px(width);
+        n2.style.left = "0";
+        n2.style.visibility = "";
         
       }, end: (MotionState state) {
-        final Element parent = vo.node.parent;
+        final Element parent = n1.parent;
         if (parent != null)
           parent.style.overflow = state.data == null ? "" : state.data;
         end();
@@ -133,37 +132,37 @@ void main() {
   });
   
   w3.on.click.add((ViewEvent event) {
-    replace(v1, v2, _eff = (View vo, View vn, void end()) {
+    replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
       final List<MotionAction> actions = new List<MotionAction>();
       
       final int height = browser.size.height;
       final int width = browser.size.width;
       final Offset range = new Offset(width / 2, height / 2);
       
-      final Element vonode = vo.node;
+      final Element vonode = n1;
       actions.add((num x, MotionState state) {
         vonode.style.top = CSS.px((height * x * x).toInt()); // free fall
       });
-      addFly(vo, range, actions);
+      addFly(n1, range, actions);
       
       new EasingMotion((num x, MotionState state) {
         for (MotionAction ma in actions)
           ma(x, state);
             
       }, start: (MotionState state) {
-        vn.node.style.zIndex = "-1";
-        vn.visible = true;
-        final Element parent = vo.node.parent;
+        n2.style.zIndex = "-1";
+        n2.style.visibility = "";
+        final Element parent = n1.parent;
         if (parent != null) {
           state.data = parent.style.overflow;
           parent.style.overflow = "hidden";
         }
         
       }, end: (MotionState state) {
-        final Element parent = vo.node.parent;
+        final Element parent = n1.parent;
         if (parent != null)
           parent.style.overflow = state.data == null ? "" : state.data;
-        vn.node.style.zIndex = "";
+        n2.style.zIndex = "";
         end();
         
       }).run();

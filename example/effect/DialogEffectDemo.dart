@@ -73,48 +73,54 @@ void main() {
   });
   
   v1.on.click.add((ViewEvent event) {
-    dialog.addToDocument(mode: "dialog", visible: false);
-    final Element mask = dialogInfos[dialog].mask;
+    dialog.style.visibility = "hidden";
+    dialog.addToDocument(mode: "dialog");
+    final Element mask = dialog.maskNode;
     
     new EasingMotion.join([new FadeInEffect(dialog.node), maskFadeIn(mask)], 
     end: (MotionState state) {
       removeReady = true;
-    }, easing: (num t) => t * t).run();
+    }, easing: (num t) => t * t, period: 400).run();
     
     removeMotion = new EasingMotion.join([new FadeOutEffect(dialog.node), maskFadeOut(mask)], 
     end: (MotionState state) {
       dialog.removeFromDocument();
-    }, easing: (num t) => t * t);
+      dialog.style.visibility = "";
+    }, easing: (num t) => t * t, period: 400);
   });
   
   v2.on.click.add((ViewEvent event) {
-    dialog.addToDocument(mode: "dialog", visible: false);
-    final Element mask = dialogInfos[dialog].mask;
+    dialog.style.visibility = "hidden";
+    dialog.addToDocument(mode: "dialog");
+    final Element mask = dialog.maskNode;
     
     new EasingMotion.join([new ZoomInEffect(dialog.node), maskFadeIn(mask)], 
     end: (MotionState state) {
       removeReady = true;
-    }, easing: (num t) => t * t).run();
+    }, easing: (num t) => t * t, period: 400).run();
     
     removeMotion = new EasingMotion.join([new ZoomOutEffect(dialog.node), maskFadeOut(mask)], 
     end: (MotionState state) {
       dialog.removeFromDocument();
-    }, easing: (num t) => t * t);
+      dialog.style.visibility = "";
+    }, easing: (num t) => t * t, period: 400);
   });
   
   v3.on.click.add((ViewEvent event) {
-    dialog.addToDocument(mode: "dialog", visible: false);
-    final Element mask = dialogInfos[dialog].mask;
+    dialog.style.visibility = "hidden";
+    dialog.addToDocument(mode: "dialog");
+    final Element mask = dialog.maskNode;
     
     new EasingMotion.join([new SlideInEffect(dialog.node), maskFadeIn(mask)], 
     end: (MotionState state) {
       removeReady = true;
-    }, easing: (num t) => t * t).run();
+    }, easing: (num t) => t * t, period: 400).run();
     
     removeMotion = new EasingMotion.join([new SlideOutEffect(dialog.node), maskFadeOut(mask)], 
     end: (MotionState state) {
       dialog.removeFromDocument();
-    }, easing: (num t) => t * t);
+      dialog.style.visibility = "";
+    }, easing: (num t) => t * t, period: 400);
   });
   
   v4.on.click.add((ViewEvent event) {

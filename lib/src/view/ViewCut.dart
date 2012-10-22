@@ -67,12 +67,12 @@ class _ViewCut implements ViewCut {
 
     parent._removeChild(view, exit: false); //not to exit
   }
-  void pasteTo(View parent, [View beforeChild, bool visible = true]) {
+  void pasteTo(View parent, [View beforeChild]) {
     if (!parent.inDocument)
       throw new UIException("Not in document: $parent");
     _check();
 
-    parent._addChild(view, beforeChild, visible, view.node);
+    parent._addChild(view, beforeChild, view.node);
   }
   void drop() {
     _check();

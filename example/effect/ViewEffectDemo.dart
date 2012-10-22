@@ -84,7 +84,7 @@ void main() {
     if (mv1)
       return;
     mv1 = true;
-    v1.visible = false;
+    v1.style.visibility = "hidden";
     container.addChild(v1);
     new FadeInEffect(v1.node, end: (MotionState state) {
       mv1 = false;
@@ -109,7 +109,7 @@ void main() {
     if (mv2)
       return;
     mv2 = true;
-    v2.visible = false;
+    v2.style.visibility = "hidden";
     container.addChild(v2);
     new ZoomInEffect(v2.node, end: (MotionState state) {
       mv2 = false;
@@ -144,7 +144,7 @@ void main() {
     if (mv3)
       return;
     mv3 = true;
-    v3.visible = false;
+    v3.style.visibility = "hidden";
     container.addChild(v3);
     new SlideInEffect(v3.node, direction: _dir, end: (MotionState state) {
       mv3 = false;
