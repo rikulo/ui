@@ -50,8 +50,8 @@ class TextBox extends View implements Input<String> {
 
       if (inDocument)
         if (oldMultiline != _multiline) { //rerender required
-          invalidate(true);
-          //immeidate is true, since the user might modify other properties later
+          invalidate(immeidate: true);
+            //immeidate is true, since the user might modify other properties later
         } else {
           (inputNode as Dynamic).type = type; //Unlike ButtonElement, it is OK to change directly
         }

@@ -720,7 +720,7 @@ class View {
    * See also [ViewUtil.flushInvalidated], which forces all queued invalidation
    * to be handle immediately (but you rarely need to call it).
    */
-  void invalidate([bool immediate=false]) {
+  void invalidate({bool immediate:false}) {
     if (!immediate) {
       _invalidator.queue(this);
     } else if (inDocument) {
@@ -780,7 +780,7 @@ class View {
    * If you'd like to handle all queued layouts, you can invoke
    * [ViewUtil.flushRequestedLayouts].
    */
-  void requestLayout([bool immediate=false, bool descendantOnly=false]) {
+  void requestLayout({bool immediate:false, bool descendantOnly:false}) {
     layoutManager.requestLayout(this, immediate, descendantOnly);
   }
   /** Hanldes the layout of the child views of this view.
