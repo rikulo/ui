@@ -112,8 +112,8 @@ abstract class _DragGesture implements DragGesture {
   factory _DragGesture(Element owner, {DragGestureStart start, 
   DragGestureMove move, DragGestureEnd end}) {
     return browser.touch ?
-      new _TouchDragGesture(owner, start, move, end) :
-      new _MouseDragGesture(owner, start, move, end);
+      new _TouchDragGesture(owner, start: start, move: move, end: end) :
+      new _MouseDragGesture(owner, start: start, move: move, end: end);
   }
   
   _DragGesture._init(Element this._owner, DragGestureStart this._start, 
