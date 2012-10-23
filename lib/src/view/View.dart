@@ -490,7 +490,7 @@ class View {
    * or null otherwise.
    *
    * The mask node is generated when a view was invoked with [addToDocument]
-   * with `mode: dialog`. It is placed under [node] and occupies the whole area to
+   * with `mode: dialog`. It is placed below [node] and occupies the whole space to
    * prevent the user from accessing any UI other than this view.
    */
   Element get maskNode {
@@ -1083,14 +1083,12 @@ class View {
     if ((noCtrl || !ctrl.noStyle)) {
       final StringBuffer stylesb = new StringBuffer();
       domStyle_(stylesb,
-        new DOMStyleCtrl(noVisible: (noCtrl ||  ctrl.noVisible)));
+        !noCtrl && ctrl.noVisible ? new DOMStyleCtrl(noVisible: true): null);
       if (!stylesb.isEmpty())
           out.add(' style="').add(stylesb).add('"');
     }
     if ((noCtrl || !ctrl.noDraggable))
       out.add(' draggable="').add(draggable).add('"');
-    if ((noCtrl || !ctrl.noVisible) && !visible)
-      _visiCtrl.addHiddenAttr(out);
     if ((noCtrl || !ctrl.noClass)) {
       final StringBuffer classsb = new StringBuffer();
       domClass_(classsb);
@@ -1135,7 +1133,8 @@ class View {
     if ((noCtrl || !ctrl.noHeight) && _height != null) //don't use height since it has special handling
       out.add("height:").add(_height).add("px;");
     if ((noCtrl || !ctrl.noVisible) && !visible)
-      _visiCtrl.addHiddenStyle(out);
+      out.add("display:none;");
+
     String s;
     if ((noCtrl || !ctrl.noStyle) && _style != null && !(s = _style.cssText).isEmpty())
       out.add(XMLUtil.encode(s));
@@ -1231,6 +1230,5 @@ class View {
   Map<String, Annotation> get annotations
   => _annos != null ? _annos: MapUtil.onDemand(() => _annos = new Map());
 
-  int hashCode() => uuid.hashCode(); //uuid is immutable once assigned
   String toString() => "$className(${id.isEmpty() ? uuid: id})";
 }

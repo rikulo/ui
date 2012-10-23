@@ -180,26 +180,20 @@ class DOMAgent {
     return sz;
   }
   static Element _txtdiv;
-  
+
   /// show the element.
   void show() {
     visible = true;
   }
-  
   /// hide the element.
   void hide() {
     visible = false;
   }
-  
   /// set the visiblility of element
-  void set visible(bool visible) {
-    if (browser.msie)
-      node.style.display = visible ? "": "none";
-    else
-      node.hidden = !visible;
-  }
-  
+  void set visible(bool visible)
+  => node.style.display = visible ? "": "none";
 }
+
 /**
  * A window query agent used to provide the additional utilities
  * for handling window.
