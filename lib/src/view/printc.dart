@@ -50,7 +50,7 @@ class _Printc {
  ${CSS.name('box-sizing')}: border-box;
  width:40%; height:30%; border:1px solid #332; background-color:#eec;
  overflow:auto; padding:3px; white-space:pre-wrap;
- font-size:11px; position:absolute; right:0; bottom:0;
+ font-size:11px; font-family:monospace; position:absolute; right:0; bottom:0;
 }
 .v-printView-pp {
  position:absolute; border:1px solid #221; padding:1px; background-color:white;
