@@ -2,27 +2,6 @@
 //History: Tue, Mar 13, 2012  2:14:29 PM
 // Author: tomyeh
 
-/** Controls the visibility
- */
-class _VisiCtrl {
- void addHiddenStyle(StringBuffer out) {
-    //does nothing
-  }
-  void addHiddenAttr(StringBuffer out) {
-    out.add(' hidden');
-  }
-}
-//IE (10 preview) doesn't support the hidden attribute
-class _IEVisiCtrl extends _VisiCtrl {
-  void addHiddenStyle(StringBuffer out) {
-    out.add('display:none;');
-  }
-  void addHiddenAttr(StringBuffer out) {
-    //does nothing
-  }
-}
-_VisiCtrl _visiCtrl = browser.msie ? new _IEVisiCtrl(): new _VisiCtrl();
-
 /** Used by View.tag()
  */
 class _TagView extends View {
@@ -521,7 +500,7 @@ class _SubviewList extends AbstractList<View> {
   void add(View view) {
     _owner.addChild(view);
   }
-  void sort(int compare(View a, View b)) {
+  void sort([Comparator<View> compare = Comparable.compare]) {
     List<View> copy = new List.from(this);
     copy.sort(compare);
     setRange(0, length, copy);
