@@ -193,7 +193,7 @@ class _ViewImpl {
   //utilities//
   /** Creates a dialog encloser.
    */
-  static DialogInfo createDialog(Element node, [bool hidden = false, String maskClass="v-mask"]) {
+  static DialogInfo createDialog(Element node, View view, [String maskClass="v-mask"]) {
     Size size = node == document.body ?
       browser.innerSize: new DOMAgent(node).innerSize;
 
@@ -206,10 +206,14 @@ class _ViewImpl {
     //create mask
     final mask = new Element.html(
       '<div class="v- ${maskClass}" style="width:${size.width}px;height:${size.height}px"></div>');
+    
     if (node != document.body)
       mask.style.position = "absolute";
-    if (hidden)
-      mask.style.visibility = "hidden";
+    // mask inherits visibility of dialog view
+    mask.style.visibility = view.style.visibility;
+    if (!view.visible)
+      new DOMAgent(mask).hide();
+    
     parent.$dom_appendChild(mask);
     return new DialogInfo(parent, mask);
   }

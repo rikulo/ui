@@ -558,9 +558,7 @@ class View {
         node.innerHTML = html;
         break;//done (and no need to assign p and nxt)
       case "dialog":
-        final hidden = style.visibility == "hidden";
-        final dlgInfo = dialogInfos[this] = 
-          _ViewImpl.createDialog(node, hidden: hidden);
+        final dlgInfo = dialogInfos[this] = _ViewImpl.createDialog(node, this);
         p = dlgInfo.cave;
         if (profile.location.isEmpty())
           profile.location = "center center";
