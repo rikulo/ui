@@ -500,7 +500,7 @@ class _SubviewList extends AbstractList<View> {
   void add(View view) {
     _owner.addChild(view);
   }
-  void sort(int compare(View a, View b)) {
+  void sort([Comparator<View> compare = Comparable.compare]) {
     List<View> copy = new List.from(this);
     copy.sort(compare);
     setRange(0, length, copy);

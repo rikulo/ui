@@ -190,8 +190,9 @@ class DOMAgent {
     visible = false;
   }
   /// set the visiblility of element
-  void set visible(bool visible)
-  => node.style.display = visible ? "": "none";
+  void set visible(bool visible) {
+    node.style.display = visible ? "": "none";
+  }
 }
 
 /**
