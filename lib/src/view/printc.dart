@@ -62,7 +62,7 @@ class _Printc {
 }
 </style>
       ''');
-      new HoldGesture(_node, _gestureAction(), _gestureStart());
+      new HoldGesture(_node, _gestureAction(), start: _gestureStart());
     }
     return true;
   }
