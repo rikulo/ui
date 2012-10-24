@@ -59,7 +59,7 @@ void main() {
       pp.style.backgroundColor = "#0ff";
       pp.on.dismiss.add((e) {pp.removeFromParent();});
       view.addChild(pp, popup);
-      pp.requestLayout(immediate: true);
+      pp.requestLayout(true);
     });
   view.addChild(btn3);
 

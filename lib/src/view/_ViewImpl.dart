@@ -611,7 +611,7 @@ class _SVIterator implements Iterator<View> {
 }
 
 final RunOnceViewManager _invalidator =
-  new RunOnceViewManager((View view) {view.invalidate(immediate: true);});
+  new RunOnceViewManager((View view) {view.invalidate(true);});
 
 /** The classes to add to the root node
  */

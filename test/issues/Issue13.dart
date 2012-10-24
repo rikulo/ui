@@ -23,7 +23,7 @@ void main() {
   final btn = new Button("test");
   btn.on.click.add((event) {
     rg.model = model;
-    mainView.requestLayout(immediate: true);
+    mainView.requestLayout(true);
     mainView.addChild(
         new TextView(rg.node.query('input') != null ?
           "Success!":

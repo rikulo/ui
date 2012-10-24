@@ -526,7 +526,7 @@ class View {
    *    + `inner`: replace the inner content. In other words, all children
    * are removed and this view will become its only child.
    * + [layout] specifies whether to invoke [requestLayout].
-   * If true, `requestLayout(immediate: true)` will be called.
+   * If true, `requestLayout(true)` will be called.
    * If omitted (i.e., null), `requestLayout()` will be called.
    * If false, [requestLayout] won't be called at all.
    */
@@ -581,7 +581,7 @@ class View {
     rootViews.add(this);
 
     if (layout != false)
-      requestLayout(immediate: layout == true);
+      requestLayout(layout == true);
       //immediate: better feedback (and avoid ghost, i.e., showed at original place)
   }
   /** Removes this view from the document.
@@ -720,7 +720,7 @@ class View {
    * See also [ViewUtil.flushInvalidated], which forces all queued invalidation
    * to be handle immediately (but you rarely need to call it).
    */
-  void invalidate({bool immediate:false}) {
+  void invalidate([bool immediate=false]) {
     if (!immediate) {
       _invalidator.queue(this);
     } else if (inDocument) {
@@ -780,7 +780,7 @@ class View {
    * If you'd like to handle all queued layouts, you can invoke
    * [ViewUtil.flushRequestedLayouts].
    */
-  void requestLayout({bool immediate:false, bool descendantOnly:false}) {
+  void requestLayout([bool immediate=false, bool descendantOnly=false]) {
     layoutManager.requestLayout(this, immediate, descendantOnly);
   }
   /** Hanldes the layout of the child views of this view.
@@ -882,7 +882,7 @@ class View {
     if (_inDoc) {
       new DOMAgent(node).visible = visible;
       if (changed && visible)
-        requestLayout(immediate: true);
+        requestLayout(true);
     }
   }
 

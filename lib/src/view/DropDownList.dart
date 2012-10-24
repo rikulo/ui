@@ -161,7 +161,7 @@ class DropDownList<T> extends View {
   void renderModel_() {
     //Note: when this method is called, _model might be null
     if (browser.msie) { //IE/FF doesn't handle innerHTML well
-      invalidate(immediate: true);
+      invalidate(true);
     } else {
       _renderInner();
       sendEvent(new ViewEvent("render"));
