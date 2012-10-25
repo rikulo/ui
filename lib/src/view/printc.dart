@@ -34,10 +34,10 @@ class _Printc {
       final Element db = document.query("#v-dashboard");
       if (db == null) { //not in simulator
         _node = new Element.html(
-  '<div class="v-printView-x"></div>');
+  '<div class="v-printc-x"></div>');
         document.body.elements.add(_node);
       } else { //running in simulator
-        _node = db.query(".v-printView");
+        _node = db.query(".v-printc");
         if (_node == null) {
           _defer(); //later
           return false;
@@ -45,23 +45,23 @@ class _Printc {
       }
 
       document.body.insertAdjacentHTML("afterBegin", '''
-<style>
-.v-printView-x {
+<div><style>
+.v-printc-x {
  ${CSS.name('box-sizing')}: border-box;
  width:40%; height:30%; border:1px solid #332; background-color:#eec;
  overflow:auto; padding:3px; white-space:pre-wrap;
  font-size:11px; font-family:monospace; position:absolute; right:0; bottom:0;
 }
-.v-printView-pp {
+.v-printc-pp {
  position:absolute; border:1px solid #221; padding:1px; background-color:white;
  border-radius: 1px; box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
-.v-printView-pp div {
+.v-printc-pp div {
  display: inline-block; border:1px solid #553; border-radius: 3px;
  margin:2px; padding:0 2px; font-size:15px; cursor:pointer;
 }
-</style>
-      ''');
+</style></div>
+      '''); //IE9: enclose with div is required
       new HoldGesture(_node, _gestureAction(), start: _gestureStart());
     }
     return true;
@@ -131,7 +131,7 @@ class _PrintcPopup {
   _PrintcPopup(_Printc this._owner) {
   }
   void open(int x, int y) {
-    _node = new Element.html('<div style="left:${x+2}px;top:${y+2}px" class="v-printView-pp"><div>[]</div><div>+</div><div>-</div><div>x</div></div>');
+    _node = new Element.html('<div style="left:${x+2}px;top:${y+2}px" class="v-printc-pp"><div>[]</div><div>+</div><div>-</div><div>x</div></div>');
 
     _node.elements[0].on.click.add((e) {_size("100%", "100%");});
     _node.elements[1].on.click.add((e) {_size("100%", "30%");});
