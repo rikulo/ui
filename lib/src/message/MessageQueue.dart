@@ -50,7 +50,7 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
   _MessageQueueImpl(): _listenerInfos = new List() {
   }
 
-  //@Override
+  //@override
   String get uuid {
     if (_uuid == null) {
       final int appid = ViewUtil.appId;
@@ -61,11 +61,11 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
   }
   static int _uuidNext = 0;
 
-  //@Override
+  //@override
   void subscribe(MessageListener listener, [MessageFilter filter]) {
     _listenerInfos.add(new _ListenerInfo(listener, filter));
   }
-  //@Override
+  //@override
   bool unsubscribe(MessageListener listener, [MessageFilter filter]) {
     for (int j = _listenerInfos.length; --j >= 0;) {
       final _ListenerInfo info = _listenerInfos[j];
@@ -76,7 +76,7 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
     }
     return false;
   }
-  //@Override
+  //@override
   void send(Message message) {
     for (final _ListenerInfo info in _listenerInfos) {
       if (info.filter == null || (message = info.filter(message)) != null) {
@@ -84,7 +84,7 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
       }
     }
   }
-  //@Override
+  //@override
   void post(Message message) {
     window.setTimeout(() {send(message);}, 0);
       //note: the order of messages is preserved across all message queues

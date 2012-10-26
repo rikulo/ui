@@ -5,36 +5,25 @@
 /** Used by View.tag()
  */
 class _TagView extends View {
-  final String _tag, _inner;
-  final Map<String, Dynamic> _attrs;
   final bool _vgroup;
 
-  _TagView(this._tag, this._attrs, this._inner, this._vgroup);
-
-  bool isViewGroup() => _vgroup;
-  String get domTag_ => _tag;
-  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
-    super.domAttrs_(out, ctrl);
-
-    if (_attrs != null)
-      _attrs.forEach((key, value) {
-          switch (key) {
-            case "id":
-            case "style":
-            case "class":
-              throw new UIException("$key not allowed");
-          }
+  _TagView(String tag, Map<String, Dynamic> attrs, String inner, bool this._vgroup) {
+    final out = new StringBuffer().add('<').add(tag);
+    if (attrs != null)
+      attrs.forEach((key, value) {
           out.add(' ').add(key).add('="');
           if (value != null)
             out.add(value);
           out.add('"');
         });
+      out.add('>');
+      if (inner != null)
+        out.add(inner);
+      out.add('</').add(tag).add('>');
+    node = new Element.html(out.toString());
   }
-  void domInner_(StringBuffer out) {
-    if (_inner != null)
-      out.add(_inner); //no encoding (since it is HTML fragment)
-    super.domInner_(out);
-  }
+
+  bool isViewGroup() => _vgroup;
 }
 
 /** Collection of utilities for View's implementation
@@ -393,44 +382,6 @@ class _EventListenerInfo {
   }
 }
 
-/** The classes stored in a view.
- */
-class _ClassSet extends HashSetImplementation<String> implements CSSClassSet {
-  final View view;
-
-  _ClassSet(View this.view);
-
-  void add(String name) {
-    super.add(name);
-    if (view.inDocument)
-      view.node.classes.add(name);
-  }
-  bool remove(String name) {
-    final bool removed = super.remove(name);
-    if (removed && view.inDocument)
-      view.node.classes.remove(name);
-    return removed;
-  }
-  void clear() {
-    super.clear();
-    if (view.inDocument)
-      view.node.classes.clear();
-  }
-  bool toggle(String token) {
-    bool result = false;
-    if (super.contains(token)) {
-      super.remove(token);
-    } else {
-      super.add(token);
-      result = true;
-    }
-    if (view.inDocument)
-      view.node.classes.toggle(token);
-    return result;
-  }
-  bool get frozen => false;
-}
-
 /** A virtual ID space.
  */
 class _VirtualIdSpace implements IdSpace {
@@ -610,9 +561,6 @@ class _SVIterator implements Iterator<View> {
   }
 }
 
-final RunOnceViewManager _invalidator =
-  new RunOnceViewManager((View view) {view.invalidate(true);});
-
 /** The classes to add to the root node
  */
 List<String> get _rootClasses {
@@ -628,3 +576,41 @@ List<String> get _rootClasses {
   return _$rootClasses;
 }
 List<String> _$rootClasses;
+
+//TODO: use mixin or dyanmic proxy when it is ready
+class _CSSStyleImpl implements CSSStyleDeclaration {
+  final View _view;
+  _CSSStyleImpl(View this._view);
+
+  String getPropertyValue(String propertyName)
+  => _view.node.style.getPropertyValue(propertyName);
+  String removeProperty(String propertyName)
+  => _view.node.style.removeProperty(propertyName);
+
+  void setProperty(String propertyName, String value, [String priority]) {
+    if (?priority)
+      _view.node.style.setProperty(propertyName, value, priority);
+    else
+      _view.node.style.setProperty(propertyName, value);
+  }
+
+  String get cssText => _view.node.style.cssText;
+  void set cssText(String value) {
+    final style = _view.node.style;
+    style.cssText = value;
+    style.left = CSS.px(_view.left);
+    style.top = CSS.px(_view.top);
+    if (_view.width != null)
+      style.width = CSS.px(_view.width);
+    if (_view.height != null)
+      style.height = CSS.px(_view.height);
+  }
+  Dynamic noSuchMethod(String name, List args) {
+    if (name.startsWith("set:"))
+      return setProperty(StringUtil.uncamelize(name.substring(4)), args[0], '');
+    else if (name.startsWith("get:"))
+      return getPropertyValue(StringUtil.uncamelize(name.substring(4)));
+    return super.noSuchMethod(name, args);
+  }
+}
+

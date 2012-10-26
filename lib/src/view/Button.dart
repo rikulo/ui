@@ -4,9 +4,6 @@
 /** A button.
  */
 class Button extends TextView {
-  String _type = "button";
-  bool _disabled = false, _autofocus = false;
-
   /** Instantaites with a plain text.
    * The text will be encoded to make sure it is valid HTML text.
    */
@@ -19,62 +16,51 @@ class Button extends TextView {
    */
   Button.fromHTML(String html): super.fromHTML(html);
 
-  //@Override
+  //@override
   String get className => "Button"; //TODO: replace with reflection if Dart supports it
+
+  /** Returns the INPUT element in this view.
+   */
+  ButtonElement get _buttonNode => node as ButtonElement;
 
   /** Returns the button type.
    *
    * Default: "button".
    */
-  String get type => _type;
+  String get type => _buttonNode.type;
   /** Sets the button type.
    *
    * + [type] can be either `button`, `submit` or `reset`.
    */
   void set type(String type) {
-    _type = type == null || type.isEmpty() ? "button": type;
-
-    if (inDocument)
-      node.$dom_setAttribute('type', _type); //Chrome's type can't be assigned directly
+    node.$dom_setAttribute('type', type == null || type.isEmpty() ? "button": type);
+      //Chrome's type can't be assigned directly
   }
   /** Returns whether it is disabled.
    *
    * Default: false.
    */
-  bool get disabled => _disabled;
+  bool get disabled => _buttonNode.disabled;
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
-    _disabled = disabled;
-
-    if (inDocument)
-      (node as ButtonElement).disabled = _disabled;
+    _buttonNode.disabled = disabled;
   }
 
   /** Returns whether this button should automatically get focus.
    *
    * Default: false.
    */
-  bool get autofocus => _autofocus;
+  bool get autofocus => _buttonNode.autofocus;
   /** Sets whether this button should automatically get focus.
    */
   void set autofocus(bool autofocus) {
-    _autofocus = autofocus;
+    final btn = _buttonNode..autofocus = autofocus;
     if (autofocus && inDocument)
-      (node as ButtonElement).focus();
+      btn.focus();
   }
 
-  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
-    out.add(' type="').add(type).add('"');
-    if (disabled)
-      out.add(' disabled');
-    if (autofocus)
-      out.add(' autofocus');
-    super.domAttrs_(out, ctrl);
-  }
-  /** Returns the HTML tag's name representing this widget.
-   *
-   * Default: `button`.
-   */
-  String get domTag_ => "button";
+  //@override
+  Element render_()
+  => new Element.html("<button>$encodedText</button>");
 }

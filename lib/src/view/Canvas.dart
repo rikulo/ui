@@ -9,21 +9,15 @@ class Canvas extends View {
   Canvas() {
   }
 
-  //@Override
+  //@override
   String get className => "Canvas"; //TODO: replace with reflection if Dart supports it
 
   /** Returns a drawing context for 2D on the canvas.
    * A drawing context lets you draw on the canvas.
-   *
-   * Notice that it will throw an exception if it is not attached. In other words,
-   * [inDocument] must be true when calling this method.
    */
   CanvasRenderingContext2D get context2D => canvasNode.getContext("2d");
   /** Returns a drawing context for WebGL on the canvas, or null
    * if the browser doesn't support WebGL.
-   *
-   * Notice that it will throw an exception if it is not attached. In other words,
-   * [inDocument] must be true when calling this method.
    */
   WebGLRenderingContext get contextWebGL => canvasNode.getContext("experimental-webgl");
 
@@ -31,26 +25,20 @@ class Canvas extends View {
    */
   CanvasElement get canvasNode => node;
 
-  //@Override
+  //@override
   void set width(int width) {
     super.width = width;
-    if (inDocument)
-      canvasNode.width = width;
+    canvasNode.width = width;
   }
-  //@Override
+  //@override
   void set height(int height) {
     super.height = height;
-    if (inDocument)
-      canvasNode.height = height;
+    canvasNode.height = height;
   }
-  //@Override
-  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
-    if (width != null)
-      out.add('  width="').add(width).add('"');
-    if (height != null)
-      out.add('  height="').add(height).add('"');
-
-    super.domAttrs_(out, ctrl);
-  }
-  String get domTag_ => "canvas";
+  //@override
+  Element render_() => new Element.tag("canvas");
+  /** Returns false to indicate this view doesn't allow any child views.
+   */
+  //@override
+  bool isViewGroup() => false;
 }

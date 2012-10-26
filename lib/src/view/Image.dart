@@ -6,38 +6,33 @@
  * An image.
  */
 class Image extends View {
-  String _src;
   Image([String src]) {
-    _src = src;
+    if (src != null && !src.isEmpty())
+      imageNode.src = src;
   }
 
-  //@Override
+  //@override
   String get className => "Image"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the source URI of the image, or null if not assigned yet.
    */
-  String get src => _src;
+  String get src => imageNode.src;
   /** Sets the source URI of the image.
    */
   void set src(String src) {
-    _src = src;
-
-    if (inDocument)
-      (node as ImageElement).src = src != null ? src: ""; //TODO: a blank image
+    imageNode.src = src;
   }
 
-  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
-    if (_src != null)
-      out.add(' src="').add(_src).add('"');
-    super.domAttrs_(out, ctrl);
-  }
-  /** Returns the HTML tag's name representing this widget.
-   *
-   * Default: `img`.
+  /** Returns the image node.
    */
-  String get domTag_ => "img";
+  ImageElement get imageNode => (node as ImageElement);
+
+  //@override
+  Element render_()
+  => new Element.tag("img");
   /** Returns false to indicate this view doesn't allow any child views.
    */
+  //@override
   bool isViewGroup() => false;
 
   int measureWidth_(MeasureContext mctx)
@@ -48,8 +43,8 @@ class Image extends View {
   void mount_() {
     super.mount_();
 
-    if (_src != null && (width == null || height == null))
-      layoutManager.waitImageLoaded(_src);
+    if (width == null || height == null)
+      layoutManager.waitImageLoaded(src);
   }
 
   String toString() => "$className('$src')";

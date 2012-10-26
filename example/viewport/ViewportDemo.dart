@@ -64,7 +64,7 @@ void createChildViews(View parent) {
 }
 
 void main() {
-  Viewport viewport = new Viewport("Viewport Demo");
+  Viewport viewport = new Viewport("Demo of Viewport");
   viewport.layout.type = "linear";
   viewport.layout.orient = "vertical";
   viewport.profile.width = viewport.profile.height = "flex";

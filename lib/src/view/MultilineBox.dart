@@ -1,49 +1,23 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
-//History: Tue, May 22, 2012 10:46:08 AM
+//History: Fri, Oct 26, 2012  4:15:41 PM
 // Author: tomyeh
 
-/**
- * A text box to get input from the user or to to display text.
+/** A multiline input box.
  *
- * For multiline input, please use [MultilineBox] instead.
+ * For single line input box, please use [TextBox].
  */
-class TextBox extends View implements Input<String> {
-  TextBox([String value, String type]) {
+class MultilineBox extends View implements Input<String> {
+  MultilineBox([String value]) {
     if (value != null && !value.isEmpty())
       this.value = value;
-    if (type != null && !type.isEmpty())
-      this.type = type;
   }
 
   //@override
-  String get className => "TextBox"; //TODO: replace with reflection if Dart supports it
+  String get className => "MultilineBox"; //TODO: replace with reflection if Dart supports it
 
-  /** Returns the INPUT element in this view.
+  /** Returns the TEXTAREA element in this view.
    */
-  InputElement get inputNode => node as InputElement;
-
-  /** Returns the type of data being placed in this text box.
-   */
-  String get type => inputNode.type;
-  /** Sets the type of data being placed in this text box.
-   *
-   * Default: text.
-   *
-   * Allowed values:
-   * 
-   * + text - plain text
-   * + password - 
-   * + number - 
-   * + color - 
-   * + range - 
-   * + date - 
-   * + url - 
-   * + tel - 
-   * + email - 
-   */
-  void set type(String type) {
-    inputNode.type = type;
-  }
+  TextAreaElement get inputNode => node as TextAreaElement;
 
   /** Returns the value of this text box.
    */
@@ -80,20 +54,6 @@ class TextBox extends View implements Input<String> {
       inp.focus();
   }
 
-  /** Returns whether to predict the value based on ealier typed value.
-   * When a user starts to type in,
-   * a list of options will be  displayed to fill the box, based on
-   * ealier typed values
-   *
-   * Default: true (enabled).
-   */
-  bool get autocomplete => inputNode.autocomplete == "on";
-  /** Sets whether to predict the value based on ealier typed value.
-   */
-  void set autocomplete(bool autocomplete) {
-    inputNode.autocomplete = autocomplete ? "on": "off";
-  }
-
   /** Returns a short hint that describes this text box.
    * The hint is displayed in the text box when it is empty, and
    * disappears when it gets focus.
@@ -109,13 +69,21 @@ class TextBox extends View implements Input<String> {
     inputNode.placeholder = placeholder;
   }
 
+  /** Returns the height of this text box in number of lines.
+   */
+  int get rows => inputNode.rows;
+  /** Sets the height of this text box in number of lines.
+   */
+  void set rows(int rows) {
+    inputNode.rows = rows;
+  }
   /** Returns the width of this text box in average character width.
    */
-  int get cols => inputNode.size;
+  int get cols => inputNode.cols;
   /** Sets the width of this text box in average character width.
    */
   void set cols(int cols) {
-    inputNode.size = cols;
+    inputNode.cols = cols;
   }
 
   /** Returns the maximal allowed number of characters.
@@ -132,7 +100,7 @@ class TextBox extends View implements Input<String> {
   => type == "change" ? _changeDispatcher: super.getDOMEventDispatcher_(type);
 
   //@override
-  Element render_() => new Element.tag("input");
+  Element render_() => new Element.tag("textarea");
 
   //@override
   /** Returns false to indicate this view doesn't allow any child views.
@@ -141,14 +109,3 @@ class TextBox extends View implements Input<String> {
   //@override
   String toString() => "$className('$value')";
 }
-
-DOMEventDispatcher _$changeDispatcher;
-DOMEventDispatcher get _changeDispatcher {
-  if (_$changeDispatcher == null)
-    _$changeDispatcher = (target) => (event) {
-      final TextBox t = target;
-      t.sendEvent(new ChangeEvent<String>(t.value));
-    };
-  return _$changeDispatcher;
-}
-//TODO: use const if Dart considers closure as constants (also check Issue 3905)

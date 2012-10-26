@@ -2,6 +2,14 @@
 
 ##0.6.0
 
+**October 26, 2012**
+
+* View's lifecycle is simplified. First, draw() is removed and replaced with
+  render_(). Second, the DOM element is rendered as soon as `node` is accessed.
+* PopupView is removed and replaced with View.addToDocument(mode: 'popup').
+* RadioGroup is removed and replaced with RadioButton.
+* TextBox no longer supports multiline. Rather, MultilineBox is introduced.
+
 **October 20, 2012**
 
 * View.addToDocument() is changed to use named parameters

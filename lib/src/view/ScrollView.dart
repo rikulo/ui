@@ -18,7 +18,7 @@ class ScrollView extends View {
   this.direction = direction, _snap = snap, 
   _contentSizeValue = contentSize, _contentSize = contentSize;
 
-  //@Override
+  //@override
   String get className => "ScrollView"; //TODO: replace with reflection if Dart supports it
   
   /** Return the view port size, which is determined by the inner size of the
@@ -91,7 +91,7 @@ class ScrollView extends View {
    */
   Scroller get scroller => _scroller;
   
-  //@Override
+  //@override
   void onPreLayout_(MeasureContext mctx) {
     //we have to decide the content size here, since its children might depend on it
     _contentSize = null; //force the calculation
@@ -102,30 +102,26 @@ class ScrollView extends View {
 
     super.onPreLayout_(mctx);
   }
-  //@Override
+  //@override
   void mount_() {
     super.mount_();
     _scroller = newScroller_();
   }
-  //@Override
+  //@override
   void unmount_() {
     _scroller.destroy();
     _scroller = null;
-    super.mount_();
+    super.unmount_();
   }
-  //@Override
-  void domInner_(StringBuffer out) {
-    out.add('<div class="v-inner" id="').add(uuid).add('-inner">');
-    super.domInner_(out);
-    out.add('</div>');
-  }
-  //@Override
-  void insertChildToDocument_(View child, var childInfo, View beforeChild) {
+  //@override
+  Element render_()
+  => new Element.html('<div><div class="v-inner" id="$uuid-inner"</div>');
+
+  //@override
+  void addChildNode_(View child, View beforeChild) {
     if (beforeChild != null)
-      super.insertChildToDocument_(child, childInfo, beforeChild);
-    else if (childInfo is Element)
-      contentNode.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement
+      super.addChildNode_(child, beforeChild);
     else
-      contentNode.insertAdjacentHTML("beforeEnd", childInfo);
+      contentNode.nodes.add(child.node); //note: Firefox not support insertAdjacentElement
   }
 }

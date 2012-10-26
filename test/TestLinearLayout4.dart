@@ -24,18 +24,6 @@ void _addOrientation(View parent) {
   });
   view.addChild(ckbox);
 
-  final DefaultListModel<String> model =
-    new ListModel(["horizontal radio", "vertical radio"]);
-  model.addToSelection(model[0]);
-  RadioGroup group = new RadioGroup(model);
-  model.on.select.add((event) {
-    model[model.indexOf(model.selectedValue)] = 'checked: ${++clickCount}';
-  });
-  _setHLayout(group);
-  _setBorder(group);
-  group.layout.spacing = "0 5";
-  view.addChild(group);
-
   _addTextWithMaxWidth(view, 150);
 }
 

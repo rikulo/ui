@@ -10,7 +10,6 @@ import "../html.dart";
 import "../view.dart";
 import "../layout.dart";
 
-part "../src/view/impl/CSSStyleDeclarationImpl.dart";
 part "../src/view/impl/DeclarationImpl.dart";
 part "../src/view/impl/LayoutDeclarationImpl.dart";
 part "../src/view/impl/ProfileDeclarationImpl.dart";

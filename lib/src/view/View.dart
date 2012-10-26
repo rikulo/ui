@@ -47,7 +47,6 @@ typedef void AfterMount(View view);
  * + [ViewUtil]
  */
 class View {
-  String _id = "";
   String _uuid;
 
   View _parent;
@@ -61,9 +60,6 @@ class View {
   Map<String, Template> _templs;
   Map<String, Annotation> _annos;
 
-  //the classes; created on demand
-  CSSClassSet _classes;
-  //the CSS style; created on demand
   CSSStyleDeclaration _style;
   Element _node;
 
@@ -71,19 +67,17 @@ class View {
   ProfileDeclaration _profile;
   LayoutDeclaration _layout;
 
-  bool _visible = true, _draggable = false, _inDoc = false;
+  bool _inDoc = false;
 
   /** Constructor.
    */
   View() {
-    _classes = new _ClassSet(this);
-    _classes.add("${viewConfig.classPrefix}$className");
   }
   /** Instantiates a view by using the given HTML tag.
    * For example,
    *
    *     new View.tag("section");
-   *     new View.tag("header", {"conteneditable": true, "draggable": true});
+   *     new View.tag("header", {"conteneditable": true});
    *
    * It is useful if you'd like to encapsulate an element that is made of
    * [Shadow DOM](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html#shadow-dom-section).
@@ -99,7 +93,6 @@ class View {
    * + [tag] specifies the HTML tag name, such as `section` and `article`.
    * + [attributes] specifies a map of attributes to be assigned.
    * The value will be converted to a string. If null, an empty string is assumed.  
-   * Notice that the key can't be `id`, `style` and `class`.
    * Also notice that the value won't be encoded, so it is caller's job to avoid
    * so-called *HTML injection*.
    * + [innerHTML] specified the inner HTML fragment, such as "Drame come <i>true<i>".
@@ -132,6 +125,8 @@ class View {
   }
 
   /** Returns the UUID of this component, never null.
+   *
+   * It is used mostly by [render_] to identify the child elements, if any.
    */
   String get uuid {
     if (_uuid == null)
@@ -142,18 +137,16 @@ class View {
 
   /** Returns the ID of this view, or an empty string if not assigned.
    */
-  String get id {
-    return _id;
-  }
+  String get id => node.id;
   /** Sets the ID of this view.
    */
   void set id(String id) {
     if (id == null) id = "";
-    if (_id != id) {
+    if (node.id != id) {
       if (id.length > 0)
         _ViewImpl.checkIdSpaces(this, id);
       _ViewImpl.removeFromIdSpace(this);
-      _id = id;
+      node.id = id;
       _ViewImpl.addToIdSpace(this);
     }
   }
@@ -327,9 +320,6 @@ class View {
    * to the document.
    */
   void addChild(View child, [View beforeChild]) {
-    _addChild(child, beforeChild);
-  }
-  void _addChild(View child, View beforeChild, [Element childNode]) {
     if (isDescendantOf(child))
       throw new UIException("$child is an ancestor of $this");
     if (!isViewGroup())
@@ -350,19 +340,14 @@ class View {
     if (parentChanged)
       child.beforeParentChanged_(this);
     if (oldParent != null)
-      oldParent._removeChild(child, notifyChild:false);
+      oldParent._removeChild(child, false);
 
     _ViewImpl.link(this, child, beforeChild);
+    addChildNode_(child, beforeChild);
 
-    if (inDocument) {
-      if (childNode != null) {
-        insertChildToDocument_(child, childNode, beforeChild);
-      } else {
-        insertChildToDocument_(child, child._asHTML(), beforeChild);
-        child._mount();
-        //note: child.requestLayout won't be called (for sake of performance)
-      }
-    }
+    if (inDocument)
+      child._mount();
+      //note: child.requestLayout won't be called (for sake of performance)
 
     onChildAdded_(child);
     if (parentChanged)
@@ -373,15 +358,6 @@ class View {
    *
    * If this view has no parent, [UIException] will be thrown.
    *
-   * If the view is in the document ([inDocument] is true), the DOM
-   * element will be removed too. Furthermore, if the view is added back
-   * to the document, a new DOM element will be created to represent the child.
-   *
-   * If you just want to move the child, you can use the so-called
-   * cut-and-paste. It won't re-create the DOM element, so the performance
-   * is better. Please refer to [cut] for more information.
-   * If it is a root view, it will be detached from the document.
-   *
    * > If you add a root view to the document with [addToDocument],
    * you shall invoke [removeFromDocument] to remove it instead.
    */
@@ -390,7 +366,7 @@ class View {
       throw new UIException("Unable to remove a root view, $this");
     parent._removeChild(this);
   }
-  void _removeChild(View child, [bool notifyChild=true, bool exit=true]) {
+  void _removeChild(View child, [bool notifyChild=true]) {
     if (!identical(child.parent, this))
       return;
 
@@ -398,12 +374,10 @@ class View {
     if (notifyChild)
       child.beforeParentChanged_(null);
 
-    if (inDocument) {
-      final Element childNode = child.node; //cache first since not callable after _unmount 
-      if (exit)
-        child._unmount();
-      removeChildFromDocument_(child, childNode);
-    }
+    if (inDocument)
+      child._unmount();
+
+    removeChildNode_(child);
     _ViewImpl.unlink(this, child);
 
     if (notifyChild)
@@ -411,80 +385,96 @@ class View {
     onChildRemoved_(child);
   }
 
-  /** Cuts this view and the DOM elements from its parent.
-   * It is the first step of the so-called cut-and-paste.
-   * Unlike [removeFromParent], the DOM element will be kept intact (though it is
-   * removed from the document). Then, you can attach both the view and DOM
-   * element back by use of [ViewCut.pasteTo]. For example,
-   *
-   *     view.cut().pasteTo(newParent);
-   *
-   * Since the DOM element is kept intact, the performance is better
-   * then remove-and-add (with [removeFromParent] and [addChild]).
-   * However, unlike remove-and-add, you cannot modify the view after it
-   * is cut (until it is pasted back). Otherwise, the result is unpredictable.
-   *
-   * Notice that, like [removeFromParent], it can't be called if this view
-   * is a root view (i.e., it has no parent).
-   */
-  ViewCut cut() => new _ViewCut(this);
-
   /** Inserts the DOM element of the given [child] view before
    * the reference view ([beforeChild]).
-   * It is called by [addChild] to attach the DOM elements to the document.
+   * It is called by [addChild] to attach the DOM elements to [node].
    *
-   * Deriving classes might override this method to modify the HTML content,
-   * such as enclosing with TD, or to insert the HTML content to a different
+   * Deriving classes might override this method if it has to, say,
+   * enclose with TD, or to add the child node to a different
    * position.
-   *
-   * Notice: if [childInfo] is either a HTML fragment (String) or
-   * a DOM element.
    */
-  void insertChildToDocument_(View child, var childInfo, View beforeChild) {
+  void addChildNode_(View child, View beforeChild) {
     if (beforeChild != null) {
-      final beforeNode =
-        beforeChild is PopupView ? (beforeChild as PopupView).refNode: beforeChild.node;
-      if (childInfo is Element)
-        beforeNode.parent.insertBefore(childInfo, beforeNode);
-      else
-        beforeNode.insertAdjacentHTML("beforeBegin", childInfo);
+      final beforeNode = beforeChild.node;
+      beforeNode.parent.insertBefore(child.node, beforeNode);
     } else {
-      if (childInfo is Element)
-        node.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement
-      else
-        node.insertAdjacentHTML("beforeEnd", childInfo);
+      node.nodes.add(child.node); //note: Firefox not support insertAdjacentElement
     }
   }
-  /** Removes the corresponding DOM elements of the give child from the document.
+  /** Removes the corresponding DOM elements of the give child.
    * It is called by [removeFromParent] to remove the DOM elements.
+   *
+   * Deriving classes might override this method if it encloses some special
+   * element around the child.node (in [addChildNode_]) (such that the special
+   * element will be also deleted in this method).
    */
-  void removeChildFromDocument_(View child, Element childNode) {
-    childNode.remove();
+  void removeChildNode_(View child) {
+    child.node.remove();
   }
 
   /** Returns the DOM element associated with this view (never null).
    *
-   * This method throws an exception if this view is attached to the document yet
-   * (i.e., [inDocument] is false).
+   * When the first time this method is called, [render_] will be called to render
+   * the DOM elements (unless you assign it explicity with the setter before calling
+   * the getter).
    *
-   * To retrieve a child element, use the [getNode] method instead.
-   *
-   * Depending on your implementation,
-   * you might have to override [insertChildToDocument_] and/or
-   * [removeChildFromDocument_] if they share the same DOM element.
+   * To retrieve a child element (of this view), use the [getNode] method instead.
    */
-  Element get node => _node != null ? _node: getNode(null);
+  Element get node {
+    if (_node == null) {
+      _node = render_();
+      _initNode();
+    }
+    return _node;
+  }
+  /** Sets the DOM element associated with this view.
+   * You rarely need to invoke this method. Rather, you shall override [render_]
+   * instead.
+   *
+   * In general, it is suggested to use this method only if you'd like to 
+   * create the element in the constructor and don't want to save the arguments
+   * until [render_] is called. Furthermore, it must be called before calling
+   * the getter, `node`.
+   *
+   * It throws [UIException] if it was assigned (such as either the setter or the
+   * getter has been called before).
+   */
+  void set node(Element node) {
+    if (node.parent != null)
+      throw const UIException("Only root element is allowed");
+    if (_node != null)
+      throw const UIException("Already assigned");
+    _node = node;
+    _initNode();
+  }
+  void _initNode() {
+    _node.classes
+      ..add(viewConfig.classPrefix)
+      ..add("${viewConfig.classPrefix}$className");
+  }
+  /** Creates and returns the DOM elements of this view.
+   *
+   * Default: it creates a DIV element.
+   *
+   * Note: it doesn't need to handle child views, which will be handled by
+   * [addChildNode_].
+   *
+   * Note: instead of overriding this, you can create the DOM element directly
+   * and assign it with [setNode_]. However, [setNode_] shall be called before
+   * [node] has been accessed.
+   */
+  Element render_() => new Element.tag("div");
+
   /** Returns the child element of the given sub-ID, or null if not found.
    * This method assumes the ID of the child element the concatenation of
    * uuid, dash ('-'), and subId.
-   *
-   * This method throws an exception if this view is attached to the document yet
-   * (i.e., [inDocument] is false).
    */
   Element getNode(String subId) {
-    if (!_inDoc)
-      throw new UIException("Not in document, $this.");
-    return document.query(subId != null && subId.length > 0 ? "#$uuid-$subId": "#$uuid");
+    if (subId == null || subId.isEmpty())
+      return node;
+    subId = "#$uuid-$subId";
+    return inDocument ? document.query(subId): node.query(subId);
+      //For better performance, we use document.query if possible
   }
   /** Retrieve the mask node if the view is added to the document as a dialog, 
    * or null otherwise.
@@ -511,18 +501,18 @@ class View {
    *
    * > [UIException] is thrown if this view is not a root view (i.e., it has a parent).
    *
-   * + [node] specifies the DOM element to add this view. If not specified,
+   * + [ref] specifies the DOM element to add this view. If not specified,
    * it will look for an element whose id is "v-main". If not found,
    * `document.body` is assumed.
    * + [mode] specifies how to add this view. The allowed values include:
-   *    + `child` (default): add as a child of the given node.
+   *    + `child` (default): add as a child of the given reference node.
    *    + `dialog`: add as a child and makes it looks like a dialog (a mask
    * is inserted to keep user from accessing other views).
    * In additions, if its `profile.location` is not speciifed, `"center center"`
    * will be assigned (i.e., it will be placed at the center).
-   *    + `before`: insert before the given node
-   *    + `replace`: replace the given node. Notice if the give node has an ID,
-   * it will be assigned to this view's UUID.
+   *    + `before`: insert before the given reference node
+   *    + `replace`: replace the given reference node. Notice if the give reference node has an ID,
+   * it will be assigned to this view's [id] (if it was not assigned).
    *    + `inner`: replace the inner content. In other words, all children
    * are removed and this view will become its only child.
    * + [layout] specifies whether to invoke [requestLayout].
@@ -530,54 +520,52 @@ class View {
    * If omitted (i.e., null), `requestLayout()` will be called.
    * If false, [requestLayout] won't be called at all.
    */
-  void addToDocument({Element node, String mode, bool layout}) {
+  void addToDocument({Element ref, String mode, bool layout}) {
     if (parent != null || inDocument)
       throw new UIException("No parent allowed, nor attached twice: $this");
 
     _ViewImpl.init();
-    _addToDoc(node != null ? node:
-      (node = document.query("#v-main")) != null ? node: document.body,
-      mode, layout);
-  }
-  void _addToDoc(Element node, String mode, [bool layout]) {
-    String html = _asHTML();
+
+    if (ref == null && (ref = document.query("#v-main")) == null)
+      ref = document.body;
+
     Element p, nxt;
     switch (mode) {
       case "before":
-        p = node.parent;
-        nxt = node;
+        p = ref.parent;
+        nxt = ref;
         break;
       case "replace":
-        if (!node.id.isEmpty())
-          _uuid = node.id;
-        p = node.parent;
-        nxt = node.nextElementSibling;
-        node.remove();
+        final refid = ref.id;
+        if (!refid.isEmpty() && id.isEmpty())
+          id = refid;
+
+        p = ref.parent;
+        nxt = ref.nextElementSibling;
+        ref.remove();
         break;
       case "inner":
-        node.innerHTML = html;
-        break;//done (and no need to assign p and nxt)
+        ref.nodes.clear();
+        p = ref;
+        break;
       case "dialog":
-        final dlgInfo = dialogInfos[this] = _ViewImpl.createDialog(node, this);
-        p = dlgInfo.cave;
+        final dlgInfo = dialogInfos[this] = _ViewImpl.createDialog(ref, this);
+        ViewUtil._views[p = dlgInfo.cave] = this; //yes, cave belongs to this view
         if (profile.location.isEmpty())
           profile.location = "center center";
         break;
       default:
-        p = node;
+        p = ref;
         break;
     }
 
     if (nxt != null)
-      nxt.insertAdjacentHTML("beforeBegin", html);
+      nxt.parent.insertBefore(node, nxt);
     else if (p != null)
-      p.insertAdjacentHTML("beforeEnd", html);
-    
-    if (inDocument && !visible)
-      new DOMAgent(this.node).hide();
+      p.nodes.add(node);
     
     _mount();
-    this.node.classes.addAll(_rootClasses);
+    classes.addAll(_rootClasses);
     rootViews.add(this);
 
     if (layout != false)
@@ -599,10 +587,14 @@ class View {
 
     final Element n = node; //store first since _node will be cleared up later
     _unmount();
+    classes.removeAll(_rootClasses);
     ListUtil.remove(rootViews, this);
 
     final dlgInfo = dialogInfos.remove(this);
-    (dlgInfo != null ? dlgInfo.cave: n).remove();
+    if (dlgInfo != null)
+      ViewUtil._views.remove(dlgInfo.cave..remove());
+    else
+      n.remove();
   }
   /** Binds the view.
    */
@@ -667,7 +659,7 @@ class View {
    * after [mount_] of all new-attached views are called, it can
    * invoke [afterMount_] to queue the task.
    *
-   * See also [inDocument] and [invalidate].
+   * See also [inDocument].
    */
   void mount_() {
     for (View child = firstChild; child != null; child = child.nextSibling) {
@@ -700,34 +692,12 @@ class View {
   }
   void _mntInit() {
     _inDoc = true;
-    ViewUtil._views[uuid] = this;
+    ViewUtil._views[node] = this;
   }
   void _mntClean() {
-    ViewUtil._views.remove(uuid);
+    ViewUtil._views.remove(node);
     _mntAttrs = null; //clean up
     _inDoc = false;
-    _node = null; //as the last step since node might be called in unmount_
-  }
-
-  /** Called when something has changed and caused that the display of this
-   * view has to draw.
-   * It has no effect if it is not attached (i.e., [inDocument] is true).
-   *
-   * Notice that, for better performance, the view won't be redrawn immediately.
-   * Rather, it is queued and all queued invalidation will be drawn together later.
-   * If you'd like to re-render it immediately, you can specify [immediate] to true.
-   *
-   * See also [ViewUtil.flushInvalidated], which forces all queued invalidation
-   * to be handle immediately (but you rarely need to call it).
-   */
-  void invalidate([bool immediate=false]) {
-    if (!immediate) {
-      _invalidator.queue(this);
-    } else if (inDocument) {
-      final Element n = node; //cache it since _unmount will clean _node
-      _unmount();
-      _addToDoc(n, "replace");
-    }
   }
 
   /** Places this view at the given location.
@@ -740,14 +710,14 @@ class View {
    * "top left", "top center", "top right",
    * "center left", "center center", "center right",
    * "bottom left", "bottom center", and "bottom right"
-   * + [reference] - the reference view.
+   * + [ref] - the reference view.
    * + [x] - the reference point's X coordinate if [reference] is not specified.
    * If [reference] is specified, [x] and [y] are ignored.
    * + [y] - the reference point's Y coordinate if [reference] is not specified.
    * If [reference] is specified, [x] and [y] are ignored.
    */
-  void locateTo(String location, [View reference, int x=0, int y=0]) {
-    AnchorRelation.locate(this, location, reference, x, y);
+  void locateTo(String location, [View ref, int x=0, int y=0]) {
+    AnchorRelation.locate(this, location, ref, x, y);
   }
 
   /** Requests the layout manager to re-position the layout of this view.
@@ -816,7 +786,7 @@ class View {
   /** Returns whether the given child shall be handled by the layout manager.
    *
    * Default: return true if the child is visble, its position
-   * is absolute, and not an instance of [PopupView].
+   * is absolute.
    * Notice that, for better performance, it checks only [View.style], and
    * assumes the position defined in
    * CSS rules (aka., classes) is `absolute`.
@@ -832,43 +802,15 @@ class View {
    * will be still called to arrange the layout of the child's child views.
    */
   bool shallLayout_(View child) {
-    if (!child.visible || child is PopupView)
+    if (!child.visible)
       return false;
     final String v = child.style.position;
     return v.isEmpty() || v == "absolute";
   }
 
-  /** Generates the HTML fragment for this view and its descendants
-   * to the given string buffer.
-   *
-   * + See also [invalidate].
-   */
-  void draw(StringBuffer out) {
-    final String tag = domTag_;
-    out.add('<').add(tag);
-    domAttrs_(out);
-    out.add('>');
-    domInner_(out);
-    out.add('</').add(tag).add('>');
-  }
-  /** Returns the HTML tag's name representing this widget.
-   * It is called by [draw]. If you override draw and don't call
-   * back super.draw, this method has no effect.
-   *
-   * Default: `div`.
-   */
-  String get domTag_ => "div";
-
-  /**Shortcut of [draw].*/
-  String _asHTML() {
-    final out = new StringBuffer();
-    draw(out);
-    return out.toString();
-  }
-
   /** Returns if this view is visible.
    */
-  bool get visible => _visible;
+  bool get visible => node.style.display != "none";
   /** Sets if this view is visible.
    *
    * Default: true.
@@ -876,27 +818,22 @@ class View {
    * Unlike most API, [requestLayout] will be called automatically if it is becoming visible.
    */
   void set visible(bool visible) {
-    final bool changed = visible != _visible;
-    _visible = visible;
+    final changed = visible != this.visible;
+    node.style.display = visible ? "": "none";
 
-    if (_inDoc) {
-      new DOMAgent(node).visible = visible;
-      if (changed && visible)
+    if (_inDoc && changed && visible)
         requestLayout(true);
-    }
   }
 
   /** Returns whether the view is draggable.
    */
-  bool get draggable => _draggable;
+  bool get draggable => node.draggable;
   /** Sets whether the view is draggable.
    *
    * Default: false.
    */
   void set draggable(bool draggable) {
-    _draggable = draggable;
-    if (_inDoc)
-      node.draggable = draggable;
+    node.draggable = draggable;
   }
 
   /** Returns the left position of this view relative to its parent.
@@ -908,9 +845,7 @@ class View {
    */
   void set left(int left) {
     _left = left;
-
-    if (_inDoc)
-      node.style.left = CSS.px(left);
+    node.style.left = CSS.px(left);
   }
   /** Returns the top position of this view relative to its parent.
    *
@@ -921,9 +856,7 @@ class View {
    */
   void set top(int top) {
     _top = top;
-
-    if (_inDoc)
-      node.style.top = CSS.px(top);
+    node.style.top = CSS.px(top);
   }
 
   /** Returns the width of this view.
@@ -941,10 +874,8 @@ class View {
   void set width(int width) {
     _width = width;
 
-    if (_inDoc) {
-      node.style.width = CSS.px(width);
-      layoutManager.sizeUpdated(this, Dir.HORIZONTAL);
-    }
+    node.style.width = CSS.px(width);
+    layoutManager.sizeUpdated(this, Dir.HORIZONTAL);
   }
   /** Returns the height of this view.
    *
@@ -961,10 +892,8 @@ class View {
   void set height(int height) {
     _height = height;
 
-    if (_inDoc) {
-      node.style.height = CSS.px(height);
-      layoutManager.sizeUpdated(this, Dir.VERTICAL);
-    }
+    node.style.height = CSS.px(height);
+    layoutManager.sizeUpdated(this, Dir.VERTICAL);
   }
 
   /** Returns the real width of this view shown on the document (never null).
@@ -1050,95 +979,15 @@ class View {
   }
 
   /** Retuns the CSS style.
-   *
-   * Notice that `getPropertyValue()` returns an empty string if the given style
-   * is not set (in the returned instance of CSSStyleDeclaration). On the other
-   * hand, the returned instance of DOM Element depends on the browser (unless Dart
-   * changed it). For example,
-   *
-   *     view.style.getProperty("width"); //return an empty string if not set
-   *     view.node.style.getProperty("width"); //return null in Webkit (while empty in others)
    */
   CSSStyleDeclaration get style {
     if (_style == null)
-      _style =  new CSSStyleDeclarationImpl(this);
+      _style = new _CSSStyleImpl(this);
     return _style;
   }
-
   /** Returns the style classes.
    */
-  CSSClassSet get classes => _classes;
-
-  /** Outputs all HTML attributes used for the DOM element of this view
-   * to the given output.
-   * It is called by [draw], and the deriving class can override it
-   * to provide more attributes. Of course, if you override [draw]
-   * directly, you can decide whether to call this method.
-   */
-  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
-    final noCtrl = ctrl == null;
-    String s;
-    if ((noCtrl || !ctrl.noId) && !(s = uuid).isEmpty())
-      out.add(' id="').add(s).add('"');
-    if ((noCtrl || !ctrl.noStyle)) {
-      final StringBuffer stylesb = new StringBuffer();
-      domStyle_(stylesb,
-        !noCtrl && ctrl.noVisible ? new DOMStyleCtrl(noVisible: true): null);
-      if (!stylesb.isEmpty())
-          out.add(' style="').add(stylesb).add('"');
-    }
-    if ((noCtrl || !ctrl.noDraggable))
-      out.add(' draggable="').add(draggable).add('"');
-    if ((noCtrl || !ctrl.noClass)) {
-      final StringBuffer classsb = new StringBuffer();
-      domClass_(classsb);
-      if (!classsb.isEmpty())
-        out.add(' class="').add(classsb).add('"');
-    }
-  }
-  /** Outputs the inner content of this widget. It is everything
-   * other than the enclosing tag.
-   * It is called by [draw], and the deriving class can override it to
-   * provide the content it wants. Of course, if you override [draw]
-   * directly, you can decide whether to call this method.
-   *
-   * Default: invoke each child view's [draw] sequentially.
-   */
-  void domInner_(StringBuffer out) {
-    for (View child = firstChild; child != null; child = child.nextSibling) {
-      child.draw(out);
-    }
-  }
-  /** Outputs a list of the CSS classes for the DOM element of this view
-   * to the given output. If there are multiple CSS classes, they will
-   * be separated with white spaces.
-   */
-  void domClass_(StringBuffer out) {
-    out.add(viewConfig.classPrefix);
-
-    for (final String cls in classes) {
-      out.add(' ').add(cls);
-    }
-  }
-  /** Output the CSS style for the DOM element of this view to the given outout.
-   */
-  void domStyle_(StringBuffer out, [DOMStyleCtrl ctrl]) {
-    final noCtrl = ctrl == null;
-    if ((noCtrl || !ctrl.noLeft) && left != 0)
-      out.add("left:").add(left).add("px;");
-    if ((noCtrl || !ctrl.noTop) && top != 0)
-      out.add("top:").add(top).add("px;");
-    if ((noCtrl || !ctrl.noWidth) && _width != null) //don't use width since it has special handling
-      out.add("width:").add(_width).add("px;");
-    if ((noCtrl || !ctrl.noHeight) && _height != null) //don't use height since it has special handling
-      out.add("height:").add(_height).add("px;");
-    if ((noCtrl || !ctrl.noVisible) && !visible)
-      out.add("display:none;");
-
-    String s;
-    if ((noCtrl || !ctrl.noStyle) && _style != null && !(s = _style.cssText).isEmpty())
-      out.add(XMLUtil.encode(s));
-  }
+  CSSClassSet get classes => node.classes;
 
   /** Returns [ViewEvents] for adding or removing event listeners.
    */

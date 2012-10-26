@@ -102,51 +102,25 @@ final List<View> rootViews = new List();
  * A collection of [View] utilities.
  */
 class ViewUtil {
-  /** Returns the view of the given UUID or element, or null if not found.
+  /** Returns the view of the given element, or null if not found.
    *
    * Notice it searches only the mounted views, i.e.,
    * `inDocument` is true.
    *
-   * + [uuid] specifies either UUID (a String instance)
-   * or an element (an Element instance). Note it can contain the suffix, such as
-   * *uuid-inner* (in fact, it will remove the suffix starting with dash).
-   *
-   * If an element is given, the nearest view containing it will be returned.
+   * If the given element doesn't belong to any view,
+   * the nearest view containing it will be returned.
    * For example, if the given element is the content of an instance of [TextView],
    * the [TextView] instance will be returned.
    */
-  static View getView(var uuid) {
-    if (uuid is Element) {
-      Element e = uuid as Element;
-      do {
-        if (e.id != null) {
-          final v = _views[_noSuffix(e.id)];
-          if (v != null)
-            return v;
-        }
-      } while ((e = e.parent) != null && e is! Document);
-      return null;
-    }
+  static View getView(Element node) {
+    var view;
+    do {
+      if ((view = _views[node]) != null)
+        return view;
+    } while ((node = node.parent) != null && node is! Document);
+  }
+  static final Map<Element, View> _views = new Map();
 
-    return _views[_noSuffix(uuid as String)];
-  }
-  static String _noSuffix(String uuid) {
-    if (uuid != null) {
-      final i = uuid.lastIndexOf('-');
-      if (i > 0)
-        uuid = uuid.substring(0, i);
-    }
-    return uuid;
-  }
-  static final Map<String, View> _views = new Map();
-
-  /** Redraws the invalidated views queued by [View.invalidate].
-   *
-   * Notice that it is static, i.e., all queued invalidation will be redrawn.
-   */
-  static void flushInvalidated() {
-    _invalidator.flush(force: true);
-  }
   /** Handles the layouts of views queued by [View.requestLayout].
    *
    * Notice that it is static, i.e., all queued requests will be handled.
@@ -155,6 +129,13 @@ class ViewUtil {
     layoutManager.flush(force: true);
   }
 
+  /** Returns the root view of the given view.
+   */
+  static View getRoot(View view) {
+    for (View w; (w = view.parent) != null; view = w)
+      ;
+    return view;
+  }
   /** Returns the rectangle enclosing all views in the given list.
    * Views in [children] must belong to the same parent.
    *

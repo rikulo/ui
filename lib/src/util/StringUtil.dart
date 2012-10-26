@@ -56,10 +56,6 @@ class StringUtil {
     || (whitespace && (cc == ' ' || cc == '\t' || cc == '\n' || cc == '\r'))
     || (match != null && match.indexOf(cc) >= 0);
   }
-  //** TODO: use intializer below when Dart supports non-constant final
-  static final int _CC_0 = '0'.charCodeAt(0), _CC_9 = _CC_0 + 9,
-    _CC_A = 'A'.charCodeAt(0), _CC_Z = _CC_A + 25,
-    _CC_a = 'a'.charCodeAt(0), _CC_z = _CC_a + 25;
 
   /** Encodes an integer to a string consisting of alpanumeric characters
    * and underscore. With a prefix, it can be used as an identifier.
@@ -108,4 +104,43 @@ class StringUtil {
     }
     return sb.toString();
   }
+
+  /** Camelizes the given string.
+   * For example, `background-color' => `backgroundColor`.
+   *
+   * Note: for better performance, it assumes there must be a character following a dash.
+   */
+  static String camelize(String name) {
+    StringBuffer sb;
+    int k = 0;
+    for (int i = 0, len = name.length; i < len; ++i) {
+      if (name == '-') {
+        if (sb == null) sb = new StringBuffer();
+        sb.add(name.substring(k, i))
+          .add(name[++i].toUpperCase());
+        k = i + 1;
+      }
+    }
+    return sb != null ? sb.add(name.substring(k)).toString(): name;
+  }
+  /** Uncamelizes the give string.
+   * For example, `backgroundColor' => `background-color`.
+   */
+  static String uncamelize(String name) {
+    StringBuffer sb;
+    int k = 0;
+    for (int i = 0, len = name.length; i < len; ++i) {
+      final cc = name.charCodeAt(i);
+      if (cc >= _CC_A && cc <= _CC_Z) {
+        if (sb == null) sb = new StringBuffer();
+        sb.add(name.substring(k, i)).add('-').add(name[i].toLowerCase());
+        k = i + 1;
+      }
+    }
+    return sb != null ? sb.add(name.substring(k)).toString(): name;
+  }
 }
+
+final int _CC_0 = '0'.charCodeAt(0), _CC_9 = _CC_0 + 9,
+  _CC_A = 'A'.charCodeAt(0), _CC_Z = _CC_A + 25,
+  _CC_a = 'a'.charCodeAt(0), _CC_z = _CC_a + 25;

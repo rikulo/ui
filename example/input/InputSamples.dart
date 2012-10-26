@@ -18,7 +18,7 @@ void main() {
     label.profile.width = "70";
     view.addChild(label);
 
-    TextBox input = new TextBox(type: type);
+    var input = type == "multiline" ? new MultilineBox(): new TextBox(type: type);
     input.on.change.add((event) {
       TextView inf = input.nextSibling;
       inf.text = input.value;

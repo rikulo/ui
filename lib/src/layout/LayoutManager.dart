@@ -55,7 +55,7 @@ class LayoutManager extends RunOnceViewManager {
       final View parent = view.parent;
       //Start the layout from parent only if necessary
       //Currently, we start from parent if in some layout, not anchored/popup
-      if (view.profile.anchorView == null && view is! PopupView
+      if (view.profile.anchorView == null
       && parent != null && !parent.layout.type.isEmpty())
         view = parent; //start from parent (slower performance but safer)
     }
@@ -96,11 +96,9 @@ class LayoutManager extends RunOnceViewManager {
         //including anchored
         rootLayout(mctx, view);
       } else if (view.profile.anchorView != null) {
-        //including PopupView
         new AnchorRelation(parent)
           ._layoutAnchored(mctx, view.profile.anchorView, view);
-      } else if (view is PopupView
-      || parent.layout.type.isEmpty()) {
+      } else if (parent.layout.type.isEmpty()) {
         mctx.setWidthByProfile(view, () => parent.innerWidth);
         mctx.setHeightByProfile(view, () => parent.innerHeight);
       }
@@ -147,7 +145,7 @@ class LayoutManager extends RunOnceViewManager {
    * if the width or height of the image is not specified.
    */
   void waitImageLoaded(String imgURI) {
-    if (!_imgWaits.contains(imgURI)) {
+    if (imgURI != null && !imgURI.isEmpty() && !_imgWaits.contains(imgURI)) {
       _imgWaits.add(imgURI);
       final ImageElement img = new Element.tag("img");
       var func = (event) { //DOM event

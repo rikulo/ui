@@ -17,15 +17,15 @@ void main() {
   model.addToSelection("orange");
   model.addToDisables("juice");
 
-  final rg = new RadioGroup();
-  mainView.addChild(rg);
+  final ddl = new DropDownList();
+  mainView.addChild(ddl);
 
   final btn = new Button("test");
   btn.on.click.add((event) {
-    rg.model = model;
+    ddl.model = model;
     mainView.requestLayout(true);
     mainView.addChild(
-        new TextView(rg.node.query('input') != null ?
+        new TextView(ddl.node.query('input') != null ?
           "Success!":
           "Wrong! requestLayout+immediate shall force model to render immediately"));
     mainView.requestLayout();

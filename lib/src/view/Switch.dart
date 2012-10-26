@@ -27,7 +27,7 @@ class Switch extends View implements Input<bool> {
     _onLabel = onLabel != null ? onLabel: "ON";
     _offLabel = offLabel != null ? offLabel: "OFF";
   }
-  //@Override
+  //@override
   String get className => "Switch"; //TODO: replace with reflection if Dart supports it
 
   /** Returns whether it is value (i.e., the switch is ON).
@@ -118,6 +118,7 @@ class Switch extends View implements Input<bool> {
   }
   void unmount_() {
     _dg.destroy();
+    _dg = null;
     super.unmount_();
   }
   void onLayout_(MeasureContext mctx) { //Issue 5: if its parent's visible is changed
@@ -127,16 +128,19 @@ class Switch extends View implements Input<bool> {
     super.onLayout_(mctx);
   }
 
-  void domInner_(StringBuffer out) {
-    out.add('<div class="v-bg"><div class="v-bgi" id="')
-      .add(uuid).add('-bg"></div></div><div class="v-slide" id="')
-      .add(uuid).add('-sd"><div class="v-text-on v-button">')
-      .add(onLabel).add('</div><div class="v-text-off v-button">')
-      .add(offLabel).add('</div><div class="v-knot"></div></div>');
-  }
+  //@override
+  Element render_()
+  => new Element.html(
+      new StringBuffer().add('<div><div class="v-bg"><div class="v-bgi" id="')
+        .add(uuid).add('-bg"></div></div><div class="v-slide" id="')
+        .add(uuid).add('-sd"><div class="v-text-on v-button">')
+        .add(onLabel).add('</div><div class="v-text-off v-button">')
+        .add(offLabel).add('</div><div class="v-knot"></div></div></div>')
+        .toString());
 
   /** Returns false to indicate this view doesn't allow any child views.
    */
+  //@override
   bool isViewGroup() => false;
   String toString() => "$className($value)";
 }

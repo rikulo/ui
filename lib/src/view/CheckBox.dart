@@ -10,8 +10,7 @@
  * + change: an instance of [ChangeEvent] indicates the check state is changed.
  */
 class CheckBox extends TextView implements Input<bool> {
-  bool _value = false, _disabled = false, _autofocus = false;
-  EventListener _onInputClick;
+  bool _value; //we need it to detect if the value is changed (so onchange shall be fired)
 
   /** Instantaites with a plain text.
    * The text will be encoded to make sure it is valid HTML text.
@@ -29,7 +28,7 @@ class CheckBox extends TextView implements Input<bool> {
     _value = value != null && value;
   }
 
-  //@Override
+  //@override
   String get className => "CheckBox"; //TODO: replace with reflection if Dart supports it
 
   /** Returns whether it is value.
@@ -40,37 +39,31 @@ class CheckBox extends TextView implements Input<bool> {
   /** Sets whether it is value.
    */
   void set value(bool value) {
-    _value = value;
-
-    if (inDocument)
-      inputNode.checked = _value;
+    _value = inputNode.checked = value;
   }
 
   /** Returns whether it is disabled.
    *
    * Default: false.
    */
-  bool get disabled => _disabled;
+  bool get disabled => inputNode.disabled;
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
-    _disabled = disabled;
-
-    if (inDocument)
-      inputNode.disabled = _disabled;
+    inputNode.disabled = disabled;
   }
 
   /** Returns whether this button should automatically get focus.
    *
    * Default: false.
    */
-  bool get autofocus => _autofocus;
+  bool get autofocus => inputNode.autofocus;
   /** Sets whether this button should automatically get focus.
    */
   void set autofocus(bool autofocus) {
-    _autofocus = autofocus;
+    final inp = inputNode..autofocus = autofocus;
     if (autofocus && inDocument)
-      inputNode.focus();
+      inp.focus();
   }
   /** Returns the INPUT element in this view.
    */
@@ -82,11 +75,26 @@ class CheckBox extends TextView implements Input<bool> {
     sendEvent(new ChangeEvent(_value));
   }
 
-  //@Override
-  void mount_() {
-    super.mount_();
+  //@override
+  void updateInner_([String html]) {
+    if (html == null) html = "";
+    node.query("label").innerHTML = "$encodedText$html";
+  }
+  //@override
+  Element render_() {
+    final out = new StringBuffer("<div>");
+    out.add('<input type="checkbox" id="').add(uuid).add('-inp"');
 
-    inputNode.on.click.add(_onInputClick = (Event event) {
+    if (_value)
+      out.add(' checked');
+
+    final node = new Element.html(
+      out.add('/><label for="').add(uuid).add('-inp" class="')
+        .add(viewConfig.classPrefix).add('inner">').add(encodedText).add('</label>')
+        .add("</div>").toString());
+
+    //note: we can't use getNode here since [node] is not available yet
+    node.query("#$uuid-inp").on.click.add((Event event) {
       final InputElement n = event.srcElement;
       final bool cked = n.checked;
       if (_value != cked) {
@@ -94,31 +102,7 @@ class CheckBox extends TextView implements Input<bool> {
         onChange_();
       }
     });
+    return node;
   }
-  //@Override
-  void unmount_() {
-    inputNode.on.click.remove(_onInputClick);
-
-    super.unmount_();
-  }
-  //@Override
-  void updateInner_() {
-    final Element n = node.query("label");
-    if (n != null)
-      n.innerHTML = innerHTML_;
-  }
-  //@Override
-  void domInner_(StringBuffer out) {
-    out.add('<input type="checkbox" id="').add(uuid).add('-inp"');
-
-    if (_value)
-      out.add(' checked');
-    if (_disabled)
-      out.add(' disabled');
-    if (_autofocus)
-      out.add(' autofocus');
-    out.add('/><label for="').add(uuid).add('-inp" class="')
-      .add(viewConfig.classPrefix).add('inner">').add(innerHTML_).add('</label>');
-  }
-  String toString() => "$className('$text$html', $value)";
+  String toString() => "$className($text, $value)";
 }

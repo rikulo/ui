@@ -67,7 +67,7 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
    * a view has re-rendered itself because
    * its data model has been changed.
    * It is used with views that support the data model, such as
-   * [DropDownList] and [RadioGroup].
+   * [DropDownList].
    *
    * The event is an instance of [ViewEvent].
    *

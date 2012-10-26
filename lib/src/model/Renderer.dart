@@ -61,7 +61,7 @@ typedef String StringRenderer(RenderContext context);
  * (by use of [HTMLFragment.html]).
  *
  * For more information, please refer to the view that supports it, such as
- * [RadioGroup].
+ * [DropDownList].
  */
 typedef HTMLFragment HTMLRenderer(RenderContext context);
 /** Renders the given data into a view.

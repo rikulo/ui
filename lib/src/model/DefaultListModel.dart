@@ -23,11 +23,11 @@ class DefaultListModel<T> extends AbstractListModel<T> {
   [Set<T> selection, Set<T> disables, bool multiple]):
   super(selection, disables, multiple != null && multiple), _data = data;
 
-  //@Override
+  //@override
   /** Returns the object of the given index.
    */
   T operator [](int index) => _data[index];
-  //@Override
+  //@override
   /** Returns the length of the list.
    */
   int get length => _data.length;
@@ -99,8 +99,9 @@ class DefaultListModel<T> extends AbstractListModel<T> {
     }
   }
 
-  bool equals(var other) {
-    return (other is DefaultListModel) && super.equals(other)
+  //@override
+  bool operator==(other) {
+    return (other is DefaultListModel) && super == other
       && _data == other._data;
   }
   String toString() => "DefaultListModel($_data)";

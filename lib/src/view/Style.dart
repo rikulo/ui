@@ -6,44 +6,43 @@
  * A CSS style.
  */
 class Style extends View {
-  //_src and _content cannot be non-null at the same time
-  String _src, _content, _media;
+  String _media;
 
-  /** Constructs an empty style.
+  /** Constructs a style.
+   *
+   * Notice: you can specify either [content] or [src] (or none) but
+   * not both
    */
-  Style([String media]) {
-    _visible = false; //so shallLayout_ will ignore it
+  Style({String content, String src, String media}) {
     _media = media;
-  }
-  /** Constructs a style from the given CSS content.
-   */
-  Style.fromContent(String content, [String media]) {
-    _content = content;
-    _media = media;
-  }
-  /** Constructs a style from the given URL containing the CSS content.
-   */
-  Style.fromSrc(String src, [String media]) {
-    _src = src;
-    _media = media;
+    visible = false;
+    _updateInner(content, src);
   }
 
-  //@Override
+  //@override
   String get className => "Style"; //TODO: replace with reflection if Dart supports it
 
+  /** Returns the style sheet, or null if not available.
+   */
+  StyleSheet get sheet {
+    var n;
+    if ((n = _linkNode) != null)
+      return n.sheet;
+    if ((n = _styleNode) != null)
+      return n.sheet;
+  }
   /** Returns the URL of the CSS file, or null if no CSS file specified.
    */
-  String get src => _src;
+  String get src {
+    final n = _linkNode;
+    return n != null ? n.href: null;
+  }
   /** Sets the URL of the CSS file.
    * If there is any content, it will be removed.
    * In other words, [get content] returns null after this method is called.
    */
   void set src(String src) {
-    _content = null;
-    if (!identical(_src, src)) {
-      _src = src;
-      invalidate();
-    }
+    _updateInner(null, src);
   }
 
   /** Returns the CSS content, or null if no content specified.
@@ -52,18 +51,20 @@ class Style extends View {
    * previous invocation of [set content]. It returns null
    * if the previous invocation is [set src].
    */
-  String get content => _content;
+  String get content {
+    final n = _styleNode;
+    return n != null ? n.innerHTML: null;
+  }
   /** Sets the CSS content.
    * If there is any URI being assigned, it will be removed.
    * In other words, [get src] returns null after this method is called.
    */
   void set content(String content) {
-    _src = null;
-    if (_content != content) {
-      _content = content;
-      invalidate();
-    }
+    _updateInner(content, null);
   }
+
+  LinkElement get _linkNode => (node.query("link") as LinkElement);
+  StyleElement get _styleNode => (node.query("style") as StyleElement);
 
   /** Returns the CSS media, or null if no media specified.
    *
@@ -75,18 +76,16 @@ class Style extends View {
   void set media(String media) {
     if (_media != media) {
       _media = media;
-      invalidate();
+      var n;
+      if ((n = _linkNode) != null)
+        n.media = media != null ? media: "";
+      else if ((n = _styleNode) != null)
+        n.media = media != null ? media: "";
     }
   }
 
-  //@Override
-  void draw(StringBuffer out) {
-    out.add('<div id="').add(uuid).add('" style="display:none">');
-    domInner_(out);
-    out.add('</div>');
-  }
-  //@Override
-  void domInner_(StringBuffer out) {
+  void _updateInner(String content, String src) {
+    final out = new StringBuffer();
     if (src != null)
       out.add('<link rel="stylesheet" type="text/css" href="').add(src).add('"');
     else
@@ -103,11 +102,12 @@ class Style extends View {
         out.add(content);
       out.add('</style>');
     }
+    node.innerHTML = out.toString();
   }
-  //@Override
   /** Returns false to indicate this view doesn't allow any child views.
    */
+  //@override
   bool isViewGroup() => false;
-  //@Override
-  String toString() => "$className('${src != null ? src: content}')";
+  //@override
+  String toString() => "$className($src)";
 }

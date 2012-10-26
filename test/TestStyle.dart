@@ -19,8 +19,7 @@ border: 1px solid #553;
 }
 ''';
   
-  Style style = new Style.fromContent(style1);
-  
+  Style style = new Style(content: style1);
   final View mainView = new View()..addToDocument();
   mainView.addChild(style);
 

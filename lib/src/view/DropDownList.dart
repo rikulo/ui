@@ -16,58 +16,53 @@ class DropDownList<T> extends View {
   DataModel _model;
   DataEventListener _dataListener;
   StringRenderer _renderer;
-  int _rows = 1;
-  EventListener _onChange;
   bool _modelSelUpdating = false; //whether it's updating model's selection
-  bool _disabled = false, _autofocus = false;
 
   DropDownList([DataModel model, StringRenderer renderer]) {
     _renderer = renderer;
     this.model = model;
   }
 
+  /** Returns the SELECT element in this view.
+   */
+  SelectElement get _selectNode => node as SelectElement;
+
   /** Returns whether it is disabled.
    *
    * Default: false.
    */
-  bool get disabled => _disabled;
+  bool get disabled => _selectNode.disabled;
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
-    _disabled = disabled;
-
-    if (inDocument)
-      (node as SelectElement).disabled = _disabled;
-  }
-
-  /** Returns the number of visible rows.
-   *
-   * Default: 1
-   */
-  int get rows => _rows;
-  /** Sets the number of visible rows.
-   */
-  void set rows(int rows) {
-    _rows = rows;
-
-    if (inDocument)
-      (node as SelectElement).size = _rows;
+    _selectNode.disabled = disabled;
   }
 
   /** Returns whether this button should automatically get focus.
    *
    * Default: false.
    */
-  bool get autofocus => _autofocus;
+  bool get autofocus => _selectNode.autofocus;
   /** Sets whether this button should automatically get focus.
    */
   void set autofocus(bool autofocus) {
-    _autofocus = autofocus;
+    final seln = _selectNode..autofocus = autofocus;
     if (autofocus && inDocument)
-      (node as SelectElement).focus();
+      seln.focus();
   }
 
-  //@Override
+  /** Returns the number of visible rows.
+   *
+   * Default: 1
+   */
+  int get rows => _selectNode.size;
+  /** Sets the number of visible rows.
+   */
+  void set rows(int rows) {
+    _selectNode.size = rows;
+  }
+
+  //@override
   String get className => "DropDownList"; //TODO: replace with reflection if Dart supports it
 
   /** Returns the model.
@@ -99,9 +94,7 @@ class DropDownList<T> extends View {
 
       if (_model != null) {
         _model.on.all.add(_initDataListener());
-
-        if (inDocument)
-          (node as SelectElement).multiple = (_model as Selection).multiple;
+        _selectNode.multiple = (_model as Selection).multiple;
       }
 
       modelRenderer.queue(this); //queue even if _model is null (since cleanup is a bit tricky)
@@ -160,23 +153,18 @@ class DropDownList<T> extends View {
    */
   void renderModel_() {
     //Note: when this method is called, _model might be null
-    if (browser.msie) { //IE/FF doesn't handle innerHTML well
-      invalidate(true);
-    } else {
-      _renderInner();
-      sendEvent(new ViewEvent("render"));
-    }
+    _renderInner();
+    sendEvent(new ViewEvent("render"));
   }
   static final StringRenderer _defRenderer =
     (RenderContext context) => HTMLFragment.getHTML(context.data, false);
     //handles TreeNode/Map; don't encode
     //TODO: use const if Dart considered closure as const
 
-  //@Override
-  void mount_() {
-    super.mount_();
-
-    node.on.change.add(_onChange = (e) {
+  //@override
+  Element render_() {
+    final node = new Element.tag("select");
+    node.on.change.add((e) {
       final List<T> selValues = new List();
       int selIndex = -1;
       if (_model != null) {
@@ -213,27 +201,7 @@ class DropDownList<T> extends View {
 
       sendEvent(new SelectEvent(selValues, selIndex));
     });
-  }
-  void unmount_() {
-    node.on.change.remove(_onChange);
-    super.unmount_();
-  }
-
-  //@Override
-  void domAttrs_(StringBuffer out, [DOMAttrsCtrl ctrl]) {
-    out.add(' size="').add(rows).add('"');
-    if (disabled)
-      out.add(' disabled');
-    if (autofocus)
-      out.add(' autofocus');
-    if (_model != null && (_model as Selection).multiple)
-      out.add(' multiple="multiple"');
-    super.domAttrs_(out, ctrl);
-  }
-  //@Override
-  void domInner_(StringBuffer out) {
-    modelRenderer.queue(this);
-      //defer to renderModel_ so _renderInner will be called only once
+    return node;
   }
 
   void _renderInner() {
@@ -321,13 +289,7 @@ class DropDownList<T> extends View {
       out.add(' disabled');
   }
 
-  //@Override
-  /** Returns the HTML tag's name representing this view.
-   *
-   * Default: `select`.
-   */
-  String get domTag_ => "select";
-  //@Override
+  //@override
   /** Returns false to indicate this view doesn't allow any child views.
    */
   bool isViewGroup() => false;

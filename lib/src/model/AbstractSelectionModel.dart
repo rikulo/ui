@@ -44,12 +44,12 @@ implements Selection<T>, Disables<T> {
     }
   }
 
-  //@Override
+  //@override
   bool isSelected(Object obj)  => _selection.contains(obj);
-  //@Override
+  //@override
   bool isSelectionEmpty() => _selection.isEmpty();
 
-  //@Override
+  //@override
   bool addToSelection(T obj) {
     if (_selection.contains(obj))
       return false;
@@ -60,7 +60,7 @@ implements Selection<T>, Disables<T> {
     _sendSelect();
     return true;
   }
-  //@Override
+  //@override
   bool removeFromSelection(Object obj) {
     if (_selection.remove(obj)) {
       _sendSelect();
@@ -68,7 +68,7 @@ implements Selection<T>, Disables<T> {
     }
     return false;
   }
-  //@Override
+  //@override
   void clearSelection() {
     if (!_selection.isEmpty()) {
       _selection.clear();
@@ -76,9 +76,9 @@ implements Selection<T>, Disables<T> {
     }
   }
 
-  //@Override
+  //@override
   bool get multiple => _multiple;
-  //@Override
+  //@override
   void set multiple(bool multiple) {
     if (_multiple != multiple) {
       _multiple = multiple;
@@ -144,7 +144,7 @@ implements Selection<T>, Disables<T> {
       _sendDisable();
   }
 
-  bool equals(var other) {
+  bool operator==(other) {
     return (other is AbstractSelectionModel) && multiple == other.multiple
       && _selection == other._selection && _disables == other._disables;
   }

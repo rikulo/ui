@@ -108,9 +108,9 @@ implements TreeSelectionModel<T> {
     if (oldlen != _opens.length)
       _sendOpen();
   }
-
-  bool equals(var other) {
-    return (other is AbstractTreeModel) && super.equals(other)
+  //@override
+  bool operator==(other) {
+    return (other is AbstractTreeModel) && super == other
       && _opens == other._opens;
   }
 }

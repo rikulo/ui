@@ -30,6 +30,6 @@ class LabeledInput extends View {
   void set value(String value) {
     _input.value = value;
   }
-  //@Override
+  //@override
   String get className => "LabeledInput"; //TODO: replace with reflection if Dart supports it
 }

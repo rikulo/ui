@@ -8,7 +8,7 @@ import 'package:rikulo/util.dart';
 View getContainer(ViewEvent event) {
   //to protect the drop from other source, we have to check data first
   final data = event.dataTransfer.getData("Text");
-  if (data != null && data.startsWith("uuid:"))
+  if (data != null && data.startsWith("id:"))
     for (View view = event.target; view != null; view = view.parent)
       if (view.classes.contains('container'))
         return view;
@@ -30,6 +30,7 @@ void main() {
     final view = new Image("http://static.rikulo.org/blogs/tutorial/swipe-album/res/${images[i]}");
     //IE accepts only Image as draggable
     view.width = view.height = 150;
+    view.id = "img$i";
     view.classes..add("box");
     view.draggable = true;
     mainView.firstChild.addChild(view);
@@ -39,7 +40,7 @@ void main() {
   //create drag effect
   ..dragStart.add((event) {
     event.target.classes.add("dragged");
-    event.dataTransfer.setData("Text", "uuid:${event.target.uuid}");
+    event.dataTransfer.setData("Text", "id:${event.target.id}");
     //IE accepts only "Text" and "URL" as the first argument
   })
   ..dragEnd.add((event) {
@@ -71,7 +72,7 @@ void main() {
       container.classes.remove("dragover");
       //Chrome issue: dragLeave not called, so clean up here
       final data = event.dataTransfer.getData("Text");
-      final dragged = ViewUtil.getView(data.substring(5).trim()); //trim uuid:
+      final dragged = mainView.query("#${data.substring(3).trim()}"); //trim id:
       dragged.classes.remove("dragged");
         //we have to do dragEnd here since the dragEnd event might not be fired
         //(it is caused by our modification of DOM tree below (addChild)

@@ -145,8 +145,8 @@ abstract class AbstractList<T> implements List<T> {
     throw const UnsupportedOperationException("Cannot modify");
   }
 
-  //@Override
-  bool equals(var other) {
+  //@override
+  bool operator ==(other) {
     if (other is Collection && other.length == length) {
       final Iterator<T> it = iterator();
       for (final o in other) {
@@ -157,7 +157,7 @@ abstract class AbstractList<T> implements List<T> {
     }
     return false;
   }
-  //@Override
+  //@override
   String toString() {
     StringBuffer result = new StringBuffer("[");
     bool comma;

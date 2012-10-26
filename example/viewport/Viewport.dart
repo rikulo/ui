@@ -13,25 +13,21 @@ import 'package:rikulo/html.dart';
  * child views is not at the left-top corner of this view.
  */
 class Viewport extends View {
-  String _title;
   View _toolbar;
   //Controlling the space between [node] and [contentNode]
   int _spacingLeft = 10, _spacingTop = 30, _spacingRight = 10, _spacingBottom = 10;
 
-  Viewport([String title=""]) {
-    _title = title;
+  Viewport([String title]) {
+    if (title != null && !title.isEmpty())
+      this.title = title;
   }
 
-  //@Override
+  //@override
   String get className => "Viewport"; //TODO: replace with reflection if Dart supports it
 
-  String get title => _title;
+  String get title => getNode("title").innerHTML;
   void set title(String title) {
-    if (title == null) title = "";
-    _title = title;
-
-    if (inDocument)
-      getNode("title").innerHTML = title;
+    getNode("title").innerHTML = title != null ? title: "";
   }
 
   View get toolbar => _toolbar;
@@ -43,60 +39,34 @@ class Viewport extends View {
 
     if (_toolbar != null) {
       addChild(_toolbar, firstChild);
-      _syncToolbar();
-    }
-  }
-  void _syncToolbar() {
-    if (inDocument) {
-      final DOMAgent qtbar = new DOMAgent(getNode("toolbar"));
-      _toolbar.left = qtbar.offsetLeft;
-      _toolbar.top = qtbar.offsetTop;
+      _toolbar.top = 0; //align to top
     }
   }
 
-  //@Override to returns the element representing the inner element.
+  //@override to returns the element representing the inner element.
   Element get contentNode => getNode("inner");
-  //@Override to skip the toolbar
+  //@override to skip the toolbar
   bool shallLayout_(View child) => !identical(child, _toolbar) && super.shallLayout_(child);
-  //@Override
-  void domInner_(StringBuffer out) {
-    out.add('<div class="v-Viewport-title" id="')
-      .add(uuid).add('-title">').add(_title)
-      .add('</div>');
+  //@override
+  Element render_()
+  => new Element.html(
+      '''
+<div>
+<div class="v-Viewport-title" id="$uuid-title"></div>
+<div class="v-Viewport-toolbar" id="$uuid-toolbar">&nbsp;</div>
+<div class="v-Viewport-inner" id="$uuid-inner"></div>
+</div>
+      ''');
 
-    out.add('<div class="v-Viewport-toolbar" id="').add(uuid)
-      .add('-toolbar">&nbsp;'); //&nbsp; makes this DIV positioned correctly
-    if (_toolbar != null)
-      _toolbar.draw(out);
-    out.add('</div>');
-
-    out.add('<div class="v-Viewport-inner" id="')
-      .add(uuid).add('-inner">');
-
-    for (View child = firstChild; child != null; child = child.nextSibling) {
-      if (!identical(child, _toolbar))
-        child.draw(out);
-    }
-
-    out.add('</div>');
-  }
-  //@Override to insert the toolbar to getNode("toolbar"), and others into contentNode
-  void insertChildToDocument_(View child, var childInfo, View beforeChild) {
+  //@override to insert the toolbar to getNode("toolbar"), and others into contentNode
+  void addChildNode_(View child, View beforeChild) {
     if (identical(child, _toolbar)) {
-      if (childInfo is Element)
-        getNode("toolbar").insertBefore(childInfo, null); //note: Firefox not support insertAdjacentElement
-      else
-        getNode("toolbar").insertAdjacentHTML("beforeEnd", childInfo);
+      getNode("toolbar").nodes.add(child.node);
     } else {
-      if (identical(beforeChild, _toolbar))
-        beforeChild = null;
-
-      if (beforeChild != null)
-        super.insertChildToDocument_(child, childInfo, beforeChild);
-      else if (childInfo is Element)
-        contentNode.$dom_appendChild(childInfo); //note: Firefox not support insertAdjacentElement
+      if (beforeChild != null && !identical(beforeChild, _toolbar))
+        super.addChildNode_(child, beforeChild);
       else
-        contentNode.insertAdjacentHTML("beforeEnd", childInfo);
+        contentNode.nodes.add(child.node);
     }
   }
   //@override to adjust toolbar and contentNode
@@ -108,20 +78,18 @@ class Viewport extends View {
     style.top = CSS.px(_spacingTop);
     _adjustWidth();
     _adjustHeight();
-    if (_toolbar != null)
-      _syncToolbar();
   }
-  //@Override
+  //@override
   int get innerWidth => new DOMAgent(contentNode).innerWidth;
-  //@Override
+  //@override
   int get innerHeight => new DOMAgent(contentNode).innerHeight;
-  //@Override to adjust [contentNode]'s width accordingly
+  //@override to adjust [contentNode]'s width accordingly
   void set width(int width) {
     super.width = width;
     if (inDocument)
       _adjustWidth();
   }
-  //@Override to adjust [contentNode]'s height accordingly
+  //@override to adjust [contentNode]'s height accordingly
   void set height(int height) {
     super.height = height;
     if (inDocument)

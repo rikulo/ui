@@ -15,11 +15,11 @@ void replace(View vo, View vn, SwitchViewEffect effect) {
   if (effect == null) {
     final Element p = vo.node.parent;
     vo.removeFromDocument();
-    vn.addToDocument(node: p);
+    vn.addToDocument(ref: p);
     
   } else {
     vn.style.visibility = "hidden";
-    vn.addToDocument(node: vo.node.parent);
+    vn.addToDocument(ref: vo.node.parent);
     vn.requestLayout(true);
     effect(vo.node, vn.node, () {
       vo.removeFromDocument();
