@@ -20,9 +20,8 @@ class Section extends View implements IdSpace {
     else _fellows.remove(id);
   }
 
-  /** Returns the HTML tag's name representing this widget.
-   *
-   * Default: `section`.
+  /** Returns the SECTION element.
    */
-  String get domTag_ => "section";
+  //@override
+  Element render_() => new Element.tag("section");
 }
