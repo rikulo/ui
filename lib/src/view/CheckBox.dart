@@ -10,13 +10,12 @@
  * + change: an instance of [ChangeEvent] indicates the check state is changed.
  */
 class CheckBox extends TextView implements Input<bool> {
-  bool _value; //we need it to detect if the value is changed (so onchange shall be fired)
-
   /** Instantaites with a plain text.
    * The text will be encoded to make sure it is valid HTML text.
    */
   CheckBox([String text, bool value]): super(text) {
-    _value = value != null && value;
+    if (value != null && value)
+      this.value = true;
   }
   /** Instantiates with a HTML fragment.
    *
@@ -25,21 +24,31 @@ class CheckBox extends TextView implements Input<bool> {
    * unpreditable.
    */
   CheckBox.fromHTML(String html, [bool value]): super.fromHTML(html) {
-    _value = value != null && value;
+    if (value != null && value)
+      this.value = true;
   }
 
   //@override
   String get className => "CheckBox"; //TODO: replace with reflection if Dart supports it
 
+  /** Returns the name of the input element of this view.
+   */
+  String get name => inputNode.name;
+  /** Sets the name of the input element of this view.
+   */
+  void set name(String name) {
+    inputNode.name = name;
+  }
+
   /** Returns whether it is value.
    *
    * Default: false.
    */
-  bool get value => _value;
+  bool get value => inputNode.checked;
   /** Sets whether it is value.
    */
   void set value(bool value) {
-    _value = inputNode.checked = value;
+    inputNode.checked = value;
   }
 
   /** Returns whether it is disabled.
@@ -69,40 +78,19 @@ class CheckBox extends TextView implements Input<bool> {
    */
   InputElement get inputNode => getNode("inp");
 
-  /** Callback when the user changes [value].
-   */
-  void onChange_() {
-    sendEvent(new ChangeEvent(_value));
-  }
-
   //@override
   void updateInner_([String html]) {
     if (html == null) html = "";
     node.query("label").innerHTML = "$encodedText$html";
   }
   //@override
-  Element render_() {
-    final out = new StringBuffer("<div>");
-    out.add('<input type="checkbox" id="').add(uuid).add('-inp"');
+  Element render_()
+  => new Element.html(
+  '<div><input type="$type" id="$uuid-inp"/><label for="$uuid-inp" class="${viewConfig.classPrefix}inner"></label></div>');
 
-    if (_value)
-      out.add(' checked');
-
-    final node = new Element.html(
-      out.add('/><label for="').add(uuid).add('-inp" class="')
-        .add(viewConfig.classPrefix).add('inner">').add(encodedText).add('</label>')
-        .add("</div>").toString());
-
-    //note: we can't use getNode here since [node] is not available yet
-    node.query("#$uuid-inp").on.click.add((Event event) {
-      final InputElement n = event.srcElement;
-      final bool cked = n.checked;
-      if (_value != cked) {
-        _value = cked;
-        onChange_();
-      }
-    });
-    return node;
-  }
+  /** Returns the type of the INPUT element.
+   */
+  String get type => "checkbox";
+  //@override
   String toString() => "$className($text, $value)";
 }

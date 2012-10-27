@@ -137,9 +137,10 @@ class _ViewImpl {
       "focus",
       "mouseDown", "mouseMove", "mouseOut", "mouseOver", "mouseUp", "mouseWheel",
       "scroll"]) {
-      //Note: not including "change", since it shall be handled by View to use ChangeEvent instead
         _domEvtDisps[nm] = _domEvtDisp(nm);
       }
+      _domEvtDisps["change"] = _domChangeEvtDisp();
+
       //TODO: handle keyDown/keyPress/keyUp with KeyEvent
       //TODO: handle mouseXxx with MouseEvent
     }
@@ -148,11 +149,24 @@ class _ViewImpl {
   static DOMEventDispatcher _domEvtDisp(String type) {
     return (View target) {
       return (Event event) {
-        var t = event.target;
-        if (t != null)
-          t = ViewUtil.getView(t);
-        target.sendEvent(new ViewEvent.dom(event, type: type,
-          target: t != null ? t: target));
+        var tv = event.target; //the real target based on the event
+        if (tv != null)
+          tv = ViewUtil.getView(tv);
+        target.sendEvent(
+          new ViewEvent.dom(event, type: type, target: tv != null ? tv: target));
+      };
+    };
+  }
+  static DOMEventDispatcher _domChangeEvtDisp() {
+    return (View target) {
+      return (Event event) {
+        final dt = event.target;
+        var tv = dt; //the real target based on the event
+        if (tv != null)
+          tv = ViewUtil.getView(tv);
+        target.sendEvent(
+          new ChangeEvent(tv != null ? tv.value: dt.value));
+            //assumes tv has a property called value (at least, dt has a value)
       };
     };
   }

@@ -19,6 +19,15 @@ class MultilineBox extends View implements Input<String> {
    */
   TextAreaElement get inputNode => node;
 
+  /** Returns the name of the input element of this view.
+   */
+  String get name => inputNode.name;
+  /** Sets the name of the input element of this view.
+   */
+  void set name(String name) {
+    inputNode.name = name;
+  }
+
   /** Returns the value of this text box.
    */
   String get value => inputNode.value;
@@ -94,10 +103,6 @@ class MultilineBox extends View implements Input<String> {
   void set maxLength(int maxLength) {
     inputNode.maxLength = maxLength;
   }
-
-  //@override
-  DOMEventDispatcher getDOMEventDispatcher_(String type)
-  => type == "change" ? _changeDispatcher: super.getDOMEventDispatcher_(type);
 
   //@override
   Element render_() => new Element.tag("textarea");

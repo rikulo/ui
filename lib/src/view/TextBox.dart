@@ -22,6 +22,15 @@ class TextBox extends View implements Input<String> {
    */
   InputElement get inputNode => node;
 
+  /** Returns the name of the input element of this view.
+   */
+  String get name => inputNode.name;
+  /** Sets the name of the input element of this view.
+   */
+  void set name(String name) {
+    inputNode.name = name;
+  }
+
   /** Returns the type of data being placed in this text box.
    */
   String get type => inputNode.type;
@@ -128,10 +137,6 @@ class TextBox extends View implements Input<String> {
   }
 
   //@override
-  DOMEventDispatcher getDOMEventDispatcher_(String type)
-  => type == "change" ? _changeDispatcher: super.getDOMEventDispatcher_(type);
-
-  //@override
   Element render_() => new Element.tag("input");
 
   //@override
@@ -141,14 +146,3 @@ class TextBox extends View implements Input<String> {
   //@override
   String toString() => "$className('$value')";
 }
-
-DOMEventDispatcher _$changeDispatcher;
-DOMEventDispatcher get _changeDispatcher {
-  if (_$changeDispatcher == null)
-    _$changeDispatcher = (target) => (event) {
-      final TextBox t = target;
-      t.sendEvent(new ChangeEvent<String>(t.value));
-    };
-  return _$changeDispatcher;
-}
-//TODO: use const if Dart considers closure as constants (also check Issue 3905)

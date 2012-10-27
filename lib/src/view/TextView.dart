@@ -13,13 +13,14 @@
  * Thus, you can customize the look of embedding HTML fragment different from text.
  */
 class TextView extends View {
-  String _text; //we have to preserve it since it can't be retrieve from node
+  String _text = ""; //we have to preserve it since it can't be retrieve from node
 
   /** Instantaites with a plain text.
    * The text will be encoded to make sure it is valid HTML text.
    */
   TextView([String text]) {
-    _text = text != null ? text: "";
+    if (text != null && !text.isEmpty())
+      this.text = text; //have render_() called
   }
   /** Instantiates with a HTML fragment.
    *
@@ -28,7 +29,7 @@ class TextView extends View {
    * unpreditable.
    */
   TextView.fromHTML(String html) {
-    this.html = html;
+    this.html = html; //have render_() called
   }
 
   //@override
