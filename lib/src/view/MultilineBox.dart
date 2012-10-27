@@ -17,7 +17,7 @@ class MultilineBox extends View implements Input<String> {
 
   /** Returns the TEXTAREA element in this view.
    */
-  TextAreaElement get inputNode => node as TextAreaElement;
+  TextAreaElement get inputNode => node;
 
   /** Returns the value of this text box.
    */

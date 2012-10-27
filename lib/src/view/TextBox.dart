@@ -20,7 +20,7 @@ class TextBox extends View implements Input<String> {
 
   /** Returns the INPUT element in this view.
    */
-  InputElement get inputNode => node as InputElement;
+  InputElement get inputNode => node;
 
   /** Returns the type of data being placed in this text box.
    */

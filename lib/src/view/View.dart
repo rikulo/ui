@@ -99,9 +99,10 @@ class View {
    * It won't be encoded, so it is caller's job to avoid so-called *HTML injection*.
    * It will be generated before any child view's content.
    * + [isViewGroup] specifies whether it is a view group ([isViewGroup]).
-   * Default: true. Notice that it affects how the width and height are measured.
+   * Default: true. Notice that it affects how the width and height are measured
+   * unless you overrides [shallMeasureByContent].
    * Basically if it doesn't allow any child view, it is better to specify false here.
-   * Please refer to [isViewGroup] for more information.
+   * Please refer to [isViewGroup] and [shallMeasureByContent] for more information.
    */
   factory View.tag(String tag, [Map<String,Dynamic> attributes,
     String innerHTML, bool isViewGroup=true])
@@ -769,20 +770,33 @@ class View {
    * It is called by [LayoutManager].
    *
    * Default: forward to [layoutManager] to handle it.
-   * If [isViewGroup] is true, `measureWidth(mctx, this)` is called.
-   * If false, `measureWidthByContent(mctx, this, true) is called.
+   * If [shallMeasureByContent] is false, `measureWidth(mctx, this)` is called.
+   * If true, `measureWidthByContent(mctx, this, true) is called.
    */
   int measureWidth_(MeasureContext mctx)
-  => isViewGroup() ? mctx.measureWidth(this): mctx.measureWidthByContent(this, true);
+  => shallMeasureByContent() ? mctx.measureWidthByContent(this, true):
+    mctx.measureWidth(this);
   /** Measures the height of this view.
    * It is called by [LayoutManager].
    *
    * Default: forward to [layoutManager] to handle it.
-   * If [isViewGroup] is true, `measureHeight(mctx, this)` is called.
-   * If false, `measureHeightByContent(mctx, this, true) is called.
+   * If [shallMeasureByContent] is false, `measureHeight(mctx, this)` is called.
+   * If true, `measureHeightByContent(mctx, this, true) is called.
    */
   int measureHeight_(MeasureContext mctx)
-  => isViewGroup() ? mctx.measureHeight(this): mctx.measureHeightByContent(this, true);
+  => shallMeasureByContent() ? mctx.measureHeightByContent(this, true):
+    mctx.measureHeight(this);
+  /** Returns whether the dimension of this view shall be measured by content.
+   *
+   * Default: `!isViewGroup()`
+   *
+   * If false, [MeasureContext.measureWidth] is used instead of
+   * [MeasureContext.measureWidthByContent]. Furthermore, if the view
+   * is a root, `profile.width` and `profile.height` are assumed to be `flex`
+   * if it is not specified.
+   */
+  bool shallMeasureByContent() => !isViewGroup();
+
   /** Returns whether the given child shall be handled by the layout manager.
    *
    * Default: return true if the child is visble, its position
@@ -1046,6 +1060,8 @@ class View {
    *
    * Note: the name of the attribute can't start with "rk.", which is reserved
    * for internal use.
+   *
+   * Unlike `Element.dataAttributes', you can store any kind of objects here.
    *
    * See also [mountAttributes].
    */

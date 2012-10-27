@@ -96,7 +96,8 @@ class MeasureContext {
           if (getWidthSetByApp(view) == null) {
             //if view is root and a view group, we use flex
             int wd;
-            if (view.parent == null && view.isViewGroup() && (wd = width()) > 0)
+            if (view.parent == null && !view.shallMeasureByContent()
+            && (wd = width()) > 0)
               _flexWd(view, wd); //FLEX
             else
               _contentWd(view); //CONTENT
@@ -131,7 +132,8 @@ class MeasureContext {
           if (getHeightSetByApp(view) == null) {
             //if view is root and a view group, we use flex
             int hgh;
-            if (view.parent == null && view.isViewGroup() && (hgh = height()) > 0)
+            if (view.parent == null && !view.shallMeasureByContent()
+            && (hgh = height()) > 0)
               _flexHgh(view, hgh); //FLEX
             else
               _contentHgh(view); //CONTENT

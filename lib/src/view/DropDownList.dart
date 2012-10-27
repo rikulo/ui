@@ -25,7 +25,7 @@ class DropDownList<T> extends View {
 
   /** Returns the SELECT element in this view.
    */
-  SelectElement get _selectNode => node as SelectElement;
+  SelectElement get _selectNode => node;
 
   /** Returns whether it is disabled.
    *

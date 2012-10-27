@@ -25,7 +25,7 @@ class Image extends View {
 
   /** Returns the image node.
    */
-  ImageElement get imageNode => (node as ImageElement);
+  ImageElement get imageNode => node;
 
   //@override
   Element render_()

@@ -63,8 +63,8 @@ class Style extends View {
     _updateInner(content, null);
   }
 
-  LinkElement get _linkNode => (node.query("link") as LinkElement);
-  StyleElement get _styleNode => (node.query("style") as StyleElement);
+  LinkElement get _linkNode => node.query("link");
+  StyleElement get _styleNode => node.query("style");
 
   /** Returns the CSS media, or null if no media specified.
    *

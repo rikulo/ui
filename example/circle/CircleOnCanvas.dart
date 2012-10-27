@@ -34,8 +34,7 @@ class CanvasCircle {
   List<Ball> balls;
 
   void run() {
-    canvas = new Canvas()
-      ..addToDocument(layout: true);
+    canvas = new Canvas()..addToDocument();
 
     balls = [new Ball(50, 2.0, 6, "red"),
       new Ball(30, 1.3, 6, "blue"),

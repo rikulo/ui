@@ -21,7 +21,7 @@ class Button extends TextView {
 
   /** Returns the INPUT element in this view.
    */
-  ButtonElement get _buttonNode => node as ButtonElement;
+  ButtonElement get _buttonNode => node;
 
   /** Returns the button type.
    *
