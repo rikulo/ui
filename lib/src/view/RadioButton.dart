@@ -3,7 +3,9 @@
 // Author: tomyeh
 
 /**
- * A radio button. The radio buttons are grouped by [name]
+ * A radio button. The radio buttons are grouped by [name].
+ * If one of the radio buttons is checked, all others in the same group will
+ * be unchecked.
  */
 class RadioButton extends CheckBox {
   /** Instantaites with a plain text.
