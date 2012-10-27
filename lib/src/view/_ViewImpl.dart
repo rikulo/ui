@@ -182,7 +182,7 @@ class _ViewImpl {
     if (!view.visible)
       new DOMAgent(mask).hide();
     
-    parent.$dom_appendChild(mask);
+    parent.nodes.add(mask);
     return new DialogInfo(parent, mask);
   }
 

@@ -28,7 +28,7 @@ class TextView extends View {
    * unpreditable.
    */
   TextView.fromHTML(String html) {
-    html = html;
+    this.html = html;
   }
 
   //@override
