@@ -21,7 +21,6 @@ part "src/view/ViewUtil.dart";
 part "src/view/ProfileDeclaration.dart";
 part "src/view/LayoutDeclaration.dart";
 part "src/view/_ViewImpl.dart";
-part "src/view/HTMLFragment.dart";
 part "src/view/printc.dart";
 
 part "src/view/Button.dart";

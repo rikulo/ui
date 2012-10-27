@@ -6,7 +6,7 @@
  * The render context used to render [DataModel].
  *
  * Note: Which renderer to use depends on the view.
- * See also [HTMLRenderer], [StringRenderer] and [ViewRenderer].
+ * See also [Renderer].
  */
 interface RenderContext<T> default _RenderContext<T> {
   RenderContext(View view, DataModel model, T data,
@@ -51,23 +51,10 @@ interface RenderContext<T> default _RenderContext<T> {
    */
   final String column;
 }
-/** Renders the given data into a string.
+/** Renders the given data into a string or an element.
+ * The return value depends on the view you are using.
  */
-typedef String StringRenderer(RenderContext context);
-/** Renders the given data into a HTML fragment.
- *
- * The simplest implementation is to return a string representing the given data.
- * If you'd like more complicated presentation, you can return a HTML fragment
- * (by use of [HTMLFragment.html]).
- *
- * For more information, please refer to the view that supports it, such as
- * [DropDownList].
- */
-typedef HTMLFragment HTMLRenderer(RenderContext context);
-/** Renders the given data into a view.
- * The view will be added as a child of the model's owner (i.e., [RenderContext]'s view).
- */
-typedef View ViewRenderer(RenderContext context);
+typedef Renderer(RenderContext context);
 
 class _RenderContext<T> implements RenderContext<T> {
   final View view;
@@ -82,4 +69,17 @@ class _RenderContext<T> implements RenderContext<T> {
   _RenderContext(View this.view, DataModel this.model, T this.data,
     bool this.selected, bool this.disabled,
     [int this.index = -1, String this.column, int this.columnIndex = -1]);
+
+  /** Converts the given object to a string.
+   *
+   * + [encode] specifies whether to invoke [XMLUtil.encode].
+   */
+  String getDataAsString([bool encode=false]) {
+    var val = data;
+    if (val is TreeNode)
+      val = val.data;
+    if (val is Map && val.contains("text"))
+      val = val["text"];
+    return val != null ? encode ? "${XMLUtil.encode(val)}": val.toString(): "";
+  }
 }

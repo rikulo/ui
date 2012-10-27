@@ -9,6 +9,7 @@
 * PopupView is removed and replaced with View.addToDocument(mode: 'popup').
 * RadioGroup is removed and replaced with RadioButton.
 * TextBox no longer supports multiline. Rather, MultilineBox is introduced.
+* HTMLRenderer, StringRender and ViewRenderer are removed and replaced with Renderer.
 
 **October 20, 2012**
 

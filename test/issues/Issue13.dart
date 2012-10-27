@@ -25,9 +25,9 @@ void main() {
     ddl.model = model;
     mainView.requestLayout(true);
     mainView.addChild(
-        new TextView(ddl.node.query('input') != null ?
-          "Success!":
-          "Wrong! requestLayout+immediate shall force model to render immediately"));
+      new TextView(ddl.node.query('option') != null ?
+        "Success!":
+        "Wrong! requestLayout+immediate shall force model to render immediately"));
     mainView.requestLayout();
   });
   mainView.addChild(btn);

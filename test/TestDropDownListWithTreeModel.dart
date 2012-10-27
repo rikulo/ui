@@ -47,5 +47,6 @@ void main() {
   });;
 
   //Add the 2nd drop-down list to share the same model
-  createDropDownList(mainView, model);
+  final d2 = createDropDownList(mainView, model);
+  mainView.addChild(new Button('clear')..on.click.add((e) {d2.model =  null;}));
 }
