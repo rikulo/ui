@@ -60,7 +60,7 @@ class AnchorRelation {
           mctx.setHeightByProfile(view, () => _anchorHeight(anchor, view));
 
           //2) position
-          locate(view, view.profile.location, anchor);
+          locateToView(view, anchor, view.profile.location);
 
           if (thisOnly != null)
             return; //done
@@ -71,29 +71,30 @@ class AnchorRelation {
         _layoutAnchored(mctx, view, thisOnly); //recursive
     }
   }
-  /** Locates the given view at the given offset.
-   *
-   * Please refer to [View]'s `locateTo` for more information.
-   */
-  static void locate(View view, String location, View anchor, [int x=0, int y=0]) {
-    if (anchor != null) {
-      final locators = _getLocators(location);
-      final offset =
-        view.style.position == "fixed" ? anchor.pageOffset:
-        identical(anchor, view.parent) ? new Offset(0, 0): //parent
-        identical(anchor.parent, view.parent) ?
-          new Offset(anchor.left, anchor.top): //sibling (the same coordiante system)
-          anchor.pageOffset - view.pageOffset; //neither parent nor sibling
-      _anchorXLocators[locators[0]](offset.left, anchor, view);
-      _anchorYLocators[locators[1]](offset.top, anchor, view);
-    } else if (location == null || location.isEmpty()) {
-      view.left = x;
-      view.top = y;
-    } else {
-      final locators = _getLocators(location);
-      _anchorXLocators[locators[0]](x, _anchorOfPoint, view);
-      _anchorYLocators[locators[1]](y, _anchorOfPoint, view);
-    }
+}
+/** Places the given view at the given offset relative to an optional anchor.
+ *
+ * [x] and [y] are used only if [anchor] (the reference view) is null.
+ * Please refer to [View]'s `locateTo` for more information.
+ */
+void locateToView(View view, View anchor, String location, [int x=0, int y=0]) {
+  if (anchor != null) {
+    final locators = _getLocators(location);
+    final offset =
+      view.style.position == "fixed" ? anchor.pageOffset:
+      identical(anchor, view.parent) ? new Offset(0, 0): //parent
+      identical(anchor.parent, view.parent) ?
+        new Offset(anchor.left, anchor.top): //sibling (the same coordiante system)
+        anchor.pageOffset - view.pageOffset; //neither parent nor sibling
+    _anchorXLocators[locators[0]](offset.left, anchor, view);
+    _anchorYLocators[locators[1]](offset.top, anchor, view);
+  } else if (location == null || location.isEmpty()) {
+    view.left = x;
+    view.top = y;
+  } else {
+    final locators = _getLocators(location);
+    _anchorXLocators[locators[0]](x, _anchorOfPoint, view);
+    _anchorYLocators[locators[1]](y, _anchorOfPoint, view);
   }
 }
 List<int> _getLocators(String loc) {

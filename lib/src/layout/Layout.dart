@@ -143,12 +143,9 @@ class FreeLayout extends AbstractLayout {
   }
 }
 
-/** The function type used to handle the layout of the root views.
- */
-typedef void RootLayout(MeasureContext mctx, View root);
 /** The function used to handle the layout of the root views.
  */
-RootLayout rootLayout(MeasureContext mctx, View root) {
+void rootLayout(MeasureContext mctx, View root) {
   final node = root.node;
   final dlgInfo = dialogInfos[root];
   Element cave = dlgInfo != null ? dlgInfo.cave.parent: node.parent;
@@ -162,7 +159,6 @@ RootLayout rootLayout(MeasureContext mctx, View root) {
   mctx.setHeightByProfile(root,
     () => anchor != null ? _anchorHeight(anchor, root): size.height);
 
-  String loc = root.profile.location;
   final ref = anchor != null ? anchor:
     cave != null ? new _AnchorOfNode(cave): _anchorOfRoot;
   final ofs = anchor != null ?
@@ -173,7 +169,7 @@ RootLayout rootLayout(MeasureContext mctx, View root) {
         new Offset(0,0): new DOMAgent(cave).offset:
     browser.innerOffset;
 
-  final locators = _getLocators(loc);
+  final locators = _getLocators(root.profile.location);
   _anchorXLocators[locators[0]](ofs.left, ref, root);
   _anchorYLocators[locators[1]](ofs.top, ref, root);
 }

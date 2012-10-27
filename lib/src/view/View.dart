@@ -703,6 +703,7 @@ class View {
 
   /** Places this view at the given location.
    *
+   * + [ref] - the reference view.
    * + [location] - one of the following. If not specified, "left top" is assumed.   
    * "north start", "north center", "north end",
    * "south start", "south center", "south end",
@@ -711,14 +712,13 @@ class View {
    * "top left", "top center", "top right",
    * "center left", "center center", "center right",
    * "bottom left", "bottom center", and "bottom right"
-   * + [ref] - the reference view.
-   * + [x] - the reference point's X coordinate if [reference] is not specified.
+   * + [x] - the reference point's X coordinate if [ref] is not specified.
    * If [reference] is specified, [x] and [y] are ignored.
-   * + [y] - the reference point's Y coordinate if [reference] is not specified.
+   * + [y] - the reference point's Y coordinate if [ref] is not specified.
    * If [reference] is specified, [x] and [y] are ignored.
    */
-  void locateTo(String location, [View ref, int x=0, int y=0]) {
-    AnchorRelation.locate(this, location, ref, x, y);
+  void locateTo({View ref, String location, int x:0, int y:0}) {
+      locateToView(this, ref, location, x, y);
   }
 
   /** Requests the layout manager to re-position the layout of this view.
