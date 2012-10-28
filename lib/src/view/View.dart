@@ -844,8 +844,8 @@ class View {
    * will be still called to arrange the layout of the child's child views.
    */
   bool shallLayout_(View child) {
-    if (!child.visible)
-      return false;
+    if (!child.visible || !identical(child.node, child.jointNode))
+      return false; //don't handle the layout if jointNode differs
     final String v = child.style.position;
     return v.isEmpty() || v == "absolute";
   }
