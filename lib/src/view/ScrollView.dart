@@ -119,10 +119,10 @@ class ScrollView extends View {
 
   //@override
   void addChildNode_(View child, View beforeChild) {
-    //Note: use child.mountNode rather than child.node
+    //Note: use child.jiontNode rather than child.node
     if (beforeChild != null)
       super.addChildNode_(child, beforeChild);
     else
-      contentNode.nodes.add(child.mountNode);
+      contentNode.nodes.add(child.jointNode);
   }
 }

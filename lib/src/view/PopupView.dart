@@ -29,7 +29,7 @@
  * ##The associated DOM Element
  *
  * To make the DOM element appears on the top of all other views, [PopupView]
- * creates two DOM elements. One is called [mountNode]. It is used as
+ * creates two DOM elements. One is called [jointNode]. It is used as
  * the *mounting node* to add to the parent's hierarchy of elements.
  * However, it is invisible and used only to form the hierarchy of elements
  *
@@ -64,7 +64,7 @@ class PopupView extends View {
   ViewEventListener _fnClickOutside;
   int _idDismissTimeout;
   //mounting node
-  Element _mtnode; //don't access it (except in mountNode)
+  Element _jtnode; //don't access it (except in jointNode)
 
   /** Constructor.
    *
@@ -74,7 +74,7 @@ class PopupView extends View {
    * before dismissing it automatically.
    */
   PopupView([int this.dismissTimeout=0, bool this.dismissOnClickOutside=true]) {
-    _mtnode = new Element.html('<div style="display:none"></div>');
+    _jtnode = new Element.html('<div style="display:none"></div>');
     node = new Element.tag("div");
   }
 
@@ -94,7 +94,7 @@ class PopupView extends View {
   }
 
   //@override
-  Element get mountNode => _mtnode;
+  Element get jointNode => _jtnode;
 
   //@override
   void set visible(bool visible) {
@@ -107,7 +107,7 @@ class PopupView extends View {
 
     if (inDocument) {
       if (parent != null)
-        left = new DOMAgent(mountNode.parent).pageOffset.left + left;
+        left = new DOMAgent(jointNode.parent).pageOffset.left + left;
       node.style.left = CSS.px(left);
     }
   }
@@ -117,7 +117,7 @@ class PopupView extends View {
 
     if (inDocument) {
       if (parent != null)
-        top = new DOMAgent(mountNode.parent).pageOffset.top + top;
+        top = new DOMAgent(jointNode.parent).pageOffset.top + top;
       node.style.top = CSS.px(top);
     }
   }
@@ -131,7 +131,7 @@ class PopupView extends View {
 
     //fix the left/top of DOM (since it is in diff coordinates)
     if (parent != null) {
-      final ofs = new DOMAgent(mountNode.parent).pageOffset;
+      final ofs = new DOMAgent(jointNode.parent).pageOffset;
       final style = node.style;
       style.left = CSS.px(ofs.left + left);
       style.top = CSS.px(ofs.top + top);

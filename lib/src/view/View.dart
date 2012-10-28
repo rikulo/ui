@@ -394,16 +394,16 @@ class View {
    * enclose with TD, or to add the child node to a different
    * position.
    *
-   * Notice that you have to use `child.mountNode` and `beforeChild.mountNode`
+   * Notice that you have to use `child.jointNode` and `beforeChild.jointNode`
    * to get the elements for adding them into the DOM hierarchy of this view.
-	 * For more information, please refer to [mountNode].
+	 * For more information, please refer to [jointNode].
    */
   void addChildNode_(View child, View beforeChild) {
     if (beforeChild != null) {
-      final beforeNode = beforeChild.mountNode;
-      beforeNode.parent.insertBefore(child.mountNode, beforeNode);
+      final beforeNode = beforeChild.jointNode;
+      beforeNode.parent.insertBefore(child.jointNode, beforeNode);
     } else {
-      node.nodes.add(child.mountNode);
+      node.nodes.add(child.jointNode);
     }
   }
   /** Removes the corresponding DOM elements of the give child.
@@ -413,27 +413,27 @@ class View {
    * element around the child.node (in [addChildNode_]) (such that the special
    * element will be also deleted in this method).
    *
-   * Notice that you shall use `child.mountNode` instead of `child.node`
+   * Notice that you shall use `child.jointNode` instead of `child.node`
 	 * in this method.
-	 * For more information, please refer to [mountNode].
+	 * For more information, please refer to [jointNode].
    */
   void removeChildNode_(View child) {
-    child.mountNode.remove();
+    child.jointNode.remove();
   }
-  /** Returns the DOM element that will be added (so called mounted) to
-   * parent's hierarchy of elements. In other words, it is the DOM element will
+  /** Returns the DOM element that will be added to parent's hierarchy of
+   * elements (i.e., a joint). In other words, it is the DOM element will
    * be put under parent's [node] (or one of its child elements).
    *
    * Default: it is the same as [node].  
    * It is used only by [addChildNode_] and [removeChildNode_].
    * Furthermore, you rarely need to override it, unless you'd like to
-   * mount an element other than [node] to the parent's hierarchy of elements.
+   * add an element other than [node] to the parent's hierarchy of elements.
    * [PopupView] is the only builtin view overriding it.
    *
-   * Notice that [addChildNode_] and [removeChildNode_] shall use [mountNode]
+   * Notice that [addChildNode_] and [removeChildNode_] shall use [jointNode]
    * (of the child view).
    */
-  Element get mountNode => node;
+  Element get jointNode => node;
 
   /** Returns the DOM element associated with this view (never null).
    *
@@ -522,6 +522,9 @@ class View {
    * On the other hand, the child views are added to the document automatically
    * once the root has been attached.
    *
+   * To notify the views, [mount_] will be called against this view and all
+   * of its descendants.
+   *
    * > [UIException] is thrown if this view is not a root view (i.e., it has a parent).
    *
    * + [ref] specifies the DOM element to add this view. If not specified,
@@ -531,7 +534,7 @@ class View {
    *    + `child` (default): add as a child of the given reference node.
    *    + `dialog`: add as a child and makes it looks like a dialog (a mask
    * is inserted to keep user from accessing other views).
-   * In additions, if its `profile.location` is not speciifed, `"center center"`
+   * In additions, if its `profile.location` is not specified, `"center center"`
    * will be assigned (i.e., it will be placed at the center).
    *    + `before`: insert before the given reference node
    *    + `replace`: replace the given reference node. Notice if the give reference node has an ID,
@@ -603,6 +606,9 @@ class View {
    * Like [addToDocument], this method can be called only if this view has no parent.
    *
    * > If you add a child by [addChild], you shall invoke [removeFromParent] instead.
+   *
+   * To notify the views, [unmount_] will be called against this view and all
+   * of its descendants.
    */
   void removeFromDocument() {
     if (parent != null || !inDocument)
