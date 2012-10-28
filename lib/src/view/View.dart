@@ -420,8 +420,8 @@ class View {
   void removeChildNode_(View child) {
     child.mountNode.remove();
   }
-  /** Returns the DOM element that is used to mount this view to parent's
-   * hierarchy of elements. In other words, it is the DOM element will
+  /** Returns the DOM element that will be added (so called mounted) to
+   * parent's hierarchy of elements. In other words, it is the DOM element will
    * be put under parent's [node] (or one of its child elements).
    *
    * Default: it is the same as [node].  
