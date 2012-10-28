@@ -60,7 +60,7 @@ class AnchorRelation {
           mctx.setHeightByProfile(view, () => _anchorHeight(anchor, view));
 
           //2) position
-          locateToView(view, anchor, view.profile.location);
+          locateToView(view, view.profile.location, anchor);
 
           if (thisOnly != null)
             return; //done
@@ -77,7 +77,7 @@ class AnchorRelation {
  * [x] and [y] are used only if [anchor] (the reference view) is null.
  * Please refer to [View]'s `locateTo` for more information.
  */
-void locateToView(View view, View anchor, String location, [int x=0, int y=0]) {
+void locateToView(View view, String location, [View anchor, int x=0, int y=0]) {
   if (anchor != null) {
     final locators = _getLocators(location);
     final offset =

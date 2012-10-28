@@ -704,7 +704,7 @@ class View {
   /** Places this view at the given location.
    *
    * + [ref] - the reference view.
-   * + [location] - one of the following. If not specified, "left top" is assumed.   
+   * + [location] - one of the following. If null, "left top" is assumed.   
    * "north start", "north center", "north end",
    * "south start", "south center", "south end",
    * "west start", "west center", "west end",
@@ -717,8 +717,8 @@ class View {
    * + [y] - the reference point's Y coordinate if [ref] is not specified.
    * If [reference] is specified, [x] and [y] are ignored.
    */
-  void locateTo({View ref, String location, int x:0, int y:0}) {
-      locateToView(this, ref, location, x, y);
+  void locateTo(String location, [View ref, int x=0, int y=0]) {
+      locateToView(this, location, ref, x, y);
   }
 
   /** Requests the layout manager to re-position the layout of this view.
