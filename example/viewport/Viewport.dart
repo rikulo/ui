@@ -60,13 +60,14 @@ class Viewport extends View {
 
   //@override to insert the toolbar to getNode("toolbar"), and others into contentNode
   void addChildNode_(View child, View beforeChild) {
+    //Note: use child.mountNode rather than child.node
     if (identical(child, _toolbar)) {
-      getNode("toolbar").nodes.add(child.node);
+      getNode("toolbar").nodes.add(child.mountNode);
     } else {
       if (beforeChild != null && !identical(beforeChild, _toolbar))
         super.addChildNode_(child, beforeChild);
       else
-        contentNode.nodes.add(child.node);
+        contentNode.nodes.add(child.mountNode);
     }
   }
   //@override to adjust toolbar and contentNode

@@ -393,13 +393,17 @@ class View {
    * Deriving classes might override this method if it has to, say,
    * enclose with TD, or to add the child node to a different
    * position.
+   *
+   * Notice that you have to use `child.mountNode` and `beforeChild.mountNode`
+   * to get the elements for adding them into the DOM hierarchy of this view.
+	 * For more information, please refer to [mountNode].
    */
   void addChildNode_(View child, View beforeChild) {
     if (beforeChild != null) {
-      final beforeNode = beforeChild.node;
-      beforeNode.parent.insertBefore(child.node, beforeNode);
+      final beforeNode = beforeChild.mountNode;
+      beforeNode.parent.insertBefore(child.mountNode, beforeNode);
     } else {
-      node.nodes.add(child.node); //note: Firefox not support insertAdjacentElement
+      node.nodes.add(child.mountNode);
     }
   }
   /** Removes the corresponding DOM elements of the give child.
@@ -408,10 +412,28 @@ class View {
    * Deriving classes might override this method if it encloses some special
    * element around the child.node (in [addChildNode_]) (such that the special
    * element will be also deleted in this method).
+   *
+   * Notice that you shall use `child.mountNode` instead of `child.node`
+	 * in this method.
+	 * For more information, please refer to [mountNode].
    */
   void removeChildNode_(View child) {
-    child.node.remove();
+    child.mountNode.remove();
   }
+  /** Returns the DOM element that is used to mount this view to parent's
+   * hierarchy of elements. In other words, it is the DOM element will
+   * be put under parent's [node] (or one of its child elements).
+   *
+   * Default: it is the same as [node].  
+   * It is used only by [addChildNode_] and [removeChildNode_].
+   * Furthermore, you rarely need to override it, unless you'd like to
+   * mount an element other than [node] to the parent's hierarchy of elements.
+   * [PopupView] is the only builtin view overriding it.
+   *
+   * Notice that [addChildNode_] and [removeChildNode_] shall use [mountNode]
+   * (of the child view).
+   */
+  Element get mountNode => node;
 
   /** Returns the DOM element associated with this view (never null).
    *
@@ -449,7 +471,7 @@ class View {
     _initNode();
   }
   void _initNode() {
-    _node.classes
+    node.classes
       ..add(viewConfig.classPrefix)
       ..add("${viewConfig.classPrefix}$className");
   }
