@@ -162,12 +162,11 @@ void rootLayout(MeasureContext mctx, View root) {
   final ref = anchor != null ? anchor:
     cave != null ? new _AnchorOfNode(cave): _anchorOfRoot;
   final ofs = anchor != null ?
-    cave != anchor.parent ? anchor.pageOffset - root.pageOffset:
+    cave != anchor.parent ?
+      anchor.pageOffset - root.pageOffset + new Offset(root.left, root.top):
       new Offset(anchor.left, anchor.top):
-    cave != null ?
-      node.offsetParent == node.parent ? //if parent is relative/absolute/fixed
-        new Offset(0,0): new DOMAgent(cave).offset:
-    browser.innerOffset;
+    cave != null && node.offsetParent != node.parent ? //if parent is relative/absolute/fixed
+        new DOMAgent(cave).offset: new Offset(0,0);
 
   final locators = _getLocators(root.profile.location);
   _anchorXLocators[locators[0]](ofs.left, ref, root);

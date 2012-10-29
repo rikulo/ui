@@ -16,16 +16,6 @@ typedef void AfterMount(View view);
  * A view occupies a rectangular area on the screen and the
  * interfaces for managing the content and event handling in the area.
  *
- * ##ID Space
- *
- * If a view implements [IdSpace], it and its descendants are considered
- * as a ID space. And, the topmost view is the owner.
- * The ID ([id]) of a view in the given ID space must be unique.
- * On the other hand, views in different ID spaces can have the same ID.
- *
- * Notice that if a view implements [IdSpace], it has to override
- * [getFellow] and [bindFellow_]. Please refer to [Section] for sample code.
- *
  * ##Events
  *
  * + `layout`: an instance of [LayoutEvent] indicates the layout of this view
@@ -41,6 +31,16 @@ typedef void AfterMount(View view);
  *
  * Default [classes]: "v-$className"
  * (note: "v-" is actually [viewConfig.classPrefix])
+ *
+ * ##ID Space
+ *
+ * If a view implements [IdSpace], it and its descendants are considered
+ * as a ID space. And, the topmost view is the owner.
+ * The ID ([id]) of a view in the given ID space must be unique.
+ * On the other hand, views in different ID spaces can have the same ID.
+ *
+ * Notice that if a view implements [IdSpace], it has to override
+ * [getFellow] and [bindFellow_]. Please refer to [Section] for sample code.
  *
  * ##See Also
  *
@@ -393,17 +393,13 @@ class View {
    * Deriving classes might override this method if it has to, say,
    * enclose with TD, or to add the child node to a different
    * position.
-   *
-   * Notice that you have to use `child.jointNode` and `beforeChild.jointNode`
-   * to get the elements for adding them into the DOM hierarchy of this view.
-	 * For more information, please refer to [jointNode].
    */
   void addChildNode_(View child, View beforeChild) {
     if (beforeChild != null) {
-      final beforeNode = beforeChild.jointNode;
-      beforeNode.parent.insertBefore(child.jointNode, beforeNode);
+      final beforeNode = beforeChild.node;
+      beforeNode.parent.insertBefore(child.node, beforeNode);
     } else {
-      node.nodes.add(child.jointNode);
+      node.nodes.add(child.node);
     }
   }
   /** Removes the corresponding DOM elements of the give child.
@@ -412,28 +408,10 @@ class View {
    * Deriving classes might override this method if it encloses some special
    * element around the child.node (in [addChildNode_]) (such that the special
    * element will be also deleted in this method).
-   *
-   * Notice that you shall use `child.jointNode` instead of `child.node`
-	 * in this method.
-	 * For more information, please refer to [jointNode].
    */
   void removeChildNode_(View child) {
-    child.jointNode.remove();
+    child.node.remove();
   }
-  /** Returns the DOM element that will be added to parent's hierarchy of
-   * elements (i.e., a joint). In other words, it is the DOM element will
-   * be put under parent's [node] (or one of its child elements).
-   *
-   * Default: it is the same as [node].  
-   * It is used only by [addChildNode_] and [removeChildNode_].
-   * Furthermore, you rarely need to override it, unless you'd like to
-   * add an element other than [node] to the parent's hierarchy of elements.
-   * [PopupView] is the only builtin view overriding it.
-   *
-   * Notice that [addChildNode_] and [removeChildNode_] shall use [jointNode]
-   * (of the child view).
-   */
-  Element get jointNode => node;
 
   /** Returns the DOM element associated with this view (never null).
    *
@@ -474,6 +452,12 @@ class View {
     node.classes
       ..add(viewConfig.classPrefix)
       ..add("${viewConfig.classPrefix}$className");
+
+    //Note: we have initialize it.
+    //reason: it will become padding-left/top if not assigned
+    node.style
+      ..left = CSS.px(left)
+      ..top = CSS.px(top);
   }
   /** Creates and returns the DOM elements of this view.
    *
@@ -844,8 +828,8 @@ class View {
    * will be still called to arrange the layout of the child's child views.
    */
   bool shallLayout_(View child) {
-    if (!child.visible || !identical(child.node, child.jointNode))
-      return false; //don't handle the layout if jointNode differs
+    if (!child.visible)
+      return false;
     final String v = child.style.position;
     return v.isEmpty() || v == "absolute";
   }

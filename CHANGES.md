@@ -9,6 +9,7 @@
 * RadioGroup is removed and replaced with RadioButton.
 * TextBox no longer supports multiline. Rather, MultilineBox is introduced.
 * HTMLRenderer, StringRender and ViewRenderer are removed and replaced with Renderer.
+* PopupView is removed. It can be implemented easily. Please refer to TestPopup1.dart.
 
 **October 20, 2012**
 

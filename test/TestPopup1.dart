@@ -1,7 +1,26 @@
 //Sample Code: Test Log
 
 import 'package:rikulo/view.dart';
+import 'package:rikulo/event.dart';
 
+class Popup extends View {
+  ViewEventListener _fnClickOutside;
+
+  //@override
+  void mount_() {
+    super.mount_();
+
+    broadcaster.on.popup.add(_fnClickOutside = (event) {
+        if (visible && inDocument && event.shallClose(this))
+          removeFromDocument();
+      });
+  }
+  //@override
+  void unmount_() {
+    broadcaster.on.popup.remove(_fnClickOutside);
+    super.unmount_();
+  }
+}
 void main() {
   View view = new View();
   view.classes.add("v-dialog");
@@ -20,48 +39,30 @@ void main() {
   btn.profile.location = "north start";
   view.addChild(btn);
 
-  View popup = new PopupView();
-  popup.profile.anchorView = btn;
-  popup.profile.location = "south start";
-  popup.width = 300;
-  popup.height = 200;
-  popup.style.backgroundColor = "yellow";
-  popup.visible = false;
-  view.addChild(popup);
+  View popup = new Popup()
+    ..width = 300
+    ..height = 200
+    ..classes.add("v-dialog")
+    ..style.backgroundColor = "yellow";
+  popup.profile..anchorView = btn
+    ..location = "south start";
 
   btn.on.click.add((event) {
-    popup.visible = true;
+    popup.addToDocument(layout: true);
   });
 
   Button btn2 = new Button("Create Popup 1");
   btn2.profile.anchorView = btn;
   btn2.profile.location = "east start";
   btn2.on.click.add((event) {
-    final pp = new PopupView();
-    pp.width = 200;
-    pp.height = 150;
-    pp.style.backgroundColor = "orange";
-    pp.on.dismiss.add((e) {pp.removeFromParent();});
-    view.addChild(pp, popup);
-    pp.locateTo("south start", btn2);
+    final pp = new Popup()
+      ..width = 200
+      ..height = 150
+      ..style.backgroundColor = "orange"
+      ..addToDocument(layout: false)
+      ..locateTo("south start", btn2);
   });
   view.addChild(btn2);
-
-  Button btn3 = new Button("Create Popup 2 (timeout: 5s)");
-  btn3.profile.anchorView = btn2;
-  btn3.profile.location = "east start";
-  btn3.on.click.add((event) {
-    final pp = new PopupView(dismissTimeout: 5000, dismissOnClickOutside: false);
-    pp.profile.anchorView = btn3;
-    pp.profile.location = "south start";
-    pp.width = 150;
-    pp.height = 100;
-    pp.style.backgroundColor = "#0ff";
-    pp.on.dismiss.add((e) {pp.removeFromParent();});
-    view.addChild(pp, popup);
-    pp.requestLayout(true);
-  });
-  view.addChild(btn3);
 
   new Section()
     ..addChild(view)

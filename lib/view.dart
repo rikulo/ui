@@ -29,7 +29,6 @@ part "src/view/CheckBox.dart";
 part "src/view/DropDownList.dart";
 part "src/view/Image.dart";
 part "src/view/MultilineBox.dart";
-part "src/view/PopupView.dart";
 part "src/view/RadioButton.dart";
 part "src/view/ScrollView.dart";
 part "src/view/Section.dart";
