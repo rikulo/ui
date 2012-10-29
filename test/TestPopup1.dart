@@ -6,6 +6,9 @@ import 'package:rikulo/event.dart';
 class Popup extends View {
   ViewEventListener _fnClickOutside;
 
+  Popup() {
+    classes.add("v-popup");
+  }
   //@override
   void mount_() {
     super.mount_();
@@ -42,7 +45,6 @@ void main() {
   View popup = new Popup()
     ..width = 300
     ..height = 200
-    ..classes.add("v-dialog")
     ..style.backgroundColor = "yellow";
   popup.profile..anchorView = btn
     ..location = "south start";
