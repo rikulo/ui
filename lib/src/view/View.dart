@@ -452,11 +452,6 @@ class View {
     node.classes
       ..add(viewConfig.classPrefix)
       ..add("${viewConfig.classPrefix}$className");
-
-    //Note: we have initialize it.
-    //reason: it will become padding-left/top if not assigned
-    final st = node.style;
-    st.left = st.top = "0"; //_left/_top must be 0 here
   }
   /** Creates and returns the DOM elements of this view.
    *
