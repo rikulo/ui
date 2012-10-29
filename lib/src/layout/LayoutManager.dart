@@ -64,16 +64,12 @@ class LayoutManager extends RunOnceViewManager {
     else queue(view);
   }
 
-  /** Called by [View], when it changed the width or height.
+  /** Returns whether the layout manager is handling the offset and dimension.
+   *
+   * Notice that it is also false in the event listener
+   * (including 'layout' and 'preLayout').
    */
-  void sizeUpdated(View view, Dir dir) {
-    //Note: we have to store the width in view since it is required if requestLayout
-    //is called again (while _borderWds shall be dropped after layouted)
-    if (_inLayout > 0 && _inCallback <= 0)
-      ViewImpl.sizedInternally(view, dir);
-    else
-      ViewImpl.sizedByApp(view, dir);
-  }
+  bool get inLayout => _inLayout > 0 && _inCallback <= 0;
 
   //@override
   void flush([View view, bool force=false]) {

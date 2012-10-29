@@ -31,7 +31,7 @@ interface _RealLinearLayout {
  */
 class _HLayout implements _RealLinearLayout {
   int measureWidth(MeasureContext mctx, View view) {
-    final int va = mctx.getWidthSetByApp(view);
+    final int va = mctx.getWidthByApp(view);
     if (va != null)
       return va;
 
@@ -69,7 +69,7 @@ class _HLayout implements _RealLinearLayout {
     return width;
   }
   int measureHeight(MeasureContext mctx, View view) {
-    final int va = mctx.getHeightSetByApp(view);
+    final int va = mctx.getHeightByApp(view);
     if (va != null)
       return va;
 
@@ -205,7 +205,7 @@ class _HLayout implements _RealLinearLayout {
  */
 class _VLayout implements _RealLinearLayout {
   int measureHeight(MeasureContext mctx, View view) {
-    final int va = mctx.getHeightSetByApp(view);
+    final int va = mctx.getHeightByApp(view);
     if (va != null)
       return va;
 
@@ -243,7 +243,7 @@ class _VLayout implements _RealLinearLayout {
     return height;
   }
   int measureWidth(MeasureContext mctx, View view) {
-    final int va = mctx.getWidthSetByApp(view);
+    final int va = mctx.getWidthByApp(view);
     if (va != null)
       return va;
 

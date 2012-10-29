@@ -59,7 +59,7 @@ void main() {
       ..width = 200
       ..height = 150
       ..style.backgroundColor = "orange"
-      ..addToDocument(layout: false)
+      ..addToDocument()
       ..locateTo("south start", btn2);
   });
   view.addChild(btn2);

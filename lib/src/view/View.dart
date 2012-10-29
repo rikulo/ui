@@ -455,9 +455,8 @@ class View {
 
     //Note: we have initialize it.
     //reason: it will become padding-left/top if not assigned
-    node.style
-      ..left = CSS.px(left)
-      ..top = CSS.px(top);
+    final st = node.style;
+    st.left = st.top = "0"; //_left/_top must be 0 here
   }
   /** Creates and returns the DOM elements of this view.
    *
@@ -872,6 +871,7 @@ class View {
   void set left(int left) {
     _left = left;
     node.style.left = CSS.px(left);
+    ViewImpl.leftUpdated(this);
   }
   /** Returns the top position of this view relative to its parent.
    *
@@ -883,6 +883,7 @@ class View {
   void set top(int top) {
     _top = top;
     node.style.top = CSS.px(top);
+    ViewImpl.topUpdated(this);
   }
 
   /** Returns the width of this view.
@@ -901,7 +902,7 @@ class View {
     _width = width;
 
     node.style.width = CSS.px(width);
-    layoutManager.sizeUpdated(this, Dir.HORIZONTAL);
+    ViewImpl.widthUpdated(this);
   }
   /** Returns the height of this view.
    *
@@ -919,7 +920,7 @@ class View {
     _height = height;
 
     node.style.height = CSS.px(height);
-    layoutManager.sizeUpdated(this, Dir.VERTICAL);
+    ViewImpl.heightUpdated(this);
   }
 
   /** Returns the real width of this view shown on the document (never null).
