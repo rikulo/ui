@@ -115,11 +115,11 @@ class ScrollView extends View {
   }
   //@override
   Element render_()
-  => new Element.html('<div><div class="v-inner" id="$uuid-inner"</div>');
+  => new Element.html('<div><div class="v-inner" id="$uuid-inner"></div></div>');
 
   //@override
   void addChildNode_(View child, View beforeChild) {
-    //Note: use child.jiontNode rather than child.node
+    //Note: use child.jointNode rather than child.node
     if (beforeChild != null)
       super.addChildNode_(child, beforeChild);
     else
