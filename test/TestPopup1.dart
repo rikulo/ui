@@ -1,7 +1,26 @@
 //Sample Code: Test Log
 
 import 'package:rikulo/view.dart';
+import 'package:rikulo/event.dart';
 
+class Popup extends View {
+  ViewEventListener _fnClickOutside;
+
+  //@override
+  void mount_() {
+    super.mount_();
+
+    broadcaster.on.popup.add(_fnClickOutside = (event) {
+        if (visible && inDocument && event.shallClose(this))
+          removeFromDocument();
+      });
+  }
+  //@override
+  void unmount_() {
+    broadcaster.on.popup.remove(_fnClickOutside);
+    super.unmount_();
+  }
+}
 void main() {
   View view = new View();
   view.classes.add("v-dialog");
@@ -20,15 +39,13 @@ void main() {
   btn.profile.location = "north start";
   view.addChild(btn);
 
-  View popup = new View()
+  View popup = new Popup()
     ..width = 300
     ..height = 200
     ..classes.add("v-dialog")
     ..style.backgroundColor = "yellow";
   popup.profile..anchorView = btn
     ..location = "south start";
-//  popup.visible = false;
-//  view.addChild(popup);
 
   btn.on.click.add((event) {
     popup.addToDocument(layout: true);
@@ -38,32 +55,14 @@ void main() {
   btn2.profile.anchorView = btn;
   btn2.profile.location = "east start";
   btn2.on.click.add((event) {
-    final pp = new View()
+    final pp = new Popup()
       ..width = 200
       ..height = 150
-      ..style.backgroundColor = "orange";
-//    pp.on.dismiss.add((e) {pp.removeFromParent();});
-//    view.addChild(pp, popup);
-    pp.addToDocument(layout: false);
-    pp.locateTo("south start", btn2);
+      ..style.backgroundColor = "orange"
+      ..addToDocument(layout: false)
+      ..locateTo("south start", btn2);
   });
   view.addChild(btn2);
-
-  Button btn3 = new Button("Create Popup 2 (timeout: 5s)");
-  btn3.profile.anchorView = btn2;
-  btn3.profile.location = "east start";
-  btn3.on.click.add((event) {
-    final pp = new PopupView(dismissTimeout: 5000, dismissOnClickOutside: false);
-    pp.profile.anchorView = btn3;
-    pp.profile.location = "south start";
-    pp.width = 150;
-    pp.height = 100;
-    pp.style.backgroundColor = "#0ff";
-    pp.on.dismiss.add((e) {pp.removeFromParent();});
-    view.addChild(pp, popup);
-    pp.requestLayout(true);
-  });
-  view.addChild(btn3);
 
   new Section()
     ..addChild(view)

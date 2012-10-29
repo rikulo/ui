@@ -85,7 +85,7 @@ void locateToView(View view, String location, [View anchor, int x=0, int y=0]) {
       identical(anchor, view.parent) ? new Offset(0, 0): //parent
       identical(anchor.parent, view.parent) ?
         new Offset(anchor.left, anchor.top): //sibling (the same coordiante system)
-        anchor.pageOffset - _adjPageOffset(view); //neither parent nor sibling
+        anchor.pageOffset - view.pageOffset + new Offset(view.left, view.top); //neither parent nor sibling
 
     _anchorXLocators[locators[0]](offset.left, anchor, view);
     _anchorYLocators[locators[1]](offset.top, anchor, view);
@@ -97,14 +97,6 @@ void locateToView(View view, String location, [View anchor, int x=0, int y=0]) {
     _anchorXLocators[locators[0]](x, _anchorOfPoint, view);
     _anchorYLocators[locators[1]](y, _anchorOfPoint, view);
   }
-}
-//Adjusted page offset. It adjusted view.left/top and browser.innerOffsest.
-Offset _adjPageOffset(View view) {
-  var ofs = view.pageOffset - new Offset(view.left, view.top);
-  var node = view.node;
-  if (view.node.offsetParent is BodyElement)
-    ofs = ofs - browser.innerOffset;
-  return ofs;
 }
 List<int> _getLocators(String loc) {
   if (loc.isEmpty()) //assume a value if empty since there is an anchor
