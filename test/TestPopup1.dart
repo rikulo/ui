@@ -12,11 +12,10 @@ class Popup extends View {
   //@override
   void mount_() {
     super.mount_();
-
     broadcaster.on.popup.add(_fnClickOutside = (event) {
-        if (visible && inDocument && event.shallClose(this))
-          removeFromDocument();
-      });
+      if (event.shallClose(this))
+        removeFromDocument();
+    });
   }
   //@override
   void unmount_() {
