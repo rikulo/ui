@@ -85,7 +85,8 @@ void locateToView(View view, String location, [View anchor, int x=0, int y=0]) {
       identical(anchor, view.parent) ? new Offset(0, 0): //parent
       identical(anchor.parent, view.parent) ?
         new Offset(anchor.left, anchor.top): //sibling (the same coordiante system)
-        anchor.pageOffset - view.pageOffset; //neither parent nor sibling
+        anchor.pageOffset - _adjPageOffset(view); //neither parent nor sibling
+
     _anchorXLocators[locators[0]](offset.left, anchor, view);
     _anchorYLocators[locators[1]](offset.top, anchor, view);
   } else if (location == null || location.isEmpty()) {
@@ -96,6 +97,14 @@ void locateToView(View view, String location, [View anchor, int x=0, int y=0]) {
     _anchorXLocators[locators[0]](x, _anchorOfPoint, view);
     _anchorYLocators[locators[1]](y, _anchorOfPoint, view);
   }
+}
+//Adjusted page offset. It adjusted view.left/top and browser.innerOffsest.
+Offset _adjPageOffset(View view) {
+  var ofs = view.pageOffset - new Offset(view.left, view.top);
+  var node = view.node;
+  if (view.node.offsetParent is BodyElement)
+    ofs = ofs - browser.innerOffset;
+  return ofs;
 }
 List<int> _getLocators(String loc) {
   if (loc.isEmpty()) //assume a value if empty since there is an anchor
@@ -114,7 +123,7 @@ List<int> _getLocators(String loc) {
   }
   throw new UIException("Unknown loation ${loc}");
 }
-final Map<String, List<int>> _locators = const {
+const Map<String, List<int>> _locators = const {
   "north start": const [1, 0], "north center": const [2, 0], "north end": const [3, 0],
   "south start": const [1, 4], "south center": const [2, 4], "south end": const [3, 4],
   "west start": const [0, 1], "west center": const [0, 2], "west end": const [0, 3],

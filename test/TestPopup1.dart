@@ -20,29 +20,31 @@ void main() {
   btn.profile.location = "north start";
   view.addChild(btn);
 
-  View popup = new PopupView();
-  popup.profile.anchorView = btn;
-  popup.profile.location = "south start";
-  popup.width = 300;
-  popup.height = 200;
-  popup.style.backgroundColor = "yellow";
-  popup.visible = false;
-  view.addChild(popup);
+  View popup = new View()
+    ..width = 300
+    ..height = 200
+    ..classes.add("v-dialog")
+    ..style.backgroundColor = "yellow";
+  popup.profile..anchorView = btn
+    ..location = "south start";
+//  popup.visible = false;
+//  view.addChild(popup);
 
   btn.on.click.add((event) {
-    popup.visible = true;
+    popup.addToDocument(layout: true);
   });
 
   Button btn2 = new Button("Create Popup 1");
   btn2.profile.anchorView = btn;
   btn2.profile.location = "east start";
   btn2.on.click.add((event) {
-    final pp = new PopupView();
-    pp.width = 200;
-    pp.height = 150;
-    pp.style.backgroundColor = "orange";
-    pp.on.dismiss.add((e) {pp.removeFromParent();});
-    view.addChild(pp, popup);
+    final pp = new View()
+      ..width = 200
+      ..height = 150
+      ..style.backgroundColor = "orange";
+//    pp.on.dismiss.add((e) {pp.removeFromParent();});
+//    view.addChild(pp, popup);
+    pp.addToDocument(layout: false);
     pp.locateTo("south start", btn2);
   });
   view.addChild(btn2);

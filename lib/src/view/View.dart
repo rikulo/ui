@@ -16,16 +16,6 @@ typedef void AfterMount(View view);
  * A view occupies a rectangular area on the screen and the
  * interfaces for managing the content and event handling in the area.
  *
- * ##ID Space
- *
- * If a view implements [IdSpace], it and its descendants are considered
- * as a ID space. And, the topmost view is the owner.
- * The ID ([id]) of a view in the given ID space must be unique.
- * On the other hand, views in different ID spaces can have the same ID.
- *
- * Notice that if a view implements [IdSpace], it has to override
- * [getFellow] and [bindFellow_]. Please refer to [Section] for sample code.
- *
  * ##Events
  *
  * + `layout`: an instance of [LayoutEvent] indicates the layout of this view
@@ -41,6 +31,16 @@ typedef void AfterMount(View view);
  *
  * Default [classes]: "v-$className"
  * (note: "v-" is actually [viewConfig.classPrefix])
+ *
+ * ##ID Space
+ *
+ * If a view implements [IdSpace], it and its descendants are considered
+ * as a ID space. And, the topmost view is the owner.
+ * The ID ([id]) of a view in the given ID space must be unique.
+ * On the other hand, views in different ID spaces can have the same ID.
+ *
+ * Notice that if a view implements [IdSpace], it has to override
+ * [getFellow] and [bindFellow_]. Please refer to [Section] for sample code.
  *
  * ##See Also
  *
