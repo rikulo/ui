@@ -21,9 +21,9 @@ class LinearPathMotion extends EasingMotion {
    * behavior of LinearPathMotion.
    */
   LinearPathMotion(Element element, Offset origin, Offset destination, 
-    [EasingFunction easing, int period = 500, MotionStart start, 
+    {EasingFunction easing, int period: 500, MotionStart start, 
     bool move(MotionState state, Offset position, num x, void defaultAction()), 
-    MotionEnd end]) :
+    MotionEnd end}) :
     this.element = element, this.origin = origin, this.destination = destination, 
     _diff = destination - origin, _moveCB = move, 
     super(null, easing, period: period, start: start, end: end);

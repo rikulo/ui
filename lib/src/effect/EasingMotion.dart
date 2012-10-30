@@ -29,8 +29,8 @@ class EasingMotion extends Motion {
    * + [start] is invoked when the motion starts.
    * + [end] is invoked when the motion ends.
    */
-  EasingMotion(this.action, [EasingFunction easing, int period = 500, 
-    int repeat = 1, MotionStart start, MotionEnd end]) : 
+  EasingMotion(this.action, {EasingFunction easing, int period: 500, 
+    int repeat: 1, MotionStart start, MotionEnd end}) : 
     this.easing = easing, this.period = period, this.repeat = repeat, 
     duration = repeat * period, super(start, null, end);
   

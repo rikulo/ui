@@ -16,7 +16,7 @@ void logMsg(String msg) {
   mainView.addChild(new TextView(msg));
 }
 
-View apply(View v, [String id, List<String> cls]) {
+View apply(View v, {String id, List<String> cls}) {
   if (id != null)
     v.id = id;
   if (cls != null)

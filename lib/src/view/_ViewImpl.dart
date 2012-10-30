@@ -153,7 +153,7 @@ class _ViewImpl {
         if (tv != null)
           tv = ViewUtil.getView(tv);
         target.sendEvent(
-          new ViewEvent.dom(event, type: type, target: tv != null ? tv: target));
+          new ViewEvent.dom(event, type, tv != null ? tv: target));
       };
     };
   }

@@ -27,7 +27,7 @@ class MotionState {
   int _current, _elapsed, _paused, _pauseStart;
   var data;
   
-  MotionState(int current, int elapsed, [int start, int paused = 0]) : 
+  MotionState(int current, int elapsed, {int start, int paused: 0}) : 
     startTime = start != null ? start : current, 
     _current = current, _elapsed = elapsed, _paused = paused;
   

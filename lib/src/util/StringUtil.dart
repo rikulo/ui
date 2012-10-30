@@ -47,8 +47,8 @@ class StringUtil {
    * + [whitespace] specifies if it matches whitespace.
    * + [match] specifies a string of characters that are matched.
    */
-  static bool isChar(String cc, [bool digit=false, bool upper=false, bool lower=false,
-  bool whitespace=false, String match=null]) {
+  static bool isChar(String cc, {bool digit: false, bool upper: false, bool lower: false,
+  bool whitespace: false, String match: null}) {
     int v = cc.isEmpty() ? 0: cc.charCodeAt(0);
     return (digit && v >= _CC_0 && v <= _CC_9)
     || (upper && v >= _CC_A && v <= _CC_Z)
