@@ -59,13 +59,14 @@ class HideEffect extends EasingMotion {
   HideEffect(Element element, MotionAction action, {int period: 500, 
   EasingFunction easing, MotionStart start, MotionEnd end}) :
   this.element = element, 
-  super(action, start: start, end: _hideEffectEnd(element, end), 
+  super(action, start: start, end: _hideEffectEnd(element, action, end), 
   period: period, easing: easing);
   
   // dart2js bug: closure in intializer doesn't compile
-  static MotionEnd _hideEffectEnd(Element element, MotionEnd end) {
+  static MotionEnd _hideEffectEnd(Element element, MotionAction action, MotionEnd end) {
     return (MotionState state) {
       element.style.visibility = 'hidden';
+      action(0, state);
       if (end != null)
         end(state);
     };
