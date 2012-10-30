@@ -142,7 +142,7 @@ class _HLayout implements _RealLinearLayout {
           assigned += child.width = (view.innerWidth * amt.value).round().toInt();
           break;
         default:
-          final int wdapp = mctx.getWidthSetByApp(child);
+          final int wdapp = mctx.getWidthByApp(child);
           if (wdapp != null)
             assigned += wdapp;
           else {
@@ -321,7 +321,7 @@ class _VLayout implements _RealLinearLayout {
           assigned += child.height = (view.innerHeight * amt.value).round().toInt();
           break;
         default:
-          final int hghapp = mctx.getHeightSetByApp(child);
+          final int hghapp = mctx.getHeightByApp(child);
           if (hghapp != null)
             assigned += hghapp;
           else {
