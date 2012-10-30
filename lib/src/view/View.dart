@@ -82,14 +82,12 @@ class View {
    * It is useful if you'd like to encapsulate an element that is made of
    * [Shadow DOM](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html#shadow-dom-section).
    *
+   * If you'd like to create a view to representing a hierarchy of elements, you can
+   * use [View.html].
+   *
    * Notice that the view is positioned absolutely. It is different from
-   * the default behavior the most HTML elements. If you want to create a HTML fragment,
-   * you can use [TextView.fromHTML] instead, since it is much simpler.
-   *
-   *     new TextView.fromHTML('''
-   *       <table cellapding="10" border="1"><tr><td>Cell 1.1</td></tr></table>
-   *       ''');
-   *
+   * the default behavior the most HTML elements.
+
    * + [tag] specifies the HTML tag name, such as `section` and `article`.
    * + [attributes] specifies a map of attributes to be assigned.
    * The value will be converted to a string. If null, an empty string is assumed.  
@@ -107,6 +105,22 @@ class View {
   factory View.tag(String tag, [Map<String,dynamic> attributes,
     String innerHTML, bool isViewGroup=true])
   => new _TagView(tag, attributes, innerHTML, isViewGroup);
+  /** Instantiates a view to representing a hierarchy of elements specified
+   * in the given HTML fragment. For example,
+   *
+   *     new View.html('<table cellapding="10" border="1"><tr><td>Cell 1.1</td></tr></table>');
+   *
+   * In the above example, [node] will, after instantiated, be the TABLE element.
+   *
+   * Notice that it is different from [TextView.fromHTML]. [TextView.fromHTML]
+   * creates an instance of [TextView] and the heirarchy of the HTML fragment
+   * will become a child of [node]. For example, the UL element in the following example
+   * will be a child of [node]:
+   *
+   *     new TextView.fromHTML("<ul><li>First item</li><li>Second item</li></ul>");
+   */
+  factory View.html(String html)
+  => new _HTMLView(html);
 
   /** Returns the Dart class name.
    * The subclass shall override it.

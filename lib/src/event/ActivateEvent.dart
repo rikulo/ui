@@ -5,8 +5,10 @@
 /**
  * An event to indicate activation.
  * It is a broadcast event used to notify root views and any listeners
- * that a view or an element is *activated*. By activated it usually mean
- * the user is clicking on a view or an element (it is done automatically).
+ * that a view or an element is *activated*. By activated it means the view
+ * or the element will become the *focal point* for users to interact with.
+ * For example, it happens when the user clicks on a view or an element
+ * (it is done automatically).
  * If the application wants to bring some view to the top, it can broadcast
  * this event too.
  *

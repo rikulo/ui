@@ -25,6 +25,12 @@ class _TagView extends View {
 
   bool get isViewGroup => _vgroup;
 }
+class _HTMLView extends View {
+  _HTMLView(String html) {
+    node = new Element.html(html);
+  }
+  bool get isViewGroup => false;
+}
 
 /** Collection of utilities for View's implementation
  */
