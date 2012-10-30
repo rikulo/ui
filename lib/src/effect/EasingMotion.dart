@@ -32,12 +32,12 @@ class EasingMotion extends Motion {
   EasingMotion(this.action, {EasingFunction easing, int period: 500, 
     int repeat: 1, MotionStart start, MotionEnd end}) : 
     this.easing = easing, this.period = period, this.repeat = repeat, 
-    duration = repeat * period, super(start, null, end);
+    duration = repeat * period, super(start: start, end: end);
   
   /** Construct an EasingMotion by joining multiple EasingMotion.
    */
-  EasingMotion.join(List<EasingMotion> motions, [EasingFunction easing, 
-  int period = 500, int repeat = 1, MotionStart start, MotionEnd end]) :
+  EasingMotion.join(List<EasingMotion> motions, {EasingFunction easing, 
+  int period: 500, int repeat: 1, MotionStart start, MotionEnd end}) :
   this(_jointAction(motions), easing: easing, period: period, repeat: repeat,
   start: _jointStart(motions, start), end: _jointEnd(motions, end));
   

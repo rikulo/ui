@@ -19,8 +19,8 @@ class ShakeEffect extends EasingMotion {
    * + [start]: Called when the effect starts.
    * + [end]: Called when the effect ends.
    */
-  ShakeEffect(Element element, [int period = 500, int repeat = 1, num rotation = 10,
-  MotionStart start, MotionEnd end]) : 
+  ShakeEffect(Element element, {int period: 500, int repeat: 1, num rotation: 10,
+  MotionStart start, MotionEnd end}) : 
   this.element = element, 
   super(createAction(element, rotation), start: (MotionState state) {
     if (start != null)

@@ -21,8 +21,8 @@ class BuzzEffect extends EasingMotion {
    * + [start]: Called when the effect starts.
    * + [end]: Called when the effect ends.
    */
-  BuzzEffect(Element element, [int period = 500, num movement = 3, num rotation = 3, 
-  MotionStart start, MotionEnd end]) : 
+  BuzzEffect(Element element, {int period: 500, num movement: 3, num rotation: 3, 
+  MotionStart start, MotionEnd end}) : 
   this.element = element, 
   super(createAction(element, movement, rotation), start: (MotionState state) {
     if (start != null)

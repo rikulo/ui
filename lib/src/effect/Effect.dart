@@ -20,8 +20,8 @@ class ShowEffect extends EasingMotion {
    * + [start] is called when the effect starts.
    * + [end] is called when the effect ends.
    */
-  ShowEffect(Element element, MotionAction action, [int period = 500, 
-  EasingFunction easing, MotionStart start, MotionEnd end]) :
+  ShowEffect(Element element, MotionAction action, {int period: 500, 
+  EasingFunction easing, MotionStart start, MotionEnd end}) :
   this.element = element, 
   super(action, start: _showEffectStart(element, action, start), end: end, 
   period: period, easing: easing);
@@ -56,8 +56,8 @@ class HideEffect extends EasingMotion {
    * + [start] is called when the effect starts.
    * + [end] is called when the effect ends.
    */
-  HideEffect(Element element, MotionAction action, [int period = 500, 
-  EasingFunction easing, MotionStart start, MotionEnd end]) :
+  HideEffect(Element element, MotionAction action, {int period: 500, 
+  EasingFunction easing, MotionStart start, MotionEnd end}) :
   this.element = element, 
   super(action, start: start, end: _hideEffectEnd(element, end), 
   period: period, easing: easing);
@@ -79,9 +79,8 @@ class FadeInEffect extends ShowEffect {
   
   /** Create a fade-in effect on the [element].
    */
-  FadeInEffect(Element element, [int period = 500, EasingFunction easing,
-  num minOpacity = 0, num maxOpacity = 1, 
-  MotionStart start, MotionEnd end]) :
+  FadeInEffect(Element element, {int period: 500, EasingFunction easing,
+  num minOpacity: 0, num maxOpacity: 1, MotionStart start, MotionEnd end}) :
   super(element, createAction(element, minOpacity, maxOpacity), 
   start: start, end: end, period: period, easing: easing);
   
@@ -102,9 +101,8 @@ class FadeOutEffect extends HideEffect {
   
   /** Create a fade-out effect on the [element].
    */
-  FadeOutEffect(Element element, [int period = 500, EasingFunction easing, 
-  num minOpacity = 0, num maxOpacity = 1, 
-  MotionStart start, MotionEnd end]) : 
+  FadeOutEffect(Element element, {int period: 500, EasingFunction easing, 
+  num minOpacity: 0, num maxOpacity: 1, MotionStart start, MotionEnd end}) : 
   super(element, createAction(element, minOpacity, maxOpacity), 
   start: start, end: end, period: period, easing: easing);
   
@@ -125,8 +123,8 @@ class ZoomInEffect extends ShowEffect {
   
   /** Create a zoom-in effect on the [element].
    */
-  ZoomInEffect(Element element, [int period = 500, EasingFunction easing, 
-  bool fade = true, MotionStart start, MotionEnd end]) : 
+  ZoomInEffect(Element element, {int period: 500, EasingFunction easing, 
+  bool fade: true, MotionStart start, MotionEnd end}) : 
   super(element, createAction(element, fade), 
   start: start, end: end, period: period, easing: easing);
   
@@ -149,8 +147,8 @@ class ZoomOutEffect extends HideEffect {
   
   /** Create a zoom-out effect on the [element].
    */
-  ZoomOutEffect(Element element, [int period = 500, EasingFunction easing, 
-  bool fade = true, MotionStart start, MotionEnd end]) : 
+  ZoomOutEffect(Element element, {int period: 500, EasingFunction easing, 
+  bool fade: true, MotionStart start, MotionEnd end}) : 
   super(element, createAction(element, fade), 
   start: start, end: end, period: period, easing: easing);
   
