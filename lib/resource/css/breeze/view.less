@@ -160,6 +160,42 @@ body.rikulo {
   }
 }
 
+@panel-border-radius: 5px;
+@header-btn-border-radius: 3px;
+
+.v-Panel {
+  border-radius: @panel-border-radius;
+  border: 1px solid #888; // grouping border
+  
+  > .v-header {
+    height: 14px;
+    line-height: 14px;
+    padding: 5px;
+    border-radius: @panel-border-radius @panel-border-radius 0 0;
+    border-bottom: 1px solid #888; // grouping border
+    .background-gradient2(#FFF, #EEE); // header bg
+    font-weight: bold;
+    color: #333;
+    
+    > .v-btn {
+      .box-sizing(border-box);
+      float: right;
+      margin-left: 3px;
+      height: 14px;
+      width: 14px;
+      border-radius: @header-btn-border-radius;
+      border: 1px solid #888; // temp
+    }
+    
+  }
+  
+  > .v-inner {
+  	position: relative;
+  	border-radius: 0 0 @panel-border-radius @panel-border-radius;
+  }
+  
+}
+
 .v-popup {
   border-radius: 3px;
   border: 1px solid #886;
