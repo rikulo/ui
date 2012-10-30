@@ -101,9 +101,13 @@ void main() {
   
   w1.on.click.add((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
+      final String n1z = n1.style.zIndex;
       new FadeInEffect(n2, start: (MotionState state) {
         n1.style.zIndex = "-1";
-      }, end: (MotionState state) => end()).run();
+      }, end: (MotionState state) {
+        end();
+        n1.style.zIndex = n1z;
+      }).run();
     });
   });
   
