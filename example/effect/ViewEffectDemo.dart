@@ -96,7 +96,7 @@ void main() {
       return;
     mv1 = true;
     new FadeOutEffect(v1.node, end: (MotionState state) {
-      v1.removeFromParent();
+      v1.remove();
       mv1 = false;
     }).run();
   });
@@ -121,7 +121,7 @@ void main() {
       return;
     mv2 = true;
     new ZoomOutEffect(v2.node, end: (MotionState state) {
-      v2.removeFromParent();
+      v2.remove();
       mv2 = false;
     }).run();
   });
@@ -156,7 +156,7 @@ void main() {
       return;
     mv3 = true;
     new SlideOutEffect(v3.node, direction: _dir, end: (MotionState state) {
-      v3.removeFromParent();
+      v3.remove();
       mv3 = false;
     }).run();
   });
@@ -170,7 +170,7 @@ void main() {
   });
   
   v4.on.click.add((ViewEvent event) {
-    v4.removeFromParent();
+    v4.remove();
   });
   
 }

@@ -43,7 +43,7 @@ void main() {
     } else {
       btn.disabled = true;
       new ZoomOutEffect(v2.node, end: (MotionState state) {
-        v2.removeFromParent();
+        v2.remove();
         vlayout.requestLayout(true);
         btn.text = "Insert";
         btn.disabled = false;

@@ -113,7 +113,7 @@ class SnakeCanvas {
     dlg.profile.text = "location: center center; width: 30%; min-height: 60; min-width: 200";
     dlg.classes.add("v-dialog");
     dlg.on.click.add((e) {
-      dlg.removeFromDocument();
+      dlg.remove();
       
       //reset the canvas
       ctx2d.save();

@@ -33,7 +33,7 @@ class Viewport extends View {
   View get toolbar => _toolbar;
   void set toolbar(View tbar) {
     if (_toolbar != null)
-      _toolbar.removeFromParent();
+      _toolbar.remove();
 
     _toolbar = tbar;
 

@@ -14,7 +14,7 @@ typedef void SwitchViewEffect(Element n1, Element n2, void end());
 void replace(View vo, View vn, SwitchViewEffect effect) {
   if (effect == null) {
     final Element p = vo.node.parent;
-    vo.removeFromDocument();
+    vo.remove();
     vn.addToDocument(ref: p);
     
   } else {
@@ -22,7 +22,7 @@ void replace(View vo, View vn, SwitchViewEffect effect) {
     vn.addToDocument(ref: vo.node.parent);
     vn.requestLayout(true);
     effect(vo.node, vn.node, () {
-      vo.removeFromDocument();
+      vo.remove();
       vn.style.visibility = vo.style.visibility = "";
     });
     

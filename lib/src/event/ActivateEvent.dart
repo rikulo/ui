@@ -19,7 +19,7 @@
  *      Popup() {
  *        on.activate.add((event) {
  *          if (event.shallClose(this))
- *            removeFromDocument();
+ *            remove();
  *        });
  *      }
  *    }

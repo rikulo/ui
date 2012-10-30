@@ -10,7 +10,7 @@ void main() {
     dlg.classes.add("v-dialog");
     dlg.addToDocument(mode: "dialog");
     dlg.on.click.add((e) {
-      dlg.removeFromDocument();
+      dlg.remove();
     });
   });
   new View()..addChild(welcome)..addToDocument();

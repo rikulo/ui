@@ -6,6 +6,7 @@
 
 * PopupView is removed. It can be implemented easily. Please refer to TestPopup1.dart.
 * PopupEvent is renamed to ActivateEvent for broader meaning.
+* View.remvoeFromDocument and removeFromParent are removed and replaced with remove.
 
 **October 26, 2012**
 

@@ -319,6 +319,8 @@ class View {
    *
    * If this view is attached to the document, this method will attach the child
    * to the document.
+   *
+   * To remove a child from its parent, you can invoke [remove] (`child.remove()`).
    */
   void addChild(View child, [View beforeChild]) {
     if (isDescendantOf(child))
@@ -338,6 +340,9 @@ class View {
     if (!parentChanged && identical(beforeChild, child.nextSibling))
       return; //nothing to change
 
+    if (oldParent == null && child.inDocument) //child.addToDocument was called
+      child._removeFromDocument();
+
     if (parentChanged)
       child.beforeParentChanged_(this);
     if (oldParent != null)
@@ -355,17 +360,17 @@ class View {
       child.onParentChanged_(oldParent);
   }
 
-  /** Removes this view from its parent.
+  /** Removes this view from its parent and, if attached, from the document.
    *
-   * If this view has no parent, [UIException] will be thrown.
-   *
-   * > If you add a root view to the document with [addToDocument],
-   * you shall invoke [removeFromDocument] to remove it instead.
+   * If it has a parent, it will be detached from the parent.
+   * If it is attached (i.e., `inDocument`), it will be removed from document.
+   * If neither, nothing happens.
    */
-  void removeFromParent() {
-    if (parent == null)
-      throw new UIException("Unable to remove a root view, $this");
-    parent._removeChild(this);
+  void remove() {
+    if (parent != null)
+      parent._removeChild(this);
+    else if (inDocument)
+      _removeFromDocument();
   }
   void _removeChild(View child, [bool notifyChild=true]) {
     if (!identical(child.parent, this))
@@ -403,7 +408,9 @@ class View {
     }
   }
   /** Removes the corresponding DOM elements of the give child.
-   * It is called by [removeFromParent] to remove the DOM elements.
+   * It is a callback of [remove]: if `child.remove()` is called, then
+   * `child.parent.removeChildNode_(child)` will be called implicitly
+   * to remove the DOM elements from its parent's hierarchy of elements.
    *
    * Deriving classes might override this method if it encloses some special
    * element around the child.node (in [addChildNode_]) (such that the special
@@ -500,10 +507,13 @@ class View {
    * On the other hand, the child views are added to the document automatically
    * once the root has been attached.
    *
+   * If this view is a child of another view, [remove] will be called implicity
+   * to detach it first.
+   *
    * To notify the views, [mount_] will be called against this view and all
    * of its descendants.
    *
-   * > [UIException] is thrown if this view is not a root view (i.e., it has a parent).
+   * To remove it from document, you can invoke [remove].
    *
    * + [ref] specifies the DOM element to add this view. If not specified,
    * it will look for an element whose id is "v-main". If not found,
@@ -525,8 +535,7 @@ class View {
    * If false, [requestLayout] won't be called at all.
    */
   void addToDocument({Element ref, String mode, bool layout}) {
-    if (parent != null || inDocument)
-      throw new UIException("No parent allowed, nor attached twice: $this");
+    remove();
 
     _ViewImpl.init();
 
@@ -577,22 +586,9 @@ class View {
       //immediate: better feedback (and avoid ghost, i.e., showed at original place)
   }
   /** Removes this view from the document.
-   * All of its descendant views are removed too.
-   *
-   * You rarely need to invoke this method directly. This method is used to undo
-   * the attachment made by [addToDocument].
-   * Like [addToDocument], this method can be called only if this view has no parent.
-   *
-   * > If you add a child by [addChild], you shall invoke [removeFromParent] instead.
-   *
-   * To notify the views, [unmount_] will be called against this view and all
-   * of its descendants.
+   * Notice: this method can be called only if parent is null and inDocument
    */
-  void removeFromDocument() {
-    if (parent != null || !inDocument)
-      throw new UIException("No parent allowed, nor detached twice: $this");
-
-    final Element n = node; //store first since _node will be cleared up later
+  void _removeFromDocument() {
     _unmount();
     classes.removeAll(_rootClasses);
     ListUtil.remove(rootViews, this);
@@ -601,7 +597,7 @@ class View {
     if (dlgInfo != null)
       ViewUtil._views.remove(dlgInfo.cave..remove());
     else
-      n.remove();
+      node.remove();
   }
   /** Binds the view.
    */
