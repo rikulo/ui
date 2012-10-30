@@ -27,7 +27,7 @@ interface Disables<T> {
   /**
    * Returns true if the list of the disabled objects is currently empty.
    */
-  bool isDisablesEmpty();
+  bool get isDisablesEmpty;
 
   /**
    * Add the specified object into the current list of disabled objects.

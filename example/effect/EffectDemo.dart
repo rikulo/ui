@@ -30,7 +30,7 @@ void main() {
   
   final Motion buzz = new BuzzEffect(v.node);
   v.on.click.add((ViewEvent event) {
-    if (!buzz.isRunning())
+    if (!buzz.isRunning)
       buzz.run();
   });
   
@@ -40,7 +40,7 @@ void main() {
   //final Color c = const HSVColor(210, 50, 100).rgb();
   final Motion glow = new GlowEffect(v.node, tempo: n);
   v.on.click.add((ViewEvent event) {
-    if (!glow.isRunning())
+    if (!glow.isRunning)
       glow.run();
   });
   
@@ -48,7 +48,7 @@ void main() {
   
   final Motion shake = new ShakeEffect(v.node);
   v.on.click.add((ViewEvent event) {
-    if (!shake.isRunning())
+    if (!shake.isRunning)
       shake.run();
   });
   

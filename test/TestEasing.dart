@@ -82,7 +82,6 @@ void main() {
   
   for (int i = 0; i < 3; i++) {
     cubes[i].on.click.add((ViewEvent event) {
-      if (motions[i] != null && motions[i].isRunning())
         return;
       green(cubes[i]);
       motions[i] = new EasingMotion(_action(cubes[i].node, centers[i]), 

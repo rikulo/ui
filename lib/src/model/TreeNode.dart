@@ -38,7 +38,7 @@ interface TreeNode<T> default DefaultTreeNode<T> {
 
   /** Returns true if this node is a leaf.
    */
-  bool isLeaf();
+  bool get isLeaf;
 
   /**
    * Returns the child ([TreeNode]) at the given index.

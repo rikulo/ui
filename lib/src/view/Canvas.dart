@@ -40,7 +40,7 @@ class Canvas extends View {
   /** Returns false to indicate this view doesn't allow any child views.
    */
   //@override
-  bool isViewGroup() => false;
+  bool get isViewGroup => false;
   //@override
-  bool shallMeasureByContent() => false;
+  bool get isMeasuredByContent => false;
 }

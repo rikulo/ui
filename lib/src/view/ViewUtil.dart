@@ -46,7 +46,7 @@ interface Declaration default DeclarationImpl {
   /** Returns a collection of properties that are assigned with
    * a non-empty value.
    */
-  Collection<String> getPropertyNames();
+  Collection<String> get propertyNames;
   /** Retrieves the property's value.
    */
   String getPropertyValue(String propertyName);

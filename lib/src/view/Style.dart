@@ -107,7 +107,7 @@ class Style extends View {
   /** Returns false to indicate this view doesn't allow any child views.
    */
   //@override
-  bool isViewGroup() => false;
+  bool get isViewGroup => false;
   //@override
   String toString() => "$className($src)";
 }

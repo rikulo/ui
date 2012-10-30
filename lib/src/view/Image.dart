@@ -33,7 +33,7 @@ class Image extends View {
   /** Returns false to indicate this view doesn't allow any child views.
    */
   //@override
-  bool isViewGroup() => false;
+  bool get isViewGroup => false;
 
   int measureWidth_(MeasureContext mctx)
   => mctx.measureWidthByContent(this, false); //no need to autowidth

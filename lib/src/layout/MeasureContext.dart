@@ -62,9 +62,9 @@ class MeasureContext {
     String v = view.profile.getPropertyValue(name);
     if (v.isEmpty) {
       if (view.parent != null
-      && layoutManager.getLayoutOfView(view.parent).isProfileInherited())
+      && layoutManager.getLayoutOfView(view.parent).isProfileInherited)
         v = view.parent.layout.getPropertyValue(name);
-      if (v.isEmpty && layoutManager.getLayoutOfView(view).isFlex())
+      if (v.isEmpty && layoutManager.getLayoutOfView(view).isFlex)
         v = "flex";
     }
     return v;
@@ -96,7 +96,7 @@ class MeasureContext {
           if (getWidthByApp(view) == null) {
             //if view is root and a view group, we use flex
             int wd;
-            if (view.parent == null && !view.shallMeasureByContent()
+            if (view.parent == null && !view.isMeasuredByContent
             && (wd = width()) > 0)
               _flexWd(view, wd); //FLEX
             else
@@ -132,7 +132,7 @@ class MeasureContext {
           if (getHeightByApp(view) == null) {
             //if view is root and a view group, we use flex
             int hgh;
-            if (view.parent == null && !view.shallMeasureByContent()
+            if (view.parent == null && !view.isMeasuredByContent
             && (hgh = height()) > 0)
               _flexHgh(view, hgh); //FLEX
             else

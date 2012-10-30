@@ -28,7 +28,7 @@ fi
 if [ ! -d $cssdir/lib/resource/css ] ; then
 	echo $cssdir/lib/resource/css not found
 fi
-for f in $cssdir/lib/resource/css/*.less; do
+for f in $cssdir/lib/resource/css/*/*.less; do
 	echo Compile $f
 	dstfl=${f%.less}.css
 	java -jar $jarfl $f ${dstfl}.tmp

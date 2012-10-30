@@ -31,7 +31,7 @@ interface Selection<T> {
   /**
    * Returns true if the selection is currently empty.
    */
-  bool isSelectionEmpty();
+  bool get isSelectionEmpty;
   /**
    * Add the specified object into selection.
    * It returns whether it has been added successfully.

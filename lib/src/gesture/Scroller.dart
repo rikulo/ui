@@ -64,7 +64,7 @@ interface Scroller default _Scroller {
   
   /** Return true if it is currently scrolling.
    */
-  bool isScrolling();
+  bool get isScrolling;
   
   /** Return the current scroll position.
    */
@@ -410,7 +410,7 @@ class _Scroller implements Scroller {
   bool get _ver => _state != null ? _state._ver : _hasVer;
   
   // query //
-  bool isScrolling() => _state != null;
+  bool get isScrolling => _state != null;
   
   Offset get scrollPosition => 
       _state != null ? _state.position : (new DOMAgent(owner).offset * -1);

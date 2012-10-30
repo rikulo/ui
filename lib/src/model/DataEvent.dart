@@ -33,7 +33,7 @@ interface DataEventListenerList default _DataEventListenerList {
   bool dispatch(DataEvent event);
   /** Tests if any event listener is registered.
    */
-  bool isEmpty();
+  bool get isEmpty;
 }
 /** A map of [DataEvent] listeners.
  * It is a skeletal interface for any object that handles events,
@@ -134,12 +134,8 @@ class _DataEventListenerList implements DataEventListenerList {
     _ptr.removeEventListener(_type, handler);
     return this;
   }
-  bool dispatch(DataEvent event) {
-    return _ptr.sendEvent(event, type: _type);
-  }
-  bool isEmpty() {
-    return _ptr.isEventListened(_type);
-  }
+  bool dispatch(DataEvent event) => _ptr.sendEvent(event, type: _type);
+  bool get isEmpty => _ptr.isEventListened(_type);
 }
 /** An implementation of [DataEventListenerMap].
  */
@@ -158,7 +154,7 @@ class _DataEventListenerMap implements DataEventListenerMap {
 
   bool isListened(String type) {
     final p = _lnlist[type];
-    return p == null || p.isEmpty();
+    return p == null || p.isEmpty;
   }
 }
 
