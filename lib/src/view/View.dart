@@ -77,7 +77,7 @@ class View {
    * For example,
    *
    *     new View.tag("section");
-   *     new View.tag("header", {"conteneditable": true});
+   *     new View.tag("header", {"id": "foo", "conteneditable": true});
    *
    * It is useful if you'd like to encapsulate an element that is made of
    * [Shadow DOM](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html#shadow-dom-section).
@@ -108,7 +108,8 @@ class View {
   /** Instantiates a view to representing a hierarchy of elements specified
    * in the given HTML fragment. For example,
    *
-   *     new View.html('<table cellapding="10" border="1"><tr><td>Cell 1.1</td></tr></table>');
+   *     new View.html(
+   *      '<table cellapding="10" border="1"><tr><td>Cell 1.1</td></tr></table>');
    *
    * In the above example, [node] will, after instantiated, be the TABLE element.
    *
@@ -117,7 +118,8 @@ class View {
    * will become a child of [node]. For example, the UL element in the following example
    * will be a child of [node]:
    *
-   *     new TextView.fromHTML("<ul><li>First item</li><li>Second item</li></ul>");
+   *     new TextView.fromHTML(
+   *      "<ul><li>First item</li><li>Second item</li></ul>");
    */
   factory View.html(String html)
   => new _HTMLView(html);
