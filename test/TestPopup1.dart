@@ -1,26 +1,15 @@
 //Sample Code: Test Log
 
 import 'package:rikulo/view.dart';
-import 'package:rikulo/event.dart';
 
 class Popup extends View {
-  ViewEventListener _fnClickOutside;
-
   Popup() {
     classes.add("v-popup");
-  }
-  //@override
-  void mount_() {
-    super.mount_();
-    broadcaster.on.popup.add(_fnClickOutside = (event) {
+
+    on.activate.add((event) {
       if (event.shallClose(this))
         removeFromDocument();
     });
-  }
-  //@override
-  void unmount_() {
-    broadcaster.on.popup.remove(_fnClickOutside);
-    super.unmount_();
   }
 }
 void main() {

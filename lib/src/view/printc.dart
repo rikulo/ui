@@ -139,7 +139,7 @@ class _PrintcPopup {
     _node.elements[3].on.click.add((e) {_owner.close();});
 
     _owner._node.elements.add(_node);
-    broadcaster.on.popup.add(_onPopup());
+    broadcaster.on.activate.add(_onPopup());
   }
   void _size(String width, String height) {
     final CSSStyleDeclaration style = _owner._node.style;
@@ -148,14 +148,14 @@ class _PrintcPopup {
     close();
   }
   void close() {
-    broadcaster.on.popup.remove(_onPopup());
+    broadcaster.on.activate.remove(_onPopup());
     _node.remove();
     _node = null;
     _owner._popup = null;
   }
   ViewEventListener _onPopup() {
     if (_elPopup == null)
-      _elPopup = (PopupEvent event) {
+      _elPopup = (event) {
         if (_node != null && event.shallClose(_node))
           close();
       };

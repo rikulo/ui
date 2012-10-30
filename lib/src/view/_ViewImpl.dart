@@ -71,7 +71,7 @@ class _ViewImpl {
   static EventListener get _onTouchStart {
     if (_$onTouchStart == null)
       _$onTouchStart = (event) { //DOM event
-        broadcaster.sendEvent(new PopupEvent(event.target));
+        broadcaster.sendEvent(new ActivateEvent(event.target));
       };
     return _$onTouchStart;
   }
@@ -165,7 +165,9 @@ class _ViewImpl {
         if (tv != null)
           tv = ViewUtil.getView(tv);
         target.sendEvent(
-          new ChangeEvent(tv != null ? tv.value: dt.value));
+          new ChangeEvent(tv != null ? tv.value:
+            dt is InputElement && (dt.type == 'checkbox' || dt.type == 'radio') ?
+              dt.checked: dt.value));
             //assumes tv has a property called value (at least, dt has a value)
       };
     };

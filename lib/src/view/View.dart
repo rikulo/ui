@@ -1021,6 +1021,10 @@ class View {
    * If the type parameter is not specified, it is assumed to be [ViewEvent.type].
    *
    * To broadcast an event, please use [broadcaster] instead.
+   * Also notice that the broadcasted event will be sent to every root view
+   * if it is `inDocument`.
+   *
+   * + returns true if it has been dispatched to one of the registered listeners.
    */
   bool sendEvent(ViewEvent event, [String type]) {
     if (event.target == null)
