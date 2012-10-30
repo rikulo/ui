@@ -22,13 +22,13 @@ class ViewIterator implements Iterator<View> {
   }
   
   View next() {
-    if (!hasNext()) 
-      throw new NoMoreElementsException();
+    if (!hasNext) 
+      throw new StateError("No more elements");
     _ready = false;
     return _next;
   }
   
-  bool hasNext() {
+  bool get hasNext {
     _loadNext();
     return _next != null;
   }
@@ -250,7 +250,7 @@ class ViewIterator implements Iterator<View> {
         strs = new List<String>();
         for (SimpleSelectorSequence seq in selector.seqs) {
           String id = seq.id;
-          if (id != null && !id.isEmpty()) {
+          if (id != null && !id.isEmpty) {
             strs.add(seq.toString());
             strs.add(seq.printCombinator());
           } else
@@ -261,7 +261,7 @@ class ViewIterator implements Iterator<View> {
         int i = 0;
         for (SimpleSelectorSequence seq in selector.seqs) {
           String id = seq.id;
-          if (i >= max || id == null || id.isEmpty() || 
+          if (i >= max || id == null || id.isEmpty || 
               strs[i++] != seq.toString() || 
               strs[i++] != seq.printCombinator())
             break;

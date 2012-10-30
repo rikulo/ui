@@ -75,7 +75,7 @@ implements TreeSelectionModel<T> {
   }
 
   bool isOpened(T node) => _opens.contains(node);
-  bool isOpensEmpty() => _opens.isEmpty();
+  bool isOpensEmpty() => _opens.isEmpty;
 
   bool addToOpens(T node) {
     if (_opens.contains(node))
@@ -93,7 +93,7 @@ implements TreeSelectionModel<T> {
     return false;
   }
   void clearOpens() {
-    if (!_opens.isEmpty()) {
+    if (!_opens.isEmpty) {
       _opens.clear();
       _sendOpen();
     }
@@ -102,7 +102,7 @@ implements TreeSelectionModel<T> {
   //Additional API//
   /**Removes the given collection from the list of opened nodes.
    */
-  void removeAllOpens(Collection<Dynamic> c) {
+  void removeAllOpens(Collection<dynamic> c) {
     final int oldlen = _opens.length;
     _opens.removeAll(c);
     if (oldlen != _opens.length)

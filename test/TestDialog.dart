@@ -14,7 +14,7 @@ void main() {
     dlg.profile.text = "width:30%;height:20%";
     dlg.classes.add("v-dialog");
     dlg.on.click.add((e) {
-      dlg.removeFromDocument();
+      dlg.remove();
     });
     dlg.addToDocument(mode: "dialog");
   });

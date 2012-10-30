@@ -97,7 +97,7 @@ LayoutAmountInfo _getLayoutAmountInfo(View view, String value) {
  */
 class FreeLayout extends AbstractLayout {
   int measureWidth(MeasureContext mctx, View view) {
-    int wd = mctx.getWidthSetByApp(view);
+    int wd = mctx.getWidthByApp(view);
     if (wd == null) {
       wd = view.innerWidth;
       for (final View child in view.children) {
@@ -115,7 +115,7 @@ class FreeLayout extends AbstractLayout {
     return wd;
   }
   int measureHeight(MeasureContext mctx, View view) {
-    int hgh = mctx.getHeightSetByApp(view);
+    int hgh = mctx.getHeightByApp(view);
     if (hgh == null) {
       hgh = view.innerHeight;
       for (final View child in view.children) {
@@ -159,18 +159,26 @@ void rootLayout(MeasureContext mctx, View root) {
   mctx.setHeightByProfile(root,
     () => anchor != null ? _anchorHeight(anchor, root): size.height);
 
-  final ref = anchor != null ? anchor:
-    cave != null ? new _AnchorOfNode(cave): _anchorOfRoot;
-  final ofs = anchor != null ?
-    cave != anchor.parent ?
-      anchor.pageOffset - root.pageOffset + new Offset(root.left, root.top):
-      new Offset(anchor.left, anchor.top):
-    cave != null && node.offsetParent != node.parent ? //if parent is relative/absolute/fixed
-        new DOMAgent(cave).offset: new Offset(0,0);
+  final loc = root.profile.location,
+  	leftByApp = loc.isEmpty && mctx.getLeftByApp(root) != null,
+    topByApp = loc.isEmpty && mctx.getTopByApp(root) != null;
+    //if !loc.isEmpty, the layout is still required (since it is related to cave)
+  if (!leftByApp || !topByApp) {
+    final ref = anchor != null ? anchor:
+      cave != null ? new _AnchorOfNode(cave): _anchorOfRoot;
+    final ofs = anchor != null ?
+      cave != anchor.parent ?
+        anchor.pageOffset - root.pageOffset + new Offset(root.left, root.top):
+        new Offset(anchor.left, anchor.top):
+      cave != null && node.offsetParent != node.parent ? //if parent is relative/absolute/fixed
+          new DOMAgent(cave).offset: new Offset(0,0);
 
-  final locators = _getLocators(root.profile.location);
-  _anchorXLocators[locators[0]](ofs.left, ref, root);
-  _anchorYLocators[locators[1]](ofs.top, ref, root);
+    final locators = _getLocators(loc);
+    if (!leftByApp)
+      _anchorXLocators[locators[0]](ofs.left, ref, root);
+    if (!topByApp)
+      _anchorYLocators[locators[1]](ofs.top, ref, root);
+  }
 }
 //Used by _locateRoot to simulate an achor for root views
 class _AnchorOfRoot { //mimic View API

@@ -47,7 +47,7 @@ implements Selection<T>, Disables<T> {
   //@override
   bool isSelected(Object obj)  => _selection.contains(obj);
   //@override
-  bool isSelectionEmpty() => _selection.isEmpty();
+  bool isSelectionEmpty() => _selection.isEmpty;
 
   //@override
   bool addToSelection(T obj) {
@@ -70,7 +70,7 @@ implements Selection<T>, Disables<T> {
   }
   //@override
   void clearSelection() {
-    if (!_selection.isEmpty()) {
+    if (!_selection.isEmpty) {
       _selection.clear();
       _sendSelect();
     }
@@ -103,7 +103,7 @@ implements Selection<T>, Disables<T> {
     }
   }
   bool isDisabled(Object obj)  => _disables.contains(obj);
-  bool isDisablesEmpty() => _disables.isEmpty();
+  bool isDisablesEmpty() => _disables.isEmpty;
   bool addToDisables(T obj) {
     if (_disables.contains(obj))
       return false;
@@ -120,7 +120,7 @@ implements Selection<T>, Disables<T> {
     return false;
   }
   void clearDisables() {
-    if (!_disables.isEmpty()) {
+    if (!_disables.isEmpty) {
       _disables.clear();
       _sendDisable();
     }
@@ -129,7 +129,7 @@ implements Selection<T>, Disables<T> {
   //Additional API//
   /**Removes the given collection from the selection.
    */
-  void removeAllSelection(Collection<Dynamic> c) {
+  void removeAllSelection(Collection<dynamic> c) {
     final int oldlen = _selection.length;
     _selection.removeAll(c);
     if (oldlen != _selection.length)
@@ -137,7 +137,7 @@ implements Selection<T>, Disables<T> {
   }
   /**Removes the given collection from the list of disabled object.
    */
-  void removeAllDisables(Collection<Dynamic> c) {
+  void removeAllDisables(Collection<dynamic> c) {
     final int oldlen = _disables.length;
     _disables.removeAll(c);
     if (oldlen != _disables.length)

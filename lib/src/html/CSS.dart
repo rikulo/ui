@@ -40,7 +40,7 @@ class CSS {
    * If it is 2-tuples, [Offset3d.z] will be zero.
    */
   static Offset3d offset3dOf(String value) {
-    if (value == null || value.isEmpty())
+    if (value == null || value.isEmpty)
       return new Offset3d(0, 0, 0);
 
     final List<int> ary = [0, 0, 0];
@@ -62,7 +62,7 @@ class CSS {
    */
   static int intOf(String value, [bool reportError]) {
     try {
-      if (value != null && !value.isEmpty()) {
+      if (value != null && !value.isEmpty) {
         final Match m = _reNum.firstMatch(value);
         if (m != null)
           return int.parse(m.group(0));

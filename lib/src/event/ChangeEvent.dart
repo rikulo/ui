@@ -3,7 +3,8 @@
 // Author: tomyeh
 
 /**
- * A change event. It is sent with [ViewEvents.change].
+ * An event to indicate a view's value has been changed.
+ * It is sent with [ViewEvents.change].
  */
 class ChangeEvent<T> extends ViewEvent {
   final T _value;

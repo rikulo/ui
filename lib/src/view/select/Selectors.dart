@@ -70,7 +70,7 @@ class Selectors {
         case STATE_IN_PSDOCLS_PARAM:
           if (t.type != Token.TYPE_IDENTIFIER)
             throw new SelectorParseException.unexpectedToken(source, t);
-          currSeq.pseudoClasses.last().parameter = t.source(source);
+          currSeq.pseudoClasses.last.parameter = t.source(source);
           state = STATE_POST_PSDOCLS_PARAM;
           continue;
         case STATE_POST_PSDOCLS_PARAM:

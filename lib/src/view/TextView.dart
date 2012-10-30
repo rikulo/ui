@@ -19,7 +19,7 @@ class TextView extends View {
    * The text will be encoded to make sure it is valid HTML text.
    */
   TextView([String text]) {
-    if (text != null && !text.isEmpty())
+    if (text != null && !text.isEmpty)
       this.text = text; //have render_() called
   }
   /** Instantiates with a HTML fragment.

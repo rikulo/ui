@@ -33,7 +33,7 @@ class Button extends TextView {
    * + [type] can be either `button`, `submit` or `reset`.
    */
   void set type(String type) {
-    node.$dom_setAttribute('type', type == null || type.isEmpty() ? "button": type);
+    node.$dom_setAttribute('type', type == null || type.isEmpty ? "button": type);
       //Chrome's type can't be assigned directly
   }
   /** Returns whether it is disabled.

@@ -10,34 +10,83 @@ typedef EventListener DOMEventDispatcher(View target);
 /** Utilities for implemnetation.
  */
 class ViewImpl {
-  /** Called to indicate the width or height is updated by layouts
-   * or other internal modules, rather than the application.
-   *
-   * Once called, [sizedByApp] will return true.
+  /** Called to indicate the view's left has been changed.
+   * It is called automatically if [View]'s left has been set.
    */
-  static void sizedInternally(View view, Dir dir) {
-    view.dataAttributes[_sbaAttr(dir)] = _sbaVal(view, dir);
+  static void leftUpdated(View view) {
+    final nm = _sbaAttr(0);
+    if (layoutManager.inLayout)
+      view.dataAttributes[nm] = _sbaVal(view, 0);
+    else
+      view.dataAttributes.remove(nm);
   }
-  /** Called to indicate the width or height is updated by the application.
-   *
-   * Once called, [sizedByApp] will return false.
+  /** Called to indicate the view's top has been changed.
+   * It is called automatically if [View]'s top has been set.
    */
-  static void sizedByApp(View view, Dir dir) {
-    view.dataAttributes.remove(_sbaAttr(dir));
+  static void topUpdated(View view) {
+    final nm = _sbaAttr(1);
+    if (layoutManager.inLayout)
+      view.dataAttributes[nm] = _sbaVal(view, 1);
+    else
+      view.dataAttributes.remove(nm);
   }
-  /** Returns true if the width or height is set by the application.
-   *
-   * + [dir] can be either *HORIZONTAL* or *VERTICAL*. It can't be *BOTH*.
+  /** Called to indicate the view's width has been changed.
+   * It is called automatically if [View]'s width has been set.
    */
-  static bool isSizedByApp(View view, Dir dir) {
-    final val = _sbaVal(view, dir);
-    return val != null && val != view.dataAttributes[_sbaAttr(dir)];
+  static void widthUpdated(View view) {
+    final nm = _sbaAttr(2);
+    if (layoutManager.inLayout)
+      view.dataAttributes[nm] = _sbaVal(view, 2);
+    else
+      view.dataAttributes.remove(nm);
+  }
+  /** Called to indicate the view's height has been changed.
+   * It is called automatically if [View]'s height has been set.
+   */
+  static void heightUpdated(View view) {
+    final nm = _sbaAttr(3);
+    if (layoutManager.inLayout)
+      view.dataAttributes[nm] = _sbaVal(view, 3);
+    else
+      view.dataAttributes.remove(nm);
+  }
+  /** Returns true if [View]'s left is set by the application.
+   */
+  static bool isLeftByApp(View view) {
+    final v1 = _sbaVal(view, 0), v2 = view.dataAttributes[_sbaAttr(0)];
+    return v1 != v2 && (v1 != 0 || v2 != null);
+      //Note: left is default to 0, while dataAttributes is default null => not app
+  }
+  /** Returns true if [View]'s top is set by the application.
+   */
+  static bool isTopByApp(View view) {
+    final v1 = _sbaVal(view, 1), v2 = view.dataAttributes[_sbaAttr(1)];
+    return v1 != v2 && (v1 != 0 || v2 != null);
+      //Note: left is default to 0, while dataAttributes is default null => not app
+  }
+  /** Returns true if [View]'s width is set by the application.
+   */
+  static bool isWidthByApp(View view) {
+    final val = _sbaVal(view, 2);
+    return val != null && val != view.dataAttributes[_sbaAttr(2)];
       //Note: if null is assigned, it is considered as set-internally
   }
-  static int _sbaVal(View view, Dir dir)
-  => dir == Dir.HORIZONTAL ? view.width: view.height;
-  static String _sbaAttr(Dir dir)
-  => dir == Dir.HORIZONTAL ? 'rk.layout.hz': 'rk.layout.vt';
+  /** Returns true if [View]'s height is set by the application.
+   */
+  static bool isHeightByApp(View view) {
+    final val = _sbaVal(view, 3);
+    return val != null && val != view.dataAttributes[_sbaAttr(3)];
+      //Note: if null is assigned, it is considered as set-internally
+  }
+  static int _sbaVal(View view, int type) {
+    switch (type) {
+      case 0: return view.left;
+      case 1: return view.top;
+      case 2: return view.width;
+      case 3: return view.height;
+    }
+  }
+  static String _sbaAttr(int type) => 'rk.layout.$type';
 }
 
 /** The dialog information.

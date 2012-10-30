@@ -20,12 +20,12 @@ void main() {
           new Button("Yes")
             ..on.click.add((event) { //delete
               //removeFile(); //assume you have this method
-              dialog.removeFromDocument();
+              dialog.remove();
             }))
           ..addChild(
           new Button("No")
             ..on.click.add((event) { //cancel
-              dialog.removeFromDocument();
+              dialog.remove();
             })))
       ..addToDocument(mode: "dialog");
   });

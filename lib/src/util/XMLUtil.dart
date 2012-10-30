@@ -18,7 +18,7 @@ class XMLUtil {
    * + [maxlength] - the maximal allowed length of the text
    */
   static String encode(String txt,
-  [bool multiline=false, int maxlength=0, bool pre=false]) {
+  {bool multiline: false, int maxlength: 0, bool pre: false}) {
     if (txt == null) return null; //as it is
 
     int tl = txt.length;

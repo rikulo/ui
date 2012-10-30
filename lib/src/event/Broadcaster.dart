@@ -4,6 +4,10 @@
 
 /**
  * The broadcaster used to broadcast events.
+ *
+ * The bradcasted event will be sent to every root views if they are mounted
+ * (i.e., `inDocument`). Thus, to listen a broadcast event, you can register
+ * a listenber to either [broadcaster] or one of the moutned root views.
  */
 interface Broadcaster {
   /** Returns [BroadcastEvents] for adding or removing event listeners.
@@ -30,9 +34,9 @@ Broadcaster broadcaster = new _Broadcaster();
 interface BroadcastEvents extends ViewEventListenerMap default _BroadcastEvents {
   BroadcastEvents(var ptr);
 
-  /** Listeners for the popup event ([PopupEvent]).
+  /** Listeners for the activate event ([ActivateEvent]).
    */
-  ViewEventListenerList get popup;
+  ViewEventListenerList get activate;
 }
 
 /** An implementation of [BroadcastEvents].
@@ -40,7 +44,7 @@ interface BroadcastEvents extends ViewEventListenerMap default _BroadcastEvents 
 class _BroadcastEvents extends _ViewEventListenerMap implements BroadcastEvents {
   _BroadcastEvents(var ptr): super(ptr);
 
-  ViewEventListenerList get popup => _get('popup');
+  ViewEventListenerList get activate => _get('activate');
 }
 
 /** An implementation of [Broadcaster].
@@ -75,7 +79,7 @@ class _BroadcastListeners {
    */
   bool isEmpty(String type) {
     List<ViewEventListener> ls;
-    return _listeners == null || (ls = _listeners[type]) == null || ls.isEmpty();
+    return _listeners == null || (ls = _listeners[type]) == null || ls.isEmpty;
   }
   /** Adds an event listener.  (Called by ViewEvents)
    */
@@ -109,6 +113,11 @@ class _BroadcastListeners {
           return true; //done
       }
     }
+
+		//broadcast to all root views
+    for (final v in rootViews)
+      if (v.sendEvent(event, type))
+        dispatched = true;
     return dispatched;
   }
 }

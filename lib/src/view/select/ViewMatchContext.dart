@@ -67,11 +67,9 @@ class ViewMatchContext {
       return false;
       
     } else
-      return selectorIndex < _qualified.length && _qualified[selectorIndex].last();
+      return selectorIndex < _qualified.length && _qualified[selectorIndex].last;
   }
-  
-  
-  
+
   // match local property //
   /**
    * Return true if the component qualifies the local properties of a given
@@ -96,7 +94,7 @@ class ViewMatchContext {
   }
   
   static bool matchClasses(View view, Collection<String> classes) {
-    if (classes == null || classes.isEmpty())
+    if (classes == null || classes.isEmpty)
       return true;
     for (String c in classes)
       if (!view.classes.contains(c))
@@ -105,7 +103,7 @@ class ViewMatchContext {
   }
   
   bool matchPseudoClasses(Collection<PseudoClass> pseudoClasses) {
-    if (pseudoClasses == null || pseudoClasses.isEmpty())
+    if (pseudoClasses == null || pseudoClasses.isEmpty)
       return true;
     for (PseudoClass pc in pseudoClasses) {
       Function accept = PseudoClass.getDefinition(pc.name);

@@ -103,7 +103,7 @@ class RunOnceViewManager {
    */
   bool isQueueEmpty([View view]) {
     if (view == null)
-      return _views.isEmpty();
+      return _views.isEmpty;
 
     for (final v in _views)
       if (v.isDescendantOf(view))
@@ -218,7 +218,7 @@ class RunOnceViewManager {
     _readyChecks.add(ready);
   }
   bool _ready(View view, bool force) {
-    if (!_readyChecks.isEmpty()) {
+    if (!_readyChecks.isEmpty) {
       final Task continueTask = () {flush(view, force);};
       for (final RunOnceReadyCheck ready in _readyChecks)
         if (!ready(view, continueTask, force))

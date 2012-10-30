@@ -8,7 +8,7 @@
  */
 class MultilineBox extends View implements Input<String> {
   MultilineBox([String value]) {
-    if (value != null && !value.isEmpty())
+    if (value != null && !value.isEmpty)
       this.value = value;
   }
 

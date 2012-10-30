@@ -66,7 +66,7 @@ void main() {
     if (removeReady) {
       removeReady = false;
       if (removeMotion == null)
-        dialog.removeFromDocument();
+        dialog.remove();
       else
         removeMotion.run();
     }
@@ -84,7 +84,7 @@ void main() {
     
     removeMotion = new EasingMotion.join([new FadeOutEffect(dialog.node), maskFadeOut(mask)], 
     end: (MotionState state) {
-      dialog.removeFromDocument();
+      dialog.remove();
       dialog.style.visibility = "";
     }, easing: (num t) => t * t, period: 400);
   });
@@ -101,7 +101,7 @@ void main() {
     
     removeMotion = new EasingMotion.join([new ZoomOutEffect(dialog.node), maskFadeOut(mask)], 
     end: (MotionState state) {
-      dialog.removeFromDocument();
+      dialog.remove();
       dialog.style.visibility = "";
     }, easing: (num t) => t * t, period: 400);
   });
@@ -118,7 +118,7 @@ void main() {
     
     removeMotion = new EasingMotion.join([new SlideOutEffect(dialog.node), maskFadeOut(mask)], 
     end: (MotionState state) {
-      dialog.removeFromDocument();
+      dialog.remove();
       dialog.style.visibility = "";
     }, easing: (num t) => t * t, period: 400);
   });

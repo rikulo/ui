@@ -30,22 +30,34 @@ class _OnDemandMap<K, V> implements Map<K,V> {
 
   Map _init() => _map != null ? _map: (_map = _creator());
 
+  //@override
   V  operator[](K key) => _map != null ? _map[key]: null;
+  //@override
   void operator[]=(K key, V value) {
     _init()[key] = value;
   }
+  //@override
   void clear() {
     if (_map != null) _map.clear();
   }
+  //@override
   bool containsKey(K key) => _map != null && _map.containsKey(key);
+  //@override
   bool containsValue(V value) => _map != null && _map.containsValue(value);
+  //@override
   void forEach(void f(key, value)) {
     if (_map != null) _map.forEach(f);
   }
-  Collection<K> getKeys() => _map != null ? _map.getKeys(): ListUtil.EMPTY_LIST;
-  Collection<V> getValues() => _map != null ? _map.getValues(): ListUtil.EMPTY_LIST;
-  bool isEmpty() => _map == null || _map.isEmpty();
+  //@override
+  Collection<K> get keys => _map != null ? _map.keys: ListUtil.EMPTY_LIST;
+  //@override
+  Collection<V> get values => _map != null ? _map.values: ListUtil.EMPTY_LIST;
+  //@override
+  bool get isEmpty => _map == null || _map.isEmpty;
+  //@override
   int get length => _map != null ? _map.length: 0;
+  //@override
   V putIfAbsent(K key, V ifAbsent()) => _init().putIfAbsent(key, ifAbsent);
+  //@override
   V remove(K key) => _map != null ? _map.remove(key): null;
 }

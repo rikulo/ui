@@ -10,7 +10,7 @@ class Selector {
   Selector(this.selectorIndex) : seqs = new List<SimpleSelectorSequence>();
   
   void addCombinator(Token token) {
-    seqs.last().setCombinatorByToken(token);
+    seqs.last.setCombinatorByToken(token);
   }
   
   int getCombinator(int index) => seqs[index].combinator;

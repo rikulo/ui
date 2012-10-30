@@ -57,6 +57,9 @@ interface ViewEvents extends ViewEventListenerMap default _ViewEvents {
   ViewEventListenerList get mouseWheel;
   ViewEventListenerList get scroll;
 
+  /** Listeners for the activate event ([ActivateEvent]).
+   */
+  ViewEventListenerList get activate;
   /** A list of event listeners for indicating
    * the selection state of a view is changed.
    *
@@ -202,7 +205,7 @@ class _ViewEvents extends _ViewEventListenerMap implements ViewEvents {
   ViewEventListenerList get mount => _get("mount");
   ViewEventListenerList get unmount => _get("unmount");
 
-  ViewEventListenerList get check => _get("check");
+  ViewEventListenerList get activate => _get("activate");
   ViewEventListenerList get select => _get("select");
   ViewEventListenerList get render => _get("render");
   

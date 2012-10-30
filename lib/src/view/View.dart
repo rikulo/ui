@@ -56,7 +56,7 @@ class View {
 
   _ChildInfo _childInfo;
   _EventListenerInfo _evlInfo;
-  Map<String, Dynamic> _dataAttrs, _mntAttrs;
+  Map<String, dynamic> _dataAttrs, _mntAttrs;
   Map<String, Template> _templs;
   Map<String, Annotation> _annos;
 
@@ -104,7 +104,7 @@ class View {
    * Basically if it doesn't allow any child view, it is better to specify false here.
    * Please refer to [isViewGroup] and [shallMeasureByContent] for more information.
    */
-  factory View.tag(String tag, [Map<String,Dynamic> attributes,
+  factory View.tag(String tag, [Map<String,dynamic> attributes,
     String innerHTML, bool isViewGroup=true])
   => new _TagView(tag, attributes, innerHTML, isViewGroup);
 
@@ -170,7 +170,7 @@ class View {
     }
 
     final Iterator<View> iter = queryAll(selector).iterator();
-    return iter.hasNext() ? iter.next() : null;
+    return iter.hasNext ? iter.next() : null;
   }
   /** Searches and returns all views that matches the selector.
    */
@@ -201,7 +201,7 @@ class View {
    * If fellow is null, it means to remove the binding.
    */
   void bindFellow_(String id, View fellow) {
-    throw const UnsupportedOperationException ("Not IdSpace");
+    throw new UnsupportedError("Not IdSpace, $this");
   }
   /** Returns the owner of the ID space that this view belongs to.
    *
@@ -319,6 +319,8 @@ class View {
    *
    * If this view is attached to the document, this method will attach the child
    * to the document.
+   *
+   * To remove a child from its parent, you can invoke [remove] (`child.remove()`).
    */
   void addChild(View child, [View beforeChild]) {
     if (isDescendantOf(child))
@@ -338,6 +340,9 @@ class View {
     if (!parentChanged && identical(beforeChild, child.nextSibling))
       return; //nothing to change
 
+    if (oldParent == null && child.inDocument) //child.addToDocument was called
+      child._removeFromDocument();
+
     if (parentChanged)
       child.beforeParentChanged_(this);
     if (oldParent != null)
@@ -355,17 +360,17 @@ class View {
       child.onParentChanged_(oldParent);
   }
 
-  /** Removes this view from its parent.
+  /** Removes this view from its parent and, if attached, from the document.
    *
-   * If this view has no parent, [UIException] will be thrown.
-   *
-   * > If you add a root view to the document with [addToDocument],
-   * you shall invoke [removeFromDocument] to remove it instead.
+   * If it has a parent, it will be detached from the parent.
+   * If it is attached (i.e., `inDocument`), it will be removed from document.
+   * If neither, nothing happens.
    */
-  void removeFromParent() {
-    if (parent == null)
-      throw new UIException("Unable to remove a root view, $this");
-    parent._removeChild(this);
+  void remove() {
+    if (parent != null)
+      parent._removeChild(this);
+    else if (inDocument)
+      _removeFromDocument();
   }
   void _removeChild(View child, [bool notifyChild=true]) {
     if (!identical(child.parent, this))
@@ -403,7 +408,9 @@ class View {
     }
   }
   /** Removes the corresponding DOM elements of the give child.
-   * It is called by [removeFromParent] to remove the DOM elements.
+   * It is a callback of [remove]: if `child.remove()` is called, then
+   * `child.parent.removeChildNode_(child)` will be called implicitly
+   * to remove the DOM elements from its parent's hierarchy of elements.
    *
    * Deriving classes might override this method if it encloses some special
    * element around the child.node (in [addChildNode_]) (such that the special
@@ -452,12 +459,6 @@ class View {
     node.classes
       ..add(viewConfig.classPrefix)
       ..add("${viewConfig.classPrefix}$className");
-
-    //Note: we have initialize it.
-    //reason: it will become padding-left/top if not assigned
-    node.style
-      ..left = CSS.px(left)
-      ..top = CSS.px(top);
   }
   /** Creates and returns the DOM elements of this view.
    *
@@ -477,7 +478,7 @@ class View {
    * uuid, dash ('-'), and subId.
    */
   Element getNode(String subId) {
-    if (subId == null || subId.isEmpty())
+    if (subId == null || subId.isEmpty)
       return node;
     subId = "#$uuid-$subId";
     return inDocument ? document.query(subId): node.query(subId);
@@ -506,10 +507,13 @@ class View {
    * On the other hand, the child views are added to the document automatically
    * once the root has been attached.
    *
+   * If this view is a child of another view, [remove] will be called implicity
+   * to detach it first.
+   *
    * To notify the views, [mount_] will be called against this view and all
    * of its descendants.
    *
-   * > [UIException] is thrown if this view is not a root view (i.e., it has a parent).
+   * To remove it from document, you can invoke [remove].
    *
    * + [ref] specifies the DOM element to add this view. If not specified,
    * it will look for an element whose id is "v-main". If not found,
@@ -531,8 +535,7 @@ class View {
    * If false, [requestLayout] won't be called at all.
    */
   void addToDocument({Element ref, String mode, bool layout}) {
-    if (parent != null || inDocument)
-      throw new UIException("No parent allowed, nor attached twice: $this");
+    remove();
 
     _ViewImpl.init();
 
@@ -547,7 +550,7 @@ class View {
         break;
       case "replace":
         final refid = ref.id;
-        if (!refid.isEmpty() && id.isEmpty())
+        if (!refid.isEmpty && id.isEmpty)
           id = refid;
 
         p = ref.parent;
@@ -561,7 +564,7 @@ class View {
       case "dialog":
         final dlgInfo = dialogInfos[this] = _ViewImpl.createDialog(ref, this);
         ViewUtil._views[p = dlgInfo.cave] = this; //yes, cave belongs to this view
-        if (profile.location.isEmpty())
+        if (profile.location.isEmpty)
           profile.location = "center center";
         break;
       default:
@@ -583,22 +586,9 @@ class View {
       //immediate: better feedback (and avoid ghost, i.e., showed at original place)
   }
   /** Removes this view from the document.
-   * All of its descendant views are removed too.
-   *
-   * You rarely need to invoke this method directly. This method is used to undo
-   * the attachment made by [addToDocument].
-   * Like [addToDocument], this method can be called only if this view has no parent.
-   *
-   * > If you add a child by [addChild], you shall invoke [removeFromParent] instead.
-   *
-   * To notify the views, [unmount_] will be called against this view and all
-   * of its descendants.
+   * Notice: this method can be called only if parent is null and inDocument
    */
-  void removeFromDocument() {
-    if (parent != null || !inDocument)
-      throw new UIException("No parent allowed, nor detached twice: $this");
-
-    final Element n = node; //store first since _node will be cleared up later
+  void _removeFromDocument() {
     _unmount();
     classes.removeAll(_rootClasses);
     ListUtil.remove(rootViews, this);
@@ -607,7 +597,7 @@ class View {
     if (dlgInfo != null)
       ViewUtil._views.remove(dlgInfo.cave..remove());
     else
-      n.remove();
+      node.remove();
   }
   /** Binds the view.
    */
@@ -621,7 +611,7 @@ class View {
     }
 
     if (_mntCnt == 0) {
-      if (!_afters.isEmpty()) {
+      if (!_afters.isEmpty) {
         final List<List> afters = new List.from(_afters); //to avoid one of callbacks mounts again
         _afters.clear();
         for (final List after in afters) {
@@ -831,7 +821,7 @@ class View {
     if (!child.visible)
       return false;
     final String v = child.style.position;
-    return v.isEmpty() || v == "absolute";
+    return v.isEmpty || v == "absolute";
   }
 
   /** Returns if this view is visible.
@@ -872,6 +862,7 @@ class View {
   void set left(int left) {
     _left = left;
     node.style.left = CSS.px(left);
+    ViewImpl.leftUpdated(this);
   }
   /** Returns the top position of this view relative to its parent.
    *
@@ -883,6 +874,7 @@ class View {
   void set top(int top) {
     _top = top;
     node.style.top = CSS.px(top);
+    ViewImpl.topUpdated(this);
   }
 
   /** Returns the width of this view.
@@ -901,7 +893,7 @@ class View {
     _width = width;
 
     node.style.width = CSS.px(width);
-    layoutManager.sizeUpdated(this, Dir.HORIZONTAL);
+    ViewImpl.widthUpdated(this);
   }
   /** Returns the height of this view.
    *
@@ -919,7 +911,7 @@ class View {
     _height = height;
 
     node.style.height = CSS.px(height);
-    layoutManager.sizeUpdated(this, Dir.VERTICAL);
+    ViewImpl.heightUpdated(this);
   }
 
   /** Returns the real width of this view shown on the document (never null).
@@ -1025,6 +1017,10 @@ class View {
    * If the type parameter is not specified, it is assumed to be [ViewEvent.type].
    *
    * To broadcast an event, please use [broadcaster] instead.
+   * Also notice that the broadcasted event will be sent to every root view
+   * if it is `inDocument`.
+   *
+   * + returns true if it has been dispatched to one of the registered listeners.
    */
   bool sendEvent(ViewEvent event, [String type]) {
     if (event.target == null)
@@ -1077,7 +1073,7 @@ class View {
    *
    * See also [mountAttributes].
    */
-  Map<String, Dynamic> get dataAttributes
+  Map<String, dynamic> get dataAttributes
   => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
   /**
    * A map of application-specific data that exist only
@@ -1090,7 +1086,7 @@ class View {
    *
    * See also [dataAttributes].
    */
-  Map<String, Dynamic> get mountAttributes
+  Map<String, dynamic> get mountAttributes
   => _mntAttrs != null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new Map());
 
   /** A map of templates.
@@ -1107,5 +1103,5 @@ class View {
   Map<String, Annotation> get annotations
   => _annos != null ? _annos: MapUtil.onDemand(() => _annos = new Map());
 
-  String toString() => "$className(${id.isEmpty() ? uuid: id})";
+  String toString() => "$className(${id.isEmpty ? uuid: id})";
 }
