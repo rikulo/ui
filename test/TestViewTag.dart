@@ -22,4 +22,12 @@ void main() {
   }
   final View mainView = new View()..addToDocument();
   mainView.addChild(dl);
+  mainView.addChild(
+    new View.html('''
+      <table cellapding="10" border="1">
+        <tr><td>Cell 1.1</td><td>Cell 1.2</td></tr>
+        <tr><td>Cell 2.1</td><td>Cell 2.2</td></tr>
+      </table>
+      ''')
+      ..left = 200..width = 300);
 }
