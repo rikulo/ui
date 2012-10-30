@@ -27,7 +27,7 @@ interface Opens<T> {
   bool isOpened(T node);
   /** Returns true if the list of opened nodes is empty.
    */
-  bool isOpensEmpty();
+  bool get isOpensEmpty;
 
   /** Adds the given node to the list of opened nodes.
    */

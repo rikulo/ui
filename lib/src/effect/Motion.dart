@@ -49,7 +49,7 @@ class MotionState {
   
   /** Return true if paused.
    */
-  bool isPaused() => _pauseStart != null;
+  bool get isPaused => _pauseStart != null;
   
   void _snapshot(int current, int elapsed) {
     _current = current;
@@ -98,7 +98,7 @@ class Motion {
       _state._snapshot(time, elapsed);
       switch (_stateFlag) {
         case _MOTION_STATE_RUNNING:
-          if (_state.isPaused()) { // resume from pause
+          if (_state.isPaused) { // resume from pause
             _state._resume(time);
             onResume(_state);
           }
@@ -112,7 +112,7 @@ class Motion {
           }
           return cont;
         case _MOTION_STATE_PAUSED:
-          if (!_state.isPaused()) { // pause from running
+          if (!_state.isPaused) { // pause from running
             _state._pause(time);
             onPause(_state);
           }
@@ -199,10 +199,10 @@ class Motion {
   /**
    * Return true if the motion is at running state.
    */
-  bool isRunning() => _stateFlag == _MOTION_STATE_RUNNING;
+  bool get isRunning => _stateFlag == _MOTION_STATE_RUNNING;
   
   /**
    * Return true if the motion is at paused state.
    */
-  bool isPaused() => _stateFlag == _MOTION_STATE_PAUSED;
+  bool get isPaused => _stateFlag == _MOTION_STATE_PAUSED;
 }

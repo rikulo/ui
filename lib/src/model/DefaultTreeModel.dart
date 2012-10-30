@@ -57,7 +57,7 @@ class DefaultTreeModel<T> extends AbstractTreeModel<TreeNode<T>> {
 
   TreeNode<T> getChild(TreeNode<T> parent, int index) => parent[index];
   int getChildCount(TreeNode<T> parent) => parent.length;
-  bool isLeaf(TreeNode<T> node) => node.isLeaf();
+  bool isLeaf(TreeNode<T> node) => node.isLeaf;
 
   //Additional API//
 	/**

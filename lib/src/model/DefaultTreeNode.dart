@@ -44,7 +44,7 @@ class DefaultTreeNode<T> implements TreeNode<T> {
     }
   }
 
-  bool isLeaf() => _leaf != null ? _leaf: _children == null || _children.isEmpty;
+  bool get isLeaf => _leaf != null ? _leaf: _children == null || _children.isEmpty;
 
   TreeNode<T> operator[](int childIndex) {
     _init();
@@ -128,7 +128,7 @@ class DefaultTreeNode<T> implements TreeNode<T> {
     m._selection.remove(child);
     m._opens.remove(child);
 
-    if (!child.isLeaf()) {
+    if (!child.isLeaf) {
       for (int i = 0, len = child.length; i < len; ++i)
         _cleanSelOpen(m, child[i]);
     }

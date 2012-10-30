@@ -63,11 +63,11 @@ void resetBtn() {
 }
 
 void play() {
-  if (_em != null && _em.isRunning())
+  if (_em != null && _em.isRunning)
     return;
   rbtn.classes.add("on");
   pbtn.classes.remove("on");
-  if (_em == null || !_em.isPaused())
+  if (_em == null || !_em.isPaused)
     _em = new EasingMotion((num x, MotionState state) {
       _rgma.selected(x, state);
       progBar.width = min(300, (state.runningTime * 0.3).toInt());
@@ -76,7 +76,7 @@ void play() {
 }
 
 void pause() {
-  if (_em == null || !_em.isRunning())
+  if (_em == null || !_em.isRunning)
     return;
   rbtn.classes.remove("on");
   pbtn.classes.add("on");

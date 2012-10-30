@@ -142,7 +142,7 @@ class TextBox extends View implements Input<String> {
   //@override
   /** Returns false to indicate this view doesn't allow any child views.
    */
-  bool isViewGroup() => false;
+  bool get isViewGroup => false;
   //@override
   String toString() => "$className('$value')";
 }

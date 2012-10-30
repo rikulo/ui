@@ -75,7 +75,7 @@ implements TreeSelectionModel<T> {
   }
 
   bool isOpened(T node) => _opens.contains(node);
-  bool isOpensEmpty() => _opens.isEmpty;
+  bool get isOpensEmpty => _opens.isEmpty;
 
   bool addToOpens(T node) {
     if (_opens.contains(node))

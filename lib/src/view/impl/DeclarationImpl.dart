@@ -39,7 +39,7 @@ class DeclarationImpl implements Declaration {
   /** Returns a collection of properties that are assigned with
    * a non-empty value.
    */
-  Collection<String> getPropertyNames() {
+  Collection<String> get propertyNames {
     return _props.keys;
   }
   /** Retrieves the property's value.

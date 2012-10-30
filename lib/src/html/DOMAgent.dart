@@ -149,7 +149,7 @@ class DOMAgent {
   
   /** Return true if the element is input.
    */
-  bool isInput() => node.tagName == 'INPUT' || node.tagName == 'TEXTAREA';
+  bool get isInput => node.tagName == 'INPUT' || node.tagName == 'TEXTAREA';
   
   /** Measure the size of the given text.
    *

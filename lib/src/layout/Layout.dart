@@ -20,7 +20,7 @@ interface Layout default FreeLayout {
    * height in the subviews shall inherit from [LayoutDeclaration] of the parent
    * (that is associated with [LinearLayout]).
    */
-  bool isProfileInherited();
+  bool get isProfileInherited;
   /** Returns whether its dimension depends on the parent.
    * If `true` is returned, the default width of the associate view's
    * [LayoutDeclaration] will be `flex` (rather than `content`).
@@ -28,7 +28,7 @@ interface Layout default FreeLayout {
    * For example, [TileLayout] returns true since there is no way to measure
    * the dimension without knowing the parent's dimension.
    */
-  bool isFlex();
+  bool get isFlex;
 
   /** Handles the layout of the given view.
    */
@@ -51,10 +51,10 @@ abstract class AbstractLayout implements Layout {
 
   /** Default: true.
    */
-  bool isProfileInherited() => true;
+  bool get isProfileInherited => true;
   /** Default: false.
    */
-  bool isFlex() => false;
+  bool get isFlex => false;
   void doLayout(MeasureContext mctx, View view) {
     if (view.firstChild != null) {
       final AnchorRelation ar = new AnchorRelation(view);
@@ -85,7 +85,7 @@ final int _DEFAULT_SPACING = 3;
 LayoutAmountInfo _getLayoutAmountInfo(View view, String value) {
   final amt = new LayoutAmountInfo(value);
   if (amt.type == LayoutAmountType.NONE
-  && layoutManager.getLayoutOfView(view).isFlex()) {
+  && layoutManager.getLayoutOfView(view).isFlex) {
     amt.type = LayoutAmountType.FLEX;
     amt.value = 1;
   }
@@ -132,7 +132,7 @@ class FreeLayout extends AbstractLayout {
     }
     return hgh;
   }
-  bool isProfileInherited() => false;
+  bool get isProfileInherited => false;
   void doLayout_(MeasureContext mctx, View view, List<View> children) {
     final AsInt innerWidth = () => view.innerWidth,
       innerHeight = () => view.innerHeight; //future: introduce cache

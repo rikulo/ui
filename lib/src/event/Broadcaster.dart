@@ -109,7 +109,7 @@ class _BroadcastListeners {
       for (final ViewEventListener listener in new List.from(ls)) {
         dispatched = true;
         listener(event);
-        if (event.isPropagationStopped())
+        if (event.isPropagationStopped)
           return true; //done
       }
     }

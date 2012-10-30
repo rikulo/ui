@@ -241,7 +241,7 @@ class DropDownList<T> extends View {
     }
 
     //Update DOM tree
-    if ((_model as Selection).isSelectionEmpty())
+    if ((_model as Selection).isSelectionEmpty)
       (node as SelectElement).selectedIndex = -1;
   }
   void _renderTree(Element parent, TreeModel<T> model,
@@ -308,5 +308,5 @@ class DropDownList<T> extends View {
   //@override
   /** Returns false to indicate this view doesn't allow any child views.
    */
-  bool isViewGroup() => false;
+  bool get isViewGroup => false;
 }

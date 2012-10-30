@@ -16,7 +16,7 @@ interface ViewEventListenerList default _ViewEventListenerList {
   bool send(ViewEvent event);
   /** Tests if no event listener is registered.
    */
-  bool isEmpty();
+  bool get isEmpty;
 }
 /** A map of [ViewEvent] listeners.
  * It is a skeletal interface for any object that handles events,
@@ -150,7 +150,7 @@ class _ViewEventListenerList implements ViewEventListenerList {
     return this;
   }
   bool send(ViewEvent event) => _ptr.send(event, _type);
-  bool isEmpty() => _ptr.isEmpty(_type);
+  bool get isEmpty => _ptr.isEmpty(_type);
 }
 /** An implementation of [ViewEventListenerMap].
  */
@@ -166,7 +166,7 @@ class _ViewEventListenerMap implements ViewEventListenerMap {
   }
   bool isListened(String type) {
     final p = _lnlist[type];
-    return p == null || p.isEmpty();
+    return p == null || p.isEmpty;
   }
 }
 

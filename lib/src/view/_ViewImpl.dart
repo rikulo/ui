@@ -23,7 +23,7 @@ class _TagView extends View {
     node = new Element.html(out.toString());
   }
 
-  bool isViewGroup() => _vgroup;
+  bool get isViewGroup => _vgroup;
 }
 
 /** Collection of utilities for View's implementation
@@ -368,7 +368,7 @@ class _EventListenerInfo {
       for (final ViewEventListener listener in new List.from(ls)) {
         dispatched = true;
         listener(event);
-        if (event.isPropagationStopped())
+        if (event.isPropagationStopped)
           return true; //done
       }
     }

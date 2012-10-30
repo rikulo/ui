@@ -47,7 +47,7 @@ implements Selection<T>, Disables<T> {
   //@override
   bool isSelected(Object obj)  => _selection.contains(obj);
   //@override
-  bool isSelectionEmpty() => _selection.isEmpty;
+  bool get isSelectionEmpty => _selection.isEmpty;
 
   //@override
   bool addToSelection(T obj) {
@@ -103,7 +103,7 @@ implements Selection<T>, Disables<T> {
     }
   }
   bool isDisabled(Object obj)  => _disables.contains(obj);
-  bool isDisablesEmpty() => _disables.isEmpty;
+  bool get isDisablesEmpty => _disables.isEmpty;
   bool addToDisables(T obj) {
     if (_disables.contains(obj))
       return false;

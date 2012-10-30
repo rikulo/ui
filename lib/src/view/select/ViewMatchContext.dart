@@ -24,16 +24,12 @@ class ViewMatchContext {
   ViewMatchContext.child(this.view, ViewMatchContext parent) : this.parent = parent,
     _qualified = _initBoolListFromParent(parent);
   
-  
-  
   // operation //
   void moveToNextSibling() {
     view = view.nextSibling;
     viewChildIndex++;
   }
-  
-  
-  
+
   // match position //
   /**
    * Return true if the component matched the given position of the given 

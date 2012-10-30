@@ -51,5 +51,5 @@ class TileLayout extends AbstractLayout {
   int measureHeight(MeasureContext ctx, View view) {
     throw const UIException("'content' not allowed in tile layout");
   }
-  bool isFlex() => true;
+  bool get isFlex => true;
 }

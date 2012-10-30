@@ -75,10 +75,10 @@ class Browser {
    * For example, "http://www.yourserver.com" and "file://".
    */
   String get url {
-    final Location l = window.location;
-    final StringBuffer sb = new StringBuffer();
+    final l = window.location;
+    final sb = new StringBuffer();
     sb.add(l.protocol).add("//").add(l.hostname);
-    if (l.port != "80" && !l.port.isEmpty())
+    if (l.port != "80" && !l.port.isEmpty)
       sb.add(':').add(l.port);
     return sb.toString();
   }
