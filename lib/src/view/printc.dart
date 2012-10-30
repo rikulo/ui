@@ -85,7 +85,7 @@ class _Printc {
     _printc._flush();
   }
   void _flush() {
-    if (!_msgs.isEmpty()) {
+    if (!_msgs.isEmpty) {
       if (!_ready()) {
         _defer();
         return;

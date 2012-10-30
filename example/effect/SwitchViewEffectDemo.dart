@@ -38,7 +38,7 @@ TextView block(String text, int left, int top) {
 }
 
 void addFly(Element element, Offset range, List<MotionAction> actions) {
-  if (element.$dom_children.isEmpty())
+  if (element.$dom_children.isEmpty)
     actions.add(randFly(element, range));
   else
     for (Element c in element.$dom_children)

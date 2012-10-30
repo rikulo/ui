@@ -46,7 +46,7 @@ class _Animator implements Animator {
 
   _Animator(): _anims = new List() {
     _callback = (num now) {
-      if (!_anims.isEmpty()) {
+      if (!_anims.isEmpty) {
         final int inow = now == null ? _now(): now.toInt();
         final int diff = inow - _prevTime;
         _prevTime = inow;
@@ -65,7 +65,7 @@ class _Animator implements Animator {
           _afterCallback();
         }
 
-        if (!_anims.isEmpty())
+        if (!_anims.isEmpty)
           window.requestAnimationFrame(_callback);
       }
     };
@@ -82,7 +82,7 @@ class _Animator implements Animator {
     }
   }
   bool _isRemoved(int index) {
-    if (!_tmpRemoved.isEmpty()) {
+    if (!_tmpRemoved.isEmpty) {
       final AnimatorTask animate = _anims[index];
       int cnt = 0;
       for (final AnimatorTask anim in _tmpRemoved) {

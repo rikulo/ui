@@ -23,7 +23,7 @@ implements ProfileDeclaration {
     if (_anchorView != null)
       return _anchorView;
     final anc = anchor;
-    return anc.isEmpty() ? location.isEmpty() ? null: _owner.parent: _owner.query(anc);
+    return anc.isEmpty ? location.isEmpty ? null: _owner.parent: _owner.query(anc);
   }
   void set anchorView(View view) {
     String av;
@@ -38,7 +38,7 @@ implements ProfileDeclaration {
         throw new UIException("Only parent or sibling allowed for an anchor, not $view");
       if (identical(view, _owner))
         throw const UIException("The anchor can't be itself.");
-      av = view.id.isEmpty() ? "": "#${view.id}";
+      av = view.id.isEmpty ? "": "#${view.id}";
     }
     setProperty("anchor", av);
     _anchorView = view;

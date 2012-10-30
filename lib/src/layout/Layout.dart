@@ -160,8 +160,8 @@ void rootLayout(MeasureContext mctx, View root) {
     () => anchor != null ? _anchorHeight(anchor, root): size.height);
 
   final loc = root.profile.location,
-  	leftByApp = loc.isEmpty() && mctx.getLeftByApp(root) != null,
-    topByApp = loc.isEmpty() && mctx.getTopByApp(root) != null;
+  	leftByApp = loc.isEmpty && mctx.getLeftByApp(root) != null,
+    topByApp = loc.isEmpty && mctx.getTopByApp(root) != null;
     //if !loc.isEmpty, the layout is still required (since it is related to cave)
   if (!leftByApp || !topByApp) {
     final ref = anchor != null ? anchor:

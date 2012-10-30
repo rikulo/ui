@@ -38,7 +38,7 @@ class ListUtil {
   /** Returns the first element of the given collection, or null.
    */
   static first(Collection col)
-  => col.isEmpty() ? null: col.iterator().next();
+  => col.isEmpty ? null: col.iterator().next();
 
   /** A readonly and empty list.
    */
@@ -62,6 +62,8 @@ class ListUtil {
  *
  * For mutable list, you shall override [operator[]=], [set length],
  * [add], [setRange], [insertRange], and [removeRange].
+ *
+ * For sortable list, you have to implement [sort].
  */
 abstract class AbstractList<T> implements List<T> {
   const AbstractList();
@@ -71,12 +73,13 @@ abstract class AbstractList<T> implements List<T> {
   Collection map(f(T element)) => Collections.map(this, [], f);
   Collection filter(bool f(T element)) => Collections.filter(this, [], f);
   void forEach(f(T element)) => Collections.forEach(this, f);
-  Dynamic reduce(Dynamic initialValue, Dynamic combine(Dynamic previousValue, T element))
+  dynamic reduce(dynamic initialValue, dynamic combine(dynamic previousValue, T element))
   => Collections.reduce(this, initialValue, combine);
-  bool isEmpty() => this.length == 0;
+  bool get isEmpty => this.length == 0;
   bool some(bool f(T element)) => Collections.some(this, f);
 
   //List//
+  //@override
   T operator[](int index) {
     ListUtil.rangeCheck(this, index, 1);
 
@@ -85,48 +88,62 @@ abstract class AbstractList<T> implements List<T> {
       it.next();
     return it.next();
   }
+  //@override
   void operator[]=(int index, T value) {
-    throw const UnsupportedOperationException("Cannot modify");
+    throw new UnsupportedError("readonly");
   }
+  //@override
   void set length(int newLength) {
-    throw const UnsupportedOperationException("Cannot modify");
+    throw new UnsupportedError("readonly");
   }
+  //@override
   void add(T element) {
-    throw const UnsupportedOperationException("Cannot modify");
+    throw new UnsupportedError("readonly");
   }
+  //@override
   void addLast(T element) {
     add(element);
   }
+  //@override
   void addAll(Collection<T> elements) {
     for (final T e in elements) {
       add(e);
     }
   }
+  //@override
   bool contains(T value) {
     for (int i = 0; i < length; i++)
       if (this[i] == value)
         return true;
     return false;
   }
+  //@override
   void sort([Comparator<T> compare = Comparable.compare]) {
-    DualPivotQuicksort.sort(this, compare);
+    throw new UnsupportedError("readonly");
   }
+  //@override
   int indexOf(T element, [int start=0])
   => Arrays.indexOf(this, element, start, this.length);
+  //@override
   int lastIndexOf(T element, [int start]) {
     if (start == null) start = length - 1;
     return Arrays.lastIndexOf(this, element, start);
   }
+  //@override
   void clear() {
     removeRange(0, length);
   }
+  //@override
   T removeAt(int index) {
     T v = this[index];
     removeRange(index, 1);
     return v;
   }
+  //@override
   T removeLast() => removeAt(length - 1);
-  T last() => this[length - 1];
+  //@override
+  T get last => this[length - 1];
+  //@override
   List<T> getRange(int start, int length) {
     if (length == 0) return [];
     ListUtil.rangeCheck(this, start, length);
@@ -135,14 +152,17 @@ abstract class AbstractList<T> implements List<T> {
     Arrays.copy(this, start, list, 0, length);
     return list;
   }
+  //@override
   void setRange(int start, int length, List<T> from, [int startFrom]) {
-    throw const UnsupportedOperationException("Cannot modify");
+    throw new UnsupportedError("readonly");
   }
+  //@override
   void removeRange(int start, int length) {
-    throw const UnsupportedOperationException("Cannot modify");
+    throw new UnsupportedError("readonly");
   }
+  //@override
   void insertRange(int start, int length, [T initialValue]) {
-    throw const UnsupportedOperationException("Cannot modify");
+    throw new UnsupportedError("readonly");
   }
 
   //@override
@@ -173,8 +193,10 @@ abstract class AbstractList<T> implements List<T> {
 class _EmptyIter<T> implements Iterator<T> {
   const _EmptyIter();
 
+  //@override
   T next() {
-    throw const NoMoreElementsException();
+    throw new StateError("No more elements");
   }
-  bool hasNext() => false;
+  //@override
+  bool get hasNext => false;
 }

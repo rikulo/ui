@@ -75,7 +75,7 @@ class _Offset implements Offset {
     return n != null && n > 0 ? this / n : null;
   }
   
-  int hashCode() => (left + top).toInt();
+  int get hashCode => (left + top).toInt();
   String toString() => "($left, $top)";
 }
 
@@ -102,7 +102,7 @@ class _Offset3d extends _Offset implements Offset3d {
   num norm() => left == null || top == null || zIndex == null ? null : 
     sqrt(left * left + top * top + zIndex * zIndex);
   
-  int hashCode() => (x + y + z).toInt();
+  int get hashCode => (x + y + z).toInt();
   String toString() => "($x, $y, $z)";
 }
 

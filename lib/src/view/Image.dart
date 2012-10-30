@@ -7,7 +7,7 @@
  */
 class Image extends View {
   Image([String src]) {
-    if (src != null && !src.isEmpty())
+    if (src != null && !src.isEmpty)
       imageNode.src = src;
   }
 

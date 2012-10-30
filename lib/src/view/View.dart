@@ -56,7 +56,7 @@ class View {
 
   _ChildInfo _childInfo;
   _EventListenerInfo _evlInfo;
-  Map<String, Dynamic> _dataAttrs, _mntAttrs;
+  Map<String, dynamic> _dataAttrs, _mntAttrs;
   Map<String, Template> _templs;
   Map<String, Annotation> _annos;
 
@@ -104,7 +104,7 @@ class View {
    * Basically if it doesn't allow any child view, it is better to specify false here.
    * Please refer to [isViewGroup] and [shallMeasureByContent] for more information.
    */
-  factory View.tag(String tag, [Map<String,Dynamic> attributes,
+  factory View.tag(String tag, [Map<String,dynamic> attributes,
     String innerHTML, bool isViewGroup=true])
   => new _TagView(tag, attributes, innerHTML, isViewGroup);
 
@@ -170,7 +170,7 @@ class View {
     }
 
     final Iterator<View> iter = queryAll(selector).iterator();
-    return iter.hasNext() ? iter.next() : null;
+    return iter.hasNext ? iter.next() : null;
   }
   /** Searches and returns all views that matches the selector.
    */
@@ -201,7 +201,7 @@ class View {
    * If fellow is null, it means to remove the binding.
    */
   void bindFellow_(String id, View fellow) {
-    throw const UnsupportedOperationException ("Not IdSpace");
+    throw new UnsupportedError("Not IdSpace, $this");
   }
   /** Returns the owner of the ID space that this view belongs to.
    *
@@ -471,7 +471,7 @@ class View {
    * uuid, dash ('-'), and subId.
    */
   Element getNode(String subId) {
-    if (subId == null || subId.isEmpty())
+    if (subId == null || subId.isEmpty)
       return node;
     subId = "#$uuid-$subId";
     return inDocument ? document.query(subId): node.query(subId);
@@ -541,7 +541,7 @@ class View {
         break;
       case "replace":
         final refid = ref.id;
-        if (!refid.isEmpty() && id.isEmpty())
+        if (!refid.isEmpty && id.isEmpty)
           id = refid;
 
         p = ref.parent;
@@ -555,7 +555,7 @@ class View {
       case "dialog":
         final dlgInfo = dialogInfos[this] = _ViewImpl.createDialog(ref, this);
         ViewUtil._views[p = dlgInfo.cave] = this; //yes, cave belongs to this view
-        if (profile.location.isEmpty())
+        if (profile.location.isEmpty)
           profile.location = "center center";
         break;
       default:
@@ -615,7 +615,7 @@ class View {
     }
 
     if (_mntCnt == 0) {
-      if (!_afters.isEmpty()) {
+      if (!_afters.isEmpty) {
         final List<List> afters = new List.from(_afters); //to avoid one of callbacks mounts again
         _afters.clear();
         for (final List after in afters) {
@@ -825,7 +825,7 @@ class View {
     if (!child.visible)
       return false;
     final String v = child.style.position;
-    return v.isEmpty() || v == "absolute";
+    return v.isEmpty || v == "absolute";
   }
 
   /** Returns if this view is visible.
@@ -1077,7 +1077,7 @@ class View {
    *
    * See also [mountAttributes].
    */
-  Map<String, Dynamic> get dataAttributes
+  Map<String, dynamic> get dataAttributes
   => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
   /**
    * A map of application-specific data that exist only
@@ -1090,7 +1090,7 @@ class View {
    *
    * See also [dataAttributes].
    */
-  Map<String, Dynamic> get mountAttributes
+  Map<String, dynamic> get mountAttributes
   => _mntAttrs != null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new Map());
 
   /** A map of templates.
@@ -1107,5 +1107,5 @@ class View {
   Map<String, Annotation> get annotations
   => _annos != null ? _annos: MapUtil.onDemand(() => _annos = new Map());
 
-  String toString() => "$className(${id.isEmpty() ? uuid: id})";
+  String toString() => "$className(${id.isEmpty ? uuid: id})";
 }

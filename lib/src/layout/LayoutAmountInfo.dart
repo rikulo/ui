@@ -44,7 +44,7 @@ class LayoutAmountInfo {
   /** Constructor.
    */
   LayoutAmountInfo(String profile) {
-    if (profile == null || profile.isEmpty()) { //no need to trim since it was trimmed
+    if (profile == null || profile.isEmpty) { //no need to trim since it was trimmed
       type = LayoutAmountType.NONE;
     } else if (profile == "content") {
       type = LayoutAmountType.CONTENT;

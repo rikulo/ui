@@ -25,7 +25,7 @@ class MeasureContext {
    */
   final Map<View, int> heights;
   final Map<View, int> _borderWds, _borderHghs;
-  Map<String, Dynamic> _dataAttrs;
+  Map<String, dynamic> _dataAttrs;
 
   MeasureContext(): widths = new Map(), heights = new Map(),
   _borderWds = new Map(), _borderHghs = new Map() {
@@ -60,11 +60,11 @@ class MeasureContext {
    */
   String getProfile(View view, String name) {
     String v = view.profile.getPropertyValue(name);
-    if (v.isEmpty()) {
+    if (v.isEmpty) {
       if (view.parent != null
       && layoutManager.getLayoutOfView(view.parent).isProfileInherited())
         v = view.parent.layout.getPropertyValue(name);
-      if (v.isEmpty() && layoutManager.getLayoutOfView(view).isFlex())
+      if (v.isEmpty && layoutManager.getLayoutOfView(view).isFlex())
         v = "flex";
     }
     return v;
@@ -163,11 +163,11 @@ class MeasureContext {
   int _minMaxHgh(View view, int hgh)
   => _minMax(hgh, getProfile(view, "min-height"), getProfile(view, "max-height"));
   static int _minMax(int v, String vmin, String vmax) {
-    if (!vmin.isEmpty()) {
+    if (!vmin.isEmpty) {
       final int w = CSS.intOf(vmin);
       if (v < w) v = w;
     }
-    if (!vmax.isEmpty()) {
+    if (!vmax.isEmpty) {
       final int w = CSS.intOf(vmax);
       if (w > 0 && v > w) v = w;
     }
@@ -275,9 +275,9 @@ class MeasureContext {
 
     if (orgspace != null)
       nodestyle.whiteSpace = orgspace; //restore
-    if (orgwd != null && !orgwd.isEmpty())
+    if (orgwd != null && !orgwd.isEmpty)
       nodestyle.width = orgwd;
-    if (orghgh != null && !orghgh.isEmpty())
+    if (orghgh != null && !orghgh.isEmpty)
       nodestyle.height = orghgh;
 
     final AsInt parentInnerWidth =
@@ -377,6 +377,6 @@ class MeasureContext {
    * Note: the name of the attribute can't start with "rk.", which is reserved
    * for internal use.
    */
-  Map<String, Dynamic> get dataAttributes
+  Map<String, dynamic> get dataAttributes
   => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
 }

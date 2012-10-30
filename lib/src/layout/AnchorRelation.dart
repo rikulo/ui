@@ -49,7 +49,7 @@ class AnchorRelation {
   }
   void _layoutAnchored(MeasureContext mctx, View anchor, [View thisOnly]) {
     final List<View> views = anchored[anchor];
-    if (views != null && !views.isEmpty()) {
+    if (views != null && !views.isEmpty) {
       for (final View view in views) {
         if (thisOnly == null || view == thisOnly) {
           //0) preLayout callback
@@ -89,7 +89,7 @@ void locateToView(View view, String location, [View anchor, int x=0, int y=0]) {
 
     _anchorXLocators[locators[0]](offset.left, anchor, view);
     _anchorYLocators[locators[1]](offset.top, anchor, view);
-  } else if (location == null || location.isEmpty()) {
+  } else if (location == null || location.isEmpty) {
     view.left = x;
     view.top = y;
   } else {
@@ -99,7 +99,7 @@ void locateToView(View view, String location, [View anchor, int x=0, int y=0]) {
   }
 }
 List<int> _getLocators(String loc) {
-  if (loc.isEmpty()) //assume a value if empty since there is an anchor
+  if (loc.isEmpty) //assume a value if empty since there is an anchor
     loc = "top left";
 
   List<int> locators = _locators[loc];

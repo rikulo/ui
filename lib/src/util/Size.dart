@@ -114,7 +114,7 @@ class _Size implements Size {
   bool operator ==(Size other)
   => other is Size && width == other.width && height == other.height;
   
-  int hashCode() => (width + height).toInt();
+  int get hashCode => (width + height).toInt();
   String toString() => "($width, $height)";
   
 }
@@ -130,7 +130,7 @@ class _Size3d extends _Size implements Size3d {
   => other is Size3d && width == other.width && height == other.height
   && depth == other.depth;
   
-  int hashCode() => (width + height + depth).toInt();
+  int get hashCode => (width + height + depth).toInt();
   String toString() => "($width, $height, $depth)";
   
 }
@@ -161,7 +161,7 @@ class _Rectangle extends _Offset implements Rectangle {
         min(max(offset.left, left), right),
         min(max(offset.top, top), bottom));
   
-  int hashCode() => (left + top + right + bottom).toInt();
+  int get hashCode => (left + top + right + bottom).toInt();
   String toString() => "($left, $top, $right, $bottom)";
   
 }

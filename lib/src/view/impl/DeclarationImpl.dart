@@ -12,7 +12,7 @@ class DeclarationImpl implements Declaration {
 
   String get text {
     final StringBuffer sb = new StringBuffer();
-    for (final String key in _props.getKeys())
+    for (final String key in _props.keys)
       sb.add(key).add(':').add(_props[key]).add(';');
     return sb.toString();
   }
@@ -21,13 +21,13 @@ class DeclarationImpl implements Declaration {
 
     for (String pair in text.split(';')) {
       pair = pair.trim();
-      if (pair.isEmpty())
+      if (pair.isEmpty)
         continue;
       final int j = pair.indexOf(':');
       if (j > 0) {
         final String key = pair.substring(0, j).trim();
         final String value = pair.substring(j + 1).trim();
-        if (!key.isEmpty()) {
+        if (!key.isEmpty) {
           setProperty(key, value);
           continue;
         }
@@ -40,7 +40,7 @@ class DeclarationImpl implements Declaration {
    * a non-empty value.
    */
   Collection<String> getPropertyNames() {
-    return _props.getKeys();
+    return _props.keys;
   }
   /** Retrieves the property's value.
    */
@@ -59,7 +59,7 @@ class DeclarationImpl implements Declaration {
    * Notice: the value will be trimmed before saving.
    */
   void setProperty(String propertyName, String value) {
-    if (value == null || value.isEmpty())
+    if (value == null || value.isEmpty)
       removeProperty(propertyName);
     else
       _props[propertyName] = value.trim();

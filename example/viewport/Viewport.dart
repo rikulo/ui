@@ -18,7 +18,7 @@ class Viewport extends View {
   int _spacingLeft = 10, _spacingTop = 30, _spacingRight = 10, _spacingBottom = 10;
 
   Viewport([String title]) {
-    if (title != null && !title.isEmpty())
+    if (title != null && !title.isEmpty)
       this.title = title;
   }
 

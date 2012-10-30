@@ -50,7 +50,7 @@ class _HLayout implements _RealLinearLayout {
       prevSpacing = si.right;
 
       final pwd = child.profile.width;
-      final amt = _getLayoutAmountInfo(child, pwd.isEmpty() ? defpwd: pwd);
+      final amt = _getLayoutAmountInfo(child, pwd.isEmpty ? defpwd: pwd);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           width += amt.value;
@@ -85,7 +85,7 @@ class _HLayout implements _RealLinearLayout {
       final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       int hgh = si.top + si.bottom + borderHgh; //spacing of border
       final phgh = child.profile.height;
-      final amt = _getLayoutAmountInfo(child, phgh.isEmpty() ? defphgh: phgh);
+      final amt = _getLayoutAmountInfo(child, phgh.isEmpty ? defphgh: phgh);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           hgh += amt.value;
@@ -128,7 +128,7 @@ class _HLayout implements _RealLinearLayout {
       prevSpacing = si.right;
 
       final pwd = child.profile.width;
-      final amt = _getLayoutAmountInfo(child, pwd.isEmpty() ? defpwd: pwd);
+      final amt = _getLayoutAmountInfo(child, pwd.isEmpty ? defpwd: pwd);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           assigned += child.width = amt.value;
@@ -184,7 +184,7 @@ class _HLayout implements _RealLinearLayout {
       prevSpacing = si.right;
 
       String align = child.profile.align;
-      if (align.isEmpty()) align = defAlign;
+      if (align.isEmpty) align = defAlign;
       final int space = childspcinfs[child].top;
       switch (align) {
         case "center":
@@ -224,7 +224,7 @@ class _VLayout implements _RealLinearLayout {
       prevSpacing = si.bottom;
 
       final phgh = child.profile.height;
-      final amt = _getLayoutAmountInfo(child, phgh.isEmpty() ? defphgh: phgh);
+      final amt = _getLayoutAmountInfo(child, phgh.isEmpty ? defphgh: phgh);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           height += amt.value;
@@ -259,7 +259,7 @@ class _VLayout implements _RealLinearLayout {
       final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
       int wd = si.left + si.right + borderWd; //spacing of border
       final pwd = child.profile.width;
-      final amt = _getLayoutAmountInfo(child, pwd.isEmpty() ? defpwd: pwd);
+      final amt = _getLayoutAmountInfo(child, pwd.isEmpty ? defpwd: pwd);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           wd += amt.value;
@@ -302,7 +302,7 @@ class _VLayout implements _RealLinearLayout {
       prevSpacing = si.bottom;
 
       final phgh = child.profile.height;
-      final amt = _getLayoutAmountInfo(child, phgh.isEmpty() ? defphgh: phgh);
+      final amt = _getLayoutAmountInfo(child, phgh.isEmpty ? defphgh: phgh);
       switch (amt.type) {
         case LayoutAmountType.FIXED:
           assigned += child.height = amt.value;
@@ -358,7 +358,7 @@ class _VLayout implements _RealLinearLayout {
       prevSpacing = si.bottom;
 
       String align = child.profile.align;
-      if (align.isEmpty()) align = defAlign;
+      if (align.isEmpty) align = defAlign;
       final int space = childspcinfs[child].left;
       switch (align) {
         case "center":

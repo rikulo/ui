@@ -9,9 +9,9 @@
  */
 class TextBox extends View implements Input<String> {
   TextBox([String value, String type]) {
-    if (value != null && !value.isEmpty())
+    if (value != null && !value.isEmpty)
       this.value = value;
-    if (type != null && !type.isEmpty())
+    if (type != null && !type.isEmpty)
       this.type = type;
   }
 

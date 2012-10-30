@@ -34,7 +34,7 @@ class StringUtil {
     
     if ((val = digits - codes.length) > 0)
       codes.insertRange(0, val, _CC_0);
-    return codes.isEmpty() ? "0": new String.fromCharCodes(codes);
+    return codes.isEmpty ? "0": new String.fromCharCodes(codes);
   }
 
   /**
@@ -49,7 +49,7 @@ class StringUtil {
    */
   static bool isChar(String cc, {bool digit: false, bool upper: false, bool lower: false,
   bool whitespace: false, String match: null}) {
-    int v = cc.isEmpty() ? 0: cc.charCodeAt(0);
+    int v = cc.isEmpty ? 0: cc.charCodeAt(0);
     return (digit && v >= _CC_0 && v <= _CC_9)
     || (upper && v >= _CC_A && v <= _CC_Z)
     || (lower && v >= _CC_a && v <= _CC_z)

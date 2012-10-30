@@ -13,7 +13,7 @@ class LayoutSideInfo {
   static const RegExp _reWord = const RegExp(r"(\w+)");
 
   LayoutSideInfo(String profile, [int defaultValue, LayoutSideInfo defaultInfo]) {
-    if (profile != null && !profile.isEmpty()) {
+    if (profile != null && !profile.isEmpty) {
       List<int> wds = [];
       for (final Match m in _reWord.allMatches(profile)) {
         wds.add(int.parse(m.group(0)));

@@ -66,7 +66,7 @@ class SimpleSelectorSequence {
       sb.add(".${c}");
     for (PseudoClass p in pseudoClasses)
       sb.add("${p}");
-    return sb.isEmpty() ? "*" : sb.toString();
+    return sb.isEmpty ? "*" : sb.toString();
   }
   
 }

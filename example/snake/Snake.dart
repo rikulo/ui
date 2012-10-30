@@ -29,7 +29,7 @@ class Snake {
   }
   
   SnakePoint head() {
-    return body.last();
+    return body.last;
   }
   
   SnakePoint nextMove() {
@@ -86,7 +86,7 @@ class Snake {
   }
   
   void draw(CanvasRenderingContext2D context, SnakePoint removed) {    
-    drawSnake(context, body.last(), removed);
+    drawSnake(context, body.last, removed);
   }
   
   void drawSnake(CanvasRenderingContext2D context, SnakePoint point, SnakePoint removed) {

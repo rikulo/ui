@@ -79,7 +79,7 @@ class _BroadcastListeners {
    */
   bool isEmpty(String type) {
     List<ViewEventListener> ls;
-    return _listeners == null || (ls = _listeners[type]) == null || ls.isEmpty();
+    return _listeners == null || (ls = _listeners[type]) == null || ls.isEmpty;
   }
   /** Adds an event listener.  (Called by ViewEvents)
    */

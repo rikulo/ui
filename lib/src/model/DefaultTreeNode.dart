@@ -44,7 +44,7 @@ class DefaultTreeNode<T> implements TreeNode<T> {
     }
   }
 
-  bool isLeaf() => _leaf != null ? _leaf: _children == null || _children.isEmpty();
+  bool isLeaf() => _leaf != null ? _leaf: _children == null || _children.isEmpty;
 
   TreeNode<T> operator[](int childIndex) {
     _init();
@@ -78,7 +78,7 @@ class DefaultTreeNode<T> implements TreeNode<T> {
   void add(TreeNode<T> child, [int index]) {
     _init();
     if (_leaf != null && _leaf)
-      throw const UnsupportedOperationException("Leaf node doesn't allow child");
+      throw new UnsupportedError("Leaf node doesn't allow child");
 
     if (child.parent != null)
       child.parent.remove(child.index);
@@ -135,7 +135,7 @@ class DefaultTreeNode<T> implements TreeNode<T> {
   }
   void clear() {
     _init();
-    if (_children != null && !_children.isEmpty()) {
+    if (_children != null && !_children.isEmpty) {
       final DefaultTreeModel<T> m = model;
       if (m != null) {
         for (final TreeNode<T> child in _children)

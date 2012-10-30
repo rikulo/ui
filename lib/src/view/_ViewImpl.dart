@@ -7,7 +7,7 @@
 class _TagView extends View {
   final bool _vgroup;
 
-  _TagView(String tag, Map<String, Dynamic> attrs, String inner, bool this._vgroup) {
+  _TagView(String tag, Map<String, dynamic> attrs, String inner, bool this._vgroup) {
     final out = new StringBuffer().add('<').add(tag);
     if (attrs != null)
       attrs.forEach((key, value) {
@@ -238,12 +238,12 @@ class _ViewImpl {
       return;
 
     if (!skipFirst)
-      (view.spaceOwner as Dynamic).bindFellow_(id, view);
+      (view.spaceOwner as dynamic).bindFellow_(id, view);
 
     //we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
     View parent;
     if (view is IdSpace && (parent = view.parent) != null)
-      (parent.spaceOwner as Dynamic).bindFellow_(id, view);
+      (parent.spaceOwner as dynamic).bindFellow_(id, view);
   }
   //Add the given view and all its children to the ID space
   static void addToIdSpaceDown(View view, var space) {
@@ -269,12 +269,12 @@ class _ViewImpl {
       return;
 
     if (!skipFirst)
-      (view.spaceOwner as Dynamic).bindFellow_(id, null);
+      (view.spaceOwner as dynamic).bindFellow_(id, null);
 
     //we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
     View parent;
     if (view is IdSpace && (parent = view.parent) != null)
-      (parent.spaceOwner as Dynamic).bindFellow_(id, null);
+      (parent.spaceOwner as dynamic).bindFellow_(id, null);
   }
   static void removeFromIdSpaceDown(View view, var space) {
     var id = view.id;
@@ -313,7 +313,7 @@ class _EventListenerInfo {
    */
   bool isEmpty(String type) {
     List<ViewEventListener> ls;
-    return _listeners == null || (ls = _listeners[type]) == null || ls.isEmpty();
+    return _listeners == null || (ls = _listeners[type]) == null || ls.isEmpty;
   }
   /** Adds an event listener. (Called by ViewEvents)
    */
@@ -346,7 +346,7 @@ class _EventListenerInfo {
         found = true;
 
         ls.removeRange(j, 1);
-        if (ls.isEmpty() && _owner.inDocument
+        if (ls.isEmpty && _owner.inDocument
         && _owner.getDOMEventDispatcher_(type) != null)
           _owner.domUnlisten_(_owner.node, type);
       }
@@ -379,9 +379,9 @@ class _EventListenerInfo {
     //Listen the DOM element if necessary
     if (_listeners != null) {
       final Element n = _owner.node;
-      for (final String type in _listeners.getKeys()) {
+      for (final String type in _listeners.keys) {
         final DOMEventDispatcher disp = _owner.getDOMEventDispatcher_(type);
-        if (disp != null && !_listeners[type].isEmpty())
+        if (disp != null && !_listeners[type].isEmpty)
           _owner.domListen_(n, type, disp);
       }
     }
@@ -390,8 +390,8 @@ class _EventListenerInfo {
     //Unlisten the DOM element if necessary
     if (_listeners != null) {
       final Element n = _owner.node;
-      for (final String type in _listeners.getKeys()) {
-        if (_owner.getDOMEventDispatcher_(type) != null && !_listeners[type].isEmpty())
+      for (final String type in _listeners.keys) {
+        if (_owner.getDOMEventDispatcher_(type) != null && !_listeners[type].isEmpty)
           _owner.domUnlisten_(n, type);
       }
     }
@@ -414,7 +414,7 @@ class _VirtualIdSpace implements IdSpace {
     if (fellow != null) _fellows[id] = fellow;
     else _fellows.remove(id);
   }
-  Collection<View> get fellows => _fellows.getValues();
+  Collection<View> get fellows => _fellows.values;
   String toString() => "_VirtualIdSpace($_owner: $_fellows)";
 }
 
@@ -473,12 +473,12 @@ class _SubviewList extends AbstractList<View> {
     setRange(0, length, copy);
   }
   View removeLast() {
-    final View w = last();
+    final View w = last;
     if (w != null)
       w.removeFromParent();
     return w;
   }
-  View last() {
+  View get last {
     return _owner.lastChild;
   }
   void setRange(int start, int length, List<View> from, [int startFrom]) {
@@ -565,12 +565,12 @@ class _SVIterator implements Iterator<View> {
     _next = owner.firstChild;
   }
 
-  bool hasNext() {
+  bool get hasNext {
     return _next != null;
   }
   View next() {
     if (_next == null)
-      throw const NoMoreElementsException();
+      throw new StateError("No more elements");
     View nxt = _next;
     _next = _next.nextSibling;
     return nxt;
@@ -621,7 +621,7 @@ class _CSSStyleImpl implements CSSStyleDeclaration {
     if (_view.height != null)
       style.height = CSS.px(_view.height);
   }
-  Dynamic noSuchMethod(String name, List args) {
+  dynamic noSuchMethod(String name, List args) {
     if (name.startsWith("set:"))
       return setProperty(StringUtil.uncamelize(name.substring(4)), args[0], '');
     else if (name.startsWith("get:"))
