@@ -162,8 +162,8 @@ body.rikulo {
   border: 1px solid #888;
 }
 .v-Panel > .v-header {
-  height: 14px;
-  line-height: 14px;
+  height: 19px;
+  line-height: 19px;
   padding: 5px;
   border-radius: 5px 5px 0 0;
   border-bottom: 1px solid #888;
@@ -179,13 +179,22 @@ body.rikulo {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   float: right;
-  margin-left: 3px;
-  height: 14px;
-  width: 14px;
+  margin-left: 5px;
+  height: 19px;
+  width: 19px;
   border-radius: 3px;
   border: 1px solid #888;
 }
-.v-Panel > .v-inner {
+.v-Panel > .v-body {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  position: static;
+  padding: 5px;
+}
+.v-Panel > .v-body > .v-inner {
+  position: absolute;
   border-radius: 0 0 5px 5px;
 }
 .v-popup {

@@ -58,7 +58,7 @@ class _HLayout implements _RealLinearLayout {
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           final int wapp = mctx.getWidthByApp(child);
-          final int wd = wapp != null && amt.type == LayoutAmountType.CONTENT ? 
+          final int wd = wapp != null && amt.type != LayoutAmountType.CONTENT ? 
               wapp : child.measureWidth_(mctx);
           width += wd != null ? wd: child.realWidth;
           break;
@@ -95,8 +95,8 @@ class _HLayout implements _RealLinearLayout {
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           final happ = mctx.getHeightByApp(child);
-          final int h = happ != null && amt.type != LayoutAmountType.CONTENT ? happ : 
-            child.measureHeight_(mctx);
+          final int h = happ != null && amt.type != LayoutAmountType.CONTENT ? 
+              happ : child.measureHeight_(mctx);
           hgh += h != null ? h: child.realHeight;
           break;
         default:
@@ -241,8 +241,8 @@ class _VLayout implements _RealLinearLayout {
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           final happ = mctx.getHeightByApp(child);
-          final int hgh = happ != null && amt.type != LayoutAmountType.CONTENT ? happ : 
-            child.measureHeight_(mctx);
+          final int hgh = happ != null && amt.type != LayoutAmountType.CONTENT ? 
+              happ : child.measureHeight_(mctx);
           height += hgh != null ? hgh: child.realHeight;
           break;
         //default: if flex/%, don't count
@@ -278,7 +278,7 @@ class _VLayout implements _RealLinearLayout {
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
           final int wapp = mctx.getWidthByApp(child);
-          final int w = wapp != null && amt.type == LayoutAmountType.CONTENT ? 
+          final int w = wapp != null && amt.type != LayoutAmountType.CONTENT ? 
               wapp : child.measureWidth_(mctx);
           wd += w != null ? w: child.realWidth;
           break;

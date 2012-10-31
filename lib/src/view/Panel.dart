@@ -60,7 +60,9 @@ class Panel extends View {
     Element element = new Element.html('''
 <div>
   <div class="v-header" id="$uuid-header"></div>
-  <div class="v- v-inner" id="$uuid-inner"></div>
+  <div class="v-body" id="$uuid-body">
+    <div class="v-inner" id="$uuid-inner"></div>
+  </div>
 </div>
 ''');
     Element header = element.$dom_firstElementChild;
@@ -93,7 +95,7 @@ class Panel extends View {
   }
   
   Element _btn(String suffix) =>
-      new Element.html('<div class="v-btn v-btn-$suffix" id="$uuid-btn-$suffix"></div>');
+      new Element.html('<div class="v-btn v-btn-$suffix"></div>');
   
   //@override
   void addChildNode_(View child, View beforeChild) {
@@ -107,8 +109,7 @@ class Panel extends View {
   void onLayout_(MeasureContext mctx) {
     final int hh = new DOMAgent(headerNode).height;
     final int ph = new DOMAgent(node).innerHeight;
-    contentNode.style.height = CSS.px(ph - hh);
-    contentNode.style.top = CSS.px(hh);
+    getNode("body").style.height = CSS.px(ph - hh);
     super.onLayout_(mctx);
   }
   
@@ -122,14 +123,14 @@ class Panel extends View {
   
   //@override
   int measureHeight_(MeasureContext mctx) => 
-      new DOMAgent(headerNode).height + super.measureHeight_(mctx);
+      new DOMAgent(headerNode).height + super.measureHeight_(mctx) + 10; // body padding, ad-hoc
   
   //@override
   int measureWidth_(MeasureContext mctx) {
     final int titleWidth = _title == null ? 0 : new DOMAgent(headerNode).measureText(_title).width;
     // 12 = border (1 * 2) + padding (5 * 2), ad-hoc
-    // 17 = button size (14) + margin (3), ad-hoc
-    return max(_btnNum * 17 + 12 + titleWidth, super.measureWidth_(mctx));
+    // 17 = button size (19) + margin (5), ad-hoc
+    return max(_btnNum * 24 + titleWidth, super.measureWidth_(mctx)) + 12;
   }
   
 }
