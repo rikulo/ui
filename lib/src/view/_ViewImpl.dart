@@ -132,54 +132,6 @@ class _ViewImpl {
     --view._childInfo.nChild;
   }
 
-  //Event Handlign//
-  //--------------//
-  static DOMEventDispatcher getDOMEventDispatcher(String type) {
-    if (_domEvtDisps == null) {
-      _domEvtDisps = {};
-      for (final String nm in
-      const ["blur", "click",
-      "drag", "dragEnd", "dragEnter", "dragLeave", "dragOver", "dragStart", "drop",
-      "focus",
-      "mouseDown", "mouseMove", "mouseOut", "mouseOver", "mouseUp", "mouseWheel",
-      "scroll"]) {
-        _domEvtDisps[nm] = _domEvtDisp(nm);
-      }
-      _domEvtDisps["change"] = _domChangeEvtDisp();
-
-      //TODO: handle keyDown/keyPress/keyUp with KeyEvent
-      //TODO: handle mouseXxx with MouseEvent
-    }
-    return _domEvtDisps[type];
-  }
-  static DOMEventDispatcher _domEvtDisp(String type) {
-    return (View target) {
-      return (Event event) {
-        var tv = event.target; //the real target based on the event
-        if (tv != null)
-          tv = ViewUtil.getView(tv);
-        target.sendEvent(
-          new ViewEvent.dom(event, type, tv != null ? tv: target));
-      };
-    };
-  }
-  static DOMEventDispatcher _domChangeEvtDisp() {
-    return (View target) {
-      return (Event event) {
-        final dt = event.target;
-        var tv = dt; //the real target based on the event
-        if (tv != null)
-          tv = ViewUtil.getView(tv);
-        target.sendEvent(
-          new ChangeEvent(tv != null ? tv.value:
-            dt is InputElement && (dt.type == 'checkbox' || dt.type == 'radio') ?
-              dt.checked: dt.value));
-            //assumes tv has a property called value (at least, dt has a value)
-      };
-    };
-  }
-  static Map<String, DOMEventDispatcher> _domEvtDisps;
-
   //utilities//
   /** Creates a dialog encloser.
    */
@@ -309,7 +261,7 @@ class _EventListenerInfo {
   //the registered event listeners; created on demand
   Map<String, List<ViewEventListener>> _listeners;
   //generic DOM event listener
-  Map<String, EventListener> domListeners;
+  Map<String, EventListener> _domListeners;
 
   _EventListenerInfo(View this._owner) {
     on = new ViewEvents(this);
@@ -336,10 +288,8 @@ class _EventListenerInfo {
       return [];
     }).add(listener);
 
-    DOMEventDispatcher disp;
-    if (first && _owner.inDocument
-    && (disp = _owner.getDOMEventDispatcher_(type)) != null)
-      _owner.domListen_(_owner.node, type, disp);
+    if (first)
+      _owner.onEventListened_(type);
   }
   /** Removes an event listener. (Called by ViewEvents)
    */
@@ -352,9 +302,8 @@ class _EventListenerInfo {
         found = true;
 
         ls.removeRange(j, 1);
-        if (ls.isEmpty && _owner.inDocument
-        && _owner.getDOMEventDispatcher_(type) != null)
-          _owner.domUnlisten_(_owner.node, type);
+        if (ls.isEmpty)
+          _owner.onEventUnlistened_(type);
       }
     }
     return found;
@@ -380,29 +329,75 @@ class _EventListenerInfo {
     }
     return dispatched;
   }
-  /** Called when _owner is mounted. */
-  void mount() {
-    //Listen the DOM element if necessary
-    if (_listeners != null) {
-      final Element n = _owner.node;
-      for (final String type in _listeners.keys) {
-        final DOMEventDispatcher disp = _owner.getDOMEventDispatcher_(type);
-        if (disp != null && !_listeners[type].isEmpty)
-          _owner.domListen_(n, type, disp);
-      }
+
+  void onEventListened_(String type) {
+    //proxy known DOM events
+    final disp = _domEventDispatcher(type);
+    if (disp != null) {
+      final ln = disp(_owner); //must be non-null
+      if (_domListeners == null)
+        _domListeners = {};
+      _owner.node.on[type.toLowerCase()].add(_domListeners[type] = ln);
     }
   }
-  void unmount() {
-    //Unlisten the DOM element if necessary
-    if (_listeners != null) {
-      final Element n = _owner.node;
-      for (final String type in _listeners.keys) {
-        if (_owner.getDOMEventDispatcher_(type) != null && !_listeners[type].isEmpty)
-          _owner.domUnlisten_(n, type);
-      }
-    }
+  void onEventUnlistened_(String type) {
+    EventListener ln;
+    if (_domListeners != null
+    && (ln = _domListeners.remove(type)) != null)
+      _owner.node.on[type.toLowerCase()].remove(ln);
   }
 }
+
+/** DOM-level event listener that proxies a DOM event to a view event
+ * ([ViewEvent]) and dispatch to the right target.
+ */
+typedef EventListener _DOMEventDispatcher(View target);
+
+_DOMEventDispatcher _domEventDispatcher(String type) {
+  if (_domEvtDisps == null) {
+    _domEvtDisps = {};
+    for (final String nm in
+    const ["blur", "click",
+    "drag", "dragEnd", "dragEnter", "dragLeave", "dragOver", "dragStart", "drop",
+    "focus",
+    "mouseDown", "mouseMove", "mouseOut", "mouseOver", "mouseUp", "mouseWheel",
+    "scroll"]) {
+      _domEvtDisps[nm] = _domEvtDisp(nm);
+    }
+    _domEvtDisps["change"] = _domChangeEvtDisp();
+
+    //TODO: handle keyDown/keyPress/keyUp with KeyEvent
+    //TODO: handle mouseXxx with MouseEvent
+  }
+  return _domEvtDisps[type];
+}
+_DOMEventDispatcher _domEvtDisp(String type) {
+  return (View target) {
+    return (Event event) {
+      var tv = event.target; //the real target based on the event
+      if (tv != null)
+        tv = ViewUtil.getView(tv);
+      target.sendEvent(
+        new ViewEvent.dom(event, type, tv != null ? tv: target));
+    };
+  };
+}
+_DOMEventDispatcher _domChangeEvtDisp() {
+  return (View target) {
+    return (Event event) {
+      final dt = event.target;
+      var tv = dt; //the real target based on the event
+      if (tv != null)
+        tv = ViewUtil.getView(tv);
+      target.sendEvent(
+        new ChangeEvent(tv != null ? tv.value:
+          dt is InputElement && (dt.type == 'checkbox' || dt.type == 'radio') ?
+            dt.checked: dt.value));
+          //assumes tv has a property called value (at least, dt has a value)
+    };
+  };
+}
+Map<String, _DOMEventDispatcher> _domEvtDisps;
 
 /** A virtual ID space.
  */
