@@ -12,7 +12,7 @@ class CustomLayoutDemo {
     TextView text = new TextView("Touch Anywhere You like");
     text.profile.text = "location: center center";
     mainView.addChild(text);
-    mainView.on.click.add((ViewEvent event) {
+    mainView.on.click.add((DOMEvent event) {
       if (anchor == null)
         _createViews();
       _move(event.offset.left, event.offset.top);

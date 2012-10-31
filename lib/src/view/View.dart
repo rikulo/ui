@@ -1041,12 +1041,24 @@ class View {
    *
    * Override if you'd like to handle DOM events differently, or to initialize
    * something for particular type.
+   *
+   * Notice that this method is called with [target] as null. It means the element
+   * to register DOM listener will be [node] or the child input element (if it is
+   * input type events).
+   * If it is not what you expected, you can override this method and
+   * pass the right element to superclass. For example,
+   *
+   *    void onEventListened_(String type, [Element target]) {
+   *      super.onEventListened_(type, type == "change" ? getNode("inp"): target);
+   *    }
    */
-  void onEventListened_(String type) => _evlInfo.onEventListened_(type);
+  void onEventListened_(String type, [Element target])
+  => _evlInfo.onEventListened_(type, target);
   /** Called when the last event listener has beeen unregistered for the given
    * type. It undoes whatever is done in [onEventListened_].
    */
-  void onEventUnlistened_(String type) => _evlInfo.onEventUnlistened_(type);
+  void onEventUnlistened_(String type, [Element target])
+  => _evlInfo.onEventUnlistened_(type, target);
 
   /**
    * A map of application-specific data.

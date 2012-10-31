@@ -5,7 +5,7 @@ import 'package:rikulo/view.dart';
 import 'package:rikulo/event.dart';
 import 'package:rikulo/util.dart';
 
-View getContainer(ViewEvent event) {
+View getContainer(DOMEvent event) {
   //to protect the drop from other source, we have to check data first
   final data = event.dataTransfer.getData("Text");
   if (data != null && data.startsWith("id:"))

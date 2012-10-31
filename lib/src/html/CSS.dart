@@ -96,7 +96,7 @@ class CSS {
    */
   static String name(String propertyName) {
     if (_nsnms == null) {
-      _nsnms = new Set.from([
+      _nsnms = new Set.from(const [
         'animation', 'animation-delay', 'animation-direction',
         'animation-duration', 'animation-fill-mode',
         'animation-iteration-count', 'animation-name',

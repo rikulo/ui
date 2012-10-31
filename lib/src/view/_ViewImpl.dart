@@ -330,21 +330,23 @@ class _EventListenerInfo {
     return dispatched;
   }
 
-  void onEventListened_(String type) {
+  void onEventListened_(String type, Element target) {
     //proxy known DOM events
     final disp = _domEventDispatcher(type);
     if (disp != null) {
       final ln = disp(_owner); //must be non-null
       if (_domListeners == null)
         _domListeners = {};
-      _owner.node.on[type.toLowerCase()].add(_domListeners[type] = ln);
+      (target != null ? target: _domEvtTarget(type, _owner.node))
+        .on[type.toLowerCase()].add(_domListeners[type] = ln);
     }
   }
-  void onEventUnlistened_(String type) {
+  void onEventUnlistened_(String type, Element target) {
     EventListener ln;
     if (_domListeners != null
     && (ln = _domListeners.remove(type)) != null)
-      _owner.node.on[type.toLowerCase()].remove(ln);
+      (target != null ? target: _domEvtTarget(type, _owner.node))
+        .on[type.toLowerCase()].remove(ln);
   }
 }
 
@@ -353,21 +355,36 @@ class _EventListenerInfo {
  */
 typedef EventListener _DOMEventDispatcher(View target);
 
+Element _domEvtTarget(String type, Element node) {
+  if ((_keyEvts.contains(type) || _inpEvts.contains(type) || "select" == type)
+  && !_inpTags.contains(node.tagName.toLowerCase())) {
+    for (final tag in _inpTags) {
+      final inp = node.query(tag);
+      if (inp != null) {
+        node = inp;
+        break;
+      }
+    }
+  }
+  return node;
+}
+final _keyEvts = new Set.from(const ["keyDown", "keyPress", "keyUp"]);
+final _inpEvts = new Set.from(const ["change", "focus", "blur"]);
+final _inpTags = new Set.from(const ["input", "textarea", "select", "button", "a"]);
 _DOMEventDispatcher _domEventDispatcher(String type) {
   if (_domEvtDisps == null) {
     _domEvtDisps = {};
-    for (final String nm in
-    const ["blur", "click",
+    for (final nm in const ["abort", "click", "dblclick"
     "drag", "dragEnd", "dragEnter", "dragLeave", "dragOver", "dragStart", "drop",
-    "focus",
+    "error", "load",
     "mouseDown", "mouseMove", "mouseOut", "mouseOver", "mouseUp", "mouseWheel",
-    "scroll"]) {
+    "reset", "scroll", "select", "submit", "unload"])
       _domEvtDisps[nm] = _domEvtDisp(nm);
-    }
+    for (final nm in _keyEvts)
+      _domEvtDisps[nm] = _domEvtDisp(nm);
+    for (final nm in _inpEvts)
+      _domEvtDisps[nm] = _domEvtDisp(nm);
     _domEvtDisps["change"] = _domChangeEvtDisp();
-
-    //TODO: handle keyDown/keyPress/keyUp with KeyEvent
-    //TODO: handle mouseXxx with MouseEvent
   }
   return _domEvtDisps[type];
 }
@@ -378,7 +395,7 @@ _DOMEventDispatcher _domEvtDisp(String type) {
       if (tv != null)
         tv = ViewUtil.getView(tv);
       target.sendEvent(
-        new ViewEvent.dom(event, type, tv != null ? tv: target));
+        new DOMEvent(event, type, tv != null ? tv: target));
     };
   };
 }
