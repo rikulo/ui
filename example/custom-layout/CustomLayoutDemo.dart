@@ -2,6 +2,8 @@
 
 import 'package:rikulo/view.dart';
 import 'package:rikulo/event.dart';
+import 'package:rikulo/util.dart';
+import 'package:rikulo/html.dart';
 
 class CustomLayoutDemo {
   View anchor, mainView;
@@ -12,15 +14,15 @@ class CustomLayoutDemo {
     TextView text = new TextView("Touch Anywhere You like");
     text.profile.text = "location: center center";
     mainView.addChild(text);
-    mainView.on.click.add((ViewEvent event) {
+    mainView.on.click.add((DOMEvent event) {
       if (anchor == null)
         _createViews();
-      _move(event.offset.left, event.offset.top);
+      _move(event.pageOffset - new DOMAgent(mainView.node).pageOffset);
     });
   }
-  void _move(int left, int top) {
-    anchor.left = left - 35;
-    anchor.top = top - 35;
+  void _move(Offset offset) {
+    anchor.left = offset.left - 35;
+    anchor.top = offset.top - 35;
     anchor.requestLayout(false, true); //only views that depend on anchor (excluding anchor)
   }
 

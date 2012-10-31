@@ -24,6 +24,12 @@
   -ms-transform: @value;
   transform: @value;
 }
+.transition (@value) {
+  -webkit-transition: @value;
+  -moz-transition: @value;
+  -ms-transition: @value;
+  transition: @value;
+}
 .user-select (@value) {
   -webkit-user-select: @value;
   -moz-user-select: @value;
@@ -201,7 +207,6 @@ body.rikulo {
     }
     
   }
-  
 }
 
 .v-popup {
@@ -222,6 +227,7 @@ body.rikulo {
 }
 .v-mask {
   position: fixed;
-  opacity: .6;
-  background: #E0E1E3;
+  .transition(200ms opacity);
+  opacity: .75;
+  background: white;
 }
