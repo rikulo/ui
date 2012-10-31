@@ -86,7 +86,7 @@ class Motion {
   MotionState _state;
   int _stateFlag = _MOTION_STATE_INIT;
   
-  Motion([MotionStart start, MotionMove move, MotionEnd end]) : 
+  Motion({MotionStart start, MotionMove move, MotionEnd end}) : 
     _start = start, _move = move, _end = end {
     
     _task = (int time, int elapsed) {

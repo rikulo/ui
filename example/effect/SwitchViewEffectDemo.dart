@@ -37,23 +37,27 @@ TextView block(String text, int left, int top) {
   return tv;
 }
 
-void addFly(Element element, Offset range, List<MotionAction> actions) {
+void addFly(Element element, Offset range, List<MotionAction> actions, List<Function> ends) {
   if (element.$dom_children.isEmpty)
-    actions.add(randFly(element, range));
+    addRandFly(element, range, actions, ends);
   else
     for (Element c in element.$dom_children)
-      addFly(c, range, actions);
+      addFly(c, range, actions, ends);
 }
 
-MotionAction randFly(Element element, Offset range) {
+void addRandFly(Element element, Offset range, List<MotionAction> actions, List<Function> ends) {
   final int initX = CSS.intOf(element.style.left);
   final int initY = CSS.intOf(element.style.top);
   final num velX = (rand.nextDouble() * 2 - 1) * range.x;
   final num velY = (rand.nextDouble() * 2 - 1) * range.y;
-  return (num x, MotionState state) {
+  actions.add((num x, MotionState state) {
     element.style.left = CSS.px(initX + (velX * x).toInt());
-    element.style.top =  CSS.px(initY + (velY * x).toInt());
-  };
+    element.style.top  = CSS.px(initY + (velY * x).toInt());
+  });
+  ends.add(() {
+    element.style.left = CSS.px(initX);
+    element.style.top  = CSS.px(initY);
+  });
 }
 
 final Random rand = new Random();
@@ -97,9 +101,13 @@ void main() {
   
   w1.on.click.add((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
+      final String n1z = n1.style.zIndex;
       new FadeInEffect(n2, start: (MotionState state) {
         n1.style.zIndex = "-1";
-      }, end: (MotionState state) => end()).run();
+      }, end: (MotionState state) {
+        end();
+        n1.style.zIndex = n1z;
+      }).run();
     });
   });
   
@@ -134,6 +142,7 @@ void main() {
   w3.on.click.add((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
       final List<MotionAction> actions = new List<MotionAction>();
+      final List<Function> ends = new List<Function>();
       
       final int height = browser.size.height;
       final int width = browser.size.width;
@@ -143,7 +152,7 @@ void main() {
       actions.add((num x, MotionState state) {
         vonode.style.top = CSS.px((height * x * x).toInt()); // free fall
       });
-      addFly(n1, range, actions);
+      addFly(n1, range, actions, ends);
       
       new EasingMotion((num x, MotionState state) {
         for (MotionAction ma in actions)
@@ -164,6 +173,8 @@ void main() {
           parent.style.overflow = state.data == null ? "" : state.data;
         n2.style.zIndex = "";
         end();
+        for (Function f in ends)
+          f();
         
       }).run();
     });

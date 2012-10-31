@@ -26,7 +26,7 @@ class LinearPathMotion extends EasingMotion {
     MotionEnd end}) :
     this.element = element, this.origin = origin, this.destination = destination, 
     _diff = destination - origin, _moveCB = move, 
-    super(null, easing, period: period, start: start, end: end);
+    super(null, easing: easing, period: period, start: start, end: end);
   
   bool doAction_(num x, MotionState state) {
     _pos = _diff * x + origin;

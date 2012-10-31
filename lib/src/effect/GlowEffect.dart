@@ -18,9 +18,8 @@ class GlowEffect extends EasingMotion {
    * + [start]: Called when the effect starts.
    * + [end]: Called when the effect ends.
    */
-  GlowEffect(Element element, [int period = 1000, num tempo = 0.3, 
-  Color color, int blur = 10, int spread = 2, 
-  MotionStart start, MotionEnd end]) : 
+  GlowEffect(Element element, {int period: 1000, num tempo: 0.3, 
+  Color color, int blur: 10, int spread: 2, MotionStart start, MotionEnd end}) : 
   this.element = element, 
   super(createAction(element, color, blur, spread), start: (MotionState state) {
     if (start != null)

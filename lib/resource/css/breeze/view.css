@@ -186,7 +186,6 @@ body.rikulo {
   border: 1px solid #888;
 }
 .v-Panel > .v-inner {
-  position: relative;
   border-radius: 0 0 5px 5px;
 }
 .v-popup {
