@@ -686,9 +686,6 @@ class View {
       child.mount_();
     }
 
-    if (_evlInfo != null)
-      _evlInfo.mount();
-
     sendEvent(new ViewEvent("mount"));
   }
   /** Callback when this view is detached from the document.
@@ -700,9 +697,6 @@ class View {
    */
   void unmount_() {
     sendEvent(new ViewEvent("unmount"));
-
-    if (_evlInfo != null)
-      _evlInfo.unmount();
 
     for (View child = firstChild; child != null; child = child.nextSibling) {
       child.unmount_();
@@ -930,48 +924,34 @@ class View {
     ViewImpl.heightUpdated(this);
   }
 
-  /** Returns the real width of this view shown on the document (never null).
-   * Notice that the performance of this method is not good, if
-   * [width] is null.
+  /** Returns the real width of this view (never null).
+   * If [width] is assigned, this method is the same as [width].
+   * However, if not assigned (i.e., null), this method calculates it from [node]'s width.
    */
   int get realWidth
-  => _width != null ? _width: inDocument ? new DOMAgent(node).width: 0;
+  => _width != null ? _width: new DOMAgent(node).width;
     //for better performance, we don't need to get the outer width if _width is
     //assigned (because we use box-sizing: border-box)
-  /** Returns the real height of this view shown on the document (never null).
-   * Notice that the performance of this method is not good, if
-   * [height] is null.
+  /** Returns the real height of this view (never null).
+   * If [height] is assigned, this method is the same as [height].
+   * However, if not assigned (i.e., null), this method calculates it from [node]'s height.
    */
   int get realHeight
-  => _height != null ? _height: inDocument ? new DOMAgent(node).height: 0;
+  => _height != null ? _height: new DOMAgent(node).height;
     //for better performance, we don't need to get the outer height if _height is
     //assigned (because we use box-sizing: border-box)
   /** Returns the viewable width of this view, excluding the borders, margins
    * and scrollbars.
    *
-   * Note: this method returns [width] if [inDocument] is false and [width] is not null.
-   * In other words, it doesn't exclude the border's width if not attached to the document
-   * (for performance reason). However, we might change it in the future, so it is better
-   * not to call this method if the view is not attached.
+   * Derives can override this method if the child views occupies only a portion.
    */
-  int get innerWidth {
-    final int v = inDocument ? new DOMAgent(node).innerWidth:
-      (_width != null ? _width: 0);
-    return v > 0 ? v: 0;
-  }
+  int get innerWidth => new DOMAgent(node).innerWidth;
   /** Returns the viewable height of this view, excluding the borders, margins
    * and scrollbars.
    *
-   * Note: this method returns [height] if [inDocument] is false and [height] is not null.
-   * In other words, it doesn't exclude the border's height if not attached to the document
-   * (for performance reason). However, we might change it in the future, so it is better
-   * not to call this method if the view is not attached.
+   * Derives can override this method if the child views occupies only a portion.
    */
-  int get innerHeight {
-    final int v = inDocument ? new DOMAgent(node).innerHeight:
-      (_height != null ? _height: 0);
-    return v > 0 ? v: 0;
-  }
+  int get innerHeight => new DOMAgent(node).innerHeight;
 
   /** Returns the offset of this view relative to the left-top corner
    * of the document.
@@ -1053,31 +1033,20 @@ class View {
       //CONSIDER if it is better to have a queue shared by views/message queues/broadcaster
   }
 
-  /** Returns if the given event type is a DOM event.
-   * If true, [domListen_] will be invoked to register the DOM event.
+  /** Called when the first event listener is registered for the given type.
+   *
+   * By default, it checks if the given type is a DOM event. If so, it will
+   * register a DOM event listener to [node] for proxying the DOM event to
+   * this view's event listeners.
+   *
+   * Override if you'd like to handle DOM events differently, or to initialize
+   * something for particular type.
    */
-  DOMEventDispatcher getDOMEventDispatcher_(String type)
-  => _ViewImpl.getDOMEventDispatcher(type);
-
-  /** Listen the given event type.
+  void onEventListened_(String type) => _evlInfo.onEventListened_(type);
+  /** Called when the last event listener has beeen unregistered for the given
+   * type. It undoes whatever is done in [onEventListened_].
    */
-  void domListen_(Element n, String type, DOMEventDispatcher disp) {
-    final EventListener ln = disp(this); //must be non-null
-    final _EventListenerInfo ei = _initEventListenerInfo();
-    if (ei.domListeners == null)
-      ei.domListeners = {};
-    ei.domListeners[type] = ln;
-    n.on[type.toLowerCase()].add(ln);
-  }
-  /** Unlisten the given event type.
-   */
-  void domUnlisten_(Element n, String  type) {
-    if (_evlInfo != null) {
-      final EventListener ln = _evlInfo.domListeners.remove(type);
-      if (ln != null)
-        n.on[type.toLowerCase()].remove(ln);
-    }
-  }
+  void onEventUnlistened_(String type) => _evlInfo.onEventUnlistened_(type);
 
   /**
    * A map of application-specific data.

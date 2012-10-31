@@ -40,6 +40,7 @@ class Viewport extends View {
     if (_toolbar != null) {
       addChild(_toolbar, firstChild);
       _toolbar.top = 0; //align to top
+      _toolbar.left = 120;
     }
   }
 
