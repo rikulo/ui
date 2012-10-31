@@ -13,19 +13,28 @@ typedef void DismissEffect(Element element, void end());
 class Panel extends View {
   
   String _title;
-  final bool _max, _min, _close;
+  final bool _closeBtn;
   final int _btnNum;
+  final ViewEventListener _maxLis, _minLis, _dismissLis;
   
   /** Construct a Panel.
    * 
    * + [title] is shown on the Panel header.
-   * + if [max] is true, a maximize button is shown on the header
-   * + if [min] is true, a minimize button is shown on the header
-   * + if [close] is true, a close button is shown on the header
+   * + if [max] is given, a maximize button is shown on the header, and
+   * the callback will be invoked when the maximize button is clicked.
+   * + if [min] is given, a minimize button is shown on the header, and
+   * the callback will be invoked when the minimize button is clicked.
+   * + if [closeBtn] is true, a close button is shown on the header
+   * + provide [dismiss] to override the default behavior when close button is 
+   * clicked. The default behavior is to remove the Panel, without visual effect.
    */
-  Panel({String title, bool max : false, bool min : false, bool close : false}) : 
-  _title = title, _max = max, _min = min, _close = close,
-  _btnNum = (max ? 1 : 0) + (min ? 1 : 0) + (close ? 1 : 0);
+  Panel({String title, ViewEventListener max, ViewEventListener min,
+  ViewEventListener dismiss, bool closeBtn : false}) : 
+  _title = title, _maxLis = max, _minLis = min, _closeBtn = closeBtn, 
+  _dismissLis = dismiss != null ? dismiss : _defaultCloseListener,  
+  _btnNum = (max != null ? 1 : 0) + (min != null ? 1 : 0) + (closeBtn ? 1 : 0);
+  
+  static ViewEventListener _defaultCloseListener = (ViewEvent event) => event.target.remove(); 
   
   /// The title of Panel
   String get title => _title;
@@ -55,14 +64,31 @@ class Panel extends View {
 </div>
 ''');
     Element header = element.$dom_firstElementChild;
+    
     if (_title != null)
       header.innerHTML = _title;
-    if (_close)
-      header.nodes.add(_btn("close"));
-    if (_max)
-      header.nodes.add(_btn("max"));
-    if (_min)
-      header.nodes.add(_btn("min"));
+    
+    if (_closeBtn) {
+      header.nodes.add(_btn("close")..on.click.add((Event event) {
+        sendEvent(new ViewEvent("dismiss", this));
+      }));
+      on.dismiss.add(_dismissLis);
+    }
+    
+    if (_maxLis != null) {
+      header.nodes.add(_btn("max")..on.click.add((Event event) {
+        sendEvent(new ViewEvent("maximize", this));
+      }));
+      on['maximize'].add(_maxLis);
+    }
+    
+    if (_minLis != null) {
+      header.nodes.add(_btn("min")..on.click.add((Event event) {
+        sendEvent(new ViewEvent("minimize", this));
+      }));
+      on['minimize'].add(_minLis);
+    }
+    
     return element;
   }
   
@@ -104,61 +130,6 @@ class Panel extends View {
     // 12 = border (1 * 2) + padding (5 * 2), ad-hoc
     // 17 = button size (14) + margin (3), ad-hoc
     return max(_btnNum * 17 + 12 + titleWidth, super.measureWidth_(mctx));
-  }
-  
-  EventListener _onClose, _onMax, _onMin;
-  
-  //@override
-  void mount_() {
-    super.mount_();
-    
-    if (_close) {
-      getNode("btn-close").on.click.add(_onClose = (Event event) {
-        sendEvent(new ViewEvent("dismiss", this));
-      });
-    }
-    if (_max) {
-      getNode("btn-max").on.click.add(_onMax = (Event event) {
-        sendEvent(new ViewEvent("maximize", this));
-      });
-    }
-    if (_min) {
-      getNode("btn-min").on.click.add(_onMin = (Event event) {
-        sendEvent(new ViewEvent("minimize", this));
-      });
-    }
-    
-    on.dismiss.add((ViewEvent event) {
-      onDismiss_();
-    });
-    
-  }
-  
-  //override
-  void unmount_() {
-    if (_close)
-      getNode("btn-close").on.click.remove(_onClose);
-    if (_max)
-      getNode("btn-max").on.click.remove(_onMax);
-    if (_min)
-      getNode("btn-min").on.click.remove(_onMin);
-    
-    super.unmount_();
-  }
-  
-  void onDismiss_() {
-    if (_dismissEffect != null)
-      _dismissEffect(this.node, remove);
-    else
-      remove();
-  }
-  
-  DismissEffect _dismissEffect; // TODO: a better way?
-  
-  /** Set the effect when the panel is dismissed.
-   */
-  void set dismissEffect(DismissEffect effect) {
-    _dismissEffect = effect;
   }
   
 }
