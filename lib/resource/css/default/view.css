@@ -205,6 +205,10 @@ body.rikulo {
 }
 .v-mask {
   position: fixed;
-  opacity: .6;
-  background: #E0E1E3;
+  -webkit-transition: 200ms opacity;
+  -moz-transition: 200ms opacity;
+  -ms-transition: 200ms opacity;
+  transition: 200ms opacity;
+  opacity: .75;
+  background: white;
 }

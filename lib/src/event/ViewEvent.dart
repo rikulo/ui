@@ -73,7 +73,6 @@ class ViewEvent {
 class DOMEvent extends ViewEvent {
   final UIEvent _uiEvt;
   final _anyEvt;
-  Offset _offset;
 
   DOMEvent(Event domEvent, [String type, View target]):
   super._super(type != null ? type: domEvent.type, target),
@@ -106,14 +105,6 @@ class DOMEvent extends ViewEvent {
   /** Indicates whether the SHIFT key was pressed when the event fired.
    */
   bool get shiftKey => _anyEvt != null && _anyEvt.shiftKey;
-  /** The offset relative to [target]'s coordinate.
-   */
-  Offset get offset {
-    if (_offset == null)
-      _offset = _uiEvt == null ? new Offset(0, 0):
-        new Offset(_uiEvt.pageX, _uiEvt.pageY) - new DOMAgent(target.node).pageOffset;
-    return _offset;
-  }
   /** The offset relative to the whole document.
    */
   Offset get pageOffset
