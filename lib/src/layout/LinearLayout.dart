@@ -57,7 +57,9 @@ class _HLayout implements _RealLinearLayout {
           break;
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
-          final int wd = child.measureWidth_(mctx);
+          final int wapp = mctx.getWidthByApp(child);
+          final int wd = wapp != null && amt.type == LayoutAmountType.CONTENT ? 
+              wapp : child.measureWidth_(mctx);
           width += wd != null ? wd: child.realWidth;
           break;
         //default: if flex/%, don't count
@@ -92,7 +94,9 @@ class _HLayout implements _RealLinearLayout {
           break;
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
-          final int h = child.measureHeight_(mctx);
+          final happ = mctx.getHeightByApp(child);
+          final int h = happ != null && amt.type != LayoutAmountType.CONTENT ? happ : 
+            child.measureHeight_(mctx);
           hgh += h != null ? h: child.realHeight;
           break;
         default:
@@ -236,7 +240,9 @@ class _VLayout implements _RealLinearLayout {
           break;
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
-          final int hgh = child.measureHeight_(mctx);
+          final happ = mctx.getHeightByApp(child);
+          final int hgh = happ != null && amt.type != LayoutAmountType.CONTENT ? happ : 
+            child.measureHeight_(mctx);
           height += hgh != null ? hgh: child.realHeight;
           break;
         //default: if flex/%, don't count
@@ -271,7 +277,9 @@ class _VLayout implements _RealLinearLayout {
           break;
         case LayoutAmountType.NONE:
         case LayoutAmountType.CONTENT:
-          final int w = child.measureWidth_(mctx);
+          final int wapp = mctx.getWidthByApp(child);
+          final int w = wapp != null && amt.type == LayoutAmountType.CONTENT ? 
+              wapp : child.measureWidth_(mctx);
           wd += w != null ? w: child.realWidth;
           break;
         default:

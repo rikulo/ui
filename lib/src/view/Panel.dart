@@ -95,19 +95,15 @@ class Panel extends View {
       inDocument ? new DOMAgent(contentNode).innerHeight : super.innerHeight;
   
   //@override
-  int measureHeight_(MeasureContext mctx) {
-    final int hgh = mctx.getHeightByApp(this);
-    return hgh != null ? hgh : 
+  int measureHeight_(MeasureContext mctx) => 
       new DOMAgent(headerNode).height + super.measureHeight_(mctx);
-  }
   
   //@override
   int measureWidth_(MeasureContext mctx) {
-    final wd = mctx.getWidthByApp(this);
-    if (wd != null)
-      return wd;
     final int titleWidth = _title == null ? 0 : new DOMAgent(headerNode).measureText(_title).width;
-    return max(_btnNum * 17 + 12 + titleWidth, super.measureWidth_(mctx)); // 12 = border + padding, ad-hoc
+    // 12 = border (1 * 2) + padding (5 * 2), ad-hoc
+    // 17 = button size (14) + margin (3), ad-hoc
+    return max(_btnNum * 17 + 12 + titleWidth, super.measureWidth_(mctx));
   }
   
   EventListener _onClose, _onMax, _onMin;
