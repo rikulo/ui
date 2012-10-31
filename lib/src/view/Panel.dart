@@ -128,8 +128,8 @@ class Panel extends View {
   int measureWidth_(MeasureContext mctx) {
     final int titleWidth = _title == null ? 0 : new DOMAgent(headerNode).measureText(_title).width;
     // 12 = border (1 * 2) + padding (5 * 2), ad-hoc
-    // 17 = button size (14) + margin (3), ad-hoc
-    return max(_btnNum * 17 + 12 + titleWidth, super.measureWidth_(mctx));
+    // 17 = button size (19) + margin (5), ad-hoc
+    return max(_btnNum * 24 + 12 + titleWidth, super.measureWidth_(mctx));
   }
   
 }

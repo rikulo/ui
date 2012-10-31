@@ -162,14 +162,15 @@ body.rikulo {
 
 @panel-border-radius: 5px;
 @header-btn-border-radius: 3px;
+@panel-header-size: 19px;
 
 .v-Panel {
   border-radius: @panel-border-radius;
   border: 1px solid #888; // grouping border
   
   > .v-header {
-    height: 14px;
-    line-height: 14px;
+    height: @panel-header-size;
+    line-height: @panel-header-size;
     padding: 5px;
     border-radius: @panel-border-radius @panel-border-radius 0 0;
     border-bottom: 1px solid #888; // grouping border
@@ -181,8 +182,8 @@ body.rikulo {
       .box-sizing(border-box);
       float: right;
       margin-left: 3px;
-      height: 14px;
-      width: 14px;
+      height: @panel-header-size;
+      width: @panel-header-size;
       border-radius: @header-btn-border-radius;
       border: 1px solid #888; // temp
     }

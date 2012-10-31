@@ -162,8 +162,8 @@ body.rikulo {
   border: 1px solid #888;
 }
 .v-Panel > .v-header {
-  height: 14px;
-  line-height: 14px;
+  height: 19px;
+  line-height: 19px;
   padding: 5px;
   border-radius: 5px 5px 0 0;
   border-bottom: 1px solid #888;
@@ -180,8 +180,8 @@ body.rikulo {
   box-sizing: border-box;
   float: right;
   margin-left: 3px;
-  height: 14px;
-  width: 14px;
+  height: 19px;
+  width: 19px;
   border-radius: 3px;
   border: 1px solid #888;
 }
