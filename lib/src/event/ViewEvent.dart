@@ -66,68 +66,88 @@ class ViewEvent {
   String toString() => "ViewEvent($target,$type)";
 }
 
-/** A event is actually triggered by a DOM event
-* (such as `UIEvent`, `MouseEvent` and `KeyboardEvent`).
-* The original DOM event can be found in [domEvent].
+/** A view event that proxies a DOM event sent by the browser
+* (such as `Event`, `UIEvent`, `MouseEvent` and `KeyboardEvent` in `dart:html`).
+* The original DOM event can be found in [cause].
 */
 class DOMEvent extends ViewEvent {
-  final UIEvent _uiEvt;
-  final _anyEvt;
+  final UIEvent _uic;
+  final _KBKeyInfo _keyInf;
 
-  DOMEvent(Event domEvent, [String type, View target]):
-  super._super(type != null ? type: domEvent.type, target),
-  this.domEvent = domEvent,
-  _uiEvt = domEvent is UIEvent ? domEvent: null,
-  _anyEvt = domEvent is KeyboardEvent || domEvent is MouseEvent ? domEvent: null;
+  DOMEvent(Event cause, [String type, View target]):
+  super._super(type != null ? type: cause.type, target),
+  this.cause = cause,
+  _uic = cause is UIEvent ? cause: null,
+  _keyInf = cause is MouseEvent ? new _MSKeyInfo(cause):
+    cause is KeyboardEvent ? new _KBKeyInfo(cause): null;
 
-  /** The DOM event that causes this view event.
+  /** The DOM event sent by the browser that causes this event to be fired.
    */
-  final Event domEvent;
+  final Event cause;
   /** The Unicode value of a character key pressed.
    */
-  int get charCode => _uiEvt != null ? _uiEvt.charCode: 0;
+  int get charCode => _uic != null ? _uic.charCode: 0;
   /** The Unicode value of a non-character key pressed.
    */
-  int get keyCode => _uiEvt != null ? _uiEvt.keyCode: 0;
+  int get keyCode => _uic != null ? _uic.keyCode: 0;
   /** The numeric [keyCode] of the key pressed, or the character code
    * ([charCode]) for an alphanumeric key pressed.
    */
-  int get which => _uiEvt != null ? _uiEvt.which: 0;
+  int get which => _uic != null ? _uic.which: 0;
   /** Indicates whether the ALT key was pressed when the event fired.
    */
-  bool get altKey => _anyEvt != null && _anyEvt.altKey;
+  bool get altKey => _keyInf != null && _keyInf.altKey;
   /** Indicates whether the CTRL key was pressed when the event fired.
    */
-  bool get ctrlKey => _anyEvt != null && _anyEvt.ctrlKey;
+  bool get ctrlKey => _keyInf != null && _keyInf.ctrlKey;
   /** Indicates whether the META key was pressed when the event fired.
    */
-  bool get metaKey => _anyEvt != null && _anyEvt.metaKey;
+  bool get metaKey => _keyInf != null && _keyInf.metaKey;
   /** Indicates whether the SHIFT key was pressed when the event fired.
    */
-  bool get shiftKey => _anyEvt != null && _anyEvt.shiftKey;
+  bool get shiftKey => _keyInf != null && _keyInf.shiftKey;
+
   /** The offset relative to the whole document.
    */
   Offset get pageOffset
-  => _uiEvt != null ? new Offset(_uiEvt.pageX, _uiEvt.pageY): new Offset(0, 0);
+  => _uic != null ? new Offset(_uic.pageX, _uic.pageY): new Offset(0, 0);
   /** The object in the clipboard.
    */
-  Clipboard get clipboardData => domEvent.clipboardData;
+  Clipboard get clipboardData => cause.clipboardData;
   /** The object used to transfer data, or null if not available.
    */
   Clipboard get dataTransfer
-  => domEvent is MouseEvent ? (domEvent as MouseEvent).dataTransfer: null;
+  => cause is MouseEvent ? (cause as MouseEvent).dataTransfer: null;
   /** Returns the time stamp.
    */
-  int get timeStamp => domEvent.timeStamp;
+  int get timeStamp => cause.timeStamp;
   //@override
   void stopPropagation() {
     super.stopPropagation();
-    domEvent.stopPropagation();
+    cause.stopPropagation();
   }
   //@override
   void preventDefault() {
-    domEvent.preventDefault();
+    cause.preventDefault();
   }
   //@override
-  String toString() => "DOMEvent($target,$domEvent)";
+  String toString() => "DOMEvent($target,$cause)";
+}
+class _MSKeyInfo {
+  final MouseEvent _mse;
+  _MSKeyInfo(this._mse);
+
+  bool get altKey => _mse.altKey;
+  bool get ctrlKey => _mse.ctrlKey;
+  bool get metaKey => _mse.metaKey;
+  bool get shiftKey => _mse.shiftKey;
+}
+class _KBKeyInfo extends _MSKeyInfo {
+  final KeyboardEvent _kbe;
+  _KBKeyInfo(this._kbe): super(null);
+
+  bool get altKey => _kbe.altKey;
+  bool get ctrlKey => _kbe.ctrlKey;
+  bool get metaKey => _kbe.metaKey;
+  bool get shiftKey => _kbe.shiftKey;
 }
