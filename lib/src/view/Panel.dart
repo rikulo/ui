@@ -2,11 +2,6 @@
 //History: Thu, Oct 25, 2012  10:01:25 AM
 //Author: simonpai
 
-/** The effect for Panel dismiss. [end] needs to be called at the end
- * of the effect.
- */
-typedef void DismissEffect(Element element, void end());
-
 /** A Panel view, as a container with header.
  * 
  */
