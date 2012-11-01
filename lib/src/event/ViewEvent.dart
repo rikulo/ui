@@ -72,14 +72,13 @@ class ViewEvent {
 */
 class DOMEvent extends ViewEvent {
   final UIEvent _uic;
-  final _KBKeyInfo _keyInf;
+  final _keyInf;
 
   DOMEvent(Event cause, [String type, View target]):
   super._super(type != null ? type: cause.type, target),
   this.cause = cause,
   _uic = cause is UIEvent ? cause: null,
-  _keyInf = cause is MouseEvent ? new _MSKeyInfo(cause):
-    cause is KeyboardEvent ? new _KBKeyInfo(cause): null;
+  _keyInf = cause is MouseEvent || cause is KeyboardEvent ? cause: null;
 
   /** The DOM event sent by the browser that causes this event to be fired.
    */
@@ -132,22 +131,4 @@ class DOMEvent extends ViewEvent {
   }
   //@override
   String toString() => "DOMEvent($target,$cause)";
-}
-class _MSKeyInfo {
-  final MouseEvent _mse;
-  _MSKeyInfo(this._mse);
-
-  bool get altKey => _mse.altKey;
-  bool get ctrlKey => _mse.ctrlKey;
-  bool get metaKey => _mse.metaKey;
-  bool get shiftKey => _mse.shiftKey;
-}
-class _KBKeyInfo extends _MSKeyInfo {
-  final KeyboardEvent _kbe;
-  _KBKeyInfo(this._kbe): super(null);
-
-  bool get altKey => _kbe.altKey;
-  bool get ctrlKey => _kbe.ctrlKey;
-  bool get metaKey => _kbe.metaKey;
-  bool get shiftKey => _kbe.shiftKey;
 }
