@@ -170,17 +170,18 @@ class ViewUtil {
    */
   static int get appId {
     if (_appId == null) {
-      final Element body = document.body;
+      final body = document.body;
       if (body == null)
         throw const UIException("document not ready yet");
 
-      String sval = body.$dom_getAttribute(_APP_COUNT);
+      final attrs = body.dataAttributes;
+      String sval = attrs[_APP_COUNT];
       if (sval != null) {
         _appId = int.parse(sval);
-        body.$dom_setAttribute(_APP_COUNT, (_appId + 1).toString());
+        attrs[_APP_COUNT] = _appId + 1;
       } else {
         _appId = 0;
-        body.$dom_setAttribute(_APP_COUNT, "1");
+        attrs[_APP_COUNT] = "1";
       }
     }
     return _appId;

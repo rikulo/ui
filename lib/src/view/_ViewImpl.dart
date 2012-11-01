@@ -356,8 +356,9 @@ class _EventListenerInfo {
 typedef EventListener _DOMEventDispatcher(View target);
 
 Element _domEvtTarget(String type, Element node) {
-  if ((_keyEvts.contains(type) || _inpEvts.contains(type) || "select" == type)
-  && !_inpTags.contains(node.tagName.toLowerCase())) {
+  //focus/blur not bubble up: http://www.quirksmode.org/js/tests/focusbubble.html
+  //so we have to register it to the right element
+  if (_noBubEvts.contains(type) && !_inpTags.contains(node.tagName.toLowerCase())) {
     for (final tag in _inpTags) {
       final inp = node.query(tag);
       if (inp != null) {
@@ -368,21 +369,18 @@ Element _domEvtTarget(String type, Element node) {
   }
   return node;
 }
-final _keyEvts = new Set.from(const ["keyDown", "keyPress", "keyUp"]);
-final _inpEvts = new Set.from(const ["change", "focus", "blur"]);
+const _noBubEvts = const ["focus", "blur"];
 final _inpTags = new Set.from(const ["input", "textarea", "select", "button", "a"]);
 _DOMEventDispatcher _domEventDispatcher(String type) {
   if (_domEvtDisps == null) {
     _domEvtDisps = {};
     for (final nm in const ["abort", "click", "dblclick"
     "drag", "dragEnd", "dragEnter", "dragLeave", "dragOver", "dragStart", "drop",
-    "error", "load",
+    "error", "keyDown", "keyPress", "keyUp", "load",
     "mouseDown", "mouseMove", "mouseOut", "mouseOver", "mouseUp", "mouseWheel",
     "reset", "scroll", "select", "submit", "unload"])
       _domEvtDisps[nm] = _domEvtDisp(nm);
-    for (final nm in _keyEvts)
-      _domEvtDisps[nm] = _domEvtDisp(nm);
-    for (final nm in _inpEvts)
+    for (final nm in _noBubEvts)
       _domEvtDisps[nm] = _domEvtDisp(nm);
     _domEvtDisps["change"] = _domChangeEvtDisp();
   }

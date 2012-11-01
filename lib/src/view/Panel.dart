@@ -65,7 +65,7 @@ class Panel extends View {
   </div>
 </div>
 ''');
-    Element header = element.$dom_firstElementChild;
+    Element header = element.elements[0];
     
     if (_title != null)
       header.innerHTML = _title;

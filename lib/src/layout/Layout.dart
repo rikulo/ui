@@ -188,7 +188,7 @@ class _AnchorOfRoot { //mimic View API
   int get realHeight => browser.innerSize.height;
   int get innerHeight => browser.innerSize.height;
 }
-final _anchorOfRoot = const _AnchorOfRoot();
+const _anchorOfRoot = const _AnchorOfRoot();
 
 class _AnchorOfNode { //mimic View API
   final DOMAgent _q;

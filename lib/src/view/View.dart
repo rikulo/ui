@@ -1043,8 +1043,7 @@ class View {
    * something for particular type.
    *
    * Notice that this method is called with [target] as null. It means the element
-   * to register DOM listener will be [node] or the child input element (if it is
-   * input type events).
+   * to register DOM listener will be [node].
    * If it is not what you expected, you can override this method and
    * pass the right element to superclass. For example,
    *
