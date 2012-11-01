@@ -74,7 +74,17 @@ class CSS {
     return 0;
   }
   static const RegExp _reNum = const RegExp(r"([-]?[0-9]+)");
-
+  
+  /** Return the sum of the integers of the given [values] converted by [intOf]
+   * function. 
+   */
+  static int sumOf(List<String> values, [bool reportError]) {
+    int sum = 0;
+    for (String v in values)
+      sum += intOf(v, reportError);
+    return sum;
+  }
+  
   static void cpTextStyles(CSSStyleDeclaration dst, CSSStyleDeclaration src) {
     for (int j = _txtStyles.length; --j >= 0;) {
       final String nm = _txtStyles[j];
