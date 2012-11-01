@@ -166,31 +166,25 @@ body.rikulo {
   }
 }
 
-@panel-border-radius: 5px;
-@header-btn-border-radius: 3px;
-@panel-header-size: 19px;
+@panel-border: 1px solid rgba(0, 0, 0, 0.333);
+@panel-border-radius: 0;
+@panel-btn-border-radius: 3px;
+@panel-btn-size: 19px;
 
 .v-Panel {
   border-radius: @panel-border-radius;
-  border: 1px solid #888; // grouping border
+  border: @panel-border;
   
-  > .v-header {
-    height: @panel-header-size;
-    line-height: @panel-header-size;
-    padding: 5px;
-    border-radius: @panel-border-radius @panel-border-radius 0 0;
-    border-bottom: 1px solid #888; // grouping border
-    .background-gradient2(#FFF, #EEE); // header bg
-    font-weight: bold;
-    color: #333;
+  > .v-btns {
     
     > .v-btn {
       .box-sizing(border-box);
       float: right;
-      margin-left: 5px;
-      height: @panel-header-size;
-      width: @panel-header-size;
-      border-radius: @header-btn-border-radius;
+      margin: 5px;
+      margin-left: 0;
+      height: @panel-btn-size;
+      width: @panel-btn-size;
+      border-radius: @panel-btn-border-radius;
       border: 1px solid #888; // temp
     }
     
@@ -200,10 +194,11 @@ body.rikulo {
     position: static;
     .box-sizing(border-box);
     padding: 5px;
+    border-radius: @panel-border-radius;
     
     > .v-inner {
       position: absolute;
-      border-radius: 0 0 @panel-border-radius @panel-border-radius;
+      border-radius: @panel-border-radius;
     }
     
   }
@@ -230,4 +225,7 @@ body.rikulo {
   .transition(200ms opacity);
   opacity: .75;
   background: white;
+}
+.v-shadow {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }

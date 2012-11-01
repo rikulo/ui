@@ -158,44 +158,34 @@ body.rikulo {
   border-radius: 8px;
 }
 .v-Panel {
-  border-radius: 5px;
-  border: 1px solid #888;
+  border-radius: 0;
+  border: 1px solid rgba(0, 0, 0, 0.333);
 }
-.v-Panel > .v-header {
-  height: 19px;
-  line-height: 19px;
-  padding: 5px;
-  border-radius: 5px 5px 0 0;
-  border-bottom: 1px solid #888;
-  background: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0, #ffffff), color-stop(0.5, #eeeeee));
-  background: -moz-linear-gradient(top, #ffffff, #eeeeee 50%);
-  background: linear-gradient(top, #ffffff, #eeeeee 50%);
-  font-weight: bold;
-  color: #333;
-}
-.v-Panel > .v-header > .v-btn {
+.v-Panel > .v-btns > .v-btn {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   float: right;
-  margin-left: 5px;
+  margin: 5px;
+  margin-left: 0;
   height: 19px;
   width: 19px;
   border-radius: 3px;
   border: 1px solid #888;
 }
 .v-Panel > .v-body {
+  position: static;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  position: static;
   padding: 5px;
+  border-radius: 0;
 }
 .v-Panel > .v-body > .v-inner {
   position: absolute;
-  border-radius: 0 0 5px 5px;
+  border-radius: 0;
 }
 .v-popup {
   border-radius: 3px;
@@ -220,4 +210,7 @@ body.rikulo {
   transition: 200ms opacity;
   opacity: .75;
   background: white;
+}
+.v-shadow {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }

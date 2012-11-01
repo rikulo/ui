@@ -20,7 +20,7 @@ void main() {
   vlayout.style.border = "2px dashed #AAAAAA";
   mainView.addChild(vlayout);
   
-  final Panel p1 = new Panel(title: "Panel 1", max: (ViewEvent event) {
+  final Panel p1 = new Panel(max: (ViewEvent event) {
     // max
   }, min: (ViewEvent event) {
     // min
@@ -44,12 +44,12 @@ void main() {
   
   vlayout.addChild(p1);
   
-  final Panel p2 = new Panel(title: "Panel 2");
+  final Panel p2 = new Panel();
   p2.profile.width = p2.profile.height = "content";
   p2.addChild(new TextView("Compact"));
   vlayout.addChild(p2);
   
-  final Panel p3 = new Panel(title: "Panel 3", closeBtn: true);
+  final Panel p3 = new Panel(closeBtn: true);
   p3.profile.width = p3.profile.height = "content";
   p3.addChild(new TextView("Compact"));
   vlayout.addChild(p3);

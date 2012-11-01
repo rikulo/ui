@@ -7,7 +7,6 @@
  */
 class Panel extends View {
   
-  String _title;
   final bool _closeBtn;
   final int _btnNum;
   final ViewEventListener _maxLis, _minLis, _dismissLis;
@@ -23,29 +22,16 @@ class Panel extends View {
    * + provide [dismiss] to override the default behavior when close button is 
    * clicked. The default behavior is to remove the Panel, without visual effect.
    */
-  Panel({String title, ViewEventListener max, ViewEventListener min,
+  Panel({ViewEventListener max, ViewEventListener min,
   ViewEventListener dismiss, bool closeBtn : false}) : 
-  _title = title, _maxLis = max, _minLis = min, _closeBtn = closeBtn, 
+  _maxLis = max, _minLis = min, _closeBtn = closeBtn, 
   _dismissLis = dismiss != null ? dismiss : _defaultCloseListener,  
   _btnNum = (max != null ? 1 : 0) + (min != null ? 1 : 0) + (closeBtn ? 1 : 0);
   
   static ViewEventListener _defaultCloseListener = (ViewEvent event) => event.target.remove(); 
   
-  /// The title of Panel
-  String get title => _title;
-  
-  /// The title of Panel
-  void set title(String title) {
-    _title = title;
-    if (inDocument)
-      getNode("header").innerHTML = title;
-  }
-  
   /// Retrieve content node.
   Element get contentNode => getNode("inner");
-  
-  /// Retrieve header node.
-  Element get headerNode => getNode("header");
   
   //@override
   String get className => "Panel"; //TODO: replace with reflection if Dart supports it
@@ -53,34 +39,31 @@ class Panel extends View {
   //@override
   Element render_() {
     Element element = new Element.html('''
-<div>
-  <div class="v-header" id="$uuid-header"></div>
+<div class="v-shadow">
+  <div class="v-btns" id="$uuid-btns"></div>
   <div class="v-body" id="$uuid-body">
     <div class="v-inner" id="$uuid-inner"></div>
   </div>
 </div>
 ''');
-    Element header = element.elements[0];
-    
-    if (_title != null)
-      header.innerHTML = _title;
+    Element btns = element.elements[0];
     
     if (_closeBtn) {
-      header.nodes.add(_btn("close")..on.click.add((Event event) {
+      btns.nodes.add(_btn("close")..on.click.add((Event event) {
         sendEvent(new ViewEvent("dismiss", this));
       }));
       on.dismiss.add(_dismissLis);
     }
     
     if (_maxLis != null) {
-      header.nodes.add(_btn("max")..on.click.add((Event event) {
+      btns.nodes.add(_btn("max")..on.click.add((Event event) {
         sendEvent(new ViewEvent("maximize", this));
       }));
       on['maximize'].add(_maxLis);
     }
     
     if (_minLis != null) {
-      header.nodes.add(_btn("min")..on.click.add((Event event) {
+      btns.nodes.add(_btn("min")..on.click.add((Event event) {
         sendEvent(new ViewEvent("minimize", this));
       }));
       on['minimize'].add(_minLis);
@@ -102,9 +85,9 @@ class Panel extends View {
   
   //@override
   void onLayout_(MeasureContext mctx) {
-    final int hh = new DOMAgent(headerNode).height;
-    final int ph = new DOMAgent(node).innerHeight;
-    getNode("body").style.height = CSS.px(ph - hh);
+    final CSSStyleDeclaration bs = new DOMAgent(getNode("body")).computedStyle;
+    getNode("body").style.height = 
+        CSS.px(new DOMAgent(node).innerHeight - CSS.sumOf([bs.marginTop, bs.marginBottom]));
     super.onLayout_(mctx);
   }
   
@@ -119,18 +102,17 @@ class Panel extends View {
   //@override
   int measureHeight_(MeasureContext mctx) {
     final CSSStyleDeclaration bs = new DOMAgent(getNode("body")).computedStyle;
-    final int padding = CSS.sumOf([bs.paddingTop, bs.paddingBottom]);
-    return new DOMAgent(headerNode).height + padding + super.measureHeight_(mctx);
+    return CSS.sumOf([bs.paddingTop, bs.paddingBottom]) + super.measureHeight_(mctx);
   }
   
   //@override
   int measureWidth_(MeasureContext mctx) {
-    final int titleWidth = _title == null ? 0 : new DOMAgent(headerNode).measureText(_title).width;
+    //final int titleWidth = _title == null ? 0 : new DOMAgent(headerNode).measureText(_title).width;
     //final CSSStyleDeclaration bs = new DOMAgent(getNode("body")).computedStyle;
     //final CSSStyleDeclaration hs = new DOMAgent(headerNode).computedStyle;
     // 12 = border (1 * 2) + padding (5 * 2), ad-hoc
     // 17 = button size (19) + margin (5), ad-hoc
-    return max(_btnNum * 24 + titleWidth, super.measureWidth_(mctx)) + 12;
+    return super.measureWidth_(mctx) + 12;
   }
   
 }
