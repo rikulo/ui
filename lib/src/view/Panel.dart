@@ -122,12 +122,17 @@ class Panel extends View {
       inDocument ? new DOMAgent(contentNode).innerHeight : super.innerHeight;
   
   //@override
-  int measureHeight_(MeasureContext mctx) => 
-      new DOMAgent(headerNode).height + super.measureHeight_(mctx) + 10; // body padding, ad-hoc
+  int measureHeight_(MeasureContext mctx) {
+    final CSSStyleDeclaration bs = new DOMAgent(getNode("body")).computedStyle;
+    final int padding = CSS.sumOf([bs.paddingTop, bs.paddingBottom]);
+    return new DOMAgent(headerNode).height + padding + super.measureHeight_(mctx);
+  }
   
   //@override
   int measureWidth_(MeasureContext mctx) {
     final int titleWidth = _title == null ? 0 : new DOMAgent(headerNode).measureText(_title).width;
+    //final CSSStyleDeclaration bs = new DOMAgent(getNode("body")).computedStyle;
+    //final CSSStyleDeclaration hs = new DOMAgent(headerNode).computedStyle;
     // 12 = border (1 * 2) + padding (5 * 2), ad-hoc
     // 17 = button size (19) + margin (5), ad-hoc
     return max(_btnNum * 24 + titleWidth, super.measureWidth_(mctx)) + 12;
