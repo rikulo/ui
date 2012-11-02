@@ -65,7 +65,6 @@ interface HoldGesture extends Gesture default _HoldGesture {
 }
 
 abstract class _HoldGesture implements HoldGesture {
-  
   final Element owner;
   final int _duration;
   final int _movementLimit;
@@ -104,8 +103,8 @@ abstract class _HoldGesture implements HoldGesture {
     _disabled = false;
   }
   
-  abstract void _listen();
-  abstract void _unlisten();
+  void _listen();
+  void _unlisten();
   
   void _touchStart(EventTarget target, int time, Offset position) {
     if (_disabled)

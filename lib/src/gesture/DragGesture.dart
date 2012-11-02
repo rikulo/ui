@@ -141,8 +141,8 @@ abstract class _DragGesture implements DragGesture {
   
   Element get owner => _owner;
   
-  abstract void _listen();
-  abstract void _unlisten();
+  void _listen();
+  void _unlisten();
   
   void _touchStart(Element target, Offset position, int time) {
     if (_disabled)
