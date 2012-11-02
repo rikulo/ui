@@ -30,7 +30,7 @@ class ListUtil {
 
   /** Checks if the given range is allowed in the given list.
    */
-  static void rangeCheck(List a, int start, int length) {
+  static void rangeCheck(Sequence a, int start, int length) {
     if (length < 0) {
       throw new IllegalArgumentException("negative length $length");
     }

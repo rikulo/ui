@@ -209,7 +209,7 @@ class View {
   Collection<View> get fellows => spaceOwner.fellows;
   /** Updates the fellow information.
    *
-   * Default: throw [UnsupportedOperationException].
+   * Default: throw [UnsupportedError].
    *
    * If a view implements [IdSpace] must override [getFellow] and
    * [bindFellow_].
