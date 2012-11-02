@@ -176,6 +176,12 @@ body.rikulo {
   border: @panel-border;
   
   > .v-btns {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right:0;
+    z-index: 5;
+    .box-sizing(border-box);
     
     > .v-btn {
       .box-sizing(border-box);

@@ -2,36 +2,41 @@
 //History: Thu, Oct 25, 2012  10:01:25 AM
 //Author: simonpai
 
-/** A Panel view, as a container with header.
+/** A Panel view.
  * 
  */
 class Panel extends View {
   
-  final bool _closeBtn;
-  final int _btnNum;
-  final ViewEventListener _maxLis, _minLis, _dismissLis;
-  
   /** Construct a Panel.
    * 
-   * + [title] is shown on the Panel header.
-   * + if [max] is given, a maximize button is shown on the header, and
-   * the callback will be invoked when the maximize button is clicked.
-   * + if [min] is given, a minimize button is shown on the header, and
-   * the callback will be invoked when the minimize button is clicked.
-   * + if [closeBtn] is true, a close button is shown on the header
-   * + provide [dismiss] to override the default behavior when close button is 
-   * clicked. The default behavior is to remove the Panel, without visual effect.
    */
-  Panel({ViewEventListener max, ViewEventListener min,
-  ViewEventListener dismiss, bool closeBtn : false}) : 
-  _maxLis = max, _minLis = min, _closeBtn = closeBtn, 
-  _dismissLis = dismiss != null ? dismiss : _defaultCloseListener,  
-  _btnNum = (max != null ? 1 : 0) + (min != null ? 1 : 0) + (closeBtn ? 1 : 0);
-  
-  static ViewEventListener _defaultCloseListener = (ViewEvent event) => event.target.remove(); 
+  Panel();
   
   /// Retrieve content node.
   Element get contentNode => getNode("inner");
+  
+  /// Retrieve button node of the given [name].
+  Element getButtonNode(String name) => getNode("btn-$name");
+  
+  /** Add a button floating at the upper right corner of the Panel with the given
+   * [name] and the given [listener] to handle on its click event.
+   */
+  void addButton(String name, EventListener listener) {
+    _addBtn(getNode("btns"), name, listener);
+  }
+  
+  /** Remove the button of the given [name];
+   */
+  void removeButton(String name) => getButtonNode(name).remove();
+  
+  Element _createBtn(String name) =>
+      new Element.html('<div class="v-btn v-btn-$name" id="$uuid-btn-$name"></div>');
+  
+  void _addBtn(Element btns, String name, EventListener listener) {
+    btns.nodes.add(_createBtn(name)..on.click.add(listener));
+  }
+  
+  
   
   //@override
   String get className => "Panel"; //TODO: replace with reflection if Dart supports it
@@ -46,34 +51,8 @@ class Panel extends View {
   </div>
 </div>
 ''');
-    Element btns = element.elements[0];
-    
-    if (_closeBtn) {
-      btns.nodes.add(_btn("close")..on.click.add((Event event) {
-        sendEvent(new ViewEvent("dismiss", this));
-      }));
-      on.dismiss.add(_dismissLis);
-    }
-    
-    if (_maxLis != null) {
-      btns.nodes.add(_btn("max")..on.click.add((Event event) {
-        sendEvent(new ViewEvent("maximize", this));
-      }));
-      on['maximize'].add(_maxLis);
-    }
-    
-    if (_minLis != null) {
-      btns.nodes.add(_btn("min")..on.click.add((Event event) {
-        sendEvent(new ViewEvent("minimize", this));
-      }));
-      on['minimize'].add(_minLis);
-    }
-    
     return element;
   }
-  
-  Element _btn(String suffix) =>
-      new Element.html('<div class="v-btn v-btn-$suffix"></div>');
   
   //@override
   void addChildNode_(View child, View beforeChild) {
@@ -82,6 +61,8 @@ class Panel extends View {
     else
       contentNode.nodes.add(child.node);
   }
+  
+  
   
   //@override
   void onLayout_(MeasureContext mctx) {

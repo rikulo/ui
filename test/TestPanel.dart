@@ -20,27 +20,16 @@ void main() {
   vlayout.style.border = "2px dashed #AAAAAA";
   mainView.addChild(vlayout);
   
-  final Panel p1 = new Panel(max: (ViewEvent event) {
-    // max
-  }, min: (ViewEvent event) {
-    // min
-  }, dismiss: (ViewEvent event) {
-    View v = event.target;
-    new FadeOutEffect(v.node, end: (MotionState state) => v.remove()).run();
-  }, closeBtn: true);
-  
-  p1..width = 200..height = 200;
+  final Panel p1 = new Panel()..width = 200..height = 200;
+  p1..addButton("close", (Event event) {
+    printc("p1 close");
+    new FadeOutEffect(p1.node, end: (MotionState state) => p1.remove()).run();
+  })..addButton("max", (Event event) {
+    printc("p1 max");
+  })..addButton("max", (Event event) {
+    printc("p1 min");
+  });
   p1.addChild(new TextView("Panel Content"));
-  
-  p1.on.dismiss.add((ViewEvent event) {
-    printc("event: dismiss");
-  });
-  p1.on["maximize"].add((ViewEvent event) {
-    printc("event: maximize");
-  });
-  p1.on["minimize"].add((ViewEvent event) {
-    printc("event: minimize");
-  });
   
   vlayout.addChild(p1);
   
@@ -49,8 +38,9 @@ void main() {
   p2.addChild(new TextView("Compact"));
   vlayout.addChild(p2);
   
-  final Panel p3 = new Panel(closeBtn: true);
+  final Panel p3 = new Panel();
   p3.profile.width = p3.profile.height = "content";
+  p3.addButton("close", (Event event) => p3.remove());
   p3.addChild(new TextView("Compact"));
   vlayout.addChild(p3);
   

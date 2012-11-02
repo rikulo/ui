@@ -161,6 +161,17 @@ body.rikulo {
   border-radius: 0;
   border: 1px solid rgba(0, 0, 0, 0.333);
 }
+.v-Panel > .v-btns {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
 .v-Panel > .v-btns > .v-btn {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
