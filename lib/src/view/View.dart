@@ -57,7 +57,6 @@ class View {
   _ChildInfo _childInfo;
   _EventListenerInfo _evlInfo;
   Map<String, dynamic> _dataAttrs, _mntAttrs;
-  Map<String, Template> _templs;
   Map<String, Annotation> _annos;
 
   CSSStyleDeclaration _style;
@@ -1085,12 +1084,6 @@ class View {
   Map<String, dynamic> get mountAttributes
   => _mntAttrs != null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new Map());
 
-  /** A map of templates.
-   * A template ([Template]) is a definition of UI that you can use to instantiate
-   * views.
-   */
-  Map<String, Template> get templates
-  => _templs != null ? _templs: MapUtil.onDemand(() => _templs = new Map());
   /** A map of annotations.
    * Annotations ([Annotation]) are the meta information providing
    * additional information about how to handle a view.

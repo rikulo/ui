@@ -59,23 +59,6 @@ interface Declaration default DeclarationImpl {
   void setProperty(String propertyName, String value);
 }
 
-/** Returns the value of the variable with the given name.
- */
-typedef Resolver(String name);
-/** A template for instantiating views.
- *
- * See also [View.templates]
- */
-interface Template {
-  /** Creates and returns the views based this template.
-   *
-   * + [parent] the parent. If null, the created view(s) won't have parent; nor attached.
-   * + [before] the child of the parent that new views will be inserted before.
-   * Ignored if null.
-   */
-  List<View> create([View parent, View before, Resolver resolver]);
-}
-
 /** An annotation for providing meta-information.
  * The menaning depends on the tool or utility that interprets it.
  *

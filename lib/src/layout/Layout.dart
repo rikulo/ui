@@ -47,7 +47,7 @@ abstract class AbstractLayout implements Layout {
   /** Arranges the layout of non-anchored views.
    * Instead of overriding [doLayout], it is simpler to override this method.
    */
-  abstract void doLayout_(MeasureContext mctx, View view, List<View> children);
+  void doLayout_(MeasureContext mctx, View view, List<View> children);
 
   /** Default: true.
    */
