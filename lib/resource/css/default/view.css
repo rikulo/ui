@@ -163,6 +163,7 @@ body.rikulo {
 }
 .v-Panel > .v-btns {
   display: inline-block;
+  white-space: nowrap;
   position: absolute;
   top: 0;
   right: 0;
@@ -177,13 +178,16 @@ body.rikulo {
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  float: right;
+  float: left;
   margin: 5px;
   margin-left: 0;
   height: 19px;
   width: 19px;
   border-radius: 3px;
-  border: 1px solid #888;
+  border: 1px dashed #888;
+}
+.v-Panel > .v-btns > .v-btn:first-child {
+  margin-left: 5px;
 }
 .v-Panel > .v-body {
   position: static;
@@ -193,6 +197,7 @@ body.rikulo {
   box-sizing: border-box;
   padding: 5px;
   border-radius: 0;
+  background: #ffffff;
 }
 .v-Panel > .v-body > .v-inner {
   position: absolute;

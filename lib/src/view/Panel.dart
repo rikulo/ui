@@ -66,34 +66,29 @@ class Panel extends View {
   
   //@override
   void onLayout_(MeasureContext mctx) {
-    final CSSStyleDeclaration bs = new DOMAgent(getNode("body")).computedStyle;
-    getNode("body").style.height = 
-        CSS.px(new DOMAgent(node).innerHeight - CSS.sumOf([bs.marginTop, bs.marginBottom]));
+    getNode("body").style.height = CSS.px(new DOMAgent(node).innerHeight - 
+        new _CSSAgent(getNode("body")).sumVer(mar: true));
     super.onLayout_(mctx);
   }
   
   //@override
-  int get innerWidth => 
-      inDocument ? new DOMAgent(contentNode).innerWidth : super.innerWidth;
+  int get innerWidth => inDocument ? new DOMAgent(contentNode).innerWidth : 0;
   
   //@override
-  int get innerHeight => 
-      inDocument ? new DOMAgent(contentNode).innerHeight : super.innerHeight;
+  int get innerHeight => inDocument ? new DOMAgent(contentNode).innerHeight : 0;
   
   //@override
   int measureHeight_(MeasureContext mctx) {
-    final CSSStyleDeclaration bs = new DOMAgent(getNode("body")).computedStyle;
-    return CSS.sumOf([bs.paddingTop, bs.paddingBottom]) + super.measureHeight_(mctx);
+    final int bdh = new _CSSAgent(getNode("body")).sumVer(mar: true, bor: true, pad: true) + super.measureHeight_(mctx);
+    final int btnh = new DOMAgent(getNode("btns")).height + new _CSSAgent(node).sumVer(bor: true);
+    return max(bdh, btnh);
   }
   
   //@override
   int measureWidth_(MeasureContext mctx) {
-    //final int titleWidth = _title == null ? 0 : new DOMAgent(headerNode).measureText(_title).width;
-    //final CSSStyleDeclaration bs = new DOMAgent(getNode("body")).computedStyle;
-    //final CSSStyleDeclaration hs = new DOMAgent(headerNode).computedStyle;
-    // 12 = border (1 * 2) + padding (5 * 2), ad-hoc
-    // 17 = button size (19) + margin (5), ad-hoc
-    return super.measureWidth_(mctx) + 12;
+    final int bdw = new _CSSAgent(getNode("body")).sumHor(mar: true, bor: true, pad: true) + super.measureWidth_(mctx);
+    final int btnw = new DOMAgent(getNode("btns")).width + new _CSSAgent(node).sumHor(bor: true);
+    return max(bdw, btnw);
   }
   
 }

@@ -170,6 +170,7 @@ body.rikulo {
 @panel-border-radius: 0;
 @panel-btn-border-radius: 3px;
 @panel-btn-size: 19px;
+@panel-background: #FFF;
 
 .v-Panel {
   border-radius: @panel-border-radius;
@@ -177,6 +178,7 @@ body.rikulo {
   
   > .v-btns {
     display: inline-block;
+    white-space: nowrap;
     position: absolute;
     top: 0;
     right:0;
@@ -185,13 +187,17 @@ body.rikulo {
     
     > .v-btn {
       .box-sizing(border-box);
-      float: right;
+      float: left;
       margin: 5px;
       margin-left: 0;
       height: @panel-btn-size;
       width: @panel-btn-size;
       border-radius: @panel-btn-border-radius;
-      border: 1px solid #888; // temp
+      border: 1px dashed #888; // temp
+    }
+    
+    > .v-btn:first-child {
+      margin-left: 5px;
     }
     
   }
@@ -201,6 +207,7 @@ body.rikulo {
     .box-sizing(border-box);
     padding: 5px;
     border-radius: @panel-border-radius;
+    background: @panel-background;
     
     > .v-inner {
       position: absolute;

@@ -5,8 +5,6 @@
 import 'dart:html';
 
 import 'package:rikulo/view.dart';
-import 'package:rikulo/model.dart';
-import 'package:rikulo/event.dart';
 import 'package:rikulo/effect.dart';
 import 'package:rikulo/util.dart';
 
@@ -21,17 +19,21 @@ void main() {
   mainView.addChild(vlayout);
   
   final Panel p1 = new Panel()..width = 200..height = 200;
-  p1..addButton("close", (Event event) {
-    printc("p1 close");
-    new FadeOutEffect(p1.node, end: (MotionState state) => p1.remove()).run();
+  p1..addButton("max", (Event event) {
+    printc("p1 min");
+    
   })..addButton("max", (Event event) {
     printc("p1 max");
-  })..addButton("max", (Event event) {
-    printc("p1 min");
+    
+  })..addButton("close", (Event event) {
+    printc("p1 close");
+    new FadeOutEffect(p1.node, end: (MotionState state) => p1.remove()).run();
+    
   });
   p1.addChild(new TextView("Panel Content"));
-  
   vlayout.addChild(p1);
+  
+  final EventListener _nothing = (Event event) {};
   
   final Panel p2 = new Panel();
   p2.profile.width = p2.profile.height = "content";
@@ -40,8 +42,14 @@ void main() {
   
   final Panel p3 = new Panel();
   p3.profile.width = p3.profile.height = "content";
-  p3.addButton("close", (Event event) => p3.remove());
+  p3.addButton("close", _nothing);
   p3.addChild(new TextView("Compact"));
   vlayout.addChild(p3);
+  
+  final Panel p4 = new Panel();
+  p4.profile.width = p4.profile.height = "content";
+  p4..addButton("min", _nothing)..addButton("max", _nothing)..addButton("close", _nothing);
+  p4.addChild(new TextView("Compact"));
+  vlayout.addChild(p4);
   
 }
