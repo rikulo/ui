@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Jun 25, 2012  11:34:48 PM
 //Author: simon
+part of rikulo_effect;
 
 /**
  * The callback function used when [Motion] starts.

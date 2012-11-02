@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Jun 18, 2012  9:46:29 AM
 // Author: tomyeh
+part of rikulo_view;
 
 /**
  * A switch button.

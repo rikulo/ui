@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, Jul 19, 2012  11:00:12 PM
 //Author: simon
+part of rikulo_event;
 
 /** Event representing scrolling.
  */

@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Jun 25, 2012  11:34:48 PM
 //Author: simon
+part of rikulo_effect;
 
 /** An easing function, which supplies a position number based on a time from 0 
  * to 1. The return value should be inclusively between 0 and 1.

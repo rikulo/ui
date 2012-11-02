@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, Oct 26, 2012  4:15:41 PM
 // Author: tomyeh
+part of rikulo_view;
 
 /** A multiline input box.
  *

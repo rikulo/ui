@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Wed, Sep 12, 2012 10:53:16 AM
 //Author: simonpai
+part of rikulo_effect;
 
 /** The constant objects to represent the direction of [SlideInEffect] and
  * [SlideOutEffect].

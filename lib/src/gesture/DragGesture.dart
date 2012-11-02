@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Wed, Jun 20, 2012 11:37:32 AM
 // Author: tomyeh
+part of rikulo_gesture;
 
 /** The callback when [DragGesture] tries to start the dragging.
  * + If false is returned, the gesture will be cancelled. In other cases (true

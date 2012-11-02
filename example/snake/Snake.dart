@@ -1,3 +1,4 @@
+part of snake;
 
 class Snake {
   static const int UP = -2, DOWN = 2, LEFT=-1, RIGHT=1;

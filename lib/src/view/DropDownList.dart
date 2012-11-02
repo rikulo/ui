@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Wed, Jun 13, 2012  4:08:37 PM
 // Author: tomyeh
+part of rikulo_view;
 
 /**
  * Represents a view that allows the user to select a single item

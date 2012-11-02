@@ -1,3 +1,4 @@
+part of snake;
 
 class SnakePoint {
   int x, y;

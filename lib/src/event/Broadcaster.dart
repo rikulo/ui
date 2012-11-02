@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, May 10, 2012 12:16:20 PM
 // Author: tomyeh
+part of rikulo_event;
 
 /**
  * The broadcaster used to broadcast events.

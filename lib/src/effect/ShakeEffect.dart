@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, Aug 30, 2012 18:31:52 AM
 //Author: simonpai
+part of rikulo_effect;
 
 /**
  * A shaking effect implemented with CSS rotation on the element.

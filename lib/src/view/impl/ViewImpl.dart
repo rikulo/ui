@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, Apr 26, 2012  6:20:13 PM
 // Author: tomyeh
+part of rikulo_view_impl;
 
 /** Utilities for implemnetation.
  */

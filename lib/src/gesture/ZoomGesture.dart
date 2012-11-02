@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, Aug 10, 2012 12:34:17 AM
 //Author: simonpai
+part of rikulo_gesture;
 
 /** The state of a [ZoomGesture].
  */

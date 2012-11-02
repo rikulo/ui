@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 17, 2012
 // Author: tomyeh
+part of rikulo_event;
 
 /** A list of [ViewEvent] listeners.
  */

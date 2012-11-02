@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Jul 23, 2012  2:31:05 PM
 // Author: tomyeh
+part of rikulo_model;
 
 /**
  * The render context used to render [DataModel].

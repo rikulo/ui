@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, Apr 06, 2012  3:11:20 PM
 // Author: tomyeh
+part of rikulo_layout;
 
 /**
  * The types of [LayoutAmountInfo].

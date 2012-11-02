@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, Jun 14, 2012  9:51:13 AM
 // Author: tomyeh
+part of rikulo_model;
 
 /** A data model.
  */

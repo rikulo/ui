@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, May 18, 2012  7:12:55 PM
 // Author: tomyeh
+part of rikulo_effect;
 
 /** An animation callbak.
  * To start an animation, you can add a callback to [Animator], such that

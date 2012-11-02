@@ -1,4 +1,5 @@
 //Sample Code: Circles implemented in Canvas
+library snake;
 
 import 'dart:html';
 import 'dart:math';

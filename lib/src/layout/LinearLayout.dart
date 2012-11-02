@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, Mar 15, 2012  4:48:10 PM
 // Author: tomyeh
+part of rikulo_layout;
 
 /**
  * The linear layout. It arranges the children of the associated view in

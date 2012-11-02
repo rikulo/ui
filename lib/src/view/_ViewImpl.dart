@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Tue, Mar 13, 2012  2:14:29 PM
 // Author: tomyeh
+part of rikulo_view;
 
 /** Used by View.tag()
  */

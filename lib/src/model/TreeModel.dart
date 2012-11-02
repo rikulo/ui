@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Jun 11, 2012 12:37:37 PM
 // Author: tomyeh
+part of rikulo_model;
 
 /**
  * An event used to notify the listeners of a tree model ([TreeModel])

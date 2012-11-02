@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu Feb 16 15:10:39 TST 2012
 // Author: tomyeh
+part of rikulo_model;
 
 /** A listener for handling [DataEvent].
  */

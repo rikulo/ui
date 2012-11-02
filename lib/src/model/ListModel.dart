@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu Feb 16 14:52:22 TST 2012
 // Author: tomyeh
+part of rikulo_model;
 
 /**
  * An event used to notify the listeners of a list model ([ListModel])

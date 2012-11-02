@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Sat, Oct 27, 2012 11:14:11 AM
 // Author: tomyeh
+part of rikulo_view;
 
 /**
  * A radio button. The radio buttons are grouped by [name].

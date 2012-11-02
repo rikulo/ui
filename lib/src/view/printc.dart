@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, Apr 27, 2012  4:20:01 PM
 // Author: tomyeh
+part of rikulo_view;
 
 /** Prints the information to the client's screen rather than console.
  *

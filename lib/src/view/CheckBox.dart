@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Apr 23, 2012  6:02:21 PM
 // Author: tomyeh
+part of rikulo_view;
 
 /**
  * A check box is a two-state button.

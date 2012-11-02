@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Jun 11, 2012 12:38:52 PM
 // Author: tomyeh
+part of rikulo_model;
 
 /**
  * Represents a tree node that can be used with [DefaultTreeModel].

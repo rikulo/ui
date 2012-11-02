@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Wed, Aug 01, 2012 11:14:35 AM
 // Author: tomyeh
+part of rikulo_event;
 
 /**
  * A layout event. It is sent with [ViewEvents.layout] and [ViewEvents.preLayout].

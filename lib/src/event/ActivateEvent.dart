@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, May 10, 2012  3:33:05 PM
 // Author: tomyeh
+part of rikulo_event;
 
 /**
  * An event to indicate activation.

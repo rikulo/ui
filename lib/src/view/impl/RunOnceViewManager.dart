@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Mar 26, 2012  7:38:18 PM
 // Author: tomyeh
+part of rikulo_view_impl;
 
 /** The task used with [RunOnceViewManager] for handling a view.
  */

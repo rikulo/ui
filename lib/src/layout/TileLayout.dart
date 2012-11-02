@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Tue, Aug 21, 2012  4:01:03 PM
 // Author: tomyeh
+part of rikulo_layout;
 
 /**
  * The title layout (not implemented yet).

@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, May 25, 2012  4:12:43 PM
 // Author: tomyeh
+part of rikulo_view;
 
 /**
  * A CSS style.

@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, Mar 15, 2012 10:15:54 AM
 // Author: tomyeh
+part of rikulo_view;
 
 /**
  * The position declaration of a view.

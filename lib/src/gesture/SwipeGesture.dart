@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, Aug 3, 2012 12:56:15 AM
 //Author: simonpai
+part of rikulo_gesture;
 
 /** The callback invoked by [SwipeGesture].
  */

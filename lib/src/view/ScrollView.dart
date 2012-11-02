@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, May 03, 2012  3:21:34 PM
 // Author: tomyeh
+part of rikulo_view;
 
 /**
  * A view container that can be scrolled by the user.

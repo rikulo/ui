@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, Jun 14, 2012  2:20:43 PM
 // Author: tomyeh
+part of rikulo_event;
 
 /**
  * A select event. It is sent with [ViewEvents.select].

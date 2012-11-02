@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Mar 19, 2012 12:10:33 PM
 // Author: tomyeh
+part of rikulo_view;
 
 /**
  * Displays plain text or a fragment of HTML content to the user.

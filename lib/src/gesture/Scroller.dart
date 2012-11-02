@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, May 03, 2012  1:06:33 PM
 // Author: tomyeh
+part of rikulo_gesture;
 
 /** The callback invoked by [Scroller] when scrolling starts.
  * 

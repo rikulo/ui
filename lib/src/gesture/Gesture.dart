@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, Aug 16, 2012 15:54:31 AM
 //Author: simonpai
+part of rikulo_gesture;
 
 /** The common interface of gestures.
  */

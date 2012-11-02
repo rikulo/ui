@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, May 24, 2012 12:05:08 PM
 // Author: tomyeh
+part of rikulo_event;
 
 /**
  * An event to indicate a view's value has been changed.

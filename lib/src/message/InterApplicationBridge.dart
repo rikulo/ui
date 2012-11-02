@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Sat, Apr 28, 2012  3:09:21 PM
 // Author: tomyeh
+part of rikulo_message;
 
 /**
  * A bridge for inter-application communication among message queues.

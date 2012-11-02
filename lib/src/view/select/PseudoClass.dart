@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Wed, Jun 06, 2012  12:30:14 AM
 // Author: simonpai
+part of rikulo_view_select;
 
 class PseudoClass {
   

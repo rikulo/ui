@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Jan 9, 2012 13:01:36
 // Author: tomyeh
+part of rikulo_view;
 
 /** An effect for the given view, such as fade-in and slide-out.
  */

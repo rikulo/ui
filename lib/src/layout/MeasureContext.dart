@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Mar 26, 2012  2:47:38 PM
 // Author: tomyeh
+part of rikulo_layout;
 
 /**
  * The context to measure size.

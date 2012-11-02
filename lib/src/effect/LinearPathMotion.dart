@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, Jul 13, 2012  09:32:28 AM
 //Author: simon
+part of rikulo_effect;
 
 /**
  * An [EasingMotion] with action of move an [Element] along a linear trajectory.

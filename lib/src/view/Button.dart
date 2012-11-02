@@ -1,5 +1,6 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //Jan. 09, 2012
+part of rikulo_view;
 
 /** A button.
  */

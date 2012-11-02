@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, Nov 2, 2012  12:04:16 AM
 //Author: simonpai
+part of rikulo_view;
 
 /** A utility for element size calculation.
  */

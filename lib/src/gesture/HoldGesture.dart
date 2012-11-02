@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Wed, May 09, 2012 12:46:09 PM
 // Author: tomyeh
+part of rikulo_gesture;
 
 /** The callback before starting monitoring the touch-and-hold
  * gesture. If it returns false, the monitoring will be cancelled.

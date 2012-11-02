@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Tue, May 22, 2012 10:46:08 AM
 // Author: tomyeh
+part of rikulo_view;
 
 /**
  * A text box to get input from the user or to to display text.

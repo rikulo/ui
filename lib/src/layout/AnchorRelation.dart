@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Mon, Apr 02, 2012  6:31:09 PM
 // Author: tomyeh
+part of rikulo_layout;
 
 typedef void _AnchorLocator(int offset, var anchor, View view);
 
