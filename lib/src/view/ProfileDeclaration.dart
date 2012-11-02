@@ -5,9 +5,11 @@
 /**
  * The position declaration of a view.
  */
-interface ProfileDeclaration extends Declaration
-default ProfileDeclarationImpl {
-  ProfileDeclaration(View owner);
+class ProfileDeclaration extends Declaration {
+  final View _owner;
+  View _anchorView;
+
+  ProfileDeclaration(View owner) : _owner = owner;
 
   /** The anchor, or null if [anchorView] was assigned and it isn't
    * assigned with an ID.
@@ -19,7 +21,14 @@ default ProfileDeclarationImpl {
    * Otherwise, it means no anchor at all if both [location] and [anchor]
    * are empty (and [anchorView] is null).
    */
-  String anchor;
+  String get anchor => getPropertyValue("anchor");
+  /** The anchor, or null if [anchorView] was assigned and it isn't
+   * assigned with an ID.
+   */
+  void set anchor(String value) {
+    setProperty("anchor", value);
+    _anchorView = null;
+  }
   /** The anchor view. There are two ways to assign an anchor view:
    *
    * 1. assign a value to [anchor]
@@ -28,7 +37,31 @@ default ProfileDeclarationImpl {
    * Notice that the anchor view must be the parent or one of the
    * siblings.
    */
-  View anchorView;
+  View get anchorView {
+    if (_anchorView != null)
+      return _anchorView;
+    final anc = anchor;
+    return anc.isEmpty ? location.isEmpty ? null: _owner.parent: _owner.query(anc);
+  }
+  /// The anchor view. There are two ways to assign an anchor view:
+  void set anchorView(View view) {
+    String av;
+    if (view == null) {
+      av = "";
+    } else if (identical(view, _owner.parent)) {
+      av = "parent";
+    } else {
+      if (view != null
+      && view.parent != null && _owner.parent != null //parent might not be assigned yet
+      && !identical(view.parent, _owner.parent))
+        throw new UIException("Only parent or sibling allowed for an anchor, not $view");
+      if (identical(view, _owner))
+        throw const UIException("The anchor can't be itself.");
+      av = view.id.isEmpty ? "": "#${view.id}";
+    }
+    setProperty("anchor", av);
+    _anchorView = view;
+  }
 
   /** The location of the associated view.
    * It is used only if [anchor] is not assigned with an non-empty value
@@ -46,7 +79,11 @@ default ProfileDeclarationImpl {
    * "center left", "center center", "center right",
    * "bottom left", "bottom center", and "bottom right"
    */
-  String location;
+  String get location => getPropertyValue("location");
+  /// The location of the associated view.
+  void set location(String value) {
+    setProperty("location", value);
+  }
 
   /** The alignment.
    *
@@ -54,14 +91,22 @@ default ProfileDeclarationImpl {
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    */
-  String align;
+  String get align => getPropertyValue("align");
+  /// The alignment.
+  void set align(String value) {
+    setProperty("align", value);
+  }
   /** The spacing of the associated view.
    *
    * Syntax: `#n1 [#n2 [#n3 #n4]]`
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    */
-  String spacing;
+  String get spacing => getPropertyValue("spacing");
+  /// The spacing of the associated view.
+  void set spacing(String value) {
+    setProperty("spacing", value);
+  }
 
   /** The expected width of the associated view.
    *
@@ -72,7 +117,11 @@ default ProfileDeclarationImpl {
    * Notice that the width will be adjusted against [minWidth] and
    * [maxWidth] (if they are specified).
    */
-  String width;
+  String get width => getPropertyValue("width");
+  /// The expected width of the associated view.
+  void set width(String value) {
+    setProperty("width", value);
+  }
   /** The expected width of the associated view.
    *
    * Syntax: `height: #n | content | flex | flex #n | #n %`
@@ -82,7 +131,11 @@ default ProfileDeclarationImpl {
    * Notice that the height will be adjusted against [minHeight] and
    * [maxHeight] (if they are specified).
    */
-  String height;
+  String get height => getPropertyValue("height");
+  /// The expected width of the associated view.
+  void set height(String value) {
+    setProperty("height", value);
+  }
 
   /** The expected minimal allowed width of the associated view.
    *
@@ -100,7 +153,11 @@ default ProfileDeclarationImpl {
    * the child, don't use flex or percentage at child's profile.
    * Otherwise, it will become zero.
    */
-  String minWidth;
+  String get minWidth => getPropertyValue("min-width");
+  /// The expected minimal allowed width of the associated view.
+  void set minWidth(String value) {
+    setProperty("min-width", value);
+  }
   /** The expected minimal allowed width of the associated view.
    *
    * Syntax: `min-height: #n | flex | #n %`
@@ -117,7 +174,11 @@ default ProfileDeclarationImpl {
    * the child, don't use flex or percentage at child's profile.
    * Otherwise, it will become zero.
    */
-  String minHeight;
+  String get minHeight => getPropertyValue("min-height");
+  /// The expected minimal allowed width of the associated view.
+  void set minHeight(String value) {
+    setProperty("min-height", value);
+  }
 
   /** The expected maximal allowed width of the associated view.
    *
@@ -135,7 +196,11 @@ default ProfileDeclarationImpl {
    * the child, don't use flex or percentage at child's profile.
    * Otherwise, it will become zero.
    */
-  String maxWidth;
+  String get maxWidth => getPropertyValue("max-width");
+  /// The expected maximal allowed width of the associated view.
+  void set maxWidth(String value) {
+    setProperty("max-width", value);
+  }
   /** The expected maximal allowed width of the associated view.
    *
    * Syntax: `max-height: #n | flex | #n %`
@@ -152,7 +217,11 @@ default ProfileDeclarationImpl {
    * the child, don't use flex or percentage at child's profile.
    * Otherwise, it will become zero.
    */
-  String maxHeight;
+  String get maxHeight => getPropertyValue("max-height");
+  /// The expected maximal allowed width of the associated view.
+  void set maxHeight(String value) {
+    setProperty("max-height", value);
+  }
 
   /** Which side of the view won't display another sibling.
    *
@@ -169,5 +238,9 @@ default ProfileDeclarationImpl {
    * If `right`, the view must be the last view in the row.  
    * If `both`, the view must be the only view in the row.
    */
-  String clear;
+  String get clear => getPropertyValue("clear");
+  /// Which side of the view won't display another sibling.
+  void set clear(String value) {
+    setProperty("clear", value);
+  }
 }

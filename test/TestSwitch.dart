@@ -27,6 +27,6 @@ void main() {
   mainView.addChild(createSwitch(false));
   mainView.addChild(createSwitch(true, "Yes", "No"));
   mainView.addChild(createSwitch(false, "True", "False"));
-  mainView.addChild(createSwitch(true, small: true));
-  mainView.addChild(createSwitch(false, small: true));
+  mainView.addChild(createSwitch(true, null, null, true));
+  mainView.addChild(createSwitch(false, null, null, true));
 }

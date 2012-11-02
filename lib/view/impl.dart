@@ -10,8 +10,5 @@ import "../html.dart";
 import "../view.dart";
 import "../layout.dart";
 
-part "../src/view/impl/DeclarationImpl.dart";
-part "../src/view/impl/LayoutDeclarationImpl.dart";
-part "../src/view/impl/ProfileDeclarationImpl.dart";
 part "../src/view/impl/ViewImpl.dart";
 part "../src/view/impl/RunOnceViewManager.dart";

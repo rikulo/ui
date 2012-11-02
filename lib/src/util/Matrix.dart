@@ -133,29 +133,24 @@ class Matrix {
 /** An intermediate object for supporting the two-dimensional-array-like entry 
  * access of [Matrix].
  */
-interface MatrixRow {
+abstract class MatrixRow {
   
   /** The getter of [Matrix] entry.
    */
   num operator [](int column);
-  
   /** The setter of [Matrix] entry.
    */
   void operator []=(int column, num value);
-  
 }
 
 class _MatrixRow implements MatrixRow {
-  
   final Matrix _m;
   final int _r;
   
   _MatrixRow(this._m, this._r);
   
   num operator [](int column) => _m._get(_r, column);
-  
   void operator []=(int column, num value) => _m._set(_r, column, value);
-  
 }
 
 /** A CSS-compatible transformation object, as a special case of a 3-by-3 

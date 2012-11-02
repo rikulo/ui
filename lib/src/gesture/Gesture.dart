@@ -4,7 +4,7 @@
 
 /** The common interface of gestures.
  */
-interface Gesture {
+abstract class Gesture {
   
   /** Destroy the gesture. It shall be called to clean up, if it is no longer 
    * in use.
@@ -21,12 +21,11 @@ interface Gesture {
   
   /** Stop the current action, if any. */
   void stop();
-  
 }
 
 /** The common interface of state of [Gesture].
  */
-interface GestureState {
+abstract class GestureState {
   
   /** The latest timestamp of gesture. */
   int get time;
@@ -38,5 +37,4 @@ interface GestureState {
    * will be cleaned up automatically when the gesture is finished.
    */
   var data;
-  
 }

@@ -17,40 +17,14 @@ typedef MessageFilter(var message);
 /**
  * A message queue.
  */
-interface MessageQueue<Message> default _MessageQueueImpl<Message> {
+class MessageQueue<Message> {
+  final List<_ListenerInfo> _listenerInfos = new List();
+  String _uuid;
+
   MessageQueue();
 
   /** The UUID of this message queue.
    */
-  String get uuid;
-
-  /** Subscribes a message listener to this message queue with an optional filter.
-   */
-  void subscribe(MessageListener listener, [MessageFilter filter]);
-  /** Unsubscribes a message listener from this message queue.
-   * This method returns true if the listener was added.
-   */
-  bool unsubscribe(MessageListener listener, [MessageFilter filter]);
-  /** Sends a message to this queue, such that
-   * all subscribers in this message queue will be notified.
-   */
-  void send(Message message);
-  /** Posts a message to this queue.
-   * Unlike [send], the subscribers will be invoked later.
-   * In other words, this method returned immediately without waiting
-   * any subscriber to be invoked.
-   */
-  void post(Message message);
-}
-
-class _MessageQueueImpl<Message> implements MessageQueue<Message> {
-  final List<_ListenerInfo> _listenerInfos;
-  String _uuid;
-
-  _MessageQueueImpl(): _listenerInfos = new List() {
-  }
-
-  //@override
   String get uuid {
     if (_uuid == null) {
       final int appid = ViewUtil.appId;
@@ -61,11 +35,14 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
   }
   static int _uuidNext = 0;
 
-  //@override
+  /** Subscribes a message listener to this message queue with an optional filter.
+   */
   void subscribe(MessageListener listener, [MessageFilter filter]) {
     _listenerInfos.add(new _ListenerInfo(listener, filter));
   }
-  //@override
+  /** Unsubscribes a message listener from this message queue.
+   * This method returns true if the listener was added.
+   */
   bool unsubscribe(MessageListener listener, [MessageFilter filter]) {
     for (int j = _listenerInfos.length; --j >= 0;) {
       final _ListenerInfo info = _listenerInfos[j];
@@ -76,7 +53,9 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
     }
     return false;
   }
-  //@override
+  /** Sends a message to this queue, such that
+   * all subscribers in this message queue will be notified.
+   */
   void send(Message message) {
     for (final _ListenerInfo info in _listenerInfos) {
       if (info.filter == null || (message = info.filter(message)) != null) {
@@ -84,7 +63,11 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
       }
     }
   }
-  //@override
+  /** Posts a message to this queue.
+   * Unlike [send], the subscribers will be invoked later.
+   * In other words, this method returned immediately without waiting
+   * any subscriber to be invoked.
+   */
   void post(Message message) {
     window.setTimeout(() {send(message);}, 0);
       //note: the order of messages is preserved across all message queues
@@ -92,6 +75,7 @@ class _MessageQueueImpl<Message> implements MessageQueue<Message> {
 
   String toString() => "MessageQueue($uuid)";
 }
+
 class _ListenerInfo {
   final MessageListener listener;
   final MessageFilter filter;

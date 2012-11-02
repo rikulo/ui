@@ -3,6 +3,24 @@
 // Author: tomyeh
 
 /**
+ * An event used to notify the listeners of a tree model ([TreeModel])
+ * that the model has been changed.
+ */
+class TreeDataEvent<T> extends DataEvent {
+  /** Constructor.
+   *
+   * + [type]: `change`, `add` or `remove`.
+   */
+  TreeDataEvent(TreeModel<T> model, String type, T this.node): super(model, type);
+
+  /** Returns the first affected node.
+   */
+  final T node;
+
+  String toString() => "$type($node)";
+}
+
+/**
  * A data model representing a tree of data.
  * Each node of the tree can be anything and represented with the generic type, `T`.
  *
@@ -53,7 +71,7 @@
  * one of the open nodes, the tree node will be opened, i.e., the child views
  * will be visible to the user.
  */
-interface TreeModel<T> extends DataModel {
+abstract class TreeModel<T> extends DataModel {
 	/**
 	 * Returns the root of the tree model.
 	 */
@@ -89,11 +107,115 @@ interface TreeModel<T> extends DataModel {
 	T getChildAt(List<int> path);
 }
 
-/** A data model representing a tree of data and it allows the user to select any data of it.
- *
- * It is optional since you can implement [TreeModel] and [Selection]
- * directly. However, it is convenient that you can instantiate an instance
- * from it and access the methods in both interfaces.
+/**
+ * A skeletal implementation of [TreeModel].
+ * To extend from this class, you have to implement [getChild], [getChildCount]
+ * and [isLeaf]. This class provides a default implementation for all other methods.
  */
-interface TreeSelectionModel<T> extends TreeModel<T>, Selection<T>, Disables<T>, Opens<T> {
+abstract class AbstractTreeModel<T> extends AbstractSelectionModel<T>
+implements TreeModel<T>, Opens<T> {
+  T _root;
+  Set<T> _opens;
+
+  /** Constructor.
+   *
+   * + [selection]: if not null, it will be used to hold the selection.
+   * Unlike [set selection], it won't make a copy.
+   * + [disables]: if not null, it will be used to hold the list of disabled items.
+   * Unlike [set disables], it won't make a copy.
+   * + [opens]: if not null, it will be used to hold the list of opened items.
+   * Unlike [set opens], it won't make a copy.
+   */
+  AbstractTreeModel(T root, {Set<T> selection, Set<T> disables,
+  Set<T> opens, bool multiple: false}):
+  super(selection: selection, disables: disables, multiple: multiple) {
+    _root = root;
+    _opens = opens != null ? opens: new Set();
+  }
+
+  void _sendOpen() {
+    sendEvent(new DataEvent(this, 'open'));
+  }
+
+  //TreeModel//
+  T get root => _root;
+  /** Sets the root of the tree model.
+   */
+  void set root(T root) {
+    if (!identical(_root, root)) {
+      _root = root;
+      _selection.clear();
+      _opens.clear();
+      sendEvent(new DataEvent(this, 'structure'));
+    }
+  }
+
+  T getChildAt(List<int> path) {
+    if (path == null || path.length == 0)
+      return root;
+
+    T parent = root;
+    T node = null;
+    int childCount = _childCount(parent);
+    for (int i = 0; i < path.length; i++) {
+      if (path[i] < 0 || path[i] > childCount //out of bound
+      || (node = getChild(parent, path[i])) == null //model is wrong
+      || ((childCount = _childCount(node)) <= 0 && i != path.length - 1)) //no more child
+        return null;
+
+      parent = node;
+    }
+    return node;
+  }
+  int _childCount(T parent) => isLeaf(parent) ? 0: getChildCount(parent);
+
+  //Open//
+  Set<T> get opens => _opens;
+  void set opens(Collection<T> opens) {
+    if (_opens != opens) {
+      _opens.clear();
+      _opens.addAll(opens);
+      _sendOpen();
+    }
+  }
+
+  bool isOpened(T node) => _opens.contains(node);
+  bool get isOpensEmpty => _opens.isEmpty;
+
+  bool addToOpens(T node) {
+    if (_opens.contains(node))
+      return false;
+
+    _opens.add(node);
+     _sendOpen();
+    return true;
+  }
+  bool removeFromOpens(T node) {
+    if (_opens.remove(node)) {
+      _sendOpen();
+      return true;
+    }
+    return false;
+  }
+  void clearOpens() {
+    if (!_opens.isEmpty) {
+      _opens.clear();
+      _sendOpen();
+    }
+  }
+
+  //Additional API//
+  /**Removes the given collection from the list of opened nodes.
+   */
+  void removeAllOpens(Collection<dynamic> c) {
+    final int oldlen = _opens.length;
+    _opens.removeAll(c);
+    if (oldlen != _opens.length)
+      _sendOpen();
+  }
+  //@override
+  bool operator==(other) {
+    return (other is AbstractTreeModel) && super == other
+      && _opens == other._opens;
+  }
 }

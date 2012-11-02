@@ -13,37 +13,36 @@ typedef void HoldGestureAction(HoldGestureState state);
 
 /** The state of [HoldGesture].
  */
-interface HoldGestureState extends GestureState {
+class HoldGestureState extends GestureState {
+  final int startTime;
+  int _timer, _time;
   
+  HoldGestureState(this.gesture, this.eventTarget, int time, this.position) : 
+  _time = time, this.startTime = time;
+
+  //@override
+  final EventTarget eventTarget;
+  //@override
+  int get time => _time;
+
   /** The associated [HoldGesture]. */
-  HoldGesture get gesture;
+  final HoldGesture gesture;
   
   /** The touch point's offset relative to the whole document.
    */
-  Offset get position;
-  
-}
-
-class _HoldGestureState implements HoldGestureState {
-  
-  final HoldGesture gesture;
-  final EventTarget eventTarget;
-  final int startTime;
-  int _timer, _time;
   final Offset position;
-  var data;
-  
-  _HoldGestureState(this.gesture, this.eventTarget, int time, this.position) : 
-  _time = time, this.startTime = time;
-  
-  int get time => _time;
-  
 }
 
 /**
  * A touch-and-hold gesture handler.
  */
-interface HoldGesture extends Gesture default _HoldGesture {
+abstract class HoldGesture extends Gesture {
+  final int _duration;
+  final int _movementLimit;
+  final HoldGestureStart _start;
+  final HoldGestureAction _action;
+  HoldGestureState _state;
+  bool _disabled = false;
   
   /** Constructor.
    *
@@ -55,50 +54,37 @@ interface HoldGesture extends Gesture default _HoldGesture {
    * + [movementLimit] is the allowed movement to consider if a user is holding a touch.
    * Default: 3 (unit: pixels)
    */
-  HoldGesture(Element owner, HoldGestureAction action,
-  {HoldGestureStart start, int duration, num movementLimit});
-  
-  /** The element that owns this handler.
-   */
-  Element get owner;
-  
-}
-
-abstract class _HoldGesture implements HoldGesture {
-  final Element owner;
-  final int _duration;
-  final int _movementLimit;
-  final HoldGestureStart _start;
-  final HoldGestureAction _action;
-  _HoldGestureState _state;
-  bool _disabled = false;
-
-  factory _HoldGesture(Element owner, HoldGestureAction action,
+  factory HoldGesture(Element owner, HoldGestureAction action,
   {HoldGestureStart start, int duration: 1000, num movementLimit: 3}) {
     return browser.touch ?
       new _TouchHoldGesture(owner, action, start, duration, movementLimit):
       new _MouseHoldGesture(owner, action, start, duration, movementLimit);
   }
   
-  _HoldGesture._init(this.owner, this._action, this._start, this._duration, 
+  HoldGesture._init(this.owner, this._action, this._start, this._duration, 
   this._movementLimit) {
     _listen();
   }
   
+  /** The element that owns this handler.
+   */
+  final Element owner;
+
+  //@override  
   void destroy() {
     _stop();
     _unlisten();
   }
-  
+  //@override  
   void stop() {
     _stop();
   }
-  
+  //@override  
   void disable() {
     _stop();
     _disabled = true;
   }
-  
+  //@override  
   void enable() {
     _disabled = false;
   }
@@ -111,7 +97,7 @@ abstract class _HoldGesture implements HoldGesture {
       return;
     
     _stop();
-    _state = new _HoldGestureState(this, target, time, position);
+    _state = new HoldGestureState(this, target, time, position);
     
     if (_start != null && identical(_start(_state), false)) {
       _stop();
@@ -127,7 +113,7 @@ abstract class _HoldGesture implements HoldGesture {
   void _touchEnd() => _stop();
   
   void _call() {
-    final _HoldGestureState state = _state;
+    final HoldGestureState state = _state;
     _stop();
     if (_action != null && state != null) {
       state._time = new Date.now().millisecondsSinceEpoch;
@@ -147,7 +133,7 @@ abstract class _HoldGesture implements HoldGesture {
 
 /** The touch-and-hold handler for touch devices.
  */
-class _TouchHoldGesture extends _HoldGesture {
+class _TouchHoldGesture extends HoldGesture {
   EventListener _elStart, _elMove, _elEnd;
 
   _TouchHoldGesture(Element owner, HoldGestureAction action,
@@ -177,7 +163,7 @@ class _TouchHoldGesture extends _HoldGesture {
 }
 /** The touch-and-hold handler for mouse-based devices.
  */
-class _MouseHoldGesture extends _HoldGesture {
+class _MouseHoldGesture extends HoldGesture {
   EventListener _elStart, _elMove, _elEnd;
   
   _MouseHoldGesture(Element owner, HoldGestureAction action,

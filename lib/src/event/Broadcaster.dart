@@ -9,7 +9,7 @@
  * (i.e., `inDocument`). Thus, to listen a broadcast event, you can register
  * a listenber to either [broadcaster] or one of the moutned root views.
  */
-interface Broadcaster {
+abstract class Broadcaster {
   /** Returns [BroadcastEvents] for adding or removing event listeners.
    */
   BroadcastEvents get on;
@@ -31,25 +31,17 @@ Broadcaster broadcaster = new _Broadcaster();
 /**
  * A map of event listeners for handling the broadcasted events.
  */
-interface BroadcastEvents extends ViewEventListenerMap default _BroadcastEvents {
-  BroadcastEvents(var ptr);
+class BroadcastEvents extends ViewEventListenerMap {
+  BroadcastEvents(var ptr): super(ptr);
 
   /** Listeners for the activate event ([ActivateEvent]).
    */
-  ViewEventListenerList get activate;
-}
-
-/** An implementation of [BroadcastEvents].
- */
-class _BroadcastEvents extends _ViewEventListenerMap implements BroadcastEvents {
-  _BroadcastEvents(var ptr): super(ptr);
-
   ViewEventListenerList get activate => _get('activate');
 }
 
 /** An implementation of [Broadcaster].
  */
-class _Broadcaster implements Broadcaster {
+class _Broadcaster extends Broadcaster {
   _BroadcastListeners _listeners;
   BroadcastEvents _on;
 

@@ -29,131 +29,212 @@ typedef Offset ScrollerSnap(Offset position);
 /** The scroller used to scroll an element by use of its style's
  * transform property.
  */
-interface Scroller default _Scroller {
+class Scroller {
+  final bool _hasHor, _hasVer;
+  final bool scrollbar;
+  final ScrollerStart _start;
+  final ScrollerMove _move;
+  final ScrollerEnd _end;
+  final AsSize _fnContentSize, _fnViewPortSize;
+  
+  DragGesture _dg;
+  _BoundedInertialMotion _bim;
+  EasingMotion _stm;
+  ScrollerState _state;
+  ScrollbarControl _scrollbarCtrl;
+
   /** Constructor.
    *
    * + [start] is the callback before starting scrolling.
    * If it returns false, the scrolling won't be activated.
    * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
    */
-  Scroller(Element owner, AsSize viewPortSize, AsSize contentSize,
-    {Element handle, Dir direction, bool scrollbar, ScrollerSnap snap, 
-      ScrollerStart start, ScrollerMove move, ScrollerEnd end});
-  // TODO: inertial, bounce
+  Scroller(this.owner, this._fnViewPortSize, AsSize this._fnContentSize,
+  {Element handle, Dir direction: Dir.BOTH, bool scrollbar: true, 
+  ScrollerSnap snap, ScrollerStart start, ScrollerMove move, ScrollerEnd end}) :
+  this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
+  _hasHor = identical(direction, Dir.HORIZONTAL) || identical(direction, Dir.BOTH),
+  _hasVer = identical(direction, Dir.VERTICAL) || identical(direction, Dir.BOTH),
+  _start = start, _move = move, _end = end {
+    
+    _dg = new DragGesture(handle != null ? handle : owner,
+    start: (DragGestureState state) => _onStart(state.eventTarget, state.time), // TODO: stop _stm
+    move: (DragGestureState state) {
+      _onMove(state.transition - _state.startPosition, state.time);
+      
+    }, end: (DragGestureState state) {
+      final Offset pos = new DOMAgent(owner).offset;
+      final Rectangle range = _state.dragRange;
+      // always go through this motion
+      _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
+        _hor, _ver, _onMove, _onEnd, snap: snap)..run();
+      
+    });
+    
+    // init scroll bar
+    if (scrollbar) {
+      _scrollbarCtrl = _scrollbarControl();
+      if (_scrollbarCtrl != null)
+        _applyScrollBarFunction0(_scrollbarCtrl.init);
+    }
+    
+    //TODO: support desktop - if not in simulator, mousewheel/draggable scrollbar
+    // TODO: inertial, bounce
+  }
   
   /** Stop current scrolling.
    */
-  void stop();
+  void stop() {
+    if (_bim != null) {
+      _bim.stop();
+      _bim = null;
+    }
+    if (_stm != null) {
+      _stm.stop();
+      _stm = null;
+    }
+    _state = null;
+  }
   
   /** Destroys the scroller.
    * It shall be called to clean up the scroller, if it is no longer used.
    */
-  void destroy();
+  void destroy() {
+    _state = null;
+    if (scrollbar && _scrollbarCtrl != null)
+      _applyScrollBarFunction0(_scrollbarCtrl.destroy);
+    _dg.destroy();
+  }
   
   /** Returns the direction that the scrolling is allowed.
    */
-  Dir get direction;
+  final Dir direction;
   
   /** Returns the owner that associates to the scroller.
    */
-  Element get owner;
+  final Element owner;
   
   /** Returns the handle element that associates to the scroller, if any.
    */
-  Element get handle;
+  final Element handle;
   
   /** Return true if it is currently scrolling.
    */
-  bool get isScrolling;
-  
+  bool get isScrolling => _state != null;
+
   /** Return the current scroll position.
    */
-  Offset get scrollPosition;
+  Offset get scrollPosition => 
+      _state != null ? _state.position : (new DOMAgent(owner).offset * -1);
   
   /** Set the scroll position. The current scrolling motion, if any, will be stopped.
    */
-  void set scrollPosition(Offset position);
+  void set scrollPosition(Offset position) => scrollTo(position, false);
   
   /** Set the scroll position. The current scrolling, if any, will be stopped.
    * + If [animate], scroll to the position continously. Otherwise the position
    * is updated instantly.
    */
-  void scrollTo(Offset position, [bool animate]);
+  void scrollTo(Offset position, [bool animate = true]) {
+    position = position * -1;
+    stop();
+    if (animate) {
+      final Offset initPos = scrollPosition * -1, diffPos = position - initPos;
+      _stm = new EasingMotion((num x, MotionState state) {
+        _onMove(initPos + diffPos * x, state.currentTime, callback: false);
+        
+      }, start: (MotionState state) {
+        _onStart(null, state.currentTime, callback: false);
+        
+      }, end: (MotionState state) {
+        _onEnd(callback: false);
+        
+      })..run();
+      
+    } else {
+      int time = new Date.now().millisecondsSinceEpoch;
+      _onStart(null, time, callback: false); // TODO: 1rupt drag?
+      _onMove(position, time, callback: false);
+      _onEnd(callback: false);
+    }
+  }
   
+  // scrolling mechanism //
+  bool _onStart(EventTarget target, int time, [bool callback = true]) {
+    if (_bim != null)
+      _bim.stop();
+    _state = new ScrollerState(this, target, _fnViewPortSize, _fnContentSize, time);
+    if (scrollbar && _scrollbarCtrl != null)
+      _applyScrollBarFunction1(_scrollbarCtrl.start, _state);
+    if (!callback || _start == null)
+      return true;
+    final bool res = _start(_state);
+    return res == null || res;
+  }
+  
+  void _onMove(Offset position, int time, [bool callback = true]) {
+    _state.snapshot(position, time);
+    if (scrollbar && _scrollbarCtrl != null)
+      _applyScrollBarFunction1(_scrollbarCtrl.move, _state);
+    if (callback && _move != null) {
+      if (identical(_move(_state, () => _applyPosition(position)), false)) {
+        // TODO stop
+      }
+    } else
+      _applyPosition(position);
+  }
+  
+  void _onEnd([bool callback = true]) {
+    if (callback && _end != null)
+      _end(_state);
+    if (scrollbar && _scrollbarCtrl != null)
+      _applyScrollBarFunction1(_scrollbarCtrl.end, _state);
+    _state = null;
+    _bim = null;
+  }
+  
+  void _applyPosition(Offset position) {
+    if (_hor)
+      owner.style.left = CSS.px(position.left);
+    if (_ver)
+      owner.style.top = CSS.px(position.top);
+  }
+  
+  // scroll bar //
+  ScrollbarControl _scrollbarControl() => new ScrollbarControl(this, this.owner);
+  
+  void _applyScrollBarFunction0(Function f) {
+    if (_hor)
+      f(false);
+    if (_ver)
+      f(true);
+  }
+  
+  void _applyScrollBarFunction1(Function f, ScrollerState state) {
+    if (_hor)
+      f(false, state);
+    if (_ver)
+      f(true, state);
+  }
+  
+  bool get _hor => _state != null ? _state._hor : _hasHor;
+  bool get _ver => _state != null ? _state._ver : _hasVer;
 }
 
 /**
  * The state in a scolling process, provided by [Scroller] in [ScrollerStart] and
  * [ScrollerMove] callback.
  */
-interface ScrollerState extends GestureState default _ScrollerState {
-  
-  /** Returns the associated [Scroller].
-   */
-  Scroller get scroller;
-  
-  /** Returns the current scroll offset.
-   */
-  Offset get position;
-  
-  /** Returns the current scrolling velocity.
-   */
-  Offset get velocity;
-  
-  /** Returns the size of view port.
-   */
-  Size get viewPortSize;
-  
-  /** Returns the content size.
-   */
-  Size get contentSize;
-  
-  /** Tell scroller state to re-determine view port and content sizes.
-   */
-  void resize();
-  
-}
-
-/**
- * The controller of a virtual scroll bar which appears when scrolling.
- */
-interface ScrollbarControl default _ScrollbarControl {
-  
-  /** Initialization of scroll bar.
-   */
-  void init(bool vertical);
-  
-  /** Destory the scroll bar.
-   */
-  void destroy(bool vertical);
-  
-  /** Called when scrolling starts.
-   */
-  void start(bool vertical, ScrollerState state);
-  
-  /** Called at each scrolling iteraion.
-   */
-  void move(bool vertical, ScrollerState state);
-  
-  /** Called when scrolling stops.
-   */
-  void end(bool vertical, ScrollerState state);
-  
-}
-
-class _ScrollerState implements ScrollerState {
-  
-  final Scroller scroller;
-  final EventTarget eventTarget;
+class ScrollerState extends GestureState {
   final AsSize _fnViewPortSize, _fnContentSize;
-  final Offset startPosition;
   bool _hor, _ver;
   Offset _pos, _ppos;
   int _time, _ptime;
-  var data;
-  
-  _ScrollerState(_Scroller scroller, this.eventTarget, 
-  this._fnViewPortSize, this._fnContentSize, this._time) : 
+  Size _contentSizeCache, _viewPortSizeCache;
+  Rectangle _dragRangeCache;
+
+  ScrollerState(Scroller scroller, EventTarget this.eventTarget, 
+  this._fnViewPortSize, this._fnContentSize, this._time) :
   this.scroller = scroller,
   startPosition = new DOMAgent(scroller.owner).offset * -1 {
     _pos = startPosition;
@@ -161,26 +242,47 @@ class _ScrollerState implements ScrollerState {
     _hor = scroller._hasHor && cs.width > vs.width;
     _ver = scroller._hasVer && cs.height > vs.height;
   }
+
+  //@override
+  final EventTarget eventTarget;
+  //@override
+  int get time => _time;
+  /** Returns the associated [Scroller].
+   */
+  final Scroller scroller;
   
+  /** Returns the current scroll offset.
+   */
   Offset get position => _pos;
+  /** The starting position.
+   */
+  final Offset startPosition;
   
-  void snapshot(Offset pos, int time) {
-    if (_time == null || time > _time) {
-      _ppos = _pos;
-      _ptime = _time;
-      _pos = pos * -1;
-      _time = time;
-    }
-  }
-  
+  /** Returns the current scrolling velocity.
+   */
   Offset get velocity => _ppos == null || _pos == null || _time == null || _ptime == null ? 
       new Offset(0, 0) : ((_pos - _ppos) / (_time - _ptime));
+  /** Returns the size of view port.
+   */
+  Size get viewPortSize {
+    if (_viewPortSizeCache == null)
+      _viewPortSizeCache = _fnViewPortSize();
+    return _viewPortSizeCache;
+  }
+  /** Returns the content size.
+   */
+  Size get contentSize {
+    if (_contentSizeCache == null)
+      _contentSizeCache = _fnContentSize();
+    return _contentSizeCache;
+  }
   
-  int get time => _time;
-  
-  // size cache //
-  Size _contentSizeCache, _viewPortSizeCache;
-  Rectangle _dragRangeCache;
+  /** Tell scroller state to re-determine view port and content sizes.
+   */
+  void resize() {
+    _viewPortSizeCache = _contentSizeCache = null;
+    _dragRangeCache = null;
+  }
   
   Rectangle get dragRange {
     if (_dragRangeCache == null) {
@@ -190,40 +292,38 @@ class _ScrollerState implements ScrollerState {
     }
     return _dragRangeCache;
   }
-  
-  Size get viewPortSize {
-    if (_viewPortSizeCache == null)
-      _viewPortSizeCache = _fnViewPortSize();
-    return _viewPortSizeCache;
+
+  void snapshot(Offset pos, int time) {
+    if (_time == null || time > _time) {
+      _ppos = _pos;
+      _ptime = _time;
+      _pos = pos * -1;
+      _time = time;
+    }
   }
-  
-  Size get contentSize {
-    if (_contentSizeCache == null)
-      _contentSizeCache = _fnContentSize();
-    return _contentSizeCache;
-  }
-  
-  void resize() {
-    _viewPortSizeCache = _contentSizeCache = null;
-    _dragRangeCache = null;
-  }
-  
 }
 
-class _ScrollbarControl implements ScrollbarControl {
-  
-  final Scroller scroller;
-  final Element owner;
-  Element _hbar, _vbar;
-  
-  _ScrollbarControl(this.scroller, this.owner);
-  
+/**
+ * The controller of a virtual scroll bar which appears when scrolling.
+ */
+class ScrollbarControl {
   /* bar inner size: 4px
    * bar border: 1px
    * bar margin: 2px
    */
   static const _mgs = 2, _bds = 1, _ins = 4;
+
+  Element _hbar, _vbar;
+
+  ScrollbarControl(this.scroller, this.owner);
+
+  ///The scrollbar
+  final Scroller scroller;
+  ///The owner
+  final Element owner;
   
+  /** Initialization of scroll bar.
+   */
   void init(bool vertical) {
     if (vertical) {
       _vbar = new Element.tag("div");
@@ -240,6 +340,8 @@ class _ScrollbarControl implements ScrollbarControl {
     }
   }
   
+  /** Destory the scroll bar.
+   */
   void destroy(bool vertical) {
     if (vertical) {
       _vbar.remove();
@@ -250,6 +352,8 @@ class _ScrollbarControl implements ScrollbarControl {
     }
   }
   
+  /** Called when scrolling starts.
+   */
   void start(bool vertical, ScrollerState state) {
     _updateBarSize(vertical, state);
     _updateBarPosition(vertical, state);
@@ -257,10 +361,14 @@ class _ScrollbarControl implements ScrollbarControl {
     bar.style.display = "block"; // TODO: animation + leave hook to cancel
   }
   
+  /** Called at each scrolling iteraion.
+   */
   void move(bool vertical, ScrollerState state) {
     _updateBarPosition(vertical, state);
   }
   
+  /** Called when scrolling stops.
+   */
   void end(bool vertical, ScrollerState state) {
     final Element bar = vertical ? _vbar : _hbar;
     bar.style.display = "none"; // TODO: animation + leave hook to skip
@@ -297,172 +405,6 @@ class _ScrollbarControl implements ScrollbarControl {
   
 }
 
-/**
- * A custom-scrolling handler.
- */
-class _Scroller implements Scroller {
-  final Element owner, handle;
-  final Dir direction;
-  final bool _hasHor, _hasVer;
-  final bool scrollbar;
-  final ScrollerStart _start;
-  final ScrollerMove _move;
-  final ScrollerEnd _end;
-  final AsSize _fnContentSize, _fnViewPortSize;
-  
-  DragGesture _dg;
-  _BoundedInertialMotion _bim;
-  EasingMotion _stm;
-  _ScrollerState _state;
-  ScrollbarControl _scrollbarCtrl;
-  
-  _Scroller(this.owner, this._fnViewPortSize, AsSize this._fnContentSize,
-  {Element handle, Dir direction: Dir.BOTH, bool scrollbar: true, 
-  ScrollerSnap snap, ScrollerStart start, ScrollerMove move, ScrollerEnd end}) :
-  this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
-  _hasHor = identical(direction, Dir.HORIZONTAL) || identical(direction, Dir.BOTH),
-  _hasVer = identical(direction, Dir.VERTICAL) || identical(direction, Dir.BOTH),
-  _start = start, _move = move, _end = end {
-    
-    _dg = new DragGesture(handle != null ? handle : owner,
-    start: (DragGestureState state) => onStart(state.eventTarget, state.time), // TODO: stop _stm
-    move: (DragGestureState state) {
-      onMove(state.transition - _state.startPosition, state.time);
-      
-    }, end: (DragGestureState state) {
-      final Offset pos = new DOMAgent(owner).offset;
-      final Rectangle range = _state.dragRange;
-      // always go through this motion
-      _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
-        _hor, _ver, onMove, onEnd, snap: snap)..run();
-      
-    });
-    
-    // init scroll bar
-    if (scrollbar) {
-      _scrollbarCtrl = _scrollbarControl();
-      if (_scrollbarCtrl != null)
-        _applyScrollBarFunction0(_scrollbarCtrl.init);
-    }
-    
-    //TODO: support desktop - if not in simulator, mousewheel/draggable scrollbar
-  }
-  
-  // scrolling mechanism //
-  bool onStart(EventTarget target, int time, [bool callback = true]) {
-    if (_bim != null)
-      _bim.stop();
-    _state = new _ScrollerState(this, target, _fnViewPortSize, _fnContentSize, time);
-    if (scrollbar && _scrollbarCtrl != null)
-      _applyScrollBarFunction1(_scrollbarCtrl.start, _state);
-    if (!callback || _start == null)
-      return true;
-    final bool res = _start(_state);
-    return res == null || res;
-  }
-  
-  void onMove(Offset position, int time, [bool callback = true]) {
-    _state.snapshot(position, time);
-    if (scrollbar && _scrollbarCtrl != null)
-      _applyScrollBarFunction1(_scrollbarCtrl.move, _state);
-    if (callback && _move != null) {
-      if (identical(_move(_state, () => _applyPosition(position)), false)) {
-        // TODO stop
-      }
-    } else
-      _applyPosition(position);
-  }
-  
-  void onEnd([bool callback = true]) {
-    if (callback && _end != null)
-      _end(_state);
-    if (scrollbar && _scrollbarCtrl != null)
-      _applyScrollBarFunction1(_scrollbarCtrl.end, _state);
-    _state = null;
-    _bim = null;
-  }
-  
-  void _applyPosition(Offset position) {
-    if (_hor)
-      owner.style.left = CSS.px(position.left);
-    if (_ver)
-      owner.style.top = CSS.px(position.top);
-  }
-  
-  // scroll bar //
-  ScrollbarControl _scrollbarControl() => new _ScrollbarControl(this, this.owner);
-  
-  void _applyScrollBarFunction0(Function f) {
-    if (_hor)
-      f(false);
-    if (_ver)
-      f(true);
-  }
-  
-  void _applyScrollBarFunction1(Function f, ScrollerState state) {
-    if (_hor)
-      f(false, state);
-    if (_ver)
-      f(true, state);
-  }
-  
-  bool get _hor => _state != null ? _state._hor : _hasHor;
-  bool get _ver => _state != null ? _state._ver : _hasVer;
-  
-  // query //
-  bool get isScrolling => _state != null;
-  
-  Offset get scrollPosition => 
-      _state != null ? _state.position : (new DOMAgent(owner).offset * -1);
-  
-  // control //
-  void set scrollPosition(Offset position) => scrollTo(position, false);
-  
-  void scrollTo(Offset position, [bool animate = true]) {
-    position = position * -1;
-    stop();
-    if (animate) {
-      final Offset initPos = scrollPosition * -1, diffPos = position - initPos;
-      _stm = new EasingMotion((num x, MotionState state) {
-        onMove(initPos + diffPos * x, state.currentTime, callback: false);
-        
-      }, start: (MotionState state) {
-        onStart(null, state.currentTime, callback: false);
-        
-      }, end: (MotionState state) {
-        onEnd(callback: false);
-        
-      })..run();
-      
-    } else {
-      int time = new Date.now().millisecondsSinceEpoch;
-      onStart(null, time, callback: false); // TODO: interrupt drag?
-      onMove(position, time, callback: false);
-      onEnd(callback: false);
-    }
-  }
-  
-  void stop() {
-    if (_bim != null) {
-      _bim.stop();
-      _bim = null;
-    }
-    if (_stm != null) {
-      _stm.stop();
-      _stm = null;
-    }
-    _state = null;
-  }
-  
-  void destroy() {
-    _state = null;
-    if (scrollbar && _scrollbarCtrl != null)
-      _applyScrollBarFunction0(_scrollbarCtrl.destroy);
-    _dg.destroy();
-  }
-  
-}
-
 class _BoundedInertialMotion extends Motion {
   
   final bool _hor, _ver;
@@ -475,10 +417,9 @@ class _BoundedInertialMotion extends Motion {
   
   _BoundedInertialMotion(Element element, Offset velocity, this.range, 
   this._hor, this._ver, void move(Offset position, int time), void end(),
-  [num friction = 0.0005, num bounce = 0.0002, num snapSpeedThreshold = 0.05, ScrollerSnap snap]) :
+  {num friction: 0.0005, num bounce: 0.0002, num snapSpeedThreshold: 0.05, ScrollerSnap snap}) :
   this.element = element, this.friction = friction, this.bounce = bounce,
-  this.snapSpeedThreshold = snapSpeedThreshold, _move = move, _end = end, _snap = snap,
-  super(null) {
+  this.snapSpeedThreshold = snapSpeedThreshold, _move = move, _end = end, _snap = snap {
     final Offset pos = new DOMAgent(element).offset;
     _posx = pos.x;
     _posy = pos.y;
@@ -486,7 +427,7 @@ class _BoundedInertialMotion extends Motion {
     _vely = _ver ? velocity.y : 0;
   }
   
-  bool onMove(MotionState state) {
+  bool _onMove(MotionState state) {
     final Offset vel = new Offset(_velx, _vely);
     final num speed = vel.norm();
     final Offset dir = speed == 0 ? new Offset(0, 0) : vel / speed;
@@ -512,7 +453,7 @@ class _BoundedInertialMotion extends Motion {
         (_ver && !_shallStop(_posy, _vely, range.y, range.bottom)); 
   }
   
-  void onEnd(MotionState state) {
+  void _onEnd(MotionState state) {
     if (_snapTo != null) {
       _snapMotion = new LinearPathMotion(element, new Offset(_posx, _posy), _snapTo,
       move: (MotionState ms, Offset pos, num x, void defaultAction()) {

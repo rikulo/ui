@@ -20,8 +20,8 @@ typedef bool AnimatorTask(int time, int elapsed);
 /**
  * The animator used to play [AnimatorTask].
  */
-interface Animator default _Animator {
-  Animator();
+abstract class Animator {
+  factory Animator() => new _Animator();
 
   /** Adds an animation callback, such that it will be
    * called periodically.

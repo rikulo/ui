@@ -24,80 +24,73 @@ typedef void DraggerEnd(DraggerState state);
 
 /** The state of a dragging movement of [Dragger].
  */
-interface DraggerState extends GestureState {
-  
-  /** The associated [Dragger]. */
-  Dragger get dragger;
-  
-  /** The dragged Element. */
-  Element get draggedElement;
-  
-  /** The [DragGestureState] of the underlying [DragGesture], which supplies 
-   * information of touch/cursor position, rather than element positions.
-   */
-  DragGestureState get gestureState;
-  
-  /** The timestamp when this dragging movement starts. */
-  int get startTime;
-  
-  /** The initial element position (offset with respect to parent). */
-  Offset get elementStartPosition;
-  
-  /** The current element position (offset with respect to parent). */
-  Offset get elementPosition;
-  
-  /** The displacement of the touch/cursor position of this dragging. */
-  Offset get elementTransition;
-  
-  /** The current estimated velocity of touch/cursor position movement. */
-  Offset get elementVelocity;
-  
-}
-
-/** Default implementation of [DraggerState].
- */
-class _DraggerState implements DraggerState {
-  
-  final Dragger dragger;
-  final DragGestureState gestureState;
-  final Offset elementStartPosition, _gestureStartPosition;
-  final int startTime;
-  final EventTarget eventTarget;
-  final Element draggedElement;
+class DraggerState extends GestureState {
+  final Offset _gestureStartPosition;
   VelocityProvider _vp;
   Offset _elementPosition;
   int _time;
-  var data;
-  
-  _DraggerState(this.dragger, this.draggedElement, Offset targetPosition, 
+
+  DraggerState(this.dragger, this.draggedElement, Offset targetPosition, 
   DragGestureState gstate) :
   gestureState = gstate, eventTarget = gstate.eventTarget, startTime = gstate.time,
   elementStartPosition = targetPosition,
   _gestureStartPosition = gstate.position {
     _vp = new VelocityProvider(elementStartPosition, startTime);
   }
-  
+
+  //@override
+  final EventTarget eventTarget;
+  //@override
   int get time => _time;
+
+  /** The associated [Dragger]. */
+  final Dragger dragger;
   
+  /** The dragged Element. */
+  final Element draggedElement;
+  
+  /** The [DragGestureState] of the underlying [DragGesture], which supplies 
+   * information of touch/cursor position, rather than element positions.
+   */
+  final DragGestureState gestureState;
+  
+  /** The timestamp when this dragging movement starts. */
+  final int startTime;
+  
+  /** The initial element position (offset with respect to parent). */
+  final Offset elementStartPosition;
+  
+  /** The current element position (offset with respect to parent). */
   Offset get elementPosition => _elementPosition;
-  
+  /** The displacement of the touch/cursor position of this dragging. */
   Offset get elementTransition => _elementPosition - elementStartPosition;
-  
+  /** The current estimated velocity of touch/cursor position movement. */
   Offset get elementVelocity => _vp.velocity;
-  
+
   void snapshot(Offset position, int time) {
     _vp.snapshot(position, time);
     _elementPosition = position;
     _time = time;
   }
-  
 }
 
 /** An utility to allow user dragging an Element. The dragging is triggered by
  * single-touch dragging on touch device or mouse dragging on PC.
  */
-interface Dragger extends Gesture default _Dragger {
+class Dragger extends Gesture {
   
+  final DraggerStart _start;
+  final DraggerMove _move;
+  final DraggerEnd _end;
+  DragGesture _drag;
+  final bool _transform;
+  
+  bool _disabled = false, _pending = false;
+  DraggerState _state;
+  
+  /** The owner of this Dragger. */
+  final Element owner;
+
   /** Construct a Dragger.
    * + [owner] is the Element which receives drag gesture.
    * + If provided, [dragged] will determine the actual dragged Element. This 
@@ -113,31 +106,7 @@ interface Dragger extends Gesture default _Dragger {
    * + [move] Callback invoked continuously during dragging.
    * + [end] Callback invoked when dragging ends.
    */
-  Dragger(Element owner, {Element dragged(), 
-  Offset snap(Offset previousPosition, Offset position), 
-  num threshold, bool transform, 
-  DraggerStart start, DraggerMove move, DraggerEnd end});
-  
-  /** The owner of this Dragger. */
-  Element get owner;
-  
-}
-
-/** Default implementation of [Dragger].
- */
-class _Dragger implements Dragger {
-  
-  final Element _owner;
-  final DraggerStart _start;
-  final DraggerMove _move;
-  final DraggerEnd _end;
-  DragGesture _drag;
-  final bool _transform;
-  
-  bool _disabled = false, _pending = false;
-  _DraggerState _state;
-  
-  _Dragger(this._owner, {Element dragged(), 
+  Dragger(this.owner, {Element dragged(), 
   Offset snap(Offset previousPosition, Offset position), 
   num threshold: -1, bool transform: false,
   DraggerStart start, DraggerMove move, DraggerEnd end}) :
@@ -190,11 +159,11 @@ class _Dragger implements Dragger {
   }
   
   bool _initState(Element dragged(), DragGestureState state) {
-    Element tar = dragged != null ? dragged() : _owner;
+    Element tar = dragged != null ? dragged() : owner;
     if (tar == null)
       return false;
     
-    _state = new _DraggerState(this, tar, getElementPosition_(tar), state);
+    _state = new DraggerState(this, tar, getElementPosition_(tar), state);
     if (_start != null && identical(_start(_state), false)) {
       _stop();
       return false;
@@ -247,7 +216,4 @@ class _Dragger implements Dragger {
     if (_drag != null)
       _drag.enable();
   }
-  
-  Element get owner => _owner;
-  
 }

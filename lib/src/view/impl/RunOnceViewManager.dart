@@ -91,7 +91,8 @@ class RunOnceViewManager {
    * + [ignoreSubviews] specifies whether to ignore the sub views. In other words,
    * a view will be ignored, if one of its ancestor has been queued for handling too.
    */
-  RunOnceViewManager(RunOnceViewTask task, [bool ignoreDetached=true, bool ignoreSubviews=true]):
+  RunOnceViewManager(RunOnceViewTask task,
+  {bool ignoreDetached: true, bool ignoreSubviews: true}):
   _runQue = new RunOnceQueue(), _views = new Set(), _readyChecks = new List(),
   _task = task, _ignoreDetached = ignoreDetached, _ignoreSubviews = ignoreSubviews {
   }

@@ -101,7 +101,7 @@ void main() {
   }
   
   for (int i = 0; i < sysnum; i++)
-    view.addChild(_system(syslocs[i], syssize, (10 * _rand() + 5).toInt(), name: _rollName()));
+    view.addChild(_system(syslocs[i], syssize, (10 * _rand() + 5).toInt(), _rollName()));
   
   final View mainView = new View()..addToDocument();
   mainView.addChild(view);

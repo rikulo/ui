@@ -20,8 +20,8 @@ class DefaultListModel<T> extends AbstractListModel<T> {
    * Unlike [set disables], it won't make a copy.
    */
   DefaultListModel(List<T> data,
-  [Set<T> selection, Set<T> disables, bool multiple]):
-  super(selection, disables, multiple != null && multiple), _data = data;
+  {Set<T> selection, Set<T> disables, bool multiple: false}):
+  super(selection: selection, disables: disables, multiple: multiple), _data = data;
 
   //@override
   /** Returns the object of the given index.

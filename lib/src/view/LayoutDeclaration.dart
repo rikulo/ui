@@ -5,9 +5,10 @@
 /**
  * The layout declaration of a view.
  */
-interface LayoutDeclaration extends Declaration
-default LayoutDeclarationImpl {
-  LayoutDeclaration(View owner);
+class LayoutDeclaration extends Declaration {
+  final View _owner;
+
+  LayoutDeclaration(View owner): _owner = owner;
 
   /** The type of the layout.
    *
@@ -18,21 +19,33 @@ default LayoutDeclarationImpl {
    * Notice you can plug in addition custom layouts. Refer to [LayoutManager]
    * for details.
    */
-  String type;
+  String get type => getPropertyValue("type");
+  /// The type of the layout.
+  void set type(String value) {
+    setProperty("type", value);
+  }
   /** The orientation.
    *
    * Syntax: `orient: horizontal | vertical`
    *
    * Default: *an empty string*. It means `horizontal`.
    */
-  String orient;
+  String get orient => getPropertyValue("orient");
+  /// The orientation.
+  void set orient(String value) {
+    setProperty("orient", value);
+  }
   /** The alignment.
    *
    * Syntax: `align: start | center | end`
    *
    * Default: *an empty string*. It means `start`.
    */
-  String align;
+  String get align => getPropertyValue("align");
+  /// The alignment.
+  void set align(String value) {
+    setProperty("align", value);
+  }
   /** The spacing between two adjacent child views and
    * between a child view and the border.
    * It can be overriden by child view's [View.profile.spacing].
@@ -47,7 +60,13 @@ default LayoutDeclarationImpl {
    * value of the spacing at the top and at the bottom.
    * If you prefer a different value, specify it in [gap].
    */
-  String spacing;
+  String get spacing => getPropertyValue("spacing");
+  /** The spacing between two adjacent child views and
+   * between a child view and the border.
+   */
+  void set spacing(String value) {
+    setProperty("spacing", value);
+  }
   /** The gap between two adjacent child views.
    * If not specified, the value specified at [spacing] will be used.
    *
@@ -60,7 +79,11 @@ default LayoutDeclarationImpl {
    * a child view and the border, while [gap] controls the spacing
    * between two child views.
    */
-  String gap;
+  String get gap => getPropertyValue("gap");
+  /// The gap between two adjacent child views.
+  void set gap(String value) {
+    setProperty("gap", value);
+  }
   /** The width of each child view.
    * It can be overriden by child view's [View.profile.width].
    *
@@ -68,7 +91,11 @@ default LayoutDeclarationImpl {
    *
    * Default: *an empty string*. It means `content`.
    */
-  String width;
+  String get width => getPropertyValue("width");
+  /// The width of each child view.
+  void set width(String value) {
+    setProperty("width", value);
+  }
   /** The width of each child view.
    * It can be overriden by child view's [View.profile.height].
    *
@@ -76,5 +103,9 @@ default LayoutDeclarationImpl {
    *
    * Default: *an empty string*. It means `content`.
    */
-  String height;
+  String get height => getPropertyValue("height");
+  /// The width of each child view.
+  void set height(String value) {
+    setProperty("height", value);
+  }
 }

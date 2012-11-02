@@ -20,32 +20,55 @@ typedef void DragGestureEnd(DragGestureState state);
 
 /** The state of dragging.
  */
-interface DragGestureState extends GestureState {
-  
+class DragGestureState extends GestureState {
+  final DragGesture _gesture;
+  final VelocityProvider _vp;
+  Offset _position;
+  int _time;
+
+  DragGestureState(DragGesture gesture, this.eventTarget, Offset position, int time):
+  _gesture = gesture, startPosition = position, _position = position, 
+  startTime = time, _time = time, _vp = new VelocityProvider(position, time);
+
+  //@override
+  final EventTarget eventTarget;
+  //@override
+  int get time => _time;
+
   /** The associated [DragGesture]. */
-  DragGesture get gesture;
-  
+  DragGesture get gesture => _gesture;
+
   /** The timestamp when the gesture starts. */
-  int get startTime;
+  final int startTime;
   
   /** The initial touch/cursor position. */
-  Offset get startPosition;
+  final Offset startPosition;
   
   /** The current touch/cursor position. */
-  Offset get position;
+  Offset get position => _position;
   
   /** The displacement of the touch/cursor position of this dragging. */
-  Offset get transition;
-  
+  Offset get transition => _position - startPosition;
+
   /** The current estimated velocity of touched/cursor position movement. */
-  Offset get velocity;
-  
+  Offset get velocity => _vp.velocity;
+
+  void snapshot(Offset position, int time) {
+    _vp.snapshot(position, time);
+    _position = position;
+    _time = time;
+  }
 }
 
 /** A touch-and-drag gesture handler
  */
-interface DragGesture extends Gesture default _DragGesture {
-  
+abstract class DragGesture extends Gesture {
+  final DragGestureStart _start;
+  final DragGestureMove _move;
+  final DragGestureEnd _end;
+  DragGestureState _state;
+  bool _disabled = false;
+
   /** Constructor.
    *
    * + [owner] is the owner of this drag gesture.
@@ -60,86 +83,38 @@ interface DragGesture extends Gesture default _DragGesture {
    * as the touch starts.
    * Default: -1 (unit: pixels)
    */
-  DragGesture(Element owner, {DragGestureStart start, DragGestureMove move, 
-    DragGestureEnd end});
-  
-  /** The element that owns this drag gesture (never null).
-   */
-  Element get owner;
-  
-}
-
-class _DragGestureState implements DragGestureState {
-  final _DragGesture _gesture;
-  final VelocityProvider _vp;
-  final EventTarget eventTarget;
-  final Offset startPosition;
-  final int startTime;
-  Offset _position;
-  int _time;
-  var data;
-  
-  _DragGestureState(DragGesture gesture, this.eventTarget, Offset position, int time):
-  _gesture = gesture, startPosition = position, _position = position, 
-  startTime = time, _time = time, _vp = new VelocityProvider(position, time);
-  
-  DragGesture get gesture => _gesture;
-  
-  Offset get position => _position;
-  
-  Offset get transition => _position - startPosition;
-  
-  Offset get velocity => _vp.velocity;
-  
-  int get time => _time;
-  
-  void snapshot(Offset position, int time) {
-    _vp.snapshot(position, time);
-    _position = position;
-    _time = time;
-  }
-  
-}
-
-abstract class _DragGesture implements DragGesture {
-  final Element _owner;
-  final DragGestureStart _start;
-  final DragGestureMove _move;
-  final DragGestureEnd _end;
-  _DragGestureState _state;
-  bool _disabled = false;
-  
-  factory _DragGesture(Element owner, {DragGestureStart start, 
-  DragGestureMove move, DragGestureEnd end}) {
-    return browser.touch ?
+  factory DragGesture(Element owner, {DragGestureStart start, 
+  DragGestureMove move, DragGestureEnd end})
+  => browser.touch ?
       new _TouchDragGesture(owner, start: start, move: move, end: end) :
       new _MouseDragGesture(owner, start: start, move: move, end: end);
-  }
-  
-  _DragGesture._init(Element this._owner, DragGestureStart this._start, 
+  //for subclass to call
+  DragGesture._init(Element this.owner, DragGestureStart this._start, 
   DragGestureMove this._move, DragGestureEnd this._end) {
     _listen();
   }
-  
+  /** The element that owns this drag gesture (never null).
+   */
+  final Element owner;
+
+  //@override  
   void destroy() {
     stop();
     _unlisten();
   }
-  
+  //@override  
   void disable() {
     stop();
     _disabled = true;
   }
-  
+  //@override  
   void enable() {
     _disabled = false;
   }
-  
+  //@override  
   void stop() {
     _state = null;
   }
-  
-  Element get owner => _owner;
   
   void _listen();
   void _unlisten();
@@ -149,11 +124,10 @@ abstract class _DragGesture implements DragGesture {
       return;
     stop();
 
-    _state = new _DragGestureState(this, target, position, time);
+    _state = new DragGestureState(this, target, position, time);
     if (_start != null && identical(_start(_state), false))
       stop();
   }
-  
   void _touchMove(Offset position, int time) {
     if (_state != null) {
       _state.snapshot(position, time);
@@ -162,16 +136,14 @@ abstract class _DragGesture implements DragGesture {
         stop();
     }
   }
-  
   void _touchEnd() {
     if (_state != null && _end != null)
       _end(_state);
     stop();
   }
-  
 }
 
-class _TouchDragGesture extends _DragGesture {
+class _TouchDragGesture extends DragGesture {
   EventListener _elStart, _elMove, _elEnd;
   
   _TouchDragGesture(Element owner, {DragGestureStart start, 
@@ -179,7 +151,7 @@ class _TouchDragGesture extends _DragGesture {
     super._init(owner, start, move, end);
 
   void _listen() {
-    final ElementEvents on = _owner.on;
+    final ElementEvents on = owner.on;
     on.touchStart.add(_elStart = (TouchEvent event) {
       if (event.touches.length > 1)
         _touchEnd(); //ignore multiple fingers
@@ -199,14 +171,14 @@ class _TouchDragGesture extends _DragGesture {
     });
   }
   void _unlisten() {
-    final ElementEvents on = _owner.on;
+    final ElementEvents on = owner.on;
     if (_elStart != null) on.touchStart.remove(_elStart);
     if (_elMove != null) on.touchMove.remove(_elMove);
     if (_elEnd != null) on.touchEnd.remove(_elEnd);
   }
 }
 
-class _MouseDragGesture extends _DragGesture {
+class _MouseDragGesture extends DragGesture {
   EventListener _elStart, _elMove, _elEnd;
   bool _captured = false;
 
@@ -236,7 +208,7 @@ class _MouseDragGesture extends _DragGesture {
     });
   }
   void _listen() {
-    _owner.on.mouseDown.add(_elStart = (MouseEvent event) {
+    owner.on.mouseDown.add(_elStart = (MouseEvent event) {
       _touchStart(event.target, new Offset(event.pageX, event.pageY), event.timeStamp);
       _capture();
       if (!new DOMAgent(event.target).isInput)
@@ -245,6 +217,6 @@ class _MouseDragGesture extends _DragGesture {
   }
   void _unlisten() {
     if (_elStart != null)
-      _owner.on.mouseDown.remove(_elStart);
+      owner.on.mouseDown.remove(_elStart);
   }
 }

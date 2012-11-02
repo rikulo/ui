@@ -5,7 +5,7 @@
 /**
  * A skeletal implementation of [DataModel], [Selection] and [Disables].
  */
-class AbstractSelectionModel<T> extends AbstractDataModel
+class AbstractSelectionModel<T> extends DataModel
 implements Selection<T>, Disables<T> {
   Set<T> _selection, _disables;
   bool _multiple = false;
@@ -16,7 +16,7 @@ implements Selection<T>, Disables<T> {
    * + [disables]: if not null, it will be used to hold the list of disabled items.
    * Unlike [set disables], it won't make a copy.
    */
-  AbstractSelectionModel([Set<T> selection, Set<T> disables, bool multiple=false]) {
+  AbstractSelectionModel({Set<T> selection, Set<T> disables, bool multiple:false}) {
     _selection = selection != null ? selection: new Set();
     _disables = disables != null ? disables: new Set();
     _multiple = multiple;

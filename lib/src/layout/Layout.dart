@@ -5,7 +5,7 @@
 /**
  * A layout controller that arranges the layout of the child views.
  */
-interface Layout default FreeLayout {
+abstract class Layout {
   /** Measure the width of the given view.
    */
   int measureWidth(MeasureContext mctx, View view);
@@ -43,7 +43,7 @@ interface Layout default FreeLayout {
  * callback, anchored views and the recursive callback of [doLayout] of sub views.
  * The derive shall override [doLayout_] and handle only the give sub views.
  */
-abstract class AbstractLayout implements Layout {
+abstract class AbstractLayout extends Layout {
   /** Arranges the layout of non-anchored views.
    * Instead of overriding [doLayout], it is simpler to override this method.
    */

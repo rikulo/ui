@@ -20,7 +20,7 @@ class DropDownList<T> extends View {
 
   /** Constructor.
    */
-  DropDownList([DataModel model, Renderer renderer]) {
+  DropDownList({DataModel model, Renderer renderer}) {
     _renderer = renderer;
     this.model = model;
   }

@@ -12,6 +12,5 @@ class ScrollEvent extends ViewEvent {
    * 
    */
   ScrollEvent(String type, View target, this.state) : 
-    super(type, target: target);
-  
+    super(type, target);
 }

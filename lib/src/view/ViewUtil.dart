@@ -5,7 +5,7 @@
 /**
  * An ID space.
  */
-interface IdSpace {
+abstract class IdSpace {
   /** Searches and returns the first view that matches the given selector,
    * or null if not found.
    */
@@ -24,6 +24,14 @@ interface IdSpace {
   Collection<View> get fellows;
 }
 
+/**
+ * Represents an input that store a value.
+ */
+abstract class Input<T> {
+  /** The value. */
+  T value;
+}
+
 /** An UI exception.
  */
 class UIException implements Exception {
@@ -36,27 +44,68 @@ class UIException implements Exception {
 /**
  * A declaration of properties.
  */
-interface Declaration default DeclarationImpl {
-  Declaration();
+class Declaration {
+  final Map<String, String> _props;
+
+  Declaration(): _props = new Map();
 
   /** The text representation of the declaration block.
    * Setting this attribute will reset all properties.
    */
-  String text;
+  String get text {
+    final StringBuffer sb = new StringBuffer();
+    for (final String key in _props.keys)
+      sb.add(key).add(':').add(_props[key]).add(';');
+    return sb.toString();
+  }
+  /// Sets the text representation of the declaration block.
+  void set text(String text) {
+    _props.clear();
+
+    for (String pair in text.split(';')) {
+      pair = pair.trim();
+      if (pair.isEmpty)
+        continue;
+      final int j = pair.indexOf(':');
+      if (j > 0) {
+        final String key = pair.substring(0, j).trim();
+        final String value = pair.substring(j + 1).trim();
+        if (!key.isEmpty) {
+          setProperty(key, value);
+          continue;
+        }
+      }
+      throw new UIException("Unknown declaration: ${pair}");
+    }
+  }
   /** Returns a collection of properties that are assigned with
    * a non-empty value.
    */
-  Collection<String> get propertyNames;
+  Collection<String> get propertyNames {
+    return _props.keys;
+  }
   /** Retrieves the property's value.
    */
-  String getPropertyValue(String propertyName);
+  String getPropertyValue(String propertyName) {
+    final String value = _props[propertyName];
+    return value != null ? value: "";
+  }
   /** Removes the property of the given name.
    */
-  String removeProperty(String propertyName);
+  String removeProperty(String propertyName) {
+    _props.remove(propertyName);
+  }
   /** Sets the value of the given property.
    * If the given value is null or empty, the property will be removed.
+   *
+   * Notice: the value will be trimmed before saving.
    */
-  void setProperty(String propertyName, String value);
+  void setProperty(String propertyName, String value) {
+    if (value == null || value.isEmpty)
+      removeProperty(propertyName);
+    else
+      _props[propertyName] = value.trim();
+  }
 }
 
 /** An annotation for providing meta-information.
@@ -64,7 +113,7 @@ interface Declaration default DeclarationImpl {
  *
  * See also [View.annotations].
  */
-interface Annotation {
+abstract class Annotation {
   /** The name of this annoataion.
    */
   String get name;

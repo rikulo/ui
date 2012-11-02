@@ -14,7 +14,7 @@ class ScrollView extends View {
   /** Construct a ScrollView.
    * + [direction] specifies allowed scrolling direction.
    */
-  ScrollView([Dir direction = Dir.BOTH, Offset snap(Offset off), Size contentSize]) : 
+  ScrollView({Dir direction: Dir.BOTH, Offset snap(Offset off), Size contentSize}) : 
   this.direction = direction, _snap = snap, 
   _contentSizeValue = contentSize, _contentSize = contentSize;
 

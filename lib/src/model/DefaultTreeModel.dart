@@ -10,9 +10,9 @@
  *
  *    DefaultTreeModel<String> model = new DefaultTreeModel(nodes: [
  *      "Wonderland",
- *      new TreeNode("Australia",
+ *      new DefaultTreeNode("Australia",
  *        ["Sydney", "Melbourne", "Port Hedland"]),
- *      new TreeNode("New Zealand",
+ *      new DefaultTreeNode("New Zealand",
  *        ["Cromwell", "Queenstown"])]);
  *    model.addToSelection(model.root[1][2]);
  *    model.on.select.add((event) {
@@ -44,9 +44,10 @@ class DefaultTreeModel<T> extends AbstractTreeModel<TreeNode<T>> {
    * + [opens]: if not null, it will be used to hold the list of opened items.
    * Unlike [set opens], it won't make a copy.
    */
-  DefaultTreeModel([TreeNode<T> root, Collection nodes, Set<TreeNode<T>> selection,
-  Set<TreeNode<T>> disables, Set<TreeNode<T>> opens, bool multiple=false]):
-  super(root != null ? root: new TreeNode(), selection, disables, opens, multiple) {
+  DefaultTreeModel({TreeNode<T> root, Collection nodes, Set<TreeNode<T>> selection,
+  Set<TreeNode<T>> disables, Set<TreeNode<T>> opens, bool multiple:false}):
+  super(root != null ? root: new DefaultTreeNode(), selection: selection,
+  disables: disables, opens: opens, multiple: multiple) {
     final TreeNode<T> p = _root.parent; //don't use the root argument since it might be null
     if (p != null)
       throw new ModelException("Only root node is allowed, not ${_root}");

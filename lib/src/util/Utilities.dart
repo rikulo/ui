@@ -36,11 +36,3 @@ typedef Map AsMap();
 /** A function that returns a list.
  */
 typedef List AsList();
-
-/**
- * Represents an input that store a value.
- */
-interface Input<T> {
-  /** The value. */
-  T value;
-}

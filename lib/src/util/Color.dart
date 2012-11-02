@@ -4,8 +4,7 @@
 
 /** An RGB based color object. The toString method returns a CSS-compatible color value.
  */
-interface Color default _Color {
-  
+class Color {
   /** Construct a Color object with given RGB and alpha (i.e., opacity) values.
    * 
    * + [red], [green], [blue] should be numbers between 0 (inclusive) and 255 
@@ -13,47 +12,22 @@ interface Color default _Color {
    * + [alpha] should be a number between 0 (inclusive) and 1 (inclusive).
    * Default: 1
    */
-  const Color(num red, num green, num blue, [num alpha]);
-  
-  /// The red component.
-  num get red;
-  
-  /// The green component.
-  num get green;
-  
-  /// The blue component.
-  num get blue;
-  
-  /// The opacity of color.
-  num get alpha;
-  
-  /// Convert to [HSVColor].
-  HSVColor hsv();
-  
-}
-
-/// Default implementation of [Color].
-class _Color implements Color {
-  
-  final num red, green, blue, alpha;
-  
-  const _Color(num red, num green, num blue, [num alpha = 1]) : 
+  const Color(num red, num green, num blue, [num alpha = 1]) : 
   this.red = red, this.green = green, this.blue = blue, this.alpha = alpha;
   
-  // no way to validate at initialization with const
-  /*
-  void _validate() {
-    if (red == null || red < 0 || red > 255)
-      throw new IllegalArgumentException("red: $red");
-    if (green == null || green < 0 || green > 255)
-      throw new IllegalArgumentException("green: $green");
-    if (blue == null || blue < 0 || blue > 255)
-      throw new IllegalArgumentException("blue: $blue");
-    if (alpha < 0 || alpha > 1)
-      throw new IllegalArgumentException("alpha: $alpha");
-  }
-  */
+  /// The red component.
+  final num red;
   
+  /// The green component.
+  final num green;
+  
+  /// The blue component.
+  final num blue;
+  
+  /// The opacity of color.
+  final num alpha;
+  
+  /// Convert to [HSVColor].
   HSVColor hsv() {
     final num mx = max(max(red, green), blue), 
         mn = min(min(red, green), blue), ch = mx - mn;
@@ -98,15 +72,14 @@ class _Color implements Color {
   
   String toString() => 
       alpha == 1 ? "#${_hex(red)}${_hex(green)}${_hex(blue)}" : 
-      "rgba(${red.toInt()}, ${green.toInt()}, ${blue.toInt()}, _alpha)";
-  
-  // helper //
-  static String _hex(num n) => n.toInt().toRadixString(16);
+      "rgba($red, $green, $blue, $alpha)";
   
 }
+// helper //
+String _hex(num n) => n.toInt().toRadixString(16);
 
 /// An HSV based color object.
-interface HSVColor default _HSVColor {
+class HSVColor {
   
   /** Construct a Color object with given HSV and alpha (i.e., opacity) values.
    * 
@@ -116,47 +89,22 @@ interface HSVColor default _HSVColor {
    * + [alpha] should be a number between 0 (inclusive) and 1 (inclusive).
    * Default: 1
    */
-  const HSVColor(num hue, num saturation, num value, [num alpha]);
-  
-  /// The hue of the color.
-  num get hue;
-  
-  /// The saturation of the color.
-  num get saturation;
-  
-  /// The value of the color.
-  num get value;
-  
-  /// The opacity of color.
-  num get alpha;
-  
-  /// Convert to RGB based [Color].
-  Color rgb();
-  
-}
-
-/// default omplementation of [HSVColor].
-class _HSVColor implements HSVColor {
-  
-  final num hue, saturation, value, alpha;
-  
-  const _HSVColor(num hue, num saturation, num value, [num alpha = 1]) : 
+  const HSVColor(num hue, num saturation, num value, [num alpha = 1]) : 
   this.hue = hue, this.saturation = saturation, this.value = value, this.alpha = alpha;
   
-  // no way to validate at initialization with const
-  /*
-  static void _validate(hue, saturation, value, alpha) {  
-    if (hue == null || hue < 0 || hue >= 360)
-      throw new IllegalArgumentException("hue: $hue");
-    if (saturation < 0 || saturation > 100)
-      throw new IllegalArgumentException("saturation: $saturation");
-    if (value < 0 || value > 100)
-      throw new IllegalArgumentException("value: $value");
-    if (alpha < 0 || alpha > 1)
-      throw new IllegalArgumentException("alpha: $alpha");
-  }
-  */
+  /// The hue of the color.
+  final num hue;
   
+  /// The saturation of the color.
+  final num saturation;
+  
+  /// The value of the color.
+  final num value;
+  
+  /// The opacity of color.
+  final num alpha;
+  
+  /// Convert to RGB based [Color].
   Color rgb() {
     final num ch = value * saturation / 10000, h2 = hue / 60, 
         x = ch * (1 - (h2 % 2 - 1).abs()), m = value / 100 - ch;
@@ -176,5 +124,5 @@ class _HSVColor implements HSVColor {
     }
     return new Color((r + m) * 255, (g + m) * 255, (b + m) * 255, alpha);
   }
-  
+  String toString() => "hsv($hue, $saturation, $value, $alpha)";
 }

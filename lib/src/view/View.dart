@@ -976,7 +976,7 @@ class View {
    */
   LayoutDeclaration get layout {
     if (_layout == null)
-      _layout = new LayoutDeclarationImpl(this);
+      _layout = new LayoutDeclaration(this);
     return _layout;
   }
   /** Returns the profile, i.e., the layouot requirement, of this view.
@@ -987,7 +987,7 @@ class View {
    */
   ProfileDeclaration get profile {
     if (_profile == null)
-      _profile = new ProfileDeclarationImpl(this);
+      _profile = new ProfileDeclaration(this);
     return _profile;
   }
 

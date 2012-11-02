@@ -5,58 +5,19 @@
 /**
  * The offset (aka., position).
  */
-interface Offset default _Offset {
-  
+class Offset {
   /** The left offset. */
-  num get left;
+  final num left;
   /** The top offset. */
-  num get top;
+  final num top;
   /** The left offset (the same as [left], i.e., an alias). */
-  num get x;
-  /** The top offset (the same as [top], i.e., an alias). */
-  num get y;
-
-  Offset(num left, num top);
-  Offset.from(Offset other);
-
-  bool operator ==(Offset other);
-  Offset operator -(Offset other);
-  Offset operator +(Offset other);
-  Offset operator *(num scalar);
-  Offset operator /(num scalar);
-  
-  /** The Euclidean norm of the offset as a vector.
-   */
-  num norm();
-  
-  /** Return an Offset with the same direction but unit length. i.e. the unit
-   * vector of this Offset.
-   */
-  Offset unit();
-}
-/**
- * The 3D offset.
- */
-interface Offset3d extends Offset default _Offset3d {
-  /** The Z index. */
-  num get zIndex;
-  /** The Z index (the same as [zIndex], i.e., an alias). */
-  num get z;
-
-  Offset3d(num x, num y, num z);
-  Offset3d.from(Offset3d other);
-}
-
-class _Offset implements Offset {
-  
-  final num left, top;
-  
-  const _Offset(this.left, this.top);
-  _Offset.from(Offset other) : this(other.left, other.top);
-  
   num get x => left;
+  /** The top offset (the same as [top], i.e., an alias). */
   num get y => top;
-  
+
+  const Offset(num this.left, num this.top);
+  Offset.from(Offset other) : this(other.left, other.top);
+
   bool operator ==(Offset other)
   => other is Offset && left == other.left && top == other.top;
   Offset operator -(Offset other)
@@ -68,26 +29,35 @@ class _Offset implements Offset {
   Offset operator /(num scalar)
   => new Offset(left / scalar, top / scalar);
   
+  /** The Euclidean norm of the offset as a vector.
+   */
   num norm() => left == null || top == null ? null : sqrt(left * left + top * top);
   
+  /** Return an Offset with the same direction but unit length. i.e. the unit
+   * vector of this Offset.
+   */
   Offset unit() {
     num n = norm();
     return n != null && n > 0 ? this / n : null;
   }
-  
+
+  //@override  
   int get hashCode => (left + top).toInt();
+  //@override  
   String toString() => "($left, $top)";
 }
-
-class _Offset3d extends _Offset implements Offset3d {
-  
+/**
+ * The 3D offset.
+ */
+class Offset3d extends Offset {
+  /** The Z index. */
   final num zIndex;
-  
-  const _Offset3d(num x, num y, this.zIndex) : super(x, y);
-  _Offset3d.from(Offset3d other) : this(other.x, other.y, other.z);
-  
+  /** The Z index (the same as [zIndex], i.e., an alias). */
   num get z => zIndex;
-  
+
+  const Offset3d(num x, num y, num z) : super(x, y), zIndex = z;
+  Offset3d.from(Offset3d other) : this(other.x, other.y, other.z);
+
   bool operator ==(Offset3d other)
   => other is Offset3d && left == other.left && top == other.top && zIndex == other.zIndex;
   Offset3d operator -(Offset3d other)
@@ -99,10 +69,13 @@ class _Offset3d extends _Offset implements Offset3d {
   Offset3d operator /(num scalar)
   => new Offset3d(left / scalar, top / scalar, zIndex / scalar);
   
+  //@override  
   num norm() => left == null || top == null || zIndex == null ? null : 
     sqrt(left * left + top * top + zIndex * zIndex);
   
+  //@override  
   int get hashCode => (x + y + z).toInt();
+  //@override  
   String toString() => "($x, $y, $z)";
 }
 
@@ -111,7 +84,6 @@ class _Offset3d extends _Offset implements Offset3d {
  * excessively small denominator. 
  */
 class VelocityProvider {
-  
   Offset _pos, _vel;
   int _time;
   
@@ -131,6 +103,5 @@ class VelocityProvider {
   }
   
   /** Retrieve velocity. */
-  Offset get velocity => _vel;
-  
+  Offset get velocity => _vel; 
 }

@@ -10,9 +10,9 @@ import 'package:rikulo/util.dart';
 DefaultTreeModel<String> createTreeModel() {
   DefaultTreeModel<String> model = new DefaultTreeModel(nodes: [
     "Wonderland",
-    new TreeNode("Australia",
+    new DefaultTreeNode("Australia",
       ["Sydney", "Melbourne", "Port Hedland"]),
-      new TreeNode("New Zealand",
+      new DefaultTreeNode("New Zealand",
       ["Cromwell", "Queenstown"])]);
 //    model.addToSelection(model.root[1][2]);
   model.on.select.add((event) {
@@ -21,7 +21,7 @@ DefaultTreeModel<String> createTreeModel() {
   return model;
 }
 DropDownList createDropDownList(View parent, DefaultTreeModel<String> model) {
-  final DropDownList ddlist = new DropDownList(model: model);
+  final ddlist = new DropDownList(model: model);
   parent.addChild(ddlist);
   return ddlist;
 }
@@ -36,7 +36,7 @@ void main() {
   int i = 0;
   Button btn = new Button("add");
   btn.on.click.add((event) {
-    model.root.add(new TreeNode("New ${++i}"));
+    model.root.add(new DefaultTreeNode("New ${++i}"));
   });
   mainView.addChild(btn);
 

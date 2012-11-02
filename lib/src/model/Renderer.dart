@@ -8,10 +8,10 @@
  * Note: Which renderer to use depends on the view.
  * See also [Renderer].
  */
-interface RenderContext<T> default _RenderContext<T> {
-  RenderContext(View view, DataModel model, T data,
-    bool selected, bool disabled,
-    [int index, String column, int columnIndex]);
+class RenderContext<T> {
+  RenderContext(View this.view, DataModel this.model, T this.data,
+    bool this.selected, bool this.disabled,
+    [int this.index = -1, String this.column, int this.columnIndex = -1]);
 
   /** The view that renders the model. */
   final View view;
@@ -50,25 +50,6 @@ interface RenderContext<T> default _RenderContext<T> {
    * Please refer to the views that support this field.
    */
   final String column;
-}
-/** Renders the given data into a string or an element.
- * The return value depends on the view you are using.
- */
-typedef Renderer(RenderContext context);
-
-class _RenderContext<T> implements RenderContext<T> {
-  final View view;
-  final DataModel model;
-  final T data;
-  final int index;
-  final bool selected;
-  final bool disabled;
-  final int columnIndex;
-  final String column;
-
-  _RenderContext(View this.view, DataModel this.model, T this.data,
-    bool this.selected, bool this.disabled,
-    [int this.index = -1, String this.column, int this.columnIndex = -1]);
 
   /** Converts the given object to a string.
    *
@@ -83,3 +64,7 @@ class _RenderContext<T> implements RenderContext<T> {
     return val != null ? encode ? "${XMLUtil.encode(val)}": val.toString(): "";
   }
 }
+/** Renders the given data into a string or an element.
+ * The return value depends on the view you are using.
+ */
+typedef Renderer(RenderContext context);
