@@ -2,6 +2,10 @@
 //History: Thu, Jun 28, 2012 10:30:47 AM
 // Author: tomyeh
 
+/** A readonly and empty map.
+ */
+const Map EMPTY_MAP = const {};
+
 /**
  * A collection of Map related utilities.
  */
@@ -49,9 +53,9 @@ class _OnDemandMap<K, V> implements Map<K,V> {
     if (_map != null) _map.forEach(f);
   }
   //@override
-  Collection<K> get keys => _map != null ? _map.keys: ListUtil.EMPTY_LIST;
+  Collection<K> get keys => _map != null ? _map.keys: EMPTY_LIST;
   //@override
-  Collection<V> get values => _map != null ? _map.values: ListUtil.EMPTY_LIST;
+  Collection<V> get values => _map != null ? _map.values: EMPTY_LIST;
   //@override
   bool get isEmpty => _map == null || _map.isEmpty;
   //@override

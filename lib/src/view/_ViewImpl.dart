@@ -434,24 +434,11 @@ class _VirtualIdSpace implements IdSpace {
   String toString() => "_VirtualIdSpace($_owner: $_fellows)";
 }
 
-/**
- * A list of child views.
- * Notice that [set length] are not supported
- */
-class _SubviewList extends AbstractList<View> {
+class _SubviewSeq extends Sequence<View> {
   final View _owner;
+  _SubviewSeq(this._owner);
 
-  _SubviewList(this._owner);
-
-  //Iterable//
-  Iterator<View> iterator() {
-    return new _SVIterator(_owner);
-  }
-
-  //Collection//
   int get length => _owner.childCount;
-
-  //List//
   View operator[](int index) {
     ListUtil.rangeCheck(this, index, 1);
 
@@ -468,7 +455,15 @@ class _SubviewList extends AbstractList<View> {
       return child;
     }
   }
-      
+}
+/**
+ * A list of child views.
+ * Notice that [set length] are not supported
+ */
+class _SubviewList extends SequenceList<View> {
+  final View _owner;
+  _SubviewList(View owner): super(new _SubviewSeq(owner)), _owner = owner;
+
   void operator[]=(int index, View value) {
     if (value == null)
       throw const IllegalArgumentException("null");
@@ -483,7 +478,7 @@ class _SubviewList extends AbstractList<View> {
   void add(View view) {
     _owner.addChild(view);
   }
-  void sort([Comparator<View> compare = Comparable.compare]) {
+  void sort([Comparator<View> compare]) {
     List<View> copy = new List.from(this);
     copy.sort(compare);
     setRange(0, length, copy);
@@ -493,9 +488,6 @@ class _SubviewList extends AbstractList<View> {
     if (w != null)
       w.remove();
     return w;
-  }
-  View get last {
-    return _owner.lastChild;
   }
   void setRange(int start, int length, List<View> from, [int startFrom]) {
     if (length <= 0)
@@ -572,27 +564,6 @@ class _SubviewList extends AbstractList<View> {
   }
 }
 
-/** _SubviewList's iterator.
- */
-class _SVIterator implements Iterator<View> {
-  View _next;
-
-  _SVIterator(View owner) {
-    _next = owner.firstChild;
-  }
-
-  bool get hasNext {
-    return _next != null;
-  }
-  View next() {
-    if (_next == null)
-      throw new StateError("No more elements");
-    View nxt = _next;
-    _next = _next.nextSibling;
-    return nxt;
-  }
-}
-
 /** The classes to add to the root node
  */
 List<String> get _rootClasses {
@@ -627,7 +598,7 @@ class _CSSStyleImpl implements CSSStyleDeclaration {
   String getPropertyPriority(String propertyName)
   => _st.getPropertyPriority(propertyName);
   String getPropertyShorthand(String propertyName)
-  => _css.getPropertyShorthand(propertyName); 
+  => _st.getPropertyShorthand(propertyName); 
   bool isPropertyImplicit(String propertyName)
   => _st.isPropertyImplicit(propertyName);
 
