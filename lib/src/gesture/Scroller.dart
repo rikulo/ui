@@ -141,21 +141,21 @@ class Scroller {
     if (animate) {
       final Offset initPos = scrollPosition * -1, diffPos = position - initPos;
       _stm = new EasingMotion((num x, MotionState state) {
-        _onMove(initPos + diffPos * x, state.currentTime, callback: false);
+        _onMove(initPos + diffPos * x, state.currentTime, false);
         
       }, start: (MotionState state) {
-        _onStart(null, state.currentTime, callback: false);
+        _onStart(null, state.currentTime, false);
         
       }, end: (MotionState state) {
-        _onEnd(callback: false);
+        _onEnd(false);
         
       })..run();
       
     } else {
       int time = new Date.now().millisecondsSinceEpoch;
-      _onStart(null, time, callback: false); // TODO: 1rupt drag?
-      _onMove(position, time, callback: false);
-      _onEnd(callback: false);
+      _onStart(null, time, false); // TODO: 1rupt drag?
+      _onMove(position, time, false);
+      _onEnd(false);
     }
   }
   

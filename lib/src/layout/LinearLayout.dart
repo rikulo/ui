@@ -20,7 +20,7 @@ class LinearLayout extends AbstractLayout {
   => _getRealLayout(view).doLayout(mctx, view, children);
 }
 
-interface _RealLinearLayout {
+abstract class _RealLinearLayout {
   int measureWidth(MeasureContext mctx, View view);
   int measureHeight(MeasureContext mctx, View view);
   void doLayout(MeasureContext mctx, View view, List<View> children);
@@ -29,7 +29,7 @@ interface _RealLinearLayout {
 /**
  * Horizontal linear layout.
  */
-class _HLayout implements _RealLinearLayout {
+class _HLayout extends _RealLinearLayout {
   int measureWidth(MeasureContext mctx, View view) {
     final int va = mctx.getWidthByApp(view);
     if (va != null)
@@ -213,7 +213,7 @@ class _HLayout implements _RealLinearLayout {
 /**
  * Vertical linear layout.
  */
-class _VLayout implements _RealLinearLayout {
+class _VLayout extends _RealLinearLayout {
   int measureHeight(MeasureContext mctx, View view) {
     final int va = mctx.getHeightByApp(view);
     if (va != null)

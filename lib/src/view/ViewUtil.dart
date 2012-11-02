@@ -158,7 +158,7 @@ class ViewUtil {
    * Notice that it is static, i.e., all queued requests will be handled.
    */
   static void flushRequestedLayouts() {
-    layoutManager.flush(force: true);
+    layoutManager.flush(null, true);
   }
 
   /** Returns the root view of the given view.
