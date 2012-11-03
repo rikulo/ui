@@ -3,11 +3,11 @@
 // Author: tomyeh
 part of rikulo_effect;
 
-/** An animation callbak.
- * To start an animation, you can add a callback to [Animator], such that
- * the callback will be called periodically until the callback returns false.
+/** An animation task.
+ * To start an animation, you can add a task to [Animator], such that
+ * the task will be called periodically until the task returns false.
  *
- * To add an animation, please invoke [Animator.add]. If the callback
+ * To add an animation, please invoke [Animator.add]. If the task
  * returns false, it will be removed from the animator automatially.
  * If you'd like, you can remove it manually by use of [Animator.remove].
  *
@@ -24,41 +24,41 @@ typedef bool AnimatorTask(int time, int elapsed);
 abstract class Animator {
   factory Animator() => new _Animator();
 
-  /** Adds an animation callback, such that it will be
+  /** Adds an animation task, such that it will be
    * called periodically.
    */
-  void add(AnimatorTask animate);
-  /** Removes this animation callback.
+  void add(AnimatorTask task);
+  /** Removes this animation task.
    *
-   * It is called automatically, if the callback returns false.
+   * It is called automatically, if the task returns false.
    */
-  void remove(AnimatorTask animate);
-  /** Returns a readonly collection of all animation callbacks.
+  void remove(AnimatorTask task);
+  /** Returns a readonly collection of all animation tasks.
    */
-  Collection<AnimatorTask> get animates;
+  Collection<AnimatorTask> get tasks;
 }
 
 class _Animator implements Animator {
-  final List<AnimatorTask> _anims;
-  //Used to hold deleted animation callback when callbacks are processed
+  final List<AnimatorTask> _tasks;
+  //Used to hold deleted animation task when tasks are processed
   List<AnimatorTask> _tmpRemoved;
   Function _callback;
   int _prevTime;
 
-  _Animator(): _anims = new List() {
+  _Animator(): _tasks = new List() {
     _callback = (num now) {
-      if (!_anims.isEmpty) {
+      if (!_tasks.isEmpty) {
         final int inow = now == null ? _now(): now.toInt();
         final int diff = inow - _prevTime;
         _prevTime = inow;
 
         _beforeCallback();
         try {
-          //Note: _anims won't be changed by [remove] because of _beforeCallback
+          //Note: _tasks won't be changed by [remove] because of _beforeCallback
           //so it is OK to use index to iterate
-          for (int j = 0; j < _anims.length; ++j) { //note: length might increase
-            if (!_isRemoved(j) && !_anims[j](inow, diff)) {
-              _anims.removeRange(j, 1);
+          for (int j = 0; j < _tasks.length; ++j) { //note: length might increase
+            if (!_isRemoved(j) && !_tasks[j](inow, diff)) {
+              _tasks.removeRange(j, 1);
               --j;
             }
           }
@@ -66,7 +66,7 @@ class _Animator implements Animator {
           _afterCallback();
         }
 
-        if (!_anims.isEmpty)
+        if (!_tasks.isEmpty)
           window.requestAnimationFrame(_callback);
       }
     };
@@ -78,21 +78,20 @@ class _Animator implements Animator {
     final List<AnimatorTask> removed = _tmpRemoved;
     _tmpRemoved = null;
 
-    for (final AnimatorTask animate in removed) {
-      remove(animate);
-    }
+    for (final task in removed)
+      remove(task);
   }
   bool _isRemoved(int index) {
     if (!_tmpRemoved.isEmpty) {
-      final AnimatorTask animate = _anims[index];
+      final AnimatorTask task = _tasks[index];
       int cnt = 0;
-      for (final AnimatorTask anim in _tmpRemoved) {
-        if (anim == animate)
+      for (final t in _tmpRemoved) {
+        if (t == task)
           ++cnt;
       }
-      if (cnt > 0) { //animate shall be deleted
+      if (cnt > 0) { //task shall be deleted
         for (int j = 0; j < index; ++j) {
-          if (_anims[j] == animate && --cnt == 0)
+          if (_tasks[j] == task && --cnt == 0)
             return false;
         }
         return true;
@@ -101,21 +100,21 @@ class _Animator implements Animator {
     return false;
   }
 
-  void add(AnimatorTask animate) {
-    _anims.add(animate);
-    if (_anims.length == 1) {
+  void add(AnimatorTask task) {
+    _tasks.add(task);
+    if (_tasks.length == 1) {
       _prevTime = _now();
       window.requestAnimationFrame(_callback);
     }
   }
-  void remove(AnimatorTask animate) {
+  void remove(AnimatorTask task) {
     if (_tmpRemoved != null) {
-      _tmpRemoved.add(animate); //handle it later
+      _tmpRemoved.add(task); //handle it later
     } else {
-      ListUtil.remove(_anims, animate);
+      ListUtil.remove(_tasks, task);
     }
   }
-  Collection<AnimatorTask> get animates => _anims;  //TODO: readonly
+  Collection<AnimatorTask> get tasks => _tasks;  //TODO: readonly
 
   static int _now() => new Date.now().millisecondsSinceEpoch;
 }

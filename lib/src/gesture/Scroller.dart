@@ -427,8 +427,8 @@ class _BoundedInertialMotion extends Motion {
     _velx = _hor ? velocity.x : 0;
     _vely = _ver ? velocity.y : 0;
   }
-  
-  bool _onMove(MotionState state) {
+  //@override  
+  bool onMove(MotionState state) {
     final Offset vel = new Offset(_velx, _vely);
     final num speed = vel.norm();
     final Offset dir = speed == 0 ? new Offset(0, 0) : vel / speed;
@@ -454,7 +454,8 @@ class _BoundedInertialMotion extends Motion {
         (_ver && !_shallStop(_posy, _vely, range.y, range.bottom)); 
   }
   
-  void _onEnd(MotionState state) {
+  //@override  
+  void onEnd(MotionState state) {
     if (_snapTo != null) {
       _snapMotion = new LinearPathMotion(element, new Offset(_posx, _posy), _snapTo,
       move: (MotionState ms, Offset pos, num x, void defaultAction()) {
