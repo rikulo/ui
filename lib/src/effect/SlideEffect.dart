@@ -7,24 +7,23 @@ part of rikulo_effect;
  * [SlideOutEffect].
  */
 class SlideDirection {
+  /** The name of the slide direction. */
+  final String name;
+  const SlideDirection._(this.name);
   
-  final String _name;
-  
-  const SlideDirection._init(this._name);
-  
-  String toString() => _name;
+  String toString() => name;
   
   /// North (top) side of the element.
-  static const SlideDirection NORTH = const SlideDirection._init("North");
+  static const SlideDirection NORTH = const SlideDirection._("North");
   
   /// South (bottom) side of the element.
-  static const SlideDirection SOUTH = const SlideDirection._init("South");
+  static const SlideDirection SOUTH = const SlideDirection._("South");
   
   /// West (left) side of the element.
-  static const SlideDirection WEST = const SlideDirection._init("West");
+  static const SlideDirection WEST = const SlideDirection._("West");
   
   /// East (right) side of the element.
-  static const SlideDirection EAST = const SlideDirection._init("East");
+  static const SlideDirection EAST = const SlideDirection._("East");
   
 }
 

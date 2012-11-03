@@ -6,25 +6,23 @@
  * The direction enumeration.
  */
 class Dir {
-  final String _name;
-
   /** Represents the vertical direction.
    */
-  static const Dir VERTICAL = const Dir("vertical");
+  static const Dir VERTICAL = const Dir._("vertical");
   /** Represents the horizontal direction.
    */
-  static const Dir HORIZONTAL = const Dir("horizontal");
+  static const Dir HORIZONTAL = const Dir._("horizontal");
   /** Represents the both direction.
    */
-  static const Dir BOTH = const Dir("both");
+  static const Dir BOTH = const Dir._("both");
 
-  const Dir(String this._name);
+  const Dir._(String this.name);
 
   /** The name of this direction. */
-  String get name => _name;
+  final String name;
 
   operator==(other) => identical(this, other);
-  String toString() => _name;
+  String toString() => name;
 }
 
 /**
@@ -98,8 +96,10 @@ class Rectangle extends Offset implements Size {
   /** Construct a Rectangle by cloning another. */
   Rectangle.from(Rectangle other)
   : this(other.left, other.top, other.right, other.bottom);
-  
+
+  //@override
   num get width => right - left;
+  //@override
   num get height => bottom - top;
 
   /** Return true if the two Rectangles have the same left, right, top, bottom values. */

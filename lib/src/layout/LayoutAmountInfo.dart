@@ -7,30 +7,28 @@ part of rikulo_layout;
  * The types of [LayoutAmountInfo].
  */
 class LayoutAmountType {
-  final String _name;
-
   /** Represents none.
    */
-  static const LayoutAmountType NONE = const LayoutAmountType("none");
+  static const LayoutAmountType NONE = const LayoutAmountType._("none");
   /** Represents fixed.
    */
-  static const LayoutAmountType FIXED = const LayoutAmountType("fixed");
+  static const LayoutAmountType FIXED = const LayoutAmountType._("fixed");
   /** Represents flex.
    */
-  static const LayoutAmountType FLEX = const LayoutAmountType("flex");
+  static const LayoutAmountType FLEX = const LayoutAmountType._("flex");
   /** Represents ratio.
    */
-  static const LayoutAmountType RATIO = const LayoutAmountType("ratio");
+  static const LayoutAmountType RATIO = const LayoutAmountType._("ratio");
   /** Represents content.
    */
-  static const LayoutAmountType CONTENT = const LayoutAmountType("content");
+  static const LayoutAmountType CONTENT = const LayoutAmountType._("content");
 
-  const LayoutAmountType(String this._name);
+  const LayoutAmountType._(String this.name);
 
   /** The name of this direction. */
-  String get name => _name;
+  final String name;
 
-  String toString() => _name;
+  String toString() => name;
 }
 
 /**

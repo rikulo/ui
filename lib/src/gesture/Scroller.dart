@@ -50,9 +50,10 @@ class Scroller {
    * If it returns false, the scrolling won't be activated.
    * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
    */
-  Scroller(this.owner, this._fnViewPortSize, AsSize this._fnContentSize,
+  Scroller(Element owner, AsSize viewPortSize, AsSize contentSize,
   {Element handle, Dir direction: Dir.BOTH, bool scrollbar: true, 
   ScrollerSnap snap, ScrollerStart start, ScrollerMove move, ScrollerEnd end}) :
+  this.owner = owner, _fnViewPortSize = viewPortSize, _fnContentSize = contentSize,
   this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
   _hasHor = identical(direction, Dir.HORIZONTAL) || identical(direction, Dir.BOTH),
   _hasVer = identical(direction, Dir.VERTICAL) || identical(direction, Dir.BOTH),
