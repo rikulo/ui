@@ -31,7 +31,7 @@ class DraggerState extends GestureState {
   Offset _elementPosition;
   int _time;
 
-  DraggerState(this.dragger, this.draggedElement, Offset targetPosition, 
+  DraggerState._(this.dragger, this.draggedElement, Offset targetPosition, 
   DragGestureState gstate) :
   gestureState = gstate, eventTarget = gstate.eventTarget, startTime = gstate.time,
   elementStartPosition = targetPosition,
@@ -164,7 +164,7 @@ class Dragger extends Gesture {
     if (tar == null)
       return false;
     
-    _state = new DraggerState(this, tar, getElementPosition_(tar), state);
+    _state = new DraggerState._(this, tar, getElementPosition_(tar), state);
     if (_start != null && identical(_start(_state), false)) {
       _stop();
       return false;

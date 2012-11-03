@@ -18,7 +18,7 @@ class HoldGestureState extends GestureState {
   final int startTime;
   int _timer, _time;
   
-  HoldGestureState(this.gesture, this.eventTarget, int time, this.position) : 
+  HoldGestureState._(this.gesture, this.eventTarget, int time, this.position) : 
   _time = time, this.startTime = time;
 
   //@override
@@ -98,7 +98,7 @@ abstract class HoldGesture extends Gesture {
       return;
     
     _stop();
-    _state = new HoldGestureState(this, target, time, position);
+    _state = new HoldGestureState._(this, target, time, position);
     
     if (_start != null && identical(_start(_state), false)) {
       _stop();

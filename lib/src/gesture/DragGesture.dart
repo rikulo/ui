@@ -27,7 +27,7 @@ class DragGestureState extends GestureState {
   Offset _position;
   int _time;
 
-  DragGestureState(DragGesture gesture, this.eventTarget, Offset position, int time):
+  DragGestureState._(DragGesture gesture, this.eventTarget, Offset position, int time):
   _gesture = gesture, startPosition = position, _position = position, 
   startTime = time, _time = time, _vp = new VelocityProvider(position, time);
 
@@ -125,7 +125,7 @@ abstract class DragGesture extends Gesture {
       return;
     stop();
 
-    _state = new DragGestureState(this, target, position, time);
+    _state = new DragGestureState._(this, target, position, time);
     if (_start != null && identical(_start(_state), false))
       stop();
   }

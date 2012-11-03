@@ -11,7 +11,7 @@ typedef void SwipeGestureAction(SwipeGestureState state);
  */
 class SwipeGestureState extends GestureState {
 
-  SwipeGestureState(this.gesture, DragGestureState ds) :
+  SwipeGestureState._(this.gesture, DragGestureState ds) :
   eventTarget = ds.eventTarget, startTime = ds.startTime, time = ds.time,
   startPosition = ds.startPosition, position = ds.position,
   transition = ds.transition, velocity = ds.velocity;
@@ -57,7 +57,7 @@ class SwipeGesture extends Gesture {
     _drag = new DragGesture(owner, 
     end: (DragGestureState state) {
       if (action != null)
-        action(new SwipeGestureState(this, state));
+        action(new SwipeGestureState._(this, state));
     });
   }
   

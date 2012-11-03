@@ -165,7 +165,7 @@ class Scroller {
   bool _onStart(EventTarget target, int time, [bool callback = true]) {
     if (_bim != null)
       _bim.stop();
-    _state = new ScrollerState(this, target, _fnViewPortSize, _fnContentSize, time);
+    _state = new ScrollerState._(this, target, _fnViewPortSize, _fnContentSize, time);
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.start, _state);
     if (!callback || _start == null)
@@ -235,7 +235,7 @@ class ScrollerState extends GestureState {
   Size _contentSizeCache, _viewPortSizeCache;
   Rectangle _dragRangeCache;
 
-  ScrollerState(Scroller scroller, EventTarget this.eventTarget, 
+  ScrollerState._(Scroller scroller, EventTarget this.eventTarget, 
   this._fnViewPortSize, this._fnContentSize, this._time) :
   this.scroller = scroller,
   startPosition = new DOMAgent(scroller.owner).offset * -1 {

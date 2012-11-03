@@ -28,7 +28,7 @@ class MotionState {
   int _current, _elapsed, _paused, _pauseStart;
   var data;
   
-  MotionState(int current, int elapsed, {int start, int paused: 0}) : 
+  MotionState._(int current, int elapsed, {int start, int paused: 0}) : 
     startTime = start != null ? start : current, 
     _current = current, _elapsed = elapsed, _paused = paused;
   
@@ -92,7 +92,7 @@ class Motion {
     
     _task = (int time, int elapsed) {
       if (_stateFlag == _MOTION_STATE_INIT) {
-        _state = new MotionState(time, elapsed);
+        _state = new MotionState._(time, elapsed);
         onStart(_state);
         _stateFlag = _MOTION_STATE_RUNNING;
       }

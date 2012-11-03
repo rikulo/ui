@@ -12,7 +12,7 @@ class ZoomGestureState extends GestureState {
   Offset _pos0, _pos1;
   int _time;
 
-  ZoomGestureState(this.gesture, this.eventTarget, Offset pos0, Offset pos1, int time) :
+  ZoomGestureState._(this.gesture, this.eventTarget, Offset pos0, Offset pos1, int time) :
   _startPos0 = pos0, _startPos1 = pos1, _pos0 = pos0, _pos1 = pos1,
   startTime = time, _time = time, _startMid = (pos0 + pos1) / 2, 
   _startDiff = pos1 - pos0 {
@@ -204,7 +204,7 @@ class ZoomGesture extends Gesture {
       return;
     
     stop();
-    _state = new ZoomGestureState(this, target, pos0, pos1, time);
+    _state = new ZoomGestureState._(this, target, pos0, pos1, time);
     
     if (_start != null && identical(_start(_state), false))
       stop();
