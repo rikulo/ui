@@ -1,6 +1,6 @@
 #Rikulo Changes
 
-##0.6.1
+##0.6.0
 
 **November 5, 2012**
 
@@ -34,8 +34,6 @@
 * View.outerWidth and outerHeight were renamed to realWidth and realHeight
 * DOMAgent.outerWidth, outerHeight and outerSize were renamed to width, height and size
 * Cordova is moved to another repository, [rikulo_gap](https://github.com/rikulo/rikulo-gap).
-
-##0.6.0
 
 **September 25, 2012**
 
