@@ -33,8 +33,9 @@ class LayoutDeclaration extends Declaration {
   /** The handler for handling this layout.
    *
    * Note: this method will check if [handler] was set. If not, it will
-   * return the handler of the given type specified in [type]. If neither is set,
-   * it returns null.
+   * return the handler of the given type specified in [type].
+   * If there is no built-in handler for the given type, [UIException]  will
+   * be thrown. In other words, this method won't return null.
    */
   Layout get handler {
     if (_handler != null)
