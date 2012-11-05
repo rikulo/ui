@@ -48,8 +48,8 @@ class _Animator implements Animator {
   _Animator(): _tasks = new List() {
     _callback = (num now) {
       if (!_tasks.isEmpty) {
-        final int inow = now == null ? _now(): now.toInt();
-        final int diff = inow - _prevTime;
+        final int inow = _now();
+        final int diff = _prevTime == null ? null : inow - _prevTime;
         _prevTime = inow;
 
         _beforeCallback();
@@ -103,7 +103,7 @@ class _Animator implements Animator {
   void add(AnimatorTask task) {
     _tasks.add(task);
     if (_tasks.length == 1) {
-      _prevTime = _now();
+      _prevTime = null;
       window.requestAnimationFrame(_callback);
     }
   }

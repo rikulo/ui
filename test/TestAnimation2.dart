@@ -69,6 +69,8 @@ void main() {
     Offset pos = new DOMAgent(element).offset;
     motion = new Motion(move: (MotionState mstate) {
       int elapsed = mstate.elapsedTime;
+      if (elapsed == null)
+        return true;
       pos = range.snap(pos + (unitv * speed * elapsed));
       element.style.left = CSS.px(pos.left.toInt());
       element.style.top = CSS.px(pos.top.toInt());

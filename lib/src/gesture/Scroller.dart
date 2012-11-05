@@ -434,19 +434,20 @@ class _BoundedInertialMotion extends Motion {
     final num speed = vel.norm();
     final Offset dir = speed == 0 ? new Offset(0, 0) : vel / speed;
     final Offset dec = dir * friction;
+    final int elapsed = state.elapsedTime;
     
-    if (_hor)
-      _posx = _updatePosition(_posx, _velx, dec.x, state.elapsedTime, range.x, range.right);
-    if (_ver)
-      _posy = _updatePosition(_posy, _vely, dec.y, state.elapsedTime, range.y, range.bottom);
+    if (_hor && elapsed != null)
+      _posx = _updatePosition(_posx, _velx, dec.x, elapsed, range.x, range.right);
+    if (_ver && elapsed != null)
+      _posy = _updatePosition(_posy, _vely, dec.y, elapsed, range.y, range.bottom);
     
     if (_move != null)
       _move(new Offset(_posx, _posy), state.currentTime);
     
-    if (_hor)
-      _velx = _updateVelocity(_posx, _velx, dec.x, state.elapsedTime, range.x, range.right);
-    if (_ver)
-      _vely = _updateVelocity(_posy, _vely, dec.y, state.elapsedTime, range.y, range.bottom);
+    if (_hor && elapsed != null)
+      _velx = _updateVelocity(_posx, _velx, dec.x, elapsed, range.x, range.right);
+    if (_ver && elapsed != null)
+      _vely = _updateVelocity(_posy, _vely, dec.y, elapsed, range.y, range.bottom);
     
     if (_shallSnap())
       return false;

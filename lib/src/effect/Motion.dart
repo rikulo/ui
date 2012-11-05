@@ -92,6 +92,7 @@ class Motion {
     
     _task = (int time, int elapsed) {
       if (_stateFlag == _MOTION_STATE_INIT) {
+        elapsed = null;
         _state = new MotionState._(time, elapsed);
         onStart(_state);
         _stateFlag = _MOTION_STATE_RUNNING;
