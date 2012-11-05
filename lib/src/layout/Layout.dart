@@ -85,8 +85,7 @@ final int _DEFAULT_SPACING = 3;
  */
 LayoutAmountInfo _getLayoutAmountInfo(View view, String value) {
   final amt = new LayoutAmountInfo(value);
-  if (amt.type == LayoutAmountType.NONE
-  && layoutManager.getLayoutOfView(view).isFlex) {
+  if (amt.type == LayoutAmountType.NONE && view.layout.handler.isFlex) {
     amt.type = LayoutAmountType.FLEX;
     amt.value = 1;
   }

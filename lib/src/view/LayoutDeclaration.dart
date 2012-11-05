@@ -8,12 +8,13 @@ part of rikulo_view;
  */
 class LayoutDeclaration extends Declaration {
   final View _owner;
+  Layout _handler;
 
   LayoutDeclaration(View owner): _owner = owner;
 
   /** The type of the layout.
    *
-   * Syntax: `type: none | linear | stack | tiles | table`
+   * Syntax: `type: none | linear`
    *
    * Default: *an empty string*. It means no layout required at all (i.e., `none`)
    *
@@ -21,10 +22,39 @@ class LayoutDeclaration extends Declaration {
    * for details.
    */
   String get type => getPropertyValue("type");
-  /// The type of the layout.
+  /** The type of the layout.
+   *
+   * Alternatively, you can assign the layout handler directly with [handler].
+   * It is useful if you'd like a view to be handled with a custom layout.
+   */
   void set type(String value) {
     setProperty("type", value);
   }
+  /** The handler for handling this layout.
+   *
+   * Note: this method will check if [handler] was set. If not, it will
+   * return the handler of the given type specified in [type].
+   * If there is no built-in handler for the given type, [UIException]  will
+   * be thrown. In other words, this method won't return null.
+   */
+  Layout get handler {
+    if (_handler != null)
+      return _handler;
+
+    final Layout handler = layoutManager.getLayout(type);
+    if (handler == null)
+      throw new UIException("Unknown type, ${type}");
+    return handler;
+  }
+  /** The handler for handling this layout.
+   * Instead of assigning one of standard types with [type], you can assign
+   * a custom layout handler directly with this method.
+   */
+  void set handler(Layout layout) {
+    _handler = layout;
+    type = layout != null ? layoutManager.getType(layout): null;
+  }
+
   /** The orientation.
    *
    * Syntax: `orient: horizontal | vertical`
