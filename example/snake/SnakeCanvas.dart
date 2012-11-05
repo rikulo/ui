@@ -84,7 +84,7 @@ class SnakeCanvas {
 
     environment = new SnakeEnvironment(height,width);
 
-    new Animator().add((int time, int elapsed) {
+    new Animator().add((int time) {
       int timeSinceCycle = time - lastCycle;
       bool ret = true;
       

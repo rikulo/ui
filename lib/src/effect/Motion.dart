@@ -28,23 +28,25 @@ class MotionState {
   int _current, _elapsed, _paused, _pauseStart;
   var data;
   
-  MotionState._(int current, int elapsed, {int start, int paused: 0}) : 
+  MotionState._(int current, {int start, int paused : 0}) : 
     startTime = start != null ? start : current, 
-    _current = current, _elapsed = elapsed, _paused = paused;
+    _current = current, _elapsed = 0, _paused = paused;
   
-  /** Return current time.
+  /** Return current time, in the form of millisecond since epoch.
    */
   int get currentTime => _current;
   
-  /** Return elapsed time since the previous animation frame.
+  /** Return elapsed time since the previous animation frame. At the first 
+   * animation frame, the value is 0.
    */
   int get elapsedTime => _elapsed;
   
-  /** Return paused time.
+  /** Return paused time in milliseconds.
    */
   int get pausedTime => _paused;
   
-  /** Return the total running time since motion starts, excluding paused time.
+  /** Return the total running time in milliseconds since motion starts, 
+   * excluding paused time.
    */
   int get runningTime => _current - startTime - _paused;
   
@@ -52,9 +54,9 @@ class MotionState {
    */
   bool get isPaused => _pauseStart != null;
   
-  void _snapshot(int current, int elapsed) {
+  void _snapshot(int current) {
+    _elapsed = current - _current;
     _current = current;
-    _elapsed = elapsed;
   }
   
   void _pause(int current) {
@@ -90,14 +92,13 @@ class Motion {
   Motion({MotionStart start, MotionMove move, MotionEnd end}) : 
     _start = start, _move = move, _end = end {
     
-    _task = (int time, int elapsed) {
+    _task = (int time) {
       if (_stateFlag == _MOTION_STATE_INIT) {
-        elapsed = null;
-        _state = new MotionState._(time, elapsed);
+        _state = new MotionState._(time);
         onStart(_state);
         _stateFlag = _MOTION_STATE_RUNNING;
       }
-      _state._snapshot(time, elapsed);
+      _state._snapshot(time);
       switch (_stateFlag) {
         case _MOTION_STATE_RUNNING:
           if (_state.isPaused) { // resume from pause

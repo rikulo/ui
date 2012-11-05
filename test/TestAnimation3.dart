@@ -120,8 +120,6 @@ void main() {
     Offset pos = new DOMAgent(element).offset;
     inertialMotion = new Motion(move: (MotionState mstate) {
       int elapsed = mstate.elapsedTime;
-      if (elapsed == null)
-        return true;
       pos += unitv * speed * elapsed;
       if (pos.x < range.left || pos.x > range.right) {
         unitv = new Offset(-unitv.x, unitv.y);

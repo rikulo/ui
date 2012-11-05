@@ -43,7 +43,7 @@ class CanvasCircle {
       new Ball(130, 0.8, 8, "#0ff")];
 
     ctx2d = canvas.context2D;
-    new Animator().add((int time, int elapsed) {
+    new Animator().add((int time) {
       ctx2d.clearRect(0, 0, canvas.width, canvas.height);
       for (final Ball ball in balls)
         ball.updatePosition(time);

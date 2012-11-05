@@ -90,11 +90,8 @@ class EasingMotion extends Motion {
   /** Skip to the end of motion.
    */
   void skip() {
-    if (_state != null) {
-      final int t = new Date.now().millisecondsSinceEpoch;
-      _state._snapshot(t, t - _state.currentTime);
-      doAction_(1, _state);
-    }
+    if (_state != null)
+      doAction_(1, _state.._snapshot(new Date.now().millisecondsSinceEpoch));
     super.stop();
   }
   

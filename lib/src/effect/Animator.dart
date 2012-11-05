@@ -12,11 +12,9 @@ part of rikulo_effect;
  * If you'd like, you can remove it manually by use of [Animator.remove].
  *
  * + [time] is the milliseconds from 1970-01-01 (UTC).
- * In other words, it is the same as `new Date.now().value`.
- * + [elapsed] is the number of milliseconds elapsed since the previous
- * invocation.
+ * In other words, it is the same as `new Date.now().millisecondsSinceEpoch`.
  */
-typedef bool AnimatorTask(int time, int elapsed);
+typedef bool AnimatorTask(int time);
 
 /**
  * The animator used to play [AnimatorTask].
@@ -43,21 +41,18 @@ class _Animator implements Animator {
   //Used to hold deleted animation task when tasks are processed
   List<AnimatorTask> _tmpRemoved;
   Function _callback;
-  int _prevTime;
 
   _Animator(): _tasks = new List() {
     _callback = (num now) {
       if (!_tasks.isEmpty) {
         final int inow = _now();
-        final int diff = _prevTime == null ? null : inow - _prevTime;
-        _prevTime = inow;
 
         _beforeCallback();
         try {
           //Note: _tasks won't be changed by [remove] because of _beforeCallback
           //so it is OK to use index to iterate
           for (int j = 0; j < _tasks.length; ++j) { //note: length might increase
-            if (!_isRemoved(j) && !_tasks[j](inow, diff)) {
+            if (!_isRemoved(j) && !_tasks[j](inow)) {
               _tasks.removeRange(j, 1);
               --j;
             }
@@ -103,7 +98,6 @@ class _Animator implements Animator {
   void add(AnimatorTask task) {
     _tasks.add(task);
     if (_tasks.length == 1) {
-      _prevTime = null;
       window.requestAnimationFrame(_callback);
     }
   }

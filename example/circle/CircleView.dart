@@ -20,7 +20,7 @@ class Ball {
     view.width = view.height = size << 1;
     centerX = (browser.size.width >> 1) - size;
     centerY = (browser.size.height >> 1) - size;
-    animator.add((int time, int elapsed) {
+    animator.add((int time) {
       updatePosition(time);
       return true;
     });
