@@ -12,8 +12,7 @@ class ProfileDeclaration extends Declaration {
 
   ProfileDeclaration(View owner) : _owner = owner;
 
-  /** The anchor, or null if [anchorView] was assigned and it isn't
-   * assigned with an ID.
+  /** The anchor.
    *
    * Syntax: `anchor: | a_CSS_selector | parent`
    *
@@ -23,8 +22,9 @@ class ProfileDeclaration extends Declaration {
    * are empty (and [anchorView] is null).
    */
   String get anchor => getPropertyValue("anchor");
-  /** The anchor, or null if [anchorView] was assigned and it isn't
-   * assigned with an ID.
+  /** The anchor.
+   *
+   * Alternatively, you can assign the view directly with [anchorView].
    */
   void set anchor(String value) {
     setProperty("anchor", value);

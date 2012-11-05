@@ -63,9 +63,9 @@ class MeasureContext {
     String v = view.profile.getPropertyValue(name);
     if (v.isEmpty) {
       if (view.parent != null
-      && layoutManager.getLayoutOfView(view.parent).isProfileInherited)
+      && view.parent.layout.handler.isProfileInherited)
         v = view.parent.layout.getPropertyValue(name);
-      if (v.isEmpty && layoutManager.getLayoutOfView(view).isFlex)
+      if (v.isEmpty && view.layout.handler.isFlex)
         v = "flex";
     }
     return v;
@@ -183,7 +183,7 @@ class MeasureContext {
       if (wd != null || widths.containsKey(view))
         return wd;
 
-      wd = layoutManager.getLayoutOfView(view).measureWidth(this, view);
+      wd = view.layout.handler.measureWidth(this, view);
 
       final AsInt parentInnerWidth =
         () => view.parent != null ? view.parent.innerWidth: browser.size.width;
@@ -206,7 +206,7 @@ class MeasureContext {
       if (hgh != null || heights.containsKey(view))
         return hgh;
 
-      hgh = layoutManager.getLayoutOfView(view).measureHeight(this, view);
+      hgh = view.layout.handler.measureHeight(this, view);
       final AsInt parentInnerHeight =
         () => view.parent != null ? view.parent.innerHeight: browser.size.height;
       int limit;

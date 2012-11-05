@@ -39,14 +39,12 @@ class LayoutManager extends RunOnceViewManager {
   Layout getLayout(String name) {
     return _layouts[name];
   }
-  /** Returns the layout of the given view (never null).
+  /** Returns the type of the given layout, or null if it is not registered.
    */
-  Layout getLayoutOfView(View view) {
-    final String name = view.layout.type;
-    final Layout clayout = getLayout(name);
-    if (clayout == null)
-      throw new UIException("Unknown layout, ${name}");
-    return clayout;
+  String getType(Layout layout) {
+    for (final nm in _layouts.keys)
+      if (layout == _layouts[nm])
+        return nm;
   }
 
   /** Handles the layout of the given view.
@@ -124,7 +122,7 @@ class LayoutManager extends RunOnceViewManager {
    */
   void doLayout(MeasureContext mctx, View view) {
     if (view.visible) {
-      getLayoutOfView(view).doLayout(mctx, view);
+      view.layout.handler.doLayout(mctx, view);
       ++_inCallback;
       try {
         view.onLayout_(mctx);
