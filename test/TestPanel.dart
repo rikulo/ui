@@ -30,7 +30,7 @@ void main() {
     new FadeOutEffect(p1.node, end: (MotionState state) => p1.remove()).run();
     
   });
-  p1.addChild(new TextView("Panel Content"));
+  p1.addChild(new TextView("Panel Content")..profile.location = "center center");
   vlayout.addChild(p1);
   
   final EventListener _nothing = (Event event) {};
