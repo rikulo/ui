@@ -37,6 +37,8 @@
 * DOMAgent.outerWidth, outerHeight and outerSize were renamed to width, height and size
 * Cordova is moved to another repository, [rikulo_gap](https://github.com/rikulo/rikulo-gap).
 
+##0.5.0
+
 **September 25, 2012**
 
 * Convert project structure to pub standard
