@@ -87,7 +87,12 @@ body.rikulo {
 }
 
 .v-Button {
+  border-radius: 2px;
+  border: 1px solid #CCC;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  .background-gradient2(#FFF, #EEE);
   font-weight: bold;
+  color: #666;
 }
 
 .v-scrollbar-ver, .v-scrollbar-hor {
@@ -174,6 +179,7 @@ body.rikulo {
 @panel-background: #FFF;
 
 .v-Panel {
+  overflow: hidden;
   border-radius: @panel-border-radius;
   border: @panel-border;
   
@@ -211,7 +217,7 @@ body.rikulo {
   > .v-body {
     position: static;
     .box-sizing(border-box);
-    padding: 5px;
+    padding: 15px;
     border-radius: @panel-border-radius;
     background: @panel-background;
     
