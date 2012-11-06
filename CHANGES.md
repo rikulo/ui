@@ -1,5 +1,7 @@
 #Rikulo Changes
 
+##0.6.1
+
 ##0.6.0
 
 **November 5, 2012**
