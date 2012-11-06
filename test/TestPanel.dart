@@ -52,4 +52,11 @@ void main() {
   p4.addChild(new TextView("Compact"));
   vlayout.addChild(p4);
   
+  final Panel p5 = new Panel();
+  p5.profile.width = "flex";
+  p5.profile.height = "content";
+  p5.addButton("close", _nothing);
+  p5.addChild(new TextView("Panel Content"));
+  vlayout.addChild(p5);
+  
 }

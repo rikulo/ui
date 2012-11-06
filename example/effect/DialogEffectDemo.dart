@@ -11,10 +11,10 @@ import 'package:rikulo/event.dart';
 import 'package:rikulo/effect.dart';
 
 EasingMotion maskFadeIn(Element m) => 
-    new FadeInEffect(m, maxOpacity: 0.6);
+    new FadeInEffect(m, maxOpacity: 0.75);
 
 EasingMotion maskFadeOut(Element m) => 
-    new FadeOutEffect(m, maxOpacity: 0.6);
+    new FadeOutEffect(m, maxOpacity: 0.75);
 
 TextView block(String text, int left, int top) {
   TextView tv = new TextView(text)..width = 100..height = 100;
@@ -94,7 +94,7 @@ void main() {
     dialog.addToDocument(mode: "dialog");
     final Element mask = dialog.maskNode;
     
-    new EasingMotion.join([new ZoomInEffect(dialog.node), maskFadeIn(mask)], 
+    new EasingMotion.join([maskFadeIn(mask), new ZoomInEffect(dialog.node)], 
     end: (MotionState state) {
       removeReady = true;
     }, easing: (num t) => t * t, period: 400).run();
