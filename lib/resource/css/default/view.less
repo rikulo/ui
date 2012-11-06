@@ -86,9 +86,10 @@ body.rikulo {
   .user-select(text);
 }
 
-.v-button {
+.v-Button {
   font-weight: bold;
 }
+
 .v-scrollbar-ver, .v-scrollbar-hor {
   position: absolute;
   border-radius: 3px;
@@ -193,7 +194,12 @@ body.rikulo {
       height: @panel-btn-size;
       width: @panel-btn-size;
       border-radius: @panel-btn-border-radius;
-      border: 1px dashed #888; // temp
+      //border: 1px dashed #888; // temp
+    }
+    
+    > .v-btn-close {
+      background: no-repeat center center transparent;
+      background-image: url('img/icon-close.png');
     }
     
     > .v-btn:first-child {
@@ -212,6 +218,9 @@ body.rikulo {
     > .v-inner {
       position: absolute;
       border-radius: @panel-border-radius;
+      margin: 0 !important;
+      border: 0 !important;
+      padding: 0 !important;
     }
     
   }

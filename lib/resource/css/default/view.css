@@ -54,7 +54,7 @@ body.rikulo {
   -ms-user-select: text;
   user-select: text;
 }
-.v-button {
+.v-Button {
   font-weight: bold;
 }
 .v-scrollbar-ver,
@@ -184,7 +184,10 @@ body.rikulo {
   height: 19px;
   width: 19px;
   border-radius: 3px;
-  border: 1px dashed #888;
+}
+.v-Panel > .v-btns > .v-btn-close {
+  background: no-repeat center center transparent;
+  background-image: url('img/icon-close.png');
 }
 .v-Panel > .v-btns > .v-btn:first-child {
   margin-left: 5px;
@@ -202,6 +205,9 @@ body.rikulo {
 .v-Panel > .v-body > .v-inner {
   position: absolute;
   border-radius: 0;
+  margin: 0 !important;
+  border: 0 !important;
+  padding: 0 !important;
 }
 .v-popup {
   border-radius: 3px;
