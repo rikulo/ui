@@ -63,16 +63,39 @@ class Panel extends View {
       contentNode.nodes.add(child.node);
   }
   
+  //@override
+  void set height(int height) {
+    super.height = height;
+    if (inDocument)
+      _adjustHeight();
+  }
   
+  //@override
+  void set width(int width) {
+    super.width = width;
+    if (inDocument)
+      _adjustWidth();
+  }
   
   //@override
   void onPreLayout_(MeasureContext mctx) {
     super.onPreLayout_(mctx);
+    if (inDocument) {
+      _adjustWidth();
+      _adjustHeight();
+    }
+  }
+  
+  void _adjustWidth() {
+    final Element bd = getNode("body");
+    contentNode.style.width = CSS.px(new DOMAgent(bd).innerWidth - new _CSSAgent(bd).sumHor(pad: true));
+  }
+  
+  void _adjustHeight() {
     final Element bd = getNode("body");
     final _CSSAgent bdcss = new _CSSAgent(bd);
-    bd.style.height = CSS.px(new DOMAgent(node).innerHeight - bdcss.sumVer(mar: true));
+    bd.style.height = CSS.px(new DOMAgent(node).innerHeight - new _CSSAgent(node).sumVer(pad: true));
     contentNode.style.height = CSS.px(new DOMAgent(bd).innerHeight - bdcss.sumVer(pad: true));
-    contentNode.style.width = CSS.px(new DOMAgent(bd).innerWidth - bdcss.sumHor(pad: true));
   }
   
   //@override
