@@ -391,8 +391,7 @@ _DOMEventDispatcher _domEvtDisp(String type) {
   return (View target) {
     return (Event event) {
       var tv = event.target; //the real target based on the event
-      if (tv != null)
-        tv = ViewUtil.getView(tv);
+      tv = tv is Node ? ViewUtil.getView(tv): null;
       target.sendEvent(new DOMEvent(event, type, tv != null ? tv: target));
     };
   };

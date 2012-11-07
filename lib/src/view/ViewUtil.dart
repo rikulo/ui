@@ -135,17 +135,17 @@ final List<View> rootViews = new List();
  * A collection of [View] utilities.
  */
 class ViewUtil {
-  /** Returns the view of the given element, or null if not found.
+  /** Returns the view of the given node, or null if not found.
    *
    * Notice it searches only the mounted views, i.e.,
    * `inDocument` is true.
    *
-   * If the given element doesn't belong to any view,
+   * If the given node doesn't belong to any view,
    * the nearest view containing it will be returned.
-   * For example, if the given element is the content of an instance of [TextView],
+   * For example, if the given node is the content of an instance of [TextView],
    * the [TextView] instance will be returned.
    */
-  static View getView(Element node) {
+  static View getView(Node node) {
     var view;
     do {
       if ((view = _views[node]) != null)

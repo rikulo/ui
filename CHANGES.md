@@ -2,6 +2,12 @@
 
 ##0.6.1
 
+**Features:**
+
+**Bugs:**
+
+* Issue 16: event.target may not be Element in _ViewImpl: _domEvtDisp(String)
+
 ##0.6.0
 
 **November 5, 2012**
