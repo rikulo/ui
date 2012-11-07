@@ -80,7 +80,7 @@ abstract class AbstractLayout extends Layout {
 }
 
 //Utilities//
-final int _DEFAULT_SPACING = 3;
+final int _DEFAULT_SPACING = 4;
 /** Returns the layout amount info for the given view.
  */
 LayoutAmountInfo _getLayoutAmountInfo(View view, String value) {
