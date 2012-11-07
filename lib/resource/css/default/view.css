@@ -62,6 +62,7 @@ body.rikulo {
   background: -moz-linear-gradient(top, #ffffff, #eeeeee 50%);
   background: linear-gradient(top, #ffffff, #eeeeee 50%);
   font-weight: bold;
+  font-size: 12px;
   color: #666;
 }
 .v-scrollbar-ver,
@@ -187,10 +188,10 @@ body.rikulo {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   float: left;
-  margin: 5px;
+  margin: 4px;
   margin-left: 0;
-  height: 19px;
-  width: 19px;
+  height: 24px;
+  width: 24px;
   border-radius: 3px;
 }
 .v-Panel > .v-btns > .v-btn-close {
@@ -198,7 +199,7 @@ body.rikulo {
   background-image: url('img/icon-close.png');
 }
 .v-Panel > .v-btns > .v-btn:first-child {
-  margin-left: 5px;
+  margin-left: 4px;
 }
 .v-Panel > .v-body {
   position: static;
@@ -206,7 +207,7 @@ body.rikulo {
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  padding: 15px;
+  padding: 16px;
   border-radius: 0;
   background: #ffffff;
 }

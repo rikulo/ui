@@ -7,14 +7,14 @@ import 'package:rikulo/util.dart';
 import 'package:rikulo/event.dart';
 import 'package:rikulo/effect.dart';
 
-TextView btn(String text) => new Button(text)..height = 30..width = 100;
+TextView btn(String text) => new Button(text)..height = 32..width = 96;
 
 void main() {
   document.body.style.margin = "0";
   
   final View mainView = new View()..addToDocument();
   View container = new View();
-  container.layout..type = "linear"..orient = "vertical"..gap = "#6";
+  container.layout..type = "linear"..orient = "vertical"..gap = "#8";
   container.profile.text = "width: content; height: content; location: center center";
   mainView.addChild(container);
   
@@ -27,7 +27,7 @@ void main() {
   final Button v3 = btn("Slide");
   container.addChild(v3);
   
-  final Button v4 = btn("No Effect");
+  final Button v4 = btn("N/A");
   container.addChild(v4);
   
   Panel dialog;
@@ -45,8 +45,8 @@ void main() {
   
   dialog = new Panel()..addButton("close", (Event event) => _remove());
   dialog.profile.text = "width: 50%; height: 50%; location: center center";
-  dialog.addChild(new TextView("Is this OK?")..profile.location = "center center");
-  Button okbtn = btn("OK")..profile.location = "bottom right";
+  dialog.addChild(new TextView("Is this OK?")..profile.location = "center center"..style.fontSize = "14px");
+  Button okbtn = btn("OK")..profile.location = browser.mobile ? "bottom center" : "bottom right";
   okbtn.on.click.add((ViewEvent event) => _remove());
   dialog.addChild(okbtn);
   
