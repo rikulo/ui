@@ -38,7 +38,7 @@ class CheckBox extends TextView implements Input<bool> {
   /** Sets the name of the input element of this view.
    */
   void set name(String name) {
-    inputNode.name = name;
+    inputNode.name = name != null ? name: "";
   }
 
   /** Returns whether it is value.
@@ -49,7 +49,7 @@ class CheckBox extends TextView implements Input<bool> {
   /** Sets whether it is value.
    */
   void set value(bool value) {
-    inputNode.checked = value;
+    inputNode.checked = value != null && value;
   }
 
   /** Returns whether it is disabled.

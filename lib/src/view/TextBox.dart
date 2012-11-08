@@ -29,7 +29,7 @@ class TextBox extends View implements Input<String> {
   /** Sets the name of the input element of this view.
    */
   void set name(String name) {
-    inputNode.name = name;
+    inputNode.name = name != null ? name: "";
   }
 
   /** Returns the type of data being placed in this text box.
@@ -52,7 +52,7 @@ class TextBox extends View implements Input<String> {
    * + email - 
    */
   void set type(String type) {
-    inputNode.type = type;
+    inputNode.type = type != null ? type: "text";
   }
 
   /** Returns the value of this text box.
@@ -63,7 +63,7 @@ class TextBox extends View implements Input<String> {
    * Default: an empty string.
    */
   void set value(String value) {
-    inputNode.value = value;
+    inputNode.value = value != null ? value: "";
   }
 
   /** Returns whether it is disabled.

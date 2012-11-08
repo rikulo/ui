@@ -26,7 +26,7 @@ class MultilineBox extends View implements Input<String> {
   /** Sets the name of the input element of this view.
    */
   void set name(String name) {
-    inputNode.name = name;
+    inputNode.name = name != null ? name: "";
   }
 
   /** Returns the value of this text box.
@@ -37,7 +37,7 @@ class MultilineBox extends View implements Input<String> {
    * Default: an empty string.
    */
   void set value(String value) {
-    inputNode.value = value;
+    inputNode.value = value != null ? value: "";
   }
 
   /** Returns whether it is disabled.
