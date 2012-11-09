@@ -10,12 +10,6 @@ import 'package:rikulo/util.dart';
 import 'package:rikulo/event.dart';
 import 'package:rikulo/effect.dart';
 
-EasingMotion maskFadeIn(Element m) => 
-    new FadeInEffect(m, maxOpacity: 0.75);
-
-EasingMotion maskFadeOut(Element m) => 
-    new FadeOutEffect(m, maxOpacity: 0.75);
-
 TextView block(String text, int left, int top) {
   TextView tv = new TextView(text)..width = 100..height = 100;
   tv.left = left;
@@ -77,12 +71,12 @@ void main() {
     dialog.addToDocument(mode: "dialog");
     final Element mask = dialog.maskNode;
     
-    new EasingMotion.join([new FadeInEffect(dialog.node), maskFadeIn(mask)], 
+    new EasingMotion.join([new FadeInEffect(dialog.node), new FadeInEffect(mask)], 
     end: (MotionState state) {
       removeReady = true;
     }, easing: (num t) => t * t, period: 400).run();
     
-    removeMotion = new EasingMotion.join([new FadeOutEffect(dialog.node), maskFadeOut(mask)], 
+    removeMotion = new EasingMotion.join([new FadeOutEffect(dialog.node), new FadeOutEffect(mask)], 
     end: (MotionState state) {
       dialog.remove();
       dialog.style.visibility = "";
@@ -94,12 +88,12 @@ void main() {
     dialog.addToDocument(mode: "dialog");
     final Element mask = dialog.maskNode;
     
-    new EasingMotion.join([maskFadeIn(mask), new ZoomInEffect(dialog.node)], 
+    new EasingMotion.join([new ZoomInEffect(dialog.node), new FadeInEffect(mask)], 
     end: (MotionState state) {
       removeReady = true;
     }, easing: (num t) => t * t, period: 400).run();
     
-    removeMotion = new EasingMotion.join([new ZoomOutEffect(dialog.node), maskFadeOut(mask)], 
+    removeMotion = new EasingMotion.join([new ZoomOutEffect(dialog.node), new FadeOutEffect(mask)], 
     end: (MotionState state) {
       dialog.remove();
       dialog.style.visibility = "";
@@ -111,12 +105,12 @@ void main() {
     dialog.addToDocument(mode: "dialog");
     final Element mask = dialog.maskNode;
     
-    new EasingMotion.join([new SlideInEffect(dialog.node), maskFadeIn(mask)], 
+    new EasingMotion.join([new SlideInEffect(dialog.node), new FadeInEffect(mask)], 
     end: (MotionState state) {
       removeReady = true;
     }, easing: (num t) => t * t, period: 400).run();
     
-    removeMotion = new EasingMotion.join([new SlideOutEffect(dialog.node), maskFadeOut(mask)], 
+    removeMotion = new EasingMotion.join([new SlideOutEffect(dialog.node), new FadeOutEffect(mask)], 
     end: (MotionState state) {
       dialog.remove();
       dialog.style.visibility = "";
