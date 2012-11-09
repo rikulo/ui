@@ -80,8 +80,8 @@ class AnchorRelation {
  */
 void locateToView(View view, String location, [View anchor, int x=0, int y=0]) {
   final ai = new PairInfo(view.profile.offset, 0);
+  final locators = _getLocators(location);
   if (anchor != null) {
-    final locators = _getLocators(location);
     final offset =
       view.style.position == "fixed" ? anchor.pageOffset:
       identical(anchor, view.parent) ? new Offset(0, 0): //parent
@@ -92,7 +92,6 @@ void locateToView(View view, String location, [View anchor, int x=0, int y=0]) {
     _anchorXLocators[locators[0]](offset.left + ai.first, anchor, view);
     _anchorYLocators[locators[1]](offset.top + ai.second, anchor, view);
   } else {
-    final locators = _getLocators(location);
     _anchorXLocators[locators[0]](x + ai.first, _anchorOfPoint, view);
     _anchorYLocators[locators[1]](y + ai.second, _anchorOfPoint, view);
   }
