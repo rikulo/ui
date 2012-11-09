@@ -238,8 +238,7 @@ body.rikulo {
 }
 .v-mask {
   position: fixed;
-  opacity: .75;
-  background: white;
+  background: rgba(255, 255, 255, 0.75);
 }
 .v-shadow {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
