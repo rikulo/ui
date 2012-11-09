@@ -36,8 +36,8 @@ class _HLayout extends _RealLinearLayout {
     if (va != null)
       return va;
 
-    final spcinf = new LayoutSideInfo(view.layout.spacing, _DEFAULT_SPACING);
-    final gapinf = new LayoutSideInfo(view.layout.gap);
+    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final gapinf = new SideInfo(view.layout.gap);
     final defpwd = view.layout.width;
     int width = 0, prevSpacing;
     for (final View child in view.children) {
@@ -45,21 +45,21 @@ class _HLayout extends _RealLinearLayout {
         continue; //ignore anchored
 
       //add spacing to width
-      final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
+      final si = new SideInfo(child.profile.spacing, 0, spcinf);
       width += prevSpacing == null ? si.left: //first
         gapinf.left != null ? gapinf.left: max(prevSpacing, si.left);
       prevSpacing = si.right;
 
       final pwd = child.profile.width;
-      final amt = _getLayoutAmountInfo(child, pwd.isEmpty ? defpwd: pwd);
+      final amt = _getAmountInfo(child, pwd.isEmpty ? defpwd: pwd);
       switch (amt.type) {
-        case LayoutAmountType.FIXED:
+        case AmountType.FIXED:
           width += amt.value;
           break;
-        case LayoutAmountType.NONE:
-        case LayoutAmountType.CONTENT:
+        case AmountType.NONE:
+        case AmountType.CONTENT:
           final int wapp = mctx.getWidthByApp(child);
-          final int wd = wapp != null && amt.type != LayoutAmountType.CONTENT ? 
+          final int wd = wapp != null && amt.type != AmountType.CONTENT ? 
               wapp : child.measureWidth_(mctx);
           width += wd != null ? wd: child.realWidth;
           break;
@@ -76,7 +76,7 @@ class _HLayout extends _RealLinearLayout {
     if (va != null)
       return va;
 
-    final spcinf = new LayoutSideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
     final String defphgh = view.layout.height;
     final int borderHgh = mctx.getBorderHeight(view);
     int height;
@@ -85,18 +85,18 @@ class _HLayout extends _RealLinearLayout {
         continue; //ignore anchored
 
       //add spacing to width
-      final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
+      final si = new SideInfo(child.profile.spacing, 0, spcinf);
       int hgh = si.top + si.bottom + borderHgh; //spacing of border
       final phgh = child.profile.height;
-      final amt = _getLayoutAmountInfo(child, phgh.isEmpty ? defphgh: phgh);
+      final amt = _getAmountInfo(child, phgh.isEmpty ? defphgh: phgh);
       switch (amt.type) {
-        case LayoutAmountType.FIXED:
+        case AmountType.FIXED:
           hgh += amt.value;
           break;
-        case LayoutAmountType.NONE:
-        case LayoutAmountType.CONTENT:
+        case AmountType.NONE:
+        case AmountType.CONTENT:
           final happ = mctx.getHeightByApp(child);
-          final int h = happ != null && amt.type != LayoutAmountType.CONTENT ? 
+          final int h = happ != null && amt.type != AmountType.CONTENT ? 
               happ : child.measureHeight_(mctx);
           hgh += h != null ? h: child.realHeight;
           break;
@@ -112,10 +112,10 @@ class _HLayout extends _RealLinearLayout {
   //children contains only indepedent views
   void doLayout(MeasureContext mctx, View view, List<View> children) {
     //1) size
-    final spcinf = new LayoutSideInfo(view.layout.spacing, _DEFAULT_SPACING);
-    final gapinf = new LayoutSideInfo(view.layout.gap);
+    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final gapinf = new SideInfo(view.layout.gap);
     final String defpwd = view.layout.width;
-    final Map<View, LayoutSideInfo> childspcinfs = new Map();
+    final Map<View, SideInfo> childspcinfs = new Map();
     final List<View> flexViews = new List();
     final List<int> flexs = new List();
     int nflex = 0, assigned = 0, prevSpacing;
@@ -126,29 +126,29 @@ class _HLayout extends _RealLinearLayout {
         continue;
       }
 
-      final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
+      final si = new SideInfo(child.profile.spacing, 0, spcinf);
       childspcinfs[child] = si;
       assigned += prevSpacing == null ? si.left: //first
         gapinf.left != null ? gapinf.left: max(prevSpacing, si.left);
       prevSpacing = si.right;
 
       final pwd = child.profile.width;
-      final amt = _getLayoutAmountInfo(child, pwd.isEmpty ? defpwd: pwd);
+      final amt = _getAmountInfo(child, pwd.isEmpty ? defpwd: pwd);
       switch (amt.type) {
-        case LayoutAmountType.FIXED:
+        case AmountType.FIXED:
           assigned += child.width = amt.value;
           break;
-        case LayoutAmountType.FLEX:
+        case AmountType.FLEX:
           nflex += amt.value;
           flexs.add(amt.value);
           flexViews.add(child);
           break;
-        case LayoutAmountType.RATIO:
+        case AmountType.RATIO:
           assigned += child.width = (view.innerWidth * amt.value).round().toInt();
           break;
         default:
           int wdapp;
-          if (amt.type == LayoutAmountType.NONE
+          if (amt.type == AmountType.NONE
           && (wdapp = mctx.getWidthByApp(child)) != null)
             assigned += wdapp;
           else {
@@ -220,8 +220,8 @@ class _VLayout extends _RealLinearLayout {
     if (va != null)
       return va;
 
-    final spcinf = new LayoutSideInfo(view.layout.spacing, _DEFAULT_SPACING);
-    final gapinf = new LayoutSideInfo(view.layout.gap);
+    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final gapinf = new SideInfo(view.layout.gap);
     final defphgh = view.layout.height;
     int height = 0, prevSpacing;
     for (final View child in view.children) {
@@ -229,21 +229,21 @@ class _VLayout extends _RealLinearLayout {
         continue; //ignore anchored
 
       //add spacing to height
-      final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
+      final si = new SideInfo(child.profile.spacing, 0, spcinf);
       height += prevSpacing == null ? si.top: //first
         gapinf.top != null ? gapinf.top: max(prevSpacing, si.top);
       prevSpacing = si.bottom;
 
       final phgh = child.profile.height;
-      final amt = _getLayoutAmountInfo(child, phgh.isEmpty ? defphgh: phgh);
+      final amt = _getAmountInfo(child, phgh.isEmpty ? defphgh: phgh);
       switch (amt.type) {
-        case LayoutAmountType.FIXED:
+        case AmountType.FIXED:
           height += amt.value;
           break;
-        case LayoutAmountType.NONE:
-        case LayoutAmountType.CONTENT:
+        case AmountType.NONE:
+        case AmountType.CONTENT:
           final happ = mctx.getHeightByApp(child);
-          final int hgh = happ != null && amt.type != LayoutAmountType.CONTENT ? 
+          final int hgh = happ != null && amt.type != AmountType.CONTENT ? 
               happ : child.measureHeight_(mctx);
           height += hgh != null ? hgh: child.realHeight;
           break;
@@ -260,7 +260,7 @@ class _VLayout extends _RealLinearLayout {
     if (va != null)
       return va;
 
-    final spcinf = new LayoutSideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
     final defpwd = view.layout.width;
     final int borderWd = mctx.getBorderWidth(view);
     int width;
@@ -269,18 +269,18 @@ class _VLayout extends _RealLinearLayout {
         continue; //ignore anchored
 
       //add spacing to height
-      final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
+      final si = new SideInfo(child.profile.spacing, 0, spcinf);
       int wd = si.left + si.right + borderWd; //spacing of border
       final pwd = child.profile.width;
-      final amt = _getLayoutAmountInfo(child, pwd.isEmpty ? defpwd: pwd);
+      final amt = _getAmountInfo(child, pwd.isEmpty ? defpwd: pwd);
       switch (amt.type) {
-        case LayoutAmountType.FIXED:
+        case AmountType.FIXED:
           wd += amt.value;
           break;
-        case LayoutAmountType.NONE:
-        case LayoutAmountType.CONTENT:
+        case AmountType.NONE:
+        case AmountType.CONTENT:
           final int wapp = mctx.getWidthByApp(child);
-          final int w = wapp != null && amt.type != LayoutAmountType.CONTENT ? 
+          final int w = wapp != null && amt.type != AmountType.CONTENT ? 
               wapp : child.measureWidth_(mctx);
           wd += w != null ? w: child.realWidth;
           break;
@@ -296,10 +296,10 @@ class _VLayout extends _RealLinearLayout {
   //children contains only indepedent views
   void doLayout(MeasureContext mctx, View view, List<View> children) {
     //1) size
-    final spcinf = new LayoutSideInfo(view.layout.spacing, _DEFAULT_SPACING);
-    final gapinf = new LayoutSideInfo(view.layout.gap);
+    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final gapinf = new SideInfo(view.layout.gap);
     final defphgh = view.layout.height;
-    final Map<View, LayoutSideInfo> childspcinfs = new Map();
+    final Map<View, SideInfo> childspcinfs = new Map();
     final List<View> flexViews = new List();
     final List<int> flexs = new List();
     int nflex = 0, assigned = 0, prevSpacing;
@@ -310,29 +310,29 @@ class _VLayout extends _RealLinearLayout {
         continue;
       }
 
-      final si = new LayoutSideInfo(child.profile.spacing, 0, spcinf);
+      final si = new SideInfo(child.profile.spacing, 0, spcinf);
       childspcinfs[child] = si;
       assigned += prevSpacing == null ? si.top: //first
         gapinf.top != null ? gapinf.top: max(prevSpacing, si.top);
       prevSpacing = si.bottom;
 
       final phgh = child.profile.height;
-      final amt = _getLayoutAmountInfo(child, phgh.isEmpty ? defphgh: phgh);
+      final amt = _getAmountInfo(child, phgh.isEmpty ? defphgh: phgh);
       switch (amt.type) {
-        case LayoutAmountType.FIXED:
+        case AmountType.FIXED:
           assigned += child.height = amt.value;
           break;
-        case LayoutAmountType.FLEX:
+        case AmountType.FLEX:
           nflex += amt.value;
           flexs.add(amt.value);
           flexViews.add(child);
           break;
-        case LayoutAmountType.RATIO:
+        case AmountType.RATIO:
           assigned += child.height = (view.innerHeight * amt.value).round().toInt();
           break;
         default:
           int hghapp;
-          if (amt.type == LayoutAmountType.NONE
+          if (amt.type == AmountType.NONE
           && (hghapp = mctx.getHeightByApp(child)) != null)
             assigned += hghapp;
           else {

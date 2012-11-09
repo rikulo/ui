@@ -78,21 +78,21 @@ class MeasureContext {
    */
   void setWidthByProfile(View view, AsInt width) {
     if (view.visible) {
-      final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "width"));
+      final AmountInfo amt = new AmountInfo(getProfile(view, "width"));
       switch (amt.type) {
-        case LayoutAmountType.FIXED:
+        case AmountType.FIXED:
           view.width = amt.value; //fixed has higher priority than min/max
           break;
-        case LayoutAmountType.FLEX:
+        case AmountType.FLEX:
           _flexWd(view, width());
           break;
-        case LayoutAmountType.RATIO:
+        case AmountType.RATIO:
           view.width = _minMaxWd(view, (width() * amt.value).round().toInt());
           break;
-        case LayoutAmountType.CONTENT:
+        case AmountType.CONTENT:
           _contentWd(view);
           break;
-        case LayoutAmountType.NONE:
+        case AmountType.NONE:
         //Note: if NONE and app doesn't set width, it means content
           if (getWidthByApp(view) == null) {
             //if view is root and a view group, we use flex
@@ -114,21 +114,21 @@ class MeasureContext {
    */
   void setHeightByProfile(View view, AsInt height) {
     if (view.visible) {
-      final LayoutAmountInfo amt = new LayoutAmountInfo(getProfile(view, "height"));
+      final AmountInfo amt = new AmountInfo(getProfile(view, "height"));
       switch (amt.type) {
-        case LayoutAmountType.FIXED:
+        case AmountType.FIXED:
           view.height = amt.value; //fixed has higher priority than min/max
           break;
-        case LayoutAmountType.FLEX:
+        case AmountType.FLEX:
           _flexHgh(view, height());
           break;
-        case LayoutAmountType.RATIO:
+        case AmountType.RATIO:
           view.height = _minMaxHgh(view, (height() * amt.value).round().toInt());
           break;
-        case LayoutAmountType.CONTENT:
+        case AmountType.CONTENT:
           _contentHgh(view);
           break;
-        case LayoutAmountType.NONE:
+        case AmountType.NONE:
         //Note: if NONE and app doesn't set height, it means content
           if (getHeightByApp(view) == null) {
             //if view is root and a view group, we use flex
@@ -311,13 +311,13 @@ class MeasureContext {
     return new Size(width, height);
   }
   static int _amountOf(String profile, AsInt parentInner) {
-    final LayoutAmountInfo ai = new LayoutAmountInfo(profile);
+    final AmountInfo ai = new AmountInfo(profile);
     switch (ai.type) {
-      case LayoutAmountType.FIXED:
+      case AmountType.FIXED:
         return ai.value;
-      case LayoutAmountType.FLEX:
+      case AmountType.FLEX:
         return parentInner();
-      case LayoutAmountType.RATIO:
+      case AmountType.RATIO:
         return (parentInner() * ai.value).round().toInt();
     }
   }
@@ -337,11 +337,11 @@ class MeasureContext {
    * by a layout.
    */
   int getWidthByApp(View view) {
-    final LayoutAmountInfo amtInf = new LayoutAmountInfo(getProfile(view, "width"));
+    final AmountInfo amtInf = new AmountInfo(getProfile(view, "width"));
     switch (amtInf.type) {
-      case LayoutAmountType.FIXED:
+      case AmountType.FIXED:
         return amtInf.value;
-      case LayoutAmountType.NONE:
+      case AmountType.NONE:
         return ViewImpl.isWidthByApp(view) ? view.width: null;
     }
   }
@@ -349,11 +349,11 @@ class MeasureContext {
    * by a layout.
    */
   int getHeightByApp(View view) {
-    final LayoutAmountInfo amtInf = new LayoutAmountInfo(getProfile(view, "height"));
+    final AmountInfo amtInf = new AmountInfo(getProfile(view, "height"));
     switch (amtInf.type) {
-      case LayoutAmountType.FIXED:
+      case AmountType.FIXED:
         return amtInf.value;
-      case LayoutAmountType.NONE:
+      case AmountType.NONE:
         return ViewImpl.isHeightByApp(view) ? view.height: null;
     }
   }

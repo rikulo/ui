@@ -65,8 +65,6 @@ class ProfileDeclaration extends Declaration {
   }
 
   /** The location of the associated view.
-   * It is used only if [anchor] is not assigned with an non-empty value
-   * (or [anchorView] is assigned with a view).
    *
    * Default: *an empty string*.
    * It means `top left`, if [anchor] or [anchorView] is specified, 
@@ -79,11 +77,33 @@ class ProfileDeclaration extends Declaration {
    * "top left", "top center", "top right",
    * "center left", "center center", "center right",
    * "bottom left", "bottom center", and "bottom right"
+   *
+   * Notice that it is used only if [anchor] is not assigned with an non-empty value
+   * (or [anchorView] is assigned with a view).
    */
   String get location => getPropertyValue("location");
   /// The location of the associated view.
   void set location(String value) {
     setProperty("location", value);
+  }
+
+  /** The additional offset added to the anchor position (which is controlled by [location]).
+   *
+   * Syntax: `#n1 #n2`
+   *
+   * Default: *an empty string* (it means "0 0")
+   *
+   * It specifies the additional offset that will be added to the view's
+   * left (`#n1`) and top (`#n2`) after the anchor position is calculated.
+   * The offset can be any value including negative.
+   *
+   * Notice that it is used only if [anchor] is not assigned with an non-empty value
+   * (or [anchorView] is assigned with a view).
+   */
+  String get offset => getPropertyValue("offset");
+  /// The additional offset added to the anchor position (which is controlled by [location]).
+  void set offset(String value) {
+    setProperty("offset", value);
   }
 
   /** The alignment.

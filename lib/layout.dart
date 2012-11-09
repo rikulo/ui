@@ -17,5 +17,4 @@ part "src/layout/MeasureContext.dart";
 part "src/layout/LinearLayout.dart";
 part "src/layout/TileLayout.dart";
 part "src/layout/AnchorRelation.dart";
-part "src/layout/LayoutAmountInfo.dart";
-part "src/layout/LayoutSideInfo.dart";
+part "src/layout/Info.dart";

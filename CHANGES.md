@@ -5,10 +5,12 @@
 **Features:**
 
 * Overriding View.className is optional. It will return the class name correctly.
+* 18: ProfileDeclaration supports offset to adjust the location after anchored
+* LayoutAmountInfo and LayoutSideInfo are renamed to AmountInfo and SideInfo
 
 **Bugs:**
 
-* Issue 16: event.target may not be Element in _ViewImpl: _domEvtDisp(String)
+* 16: event.target may not be Element in _ViewImpl: _domEvtDisp(String)
 
 ##0.6.0
 

@@ -83,10 +83,10 @@ abstract class AbstractLayout extends Layout {
 final int _DEFAULT_SPACING = 4;
 /** Returns the layout amount info for the given view.
  */
-LayoutAmountInfo _getLayoutAmountInfo(View view, String value) {
-  final amt = new LayoutAmountInfo(value);
-  if (amt.type == LayoutAmountType.NONE && view.layout.handler.isFlex) {
-    amt.type = LayoutAmountType.FLEX;
+AmountInfo _getAmountInfo(View view, String value) {
+  final amt = new AmountInfo(value);
+  if (amt.type == AmountType.NONE && view.layout.handler.isFlex) {
+    amt.type = AmountType.FLEX;
     amt.value = 1;
   }
   return amt;
@@ -174,10 +174,11 @@ void rootLayout(MeasureContext mctx, View root) {
           new DOMAgent(cave).offset: new Offset(0,0);
 
     final locators = _getLocators(loc);
+    final ai = new PairInfo(root.profile.offset, 0);
     if (!leftByApp)
-      _anchorXLocators[locators[0]](ofs.left, ref, root);
+      _anchorXLocators[locators[0]](ofs.left + ai.first, ref, root);
     if (!topByApp)
-      _anchorYLocators[locators[1]](ofs.top, ref, root);
+      _anchorYLocators[locators[1]](ofs.top + ai.second, ref, root);
   }
 }
 //Used by _locateRoot to simulate an achor for root views

@@ -18,6 +18,11 @@ void addLocations(View anchor, View parent, String prefix) {
     txt.profile.location = loc;
     parent.addChild(txt);
   }
+  parent.addChild(
+    new TextView("center center + (20, -20)")
+      ..profile.anchorView = anchor
+      ..profile.location = "center center"
+      ..profile.offset = "20, -20");
 }
 
 void addContent(View parent) {
