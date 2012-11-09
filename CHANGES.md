@@ -4,6 +4,8 @@
 
 **Features:**
 
+* Overriding View.className is optional. It will return the class name correctly.
+
 **Bugs:**
 
 * Issue 16: event.target may not be Element in _ViewImpl: _domEvtDisp(String)

@@ -125,6 +125,11 @@ class View {
   => new _HTMLView(html);
 
   /** Returns the Dart class name.
+   *
+   * Default: the class's name
+   *
+   * A CSS class named `v-$className` will be added to [classes]. In additions, [query]
+   * and [queryAll] uses it as the *tag* name for matching the given selector.
    */
   String get className => "${this.runtimeType}"; //TODO: replace with mirrors if it is minimized by dart2js
 
