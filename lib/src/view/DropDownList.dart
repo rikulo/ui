@@ -65,9 +65,6 @@ class DropDownList<T> extends View {
     _selectNode.size = rows;
   }
 
-  //@override
-  String get className => "DropDownList"; //TODO: replace with reflection if Dart supports it
-
   /** Returns the model.
    */
   DataModel get model => _model;

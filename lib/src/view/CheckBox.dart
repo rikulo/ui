@@ -29,9 +29,6 @@ class CheckBox extends TextView implements Input<bool> {
       this.value = true;
   }
 
-  //@override
-  String get className => "CheckBox"; //TODO: replace with reflection if Dart supports it
-
   /** Returns the name of the input element of this view.
    */
   String get name => inputNode.name;

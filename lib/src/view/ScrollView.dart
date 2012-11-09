@@ -19,9 +19,6 @@ class ScrollView extends View {
   this.direction = direction, _snap = snap, 
   _contentSizeValue = contentSize, _contentSize = contentSize;
 
-  //@override
-  String get className => "ScrollView"; //TODO: replace with reflection if Dart supports it
-  
   /** Return the view port size, which is determined by the inner size of the
    * node.
    */

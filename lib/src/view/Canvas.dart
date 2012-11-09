@@ -10,9 +10,6 @@ class Canvas extends View {
   Canvas() {
   }
 
-  //@override
-  String get className => "Canvas"; //TODO: replace with reflection if Dart supports it
-
   /** Returns a drawing context for 2D on the canvas.
    * A drawing context lets you draw on the canvas.
    */

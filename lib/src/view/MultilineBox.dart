@@ -13,9 +13,6 @@ class MultilineBox extends View implements Input<String> {
       this.value = value;
   }
 
-  //@override
-  String get className => "MultilineBox"; //TODO: replace with reflection if Dart supports it
-
   /** Returns the TEXTAREA element in this view.
    */
   TextAreaElement get inputNode => node;

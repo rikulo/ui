@@ -22,7 +22,5 @@ class RadioButton extends CheckBox {
   RadioButton.fromHTML(String html, [bool value]): super.fromHTML(html, value);
 
   //@override
-  String get className => "RadioButton"; //TODO: replace with reflection if Dart supports it
-  //@override
   String get type => "radio";
 }

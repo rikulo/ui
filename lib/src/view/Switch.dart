@@ -28,8 +28,6 @@ class Switch extends View implements Input<bool> {
     _onLabel = onLabel != null ? onLabel: "ON";
     _offLabel = offLabel != null ? offLabel: "OFF";
   }
-  //@override
-  String get className => "Switch"; //TODO: replace with reflection if Dart supports it
 
   /** Returns whether it is value (i.e., the switch is ON).
    *

@@ -22,9 +22,6 @@ class Viewport extends View {
       this.title = title;
   }
 
-  //@override
-  String get className => "Viewport"; //TODO: replace with reflection if Dart supports it
-
   String get title => getNode("title").innerHTML;
   void set title(String title) {
     getNode("title").innerHTML = title != null ? title: "";

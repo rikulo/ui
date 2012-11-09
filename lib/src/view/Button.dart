@@ -17,9 +17,6 @@ class Button extends TextView {
    */
   Button.fromHTML(String html): super.fromHTML(html);
 
-  //@override
-  String get className => "Button"; //TODO: replace with reflection if Dart supports it
-
   /** Returns the INPUT element in this view.
    */
   ButtonElement get _buttonNode => node;

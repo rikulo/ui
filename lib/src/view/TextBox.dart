@@ -16,9 +16,6 @@ class TextBox extends View implements Input<String> {
       this.type = type;
   }
 
-  //@override
-  String get className => "TextBox"; //TODO: replace with reflection if Dart supports it
-
   /** Returns the INPUT element in this view.
    */
   InputElement get inputNode => node;

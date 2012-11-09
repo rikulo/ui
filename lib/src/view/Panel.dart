@@ -36,12 +36,7 @@ class Panel extends View {
   void _addBtn(Element btns, String name, EventListener listener) {
     btns.nodes.add(_createBtn(name)..on.click.add(listener));
   }
-  
-  
-  
-  //@override
-  String get className => "Panel"; //TODO: replace with reflection if Dart supports it
-  
+
   //@override
   Element render_() {
     Element element = new Element.html('''

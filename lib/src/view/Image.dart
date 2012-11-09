@@ -12,9 +12,6 @@ class Image extends View {
       imageNode.src = src;
   }
 
-  //@override
-  String get className => "Image"; //TODO: replace with reflection if Dart supports it
-
   /** Returns the source URI of the image, or null if not assigned yet.
    */
   String get src => imageNode.src;

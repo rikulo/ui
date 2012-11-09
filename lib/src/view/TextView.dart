@@ -33,9 +33,6 @@ class TextView extends View {
     this.html = html; //have render_() called
   }
 
-  //@override
-  String get className => "TextView"; //TODO: replace with reflection if Dart supports it
-
   /** Returns the text.
    */
   String get text => this._text;

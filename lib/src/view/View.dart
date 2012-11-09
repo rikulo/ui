@@ -125,10 +125,8 @@ class View {
   => new _HTMLView(html);
 
   /** Returns the Dart class name.
-   * The subclass shall override it.
-   * However, it will be removed if Dart supports reflection.
    */
-  String get className => "View"; //TODO: replace with reflection if Dart supports it
+  String get className => "${this.runtimeType}"; //TODO: replace with mirrors if it is minimized by dart2js
 
   _ChildInfo _initChildInfo() {
     if (_childInfo == null)

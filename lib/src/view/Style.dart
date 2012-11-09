@@ -20,9 +20,6 @@ class Style extends View {
     _updateInner(content, src);
   }
 
-  //@override
-  String get className => "Style"; //TODO: replace with reflection if Dart supports it
-
   /** Returns the style sheet, or null if not available.
    */
   StyleSheet get sheet {
