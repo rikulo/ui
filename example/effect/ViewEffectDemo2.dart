@@ -56,9 +56,9 @@ View radio(SlideDirection dir) {
 }
 
 void main() {
-  document.body.style.margin = "0";
+  final Element body = query("#v-main-view");
   
-  final View mainView = new View()..addToDocument();
+  final View mainView = new View()..addToDocument(ref: body);
   View container = new View()..width = 240..height = 240;
   container.profile.location = "center center";
   mainView.addChild(container);

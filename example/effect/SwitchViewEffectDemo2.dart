@@ -64,16 +64,17 @@ void addRandFly(Element element, Offset range, List<MotionAction> actions, List<
 final Random rand = new Random();
 
 void main() {
-  document.body.style.margin = "0";
-  final View mainView = new View()..addToDocument();
-  View v1 = mainView;
-  
+  Element body = query("#v-main-switch");
+  if (body == null)
+    body = document.body;
+  final View v1 = new View()..addToDocument(ref: body);
   v1.style.background = "#333333";
-  View container = new View()..width = 240..height = 240;
+  
+  final View container = new View()..width = 240..height = 240;
   container.profile.location = "center center";
   v1.addChild(container);
   
-  View v2 = new View();
+  final View v2 = new View();
   v2.style.background = "#FFFFFF";
   
   final int rad = 72;
@@ -112,7 +113,7 @@ void main() {
       ..profile.location = "top right"
       ..on.click.add((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
-      final int width = browser.size.width;
+      final int width = new DOMAgent(body).width;
       new EasingMotion((num x, MotionState state) {
         final int l = (width * x).toInt();
         n1.style.left = CSS.px(-l);
@@ -145,8 +146,9 @@ void main() {
       final List<MotionAction> actions = new List<MotionAction>();
       final List<Function> ends = new List<Function>();
       
-      final int height = browser.size.height;
-      final int width = browser.size.width;
+      int h = new DOMAgent(body).height;
+      final int height = h > 0 ? h : browser.size.height;
+      final int width = new DOMAgent(body).width;
       final Offset range = new Offset(width / 2, height / 2);
       
       final Element vonode = n1;

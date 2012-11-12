@@ -18,9 +18,9 @@ EasingMotion hideWithMask(EasingMotion motion, Element mask, MotionEnd end) =>
         easing: (num t) => t * t, period: 300, end: end);
 
 void main() {
-  document.body.style.margin = "0";
+  final Element body = query("#v-main-panel");
   
-  final View mainView = new View()..addToDocument();
+  final View mainView = new View()..addToDocument(ref: body);
   mainView.addChild(new Style(content: ".v-mask {background: rgba(127,127,127,0.25);}"));
   View container = new View();
   container.layout..type = "linear"..orient = "vertical"..gap = "#8";
