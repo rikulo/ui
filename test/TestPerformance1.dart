@@ -4,8 +4,12 @@ import 'dart:html';
 import 'package:rikulo/view.dart';
 
 void main() {
-  final View mainView = new View()..addToDocument();
-  mainView.layout.text = "type: linear; orient: vertical";
+  printc("started");
+  final View mainView = new View()
+    ..layout.text = "type: linear; orient: vertical"
+    ..on.layout.add((event) {
+      printc("done");
+    });
 
   for (int i = 0; i < 50; ++i) {
     View hlayout = new View();
@@ -26,4 +30,6 @@ void main() {
 
     mainView.addChild(hlayout);
   }
+  mainView.addToDocument();
+  printc("after view added");
 }
