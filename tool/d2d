@@ -29,6 +29,7 @@ else
   dartdoc=dartdoc
 fi
 outdir=$homedir/out
+libdir=$homedir/lib
 
 mkdir -p $outdir
 if [ -d $outdir/docs ] ; then
@@ -36,16 +37,16 @@ if [ -d $outdir/docs ] ; then
 fi
 
 PATH=$PATH:$SDK/bin
-echo Compiling $homedir/lib
-$dartdoc --out $homedir/out/docs $homedir/lib/*.dart $homedir/lib/view/*.dart 
-if [ ! -f $homedir/out/docs/index.html ] ; then
-	echo $homedir/docs/index.html not found. Failed?
+echo Compiling $libdir
+$dartdoc --out $outdir/docs $libdir/*.dart $libdir/view/*.dart 
+if [ ! -f $outdir/docs/index.html ] ; then
+	echo $outdir/docs/index.html not found. Failed?
 	exit 1
 fi
 
 cd $outdir/docs
 echo Process HTML files at $(pwd)
-libdir=../../tool/lib
+tooldir=../../tool/lib
 
 function doHTML {
 	sedfl=$1
@@ -68,7 +69,7 @@ function doHTML {
 }
 
 if [ -f index.html ] ; then
-	doHTML $libdir/index.html.sed
+	doHTML $tooldir/index.html.sed
 else
 	echo index.html not found in $(pwd)
 fi
