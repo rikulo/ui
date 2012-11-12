@@ -24,24 +24,20 @@ else
 fi
 if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
   homedir=$(cygpath -u $homedir)
-  dartcmd=dart.exe
+  dartdoc=dartdoc.bat
 else
-  dartcmd=dart
+  dartdoc=dartdoc
 fi
 outdir=$homedir/out
 
-if [ -d $outdir ] ; then
+mkdir -p $outdir
+if [ -d $outdir/docs ] ; then
 	rm -rf $outdir/docs
-fi
-
-dartdoc=$SDK/pkg/dartdoc/bin/dartdoc.dart
-if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
-  dartdoc=$(cygpath -wa $dartdoc)
 fi
 
 PATH=$PATH:$SDK/bin
 echo Compiling $homedir/lib
-$dartcmd $dartdoc --out $homedir/out/docs $homedir/lib/*.dart $homedir/lib/view/*.dart 
+$dartdoc --out $homedir/out/docs $homedir/lib/*.dart $homedir/lib/view/*.dart 
 if [ ! -f $homedir/out/docs/index.html ] ; then
 	echo $homedir/docs/index.html not found. Failed?
 	exit 1
