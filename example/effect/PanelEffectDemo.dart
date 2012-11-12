@@ -9,10 +9,19 @@ import 'package:rikulo/effect.dart';
 
 TextView btn(String text) => new Button(text)..height = 32..width = 96;
 
+EasingMotion showWithMask(EasingMotion motion, Element mask, MotionEnd end) =>
+    new EasingMotion.join([motion, new FadeInEffect(mask)], 
+        easing: (num t) => t * t, period: 300, end: end);
+
+EasingMotion hideWithMask(EasingMotion motion, Element mask, MotionEnd end) =>
+    new EasingMotion.join([motion, new FadeOutEffect(mask)], 
+        easing: (num t) => t * t, period: 300, end: end);
+
 void main() {
   document.body.style.margin = "0";
   
   final View mainView = new View()..addToDocument();
+  mainView.addChild(new Style(content: ".v-mask {background: rgba(127,127,127,0.25);}"));
   View container = new View();
   container.layout..type = "linear"..orient = "vertical"..gap = "#8";
   container.profile.text = "width: content; height: content; location: center center";
@@ -44,16 +53,14 @@ void main() {
     dialog.addToDocument(mode: "dialog");
     final Element mask = dialog.maskNode;
     
-    new FadeInEffect(dialog.node,  
-    end: (MotionState state) {
+    showWithMask(new FadeInEffect(dialog.node), mask, (MotionState state) {
       removeReady = true;
-    }, easing: (num t) => t * t, period: 300).run();
+    }).run();
     
-    removeMotion = new FadeOutEffect(dialog.node, 
-    end: (MotionState state) {
+    removeMotion = hideWithMask(new FadeOutEffect(dialog.node), mask, (MotionState state) {
       dialog.remove();
       dialog.style.visibility = "";
-    }, easing: (num t) => t * t, period: 300);
+    });
   }));
   
   container.addChild(btn("Zoom")..on.click.add((ViewEvent event) {
@@ -61,16 +68,14 @@ void main() {
     dialog.addToDocument(mode: "dialog");
     final Element mask = dialog.maskNode;
     
-    new ZoomInEffect(dialog.node, 
-    end: (MotionState state) {
+    showWithMask(new ZoomInEffect(dialog.node), mask, (MotionState state) {
       removeReady = true;
-    }, easing: (num t) => t * t, period: 300).run();
+    }).run();
     
-    removeMotion = new ZoomOutEffect(dialog.node, 
-    end: (MotionState state) {
+    removeMotion = hideWithMask(new ZoomOutEffect(dialog.node), mask, (MotionState state) {
       dialog.remove();
       dialog.style.visibility = "";
-    }, easing: (num t) => t * t, period: 300);
+    });
   }));
   
   container.addChild(btn("Slide")..on.click.add((ViewEvent event) {
@@ -79,16 +84,14 @@ void main() {
     dialog.requestLayout(true); // as slide effect depends on initial size
     final Element mask = dialog.maskNode;
     
-    new SlideInEffect(dialog.node,
-    end: (MotionState state) {
+    showWithMask(new SlideInEffect(dialog.node), mask, (MotionState state) {
       removeReady = true;
-    }, easing: (num t) => t * t, period: 300).run();
+    }).run();
     
-    removeMotion = new SlideOutEffect(dialog.node,
-    end: (MotionState state) {
+    removeMotion = hideWithMask(new SlideOutEffect(dialog.node), mask, (MotionState state) {
       dialog.remove();
       dialog.style.visibility = "";
-    }, easing: (num t) => t * t, period: 300);
+    });
   }));
   
   container.addChild(btn("N/A")..on.click.add((ViewEvent event) {
