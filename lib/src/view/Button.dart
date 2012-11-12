@@ -42,7 +42,7 @@ class Button extends TextView {
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
-    _buttonNode.disabled = disabled;
+    _buttonNode.disabled = _b(disabled);
   }
 
   /** Returns whether this button should automatically get focus.
@@ -53,7 +53,7 @@ class Button extends TextView {
   /** Sets whether this button should automatically get focus.
    */
   void set autofocus(bool autofocus) {
-    final btn = _buttonNode..autofocus = autofocus;
+    final btn = _buttonNode..autofocus = _b(autofocus);
     if (autofocus && inDocument)
       btn.focus();
   }

@@ -39,7 +39,7 @@ class TextView extends View {
   /** Sets the text displayed in this view.
    */
   void set text(String text) {
-    _text = text != null ? text: "";
+    _text = _s(text);
     classes.remove("v-html");
     updateInner_();
   }
@@ -61,8 +61,7 @@ class TextView extends View {
    * and then update [node]'s innerHTML.
    */
   void updateInner_([String html]) {
-    if (html == null) html = "";
-    node.innerHTML = "$encodedText$html";
+    node.innerHTML = "$encodedText${_s(html)}";
   }
   /** Returns the encodes the text ([text]).
    *

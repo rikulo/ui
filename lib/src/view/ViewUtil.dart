@@ -63,7 +63,7 @@ class Declaration {
   void set text(String text) {
     _props.clear();
 
-    for (String pair in text.split(';')) {
+    for (String pair in _s(text).split(';')) {
       pair = pair.trim();
       if (pair.isEmpty)
         continue;

@@ -24,7 +24,7 @@ class Switch extends View implements Input<bool> {
   /** Instantaites a switch.
    */
   Switch([bool value, String onLabel, String offLabel]) {
-    _value = value != null && value;
+    _value = _b(value);
     _onLabel = onLabel != null ? onLabel: "ON";
     _offLabel = offLabel != null ? offLabel: "OFF";
   }
@@ -69,8 +69,8 @@ class Switch extends View implements Input<bool> {
   /** X offset for the OFF label. */
   int get _x_off => realWidth - realHeight; //-(width - 2 * radius)
   void _setValue(bool value, [bool bAnimate=false, bool bSendEvent=false]) {
-    final bool bChanged = _value != value;
-    _value = value != null && value;
+    final bool bChanged = _value != (value = _b(value));
+    _value = value;
     if (inDocument) {
       final int nofs = _value ? 0 : -_x_off;
       if (bAnimate) {

@@ -76,9 +76,9 @@ class Style extends View {
       _media = media;
       var n;
       if ((n = _linkNode) != null)
-        n.media = media != null ? media: "";
+        n.media = _s(media);
       else if ((n = _styleNode) != null)
-        n.media = media != null ? media: "";
+        n.media = _s(media);
     }
   }
 

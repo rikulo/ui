@@ -18,7 +18,7 @@ class Image extends View {
   /** Sets the source URI of the image.
    */
   void set src(String src) {
-    imageNode.src = src;
+    imageNode.src = _s(src);
   }
 
   /** Returns the image node.

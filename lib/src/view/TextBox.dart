@@ -26,7 +26,7 @@ class TextBox extends View implements Input<String> {
   /** Sets the name of the input element of this view.
    */
   void set name(String name) {
-    inputNode.name = name != null ? name: "";
+    inputNode.name = _s(name);
   }
 
   /** Returns the type of data being placed in this text box.
@@ -60,7 +60,7 @@ class TextBox extends View implements Input<String> {
    * Default: an empty string.
    */
   void set value(String value) {
-    inputNode.value = value != null ? value: "";
+    inputNode.value = _s(value);
   }
 
   /** Returns whether it is disabled.
@@ -71,7 +71,7 @@ class TextBox extends View implements Input<String> {
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
-    inputNode.disabled = disabled;
+    inputNode.disabled = _b(disabled);
   }
 
   /** Returns whether this input should automatically get focus.
@@ -82,7 +82,7 @@ class TextBox extends View implements Input<String> {
   /** Sets whether this input should automatically get focus.
    */
   void set autofocus(bool autofocus) {
-    final inp = inputNode..autofocus = autofocus;
+    final inp = inputNode..autofocus = _b(autofocus);
     if (autofocus && inDocument)
       inp.focus();
   }
@@ -98,7 +98,7 @@ class TextBox extends View implements Input<String> {
   /** Sets whether to predict the value based on ealier typed value.
    */
   void set autocomplete(bool autocomplete) {
-    inputNode.autocomplete = autocomplete ? "on": "off";
+    inputNode.autocomplete = _b(autocomplete) ? "on": "off";
   }
 
   /** Returns a short hint that describes this text box.
@@ -113,7 +113,7 @@ class TextBox extends View implements Input<String> {
    * Default: an empty string.
    */
   void set placeholder(String placeholder) {
-    inputNode.placeholder = placeholder;
+    inputNode.placeholder = _s(placeholder);
   }
 
   /** Returns the width of this text box in average character width.

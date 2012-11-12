@@ -23,7 +23,7 @@ class MultilineBox extends View implements Input<String> {
   /** Sets the name of the input element of this view.
    */
   void set name(String name) {
-    inputNode.name = name != null ? name: "";
+    inputNode.name = _s(name);
   }
 
   /** Returns the value of this text box.
@@ -34,7 +34,7 @@ class MultilineBox extends View implements Input<String> {
    * Default: an empty string.
    */
   void set value(String value) {
-    inputNode.value = value != null ? value: "";
+    inputNode.value = _s(value);
   }
 
   /** Returns whether it is disabled.
@@ -45,7 +45,7 @@ class MultilineBox extends View implements Input<String> {
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
-    inputNode.disabled = disabled;
+    inputNode.disabled = _b(disabled);
   }
 
   /** Returns whether this input should automatically get focus.
@@ -56,7 +56,7 @@ class MultilineBox extends View implements Input<String> {
   /** Sets whether this input should automatically get focus.
    */
   void set autofocus(bool autofocus) {
-    final inp = inputNode..autofocus = autofocus;
+    final inp = inputNode..autofocus = _b(autofocus);
     if (autofocus && inDocument)
       inp.focus();
   }
@@ -73,7 +73,7 @@ class MultilineBox extends View implements Input<String> {
    * Default: an empty string.
    */
   void set placeholder(String placeholder) {
-    inputNode.placeholder = placeholder;
+    inputNode.placeholder = _s(placeholder);
   }
 
   /** Returns the height of this text box in number of lines.

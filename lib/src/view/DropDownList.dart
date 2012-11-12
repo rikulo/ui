@@ -38,7 +38,7 @@ class DropDownList<T> extends View {
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
-    _selectNode.disabled = disabled;
+    _selectNode.disabled = _b(disabled);
   }
 
   /** Returns whether this button should automatically get focus.
@@ -49,7 +49,7 @@ class DropDownList<T> extends View {
   /** Sets whether this button should automatically get focus.
    */
   void set autofocus(bool autofocus) {
-    final seln = _selectNode..autofocus = autofocus;
+    final seln = _selectNode..autofocus = _b(autofocus);
     if (autofocus && inDocument)
       seln.focus();
   }

@@ -15,7 +15,7 @@ class CheckBox extends TextView implements Input<bool> {
    * The text will be encoded to make sure it is valid HTML text.
    */
   CheckBox([String text, bool value]): super(text) {
-    if (value != null && value)
+    if (_b(value))
       this.value = true;
   }
   /** Instantiates with a HTML fragment.
@@ -25,7 +25,7 @@ class CheckBox extends TextView implements Input<bool> {
    * unpreditable.
    */
   CheckBox.fromHTML(String html, [bool value]): super.fromHTML(html) {
-    if (value != null && value)
+    if (_b(value))
       this.value = true;
   }
 
@@ -35,7 +35,7 @@ class CheckBox extends TextView implements Input<bool> {
   /** Sets the name of the input element of this view.
    */
   void set name(String name) {
-    inputNode.name = name != null ? name: "";
+    inputNode.name = _s(name);
   }
 
   /** Returns whether it is value.
@@ -46,7 +46,7 @@ class CheckBox extends TextView implements Input<bool> {
   /** Sets whether it is value.
    */
   void set value(bool value) {
-    inputNode.checked = value != null && value;
+    inputNode.checked = _b(value);
   }
 
   /** Returns whether it is disabled.
@@ -57,7 +57,7 @@ class CheckBox extends TextView implements Input<bool> {
   /** Sets whether it is disabled.
    */
   void set disabled(bool disabled) {
-    inputNode.disabled = disabled;
+    inputNode.disabled = _b(disabled);
   }
 
   /** Returns whether this button should automatically get focus.
@@ -68,7 +68,7 @@ class CheckBox extends TextView implements Input<bool> {
   /** Sets whether this button should automatically get focus.
    */
   void set autofocus(bool autofocus) {
-    final inp = inputNode..autofocus = autofocus;
+    final inp = inputNode..autofocus = _b(autofocus);
     if (autofocus && inDocument)
       inp.focus();
   }
@@ -78,8 +78,7 @@ class CheckBox extends TextView implements Input<bool> {
 
   //@override
   void updateInner_([String html]) {
-    if (html == null) html = "";
-    node.query("label").innerHTML = "$encodedText$html";
+    node.query("label").innerHTML = "$encodedText${_s(html)}";
   }
   //@override
   Element render_()

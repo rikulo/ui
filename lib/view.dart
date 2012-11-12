@@ -20,8 +20,8 @@ part "src/view/View.dart";
 part "src/view/ViewUtil.dart";
 part "src/view/ProfileDeclaration.dart";
 part "src/view/LayoutDeclaration.dart";
-part "src/view/_ViewImpl.dart";
-part "src/view/_CSSAgent.dart";
+part "src/view/_impls.dart";
+part "src/view/_utils.dart";
 part "src/view/printc.dart";
 
 part "src/view/Button.dart";

@@ -3,6 +3,13 @@
 //Author: simonpai
 part of rikulo_view;
 
+///Converts null to an empty string
+String _s(String s) => s != null ? s: "";
+///Converts null to false
+bool _b(bool b) => b != null && b;
+///Converts null to 0
+num _n(num n) => n != null ? n: 0;
+
 /** A utility for element size calculation.
  */
 class _CSSAgent {
