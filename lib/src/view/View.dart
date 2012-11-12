@@ -1004,7 +1004,7 @@ class View {
   }
   /** Returns the style classes.
    */
-  CSSClassSet get classes => node.classes;
+  CssClassSet get classes => node.classes;
 
   /** Returns [ViewEvents] for adding or removing event listeners.
    */
