@@ -50,7 +50,7 @@ void main() {
   
   container.addChild(btn("Fade")..on.click.add((ViewEvent event) {
     dialog.style.visibility = "hidden";
-    dialog.addToDocument(mode: "dialog");
+    dialog.addToDocument(ref: body, mode: "dialog");
     final Element mask = dialog.maskNode;
     
     showWithMask(new FadeInEffect(dialog.node), mask, (MotionState state) {
@@ -65,7 +65,7 @@ void main() {
   
   container.addChild(btn("Zoom")..on.click.add((ViewEvent event) {
     dialog.style.visibility = "hidden";
-    dialog.addToDocument(mode: "dialog");
+    dialog.addToDocument(ref: body, mode: "dialog");
     final Element mask = dialog.maskNode;
     
     showWithMask(new ZoomInEffect(dialog.node), mask, (MotionState state) {
@@ -80,7 +80,7 @@ void main() {
   
   container.addChild(btn("Slide")..on.click.add((ViewEvent event) {
     dialog.style.visibility = "hidden";
-    dialog.addToDocument(mode: "dialog");
+    dialog.addToDocument(ref: body, mode: "dialog");
     dialog.requestLayout(true); // as slide effect depends on initial size
     final Element mask = dialog.maskNode;
     
@@ -95,7 +95,7 @@ void main() {
   }));
   
   container.addChild(btn("N/A")..on.click.add((ViewEvent event) {
-    dialog.addToDocument(mode: "dialog");
+    dialog.addToDocument(ref: body, mode: "dialog");
     removeReady = true;
     removeMotion = null;
   }));

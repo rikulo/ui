@@ -29,7 +29,7 @@
 }
 
 .checked > :first-child {
-  background: no-repeat center center url("packages/rikulo/resource/css/default/img/icon-check.png");
+  background: no-repeat center center url("icon-check.png");
 }
 
 .dialog-box {
