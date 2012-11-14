@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, May 11, 2012  3:04:55 PM
 // Author: tomyeh
+part of rikulo_html;
 
 /**
  * A collection of CSS utilities
@@ -13,6 +14,13 @@ class CSS {
    */
   static final String prefix = browser.webkit ? "-webkit-":
     browser.msie ? "-ms-": browser.firefox ? "-moz-": browser.opera ? "-o-": "";
+
+  ///A list of the property names of CSS text related styles.
+  static const List<String> textNames = const [
+    'font-family', 'font-size', 'font-weight', 'font-style',
+    'letter-spacing', 'line-height', 'text-align', 'text-decoration',
+    'text-indent', 'text-shadow', 'text-transform', 'text-overflow',
+    'direction', 'word-spacing', 'white-space'];
 
   /** Converts a CSS value representing a pixel.
    * In other words, it converts a number to a string appended with "px".
@@ -84,19 +92,15 @@ class CSS {
       sum += intOf(v, reportError);
     return sum;
   }
-  
-  static void cpTextStyles(CSSStyleDeclaration dst, CSSStyleDeclaration src) {
-    for (int j = _txtStyles.length; --j >= 0;) {
-      final String nm = _txtStyles[j];
+
+  ///Copy the properties of the given names from one declaration, src, to another, dest.
+  static void copy(CSSStyleDeclaration dest, CSSStyleDeclaration src, List<String> names) {
+    for (int j = names.length; --j >= 0;) {
+      final String nm = names[j];
       final String val = src.getPropertyValue(nm);
-      dst.setProperty(nm, val != null ? val: "");
+      dest.setProperty(nm, val != null ? val: "");
     }
   }
-  static const _txtStyles = const [
-      'font-family', 'font-size', 'font-weight', 'font-style',
-      'letter-spacing', 'line-height', 'text-align', 'text-decoration',
-      'text-indent', 'text-shadow', 'text-transform', 'text-overflow',
-      'direction', 'word-spacing', 'white-space'];
 
   /** Returns the corrected name for the given CSS property name.
    * For example, `css('text-size-adjust')` will return

@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Tue, Aug 14, 2012 16:28:52 AM
 //Author: simonpai
+part of rikulo_util;
 
 /** A matrix object capable of common mathematical operations, such as sum, 
  * scalar multiplication, matrix multiplication, etc. The entries are accessible

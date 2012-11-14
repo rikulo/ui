@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Wed, Mar 14, 2012  4:50:59 PM
 // Author: tomyeh
+part of rikulo_util;
 
 /**
  * The direction enumeration.

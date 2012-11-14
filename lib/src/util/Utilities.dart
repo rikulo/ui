@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Fri, Apr 06, 2012  5:11:49 PM
 // Author: tomyeh
+part of rikulo_util;
 
 /** A task that is a function taking no argument and returning nothing.
  */

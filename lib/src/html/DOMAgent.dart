@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, Apr 05, 2012 11:25:25 AM
 // Author: tomyeh
+part of rikulo_html;
 
 /**
  * A DOM query agent used to provide the additional utilities
@@ -171,9 +172,9 @@ class DOMAgent {
     final CSSStyleDeclaration dst = _txtdiv.style;
     _txtdiv.innerHTML = text;
     if (node != null)
-      CSS.cpTextStyles(dst, window.$dom_getComputedStyle(node, ""));
+      CSS.copy(dst, window.$dom_getComputedStyle(node, ""), CSS.textNames);
     if (style != null)
-      CSS.cpTextStyles(dst, style);
+      CSS.copy(dst, style, CSS.textNames);
 
     final Size sz = new Size(_txtdiv.offsetWidth, _txtdiv.offsetHeight);
     _txtdiv.innerHTML = "";

@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Sun Jan 15 11:04:13 TST 2012
 // Author: tomyeh
+part of rikulo_util;
 
 /** String utilities.
  */

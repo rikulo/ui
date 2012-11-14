@@ -1,6 +1,7 @@
 //Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 //History: Thu, Jun 28, 2012 10:30:47 AM
 // Author: tomyeh
+part of rikulo_util;
 
 /** A readonly and empty map.
  */
