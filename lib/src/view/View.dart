@@ -534,9 +534,11 @@ class View {
    *
    * To remove it from document, you can invoke [remove].
    *
-   * + [ref] specifies the DOM element to add this view. If not specified,
+   * + [ref] specifies the DOM node to add this view. If not specified,
    * it will look for an element whose id is "v-main". If not found,
    * `document.body` is assumed.
+   * Notice: it can be a Text node if [mode] is `before` or 'replace'.
+   * Otherwise, it has to be an element.
    * + [mode] specifies how to add this view. The allowed values include:
    *    + `child` (default): add as a child of the given reference node.
    *    + `dialog`: add as a child and makes it looks like a dialog (a mask
@@ -553,7 +555,7 @@ class View {
    * If omitted (i.e., null), `requestLayout()` will be called.
    * If false, [requestLayout] won't be called at all.
    */
-  void addToDocument({Element ref, String mode, bool layout}) {
+  void addToDocument({Node ref, String mode, bool layout}) {
     remove();
 
     _ViewImpl.init();
@@ -561,19 +563,19 @@ class View {
     if (ref == null && (ref = document.query("#v-main")) == null)
       ref = document.body;
 
-    Element p, nxt;
+    Node p, nxt;
     switch (mode) {
       case "before":
         p = ref.parent;
         nxt = ref;
         break;
       case "replace":
-        final refid = ref.id;
+        final refid = ref is Element ? (ref as Element).id: "";
         if (!refid.isEmpty && id.isEmpty)
           id = refid;
 
         p = ref.parent;
-        nxt = ref.nextElementSibling;
+        nxt = ref.nextNode;
         ref.remove();
         break;
       case "inner":

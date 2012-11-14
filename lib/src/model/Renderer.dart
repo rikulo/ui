@@ -60,7 +60,7 @@ class RenderContext<T> {
     var val = data;
     if (val is TreeNode)
       val = val.data;
-    if (val is Map && val.contains("text"))
+    if (val is Map && (val as Map).containsKey("text"))
       val = val["text"];
     return val != null ? encode ? "${XMLUtil.encode(val)}": val.toString(): "";
   }
