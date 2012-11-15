@@ -35,14 +35,8 @@ class Panel extends View {
   }
 
   //@override
-  Element render_() {
-    Element element = new Element.html('''
-<div class="v-shadow">
-  <div class="v-btns" id="$uuid-btns"></div>
-</div>
-''');
-    return element;
-  }
+  Element render_() =>
+      new Element.html('<div class="v-shadow"><div class="v-btns" id="$uuid-btns"></div></div>');
   
   //@override
   int measureHeight_(MeasureContext mctx) {
