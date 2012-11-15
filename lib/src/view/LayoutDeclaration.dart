@@ -83,7 +83,8 @@ class LayoutDeclaration extends Declaration {
    *
    * Syntax: `spacing: #n1 [#n2 [#n3 #n4]]`
    *
-   * Default: *an empty string*. It means `4`.
+   * Default: *an empty string*. It means `8` in *touch* devices
+   * (i.e., `Browser.touch` is true), or `4` otherwise.
    *
    * If the spacing at the left and at the right is different,
    * the horizontal spacing of two adjacent views is the maximal value of them.

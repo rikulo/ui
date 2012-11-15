@@ -48,7 +48,7 @@ class Browser {
    * it can be resized by the user.
    */
   bool mobile = false;
-  /** Whether it supports the touch events.
+  /** Whether it supports the touch gestures.
    */
   bool touch = false;
 

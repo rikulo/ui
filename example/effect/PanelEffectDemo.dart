@@ -45,8 +45,8 @@ void main() {
   dialog.addChild(new TextView("Is this OK?")
       ..profile.location = "center center"..style.fontSize = "14px");
   dialog.addChild(btn("OK")
-      ..profile.location = browser.mobile ? "bottom center" : "bottom right"
-      ..profile.margin = browser.mobile ? "0 16 0 -16" : "-16 16 16 -16"
+      ..profile.location = browser.touch ? "bottom center" : "bottom right"
+      ..profile.margin = browser.touch ? "0 16 0 -16" : "-16 16 16 -16"
       ..on.click.add((ViewEvent event) => _remove()));
   
   container.addChild(btn("Fade")..on.click.add((ViewEvent event) {

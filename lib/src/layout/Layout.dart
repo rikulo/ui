@@ -80,7 +80,7 @@ abstract class AbstractLayout extends Layout {
 }
 
 //Utilities//
-final int _DEFAULT_SPACING = 4;
+final int _SPACING = browser.touch ? 8: 4;
 /** Returns the layout amount info for the given view.
  */
 AmountInfo _getAmountInfo(View view, String value) {

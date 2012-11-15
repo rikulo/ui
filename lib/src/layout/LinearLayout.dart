@@ -36,7 +36,7 @@ class _HLayout extends _RealLinearLayout {
     if (va != null)
       return va;
 
-    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final spcinf = new SideInfo(view.layout.spacing, _SPACING);
     final gapinf = new SideInfo(view.layout.gap);
     final defpwd = view.layout.width;
     int width = 0, prevSpacing;
@@ -76,7 +76,7 @@ class _HLayout extends _RealLinearLayout {
     if (va != null)
       return va;
 
-    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final spcinf = new SideInfo(view.layout.spacing, _SPACING);
     final String defphgh = view.layout.height;
     final int borderHgh = mctx.getBorderHeight(view);
     int height;
@@ -112,7 +112,7 @@ class _HLayout extends _RealLinearLayout {
   //children contains only indepedent views
   void doLayout(MeasureContext mctx, View view, List<View> children) {
     //1) size
-    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final spcinf = new SideInfo(view.layout.spacing, _SPACING);
     final gapinf = new SideInfo(view.layout.gap);
     final String defpwd = view.layout.width;
     final Map<View, SideInfo> childspcinfs = new Map();
@@ -220,7 +220,7 @@ class _VLayout extends _RealLinearLayout {
     if (va != null)
       return va;
 
-    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final spcinf = new SideInfo(view.layout.spacing, _SPACING);
     final gapinf = new SideInfo(view.layout.gap);
     final defphgh = view.layout.height;
     int height = 0, prevSpacing;
@@ -260,7 +260,7 @@ class _VLayout extends _RealLinearLayout {
     if (va != null)
       return va;
 
-    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final spcinf = new SideInfo(view.layout.spacing, _SPACING);
     final defpwd = view.layout.width;
     final int borderWd = mctx.getBorderWidth(view);
     int width;
@@ -296,7 +296,7 @@ class _VLayout extends _RealLinearLayout {
   //children contains only indepedent views
   void doLayout(MeasureContext mctx, View view, List<View> children) {
     //1) size
-    final spcinf = new SideInfo(view.layout.spacing, _DEFAULT_SPACING);
+    final spcinf = new SideInfo(view.layout.spacing, _SPACING);
     final gapinf = new SideInfo(view.layout.gap);
     final defphgh = view.layout.height;
     final Map<View, SideInfo> childspcinfs = new Map();
