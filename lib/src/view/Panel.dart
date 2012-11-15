@@ -14,7 +14,7 @@ class Panel extends View {
   Panel();
   
   /// Retrieve content node.
-  Element get contentNode => getNode("inner");
+  Element get contentNode => getNode("body");
   
   /// Retrieve button node of the given [name].
   Element getButtonNode(String name) => getNode("btn-$name");
@@ -42,9 +42,7 @@ class Panel extends View {
     Element element = new Element.html('''
 <div class="v-shadow">
   <div class="v-btns" id="$uuid-btns"></div>
-  <div class="v-body" id="$uuid-body">
-    <div class="v-inner" id="$uuid-inner"></div>
-  </div>
+  <div class="v-body" id="$uuid-body"></div>
 </div>
 ''');
     return element;
@@ -66,31 +64,15 @@ class Panel extends View {
   }
   
   //@override
-  void set width(int width) {
-    super.width = width;
-    if (inDocument)
-      _adjustWidth();
-  }
-  
-  //@override
   void onPreLayout_(MeasureContext mctx) {
     super.onPreLayout_(mctx);
-    if (inDocument) {
-      _adjustWidth();
+    if (inDocument)
       _adjustHeight();
-    }
-  }
-  
-  void _adjustWidth() {
-    final Element bd = getNode("body");
-    contentNode.style.width = CSS.px(new DOMAgent(bd).innerWidth - new _CSSAgent(bd).sumHor(pad: true));
   }
   
   void _adjustHeight() {
-    final Element bd = getNode("body");
-    final _CSSAgent bdcss = new _CSSAgent(bd);
-    bd.style.height = CSS.px(new DOMAgent(node).innerHeight - new _CSSAgent(node).sumVer(pad: true));
-    contentNode.style.height = CSS.px(new DOMAgent(bd).innerHeight - bdcss.sumVer(pad: true));
+    contentNode.style.height = 
+        CSS.px(new DOMAgent(node).innerHeight - new _CSSAgent(node).sumVer(pad: true));
   }
   
   //@override
@@ -101,14 +83,14 @@ class Panel extends View {
   
   //@override
   int measureHeight_(MeasureContext mctx) {
-    final int bdh = new _CSSAgent(getNode("body")).sumVer(mar: true, bor: true, pad: true) + super.measureHeight_(mctx);
+    final int bdh = new _CSSAgent(contentNode).sumVer(mar: true, bor: true, pad: true) + super.measureHeight_(mctx);
     final int btnh = new DOMAgent(getNode("btns")).height + new _CSSAgent(node).sumVer(bor: true);
     return max(bdh, btnh);
   }
   
   //@override
   int measureWidth_(MeasureContext mctx) {
-    final int bdw = new _CSSAgent(getNode("body")).sumHor(mar: true, bor: true, pad: true) + super.measureWidth_(mctx);
+    final int bdw = new _CSSAgent(contentNode).sumHor(mar: true, bor: true, pad: true) + super.measureWidth_(mctx);
     final int btnw = new DOMAgent(getNode("btns")).width + new _CSSAgent(node).sumHor(bor: true);
     return max(bdw, btnw);
   }
