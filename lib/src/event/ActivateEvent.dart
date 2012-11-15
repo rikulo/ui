@@ -13,19 +13,19 @@ part of rikulo_event;
  * If the application wants to bring some view to the top, it can broadcast
  * this event too.
  *
- *    broadcaster.sendEvent(new ActivateEvent(activatedView));
+ *     broadcaster.sendEvent(new ActivateEvent(activatedView));
  *
  * Views that acts as popups shall then dismiss themselves when receiving this event.
  * For example,
  *
- *    class Popup extends View {
- *      Popup() {
- *        on.activate.add((event) {
- *          if (event.shallClose(this))
- *            remove();
- *        });
- *      }
- *    }
+ *     class Popup extends View {
+ *       Popup() {
+ *         on.activate.add((event) {
+ *           if (event.shallClose(this))
+ *             remove();
+ *         });
+ *       }
+ *     }
  *
  * If the popup is not the root view, it has to register an event listener to
  * [broadcaster].

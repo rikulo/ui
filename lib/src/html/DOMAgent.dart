@@ -158,8 +158,8 @@ class DOMAgent {
    * the optional [style]. If [node] is null, the size is based only
    * only [style].
    *
-   *    new DOMAgent(node_text_will_be_assigned).measureText(s);
-   *    new DOMAgent(null).measureText(s, style);
+   *     new DOMAgent(node_text_will_be_assigned).measureText(s);
+   *     new DOMAgent(null).measureText(s, style);
    */
   Size measureText(String text, [CSSStyleDeclaration style]) {
     if (_txtdiv == null) {

@@ -1052,9 +1052,9 @@ class View {
    * If it is not what you expected, you can override this method and
    * pass the right element to superclass. For example,
    *
-   *    void onEventListened_(String type, [Element target]) {
-   *      super.onEventListened_(type, type == "change" ? getNode("inp"): target);
-   *    }
+   *     void onEventListened_(String type, [Element target]) {
+   *       super.onEventListened_(type, type == "change" ? getNode("inp"): target);
+   *     }
    */
   void onEventListened_(String type, [Element target])
   => _evlInfo.onEventListened_(type, target);

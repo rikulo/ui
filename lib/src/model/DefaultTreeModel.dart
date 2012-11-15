@@ -9,16 +9,16 @@ part of rikulo_model;
  *
  * Example,
  *
- *    DefaultTreeModel<String> model = new DefaultTreeModel(nodes: [
- *      "Wonderland",
- *      new DefaultTreeNode("Australia",
- *        ["Sydney", "Melbourne", "Port Hedland"]),
- *      new DefaultTreeNode("New Zealand",
- *        ["Cromwell", "Queenstown"])]);
- *    model.addToSelection(model.root[1][2]);
- *    model.on.select.add((event) {
- *      //do something when it is selected
- *    });
+ *     DefaultTreeModel<String> model = new DefaultTreeModel(nodes: [
+ *       "Wonderland",
+ *       new DefaultTreeNode("Australia",
+ *         ["Sydney", "Melbourne", "Port Hedland"]),
+ *       new DefaultTreeNode("New Zealand",
+ *         ["Cromwell", "Queenstown"])]);
+ *     model.addToSelection(model.root[1][2]);
+ *     model.on.select.add((event) {
+ *       //do something when it is selected
+ *     });
  *
  * ##Big Tree
  *
