@@ -46,7 +46,7 @@ void main() {
       ..profile.location = "center center"..style.fontSize = "14px");
   dialog.addChild(btn("OK")
       ..profile.location = browser.mobile ? "bottom center" : "bottom right"
-      ..profile.offset = browser.mobile ? "#-16 #0" : "#-16 #-16"
+      ..profile.margin = browser.mobile ? "0 16 0 -16" : "-16 16 16 -16"
       ..on.click.add((ViewEvent event) => _remove()));
   
   container.addChild(btn("Fade")..on.click.add((ViewEvent event) {

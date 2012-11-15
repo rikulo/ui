@@ -22,7 +22,11 @@ void addLocations(View anchor, View parent, String prefix) {
     new TextView("center center + (20, -20)")
       ..profile.anchorView = anchor
       ..profile.location = "center center"
-      ..profile.offset = "20, -20");
+      ..profile.margin = "-20 -20 20 20"); //top right left bottom
+  parent.addChild(
+    new View()
+      ..profile.text = "anchor: parent; margin: 10; width: flex; height: flex"
+      ..style.border = "1px solid #aaa");
 }
 
 void addContent(View parent) {

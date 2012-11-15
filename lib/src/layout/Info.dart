@@ -117,43 +117,6 @@ class SideInfo {
   }
 
   String toString() {
-    return "($left,$top:$right,$bottom)";
-  }
-}
-
-/**
- * The pair information specified in layout.
- *
- * Format: `#n1 #n2`
- */
-class PairInfo {
-  int first, second;
-
-  PairInfo(String profile, [int defaultValue]) {
-    if (profile != null && !profile.isEmpty) {
-      List<int> wds = [];
-      for (final Match m in _reNum.allMatches(profile)) {
-        wds.add(int.parse(m.group(0)));
-      }
-
-      switch (wds.length) {
-        case 0:
-          break;
-        case 1:
-          first = second = wds[0];
-          return;
-        default:
-          first = wds[0];
-          second = wds[1];
-          return;
-      }
-    }
-
-    if (defaultValue != null)
-      first = second = defaultValue;
-  }
-
-  String toString() {
-    return "($first,$second)";
+    return "($left,$top,$right,$bottom)";
   }
 }

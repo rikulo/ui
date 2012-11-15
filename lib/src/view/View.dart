@@ -735,7 +735,7 @@ class View {
    * If [reference] is specified, [x] and [y] are ignored.
    */
   void locateTo(String location, [View ref, int x=0, int y=0]) {
-      locateToView(this, location, ref, x, y);
+      locateToView(null, this, location, ref, x, y);
   }
 
   /** Requests the layout manager to re-position the layout of this view.

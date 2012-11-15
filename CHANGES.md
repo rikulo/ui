@@ -9,7 +9,7 @@
 
 **Features:**
 
-* 18: ProfileDeclaration supports offset to adjust the location after anchored
+* 18: ProfileDeclaration supports margin to adjust the location and dimension after anchored
 
 **Bugs:**
 

@@ -61,7 +61,7 @@ class AnchorRelation {
           mctx.setHeightByProfile(view, () => _anchorHeight(anchor, view));
 
           //2) position
-          locateToView(view, view.profile.location, anchor);
+          locateToView(mctx, view, view.profile.location, anchor);
 
           if (thisOnly != null)
             return; //done
@@ -77,9 +77,12 @@ class AnchorRelation {
  *
  * [x] and [y] are used only if [anchor] (the reference view) is null.
  * Please refer to [View]'s `locateTo` for more information.
+ *
+ * [mctx] is ignored if null.
  */
-void locateToView(View view, String location, [View anchor, int x=0, int y=0]) {
-  final ai = new PairInfo(view.profile.offset, 0);
+void locateToView(MeasureContext mctx, View view, String location,
+[View anchor, int x=0, int y=0]) {
+  final mi = new SideInfo(view.profile.margin, 0);
   final locators = _getLocators(location);
   if (anchor != null) {
     final offset =
@@ -89,12 +92,19 @@ void locateToView(View view, String location, [View anchor, int x=0, int y=0]) {
         new Offset(anchor.left, anchor.top): //sibling (the same coordiante system)
         anchor.pageOffset - view.pageOffset + new Offset(view.left, view.top); //neither parent nor sibling
 
-    _anchorXLocators[locators[0]](offset.left + ai.first, anchor, view);
-    _anchorYLocators[locators[1]](offset.top + ai.second, anchor, view);
+    _anchorXLocators[locators[0]](offset.left + mi.left, anchor, view);
+    _anchorYLocators[locators[1]](offset.top + mi.top, anchor, view);
   } else {
-    _anchorXLocators[locators[0]](x + ai.first, _anchorOfPoint, view);
-    _anchorYLocators[locators[1]](y + ai.second, _anchorOfPoint, view);
+    _anchorXLocators[locators[0]](x + mi.left, _anchorOfPoint, view);
+    _anchorYLocators[locators[1]](y + mi.top, _anchorOfPoint, view);
   }
+
+  int diff = mi.left + mi.right;
+  if (diff != 0 && (mctx == null || mctx.getWidthByApp(view) == null))
+    view.width -= diff;
+  diff = mi.top + mi.bottom;
+  if (diff != 0 && (mctx == null || mctx.getHeightByApp(view) == null))
+    view.height -= diff;
 }
 List<int> _getLocators(String loc) {
   if (loc.isEmpty) //assume a value if empty since there is an anchor

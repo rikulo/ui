@@ -87,23 +87,30 @@ class ProfileDeclaration extends Declaration {
     setProperty("location", value);
   }
 
-  /** The additional offset added to the anchor position (which is controlled by [location]).
+  /** The additional margin after the view being anchored
+   * (which is controlled by [location]).
    *
-   * Syntax: `#n1 #n2`
+   * Syntax: `num1 [num2 [num3 num4]]`
    *
-   * Default: *an empty string* (it means "0 0")
+   * Default: *an empty string* (it means "0")
    *
-   * It specifies the additional offset that will be added to the view's
-   * left (`#n1`) and top (`#n2`) after the anchor position is calculated.
-   * The offset can be any value including negative.
+   * It specifies the additional margin that will affect the view's left, top, width
+   * or height depending what are specified.
+   *
+   *     profile="anchor:parent; margin: 8"
+   *        //8 pixels spacing around four edges
+   *     profile="location: bottom left; margin: 8 0 -8 0"
+   *        //same height but 8 pixel down
    *
    * Notice that it is used only if [anchor] is not assigned with an non-empty value
    * (or [anchorView] is assigned with a view).
    */
-  String get offset => getPropertyValue("offset");
-  /// The additional offset added to the anchor position (which is controlled by [location]).
-  void set offset(String value) {
-    setProperty("offset", value);
+  String get margin => getPropertyValue("margin");
+  /** The additional margin after the view being anchored
+   * (which is controlled by [location]).
+   */
+  void set margin(String value) {
+    setProperty("margin", value);
   }
 
   /** The alignment.
@@ -119,7 +126,7 @@ class ProfileDeclaration extends Declaration {
   }
   /** The spacing of the associated view.
    *
-   * Syntax: `#n1 [#n2 [#n3 #n4]]`
+   * Syntax: `num1 [num2 [num3 num4]]`
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    */
@@ -131,7 +138,7 @@ class ProfileDeclaration extends Declaration {
 
   /** The expected width of the associated view.
    *
-   * Syntax: `width: #n | content | flex | flex #n | #n %`
+   * Syntax: `width: num | content | flex | flex num | num %`
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
@@ -145,7 +152,7 @@ class ProfileDeclaration extends Declaration {
   }
   /** The expected width of the associated view.
    *
-   * Syntax: `height: #n | content | flex | flex #n | #n %`
+   * Syntax: `height: num | content | flex | flex num | num %`
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
@@ -160,7 +167,7 @@ class ProfileDeclaration extends Declaration {
 
   /** The expected minimal allowed width of the associated view.
    *
-   * Syntax: `min-width: #n | flex | #n %`
+   * Syntax: `min-width: num | flex | num %`
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
@@ -181,7 +188,7 @@ class ProfileDeclaration extends Declaration {
   }
   /** The expected minimal allowed width of the associated view.
    *
-   * Syntax: `min-height: #n | flex | #n %`
+   * Syntax: `min-height: num | flex | #n %`
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *

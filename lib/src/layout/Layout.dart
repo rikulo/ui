@@ -174,11 +174,18 @@ void rootLayout(MeasureContext mctx, View root) {
           new DOMAgent(cave).offset: new Offset(0,0);
 
     final locators = _getLocators(loc);
-    final ai = new PairInfo(root.profile.offset, 0);
+    final mi = new SideInfo(root.profile.margin, 0);
     if (!leftByApp)
-      _anchorXLocators[locators[0]](ofs.left + ai.first, ref, root);
+      _anchorXLocators[locators[0]](ofs.left + mi.left, ref, root);
     if (!topByApp)
-      _anchorYLocators[locators[1]](ofs.top + ai.second, ref, root);
+      _anchorYLocators[locators[1]](ofs.top + mi.top, ref, root);
+
+    int diff = mi.left + mi.right;
+    if (diff != 0 && mctx.getWidthByApp(root) == null)
+      root.width -= diff;
+    diff = mi.top + mi.bottom;
+    if (diff != 0 && mctx.getHeightByApp(root) == null)
+      root.height -= diff;
   }
 }
 //Used by _locateRoot to simulate an achor for root views
