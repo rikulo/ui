@@ -172,6 +172,7 @@ body.rikulo {
   overflow: hidden;
   border-radius: 0;
   border: 1px solid rgba(0, 0, 0, 0.25);
+  background: #ffffff;
 }
 .v-Panel > .v-btns {
   display: inline-block;
@@ -203,15 +204,6 @@ body.rikulo {
 }
 .v-Panel > .v-btns > .v-btn:first-child {
   margin-left: 4px;
-}
-.v-Panel > .v-body {
-  position: static;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-  border-radius: 0;
-  background: #ffffff;
 }
 .v-popup {
   border-radius: 3px;

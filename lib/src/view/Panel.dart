@@ -13,9 +13,6 @@ class Panel extends View {
    */
   Panel();
   
-  /// Retrieve content node.
-  Element get contentNode => getNode("body");
-  
   /// Retrieve button node of the given [name].
   Element getButtonNode(String name) => getNode("btn-$name");
   
@@ -42,57 +39,21 @@ class Panel extends View {
     Element element = new Element.html('''
 <div class="v-shadow">
   <div class="v-btns" id="$uuid-btns"></div>
-  <div class="v-body" id="$uuid-body"></div>
 </div>
 ''');
     return element;
   }
   
   //@override
-  void addChildNode_(View child, View beforeChild) {
-    if (beforeChild != null)
-      super.addChildNode_(child, beforeChild);
-    else
-      contentNode.nodes.add(child.node);
-  }
-  
-  //@override
-  void set height(int height) {
-    super.height = height;
-    if (inDocument)
-      _adjustHeight();
-  }
-  
-  //@override
-  void onPreLayout_(MeasureContext mctx) {
-    super.onPreLayout_(mctx);
-    if (inDocument)
-      _adjustHeight();
-  }
-  
-  void _adjustHeight() {
-    contentNode.style.height = 
-        CSS.px(new DOMAgent(node).innerHeight - new _CSSAgent(node).sumVer(pad: true));
-  }
-  
-  //@override
-  int get innerWidth => inDocument ? new DOMAgent(contentNode).innerWidth : 0;
-  
-  //@override
-  int get innerHeight => inDocument ? new DOMAgent(contentNode).innerHeight : 0;
-  
-  //@override
   int measureHeight_(MeasureContext mctx) {
-    final int bdh = new _CSSAgent(contentNode).sumVer(mar: true, bor: true, pad: true) + super.measureHeight_(mctx);
     final int btnh = new DOMAgent(getNode("btns")).height + new _CSSAgent(node).sumVer(bor: true);
-    return max(bdh, btnh);
+    return max(super.measureHeight_(mctx), btnh);
   }
   
   //@override
   int measureWidth_(MeasureContext mctx) {
-    final int bdw = new _CSSAgent(contentNode).sumHor(mar: true, bor: true, pad: true) + super.measureWidth_(mctx);
     final int btnw = new DOMAgent(getNode("btns")).width + new _CSSAgent(node).sumHor(bor: true);
-    return max(bdw, btnw);
+    return max(super.measureWidth_(mctx), btnw);
   }
   
 }
