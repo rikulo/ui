@@ -5,6 +5,7 @@
 **Changes**
 
 * LayoutAmountInfo and LayoutSideInfo are renamed to AmountInfo and SideInfo
+* View.tag() is simplified
 * Overriding View.className is optional. It will return the class name correctly.
 
 **Features:**

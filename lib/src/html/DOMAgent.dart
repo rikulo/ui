@@ -11,8 +11,7 @@ class DOMAgent {
   /** The DOM element in query. */
   final node;
 
-  factory DOMAgent(Element e)
-  => e != null ? new DOMAgent._as(e): new _NullAgent();
+  DOMAgent(Element this.node);
   DOMAgent.query(String s): this(document.query(s));
   DOMAgent._as(this.node);
   
@@ -201,9 +200,7 @@ class DOMAgent {
  * for handling window.
  */
 class WindowAgent extends DOMAgent {
-  factory WindowAgent(Window w)
-  => w != null ? new WindowAgent._as(w): new _NullAgent();
-  WindowAgent._as(var v): super._as(v);
+  WindowAgent(Window w): super._as(w);
 
   int get innerWidth => node.innerWidth;
   int get innerHeight => node.innerHeight;
@@ -219,13 +216,4 @@ class WindowAgent extends DOMAgent {
   bool isDescendantOf(Element parent) => false;
   CSSStyleDeclaration get computedStyle => new CSSStyleDeclaration();
   void set visible(bool visible) {}
-}
-class _NullAgent extends WindowAgent {
-  _NullAgent(): super._as(null);
-  int get innerWidth => 0;
-  int get innerHeight => 0;
-  int get width => 0;
-  int get height => 0;
-  int get contentWidth => 0;
-  int get contentHeight => 0;
 }

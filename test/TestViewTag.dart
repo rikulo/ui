@@ -15,8 +15,11 @@ void main() {
    */
   View dl = new View.tag("dl");
   for (int i = 0; i < 10; ++i) {
-    View li = new View.tag("li", {"type": "i", "value": i*2 + 1},
-        "This is the <b>$i</b> item.", false);
+    View li = new View.tag("li");
+    li.node
+      ..type = "i"
+      ..value =  i*2 + 1
+      ..innerHTML = "This is the <b>$i</b> item.";
     li.top = 22 * i;
     dl.addChild(li);
   }

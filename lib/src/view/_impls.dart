@@ -3,36 +3,6 @@
 // Author: tomyeh
 part of rikulo_view;
 
-/** Used by View.tag()
- */
-class _TagView extends View {
-  final bool _vgroup;
-
-  _TagView(String tag, Map<String, dynamic> attrs, String inner, bool this._vgroup) {
-    final out = new StringBuffer().add('<').add(tag);
-    if (attrs != null)
-      attrs.forEach((key, value) {
-          out.add(' ').add(key).add('="');
-          if (value != null)
-            out.add(value);
-          out.add('"');
-        });
-      out.add('>');
-      if (inner != null)
-        out.add(inner);
-      out.add('</').add(tag).add('>');
-    node = new Element.html(out.toString());
-  }
-
-  bool get isViewGroup => _vgroup;
-}
-class _HTMLView extends View {
-  _HTMLView(String html) {
-    node = new Element.html(html);
-  }
-  bool get isViewGroup => false;
-}
-
 /** Collection of utilities for View's implementation
  */
 class _ViewImpl {

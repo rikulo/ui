@@ -77,52 +77,35 @@ class View {
    * For example,
    *
    *     new View.tag("section");
-   *     new View.tag("header", {"id": "foo", "conteneditable": true});
    *
    * It is useful if you'd like to encapsulate an element that is made of
    * [Shadow DOM](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html#shadow-dom-section).
    *
-   * If you'd like to create a view to representing a hierarchy of elements, you can
-   * use [View.html].
-   *
-   * Notice that the view is positioned absolutely. It is different from
-   * the default behavior the most HTML elements.
-
    * + [tag] specifies the HTML tag name, such as `section` and `article`.
-   * + [attributes] specifies a map of attributes to be assigned.
-   * The value will be converted to a string. If null, an empty string is assumed.  
-   * Also notice that the value won't be encoded, so it is caller's job to avoid
-   * so-called *HTML injection*.
-   * + [innerHTML] specified the inner HTML fragment, such as "Drame come <i>true<i>".
-   * It won't be encoded, so it is caller's job to avoid so-called *HTML injection*.
-   * It will be generated before any child view's content.
-   * + [isViewGroup] specifies whether it is a view group ([isViewGroup]).
-   * Default: true. Notice that it affects how the width and height are measured
-   * unless you overrides [isMeasuredByContent].
-   * Basically if it doesn't allow any child view, it is better to specify false here.
-   * Please refer to [isViewGroup] and [isMeasuredByContent] for more information.
    */
-  factory View.tag(String tag, [Map<String,dynamic> attributes,
-    String innerHTML, bool isViewGroup=true])
-  => new _TagView(tag, attributes, innerHTML, isViewGroup);
+  View.tag(String tag) {
+    node = new Element.tag(tag);
+  }
   /** Instantiates a view to representing a hierarchy of elements specified
    * in the given HTML fragment. For example,
    *
    *     new View.html(
    *      '<table cellapding="10" border="1"><tr><td>Cell 1.1</td></tr></table>');
    *
-   * In the above example, [node] will, after instantiated, be the TABLE element.
+   * In the above example, [node] will be the TABLE element.
    *
    * Notice that it is different from [TextView.fromHTML]. [TextView.fromHTML]
-   * creates an instance of [TextView] and the heirarchy of the HTML fragment
-   * will become a child of [node]. For example, the UL element in the following example
-   * will be a child of [node]:
+   * creates an instance of [TextView] and the given HTML fragment
+   * will become child elements of [node].
+   * For example, the UL element in the following example
+   * will be a child of [node] (and [node] is always DIV):
    *
    *     new TextView.fromHTML(
    *      "<ul><li>First item</li><li>Second item</li></ul>");
    */
-  factory View.html(String html)
-  => new _HTMLView(html);
+  View.html(String html) {
+    node = new Element.html(html);
+  }
 
   /** Returns the Dart class name.
    *
@@ -805,14 +788,15 @@ class View {
     mctx.measureHeight(this);
   /** Returns whether the dimension of this view shall be measured by content.
    *
-   * Default: `!isViewGroup()`
+   * Default: `!isViewGroup() || (no child but has some content)`
    *
    * If false, [MeasureContext.measureWidth] is used instead of
    * [MeasureContext.measureWidthByContent]. Furthermore, if the view
    * is a root, `profile.width` and `profile.height` are assumed to be `flex`
    * if it is not specified.
    */
-  bool get isMeasuredByContent => !isViewGroup;
+  bool get isMeasuredByContent
+  => !isViewGroup || (firstChild == null && new _DOMAgentX(node).hasContent);
 
   /** Returns whether the given child shall be handled by the layout manager.
    *
