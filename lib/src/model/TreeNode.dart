@@ -126,7 +126,7 @@ class DefaultTreeNode<T> extends TreeNode<T> {
   TreeNode<T> operator[](int childIndex) {
     _init();
     if (_children == null)
-      throw new IndexOutOfRangeException(childIndex);
+      throw new RangeError(childIndex);
     return _children[childIndex];
   }
   int get length {

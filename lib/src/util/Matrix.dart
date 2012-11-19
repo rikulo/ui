@@ -29,7 +29,7 @@ class Matrix {
     if (entries != null) {
       final int size = rows * columns;
       if (entries.length != size)
-        throw new IllegalArgumentException(entries);
+        throw new ArgumentError(entries);
       for (int i = 0; i < size; i++)
         _en[i] = entries != null ? entries[i] : 0;
     }
@@ -67,7 +67,7 @@ class Matrix {
       return _generate(rows, columns, (int i) => _en[i] * m);
     else if (m is Matrix) {
       if (m.rows != columns)
-        throw new IllegalArgumentException(m);
+        throw new ArgumentError(m);
       final int k = m.rows, nrs = rows, ncs = m.columns;
       Matrix res = new Matrix(nrs, ncs);
       for (int r = 0; r < nrs; r++)
@@ -75,7 +75,7 @@ class Matrix {
           res._en[r * ncs + c] = _iprod(m, r, c, k);
       return res;
     } else
-      throw new IllegalArgumentException(m);
+      throw new ArgumentError(m);
   }
   
   /** Scalar division. */
@@ -103,7 +103,7 @@ class Matrix {
   // helper //
   void _assertSameSize(Matrix m) {
     if (m == null || m.rows != rows || m.columns != columns)
-      throw new IllegalArgumentException(m);
+      throw new ArgumentError(m);
   }
   
   int _index(int r, int c) => r * columns + c;

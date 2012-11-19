@@ -2,7 +2,6 @@
 //Feb. 04, 2012
 library rikulo_util;
 
-import "dart:coreimpl";
 import "dart:html";
 import "dart:math";
 

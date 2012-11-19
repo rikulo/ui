@@ -13,7 +13,7 @@ class SnakeEnvironment {
     
     if((this.height % adjustment != 0) ||
         (this.width % adjustment != 0)) {
-      throw new IllegalArgumentException("Height & Width must be divisble by the adjustment (${adjustment}) without a remainder");
+      throw new ArgumentError("Height & Width must be divisble by the adjustment (${adjustment}) without a remainder");
     }
     
     snake = new Snake(this);

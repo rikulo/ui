@@ -10,14 +10,14 @@ typedef bool _BrowserMatch(RegExp regex);
  */
 class Browser {
   // all RegExp shall be lower case here
-  static const RegExp _rwebkit = const RegExp(r"(webkit)[ /]([\w.]+)"),
-    _rsafari = const RegExp(r"(safari)[ /]([\w.]+)"),
-    _rchrome = const RegExp(r"(chrome)[ /]([\w.]+)"),
-    _rmsie = const RegExp(r"(msie) ([\w.]+)"),
-    _rmozilla = const RegExp(r"(mozilla)(?:.*? rv:([\w.]+))?"),
-    _ropera = const RegExp(r"(opera)(?:.*version)?[ /]([\w.]+)"),
-    _rios = const RegExp(r"os[ /]([\w_]+) like mac os"),
-    _randroid = const RegExp(r"android[ /]([\w.]+)");
+  static final RegExp _rwebkit = new RegExp(r"(webkit)[ /]([\w.]+)"),
+    _rsafari = new RegExp(r"(safari)[ /]([\w.]+)"),
+    _rchrome = new RegExp(r"(chrome)[ /]([\w.]+)"),
+    _rmsie = new RegExp(r"(msie) ([\w.]+)"),
+    _rmozilla = new RegExp(r"(mozilla)(?:.*? rv:([\w.]+))?"),
+    _ropera = new RegExp(r"(opera)(?:.*version)?[ /]([\w.]+)"),
+    _rios = new RegExp(r"os[ /]([\w_]+) like mac os"),
+    _randroid = new RegExp(r"android[ /]([\w.]+)");
 
   /** The browser's name. */
   String name;

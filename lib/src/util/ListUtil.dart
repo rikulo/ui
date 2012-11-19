@@ -33,13 +33,13 @@ class ListUtil {
    */
   static void rangeCheck(Sequence a, int start, int length) {
     if (length < 0) {
-      throw new IllegalArgumentException("negative length $length");
+      throw new ArgumentError("negative length $length");
     }
     if (start < 0 || start >= a.length) {
-      throw new IndexOutOfRangeException(start);
+      throw new RangeError(start);
     }
     if (start + length > a.length) {
-      throw new IndexOutOfRangeException(start + length);
+      throw new RangeError(start + length);
     }
   }
 

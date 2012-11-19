@@ -3,7 +3,7 @@
 // Author: tomyeh
 part of rikulo_layout;
 
-const RegExp _reNum = const RegExp(r"([-]?[0-9]+)");
+final RegExp _reNum = new RegExp(r"([-]?[0-9]+)");
 
 /**
  * The types of [AmountInfo].

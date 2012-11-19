@@ -47,7 +47,7 @@ class Color {
   static Color parse(String colorCode) {
     final int len = colorCode.length;
     if ((len != 7 && len != 3) || colorCode.charCodeAt(0) != 35) // #
-      throw new IllegalArgumentException(colorCode);
+      throw new ArgumentError(colorCode);
     
     bool short = len == 3;
     final bdr = short ? 2 : 3;
@@ -64,7 +64,7 @@ class Color {
         b *= 17;
       }
     } catch (final Exception e) {
-      throw new IllegalArgumentException(colorCode);
+      throw new ArgumentError(colorCode);
     }
     
     return new Color(r, g, b);

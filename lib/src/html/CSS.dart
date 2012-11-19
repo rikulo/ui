@@ -81,7 +81,7 @@ class CSS {
     }
     return 0;
   }
-  static const RegExp _reNum = const RegExp(r"([-]?[0-9]+)");
+  static final RegExp _reNum = new RegExp(r"([-]?[0-9]+)");
   
   /** Return the sum of the integers of the given [values] converted by [intOf]
    * function. 

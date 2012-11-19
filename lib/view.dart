@@ -3,7 +3,6 @@
 library rikulo_view;
 
 import "dart:html";
-import "dart:coreimpl";
 import "dart:math";
 
 import "util.dart";
