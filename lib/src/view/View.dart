@@ -78,9 +78,6 @@ class View {
    *
    *     new View.tag("section");
    *
-   * It is useful if you'd like to encapsulate an element that is made of
-   * [Shadow DOM](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html#shadow-dom-section).
-   *
    * + [tag] specifies the HTML tag name, such as `section` and `article`.
    */
   View.tag(String tag) {

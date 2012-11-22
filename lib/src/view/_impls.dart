@@ -435,7 +435,7 @@ class _SubviewList extends SequenceList<View> {
 
   void operator[]=(int index, View value) {
     if (value == null)
-      throw const ArgumentError();
+      throw new ArgumentError();
 
     final View w = this[index];
     if (!identical(w, value)) {
@@ -521,9 +521,9 @@ class _SubviewList extends SequenceList<View> {
   }
   void insertRange(int start, int length, [View initialValue]) {
     if (length != 1)
-      throw const ArgumentError("Allow only one view");
+      throw new ArgumentError("Allow only one view");
     if (initialValue == null)
-      throw const ArgumentError("Require initialValue");
+      throw new ArgumentError("Require initialValue");
     if (start == this.length) {
       add(initialValue);
     } else {
