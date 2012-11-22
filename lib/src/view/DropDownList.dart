@@ -4,8 +4,7 @@
 part of rikulo_view;
 
 /**
- * Represents a view that allows the user to select a single item
- * from a drop-down list.
+ * A drop-down list that the user can select an item from it.
  *
  * ##Events
  *

@@ -3,6 +3,8 @@
 part of rikulo_view;
 
 /** A section is a view implementing ID space ([IdSpace]).
+ * It is usually used to hold a section of UI that is usually indepedent of
+ * the others.
  */
 class Section extends View implements IdSpace {
   //The fellows. Used only if this is IdSpace

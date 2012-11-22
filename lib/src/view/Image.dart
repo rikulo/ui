@@ -4,7 +4,7 @@
 part of rikulo_view;
 
 /**
- * An image.
+ * A view for display an image.
  */
 class Image extends View {
   Image([String src]) {

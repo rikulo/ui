@@ -3,7 +3,7 @@
 // Author: tomyeh
 part of rikulo_view;
 
-/** An input box that an user can enter multiple lines of text.
+/** An input field that the user can enter multiple lines of text.
  *
  * For single line input box, please use [TextBox].
  */

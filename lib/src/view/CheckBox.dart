@@ -4,7 +4,7 @@
 part of rikulo_view;
 
 /**
- * A check box is a two-state button.
+ * A check box that the user can turn an option on or off.
  *
  * ##Events
  *

@@ -4,7 +4,7 @@
 part of rikulo_view;
 
 /**
- * A CSS style.
+ * An invisible UI element to define the CSS style information (aka., CSS rules).
  */
 class Style extends View {
   String _media;

@@ -3,8 +3,8 @@
 //Author: simonpai
 part of rikulo_view;
 
-/** A Panel view.
- * 
+/**
+ * A panel view for grouping a collection of views that are usually closed and shown together.
  */
 class Panel extends View {
   

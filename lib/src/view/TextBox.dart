@@ -4,7 +4,7 @@
 part of rikulo_view;
 
 /**
- * A text box to get input from the user or to to display text.
+ * An input field that the user can enter data.
  *
  * For multiline input, please use [TextArea] instead.
  */

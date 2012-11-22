@@ -4,7 +4,7 @@
 part of rikulo_view;
 
 /**
- * A switch button.
+ * A switch button that the user can turn an option on or off.
  *
  * ##Events
  *

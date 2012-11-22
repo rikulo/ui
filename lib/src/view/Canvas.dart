@@ -4,7 +4,7 @@
 part of rikulo_view;
 
 /**
- * A canvas.
+ * A canvas view that you can draw graphics, on the fly, in Dart.
  */
 class Canvas extends View {
   Canvas() {
