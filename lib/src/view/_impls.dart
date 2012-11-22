@@ -584,13 +584,16 @@ class _CSSStyleImpl implements CSSStyleDeclaration {
   }
   //@override
   noSuchMethod(InvocationMirror im) {
-    final nm = im.memberName;
-    if (nm.startsWith("get:"))
-      return getPropertyValue(CSS.name(nm.substring(4)));
-    else if (nm.startsWith("set:"))
-      setProperty(CSS.name(nm.substring(4)), im.positionalArguments[0], '');
-    else
+    var nm = im.memberName;
+    bool bGet;
+    if ((bGet = nm.startsWith("get:")) || nm.startsWith("set:")) {
+      nm = CSS.name(StringUtil.uncamelize(nm.substring(4)));
+      if (bGet)
+        return getPropertyValue(nm);
+      setProperty(CSS.name(nm), im.positionalArguments[0], '');
+    } else {
       super.noSuchMethod(im);
+    }
   }
 
   //@override
