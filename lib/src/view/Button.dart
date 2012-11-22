@@ -5,15 +5,15 @@ part of rikulo_view;
 /** A button.
  */
 class Button extends TextView {
-  /** Instantaites with a plain text.
+  /** Instantiates with a plain text.
    * The text will be encoded to make sure it is valid HTML text.
    */
   Button([String text]): super(text);
   /** Instantiates with a HTML fragment.
    *
    * + [html] specifies a HTML fragment.
-   * Notie it must be a valid HTML fragment. Otherwise, the result is
-   * unpreditable.
+   * Notice it must be a valid HTML fragment. Otherwise, the result is
+   * unpredictable.
    */
   Button.fromHTML(String html): super.fromHTML(html);
 

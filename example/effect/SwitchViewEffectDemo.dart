@@ -38,10 +38,10 @@ TextView block(String text, int left, int top) {
 }
 
 void addFly(Element element, Offset range, List<MotionAction> actions, List<Function> ends) {
-  if (element.elements.isEmpty)
+  if (element.children.isEmpty)
     addRandFly(element, range, actions, ends);
   else
-    for (Element c in element.$dom_children)
+    for (Element c in element.children)
       addFly(c, range, actions, ends);
 }
 

@@ -8,15 +8,15 @@ part of rikulo_view;
  *
  * Notice that there are two kinds of text: plain text and HTML fragment.
  * You can specify the normal text with [text], or the HTML fragment with [innerHTML].
- * The later inocation will override the previous ones.
+ * The later invocation will override the previous ones.
  *
- * When displaying HTML fragement, an extra CSS class called `v-html` will be added.
+ * When displaying HTML fragment, an extra CSS class called `v-html` will be added.
  * Thus, you can customize the look of embedding HTML fragment different from text.
  */
 class TextView extends View {
   String _text = ""; //we have to preserve it since it can't be retrieve from node
 
-  /** Instantaites with a plain text.
+  /** Instantiates with a plain text.
    * The text will be encoded to make sure it is valid HTML text.
    */
   TextView([String text]) {
@@ -26,8 +26,8 @@ class TextView extends View {
   /** Instantiates with a HTML fragment.
    *
    * + [html] specifies a HTML fragment.
-   * Notie it must be a valid HTML fragment. Otherwise, the result is
-   * unpreditable.
+   * Notice it must be a valid HTML fragment. Otherwise, the result is
+   * unpredictable.
    */
   TextView.fromHTML(String html) {
     this.html = html; //have render_() called

@@ -36,7 +36,7 @@ class _Printc {
       if (db == null) { //not in simulator
         _node = new Element.html(
   '<div class="v-printc-x"></div>');
-        document.body.elements.add(_node);
+        document.body.children.add(_node);
       } else { //running in simulator
         _node = db.query(".v-printc");
         if (_node == null) {
@@ -134,12 +134,13 @@ class _PrintcPopup {
   void open(int x, int y) {
     _node = new Element.html('<div style="left:${x+2}px;top:${y+2}px" class="v-printc-pp"><div>[]</div><div>+</div><div>-</div><div>x</div></div>');
 
-    _node.elements[0].on.click.add((e) {_size("100%", "100%");});
-    _node.elements[1].on.click.add((e) {_size("100%", "30%");});
-    _node.elements[2].on.click.add((e) {_size("40%", "30%");});
-    _node.elements[3].on.click.add((e) {_owner.close();});
+    final elems = _node.children;
+    elems[0].on.click.add((e) {_size("100%", "100%");});
+    elems[1].on.click.add((e) {_size("100%", "30%");});
+    elems[2].on.click.add((e) {_size("40%", "30%");});
+    elems[3].on.click.add((e) {_owner.close();});
 
-    _owner._node.elements.add(_node);
+    _owner._node.children.add(_node);
     broadcaster.on.activate.add(_onPopup());
   }
   void _size(String width, String height) {

@@ -39,10 +39,10 @@ void replace(View vo, View vn, SwitchViewEffect effect) {
 Button btn(String text) => new Button(text)..width = 96..height = 96;
 
 void addFly(Element element, Offset range, List<MotionAction> actions, List<Function> ends) {
-  if (element.elements.isEmpty)
+  if (element.children.isEmpty)
     addRandFly(element, range, actions, ends);
   else
-    for (Element c in element.$dom_children)
+    for (Element c in element.children)
       addFly(c, range, actions, ends);
 }
 

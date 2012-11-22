@@ -4,6 +4,7 @@
 
 **Changes**
 
+* MultilineBox is renamed to TextArea
 * LayoutAmountInfo and LayoutSideInfo are renamed to AmountInfo and SideInfo
 * View.tag() is simplified
 * Overriding View.className is optional. It will return the class name correctly.
@@ -11,6 +12,7 @@
 **Features:**
 
 * 18: ProfileDeclaration supports margin to adjust the location and dimension after anchored
+* Link is added for displaying and manipulating the hyperlink.
 
 **Bugs:**
 

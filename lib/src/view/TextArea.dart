@@ -3,12 +3,12 @@
 // Author: tomyeh
 part of rikulo_view;
 
-/** A multiline input box.
+/** An input box that an user can enter multiple lines of text.
  *
  * For single line input box, please use [TextBox].
  */
-class MultilineBox extends View implements Input<String> {
-  MultilineBox([String value]) {
+class TextArea extends View implements Input<String> {
+  TextArea([String value]) {
     if (value != null && !value.isEmpty)
       this.value = value;
   }

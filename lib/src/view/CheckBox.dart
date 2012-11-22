@@ -11,7 +11,7 @@ part of rikulo_view;
  * + change: an instance of [ChangeEvent] indicates the check state is changed.
  */
 class CheckBox extends TextView implements Input<bool> {
-  /** Instantaites with a plain text.
+  /** Instantiates with a plain text.
    * The text will be encoded to make sure it is valid HTML text.
    */
   CheckBox([String text, bool value]): super(text) {
@@ -21,8 +21,8 @@ class CheckBox extends TextView implements Input<bool> {
   /** Instantiates with a HTML fragment.
    *
    * + [html] specifies a HTML fragment.
-   * Notie it must be a valid HTML fragment. Otherwise, the result is
-   * unpreditable.
+   * Notice it must be a valid HTML fragment. Otherwise, the result is
+   * unpredictable.
    */
   CheckBox.fromHTML(String html, [bool value]): super.fromHTML(html) {
     if (_b(value))
@@ -90,4 +90,26 @@ class CheckBox extends TextView implements Input<bool> {
   String get type => "checkbox";
   //@override
   String toString() => "$className($text, $value)";
+}
+
+/**
+ * A radio button. The radio buttons are grouped by [name].
+ * If one of the radio buttons is checked, all others in the same group will
+ * be unchecked.
+ */
+class RadioButton extends CheckBox {
+  /** Instantiates with a plain text.
+   * The text will be encoded to make sure it is valid HTML text.
+   */
+  RadioButton([String text, bool value]): super(text, value);
+  /** Instantiates with a HTML fragment.
+   *
+   * + [html] specifies a HTML fragment.
+   * Notice it must be a valid HTML fragment. Otherwise, the result is
+   * unpredictable.
+   */
+  RadioButton.fromHTML(String html, [bool value]): super.fromHTML(html, value);
+
+  //@override
+  String get type => "radio";
 }

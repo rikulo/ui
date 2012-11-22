@@ -6,7 +6,7 @@ part of rikulo_view;
 /**
  * A text box to get input from the user or to to display text.
  *
- * For multiline input, please use [MultilineBox] instead.
+ * For multiline input, please use [TextArea] instead.
  */
 class TextBox extends View implements Input<String> {
   TextBox([String value, String type]) {
