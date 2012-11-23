@@ -124,13 +124,10 @@ display
 emptyCells
 filter
 flex
-flexAlign
 flexBasis
 flexDirection
 flexFlow
 flexGrow
-flexOrder
-flexPack
 flexShrink
 flexWrap
 float
@@ -152,7 +149,6 @@ gridColumn
 gridColumns
 gridRow
 gridRows
-height
 highlight
 hyphenateCharacter
 hyphenateLimitAfter
@@ -163,7 +159,6 @@ imageOrientation
 imageRendering
 imageResolution
 justifyContent
-left
 letterSpacing
 lineAlign
 lineBoxContain
@@ -218,7 +213,6 @@ maskRepeat
 maskRepeatX
 maskRepeatY
 maskSize
-matchNearestMailBlockquoteColor
 maxHeight
 maxLogicalHeight
 maxLogicalWidth
@@ -320,7 +314,6 @@ textUnderlineColor
 textUnderlineMode
 textUnderlineStyle
 textUnderlineWidth
-top
 transform
 transformOrigin
 transformOriginX
@@ -342,13 +335,11 @@ verticalAlign
 visibility
 whiteSpace
 widows
-width
 wordBreak
 wordSpacing
 wordWrap
 wrap
 wrapFlow
-wrapShape
 wrapThrough
 writingMode
 zIndex

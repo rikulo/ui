@@ -31,9 +31,8 @@ df=$homedir/lib/src/view/_StyleImpl.dart
 cp $headfl $df
 
 for nm in $(cat $lstfl); do
-	echo "  //@override" >> $df
-	echo "  String get $nm => _g('$nm');"  >> $df
-	echo "  void set $nm(v) {_s('$nm', v);}"  >> $df
+	echo "  String get $nm => _st.$nm;"  >> $df
+	echo "  void set $nm(String v) {_st.$nm = _s(v);}"  >> $df
 done
 
 echo '}' >> $df

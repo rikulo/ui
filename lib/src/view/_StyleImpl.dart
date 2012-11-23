@@ -8,9 +8,6 @@ class _StyleImpl implements CSSStyleDeclaration {
   _StyleImpl(View this._view);
 
   CSSStyleDeclaration get _st => _view.node.style;
-  String _n(String n) => CSS.name(StringUtil.uncamelize(n));
-  String _g(String n) => getPropertyValue(_n(n));
-  void _s(String n, var v) => setProperty(_n(n), v, '');
 
   //@override
   String getPropertyValue(String propertyName)
@@ -43,14 +40,29 @@ class _StyleImpl implements CSSStyleDeclaration {
   String get cssText => _st.cssText;
   //@override
   void set cssText(String value) {
-    final style = _st;
-    style.cssText = value;
-    style.left = CSS.px(_view.left);
-    style.top = CSS.px(_view.top);
-    if (_view.width != null)
-      style.width = CSS.px(_view.width);
-    if (_view.height != null)
-      style.height = CSS.px(_view.height);
+    final st = _st;
+    st.cssText = value;
+
+    var v;
+    if ((v = st.left).isEmpty) //restore if not set
+      st.left = CSS.px(_view.left);
+    else
+      _view.left = CSS.intOf(v);
+
+    if ((v = st.top).isEmpty)
+      st.top = CSS.px(_view.top);
+    else
+      _view.top = CSS.intOf(v);
+
+    if ((v = st.width).isEmpty)
+      st.width = CSS.px(_view.width);
+    else
+      _view.width = CSS.intOf(v, defaultValue: null);
+
+    if ((v = st.height).isEmpty)
+      st.height = CSS.px(_view.height);
+    else
+      _view.height = CSS.intOf(v, defaultValue: null);
   }
 
   //@override
@@ -60,1069 +72,710 @@ class _StyleImpl implements CSSStyleDeclaration {
   //@override
   CSSRule get parentRule => _st.parentRule;
 
-  //@override
-  String get alignContent => _g('alignContent');
-  void set alignContent(v) {_s('alignContent', v);}
-  //@override
-  String get alignItems => _g('alignItems');
-  void set alignItems(v) {_s('alignItems', v);}
-  //@override
-  String get alignSelf => _g('alignSelf');
-  void set alignSelf(v) {_s('alignSelf', v);}
-  //@override
-  String get animation => _g('animation');
-  void set animation(v) {_s('animation', v);}
-  //@override
-  String get animationDelay => _g('animationDelay');
-  void set animationDelay(v) {_s('animationDelay', v);}
-  //@override
-  String get animationDirection => _g('animationDirection');
-  void set animationDirection(v) {_s('animationDirection', v);}
-  //@override
-  String get animationDuration => _g('animationDuration');
-  void set animationDuration(v) {_s('animationDuration', v);}
-  //@override
-  String get animationFillMode => _g('animationFillMode');
-  void set animationFillMode(v) {_s('animationFillMode', v);}
-  //@override
-  String get animationIterationCount => _g('animationIterationCount');
-  void set animationIterationCount(v) {_s('animationIterationCount', v);}
-  //@override
-  String get animationName => _g('animationName');
-  void set animationName(v) {_s('animationName', v);}
-  //@override
-  String get animationPlayState => _g('animationPlayState');
-  void set animationPlayState(v) {_s('animationPlayState', v);}
-  //@override
-  String get animationTimingFunction => _g('animationTimingFunction');
-  void set animationTimingFunction(v) {_s('animationTimingFunction', v);}
-  //@override
-  String get appearance => _g('appearance');
-  void set appearance(v) {_s('appearance', v);}
-  //@override
-  String get appRegion => _g('appRegion');
-  void set appRegion(v) {_s('appRegion', v);}
-  //@override
-  String get aspectRatio => _g('aspectRatio');
-  void set aspectRatio(v) {_s('aspectRatio', v);}
-  //@override
-  String get backfaceVisibility => _g('backfaceVisibility');
-  void set backfaceVisibility(v) {_s('backfaceVisibility', v);}
-  //@override
-  String get background => _g('background');
-  void set background(v) {_s('background', v);}
-  //@override
-  String get backgroundAttachment => _g('backgroundAttachment');
-  void set backgroundAttachment(v) {_s('backgroundAttachment', v);}
-  //@override
-  String get backgroundClip => _g('backgroundClip');
-  void set backgroundClip(v) {_s('backgroundClip', v);}
-  //@override
-  String get backgroundColor => _g('backgroundColor');
-  void set backgroundColor(v) {_s('backgroundColor', v);}
-  //@override
-  String get backgroundComposite => _g('backgroundComposite');
-  void set backgroundComposite(v) {_s('backgroundComposite', v);}
-  //@override
-  String get backgroundImage => _g('backgroundImage');
-  void set backgroundImage(v) {_s('backgroundImage', v);}
-  //@override
-  String get backgroundOrigin => _g('backgroundOrigin');
-  void set backgroundOrigin(v) {_s('backgroundOrigin', v);}
-  //@override
-  String get backgroundPosition => _g('backgroundPosition');
-  void set backgroundPosition(v) {_s('backgroundPosition', v);}
-  //@override
-  String get backgroundPositionX => _g('backgroundPositionX');
-  void set backgroundPositionX(v) {_s('backgroundPositionX', v);}
-  //@override
-  String get backgroundPositionY => _g('backgroundPositionY');
-  void set backgroundPositionY(v) {_s('backgroundPositionY', v);}
-  //@override
-  String get backgroundRepeat => _g('backgroundRepeat');
-  void set backgroundRepeat(v) {_s('backgroundRepeat', v);}
-  //@override
-  String get backgroundRepeatX => _g('backgroundRepeatX');
-  void set backgroundRepeatX(v) {_s('backgroundRepeatX', v);}
-  //@override
-  String get backgroundRepeatY => _g('backgroundRepeatY');
-  void set backgroundRepeatY(v) {_s('backgroundRepeatY', v);}
-  //@override
-  String get backgroundSize => _g('backgroundSize');
-  void set backgroundSize(v) {_s('backgroundSize', v);}
-  //@override
-  String get blendMode => _g('blendMode');
-  void set blendMode(v) {_s('blendMode', v);}
-  //@override
-  String get border => _g('border');
-  void set border(v) {_s('border', v);}
-  //@override
-  String get borderAfter => _g('borderAfter');
-  void set borderAfter(v) {_s('borderAfter', v);}
-  //@override
-  String get borderAfterColor => _g('borderAfterColor');
-  void set borderAfterColor(v) {_s('borderAfterColor', v);}
-  //@override
-  String get borderAfterStyle => _g('borderAfterStyle');
-  void set borderAfterStyle(v) {_s('borderAfterStyle', v);}
-  //@override
-  String get borderAfterWidth => _g('borderAfterWidth');
-  void set borderAfterWidth(v) {_s('borderAfterWidth', v);}
-  //@override
-  String get borderBefore => _g('borderBefore');
-  void set borderBefore(v) {_s('borderBefore', v);}
-  //@override
-  String get borderBeforeColor => _g('borderBeforeColor');
-  void set borderBeforeColor(v) {_s('borderBeforeColor', v);}
-  //@override
-  String get borderBeforeStyle => _g('borderBeforeStyle');
-  void set borderBeforeStyle(v) {_s('borderBeforeStyle', v);}
-  //@override
-  String get borderBeforeWidth => _g('borderBeforeWidth');
-  void set borderBeforeWidth(v) {_s('borderBeforeWidth', v);}
-  //@override
-  String get borderBottom => _g('borderBottom');
-  void set borderBottom(v) {_s('borderBottom', v);}
-  //@override
-  String get borderBottomColor => _g('borderBottomColor');
-  void set borderBottomColor(v) {_s('borderBottomColor', v);}
-  //@override
-  String get borderBottomLeftRadius => _g('borderBottomLeftRadius');
-  void set borderBottomLeftRadius(v) {_s('borderBottomLeftRadius', v);}
-  //@override
-  String get borderBottomRightRadius => _g('borderBottomRightRadius');
-  void set borderBottomRightRadius(v) {_s('borderBottomRightRadius', v);}
-  //@override
-  String get borderBottomStyle => _g('borderBottomStyle');
-  void set borderBottomStyle(v) {_s('borderBottomStyle', v);}
-  //@override
-  String get borderBottomWidth => _g('borderBottomWidth');
-  void set borderBottomWidth(v) {_s('borderBottomWidth', v);}
-  //@override
-  String get borderCollapse => _g('borderCollapse');
-  void set borderCollapse(v) {_s('borderCollapse', v);}
-  //@override
-  String get borderColor => _g('borderColor');
-  void set borderColor(v) {_s('borderColor', v);}
-  //@override
-  String get borderEnd => _g('borderEnd');
-  void set borderEnd(v) {_s('borderEnd', v);}
-  //@override
-  String get borderEndColor => _g('borderEndColor');
-  void set borderEndColor(v) {_s('borderEndColor', v);}
-  //@override
-  String get borderEndStyle => _g('borderEndStyle');
-  void set borderEndStyle(v) {_s('borderEndStyle', v);}
-  //@override
-  String get borderEndWidth => _g('borderEndWidth');
-  void set borderEndWidth(v) {_s('borderEndWidth', v);}
-  //@override
-  String get borderFit => _g('borderFit');
-  void set borderFit(v) {_s('borderFit', v);}
-  //@override
-  String get borderHorizontalSpacing => _g('borderHorizontalSpacing');
-  void set borderHorizontalSpacing(v) {_s('borderHorizontalSpacing', v);}
-  //@override
-  String get borderImage => _g('borderImage');
-  void set borderImage(v) {_s('borderImage', v);}
-  //@override
-  String get borderImageOutset => _g('borderImageOutset');
-  void set borderImageOutset(v) {_s('borderImageOutset', v);}
-  //@override
-  String get borderImageRepeat => _g('borderImageRepeat');
-  void set borderImageRepeat(v) {_s('borderImageRepeat', v);}
-  //@override
-  String get borderImageSlice => _g('borderImageSlice');
-  void set borderImageSlice(v) {_s('borderImageSlice', v);}
-  //@override
-  String get borderImageSource => _g('borderImageSource');
-  void set borderImageSource(v) {_s('borderImageSource', v);}
-  //@override
-  String get borderImageWidth => _g('borderImageWidth');
-  void set borderImageWidth(v) {_s('borderImageWidth', v);}
-  //@override
-  String get borderLeft => _g('borderLeft');
-  void set borderLeft(v) {_s('borderLeft', v);}
-  //@override
-  String get borderLeftColor => _g('borderLeftColor');
-  void set borderLeftColor(v) {_s('borderLeftColor', v);}
-  //@override
-  String get borderLeftStyle => _g('borderLeftStyle');
-  void set borderLeftStyle(v) {_s('borderLeftStyle', v);}
-  //@override
-  String get borderLeftWidth => _g('borderLeftWidth');
-  void set borderLeftWidth(v) {_s('borderLeftWidth', v);}
-  //@override
-  String get borderRadius => _g('borderRadius');
-  void set borderRadius(v) {_s('borderRadius', v);}
-  //@override
-  String get borderRight => _g('borderRight');
-  void set borderRight(v) {_s('borderRight', v);}
-  //@override
-  String get borderRightColor => _g('borderRightColor');
-  void set borderRightColor(v) {_s('borderRightColor', v);}
-  //@override
-  String get borderRightStyle => _g('borderRightStyle');
-  void set borderRightStyle(v) {_s('borderRightStyle', v);}
-  //@override
-  String get borderRightWidth => _g('borderRightWidth');
-  void set borderRightWidth(v) {_s('borderRightWidth', v);}
-  //@override
-  String get borderSpacing => _g('borderSpacing');
-  void set borderSpacing(v) {_s('borderSpacing', v);}
-  //@override
-  String get borderStart => _g('borderStart');
-  void set borderStart(v) {_s('borderStart', v);}
-  //@override
-  String get borderStartColor => _g('borderStartColor');
-  void set borderStartColor(v) {_s('borderStartColor', v);}
-  //@override
-  String get borderStartStyle => _g('borderStartStyle');
-  void set borderStartStyle(v) {_s('borderStartStyle', v);}
-  //@override
-  String get borderStartWidth => _g('borderStartWidth');
-  void set borderStartWidth(v) {_s('borderStartWidth', v);}
-  //@override
-  String get borderStyle => _g('borderStyle');
-  void set borderStyle(v) {_s('borderStyle', v);}
-  //@override
-  String get borderTop => _g('borderTop');
-  void set borderTop(v) {_s('borderTop', v);}
-  //@override
-  String get borderTopColor => _g('borderTopColor');
-  void set borderTopColor(v) {_s('borderTopColor', v);}
-  //@override
-  String get borderTopLeftRadius => _g('borderTopLeftRadius');
-  void set borderTopLeftRadius(v) {_s('borderTopLeftRadius', v);}
-  //@override
-  String get borderTopRightRadius => _g('borderTopRightRadius');
-  void set borderTopRightRadius(v) {_s('borderTopRightRadius', v);}
-  //@override
-  String get borderTopStyle => _g('borderTopStyle');
-  void set borderTopStyle(v) {_s('borderTopStyle', v);}
-  //@override
-  String get borderTopWidth => _g('borderTopWidth');
-  void set borderTopWidth(v) {_s('borderTopWidth', v);}
-  //@override
-  String get borderVerticalSpacing => _g('borderVerticalSpacing');
-  void set borderVerticalSpacing(v) {_s('borderVerticalSpacing', v);}
-  //@override
-  String get borderWidth => _g('borderWidth');
-  void set borderWidth(v) {_s('borderWidth', v);}
-  //@override
-  String get bottom => _g('bottom');
-  void set bottom(v) {_s('bottom', v);}
-  //@override
-  String get boxAlign => _g('boxAlign');
-  void set boxAlign(v) {_s('boxAlign', v);}
-  //@override
-  String get boxDecorationBreak => _g('boxDecorationBreak');
-  void set boxDecorationBreak(v) {_s('boxDecorationBreak', v);}
-  //@override
-  String get boxDirection => _g('boxDirection');
-  void set boxDirection(v) {_s('boxDirection', v);}
-  //@override
-  String get boxFlex => _g('boxFlex');
-  void set boxFlex(v) {_s('boxFlex', v);}
-  //@override
-  String get boxFlexGroup => _g('boxFlexGroup');
-  void set boxFlexGroup(v) {_s('boxFlexGroup', v);}
-  //@override
-  String get boxLines => _g('boxLines');
-  void set boxLines(v) {_s('boxLines', v);}
-  //@override
-  String get boxOrdinalGroup => _g('boxOrdinalGroup');
-  void set boxOrdinalGroup(v) {_s('boxOrdinalGroup', v);}
-  //@override
-  String get boxOrient => _g('boxOrient');
-  void set boxOrient(v) {_s('boxOrient', v);}
-  //@override
-  String get boxPack => _g('boxPack');
-  void set boxPack(v) {_s('boxPack', v);}
-  //@override
-  String get boxReflect => _g('boxReflect');
-  void set boxReflect(v) {_s('boxReflect', v);}
-  //@override
-  String get boxShadow => _g('boxShadow');
-  void set boxShadow(v) {_s('boxShadow', v);}
-  //@override
-  String get boxSizing => _g('boxSizing');
-  void set boxSizing(v) {_s('boxSizing', v);}
-  //@override
-  String get captionSide => _g('captionSide');
-  void set captionSide(v) {_s('captionSide', v);}
-  //@override
-  String get clear => _g('clear');
-  void set clear(v) {_s('clear', v);}
-  //@override
-  String get clip => _g('clip');
-  void set clip(v) {_s('clip', v);}
-  //@override
-  String get clipPath => _g('clipPath');
-  void set clipPath(v) {_s('clipPath', v);}
-  //@override
-  String get color => _g('color');
-  void set color(v) {_s('color', v);}
-  //@override
-  String get colorCorrection => _g('colorCorrection');
-  void set colorCorrection(v) {_s('colorCorrection', v);}
-  //@override
-  String get columnAxis => _g('columnAxis');
-  void set columnAxis(v) {_s('columnAxis', v);}
-  //@override
-  String get columnBreakAfter => _g('columnBreakAfter');
-  void set columnBreakAfter(v) {_s('columnBreakAfter', v);}
-  //@override
-  String get columnBreakBefore => _g('columnBreakBefore');
-  void set columnBreakBefore(v) {_s('columnBreakBefore', v);}
-  //@override
-  String get columnBreakInside => _g('columnBreakInside');
-  void set columnBreakInside(v) {_s('columnBreakInside', v);}
-  //@override
-  String get columnCount => _g('columnCount');
-  void set columnCount(v) {_s('columnCount', v);}
-  //@override
-  String get columnGap => _g('columnGap');
-  void set columnGap(v) {_s('columnGap', v);}
-  //@override
-  String get columnProgression => _g('columnProgression');
-  void set columnProgression(v) {_s('columnProgression', v);}
-  //@override
-  String get columnRule => _g('columnRule');
-  void set columnRule(v) {_s('columnRule', v);}
-  //@override
-  String get columnRuleColor => _g('columnRuleColor');
-  void set columnRuleColor(v) {_s('columnRuleColor', v);}
-  //@override
-  String get columnRuleStyle => _g('columnRuleStyle');
-  void set columnRuleStyle(v) {_s('columnRuleStyle', v);}
-  //@override
-  String get columnRuleWidth => _g('columnRuleWidth');
-  void set columnRuleWidth(v) {_s('columnRuleWidth', v);}
-  //@override
-  String get columnSpan => _g('columnSpan');
-  void set columnSpan(v) {_s('columnSpan', v);}
-  //@override
-  String get columnWidth => _g('columnWidth');
-  void set columnWidth(v) {_s('columnWidth', v);}
-  //@override
-  String get columns => _g('columns');
-  void set columns(v) {_s('columns', v);}
-  //@override
-  String get content => _g('content');
-  void set content(v) {_s('content', v);}
-  //@override
-  String get counterIncrement => _g('counterIncrement');
-  void set counterIncrement(v) {_s('counterIncrement', v);}
-  //@override
-  String get counterReset => _g('counterReset');
-  void set counterReset(v) {_s('counterReset', v);}
-  //@override
-  String get cursor => _g('cursor');
-  void set cursor(v) {_s('cursor', v);}
-  //@override
-  String get dashboardRegion => _g('dashboardRegion');
-  void set dashboardRegion(v) {_s('dashboardRegion', v);}
-  //@override
-  String get direction => _g('direction');
-  void set direction(v) {_s('direction', v);}
-  //@override
-  String get display => _g('display');
-  void set display(v) {_s('display', v);}
-  //@override
-  String get emptyCells => _g('emptyCells');
-  void set emptyCells(v) {_s('emptyCells', v);}
-  //@override
-  String get filter => _g('filter');
-  void set filter(v) {_s('filter', v);}
-  //@override
-  String get flex => _g('flex');
-  void set flex(v) {_s('flex', v);}
-  //@override
-  String get flexAlign => _g('flexAlign');
-  void set flexAlign(v) {_s('flexAlign', v);}
-  //@override
-  String get flexBasis => _g('flexBasis');
-  void set flexBasis(v) {_s('flexBasis', v);}
-  //@override
-  String get flexDirection => _g('flexDirection');
-  void set flexDirection(v) {_s('flexDirection', v);}
-  //@override
-  String get flexFlow => _g('flexFlow');
-  void set flexFlow(v) {_s('flexFlow', v);}
-  //@override
-  String get flexGrow => _g('flexGrow');
-  void set flexGrow(v) {_s('flexGrow', v);}
-  //@override
-  String get flexOrder => _g('flexOrder');
-  void set flexOrder(v) {_s('flexOrder', v);}
-  //@override
-  String get flexPack => _g('flexPack');
-  void set flexPack(v) {_s('flexPack', v);}
-  //@override
-  String get flexShrink => _g('flexShrink');
-  void set flexShrink(v) {_s('flexShrink', v);}
-  //@override
-  String get flexWrap => _g('flexWrap');
-  void set flexWrap(v) {_s('flexWrap', v);}
-  //@override
-  String get float => _g('float');
-  void set float(v) {_s('float', v);}
-  //@override
-  String get flowFrom => _g('flowFrom');
-  void set flowFrom(v) {_s('flowFrom', v);}
-  //@override
-  String get flowInto => _g('flowInto');
-  void set flowInto(v) {_s('flowInto', v);}
-  //@override
-  String get font => _g('font');
-  void set font(v) {_s('font', v);}
-  //@override
-  String get fontFamily => _g('fontFamily');
-  void set fontFamily(v) {_s('fontFamily', v);}
-  //@override
-  String get fontFeatureSettings => _g('fontFeatureSettings');
-  void set fontFeatureSettings(v) {_s('fontFeatureSettings', v);}
-  //@override
-  String get fontKerning => _g('fontKerning');
-  void set fontKerning(v) {_s('fontKerning', v);}
-  //@override
-  String get fontSize => _g('fontSize');
-  void set fontSize(v) {_s('fontSize', v);}
-  //@override
-  String get fontSizeDelta => _g('fontSizeDelta');
-  void set fontSizeDelta(v) {_s('fontSizeDelta', v);}
-  //@override
-  String get fontSmoothing => _g('fontSmoothing');
-  void set fontSmoothing(v) {_s('fontSmoothing', v);}
-  //@override
-  String get fontStretch => _g('fontStretch');
-  void set fontStretch(v) {_s('fontStretch', v);}
-  //@override
-  String get fontStyle => _g('fontStyle');
-  void set fontStyle(v) {_s('fontStyle', v);}
-  //@override
-  String get fontVariant => _g('fontVariant');
-  void set fontVariant(v) {_s('fontVariant', v);}
-  //@override
-  String get fontVariantLigatures => _g('fontVariantLigatures');
-  void set fontVariantLigatures(v) {_s('fontVariantLigatures', v);}
-  //@override
-  String get fontWeight => _g('fontWeight');
-  void set fontWeight(v) {_s('fontWeight', v);}
-  //@override
-  String get gridColumn => _g('gridColumn');
-  void set gridColumn(v) {_s('gridColumn', v);}
-  //@override
-  String get gridColumns => _g('gridColumns');
-  void set gridColumns(v) {_s('gridColumns', v);}
-  //@override
-  String get gridRow => _g('gridRow');
-  void set gridRow(v) {_s('gridRow', v);}
-  //@override
-  String get gridRows => _g('gridRows');
-  void set gridRows(v) {_s('gridRows', v);}
-  //@override
-  String get height => _g('height');
-  void set height(v) {_s('height', v);}
-  //@override
-  String get highlight => _g('highlight');
-  void set highlight(v) {_s('highlight', v);}
-  //@override
-  String get hyphenateCharacter => _g('hyphenateCharacter');
-  void set hyphenateCharacter(v) {_s('hyphenateCharacter', v);}
-  //@override
-  String get hyphenateLimitAfter => _g('hyphenateLimitAfter');
-  void set hyphenateLimitAfter(v) {_s('hyphenateLimitAfter', v);}
-  //@override
-  String get hyphenateLimitBefore => _g('hyphenateLimitBefore');
-  void set hyphenateLimitBefore(v) {_s('hyphenateLimitBefore', v);}
-  //@override
-  String get hyphenateLimitLines => _g('hyphenateLimitLines');
-  void set hyphenateLimitLines(v) {_s('hyphenateLimitLines', v);}
-  //@override
-  String get hyphens => _g('hyphens');
-  void set hyphens(v) {_s('hyphens', v);}
-  //@override
-  String get imageOrientation => _g('imageOrientation');
-  void set imageOrientation(v) {_s('imageOrientation', v);}
-  //@override
-  String get imageRendering => _g('imageRendering');
-  void set imageRendering(v) {_s('imageRendering', v);}
-  //@override
-  String get imageResolution => _g('imageResolution');
-  void set imageResolution(v) {_s('imageResolution', v);}
-  //@override
-  String get justifyContent => _g('justifyContent');
-  void set justifyContent(v) {_s('justifyContent', v);}
-  //@override
-  String get left => _g('left');
-  void set left(v) {_s('left', v);}
-  //@override
-  String get letterSpacing => _g('letterSpacing');
-  void set letterSpacing(v) {_s('letterSpacing', v);}
-  //@override
-  String get lineAlign => _g('lineAlign');
-  void set lineAlign(v) {_s('lineAlign', v);}
-  //@override
-  String get lineBoxContain => _g('lineBoxContain');
-  void set lineBoxContain(v) {_s('lineBoxContain', v);}
-  //@override
-  String get lineBreak => _g('lineBreak');
-  void set lineBreak(v) {_s('lineBreak', v);}
-  //@override
-  String get lineClamp => _g('lineClamp');
-  void set lineClamp(v) {_s('lineClamp', v);}
-  //@override
-  String get lineGrid => _g('lineGrid');
-  void set lineGrid(v) {_s('lineGrid', v);}
-  //@override
-  String get lineHeight => _g('lineHeight');
-  void set lineHeight(v) {_s('lineHeight', v);}
-  //@override
-  String get lineSnap => _g('lineSnap');
-  void set lineSnap(v) {_s('lineSnap', v);}
-  //@override
-  String get listStyle => _g('listStyle');
-  void set listStyle(v) {_s('listStyle', v);}
-  //@override
-  String get listStyleImage => _g('listStyleImage');
-  void set listStyleImage(v) {_s('listStyleImage', v);}
-  //@override
-  String get listStylePosition => _g('listStylePosition');
-  void set listStylePosition(v) {_s('listStylePosition', v);}
-  //@override
-  String get listStyleType => _g('listStyleType');
-  void set listStyleType(v) {_s('listStyleType', v);}
-  //@override
-  String get locale => _g('locale');
-  void set locale(v) {_s('locale', v);}
-  //@override
-  String get logicalHeight => _g('logicalHeight');
-  void set logicalHeight(v) {_s('logicalHeight', v);}
-  //@override
-  String get logicalWidth => _g('logicalWidth');
-  void set logicalWidth(v) {_s('logicalWidth', v);}
-  //@override
-  String get margin => _g('margin');
-  void set margin(v) {_s('margin', v);}
-  //@override
-  String get marginAfter => _g('marginAfter');
-  void set marginAfter(v) {_s('marginAfter', v);}
-  //@override
-  String get marginAfterCollapse => _g('marginAfterCollapse');
-  void set marginAfterCollapse(v) {_s('marginAfterCollapse', v);}
-  //@override
-  String get marginBefore => _g('marginBefore');
-  void set marginBefore(v) {_s('marginBefore', v);}
-  //@override
-  String get marginBeforeCollapse => _g('marginBeforeCollapse');
-  void set marginBeforeCollapse(v) {_s('marginBeforeCollapse', v);}
-  //@override
-  String get marginBottom => _g('marginBottom');
-  void set marginBottom(v) {_s('marginBottom', v);}
-  //@override
-  String get marginBottomCollapse => _g('marginBottomCollapse');
-  void set marginBottomCollapse(v) {_s('marginBottomCollapse', v);}
-  //@override
-  String get marginCollapse => _g('marginCollapse');
-  void set marginCollapse(v) {_s('marginCollapse', v);}
-  //@override
-  String get marginEnd => _g('marginEnd');
-  void set marginEnd(v) {_s('marginEnd', v);}
-  //@override
-  String get marginLeft => _g('marginLeft');
-  void set marginLeft(v) {_s('marginLeft', v);}
-  //@override
-  String get marginRight => _g('marginRight');
-  void set marginRight(v) {_s('marginRight', v);}
-  //@override
-  String get marginStart => _g('marginStart');
-  void set marginStart(v) {_s('marginStart', v);}
-  //@override
-  String get marginTop => _g('marginTop');
-  void set marginTop(v) {_s('marginTop', v);}
-  //@override
-  String get marginTopCollapse => _g('marginTopCollapse');
-  void set marginTopCollapse(v) {_s('marginTopCollapse', v);}
-  //@override
-  String get marquee => _g('marquee');
-  void set marquee(v) {_s('marquee', v);}
-  //@override
-  String get marqueeDirection => _g('marqueeDirection');
-  void set marqueeDirection(v) {_s('marqueeDirection', v);}
-  //@override
-  String get marqueeIncrement => _g('marqueeIncrement');
-  void set marqueeIncrement(v) {_s('marqueeIncrement', v);}
-  //@override
-  String get marqueeRepetition => _g('marqueeRepetition');
-  void set marqueeRepetition(v) {_s('marqueeRepetition', v);}
-  //@override
-  String get marqueeSpeed => _g('marqueeSpeed');
-  void set marqueeSpeed(v) {_s('marqueeSpeed', v);}
-  //@override
-  String get marqueeStyle => _g('marqueeStyle');
-  void set marqueeStyle(v) {_s('marqueeStyle', v);}
-  //@override
-  String get mask => _g('mask');
-  void set mask(v) {_s('mask', v);}
-  //@override
-  String get maskAttachment => _g('maskAttachment');
-  void set maskAttachment(v) {_s('maskAttachment', v);}
-  //@override
-  String get maskBoxImage => _g('maskBoxImage');
-  void set maskBoxImage(v) {_s('maskBoxImage', v);}
-  //@override
-  String get maskBoxImageOutset => _g('maskBoxImageOutset');
-  void set maskBoxImageOutset(v) {_s('maskBoxImageOutset', v);}
-  //@override
-  String get maskBoxImageRepeat => _g('maskBoxImageRepeat');
-  void set maskBoxImageRepeat(v) {_s('maskBoxImageRepeat', v);}
-  //@override
-  String get maskBoxImageSlice => _g('maskBoxImageSlice');
-  void set maskBoxImageSlice(v) {_s('maskBoxImageSlice', v);}
-  //@override
-  String get maskBoxImageSource => _g('maskBoxImageSource');
-  void set maskBoxImageSource(v) {_s('maskBoxImageSource', v);}
-  //@override
-  String get maskBoxImageWidth => _g('maskBoxImageWidth');
-  void set maskBoxImageWidth(v) {_s('maskBoxImageWidth', v);}
-  //@override
-  String get maskClip => _g('maskClip');
-  void set maskClip(v) {_s('maskClip', v);}
-  //@override
-  String get maskComposite => _g('maskComposite');
-  void set maskComposite(v) {_s('maskComposite', v);}
-  //@override
-  String get maskImage => _g('maskImage');
-  void set maskImage(v) {_s('maskImage', v);}
-  //@override
-  String get maskOrigin => _g('maskOrigin');
-  void set maskOrigin(v) {_s('maskOrigin', v);}
-  //@override
-  String get maskPosition => _g('maskPosition');
-  void set maskPosition(v) {_s('maskPosition', v);}
-  //@override
-  String get maskPositionX => _g('maskPositionX');
-  void set maskPositionX(v) {_s('maskPositionX', v);}
-  //@override
-  String get maskPositionY => _g('maskPositionY');
-  void set maskPositionY(v) {_s('maskPositionY', v);}
-  //@override
-  String get maskRepeat => _g('maskRepeat');
-  void set maskRepeat(v) {_s('maskRepeat', v);}
-  //@override
-  String get maskRepeatX => _g('maskRepeatX');
-  void set maskRepeatX(v) {_s('maskRepeatX', v);}
-  //@override
-  String get maskRepeatY => _g('maskRepeatY');
-  void set maskRepeatY(v) {_s('maskRepeatY', v);}
-  //@override
-  String get maskSize => _g('maskSize');
-  void set maskSize(v) {_s('maskSize', v);}
-  //@override
-  String get matchNearestMailBlockquoteColor => _g('matchNearestMailBlockquoteColor');
-  void set matchNearestMailBlockquoteColor(v) {_s('matchNearestMailBlockquoteColor', v);}
-  //@override
-  String get maxHeight => _g('maxHeight');
-  void set maxHeight(v) {_s('maxHeight', v);}
-  //@override
-  String get maxLogicalHeight => _g('maxLogicalHeight');
-  void set maxLogicalHeight(v) {_s('maxLogicalHeight', v);}
-  //@override
-  String get maxLogicalWidth => _g('maxLogicalWidth');
-  void set maxLogicalWidth(v) {_s('maxLogicalWidth', v);}
-  //@override
-  String get maxWidth => _g('maxWidth');
-  void set maxWidth(v) {_s('maxWidth', v);}
-  //@override
-  String get maxZoom => _g('maxZoom');
-  void set maxZoom(v) {_s('maxZoom', v);}
-  //@override
-  String get minHeight => _g('minHeight');
-  void set minHeight(v) {_s('minHeight', v);}
-  //@override
-  String get minLogicalHeight => _g('minLogicalHeight');
-  void set minLogicalHeight(v) {_s('minLogicalHeight', v);}
-  //@override
-  String get minLogicalWidth => _g('minLogicalWidth');
-  void set minLogicalWidth(v) {_s('minLogicalWidth', v);}
-  //@override
-  String get minWidth => _g('minWidth');
-  void set minWidth(v) {_s('minWidth', v);}
-  //@override
-  String get minZoom => _g('minZoom');
-  void set minZoom(v) {_s('minZoom', v);}
-  //@override
-  String get nbspMode => _g('nbspMode');
-  void set nbspMode(v) {_s('nbspMode', v);}
-  //@override
-  String get opacity => _g('opacity');
-  void set opacity(v) {_s('opacity', v);}
-  //@override
-  String get order => _g('order');
-  void set order(v) {_s('order', v);}
-  //@override
-  String get orientation => _g('orientation');
-  void set orientation(v) {_s('orientation', v);}
-  //@override
-  String get orphans => _g('orphans');
-  void set orphans(v) {_s('orphans', v);}
-  //@override
-  String get outline => _g('outline');
-  void set outline(v) {_s('outline', v);}
-  //@override
-  String get outlineColor => _g('outlineColor');
-  void set outlineColor(v) {_s('outlineColor', v);}
-  //@override
-  String get outlineOffset => _g('outlineOffset');
-  void set outlineOffset(v) {_s('outlineOffset', v);}
-  //@override
-  String get outlineStyle => _g('outlineStyle');
-  void set outlineStyle(v) {_s('outlineStyle', v);}
-  //@override
-  String get outlineWidth => _g('outlineWidth');
-  void set outlineWidth(v) {_s('outlineWidth', v);}
-  //@override
-  String get overflow => _g('overflow');
-  void set overflow(v) {_s('overflow', v);}
-  //@override
-  String get overflowScrolling => _g('overflowScrolling');
-  void set overflowScrolling(v) {_s('overflowScrolling', v);}
-  //@override
-  String get overflowWrap => _g('overflowWrap');
-  void set overflowWrap(v) {_s('overflowWrap', v);}
-  //@override
-  String get overflowX => _g('overflowX');
-  void set overflowX(v) {_s('overflowX', v);}
-  //@override
-  String get overflowY => _g('overflowY');
-  void set overflowY(v) {_s('overflowY', v);}
-  //@override
-  String get padding => _g('padding');
-  void set padding(v) {_s('padding', v);}
-  //@override
-  String get paddingAfter => _g('paddingAfter');
-  void set paddingAfter(v) {_s('paddingAfter', v);}
-  //@override
-  String get paddingBefore => _g('paddingBefore');
-  void set paddingBefore(v) {_s('paddingBefore', v);}
-  //@override
-  String get paddingBottom => _g('paddingBottom');
-  void set paddingBottom(v) {_s('paddingBottom', v);}
-  //@override
-  String get paddingEnd => _g('paddingEnd');
-  void set paddingEnd(v) {_s('paddingEnd', v);}
-  //@override
-  String get paddingLeft => _g('paddingLeft');
-  void set paddingLeft(v) {_s('paddingLeft', v);}
-  //@override
-  String get paddingRight => _g('paddingRight');
-  void set paddingRight(v) {_s('paddingRight', v);}
-  //@override
-  String get paddingStart => _g('paddingStart');
-  void set paddingStart(v) {_s('paddingStart', v);}
-  //@override
-  String get paddingTop => _g('paddingTop');
-  void set paddingTop(v) {_s('paddingTop', v);}
-  //@override
-  String get page => _g('page');
-  void set page(v) {_s('page', v);}
-  //@override
-  String get pageBreakAfter => _g('pageBreakAfter');
-  void set pageBreakAfter(v) {_s('pageBreakAfter', v);}
-  //@override
-  String get pageBreakBefore => _g('pageBreakBefore');
-  void set pageBreakBefore(v) {_s('pageBreakBefore', v);}
-  //@override
-  String get pageBreakInside => _g('pageBreakInside');
-  void set pageBreakInside(v) {_s('pageBreakInside', v);}
-  //@override
-  String get perspective => _g('perspective');
-  void set perspective(v) {_s('perspective', v);}
-  //@override
-  String get perspectiveOrigin => _g('perspectiveOrigin');
-  void set perspectiveOrigin(v) {_s('perspectiveOrigin', v);}
-  //@override
-  String get perspectiveOriginX => _g('perspectiveOriginX');
-  void set perspectiveOriginX(v) {_s('perspectiveOriginX', v);}
-  //@override
-  String get perspectiveOriginY => _g('perspectiveOriginY');
-  void set perspectiveOriginY(v) {_s('perspectiveOriginY', v);}
-  //@override
-  String get pointerEvents => _g('pointerEvents');
-  void set pointerEvents(v) {_s('pointerEvents', v);}
-  //@override
-  String get position => _g('position');
-  void set position(v) {_s('position', v);}
-  //@override
-  String get printColorAdjust => _g('printColorAdjust');
-  void set printColorAdjust(v) {_s('printColorAdjust', v);}
-  //@override
-  String get quotes => _g('quotes');
-  void set quotes(v) {_s('quotes', v);}
-  //@override
-  String get regionBreakAfter => _g('regionBreakAfter');
-  void set regionBreakAfter(v) {_s('regionBreakAfter', v);}
-  //@override
-  String get regionBreakBefore => _g('regionBreakBefore');
-  void set regionBreakBefore(v) {_s('regionBreakBefore', v);}
-  //@override
-  String get regionBreakInside => _g('regionBreakInside');
-  void set regionBreakInside(v) {_s('regionBreakInside', v);}
-  //@override
-  String get regionOverflow => _g('regionOverflow');
-  void set regionOverflow(v) {_s('regionOverflow', v);}
-  //@override
-  String get resize => _g('resize');
-  void set resize(v) {_s('resize', v);}
-  //@override
-  String get right => _g('right');
-  void set right(v) {_s('right', v);}
-  //@override
-  String get rtlOrdering => _g('rtlOrdering');
-  void set rtlOrdering(v) {_s('rtlOrdering', v);}
-  //@override
-  String get shapeInside => _g('shapeInside');
-  void set shapeInside(v) {_s('shapeInside', v);}
-  //@override
-  String get shapeMargin => _g('shapeMargin');
-  void set shapeMargin(v) {_s('shapeMargin', v);}
-  //@override
-  String get shapeOutside => _g('shapeOutside');
-  void set shapeOutside(v) {_s('shapeOutside', v);}
-  //@override
-  String get shapePadding => _g('shapePadding');
-  void set shapePadding(v) {_s('shapePadding', v);}
-  //@override
-  String get size => _g('size');
-  void set size(v) {_s('size', v);}
-  //@override
-  String get speak => _g('speak');
-  void set speak(v) {_s('speak', v);}
-  //@override
-  String get src => _g('src');
-  void set src(v) {_s('src', v);}
-  //@override
-  String get tableLayout => _g('tableLayout');
-  void set tableLayout(v) {_s('tableLayout', v);}
-  //@override
-  String get tabSize => _g('tabSize');
-  void set tabSize(v) {_s('tabSize', v);}
-  //@override
-  String get tapHighlightColor => _g('tapHighlightColor');
-  void set tapHighlightColor(v) {_s('tapHighlightColor', v);}
-  //@override
-  String get textAlign => _g('textAlign');
-  void set textAlign(v) {_s('textAlign', v);}
-  //@override
-  String get textAlignLast => _g('textAlignLast');
-  void set textAlignLast(v) {_s('textAlignLast', v);}
-  //@override
-  String get textCombine => _g('textCombine');
-  void set textCombine(v) {_s('textCombine', v);}
-  //@override
-  String get textDecoration => _g('textDecoration');
-  void set textDecoration(v) {_s('textDecoration', v);}
-  //@override
-  String get textDecorationLine => _g('textDecorationLine');
-  void set textDecorationLine(v) {_s('textDecorationLine', v);}
-  //@override
-  String get textDecorationsInEffect => _g('textDecorationsInEffect');
-  void set textDecorationsInEffect(v) {_s('textDecorationsInEffect', v);}
-  //@override
-  String get textDecorationStyle => _g('textDecorationStyle');
-  void set textDecorationStyle(v) {_s('textDecorationStyle', v);}
-  //@override
-  String get textEmphasis => _g('textEmphasis');
-  void set textEmphasis(v) {_s('textEmphasis', v);}
-  //@override
-  String get textEmphasisColor => _g('textEmphasisColor');
-  void set textEmphasisColor(v) {_s('textEmphasisColor', v);}
-  //@override
-  String get textEmphasisPosition => _g('textEmphasisPosition');
-  void set textEmphasisPosition(v) {_s('textEmphasisPosition', v);}
-  //@override
-  String get textEmphasisStyle => _g('textEmphasisStyle');
-  void set textEmphasisStyle(v) {_s('textEmphasisStyle', v);}
-  //@override
-  String get textFillColor => _g('textFillColor');
-  void set textFillColor(v) {_s('textFillColor', v);}
-  //@override
-  String get textIndent => _g('textIndent');
-  void set textIndent(v) {_s('textIndent', v);}
-  //@override
-  String get textLineThrough => _g('textLineThrough');
-  void set textLineThrough(v) {_s('textLineThrough', v);}
-  //@override
-  String get textLineThroughColor => _g('textLineThroughColor');
-  void set textLineThroughColor(v) {_s('textLineThroughColor', v);}
-  //@override
-  String get textLineThroughMode => _g('textLineThroughMode');
-  void set textLineThroughMode(v) {_s('textLineThroughMode', v);}
-  //@override
-  String get textLineThroughStyle => _g('textLineThroughStyle');
-  void set textLineThroughStyle(v) {_s('textLineThroughStyle', v);}
-  //@override
-  String get textLineThroughWidth => _g('textLineThroughWidth');
-  void set textLineThroughWidth(v) {_s('textLineThroughWidth', v);}
-  //@override
-  String get textOrientation => _g('textOrientation');
-  void set textOrientation(v) {_s('textOrientation', v);}
-  //@override
-  String get textOverflow => _g('textOverflow');
-  void set textOverflow(v) {_s('textOverflow', v);}
-  //@override
-  String get textOverline => _g('textOverline');
-  void set textOverline(v) {_s('textOverline', v);}
-  //@override
-  String get textOverlineColor => _g('textOverlineColor');
-  void set textOverlineColor(v) {_s('textOverlineColor', v);}
-  //@override
-  String get textOverlineMode => _g('textOverlineMode');
-  void set textOverlineMode(v) {_s('textOverlineMode', v);}
-  //@override
-  String get textOverlineStyle => _g('textOverlineStyle');
-  void set textOverlineStyle(v) {_s('textOverlineStyle', v);}
-  //@override
-  String get textOverlineWidth => _g('textOverlineWidth');
-  void set textOverlineWidth(v) {_s('textOverlineWidth', v);}
-  //@override
-  String get textRendering => _g('textRendering');
-  void set textRendering(v) {_s('textRendering', v);}
-  //@override
-  String get textSecurity => _g('textSecurity');
-  void set textSecurity(v) {_s('textSecurity', v);}
-  //@override
-  String get textShadow => _g('textShadow');
-  void set textShadow(v) {_s('textShadow', v);}
-  //@override
-  String get textSizeAdjust => _g('textSizeAdjust');
-  void set textSizeAdjust(v) {_s('textSizeAdjust', v);}
-  //@override
-  String get textStroke => _g('textStroke');
-  void set textStroke(v) {_s('textStroke', v);}
-  //@override
-  String get textStrokeColor => _g('textStrokeColor');
-  void set textStrokeColor(v) {_s('textStrokeColor', v);}
-  //@override
-  String get textStrokeWidth => _g('textStrokeWidth');
-  void set textStrokeWidth(v) {_s('textStrokeWidth', v);}
-  //@override
-  String get textTransform => _g('textTransform');
-  void set textTransform(v) {_s('textTransform', v);}
-  //@override
-  String get textUnderline => _g('textUnderline');
-  void set textUnderline(v) {_s('textUnderline', v);}
-  //@override
-  String get textUnderlineColor => _g('textUnderlineColor');
-  void set textUnderlineColor(v) {_s('textUnderlineColor', v);}
-  //@override
-  String get textUnderlineMode => _g('textUnderlineMode');
-  void set textUnderlineMode(v) {_s('textUnderlineMode', v);}
-  //@override
-  String get textUnderlineStyle => _g('textUnderlineStyle');
-  void set textUnderlineStyle(v) {_s('textUnderlineStyle', v);}
-  //@override
-  String get textUnderlineWidth => _g('textUnderlineWidth');
-  void set textUnderlineWidth(v) {_s('textUnderlineWidth', v);}
-  //@override
-  String get top => _g('top');
-  void set top(v) {_s('top', v);}
-  //@override
-  String get transform => _g('transform');
-  void set transform(v) {_s('transform', v);}
-  //@override
-  String get transformOrigin => _g('transformOrigin');
-  void set transformOrigin(v) {_s('transformOrigin', v);}
-  //@override
-  String get transformOriginX => _g('transformOriginX');
-  void set transformOriginX(v) {_s('transformOriginX', v);}
-  //@override
-  String get transformOriginY => _g('transformOriginY');
-  void set transformOriginY(v) {_s('transformOriginY', v);}
-  //@override
-  String get transformOriginZ => _g('transformOriginZ');
-  void set transformOriginZ(v) {_s('transformOriginZ', v);}
-  //@override
-  String get transformStyle => _g('transformStyle');
-  void set transformStyle(v) {_s('transformStyle', v);}
-  //@override
-  String get transition => _g('transition');
-  void set transition(v) {_s('transition', v);}
-  //@override
-  String get transitionDelay => _g('transitionDelay');
-  void set transitionDelay(v) {_s('transitionDelay', v);}
-  //@override
-  String get transitionDuration => _g('transitionDuration');
-  void set transitionDuration(v) {_s('transitionDuration', v);}
-  //@override
-  String get transitionProperty => _g('transitionProperty');
-  void set transitionProperty(v) {_s('transitionProperty', v);}
-  //@override
-  String get transitionTimingFunction => _g('transitionTimingFunction');
-  void set transitionTimingFunction(v) {_s('transitionTimingFunction', v);}
-  //@override
-  String get unicodeBidi => _g('unicodeBidi');
-  void set unicodeBidi(v) {_s('unicodeBidi', v);}
-  //@override
-  String get unicodeRange => _g('unicodeRange');
-  void set unicodeRange(v) {_s('unicodeRange', v);}
-  //@override
-  String get userDrag => _g('userDrag');
-  void set userDrag(v) {_s('userDrag', v);}
-  //@override
-  String get userModify => _g('userModify');
-  void set userModify(v) {_s('userModify', v);}
-  //@override
-  String get userSelect => _g('userSelect');
-  void set userSelect(v) {_s('userSelect', v);}
-  //@override
-  String get userZoom => _g('userZoom');
-  void set userZoom(v) {_s('userZoom', v);}
-  //@override
-  String get verticalAlign => _g('verticalAlign');
-  void set verticalAlign(v) {_s('verticalAlign', v);}
-  //@override
-  String get visibility => _g('visibility');
-  void set visibility(v) {_s('visibility', v);}
-  //@override
-  String get whiteSpace => _g('whiteSpace');
-  void set whiteSpace(v) {_s('whiteSpace', v);}
-  //@override
-  String get widows => _g('widows');
-  void set widows(v) {_s('widows', v);}
-  //@override
-  String get width => _g('width');
-  void set width(v) {_s('width', v);}
-  //@override
-  String get wordBreak => _g('wordBreak');
-  void set wordBreak(v) {_s('wordBreak', v);}
-  //@override
-  String get wordSpacing => _g('wordSpacing');
-  void set wordSpacing(v) {_s('wordSpacing', v);}
-  //@override
-  String get wordWrap => _g('wordWrap');
-  void set wordWrap(v) {_s('wordWrap', v);}
-  //@override
-  String get wrap => _g('wrap');
-  void set wrap(v) {_s('wrap', v);}
-  //@override
-  String get wrapFlow => _g('wrapFlow');
-  void set wrapFlow(v) {_s('wrapFlow', v);}
-  //@override
-  String get wrapShape => _g('wrapShape');
-  void set wrapShape(v) {_s('wrapShape', v);}
-  //@override
-  String get wrapThrough => _g('wrapThrough');
-  void set wrapThrough(v) {_s('wrapThrough', v);}
-  //@override
-  String get writingMode => _g('writingMode');
-  void set writingMode(v) {_s('writingMode', v);}
-  //@override
-  String get zIndex => _g('zIndex');
-  void set zIndex(v) {_s('zIndex', v);}
-  //@override
-  String get zoom => _g('zoom');
-  void set zoom(v) {_s('zoom', v);}
+  String get left => _st.left;
+  void set left(String v) {_view.left = CSS.intOf(v);}
+  String get top => _st.top;
+  void set top(String v) {_view.top = CSS.intOf(v);}
+
+  String get width => _st.width;
+  void set width(String v) {
+    _view.width = CSS.intOf(v, defaultValue: null);
+  }
+  String get height => _st.height;
+  void set height(String v) {
+    _view.height = CSS.intOf(v, defaultValue: null);
+  }
+
+  String get alignContent => _st.alignContent;
+  void set alignContent(String v) {_st.alignContent = _s(v);}
+  String get alignItems => _st.alignItems;
+  void set alignItems(String v) {_st.alignItems = _s(v);}
+  String get alignSelf => _st.alignSelf;
+  void set alignSelf(String v) {_st.alignSelf = _s(v);}
+  String get animation => _st.animation;
+  void set animation(String v) {_st.animation = _s(v);}
+  String get animationDelay => _st.animationDelay;
+  void set animationDelay(String v) {_st.animationDelay = _s(v);}
+  String get animationDirection => _st.animationDirection;
+  void set animationDirection(String v) {_st.animationDirection = _s(v);}
+  String get animationDuration => _st.animationDuration;
+  void set animationDuration(String v) {_st.animationDuration = _s(v);}
+  String get animationFillMode => _st.animationFillMode;
+  void set animationFillMode(String v) {_st.animationFillMode = _s(v);}
+  String get animationIterationCount => _st.animationIterationCount;
+  void set animationIterationCount(String v) {_st.animationIterationCount = _s(v);}
+  String get animationName => _st.animationName;
+  void set animationName(String v) {_st.animationName = _s(v);}
+  String get animationPlayState => _st.animationPlayState;
+  void set animationPlayState(String v) {_st.animationPlayState = _s(v);}
+  String get animationTimingFunction => _st.animationTimingFunction;
+  void set animationTimingFunction(String v) {_st.animationTimingFunction = _s(v);}
+  String get appearance => _st.appearance;
+  void set appearance(String v) {_st.appearance = _s(v);}
+  String get appRegion => _st.appRegion;
+  void set appRegion(String v) {_st.appRegion = _s(v);}
+  String get aspectRatio => _st.aspectRatio;
+  void set aspectRatio(String v) {_st.aspectRatio = _s(v);}
+  String get backfaceVisibility => _st.backfaceVisibility;
+  void set backfaceVisibility(String v) {_st.backfaceVisibility = _s(v);}
+  String get background => _st.background;
+  void set background(String v) {_st.background = _s(v);}
+  String get backgroundAttachment => _st.backgroundAttachment;
+  void set backgroundAttachment(String v) {_st.backgroundAttachment = _s(v);}
+  String get backgroundClip => _st.backgroundClip;
+  void set backgroundClip(String v) {_st.backgroundClip = _s(v);}
+  String get backgroundColor => _st.backgroundColor;
+  void set backgroundColor(String v) {_st.backgroundColor = _s(v);}
+  String get backgroundComposite => _st.backgroundComposite;
+  void set backgroundComposite(String v) {_st.backgroundComposite = _s(v);}
+  String get backgroundImage => _st.backgroundImage;
+  void set backgroundImage(String v) {_st.backgroundImage = _s(v);}
+  String get backgroundOrigin => _st.backgroundOrigin;
+  void set backgroundOrigin(String v) {_st.backgroundOrigin = _s(v);}
+  String get backgroundPosition => _st.backgroundPosition;
+  void set backgroundPosition(String v) {_st.backgroundPosition = _s(v);}
+  String get backgroundPositionX => _st.backgroundPositionX;
+  void set backgroundPositionX(String v) {_st.backgroundPositionX = _s(v);}
+  String get backgroundPositionY => _st.backgroundPositionY;
+  void set backgroundPositionY(String v) {_st.backgroundPositionY = _s(v);}
+  String get backgroundRepeat => _st.backgroundRepeat;
+  void set backgroundRepeat(String v) {_st.backgroundRepeat = _s(v);}
+  String get backgroundRepeatX => _st.backgroundRepeatX;
+  void set backgroundRepeatX(String v) {_st.backgroundRepeatX = _s(v);}
+  String get backgroundRepeatY => _st.backgroundRepeatY;
+  void set backgroundRepeatY(String v) {_st.backgroundRepeatY = _s(v);}
+  String get backgroundSize => _st.backgroundSize;
+  void set backgroundSize(String v) {_st.backgroundSize = _s(v);}
+  String get blendMode => _st.blendMode;
+  void set blendMode(String v) {_st.blendMode = _s(v);}
+  String get border => _st.border;
+  void set border(String v) {_st.border = _s(v);}
+  String get borderAfter => _st.borderAfter;
+  void set borderAfter(String v) {_st.borderAfter = _s(v);}
+  String get borderAfterColor => _st.borderAfterColor;
+  void set borderAfterColor(String v) {_st.borderAfterColor = _s(v);}
+  String get borderAfterStyle => _st.borderAfterStyle;
+  void set borderAfterStyle(String v) {_st.borderAfterStyle = _s(v);}
+  String get borderAfterWidth => _st.borderAfterWidth;
+  void set borderAfterWidth(String v) {_st.borderAfterWidth = _s(v);}
+  String get borderBefore => _st.borderBefore;
+  void set borderBefore(String v) {_st.borderBefore = _s(v);}
+  String get borderBeforeColor => _st.borderBeforeColor;
+  void set borderBeforeColor(String v) {_st.borderBeforeColor = _s(v);}
+  String get borderBeforeStyle => _st.borderBeforeStyle;
+  void set borderBeforeStyle(String v) {_st.borderBeforeStyle = _s(v);}
+  String get borderBeforeWidth => _st.borderBeforeWidth;
+  void set borderBeforeWidth(String v) {_st.borderBeforeWidth = _s(v);}
+  String get borderBottom => _st.borderBottom;
+  void set borderBottom(String v) {_st.borderBottom = _s(v);}
+  String get borderBottomColor => _st.borderBottomColor;
+  void set borderBottomColor(String v) {_st.borderBottomColor = _s(v);}
+  String get borderBottomLeftRadius => _st.borderBottomLeftRadius;
+  void set borderBottomLeftRadius(String v) {_st.borderBottomLeftRadius = _s(v);}
+  String get borderBottomRightRadius => _st.borderBottomRightRadius;
+  void set borderBottomRightRadius(String v) {_st.borderBottomRightRadius = _s(v);}
+  String get borderBottomStyle => _st.borderBottomStyle;
+  void set borderBottomStyle(String v) {_st.borderBottomStyle = _s(v);}
+  String get borderBottomWidth => _st.borderBottomWidth;
+  void set borderBottomWidth(String v) {_st.borderBottomWidth = _s(v);}
+  String get borderCollapse => _st.borderCollapse;
+  void set borderCollapse(String v) {_st.borderCollapse = _s(v);}
+  String get borderColor => _st.borderColor;
+  void set borderColor(String v) {_st.borderColor = _s(v);}
+  String get borderEnd => _st.borderEnd;
+  void set borderEnd(String v) {_st.borderEnd = _s(v);}
+  String get borderEndColor => _st.borderEndColor;
+  void set borderEndColor(String v) {_st.borderEndColor = _s(v);}
+  String get borderEndStyle => _st.borderEndStyle;
+  void set borderEndStyle(String v) {_st.borderEndStyle = _s(v);}
+  String get borderEndWidth => _st.borderEndWidth;
+  void set borderEndWidth(String v) {_st.borderEndWidth = _s(v);}
+  String get borderFit => _st.borderFit;
+  void set borderFit(String v) {_st.borderFit = _s(v);}
+  String get borderHorizontalSpacing => _st.borderHorizontalSpacing;
+  void set borderHorizontalSpacing(String v) {_st.borderHorizontalSpacing = _s(v);}
+  String get borderImage => _st.borderImage;
+  void set borderImage(String v) {_st.borderImage = _s(v);}
+  String get borderImageOutset => _st.borderImageOutset;
+  void set borderImageOutset(String v) {_st.borderImageOutset = _s(v);}
+  String get borderImageRepeat => _st.borderImageRepeat;
+  void set borderImageRepeat(String v) {_st.borderImageRepeat = _s(v);}
+  String get borderImageSlice => _st.borderImageSlice;
+  void set borderImageSlice(String v) {_st.borderImageSlice = _s(v);}
+  String get borderImageSource => _st.borderImageSource;
+  void set borderImageSource(String v) {_st.borderImageSource = _s(v);}
+  String get borderImageWidth => _st.borderImageWidth;
+  void set borderImageWidth(String v) {_st.borderImageWidth = _s(v);}
+  String get borderLeft => _st.borderLeft;
+  void set borderLeft(String v) {_st.borderLeft = _s(v);}
+  String get borderLeftColor => _st.borderLeftColor;
+  void set borderLeftColor(String v) {_st.borderLeftColor = _s(v);}
+  String get borderLeftStyle => _st.borderLeftStyle;
+  void set borderLeftStyle(String v) {_st.borderLeftStyle = _s(v);}
+  String get borderLeftWidth => _st.borderLeftWidth;
+  void set borderLeftWidth(String v) {_st.borderLeftWidth = _s(v);}
+  String get borderRadius => _st.borderRadius;
+  void set borderRadius(String v) {_st.borderRadius = _s(v);}
+  String get borderRight => _st.borderRight;
+  void set borderRight(String v) {_st.borderRight = _s(v);}
+  String get borderRightColor => _st.borderRightColor;
+  void set borderRightColor(String v) {_st.borderRightColor = _s(v);}
+  String get borderRightStyle => _st.borderRightStyle;
+  void set borderRightStyle(String v) {_st.borderRightStyle = _s(v);}
+  String get borderRightWidth => _st.borderRightWidth;
+  void set borderRightWidth(String v) {_st.borderRightWidth = _s(v);}
+  String get borderSpacing => _st.borderSpacing;
+  void set borderSpacing(String v) {_st.borderSpacing = _s(v);}
+  String get borderStart => _st.borderStart;
+  void set borderStart(String v) {_st.borderStart = _s(v);}
+  String get borderStartColor => _st.borderStartColor;
+  void set borderStartColor(String v) {_st.borderStartColor = _s(v);}
+  String get borderStartStyle => _st.borderStartStyle;
+  void set borderStartStyle(String v) {_st.borderStartStyle = _s(v);}
+  String get borderStartWidth => _st.borderStartWidth;
+  void set borderStartWidth(String v) {_st.borderStartWidth = _s(v);}
+  String get borderStyle => _st.borderStyle;
+  void set borderStyle(String v) {_st.borderStyle = _s(v);}
+  String get borderTop => _st.borderTop;
+  void set borderTop(String v) {_st.borderTop = _s(v);}
+  String get borderTopColor => _st.borderTopColor;
+  void set borderTopColor(String v) {_st.borderTopColor = _s(v);}
+  String get borderTopLeftRadius => _st.borderTopLeftRadius;
+  void set borderTopLeftRadius(String v) {_st.borderTopLeftRadius = _s(v);}
+  String get borderTopRightRadius => _st.borderTopRightRadius;
+  void set borderTopRightRadius(String v) {_st.borderTopRightRadius = _s(v);}
+  String get borderTopStyle => _st.borderTopStyle;
+  void set borderTopStyle(String v) {_st.borderTopStyle = _s(v);}
+  String get borderTopWidth => _st.borderTopWidth;
+  void set borderTopWidth(String v) {_st.borderTopWidth = _s(v);}
+  String get borderVerticalSpacing => _st.borderVerticalSpacing;
+  void set borderVerticalSpacing(String v) {_st.borderVerticalSpacing = _s(v);}
+  String get borderWidth => _st.borderWidth;
+  void set borderWidth(String v) {_st.borderWidth = _s(v);}
+  String get bottom => _st.bottom;
+  void set bottom(String v) {_st.bottom = _s(v);}
+  String get boxAlign => _st.boxAlign;
+  void set boxAlign(String v) {_st.boxAlign = _s(v);}
+  String get boxDecorationBreak => _st.boxDecorationBreak;
+  void set boxDecorationBreak(String v) {_st.boxDecorationBreak = _s(v);}
+  String get boxDirection => _st.boxDirection;
+  void set boxDirection(String v) {_st.boxDirection = _s(v);}
+  String get boxFlex => _st.boxFlex;
+  void set boxFlex(String v) {_st.boxFlex = _s(v);}
+  String get boxFlexGroup => _st.boxFlexGroup;
+  void set boxFlexGroup(String v) {_st.boxFlexGroup = _s(v);}
+  String get boxLines => _st.boxLines;
+  void set boxLines(String v) {_st.boxLines = _s(v);}
+  String get boxOrdinalGroup => _st.boxOrdinalGroup;
+  void set boxOrdinalGroup(String v) {_st.boxOrdinalGroup = _s(v);}
+  String get boxOrient => _st.boxOrient;
+  void set boxOrient(String v) {_st.boxOrient = _s(v);}
+  String get boxPack => _st.boxPack;
+  void set boxPack(String v) {_st.boxPack = _s(v);}
+  String get boxReflect => _st.boxReflect;
+  void set boxReflect(String v) {_st.boxReflect = _s(v);}
+  String get boxShadow => _st.boxShadow;
+  void set boxShadow(String v) {_st.boxShadow = _s(v);}
+  String get boxSizing => _st.boxSizing;
+  void set boxSizing(String v) {_st.boxSizing = _s(v);}
+  String get captionSide => _st.captionSide;
+  void set captionSide(String v) {_st.captionSide = _s(v);}
+  String get clear => _st.clear;
+  void set clear(String v) {_st.clear = _s(v);}
+  String get clip => _st.clip;
+  void set clip(String v) {_st.clip = _s(v);}
+  String get clipPath => _st.clipPath;
+  void set clipPath(String v) {_st.clipPath = _s(v);}
+  String get color => _st.color;
+  void set color(String v) {_st.color = _s(v);}
+  String get colorCorrection => _st.colorCorrection;
+  void set colorCorrection(String v) {_st.colorCorrection = _s(v);}
+  String get columnAxis => _st.columnAxis;
+  void set columnAxis(String v) {_st.columnAxis = _s(v);}
+  String get columnBreakAfter => _st.columnBreakAfter;
+  void set columnBreakAfter(String v) {_st.columnBreakAfter = _s(v);}
+  String get columnBreakBefore => _st.columnBreakBefore;
+  void set columnBreakBefore(String v) {_st.columnBreakBefore = _s(v);}
+  String get columnBreakInside => _st.columnBreakInside;
+  void set columnBreakInside(String v) {_st.columnBreakInside = _s(v);}
+  String get columnCount => _st.columnCount;
+  void set columnCount(String v) {_st.columnCount = _s(v);}
+  String get columnGap => _st.columnGap;
+  void set columnGap(String v) {_st.columnGap = _s(v);}
+  String get columnProgression => _st.columnProgression;
+  void set columnProgression(String v) {_st.columnProgression = _s(v);}
+  String get columnRule => _st.columnRule;
+  void set columnRule(String v) {_st.columnRule = _s(v);}
+  String get columnRuleColor => _st.columnRuleColor;
+  void set columnRuleColor(String v) {_st.columnRuleColor = _s(v);}
+  String get columnRuleStyle => _st.columnRuleStyle;
+  void set columnRuleStyle(String v) {_st.columnRuleStyle = _s(v);}
+  String get columnRuleWidth => _st.columnRuleWidth;
+  void set columnRuleWidth(String v) {_st.columnRuleWidth = _s(v);}
+  String get columnSpan => _st.columnSpan;
+  void set columnSpan(String v) {_st.columnSpan = _s(v);}
+  String get columnWidth => _st.columnWidth;
+  void set columnWidth(String v) {_st.columnWidth = _s(v);}
+  String get columns => _st.columns;
+  void set columns(String v) {_st.columns = _s(v);}
+  String get content => _st.content;
+  void set content(String v) {_st.content = _s(v);}
+  String get counterIncrement => _st.counterIncrement;
+  void set counterIncrement(String v) {_st.counterIncrement = _s(v);}
+  String get counterReset => _st.counterReset;
+  void set counterReset(String v) {_st.counterReset = _s(v);}
+  String get cursor => _st.cursor;
+  void set cursor(String v) {_st.cursor = _s(v);}
+  String get dashboardRegion => _st.dashboardRegion;
+  void set dashboardRegion(String v) {_st.dashboardRegion = _s(v);}
+  String get direction => _st.direction;
+  void set direction(String v) {_st.direction = _s(v);}
+  String get display => _st.display;
+  void set display(String v) {_st.display = _s(v);}
+  String get emptyCells => _st.emptyCells;
+  void set emptyCells(String v) {_st.emptyCells = _s(v);}
+  String get filter => _st.filter;
+  void set filter(String v) {_st.filter = _s(v);}
+  String get flex => _st.flex;
+  void set flex(String v) {_st.flex = _s(v);}
+  String get flexBasis => _st.flexBasis;
+  void set flexBasis(String v) {_st.flexBasis = _s(v);}
+  String get flexDirection => _st.flexDirection;
+  void set flexDirection(String v) {_st.flexDirection = _s(v);}
+  String get flexFlow => _st.flexFlow;
+  void set flexFlow(String v) {_st.flexFlow = _s(v);}
+  String get flexGrow => _st.flexGrow;
+  void set flexGrow(String v) {_st.flexGrow = _s(v);}
+  String get flexShrink => _st.flexShrink;
+  void set flexShrink(String v) {_st.flexShrink = _s(v);}
+  String get flexWrap => _st.flexWrap;
+  void set flexWrap(String v) {_st.flexWrap = _s(v);}
+  String get float => _st.float;
+  void set float(String v) {_st.float = _s(v);}
+  String get flowFrom => _st.flowFrom;
+  void set flowFrom(String v) {_st.flowFrom = _s(v);}
+  String get flowInto => _st.flowInto;
+  void set flowInto(String v) {_st.flowInto = _s(v);}
+  String get font => _st.font;
+  void set font(String v) {_st.font = _s(v);}
+  String get fontFamily => _st.fontFamily;
+  void set fontFamily(String v) {_st.fontFamily = _s(v);}
+  String get fontFeatureSettings => _st.fontFeatureSettings;
+  void set fontFeatureSettings(String v) {_st.fontFeatureSettings = _s(v);}
+  String get fontKerning => _st.fontKerning;
+  void set fontKerning(String v) {_st.fontKerning = _s(v);}
+  String get fontSize => _st.fontSize;
+  void set fontSize(String v) {_st.fontSize = _s(v);}
+  String get fontSizeDelta => _st.fontSizeDelta;
+  void set fontSizeDelta(String v) {_st.fontSizeDelta = _s(v);}
+  String get fontSmoothing => _st.fontSmoothing;
+  void set fontSmoothing(String v) {_st.fontSmoothing = _s(v);}
+  String get fontStretch => _st.fontStretch;
+  void set fontStretch(String v) {_st.fontStretch = _s(v);}
+  String get fontStyle => _st.fontStyle;
+  void set fontStyle(String v) {_st.fontStyle = _s(v);}
+  String get fontVariant => _st.fontVariant;
+  void set fontVariant(String v) {_st.fontVariant = _s(v);}
+  String get fontVariantLigatures => _st.fontVariantLigatures;
+  void set fontVariantLigatures(String v) {_st.fontVariantLigatures = _s(v);}
+  String get fontWeight => _st.fontWeight;
+  void set fontWeight(String v) {_st.fontWeight = _s(v);}
+  String get gridColumn => _st.gridColumn;
+  void set gridColumn(String v) {_st.gridColumn = _s(v);}
+  String get gridColumns => _st.gridColumns;
+  void set gridColumns(String v) {_st.gridColumns = _s(v);}
+  String get gridRow => _st.gridRow;
+  void set gridRow(String v) {_st.gridRow = _s(v);}
+  String get gridRows => _st.gridRows;
+  void set gridRows(String v) {_st.gridRows = _s(v);}
+  String get highlight => _st.highlight;
+  void set highlight(String v) {_st.highlight = _s(v);}
+  String get hyphenateCharacter => _st.hyphenateCharacter;
+  void set hyphenateCharacter(String v) {_st.hyphenateCharacter = _s(v);}
+  String get hyphenateLimitAfter => _st.hyphenateLimitAfter;
+  void set hyphenateLimitAfter(String v) {_st.hyphenateLimitAfter = _s(v);}
+  String get hyphenateLimitBefore => _st.hyphenateLimitBefore;
+  void set hyphenateLimitBefore(String v) {_st.hyphenateLimitBefore = _s(v);}
+  String get hyphenateLimitLines => _st.hyphenateLimitLines;
+  void set hyphenateLimitLines(String v) {_st.hyphenateLimitLines = _s(v);}
+  String get hyphens => _st.hyphens;
+  void set hyphens(String v) {_st.hyphens = _s(v);}
+  String get imageOrientation => _st.imageOrientation;
+  void set imageOrientation(String v) {_st.imageOrientation = _s(v);}
+  String get imageRendering => _st.imageRendering;
+  void set imageRendering(String v) {_st.imageRendering = _s(v);}
+  String get imageResolution => _st.imageResolution;
+  void set imageResolution(String v) {_st.imageResolution = _s(v);}
+  String get justifyContent => _st.justifyContent;
+  void set justifyContent(String v) {_st.justifyContent = _s(v);}
+  String get letterSpacing => _st.letterSpacing;
+  void set letterSpacing(String v) {_st.letterSpacing = _s(v);}
+  String get lineAlign => _st.lineAlign;
+  void set lineAlign(String v) {_st.lineAlign = _s(v);}
+  String get lineBoxContain => _st.lineBoxContain;
+  void set lineBoxContain(String v) {_st.lineBoxContain = _s(v);}
+  String get lineBreak => _st.lineBreak;
+  void set lineBreak(String v) {_st.lineBreak = _s(v);}
+  String get lineClamp => _st.lineClamp;
+  void set lineClamp(String v) {_st.lineClamp = _s(v);}
+  String get lineGrid => _st.lineGrid;
+  void set lineGrid(String v) {_st.lineGrid = _s(v);}
+  String get lineHeight => _st.lineHeight;
+  void set lineHeight(String v) {_st.lineHeight = _s(v);}
+  String get lineSnap => _st.lineSnap;
+  void set lineSnap(String v) {_st.lineSnap = _s(v);}
+  String get listStyle => _st.listStyle;
+  void set listStyle(String v) {_st.listStyle = _s(v);}
+  String get listStyleImage => _st.listStyleImage;
+  void set listStyleImage(String v) {_st.listStyleImage = _s(v);}
+  String get listStylePosition => _st.listStylePosition;
+  void set listStylePosition(String v) {_st.listStylePosition = _s(v);}
+  String get listStyleType => _st.listStyleType;
+  void set listStyleType(String v) {_st.listStyleType = _s(v);}
+  String get locale => _st.locale;
+  void set locale(String v) {_st.locale = _s(v);}
+  String get logicalHeight => _st.logicalHeight;
+  void set logicalHeight(String v) {_st.logicalHeight = _s(v);}
+  String get logicalWidth => _st.logicalWidth;
+  void set logicalWidth(String v) {_st.logicalWidth = _s(v);}
+  String get margin => _st.margin;
+  void set margin(String v) {_st.margin = _s(v);}
+  String get marginAfter => _st.marginAfter;
+  void set marginAfter(String v) {_st.marginAfter = _s(v);}
+  String get marginAfterCollapse => _st.marginAfterCollapse;
+  void set marginAfterCollapse(String v) {_st.marginAfterCollapse = _s(v);}
+  String get marginBefore => _st.marginBefore;
+  void set marginBefore(String v) {_st.marginBefore = _s(v);}
+  String get marginBeforeCollapse => _st.marginBeforeCollapse;
+  void set marginBeforeCollapse(String v) {_st.marginBeforeCollapse = _s(v);}
+  String get marginBottom => _st.marginBottom;
+  void set marginBottom(String v) {_st.marginBottom = _s(v);}
+  String get marginBottomCollapse => _st.marginBottomCollapse;
+  void set marginBottomCollapse(String v) {_st.marginBottomCollapse = _s(v);}
+  String get marginCollapse => _st.marginCollapse;
+  void set marginCollapse(String v) {_st.marginCollapse = _s(v);}
+  String get marginEnd => _st.marginEnd;
+  void set marginEnd(String v) {_st.marginEnd = _s(v);}
+  String get marginLeft => _st.marginLeft;
+  void set marginLeft(String v) {_st.marginLeft = _s(v);}
+  String get marginRight => _st.marginRight;
+  void set marginRight(String v) {_st.marginRight = _s(v);}
+  String get marginStart => _st.marginStart;
+  void set marginStart(String v) {_st.marginStart = _s(v);}
+  String get marginTop => _st.marginTop;
+  void set marginTop(String v) {_st.marginTop = _s(v);}
+  String get marginTopCollapse => _st.marginTopCollapse;
+  void set marginTopCollapse(String v) {_st.marginTopCollapse = _s(v);}
+  String get marquee => _st.marquee;
+  void set marquee(String v) {_st.marquee = _s(v);}
+  String get marqueeDirection => _st.marqueeDirection;
+  void set marqueeDirection(String v) {_st.marqueeDirection = _s(v);}
+  String get marqueeIncrement => _st.marqueeIncrement;
+  void set marqueeIncrement(String v) {_st.marqueeIncrement = _s(v);}
+  String get marqueeRepetition => _st.marqueeRepetition;
+  void set marqueeRepetition(String v) {_st.marqueeRepetition = _s(v);}
+  String get marqueeSpeed => _st.marqueeSpeed;
+  void set marqueeSpeed(String v) {_st.marqueeSpeed = _s(v);}
+  String get marqueeStyle => _st.marqueeStyle;
+  void set marqueeStyle(String v) {_st.marqueeStyle = _s(v);}
+  String get mask => _st.mask;
+  void set mask(String v) {_st.mask = _s(v);}
+  String get maskAttachment => _st.maskAttachment;
+  void set maskAttachment(String v) {_st.maskAttachment = _s(v);}
+  String get maskBoxImage => _st.maskBoxImage;
+  void set maskBoxImage(String v) {_st.maskBoxImage = _s(v);}
+  String get maskBoxImageOutset => _st.maskBoxImageOutset;
+  void set maskBoxImageOutset(String v) {_st.maskBoxImageOutset = _s(v);}
+  String get maskBoxImageRepeat => _st.maskBoxImageRepeat;
+  void set maskBoxImageRepeat(String v) {_st.maskBoxImageRepeat = _s(v);}
+  String get maskBoxImageSlice => _st.maskBoxImageSlice;
+  void set maskBoxImageSlice(String v) {_st.maskBoxImageSlice = _s(v);}
+  String get maskBoxImageSource => _st.maskBoxImageSource;
+  void set maskBoxImageSource(String v) {_st.maskBoxImageSource = _s(v);}
+  String get maskBoxImageWidth => _st.maskBoxImageWidth;
+  void set maskBoxImageWidth(String v) {_st.maskBoxImageWidth = _s(v);}
+  String get maskClip => _st.maskClip;
+  void set maskClip(String v) {_st.maskClip = _s(v);}
+  String get maskComposite => _st.maskComposite;
+  void set maskComposite(String v) {_st.maskComposite = _s(v);}
+  String get maskImage => _st.maskImage;
+  void set maskImage(String v) {_st.maskImage = _s(v);}
+  String get maskOrigin => _st.maskOrigin;
+  void set maskOrigin(String v) {_st.maskOrigin = _s(v);}
+  String get maskPosition => _st.maskPosition;
+  void set maskPosition(String v) {_st.maskPosition = _s(v);}
+  String get maskPositionX => _st.maskPositionX;
+  void set maskPositionX(String v) {_st.maskPositionX = _s(v);}
+  String get maskPositionY => _st.maskPositionY;
+  void set maskPositionY(String v) {_st.maskPositionY = _s(v);}
+  String get maskRepeat => _st.maskRepeat;
+  void set maskRepeat(String v) {_st.maskRepeat = _s(v);}
+  String get maskRepeatX => _st.maskRepeatX;
+  void set maskRepeatX(String v) {_st.maskRepeatX = _s(v);}
+  String get maskRepeatY => _st.maskRepeatY;
+  void set maskRepeatY(String v) {_st.maskRepeatY = _s(v);}
+  String get maskSize => _st.maskSize;
+  void set maskSize(String v) {_st.maskSize = _s(v);}
+  String get maxHeight => _st.maxHeight;
+  void set maxHeight(String v) {_st.maxHeight = _s(v);}
+  String get maxLogicalHeight => _st.maxLogicalHeight;
+  void set maxLogicalHeight(String v) {_st.maxLogicalHeight = _s(v);}
+  String get maxLogicalWidth => _st.maxLogicalWidth;
+  void set maxLogicalWidth(String v) {_st.maxLogicalWidth = _s(v);}
+  String get maxWidth => _st.maxWidth;
+  void set maxWidth(String v) {_st.maxWidth = _s(v);}
+  String get maxZoom => _st.maxZoom;
+  void set maxZoom(String v) {_st.maxZoom = _s(v);}
+  String get minHeight => _st.minHeight;
+  void set minHeight(String v) {_st.minHeight = _s(v);}
+  String get minLogicalHeight => _st.minLogicalHeight;
+  void set minLogicalHeight(String v) {_st.minLogicalHeight = _s(v);}
+  String get minLogicalWidth => _st.minLogicalWidth;
+  void set minLogicalWidth(String v) {_st.minLogicalWidth = _s(v);}
+  String get minWidth => _st.minWidth;
+  void set minWidth(String v) {_st.minWidth = _s(v);}
+  String get minZoom => _st.minZoom;
+  void set minZoom(String v) {_st.minZoom = _s(v);}
+  String get nbspMode => _st.nbspMode;
+  void set nbspMode(String v) {_st.nbspMode = _s(v);}
+  String get opacity => _st.opacity;
+  void set opacity(String v) {_st.opacity = _s(v);}
+  String get order => _st.order;
+  void set order(String v) {_st.order = _s(v);}
+  String get orientation => _st.orientation;
+  void set orientation(String v) {_st.orientation = _s(v);}
+  String get orphans => _st.orphans;
+  void set orphans(String v) {_st.orphans = _s(v);}
+  String get outline => _st.outline;
+  void set outline(String v) {_st.outline = _s(v);}
+  String get outlineColor => _st.outlineColor;
+  void set outlineColor(String v) {_st.outlineColor = _s(v);}
+  String get outlineOffset => _st.outlineOffset;
+  void set outlineOffset(String v) {_st.outlineOffset = _s(v);}
+  String get outlineStyle => _st.outlineStyle;
+  void set outlineStyle(String v) {_st.outlineStyle = _s(v);}
+  String get outlineWidth => _st.outlineWidth;
+  void set outlineWidth(String v) {_st.outlineWidth = _s(v);}
+  String get overflow => _st.overflow;
+  void set overflow(String v) {_st.overflow = _s(v);}
+  String get overflowScrolling => _st.overflowScrolling;
+  void set overflowScrolling(String v) {_st.overflowScrolling = _s(v);}
+  String get overflowWrap => _st.overflowWrap;
+  void set overflowWrap(String v) {_st.overflowWrap = _s(v);}
+  String get overflowX => _st.overflowX;
+  void set overflowX(String v) {_st.overflowX = _s(v);}
+  String get overflowY => _st.overflowY;
+  void set overflowY(String v) {_st.overflowY = _s(v);}
+  String get padding => _st.padding;
+  void set padding(String v) {_st.padding = _s(v);}
+  String get paddingAfter => _st.paddingAfter;
+  void set paddingAfter(String v) {_st.paddingAfter = _s(v);}
+  String get paddingBefore => _st.paddingBefore;
+  void set paddingBefore(String v) {_st.paddingBefore = _s(v);}
+  String get paddingBottom => _st.paddingBottom;
+  void set paddingBottom(String v) {_st.paddingBottom = _s(v);}
+  String get paddingEnd => _st.paddingEnd;
+  void set paddingEnd(String v) {_st.paddingEnd = _s(v);}
+  String get paddingLeft => _st.paddingLeft;
+  void set paddingLeft(String v) {_st.paddingLeft = _s(v);}
+  String get paddingRight => _st.paddingRight;
+  void set paddingRight(String v) {_st.paddingRight = _s(v);}
+  String get paddingStart => _st.paddingStart;
+  void set paddingStart(String v) {_st.paddingStart = _s(v);}
+  String get paddingTop => _st.paddingTop;
+  void set paddingTop(String v) {_st.paddingTop = _s(v);}
+  String get page => _st.page;
+  void set page(String v) {_st.page = _s(v);}
+  String get pageBreakAfter => _st.pageBreakAfter;
+  void set pageBreakAfter(String v) {_st.pageBreakAfter = _s(v);}
+  String get pageBreakBefore => _st.pageBreakBefore;
+  void set pageBreakBefore(String v) {_st.pageBreakBefore = _s(v);}
+  String get pageBreakInside => _st.pageBreakInside;
+  void set pageBreakInside(String v) {_st.pageBreakInside = _s(v);}
+  String get perspective => _st.perspective;
+  void set perspective(String v) {_st.perspective = _s(v);}
+  String get perspectiveOrigin => _st.perspectiveOrigin;
+  void set perspectiveOrigin(String v) {_st.perspectiveOrigin = _s(v);}
+  String get perspectiveOriginX => _st.perspectiveOriginX;
+  void set perspectiveOriginX(String v) {_st.perspectiveOriginX = _s(v);}
+  String get perspectiveOriginY => _st.perspectiveOriginY;
+  void set perspectiveOriginY(String v) {_st.perspectiveOriginY = _s(v);}
+  String get pointerEvents => _st.pointerEvents;
+  void set pointerEvents(String v) {_st.pointerEvents = _s(v);}
+  String get position => _st.position;
+  void set position(String v) {_st.position = _s(v);}
+  String get printColorAdjust => _st.printColorAdjust;
+  void set printColorAdjust(String v) {_st.printColorAdjust = _s(v);}
+  String get quotes => _st.quotes;
+  void set quotes(String v) {_st.quotes = _s(v);}
+  String get regionBreakAfter => _st.regionBreakAfter;
+  void set regionBreakAfter(String v) {_st.regionBreakAfter = _s(v);}
+  String get regionBreakBefore => _st.regionBreakBefore;
+  void set regionBreakBefore(String v) {_st.regionBreakBefore = _s(v);}
+  String get regionBreakInside => _st.regionBreakInside;
+  void set regionBreakInside(String v) {_st.regionBreakInside = _s(v);}
+  String get regionOverflow => _st.regionOverflow;
+  void set regionOverflow(String v) {_st.regionOverflow = _s(v);}
+  String get resize => _st.resize;
+  void set resize(String v) {_st.resize = _s(v);}
+  String get right => _st.right;
+  void set right(String v) {_st.right = _s(v);}
+  String get rtlOrdering => _st.rtlOrdering;
+  void set rtlOrdering(String v) {_st.rtlOrdering = _s(v);}
+  String get shapeInside => _st.shapeInside;
+  void set shapeInside(String v) {_st.shapeInside = _s(v);}
+  String get shapeMargin => _st.shapeMargin;
+  void set shapeMargin(String v) {_st.shapeMargin = _s(v);}
+  String get shapeOutside => _st.shapeOutside;
+  void set shapeOutside(String v) {_st.shapeOutside = _s(v);}
+  String get shapePadding => _st.shapePadding;
+  void set shapePadding(String v) {_st.shapePadding = _s(v);}
+  String get size => _st.size;
+  void set size(String v) {_st.size = _s(v);}
+  String get speak => _st.speak;
+  void set speak(String v) {_st.speak = _s(v);}
+  String get src => _st.src;
+  void set src(String v) {_st.src = _s(v);}
+  String get tableLayout => _st.tableLayout;
+  void set tableLayout(String v) {_st.tableLayout = _s(v);}
+  String get tabSize => _st.tabSize;
+  void set tabSize(String v) {_st.tabSize = _s(v);}
+  String get tapHighlightColor => _st.tapHighlightColor;
+  void set tapHighlightColor(String v) {_st.tapHighlightColor = _s(v);}
+  String get textAlign => _st.textAlign;
+  void set textAlign(String v) {_st.textAlign = _s(v);}
+  String get textAlignLast => _st.textAlignLast;
+  void set textAlignLast(String v) {_st.textAlignLast = _s(v);}
+  String get textCombine => _st.textCombine;
+  void set textCombine(String v) {_st.textCombine = _s(v);}
+  String get textDecoration => _st.textDecoration;
+  void set textDecoration(String v) {_st.textDecoration = _s(v);}
+  String get textDecorationLine => _st.textDecorationLine;
+  void set textDecorationLine(String v) {_st.textDecorationLine = _s(v);}
+  String get textDecorationsInEffect => _st.textDecorationsInEffect;
+  void set textDecorationsInEffect(String v) {_st.textDecorationsInEffect = _s(v);}
+  String get textDecorationStyle => _st.textDecorationStyle;
+  void set textDecorationStyle(String v) {_st.textDecorationStyle = _s(v);}
+  String get textEmphasis => _st.textEmphasis;
+  void set textEmphasis(String v) {_st.textEmphasis = _s(v);}
+  String get textEmphasisColor => _st.textEmphasisColor;
+  void set textEmphasisColor(String v) {_st.textEmphasisColor = _s(v);}
+  String get textEmphasisPosition => _st.textEmphasisPosition;
+  void set textEmphasisPosition(String v) {_st.textEmphasisPosition = _s(v);}
+  String get textEmphasisStyle => _st.textEmphasisStyle;
+  void set textEmphasisStyle(String v) {_st.textEmphasisStyle = _s(v);}
+  String get textFillColor => _st.textFillColor;
+  void set textFillColor(String v) {_st.textFillColor = _s(v);}
+  String get textIndent => _st.textIndent;
+  void set textIndent(String v) {_st.textIndent = _s(v);}
+  String get textLineThrough => _st.textLineThrough;
+  void set textLineThrough(String v) {_st.textLineThrough = _s(v);}
+  String get textLineThroughColor => _st.textLineThroughColor;
+  void set textLineThroughColor(String v) {_st.textLineThroughColor = _s(v);}
+  String get textLineThroughMode => _st.textLineThroughMode;
+  void set textLineThroughMode(String v) {_st.textLineThroughMode = _s(v);}
+  String get textLineThroughStyle => _st.textLineThroughStyle;
+  void set textLineThroughStyle(String v) {_st.textLineThroughStyle = _s(v);}
+  String get textLineThroughWidth => _st.textLineThroughWidth;
+  void set textLineThroughWidth(String v) {_st.textLineThroughWidth = _s(v);}
+  String get textOrientation => _st.textOrientation;
+  void set textOrientation(String v) {_st.textOrientation = _s(v);}
+  String get textOverflow => _st.textOverflow;
+  void set textOverflow(String v) {_st.textOverflow = _s(v);}
+  String get textOverline => _st.textOverline;
+  void set textOverline(String v) {_st.textOverline = _s(v);}
+  String get textOverlineColor => _st.textOverlineColor;
+  void set textOverlineColor(String v) {_st.textOverlineColor = _s(v);}
+  String get textOverlineMode => _st.textOverlineMode;
+  void set textOverlineMode(String v) {_st.textOverlineMode = _s(v);}
+  String get textOverlineStyle => _st.textOverlineStyle;
+  void set textOverlineStyle(String v) {_st.textOverlineStyle = _s(v);}
+  String get textOverlineWidth => _st.textOverlineWidth;
+  void set textOverlineWidth(String v) {_st.textOverlineWidth = _s(v);}
+  String get textRendering => _st.textRendering;
+  void set textRendering(String v) {_st.textRendering = _s(v);}
+  String get textSecurity => _st.textSecurity;
+  void set textSecurity(String v) {_st.textSecurity = _s(v);}
+  String get textShadow => _st.textShadow;
+  void set textShadow(String v) {_st.textShadow = _s(v);}
+  String get textSizeAdjust => _st.textSizeAdjust;
+  void set textSizeAdjust(String v) {_st.textSizeAdjust = _s(v);}
+  String get textStroke => _st.textStroke;
+  void set textStroke(String v) {_st.textStroke = _s(v);}
+  String get textStrokeColor => _st.textStrokeColor;
+  void set textStrokeColor(String v) {_st.textStrokeColor = _s(v);}
+  String get textStrokeWidth => _st.textStrokeWidth;
+  void set textStrokeWidth(String v) {_st.textStrokeWidth = _s(v);}
+  String get textTransform => _st.textTransform;
+  void set textTransform(String v) {_st.textTransform = _s(v);}
+  String get textUnderline => _st.textUnderline;
+  void set textUnderline(String v) {_st.textUnderline = _s(v);}
+  String get textUnderlineColor => _st.textUnderlineColor;
+  void set textUnderlineColor(String v) {_st.textUnderlineColor = _s(v);}
+  String get textUnderlineMode => _st.textUnderlineMode;
+  void set textUnderlineMode(String v) {_st.textUnderlineMode = _s(v);}
+  String get textUnderlineStyle => _st.textUnderlineStyle;
+  void set textUnderlineStyle(String v) {_st.textUnderlineStyle = _s(v);}
+  String get textUnderlineWidth => _st.textUnderlineWidth;
+  void set textUnderlineWidth(String v) {_st.textUnderlineWidth = _s(v);}
+  String get transform => _st.transform;
+  void set transform(String v) {_st.transform = _s(v);}
+  String get transformOrigin => _st.transformOrigin;
+  void set transformOrigin(String v) {_st.transformOrigin = _s(v);}
+  String get transformOriginX => _st.transformOriginX;
+  void set transformOriginX(String v) {_st.transformOriginX = _s(v);}
+  String get transformOriginY => _st.transformOriginY;
+  void set transformOriginY(String v) {_st.transformOriginY = _s(v);}
+  String get transformOriginZ => _st.transformOriginZ;
+  void set transformOriginZ(String v) {_st.transformOriginZ = _s(v);}
+  String get transformStyle => _st.transformStyle;
+  void set transformStyle(String v) {_st.transformStyle = _s(v);}
+  String get transition => _st.transition;
+  void set transition(String v) {_st.transition = _s(v);}
+  String get transitionDelay => _st.transitionDelay;
+  void set transitionDelay(String v) {_st.transitionDelay = _s(v);}
+  String get transitionDuration => _st.transitionDuration;
+  void set transitionDuration(String v) {_st.transitionDuration = _s(v);}
+  String get transitionProperty => _st.transitionProperty;
+  void set transitionProperty(String v) {_st.transitionProperty = _s(v);}
+  String get transitionTimingFunction => _st.transitionTimingFunction;
+  void set transitionTimingFunction(String v) {_st.transitionTimingFunction = _s(v);}
+  String get unicodeBidi => _st.unicodeBidi;
+  void set unicodeBidi(String v) {_st.unicodeBidi = _s(v);}
+  String get unicodeRange => _st.unicodeRange;
+  void set unicodeRange(String v) {_st.unicodeRange = _s(v);}
+  String get userDrag => _st.userDrag;
+  void set userDrag(String v) {_st.userDrag = _s(v);}
+  String get userModify => _st.userModify;
+  void set userModify(String v) {_st.userModify = _s(v);}
+  String get userSelect => _st.userSelect;
+  void set userSelect(String v) {_st.userSelect = _s(v);}
+  String get userZoom => _st.userZoom;
+  void set userZoom(String v) {_st.userZoom = _s(v);}
+  String get verticalAlign => _st.verticalAlign;
+  void set verticalAlign(String v) {_st.verticalAlign = _s(v);}
+  String get visibility => _st.visibility;
+  void set visibility(String v) {_st.visibility = _s(v);}
+  String get whiteSpace => _st.whiteSpace;
+  void set whiteSpace(String v) {_st.whiteSpace = _s(v);}
+  String get widows => _st.widows;
+  void set widows(String v) {_st.widows = _s(v);}
+  String get wordBreak => _st.wordBreak;
+  void set wordBreak(String v) {_st.wordBreak = _s(v);}
+  String get wordSpacing => _st.wordSpacing;
+  void set wordSpacing(String v) {_st.wordSpacing = _s(v);}
+  String get wordWrap => _st.wordWrap;
+  void set wordWrap(String v) {_st.wordWrap = _s(v);}
+  String get wrap => _st.wrap;
+  void set wrap(String v) {_st.wrap = _s(v);}
+  String get wrapFlow => _st.wrapFlow;
+  void set wrapFlow(String v) {_st.wrapFlow = _s(v);}
+  String get wrapThrough => _st.wrapThrough;
+  void set wrapThrough(String v) {_st.wrapThrough = _s(v);}
+  String get writingMode => _st.writingMode;
+  void set writingMode(String v) {_st.writingMode = _s(v);}
+  String get zIndex => _st.zIndex;
+  void set zIndex(String v) {_st.zIndex = _s(v);}
+  String get zoom => _st.zoom;
+  void set zoom(String v) {_st.zoom = _s(v);}
 }

@@ -65,10 +65,11 @@ class CSS {
   /** Converts a string of a CSS value to an integer.
    * It returns 0 if value is null, empty, or failed to parse.
 	 *
-	 * By default, it returns 0 if it failed to parse the given value.
+	 * By default, it returns `defaultValue` (default: 0)
+   * if it failed to parse the given value.
 	 * If you prefer to throw an exception, specify [reportError] to true.
    */
-  static int intOf(String value, [bool reportError]) {
+  static int intOf(String value, {int defaultValue: 0, bool reportError}) {
     try {
       if (value != null && !value.isEmpty) {
         final Match m = _reNum.firstMatch(value);
@@ -79,17 +80,17 @@ class CSS {
       if (reportError != null && reportError)
         throw e;
     }
-    return 0;
+    return defaultValue;
   }
   static final RegExp _reNum = new RegExp(r"([-]?[0-9]+)");
   
   /** Return the sum of the integers of the given [values] converted by [intOf]
    * function. 
    */
-  static int sumOf(List<String> values, [bool reportError]) {
+  static int sumOf(List<String> values, {bool reportError}) {
     int sum = 0;
     for (String v in values)
-      sum += intOf(v, reportError);
+      sum += intOf(v, reportError: reportError);
     return sum;
   }
 
