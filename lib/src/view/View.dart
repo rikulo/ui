@@ -982,7 +982,7 @@ class View {
    */
   CSSStyleDeclaration get style {
     if (_style == null)
-      _style = new _CSSStyleImpl(this);
+      _style = new _StyleImpl(this);
     return _style;
   }
   /** Returns the style classes.

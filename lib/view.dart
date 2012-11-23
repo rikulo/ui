@@ -21,6 +21,7 @@ part "src/view/ProfileDeclaration.dart";
 part "src/view/LayoutDeclaration.dart";
 part "src/view/_impls.dart";
 part "src/view/_utils.dart";
+part "src/view/_StyleImpl.dart";
 part "src/view/printc.dart";
 
 part "src/view/Button.dart";
