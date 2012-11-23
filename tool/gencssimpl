@@ -1,0 +1,39 @@
+#!/bin/bash
+# gencssimpl
+#
+#	Purpose:
+#		Generates lib/src/view/_StyleImpl.dart
+#
+#Copyright (C) 2012 Potix Corporation. All Rights Reserved.
+#
+homedir=$0
+homedir=${homedir%/*}
+if [ "$homedir" = "." ] ; then
+  homedir=".."
+elif [ "$homedir" = "${homedir%/*}" ] ; then
+  homedir="."
+else
+  homedir=${homedir%/*}
+fi
+if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
+  homedir=$(cygpath -u $homedir)
+fi
+
+lstfl=$homedir/tool/lib/css.lst
+headfl=$homedir/tool/lib/css.head
+if [ ! -f $lstfl ] || [ ! -f $headfl ] ; then
+	echo Not found $lstfl and $headfl
+	exit -1
+fi
+
+df=$homedir/lib/src/view/_StyleImpl.dart
+
+cp $headfl $df
+
+for nm in $(cat $lstfl); do
+	echo "  //@override" >> $df
+	echo "  String get $nm => _g('$nm');"  >> $df
+	echo "  void set $nm(v) {_s('$nm', v);}"  >> $df
+done
+
+echo '}' >> $df
