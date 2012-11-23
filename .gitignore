@@ -10,6 +10,7 @@ Thumbs.db
 *.dart.js.map
 out.js
 out.js.map
+out.js.deps
 out
 *.bak
 ~$*.pptx
