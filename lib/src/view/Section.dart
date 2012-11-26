@@ -7,18 +7,11 @@ part of rikulo_view;
  * the others.
  */
 class Section extends View implements IdSpace {
-  //The fellows. Used only if this is IdSpace
-  Map<String, View> _fellows;
-
   Section() {
-    _fellows = {};
   }
 
-  View getFellow(String id) => _fellows[id];
-  void bindFellow_(String id, View fellow) {
-    if (fellow != null) _fellows[id] = fellow;
-    else _fellows.remove(id);
-  }
+  //@override
+  final Map<String, View> fellows = new Map();
 
   /** Returns the SECTION element.
    */

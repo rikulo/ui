@@ -37,11 +37,14 @@ typedef void AfterMount(View view);
  *
  * If a view implements [IdSpace], it and its descendants are considered
  * as a ID space. And, the topmost view is the owner.
- * The ID ([id]) of a view in the given ID space must be unique.
+ * All IDs in the given ID space must be unique.
  * On the other hand, views in different ID spaces can have the same ID.
  *
- * Notice that if a view implements [IdSpace], it has to override
- * [getFellow] and [bindFellow_]. Please refer to [Section] for sample code.
+ * Implementing [IdSpace] is straightforward:
+ *
+ *     class MyIdSpace extends View implements IdSpace {
+ *       final Map<String, View> fellows = new Map();
+ *     }
  *
  * ##See Also
  *
@@ -176,32 +179,16 @@ class View {
   Iterable<View> queryAll(String selector) {
     return new ViewIterable(this, selector);
   }
-  /** Returns the view of the given ID in the ID space this view belongs to,
-   * or null if not found.
+  /** Returns a map of all fellows in this ID space.
+   * The key is ID, while the value is the view with the given ID.
    *
-   * If a view implements [IdSpace] must override [getFellow] and
-   * [bindFellow_].
+   *     view.fellows['foo'].width = 100;
+   *       //equivalent to view.query('#foo').width = 100
+   *
+   * Notice that the application shall consider the map as read-only.
+   * Otherwise, the result is unpredictable.
    */
-  View getFellow(String id) => spaceOwner.getFellow(id);
-  /** Returns a read-only collection of all fellows in the ID space
-   * that this view belongs to.
-   *
-   * Note: don't modify the returned list. Otherwise, the result is
-   * unpredictable.
-   */
-  Collection<View> get fellows => spaceOwner.fellows;
-  /** Updates the fellow information.
-   *
-   * Default: throw [UnsupportedError].
-   *
-   * If a view implements [IdSpace] must override [getFellow] and
-   * [bindFellow_].
-   *
-   * If fellow is null, it means to remove the binding.
-   */
-  void bindFellow_(String id, View fellow) {
-    throw new UnsupportedError("Not IdSpace, $this");
-  }
+  Map<String, View> get fellows => spaceOwner.fellows;
   /** Returns the owner of the ID space that this view belongs to.
    *
    * A virtual [IdSpace] is used if this view is a root but is not IdSpace.

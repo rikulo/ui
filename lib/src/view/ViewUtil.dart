@@ -14,15 +14,17 @@ abstract class IdSpace {
   /** Searches and returns all views that matches the selector (never null).
    */
   List<View> queryAll(String selector);
-  /** Returns the view of the given ID, or null if not found.
-   */
-  View getFellow(String id);
-  /** Returns a readoly collection of all fellows in this ID space.
+
+  /** Returns a map of all fellows in this ID space.
+   * The key is ID, while the value is the view with the given ID.
    *
-   * Note: don't modify the returned list. Otherwise, the result is
-   * unpreditable.
+   *     view.fellows['foo'].width = 100;
+   *       //equivalent to view.query('#foo').width = 100
+   *
+   * Notice that the application shall consider the map as read-only.
+   * Otherwise, the result is unpredictable.
    */
-  Collection<View> get fellows;
+  Map<String, View> get fellows;
 }
 
 /**

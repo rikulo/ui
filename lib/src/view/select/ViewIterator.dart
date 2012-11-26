@@ -61,8 +61,7 @@ class ViewIterator implements Iterator<View> {
       Selector selector = _selectors[0];
       for (int i = 0; i < _posOffset; i++) {
         SimpleSelectorSequence seq = selector.seqs[i];
-        View rt2 = rt.getFellow(seq.id);
-        
+        View rt2 = rt.fellows[seq.id];
         if (rt2 == null)
           return null;
         
