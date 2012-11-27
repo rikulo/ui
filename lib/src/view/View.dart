@@ -440,18 +440,20 @@ class View {
    *
    * Default: it creates a DIV element.
    *
-   * Note: it doesn't need to handle child views, which will be handled by
-   * [addChildNode_].
+   * Note: this method doesn't need to handle child views. The DOM elements
+   * of the child views will be added to the hierarchy of elements later
+   * automatically (by [addChildNode_]).
    *
    * Note: instead of overriding this, you can create the DOM element directly
-   * and assign it with [setNode_]. However, [setNode_] shall be called before
-   * [node] has been accessed.
+   * and then assign it with [node]. However, [node] shall be assigned (setter)
+   * before [node] has been retrieved (getter). It usually means you have to
+   * do it in the constructor.
    */
   Element render_() => new Element.tag("div");
 
   /** Returns the child element of the given sub-ID, or null if not found.
    * This method assumes the ID of the child element the concatenation of
-   * uuid, dash ('-'), and subId.
+   * [uuid], dash ('-'), and subId.
    */
   Element getNode(String subId) {
     if (subId == null || subId.isEmpty)
@@ -483,7 +485,7 @@ class View {
    * On the other hand, the child views are added to the document automatically
    * once the root has been attached.
    *
-   * If this view is a child of another view, [remove] will be called implicity
+   * If this view is a child of another view, [remove] will be called implicitly
    * to detach it first.
    *
    * To notify the views, [mount_] will be called against this view and all
@@ -716,7 +718,8 @@ class View {
    * The performance is better if this view is part of a sophisticated layout structure,
    * since the layout manager won't need to adjust the layout of this view and its siblings.
    *
-   * If you want everything to be re-positioned, you can invoke `mainView.requestLayout()`.
+   * If you want everything to be re-positioned, you can invoke
+   * [View.requestLayout()](api:view) against your root view.
    *
    * Notice that, for better performance, the layout won't be taken place
    *immediately. Rather, it is queued and all queued views are handled
@@ -728,7 +731,7 @@ class View {
   void requestLayout([bool immediate=false, bool descendantOnly=false]) {
     layoutManager.requestLayout(this, immediate, descendantOnly);
   }
-  /** Hanldes the layout of the child views of this view.
+  /** Handles the layout of the child views of this view.
    * It is called by [LayoutManager].
    *
    * Notice that, when this method is called, you can assume the layout of this view
@@ -774,7 +777,7 @@ class View {
 
   /** Returns whether the given child shall be handled by the layout manager.
    *
-   * Default: return true if the child is visble, its position
+   * Default: return true if the child is visible, its position
    * is absolute.
    * Notice that, for better performance, it checks only [View.style], and
    * assumes the position defined in
@@ -934,7 +937,7 @@ class View {
   }
   /** Returns the layout instruction of this view.
    *
-   * [layout] intructs how a view shall layout the child views.
+   * [layout] instructs how a view shall layout the child views.
    * In additions, you can specify addition information in individual child
    * view's [profile].
    */
@@ -943,7 +946,7 @@ class View {
       _layout = new LayoutDeclaration(this);
     return _layout;
   }
-  /** Returns the profile, i.e., the layouot requirement, of this view.
+  /** Returns the profile, i.e., the layout requirement, of this view.
    * It provides additional information for the parent view to
    * layout this view.
    *
@@ -1016,7 +1019,7 @@ class View {
    */
   void onEventListened_(String type, [Element target])
   => _evlInfo.onEventListened_(type, target);
-  /** Called when the last event listener has beeen unregistered for the given
+  /** Called when the last event listener has been unregistered for the given
    * type. It undoes whatever is done in [onEventListened_].
    */
   void onEventUnlistened_(String type, [Element target])
