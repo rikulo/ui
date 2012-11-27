@@ -159,7 +159,6 @@ class DropDownList<T> extends View {
     sendEvent(new ViewEvent("render"));
   }
   static final Renderer _defRenderer = (ctx) => ctx.getDataAsString();
-    //TODO: use const if Dart considered closure as const
 
   //@override
   Element render_() {

@@ -258,7 +258,6 @@ class MeasureContext {
       final String pos = nodestyle.position;
       if (pos != "fixed" && pos != "static") {
         orgspace = nodestyle.whiteSpace;
-        if (orgspace == null) orgspace = ""; //TODO: no need if Dart handles it
         nodestyle.whiteSpace = "nowrap";
         //Node: an absolute DIV's width will be limited by its parent's width
         //so we have to unlimit it (by either nowrap or fixed/staic position)

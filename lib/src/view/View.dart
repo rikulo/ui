@@ -114,7 +114,8 @@ class View {
    * A CSS class named `v-$className` will be added to [classes]. In additions, [query]
    * and [queryAll] uses it as the *tag* name for matching the given selector.
    */
-  String get className => "${this.runtimeType}"; //TODO: replace with mirrors if it is minimized by dart2js
+  String get className => "$runtimeType";
+    //TODO: check if dart changes its implement and replace with mirrors if necessary
 
   _ChildInfo _initChildInfo() {
     if (_childInfo == null)
@@ -205,18 +206,7 @@ class View {
     }
     return false;
   }
-  /** Returns the nearest ancestor who is an instance of the given class,
-   * or null if not found.
-   */
-/* TODO: wait until Dart supports reflection
-  View getAncestorWith(Class type) {
-    for (View p = this; (p = p.parent) != null;) {
-      if (p is type)
-        return p;
-    }
-    return null;
-  }
-*/
+
   /** Returns the parent, or null if this view does not have any parent.
    */
   View get parent => _parent;

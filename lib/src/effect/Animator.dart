@@ -108,7 +108,7 @@ class _Animator implements Animator {
       ListUtil.remove(_tasks, task);
     }
   }
-  Collection<AnimatorTask> get tasks => _tasks;  //TODO: readonly
+  Collection<AnimatorTask> get tasks => _tasks;
 
   static int _now() => new Date.now().millisecondsSinceEpoch;
 }

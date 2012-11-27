@@ -44,15 +44,9 @@ class _ViewImpl {
       v.requestLayout();
     }
   }
-  static EventListener _$onTouchStart;
-  static EventListener get _onTouchStart {
-    if (_$onTouchStart == null)
-      _$onTouchStart = (event) { //DOM event
-        broadcaster.sendEvent(new ActivateEvent(event.target));
-      };
-    return _$onTouchStart;
-  }
-  //TODO: use const if Dart considers closure as constants (also check Issue 3905)
+  static final EventListener _onTouchStart = (event) { //DOM event
+      broadcaster.sendEvent(new ActivateEvent(event.target));
+    };
 
   //Link//
   //----//
@@ -216,7 +210,7 @@ class _ViewImpl {
   }
 }
 
-void _addFellow(IdSpace space, String id, [View fellow]) {
+void _addFellow(IdSpace space, String id, View fellow) {
   space.fellows[id] = fellow;
 }
 void _rmFellow(IdSpace space, String id) {
