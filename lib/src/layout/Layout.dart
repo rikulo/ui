@@ -151,7 +151,7 @@ void rootLayout(MeasureContext mctx, View root) {
   Element cave = dlgInfo != null ? dlgInfo.cave.parent: node.parent;
   if (cave == document.body)
     cave = null;
-  final size = cave == null ? browser.innerSize: new DOMAgent(cave).innerSize;
+  final size = cave == null ? browser.size: new DOMAgent(cave).innerSize;
 
   final anchor = root.profile.anchorView;
   mctx.setWidthByProfile(root,
@@ -191,10 +191,10 @@ void rootLayout(MeasureContext mctx, View root) {
 //Used by _locateRoot to simulate an achor for root views
 class _AnchorOfRoot { //mimic View API
   const _AnchorOfRoot();
-  int get realWidth => browser.innerSize.width;
-  int get innerWidth => browser.innerSize.width;
-  int get realHeight => browser.innerSize.height;
-  int get innerHeight => browser.innerSize.height;
+  int get realWidth => browser.size.width;
+  int get innerWidth => browser.size.width;
+  int get realHeight => browser.size.height;
+  int get innerHeight => browser.size.height;
 }
 const _anchorOfRoot = const _AnchorOfRoot();
 

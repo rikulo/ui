@@ -150,42 +150,6 @@ class Browser {
     }
   }
 
-  /** Returns the inner size of the browser, excluding
-   * the margin and border.
-   *
-   * Notice that, for better performance, the inner size is cached.
-   * If you changed `document.body`'s margin or border, you shall invoke
-   * [updateSize] to reset the cache.
-   */
-  Size get innerSize {
-    if (_innerSize == null) {
-      final cs = new DOMAgent(document.body).computedStyle;
-      _innerSize = new Size(
-        size.width - CSS.intOf(cs.marginLeft) - CSS.intOf(cs.marginRight)
-        - CSS.intOf(cs.borderLeft) - CSS.intOf(cs.borderRight),
-        size.height - CSS.intOf(cs.marginTop) - CSS.intOf(cs.marginBottom)
-        - CSS.intOf(cs.borderTop) - CSS.intOf(cs.borderBottom));
-
-    }
-    return _innerSize;
-  }
-  Size _innerSize;
-  /** Returns the inner offset.
-   * If `document.body`'s position is absolute, relative or fixed, it is (0, 0).
-   * Otherwise, it is the sum of margin and border width.
-   */
-  Offset get innerOffset {
-    if (_innerOfs == null) {
-      final cs = new DOMAgent(document.body).computedStyle;
-      final pos = cs.position;
-      _innerOfs = pos == "static" || pos == "" ?
-        new Offset(CSS.intOf(cs.marginLeft) + CSS.intOf(cs.borderLeft),
-          CSS.intOf(cs.marginTop) + CSS.intOf(cs.borderTop)):
-        new Offset(0, 0);
-    }
-    return _innerOfs;
-  }
-  Offset _innerOfs;
   /** Updates the browser's size. It is called when the browser's size
    * is changed (including device's orientation is changed).
    *
@@ -194,12 +158,7 @@ class Browser {
    */
   void updateSize() {
     final q = new WindowAgent(window);
-    final newsz = new Size(q.innerWidth, q.innerHeight);
-    if (newsz != size) {
-      size = newsz;
-      _innerSize = null;
-      _innerOfs = null;
-    }
+    size = new Size(q.innerWidth, q.innerHeight);
   }
 }
 

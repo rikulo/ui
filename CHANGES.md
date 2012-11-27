@@ -9,6 +9,7 @@
 * View.tag() is simplified
 * Overriding View.className is optional. It will return the class name correctly.
 * View.fellows returns a map instead of a collection, and View.getFellow is removed.
+* Browser.innerSize and innerOffset are removed since they are useless.
 
 **Features:**
 

@@ -102,7 +102,7 @@ class _ViewImpl {
    */
   static DialogInfo createDialog(Element node, View view, [String maskClass="v-mask"]) {
     Size size = node == document.body ?
-      browser.innerSize: new DOMAgent(node).innerSize;
+      browser.size: new DOMAgent(node).innerSize;
 
     final parent = new DivElement();
     parent.style.position = "relative";
