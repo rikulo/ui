@@ -151,7 +151,7 @@ void rootLayout(MeasureContext mctx, View root) {
   Element cave = dlgInfo != null ? dlgInfo.cave.parent: node.parent;
   if (cave == document.body)
     cave = null;
-  final size = cave == null ? browser.size: new DOMAgent(cave).innerSize;
+  final size = cave == null ? browser.size: new DomAgent(cave).innerSize;
 
   final anchor = root.profile.anchorView;
   mctx.setWidthByProfile(root,
@@ -171,7 +171,7 @@ void rootLayout(MeasureContext mctx, View root) {
         anchor.pageOffset - root.pageOffset + new Offset(root.left, root.top):
         new Offset(anchor.left, anchor.top):
       cave != null && node.offsetParent != node.parent ? //if parent is relative/absolute/fixed
-          new DOMAgent(cave).offset: new Offset(0,0);
+          new DomAgent(cave).offset: new Offset(0,0);
 
     final locators = _getLocators(loc);
     final mi = new SideInfo(root.profile.margin, 0);
@@ -199,8 +199,8 @@ class _AnchorOfRoot { //mimic View API
 const _anchorOfRoot = const _AnchorOfRoot();
 
 class _AnchorOfNode { //mimic View API
-  final DOMAgent _q;
-  _AnchorOfNode(Element n): _q = new DOMAgent(n);
+  final DomAgent _q;
+  _AnchorOfNode(Element n): _q = new DomAgent(n);
   int get realWidth => _q.width;
   int get innerWidth => _q.innerWidth;
   int get realHeight => _q.height;

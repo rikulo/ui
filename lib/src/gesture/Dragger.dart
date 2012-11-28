@@ -175,18 +175,18 @@ class Dragger extends Gesture {
   
   Offset getElementPosition_(Element target) {
     if (_transform) {
-      Offset3d off3d = CSS.offset3dOf(target.style.transform);
+      Offset3d off3d = Css.offset3dOf(target.style.transform);
       return new Offset(off3d.x, off3d.y);
     }
-    return new DOMAgent(target).offset;
+    return new DomAgent(target).offset;
   }
   
   void setElementPosition_(Element target, Offset position) {
     if (_transform) {
-      target.style.transform = CSS.translate3d(position.left, position.top);
+      target.style.transform = Css.translate3d(position.left, position.top);
     } else {
-      target.style.left = CSS.px(position.left);
-      target.style.top = CSS.px(position.top);
+      target.style.left = Css.px(position.left);
+      target.style.top = Css.px(position.top);
     }
   }
   

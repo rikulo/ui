@@ -11,7 +11,7 @@ import 'package:rikulo/gesture.dart';
 import 'package:rikulo/effect.dart';
 
 String createColor(num x) {
-  return CSS.color((92 * x).toInt(), (115 * x).toInt(), (229 * x).toInt());
+  return Css.color((92 * x).toInt(), (115 * x).toInt(), (229 * x).toInt());
 }
 
 List<View> createCube(int size) {
@@ -117,7 +117,7 @@ void main() {
       return;
     }
     Offset unitv = vel / speed;
-    Offset pos = new DOMAgent(element).offset;
+    Offset pos = new DomAgent(element).offset;
     inertialMotion = new Motion(move: (MotionState mstate) {
       int elapsed = mstate.elapsedTime;
       pos += unitv * speed * elapsed;
@@ -132,8 +132,8 @@ void main() {
         setSanity(sanity * 0.8);
       }
       pos = range.snap(pos);
-      element.style.left = CSS.px(pos.left.toInt());
-      element.style.top = CSS.px(pos.top.toInt());
+      element.style.left = Css.px(pos.left.toInt());
+      element.style.top = Css.px(pos.top.toInt());
       speed = max(0, speed - deceleration * elapsed);
       return speed > 0;
     }, end: (MotionState mstate) {

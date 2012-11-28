@@ -102,7 +102,7 @@ class _ViewImpl {
    */
   static DialogInfo createDialog(Element node, View view, [String maskClass="v-mask"]) {
     Size size = node == document.body ?
-      browser.size: new DOMAgent(node).innerSize;
+      browser.size: new DomAgent(node).innerSize;
 
     final parent = new DivElement();
     parent.style.position = "relative";
@@ -119,7 +119,7 @@ class _ViewImpl {
     // mask inherits visibility of dialog view
     mask.style.visibility = view.style.visibility;
     if (!view.visible)
-      new DOMAgent(mask).hide();
+      new DomAgent(mask).hide();
     
     parent.nodes.add(mask);
     return new DialogInfo(parent, mask);

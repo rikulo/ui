@@ -8,7 +8,7 @@ import 'package:rikulo/util.dart';
 import 'package:rikulo/event.dart';
 
 Offset center(View v) {
-  final dq = new DOMAgent(v.node);
+  final dq = new DomAgent(v.node);
   Size size = dq.size;
   return dq.pageOffset + new Offset(size.width / 2, size.height / 2);
 }
@@ -38,7 +38,7 @@ void main() {
   
   // sizing
   img.on.preLayout.add((LayoutEvent event) {
-    Size psize = new DOMAgent(panel.node).innerSize;
+    Size psize = new DomAgent(panel.node).innerSize;
     if (psize.width / imgw < psize.height / imgh) {
       img.width = psize.width.toInt();
       img.height = psize.width * imgh ~/ imgw;
@@ -47,7 +47,7 @@ void main() {
       img.height = psize.height.toInt();
     }
     trans = new Transformation.identity();
-    img.style.transform = CSS.transform(trans);
+    img.style.transform = Css.transform(trans);
     
   });
   
@@ -55,7 +55,7 @@ void main() {
     diff = center(img) - state.startMidpoint;
     
   }, move: (ZoomGestureState state) {
-    img.style.transform = CSS.transform(state.transformation.originAt(diff) * trans);
+    img.style.transform = Css.transform(state.transformation.originAt(diff) * trans);
     
   }, end: (ZoomGestureState state) {
     trans = state.transformation.originAt(diff) * trans;
@@ -63,7 +63,7 @@ void main() {
   });
   
   new DragGesture(mainView.node, move: (DragGestureState state) {
-    img.style.transform = CSS.transform(new Transformation.transit(state.transition) * trans);
+    img.style.transform = Css.transform(new Transformation.transit(state.transition) * trans);
     
   }, end: (DragGestureState state) {
     trans = new Transformation.transit(state.transition) * trans;

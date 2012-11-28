@@ -47,17 +47,17 @@ void addFly(Element element, Offset range, List<MotionAction> actions, List<Func
 }
 
 void addRandFly(Element element, Offset range, List<MotionAction> actions, List<Function> ends) {
-  final int initX = CSS.intOf(element.style.left);
-  final int initY = CSS.intOf(element.style.top);
+  final int initX = Css.intOf(element.style.left);
+  final int initY = Css.intOf(element.style.top);
   final num velX = (rand.nextDouble() * 2 - 1) * range.x;
   final num velY = (rand.nextDouble() * 2 - 1) * range.y;
   actions.add((num x, MotionState state) {
-    element.style.left = CSS.px(initX + (velX * x).toInt());
-    element.style.top  = CSS.px(initY + (velY * x).toInt());
+    element.style.left = Css.px(initX + (velX * x).toInt());
+    element.style.top  = Css.px(initY + (velY * x).toInt());
   });
   ends.add(() {
-    element.style.left = CSS.px(initX);
-    element.style.top  = CSS.px(initY);
+    element.style.left = Css.px(initX);
+    element.style.top  = Css.px(initY);
   });
 }
 
@@ -82,8 +82,8 @@ void main() {
   bak.profile.location = "center center";
   bak.width = bak.height = rad * 2;
   bak.classes.add("dashed-block");
-  bak.style..lineHeight = CSS.px(rad * 2 - 4)
-      ..borderRadius = CSS.px(rad)..fontSize = "17px"
+  bak.style..lineHeight = Css.px(rad * 2 - 4)
+      ..borderRadius = Css.px(rad)..fontSize = "17px"
       ..color = "#444444"..borderColor = "#444444";
   v2.addChild(bak);
   
@@ -113,11 +113,11 @@ void main() {
       ..profile.location = "top right"
       ..on.click.add((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
-      final int width = new DOMAgent(body).width;
+      final int width = new DomAgent(body).width;
       new EasingMotion((num x, MotionState state) {
         final int l = (width * x).toInt();
-        n1.style.left = CSS.px(-l);
-        n2.style.left = CSS.px(width - l);
+        n1.style.left = Css.px(-l);
+        n2.style.left = Css.px(width - l);
         
       }, start: (MotionState state) {
         final Element parent = n1.parent;
@@ -125,7 +125,7 @@ void main() {
           state.data = parent.style.overflow;
           parent.style.overflow = "hidden";
         }
-        n1.style.left = CSS.px(width);
+        n1.style.left = Css.px(width);
         n2.style.left = "0";
         n2.style.visibility = "";
         
@@ -146,14 +146,14 @@ void main() {
       final List<MotionAction> actions = new List<MotionAction>();
       final List<Function> ends = new List<Function>();
       
-      int h = new DOMAgent(body).height;
+      int h = new DomAgent(body).height;
       final int height = h > 0 ? h : browser.size.height;
-      final int width = new DOMAgent(body).width;
+      final int width = new DomAgent(body).width;
       final Offset range = new Offset(width / 2, height / 2);
       
       final Element vonode = n1;
       actions.add((num x, MotionState state) {
-        vonode.style.top = CSS.px((height * x * x).toInt()); // free fall
+        vonode.style.top = Css.px((height * x * x).toInt()); // free fall
       });
       addFly(n1, range, actions, ends);
       

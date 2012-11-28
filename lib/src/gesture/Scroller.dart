@@ -65,7 +65,7 @@ class Scroller {
       _onMove(state.transition - _state.startPosition, state.time);
       
     }, end: (DragGestureState state) {
-      final Offset pos = new DOMAgent(owner).offset;
+      final Offset pos = new DomAgent(owner).offset;
       final Rectangle range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
@@ -127,7 +127,7 @@ class Scroller {
   /** Return the current scroll position.
    */
   Offset get scrollPosition => 
-      _state != null ? _state.position : (new DOMAgent(owner).offset * -1);
+      _state != null ? _state.position : (new DomAgent(owner).offset * -1);
   
   /** Set the scroll position. The current scrolling motion, if any, will be stopped.
    */
@@ -197,9 +197,9 @@ class Scroller {
   
   void _applyPosition(Offset position) {
     if (_hor)
-      owner.style.left = CSS.px(position.left);
+      owner.style.left = Css.px(position.left);
     if (_ver)
-      owner.style.top = CSS.px(position.top);
+      owner.style.top = Css.px(position.top);
   }
   
   // scroll bar //
@@ -238,7 +238,7 @@ class ScrollerState extends GestureState {
   ScrollerState._(Scroller scroller, EventTarget this.eventTarget, 
   this._fnViewPortSize, this._fnContentSize, this._time) :
   this.scroller = scroller,
-  startPosition = new DOMAgent(scroller.owner).offset * -1 {
+  startPosition = new DomAgent(scroller.owner).offset * -1 {
     _pos = startPosition;
     Size cs = contentSize, vs = viewPortSize;
     _hor = scroller._hasHor && cs.width > vs.width;
@@ -330,13 +330,13 @@ class ScrollbarControl {
     if (vertical) {
       _vbar = new Element.tag("div");
       _vbar.classes = ["v-scrollbar-ver"];
-      _vbar.style.width = CSS.px(_ins); // do here to have better sync
+      _vbar.style.width = Css.px(_ins); // do here to have better sync
       _vbar.style.display = "none";
       owner.parent.insertBefore(_vbar, owner.nextElementSibling);
     } else {
       _hbar = new Element.tag("div");
       _hbar.classes = ["v-scrollbar-hor"];
-      _hbar.style.height = CSS.px(_ins); // do here to have better sync
+      _hbar.style.height = Css.px(_ins); // do here to have better sync
       _hbar.style.display = "none";
       owner.parent.insertBefore(_hbar, owner.nextElementSibling);
     }
@@ -384,11 +384,11 @@ class ScrollbarControl {
     final num s = ((vsize0 - _mgs * 2) * (csize0 > vsize0 ? vsize0 / csize0 : 1)).toInt() - _bds * 2;
     final num off = (ver ? vsize.width : vsize.height) - _mgs - _ins - _bds * 2;
     if (ver) {
-      _vbar.style.height = CSS.px(s);
-      _vbar.style.left = CSS.px(off);
+      _vbar.style.height = Css.px(s);
+      _vbar.style.left = Css.px(off);
     } else {
-      _hbar.style.width = CSS.px(s);
-      _hbar.style.top = CSS.px(off);
+      _hbar.style.width = Css.px(s);
+      _hbar.style.top = Css.px(off);
     }
   }
   
@@ -400,9 +400,9 @@ class ScrollbarControl {
     final num pos = ver ? state.position.y : state.position.x;
     final num x = _mgs + (csize0 > vsize0 ? ((vsize0 - _mgs * 2) * pos / csize0) : 0);
     if (ver)
-      _vbar.style.top = CSS.px(x);
+      _vbar.style.top = Css.px(x);
     else
-      _hbar.style.left = CSS.px(x);
+      _hbar.style.left = Css.px(x);
   }
   
 }
@@ -422,7 +422,7 @@ class _BoundedInertialMotion extends Motion {
   {num friction: 0.0005, num bounce: 0.0002, num snapSpeedThreshold: 0.05, ScrollerSnap snap}) :
   this.element = element, this.friction = friction, this.bounce = bounce,
   this.snapSpeedThreshold = snapSpeedThreshold, _move = move, _end = end, _snap = snap {
-    final Offset pos = new DOMAgent(element).offset;
+    final Offset pos = new DomAgent(element).offset;
     _posx = pos.x;
     _posy = pos.y;
     _velx = _hor ? velocity.x : 0;

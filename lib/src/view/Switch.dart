@@ -88,10 +88,10 @@ class Switch extends View implements Input<bool> {
       sendEvent(new ChangeEvent(_value));
   }
   void _updateBg(int delta) {
-    _sdNode.style.transform = CSS.translate3d(delta, 0);
-    _bgNode.style.marginLeft = CSS.px(delta + _marginDiff);
+    _sdNode.style.transform = Css.translate3d(delta, 0);
+    _bgNode.style.marginLeft = Css.px(delta + _marginDiff);
   }
-  int _translate3dXValue(String str) => str == null ? 0 : CSS.intOf(str.substring(12));
+  int _translate3dXValue(String str) => str == null ? 0 : Css.intOf(str.substring(12));
   
   int _snapDrag(num value) => max(min(value, 0), -_x_off).toInt();
   
@@ -103,7 +103,7 @@ class Switch extends View implements Input<bool> {
     int mgoff;
     _dg = new DragGesture(_sdNode,
       start: (state) {
-        mgoff = CSS.intOf(_bgNode.style.marginLeft) - _marginDiff;
+        mgoff = Css.intOf(_bgNode.style.marginLeft) - _marginDiff;
         moved = false;
         
       }, move: (state) {

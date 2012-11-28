@@ -66,12 +66,12 @@ void main() {
     if (speed == 0)
       return;
     Offset unitv = vel / speed;
-    Offset pos = new DOMAgent(element).offset;
+    Offset pos = new DomAgent(element).offset;
     motion = new Motion(move: (MotionState mstate) {
       int elapsed = mstate.elapsedTime;
       pos = range.snap(pos + (unitv * speed * elapsed));
-      element.style.left = CSS.px(pos.left.toInt());
-      element.style.top = CSS.px(pos.top.toInt());
+      element.style.left = Css.px(pos.left.toInt());
+      element.style.top = Css.px(pos.top.toInt());
       speed = max(0, speed - deceleration * elapsed);
       return speed > 0;
     })..run();

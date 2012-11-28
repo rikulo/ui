@@ -22,7 +22,7 @@ class ScrollView extends View {
   /** Return the view port size, which is determined by the inner size of the
    * node.
    */
-  Size get viewPortSize => new DOMAgent(node).innerSize;
+  Size get viewPortSize => new DomAgent(node).innerSize;
   
   /** Returns the total size of the content.
    * It shall cover all sub views (excluding invisible, anchored views).
@@ -95,8 +95,8 @@ class ScrollView extends View {
     _contentSize = null; //force the calculation
     final Size sz = contentSize;
     final style = contentNode.style;
-    style.width = CSS.px(sz.width);
-    style.height = CSS.px(sz.height);
+    style.width = Css.px(sz.width);
+    style.height = Css.px(sz.height);
 
     super.onPreLayout_(mctx);
   }

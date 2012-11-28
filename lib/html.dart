@@ -10,5 +10,5 @@ import "dart:math";
 import "util.dart";
 
 part "src/html/Browser.dart";
-part "src/html/CSS.dart";
-part "src/html/DOMAgent.dart";
+part "src/html/Css.dart";
+part "src/html/DomAgent.dart";

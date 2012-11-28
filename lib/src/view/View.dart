@@ -773,7 +773,7 @@ class View {
    * if it is not specified.
    */
   bool get isMeasuredByContent
-  => !isViewGroup || (firstChild == null && new _DOMAgentX(node).hasContent);
+  => !isViewGroup || (firstChild == null && new _DomAgentX(node).hasContent);
 
   /** Returns whether the given child shall be handled by the layout manager.
    *
@@ -837,7 +837,7 @@ class View {
    */
   void set left(int left) {
     _left = left;
-    node.style.left = CSS.px(left);
+    node.style.left = Css.px(left);
     ViewImpl.leftUpdated(this);
   }
   /** Returns the top position of this view relative to its parent.
@@ -849,7 +849,7 @@ class View {
    */
   void set top(int top) {
     _top = top;
-    node.style.top = CSS.px(top);
+    node.style.top = Css.px(top);
     ViewImpl.topUpdated(this);
   }
 
@@ -868,7 +868,7 @@ class View {
   void set width(int width) {
     _width = width;
 
-    node.style.width = CSS.px(width);
+    node.style.width = Css.px(width);
     ViewImpl.widthUpdated(this);
   }
   /** Returns the height of this view.
@@ -886,7 +886,7 @@ class View {
   void set height(int height) {
     _height = height;
 
-    node.style.height = CSS.px(height);
+    node.style.height = Css.px(height);
     ViewImpl.heightUpdated(this);
   }
 
@@ -895,7 +895,7 @@ class View {
    * However, if not assigned (i.e., null), this method calculates it from [node]'s width.
    */
   int get realWidth
-  => _width != null ? _width: new DOMAgent(node).width;
+  => _width != null ? _width: new DomAgent(node).width;
     //for better performance, we don't need to get the outer width if _width is
     //assigned (because we use box-sizing: border-box)
   /** Returns the real height of this view (never null).
@@ -903,7 +903,7 @@ class View {
    * However, if not assigned (i.e., null), this method calculates it from [node]'s height.
    */
   int get realHeight
-  => _height != null ? _height: new DOMAgent(node).height;
+  => _height != null ? _height: new DomAgent(node).height;
     //for better performance, we don't need to get the outer height if _height is
     //assigned (because we use box-sizing: border-box)
   /** Returns the viewable width of this view, excluding the borders, margins
@@ -911,13 +911,13 @@ class View {
    *
    * Derives can override this method if the child views occupies only a portion.
    */
-  int get innerWidth => new DOMAgent(node).innerWidth;
+  int get innerWidth => new DomAgent(node).innerWidth;
   /** Returns the viewable height of this view, excluding the borders, margins
    * and scrollbars.
    *
    * Derives can override this method if the child views occupies only a portion.
    */
-  int get innerHeight => new DOMAgent(node).innerHeight;
+  int get innerHeight => new DomAgent(node).innerHeight;
 
   /** Returns the offset of this view relative to the left-top corner
    * of the document.
@@ -925,7 +925,7 @@ class View {
    */
   Offset get pageOffset {
     if (_inDoc)
-      return new DOMAgent(node).pageOffset;
+      return new DomAgent(node).pageOffset;
     
     int left = 0, top = 0;
     for (View view = this;;) {

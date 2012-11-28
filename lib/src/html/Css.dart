@@ -6,7 +6,7 @@ part of rikulo_html;
 /**
  * A collection of CSS utilities
  */
-class CSS {
+class Css {
   /** The prefix used for non-standard CSS property.
    * For example, it is `-webkit-` for a Webkit-based browser.
    * If you're not sure whether to prefix a CSS property, please use

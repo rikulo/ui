@@ -29,8 +29,8 @@ TextView label([String text]) {
   final int fontSize = statusHeight ~/ 2;
   TextView lb = new TextView();
   lb.profile.text = "height: 100%; width: flex";
-  lb.style.fontSize = CSS.px(fontSize);
-  lb.style.lineHeight = CSS.px(statusHeight);
+  lb.style.fontSize = Css.px(fontSize);
+  lb.style.lineHeight = Css.px(statusHeight);
   if (text != null)
     lb.html = text;
   return lb;
@@ -66,7 +66,7 @@ void main() {
   
   // sizing
   panel.on.preLayout.add((LayoutEvent e) {
-    panel.height = new DOMAgent(mainView.node).innerHeight - statusHeight;
+    panel.height = new DomAgent(mainView.node).innerHeight - statusHeight;
   });
   
   // zoom gesture

@@ -7,13 +7,13 @@ part of rikulo_html;
  * A DOM query agent used to provide the additional utilities
  * for handling DOM.
  */
-class DOMAgent {
+class DomAgent {
   /** The DOM element in query. */
   final node;
 
-  DOMAgent(Element this.node);
-  DOMAgent.query(String s): this(document.query(s));
-  DOMAgent._as(this.node);
+  DomAgent(Element this.node);
+  DomAgent.query(String s): this(document.query(s));
+  DomAgent._as(this.node);
   
   /** Returns the inner width of the given element, including padding
    * but not including border, margin and scroll bar.
@@ -112,7 +112,7 @@ class DOMAgent {
     //2. subtract cumulative scrollLeft/scrollTop
     el = node;
     do {
-      final txofs = CSS.offset3dOf(el.style.transform);
+      final txofs = Css.offset3dOf(el.style.transform);
         //for performance reason it doesn't handle computed style
       left -= el.scrollLeft - txofs.left;
       top -= el.scrollTop - txofs.top;
@@ -157,8 +157,8 @@ class DOMAgent {
    * the optional [style]. If [node] is null, the size is based only
    * only [style].
    *
-   *     new DOMAgent(node_text_will_be_assigned).measureText(s);
-   *     new DOMAgent(null).measureText(s, style);
+   *     new DomAgent(node_text_will_be_assigned).measureText(s);
+   *     new DomAgent(null).measureText(s, style);
    */
   Size measureText(String text, [CSSStyleDeclaration style]) {
     if (_txtdiv == null) {
@@ -171,9 +171,9 @@ class DOMAgent {
     final CSSStyleDeclaration dst = _txtdiv.style;
     _txtdiv.innerHTML = text;
     if (node != null)
-      CSS.copy(dst, window.$dom_getComputedStyle(node, ""), CSS.textNames);
+      Css.copy(dst, window.$dom_getComputedStyle(node, ""), Css.textNames);
     if (style != null)
-      CSS.copy(dst, style, CSS.textNames);
+      Css.copy(dst, style, Css.textNames);
 
     final Size sz = new Size(_txtdiv.offsetWidth, _txtdiv.offsetHeight);
     _txtdiv.innerHTML = "";
@@ -199,7 +199,7 @@ class DOMAgent {
  * A window query agent used to provide the additional utilities
  * for handling window.
  */
-class WindowAgent extends DOMAgent {
+class WindowAgent extends DomAgent {
   WindowAgent(Window w): super._as(w);
 
   int get innerWidth => node.innerWidth;

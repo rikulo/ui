@@ -33,8 +33,8 @@ View createCube(int size, String txt) {
 
 MotionAction _action(Element elem, Offset center) => 
   (num x, MotionState state) {
-    elem.style.left = CSS.px(center.x + 50 * sin(x * 2 * PI));
-    elem.style.top  = CSS.px(center.y - 50 * cos(x * 2 * PI));
+    elem.style.left = Css.px(center.x + 50 * sin(x * 2 * PI));
+    elem.style.top  = Css.px(center.y - 50 * cos(x * 2 * PI));
   };
 
 

@@ -36,8 +36,8 @@ class MeasureContext {
   int getBorderWidth(View view) {
     final v = _borderWds[view];
     if (v == null) {
-      final qs = new DOMAgent(view.node).computedStyle;
-      return _borderWds[view] = CSS.intOf(qs.borderLeftWidth) + CSS.intOf(qs.borderRightWidth);
+      final qs = new DomAgent(view.node).computedStyle;
+      return _borderWds[view] = Css.intOf(qs.borderLeftWidth) + Css.intOf(qs.borderRightWidth);
       //Note: qs.borderWidth is supported only by Chrome
     }
     return v;
@@ -47,8 +47,8 @@ class MeasureContext {
   int getBorderHeight(View view) {
     final v = _borderHghs[view];
     if (v == null) {
-      final qs = new DOMAgent(view.node).computedStyle;
-      return _borderHghs[view] = CSS.intOf(qs.borderTopWidth) + CSS.intOf(qs.borderBottomWidth);
+      final qs = new DomAgent(view.node).computedStyle;
+      return _borderHghs[view] = Css.intOf(qs.borderTopWidth) + Css.intOf(qs.borderBottomWidth);
     }
     return v;
   }
@@ -165,11 +165,11 @@ class MeasureContext {
   => _minMax(hgh, getProfile(view, "min-height"), getProfile(view, "max-height"));
   static int _minMax(int v, String vmin, String vmax) {
     if (!vmin.isEmpty) {
-      final int w = CSS.intOf(vmin);
+      final int w = Css.intOf(vmin);
       if (v < w) v = w;
     }
     if (!vmax.isEmpty) {
-      final int w = CSS.intOf(vmax);
+      final int w = Css.intOf(vmax);
       if (w > 0 && v > w) v = w;
     }
     return v;
@@ -270,7 +270,7 @@ class MeasureContext {
       nodestyle.height = "";
     }
 
-    final DOMAgent qview = new DOMAgent(view.node);
+    final DomAgent qview = new DomAgent(view.node);
     num width = qview.width, height = qview.height;
 
     if (orgspace != null)
@@ -288,7 +288,7 @@ class MeasureContext {
     int limit = _amountOf(view.profile.maxWidth, parentInnerWidth);
     if ((autowidth && width > browser.size.width)
     || (limit != null && width > limit)) {
-      nodestyle.width = CSS.px(limit != null ? limit: browser.size.width);
+      nodestyle.width = Css.px(limit != null ? limit: browser.size.width);
 
       width = qview.width;
       height = qview.height;

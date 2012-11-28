@@ -8,7 +8,7 @@ import 'package:rikulo/event.dart';
 void main() {
   final View mainView = new View()..addToDocument();
   final int barSize = 50, barInnerSize = 40;
-  final Size msize = new DOMAgent(mainView.node).innerSize;
+  final Size msize = new DomAgent(mainView.node).innerSize;
   bool compact = msize.width < 500 || msize.height < 500; // responsive
   
   final View container = new View();
@@ -22,7 +22,7 @@ void main() {
   view.classes.add("list-view");
   
   view.on.preLayout.add((LayoutEvent event) {
-    final cs = new DOMAgent(container.node).innerSize;
+    final cs = new DomAgent(container.node).innerSize;
     view.width = cs.width - barSize;
     view.height = cs.height - barSize;
   });
@@ -71,7 +71,7 @@ void main() {
     for (int y = 0; y < rowCount; y++) {
       TextView child = new TextView("(${y+1}, ${x+1})");
       child.classes.add("list-item");
-      child.style.lineHeight = CSS.px(cellSize - 2);
+      child.style.lineHeight = Css.px(cellSize - 2);
       child.width = child.height = cellSize;
       child.left = x * cellSize;
       child.top = y * cellSize;
@@ -82,7 +82,7 @@ void main() {
   for (int x = 0; x < columnCount; x++) {
     TextView child = new TextView("Column ${x+1}");
     child.classes.add("list-item");
-    child.style.lineHeight = CSS.px(barInnerSize);
+    child.style.lineHeight = Css.px(barInnerSize);
     child.width = cellSize;
     child.height = barInnerSize;
     child.top = 0;
@@ -93,7 +93,7 @@ void main() {
   for (int y = 0; y < rowCount; y++) {
     TextView child = new TextView("R-${y+1}");
     child.classes.add("list-item");
-    child.style.lineHeight = CSS.px(cellSize - 2);
+    child.style.lineHeight = Css.px(cellSize - 2);
     child.height = cellSize;
     child.width = barInnerSize;
     child.left = 0;

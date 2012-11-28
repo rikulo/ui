@@ -17,7 +17,7 @@ class CustomLayoutDemo {
     mainView.on.click.add((DOMEvent event) {
       if (anchor == null)
         _createViews();
-      _move(event.pageOffset - new DOMAgent(mainView.node).pageOffset);
+      _move(event.pageOffset - new DomAgent(mainView.node).pageOffset);
     });
   }
   void _move(Offset offset) {

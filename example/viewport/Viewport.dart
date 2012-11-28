@@ -72,15 +72,15 @@ class Viewport extends View {
     super.mount_();
 
     final style = contentNode.style;
-    style.left = CSS.px(_spacingLeft);
-    style.top = CSS.px(_spacingTop);
+    style.left = Css.px(_spacingLeft);
+    style.top = Css.px(_spacingTop);
     _adjustWidth();
     _adjustHeight();
   }
   //@override
-  int get innerWidth => new DOMAgent(contentNode).innerWidth;
+  int get innerWidth => new DomAgent(contentNode).innerWidth;
   //@override
-  int get innerHeight => new DOMAgent(contentNode).innerHeight;
+  int get innerHeight => new DomAgent(contentNode).innerHeight;
   //@override to adjust [contentNode]'s width accordingly
   void set width(int width) {
     super.width = width;
@@ -94,11 +94,11 @@ class Viewport extends View {
       _adjustHeight();
   }
   void _adjustWidth() {
-    int v = new DOMAgent(node).innerWidth - _spacingLeft - _spacingRight;
-    contentNode.style.width = CSS.px(v > 0 ? v: 0);
+    int v = new DomAgent(node).innerWidth - _spacingLeft - _spacingRight;
+    contentNode.style.width = Css.px(v > 0 ? v: 0);
   }
   void _adjustHeight() {
-    int v = new DOMAgent(node).innerHeight - _spacingTop - _spacingBottom;
-    contentNode.style.height = CSS.px(v > 0 ? v: 0);
+    int v = new DomAgent(node).innerHeight - _spacingTop - _spacingBottom;
+    contentNode.style.height = Css.px(v > 0 ? v: 0);
   }
 }

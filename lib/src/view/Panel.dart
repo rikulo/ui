@@ -40,13 +40,13 @@ class Panel extends View {
   
   //@override
   int measureHeight_(MeasureContext mctx) {
-    final int btnh = new DOMAgent(getNode("btns")).height + new _DOMAgentX(node).sumVer(bor: true);
+    final int btnh = new DomAgent(getNode("btns")).height + new _DomAgentX(node).sumVer(bor: true);
     return max(super.measureHeight_(mctx), btnh);
   }
   
   //@override
   int measureWidth_(MeasureContext mctx) {
-    final int btnw = new DOMAgent(getNode("btns")).width + new _DOMAgentX(node).sumHor(bor: true);
+    final int btnw = new DomAgent(getNode("btns")).width + new _DomAgentX(node).sumHor(bor: true);
     return max(super.measureWidth_(mctx), btnw);
   }
   

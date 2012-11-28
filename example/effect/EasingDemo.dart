@@ -161,7 +161,7 @@ void main() {
   final View a1 = block("Move", 0, 0);
   actionBox.addChild(a1);
   _rgma.add((num x, MotionState state) {
-    node.style.top = CSS.px((50 + x * 50).toInt());
+    node.style.top = Css.px((50 + x * 50).toInt());
   }, a1, stop);
   
   final View a2 = block("Rotate", 0, 60);
