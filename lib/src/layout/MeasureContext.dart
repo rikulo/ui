@@ -150,30 +150,21 @@ class MeasureContext {
     view.height = _minMaxHgh(view, height);
   }
   void _contentWd(View view) {
+    //note: we always set width/height; otherwise it might wrap because of position
+    //example: if we changed the width to 95% (rather than 70%), TextView will wrap
     final wd = view.measureWidth_(this);
-    if (wd != null)
+    if (wd != null && (wd != 0 || _realVisible(view)))
       view.width = wd; //no need to min/max since measureXxx shall handle it
   }
   void _contentHgh(View view) {
     final hgh = view.measureHeight_(this);
-    if (hgh != null)
+    if (hgh != null && (hgh != 0 || _realVisible(view)))
       view.height = hgh; //no need to min/max since measureXxx shall handle it
   }
   int _minMaxWd(View view, int wd)
   => _minMax(wd, getProfile(view, "min-width"), getProfile(view, "max-width"));
   int _minMaxHgh(View view, int hgh)
   => _minMax(hgh, getProfile(view, "min-height"), getProfile(view, "max-height"));
-  static int _minMax(int v, String vmin, String vmax) {
-    if (!vmin.isEmpty) {
-      final int w = Css.intOf(vmin);
-      if (v < w) v = w;
-    }
-    if (!vmax.isEmpty) {
-      final int w = Css.intOf(vmax);
-      if (w > 0 && v > w) v = w;
-    }
-    return v;
-  }
 
   /** Measure the width of the given view.
    */
@@ -309,17 +300,6 @@ class MeasureContext {
     heights[view] = height;
     return new Size(width, height);
   }
-  static int _amountOf(String profile, AsInt parentInner) {
-    final AmountInfo ai = new AmountInfo(profile);
-    switch (ai.type) {
-      case AmountType.FIXED:
-        return ai.value;
-      case AmountType.FLEX:
-        return parentInner();
-      case AmountType.RATIO:
-        return (parentInner() * ai.value).round().toInt();
-    }
-  }
 
   /** Returns the left set by the applicaiton, or null if it is not set yet or set
    * by a layout.
@@ -380,3 +360,28 @@ class MeasureContext {
   Map<String, dynamic> get dataAttributes
   => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
 }
+
+int _minMax(int v, String vmin, String vmax) {
+  if (!vmin.isEmpty) {
+    final int w = Css.intOf(vmin);
+    if (v < w) v = w;
+  }
+  if (!vmax.isEmpty) {
+    final int w = Css.intOf(vmax);
+    if (w > 0 && v > w) v = w;
+  }
+  return v;
+}
+int _amountOf(String profile, AsInt parentInner) {
+  final AmountInfo ai = new AmountInfo(profile);
+  switch (ai.type) {
+    case AmountType.FIXED:
+      return ai.value;
+    case AmountType.FLEX:
+      return parentInner();
+    case AmountType.RATIO:
+      return (parentInner() * ai.value).round().toInt();
+  }
+}
+bool _realVisible(View view)
+=> new DomAgent(view.node).computedStyle.display != "none";

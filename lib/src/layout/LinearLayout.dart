@@ -9,19 +9,18 @@ part of rikulo_layout;
  * [LayoutDeclaration.orient]. If not specified, it is default to `horizontal`.
  */
 class LinearLayout extends AbstractLayout {
-  static _RealLinearLayout _getRealLayout(view) //horizontal is default
-  => view.layout.orient != "vertical" ? new _HLayout(): new _VLayout();
-
   int measureWidth(MeasureContext mctx, View view)
-  => _getRealLayout(view).measureWidth(mctx, view);
+  => _linearHandler(view).measureWidth(mctx, view);
   int measureHeight(MeasureContext mctx, View view)
-  => _getRealLayout(view).measureHeight(mctx, view);
+  => _linearHandler(view).measureHeight(mctx, view);
 
   void doLayout_(MeasureContext mctx, View view, List<View> children)
-  => _getRealLayout(view).doLayout(mctx, view, children);
+  => _linearHandler(view).doLayout(mctx, view, children);
 }
+_LinearHandler _linearHandler(view) //horizontal is default
+=> view.layout.orient != "vertical" ? new _HLayout(): new _VLayout();
 
-abstract class _RealLinearLayout {
+abstract class _LinearHandler {
   int measureWidth(MeasureContext mctx, View view);
   int measureHeight(MeasureContext mctx, View view);
   void doLayout(MeasureContext mctx, View view, List<View> children);
@@ -30,7 +29,7 @@ abstract class _RealLinearLayout {
 /**
  * Horizontal linear layout.
  */
-class _HLayout extends _RealLinearLayout {
+class _HLayout extends _LinearHandler {
   int measureWidth(MeasureContext mctx, View view) {
     final int va = mctx.getWidthByApp(view);
     if (va != null)
@@ -214,7 +213,7 @@ class _HLayout extends _RealLinearLayout {
 /**
  * Vertical linear layout.
  */
-class _VLayout extends _RealLinearLayout {
+class _VLayout extends _LinearHandler {
   int measureHeight(MeasureContext mctx, View view) {
     final int va = mctx.getHeightByApp(view);
     if (va != null)
