@@ -96,4 +96,8 @@ void main() {
     log_("Blur");
   });
   
+  mainView.addChild(createCube(100, "Cube 4", "Double Click")
+      ..left = 300..top = 300
+      ..on['dblclick'].add((ViewEvent event) => log_("Double Click")));
+  
 }

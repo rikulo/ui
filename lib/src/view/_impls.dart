@@ -346,7 +346,7 @@ final _inpTags = new Set.from(const ["input", "textarea", "select", "button", "a
 _DOMEventDispatcher _domEventDispatcher(String type) {
   if (_domEvtDisps == null) {
     _domEvtDisps = {};
-    for (final nm in const ["abort", "click", "dblclick"
+    for (final nm in const ["abort", "click", "dblclick",
     "drag", "dragEnd", "dragEnter", "dragLeave", "dragOver", "dragStart", "drop",
     "error", "keyDown", "keyPress", "keyUp", "load",
     "mouseDown", "mouseMove", "mouseOut", "mouseOver", "mouseUp", "mouseWheel",
