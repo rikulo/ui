@@ -55,9 +55,9 @@ class ProfileDeclaration extends Declaration {
       if (view != null
       && view.parent != null && _owner.parent != null //parent might not be assigned yet
       && !identical(view.parent, _owner.parent))
-        throw new UIException("Only parent or sibling allowed for an anchor, not $view");
+        throw new UiError("Anchor can be parent or sibling, not $view");
       if (identical(view, _owner))
-        throw const UIException("The anchor can't be itself.");
+        throw new UiError("Anchor can't be itself, $view.");
       av = view.id.isEmpty ? "": "#${view.id}";
     }
     setProperty("anchor", av);

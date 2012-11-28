@@ -300,9 +300,9 @@ class View {
    */
   void addChild(View child, [View beforeChild]) {
     if (isDescendantOf(child))
-      throw new UIException("$child is an ancestor of $this");
+      throw new UiError("$child is an ancestor of $this");
     if (!isViewGroup)
-      throw new UIException("No child allowed for $this");
+      throw new UiError("No child allowed for $this");
 
     if (beforeChild != null) {
       if (!identical(beforeChild.parent, this))
@@ -420,14 +420,14 @@ class View {
    * until [render_] is called. Furthermore, it must be called before calling
    * the getter, `node`.
    *
-   * It throws [UIException] if it was assigned (such as either the setter or the
+   * It throws [UiError] if it was assigned (such as either the setter or the
    * getter has been called before).
    */
   void set node(Element node) {
     if (node.parent != null)
-      throw const UIException("Only root element is allowed");
+      throw new UiError("Root element required, $node");
     if (_node != null)
-      throw const UIException("Already assigned");
+      throw new UiError("Already assigned with $_node");
     _node = node;
     _initNode();
   }
@@ -615,12 +615,12 @@ class View {
    */
   void afterMount_(AfterMount after) {
     if (after == null)
-      throw const UIException("after required");
+      throw new ArgumentError("after");
     _afters.add([this, after]);
   }
   static final List<List> _afters = [];
   static int _mntCnt = 0;
-  
+
   /** Unbinds the view.
    */
   void _unmount() {

@@ -34,7 +34,7 @@ class LayoutDeclaration extends Declaration {
    *
    * Note: this method will check if [handler] was set. If not, it will
    * return the handler of the given type specified in [type].
-   * If there is no built-in handler for the given type, [UIException]  will
+   * If there is no built-in handler for the given type, [UiError]  will
    * be thrown. In other words, this method won't return null.
    */
   Layout get handler {
@@ -43,7 +43,7 @@ class LayoutDeclaration extends Declaration {
 
     final Layout handler = layoutManager.getLayout(type);
     if (handler == null)
-      throw new UIException("Unknown type, ${type}");
+      throw new UiError("Unknown type, ${type}");
     return handler;
   }
   /** The handler for handling this layout.

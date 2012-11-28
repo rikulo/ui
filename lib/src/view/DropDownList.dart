@@ -80,9 +80,9 @@ class DropDownList<T> extends View {
   void set model(DataModel model) {
     if (model != null) {
       if (model is! Selection)
-        throw new UIException("Selection required, $model");
+        throw new UiError("Selection required, $model");
       if (model is! ListModel && model is! TreeModel)
-        throw new UIException("Only ListModel or TreeModel allowed, not $model");
+        throw new UiError("Only ListModel or TreeModel allowed, not $model");
     }
 
     if (!identical(_model, model)) { //Note: it is not !=
@@ -224,7 +224,7 @@ class DropDownList<T> extends View {
             '<option value="$i">${XMLUtil.encode(ret)}</option>'):
             //Note: Firefox doesn't support <option label="xx">
           ret is OptionElement ? ret:
-            throw new UIException("Neither String nor OptionElement, $ret");
+            throw new UiError("Neither String nor OptionElement, $ret");
 
         if (selected) option.selected = true;
         if (disabled) option.disabled = true;
@@ -256,7 +256,7 @@ class DropDownList<T> extends View {
             new Element.html('<option>${XMLUtil.encode(ret)}</option>'):
             //Note: Firefox doesn't support <option label="xx">
           ret is OptionElement ? ret:
-            throw new UIException("Neither String nor OptionElement, $ret");
+            throw new UiError("Neither String nor OptionElement, $ret");
 
         if (selected) option.selected = true;
         if (disabled) option.disabled = true;
@@ -270,14 +270,14 @@ class DropDownList<T> extends View {
         parent.nodes.add(option);
       } else {
         if (parentIndex >= 0)
-          throw new UIException("Only two levels allowed, $model");
+          throw new UiError("Only two levels allowed, $model");
 
         OptGroupElement optg =
           ret is String ?
             new Element.html('<optgroup label="${XMLUtil.encode(ret)}"></optgroup>'):
             //no matter what browser, it must be specified in 'label'
           ret is OptGroupElement ? ret:
-            throw new UIException("Neither String nor OptGroupElement, $ret");
+            throw new UiError("Neither String nor OptGroupElement, $ret");
 
         if (disabled) optg.disabled = true;
         parent.nodes.add(optg);

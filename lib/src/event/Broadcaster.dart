@@ -78,7 +78,7 @@ class _BroadcastListeners {
    */
   void add(String type, ViewEventListener listener) {
     if (listener == null)
-      throw const UIException("listener required");
+      throw new ArgumentError("listener");
 
     _listeners.putIfAbsent(type, () => []).add(listener);
   }

@@ -37,11 +37,11 @@ abstract class Input<T> {
 
 /** An UI exception.
  */
-class UIException implements Exception {
+class UiError implements Error {
   final String message;
 
-  const UIException(String this.message);
-  String toString() => "UIException($message)";
+  UiError(String this.message);
+  String toString() => "UiError($message)";
 }
 
 /**
@@ -78,7 +78,7 @@ class Declaration {
           continue;
         }
       }
-      throw new UIException("Unknown declaration: ${pair}");
+      throw new UiError("Unknown declaration: ${pair}");
     }
   }
   /** Returns a collection of properties that are assigned with
@@ -207,7 +207,7 @@ class ViewUtil {
     if (_appId == null) {
       final body = document.body;
       if (body == null)
-        throw const UIException("document not ready yet");
+        throw new UiError("document not ready yet");
 
       final attrs = body.dataAttributes;
       String sval = attrs[_APP_COUNT];
