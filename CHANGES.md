@@ -10,7 +10,7 @@
 * Overriding View.className is optional. It will return the class name correctly.
 * View.fellows returns a map instead of a collection, and View.getFellow is removed.
 * Browser.innerSize and innerOffset are removed since they are useless.
-* Follow Dart's new naming guidelines and rename to UiError, DomAgent, Css
+* Follow Dart's new naming guidelines and rename to UiError, DomAgent, Css, XmlUtil
 
 **Features:**
 

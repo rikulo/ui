@@ -54,7 +54,7 @@ class RenderContext<T> {
 
   /** Converts the given object to a string.
    *
-   * + [encode] specifies whether to invoke [XMLUtil.encode].
+   * + [encode] specifies whether to invoke [XmlUtil.encode].
    */
   String getDataAsString([bool encode=false]) {
     var val = data;
@@ -62,7 +62,7 @@ class RenderContext<T> {
       val = val.data;
     if (val is Map && (val as Map).containsKey("text"))
       val = val["text"];
-    return val != null ? encode ? "${XMLUtil.encode(val)}": val.toString(): "";
+    return val != null ? encode ? "${XmlUtil.encode(val)}": val.toString(): "";
   }
 }
 /** Renders the given data into a string or an element.

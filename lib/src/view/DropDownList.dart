@@ -221,7 +221,7 @@ class DropDownList<T> extends View {
         if (ret == null) ret = "";
         OptionElement option =
           ret is String ? new Element.html(
-            '<option value="$i">${XMLUtil.encode(ret)}</option>'):
+            '<option value="$i">${XmlUtil.encode(ret)}</option>'):
             //Note: Firefox doesn't support <option label="xx">
           ret is OptionElement ? ret:
             throw new UiError("Neither String nor OptionElement, $ret");
@@ -253,7 +253,7 @@ class DropDownList<T> extends View {
       if (model.isLeaf(child)) {
         OptionElement option =
           ret is String ?
-            new Element.html('<option>${XMLUtil.encode(ret)}</option>'):
+            new Element.html('<option>${XmlUtil.encode(ret)}</option>'):
             //Note: Firefox doesn't support <option label="xx">
           ret is OptionElement ? ret:
             throw new UiError("Neither String nor OptionElement, $ret");
@@ -274,7 +274,7 @@ class DropDownList<T> extends View {
 
         OptGroupElement optg =
           ret is String ?
-            new Element.html('<optgroup label="${XMLUtil.encode(ret)}"></optgroup>'):
+            new Element.html('<optgroup label="${XmlUtil.encode(ret)}"></optgroup>'):
             //no matter what browser, it must be specified in 'label'
           ret is OptGroupElement ? ret:
             throw new UiError("Neither String nor OptGroupElement, $ret");

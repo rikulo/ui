@@ -6,7 +6,7 @@ part of rikulo_util;
 /**
  * XML Utilities.
  */
-class XMLUtil {
+class XmlUtil {
   static const Map<String, String>
     _decs = const {'lt': '<', 'gt': '>', 'amp': '&', 'quot': '"'},
     _encs = const {'<': 'lt', '>': 'gt', '&': 'amp', '"': 'quot'};

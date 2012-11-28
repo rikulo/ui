@@ -103,7 +103,7 @@ class _Printc {
       }
       _msgs.clear();
 
-      _node.insertAdjacentHTML("beforeEnd", XMLUtil.encode(sb.toString()));;
+      _node.insertAdjacentHTML("beforeEnd", XmlUtil.encode(sb.toString()));;
       _node.scrollTop = 30000;
     }
   }
