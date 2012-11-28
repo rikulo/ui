@@ -1059,5 +1059,5 @@ class View {
   Map<String, Annotation> get annotations
   => _annos != null ? _annos: MapUtil.onDemand(() => _annos = new Map());
 
-  String toString() => "$className(${id.isEmpty ? uuid: id})";
+  String toString() => "$className(${id.isEmpty ? _uuid != null ? _uuid: '': id})";
 }
