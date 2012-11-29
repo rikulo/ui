@@ -51,7 +51,7 @@ class DefaultTreeModel<T> extends AbstractTreeModel<TreeNode<T>> {
   disables: disables, opens: opens, multiple: multiple) {
     final TreeNode<T> p = _root.parent; //don't use the root argument since it might be null
     if (p != null)
-      throw new ModelException("Only root node is allowed, not ${_root}");
+      throw new ModelError("Only root node is allowed, not ${_root}");
     _root.model = this;
     if (nodes != null)
       _root.addAll(nodes);

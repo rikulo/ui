@@ -28,7 +28,7 @@ if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
 else
   dartdoc=dartdoc
 fi
-outdir=$homedir/out/latest
+outdir=$homedir/out/dartdoc
 libdir=$homedir/lib
 
 mkdir -p $outdir

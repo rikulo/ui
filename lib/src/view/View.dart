@@ -296,7 +296,7 @@ class View {
    * If this view is attached to the document, this method will attach the child
    * to the document.
    *
-   * To remove a child from its parent, you can invoke [remove] (`child.remove()`).
+   * To remove a child from its parent, you can invoke [remove], such as `child.remove()`.
    */
   void addChild(View child, [View beforeChild]) {
     if (isDescendantOf(child))
@@ -719,7 +719,7 @@ class View {
    * since the layout manager won't need to adjust the layout of this view and its siblings.
    *
    * If you want everything to be re-positioned, you can invoke
-   * [View.requestLayout()](api:view) against your root view.
+   * [requestLayout] against your root view.
    *
    * Notice that, for better performance, the layout won't be taken place
    *immediately. Rather, it is queued and all queued views are handled

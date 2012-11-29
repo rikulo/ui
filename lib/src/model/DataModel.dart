@@ -23,7 +23,7 @@ class DataModel {
    */
   void addEventListener(String type, DataEventListener listener) {
     if (listener == null)
-      throw const ModelException("listener required");
+      throw new ArgumentError("listener");
 
     bool first = false;
     _listeners.putIfAbsent(type, () {
@@ -63,11 +63,11 @@ class DataModel {
 
 /** A model exception.
  */
-class ModelException implements Exception {
+class ModelError implements Error {
   final String message;
 
-  const ModelException(String this.message);
-  String toString() => "ModelException($message)";
+  ModelError(String this.message);
+  String toString() => "ModelError($message)";
 }
 
 /**

@@ -146,7 +146,7 @@ class DefaultTreeNode<T> extends TreeNode<T> {
     if (_parent == null)
       return 0;
     if (_parent is! DefaultTreeNode)
-      throw const ModelException("DefaultTreeNode expected");
+      throw new ModelError("DefaultTreeNode expected, not $_parent");
 
     final DefaultTreeNode p = _parent;
     return p._children.indexOf(this);
