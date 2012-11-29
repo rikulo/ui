@@ -94,8 +94,8 @@ class ProfileDeclaration extends Declaration {
    *
    * Default: *an empty string* (it means "0")
    *
-   * It specifies the additional margin that will affect the view's left, top, width
-   * or height depending what are specified.
+   * It specifies the additional margin that will affect the view's left, top,
+   * width or height depending what are specified.
    *
    *     profile="anchor:parent; margin: 8"
    *        //8 pixels spacing around four edges
@@ -138,29 +138,35 @@ class ProfileDeclaration extends Declaration {
 
   /** The expected width of the associated view.
    *
-   * Syntax: `width: num | content | flex | flex num | num %`
+   * Syntax: `width: num | content | flex | flex num | num % | ignore`
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
    * Notice that the width will be adjusted against [minWidth] and
    * [maxWidth] (if they are specified).
+   *
+   * If `ignore` is specified, the width won't be assigned. The real width
+   * depends on the `width` and/or `display` properties given in CSS rules.
    */
   String get width => getPropertyValue("width");
   /// The expected width of the associated view.
   void set width(String value) {
     setProperty("width", value);
   }
-  /** The expected width of the associated view.
+  /** The expected height of the associated view.
    *
-   * Syntax: `height: num | content | flex | flex num | num %`
+   * Syntax: `height: num | content | flex | flex num | num % | ignore`
    *
    * Default: *an empty string*. It means it will depends on parent's [LayoutDeclaration].
    *
    * Notice that the height will be adjusted against [minHeight] and
    * [maxHeight] (if they are specified).
+   *
+   * If `ignore` is specified, the height won't be assigned. The real height
+   * depends on the `height` and/or `display` properties given in CSS rules.
    */
   String get height => getPropertyValue("height");
-  /// The expected width of the associated view.
+  /// The expected height of the associated view.
   void set height(String value) {
     setProperty("height", value);
   }
@@ -186,7 +192,7 @@ class ProfileDeclaration extends Declaration {
   void set minWidth(String value) {
     setProperty("min-width", value);
   }
-  /** The expected minimal allowed width of the associated view.
+  /** The expected minimal allowed height of the associated view.
    *
    * Syntax: `min-height: num | flex | #n %`
    *
@@ -198,12 +204,12 @@ class ProfileDeclaration extends Declaration {
    * [TextView] and [Image] (See also [View.isViewGroup]).
    * + Supported by [TileLayout].
    *
-   * Notice that, if, under your layout, the parent's width is decided by
+   * Notice that, if, under your layout, the parent's height is decided by
    * the child, don't use flex or percentage at child's profile.
    * Otherwise, it will become zero.
    */
   String get minHeight => getPropertyValue("min-height");
-  /// The expected minimal allowed width of the associated view.
+  /// The expected minimal allowed height of the associated view.
   void set minHeight(String value) {
     setProperty("min-height", value);
   }
@@ -229,7 +235,7 @@ class ProfileDeclaration extends Declaration {
   void set maxWidth(String value) {
     setProperty("max-width", value);
   }
-  /** The expected maximal allowed width of the associated view.
+  /** The expected maximal allowed height of the associated view.
    *
    * Syntax: `max-height: #n | flex | #n %`
    *
@@ -241,12 +247,12 @@ class ProfileDeclaration extends Declaration {
    * [TextView] and [Image] (See also [View.isViewGroup]).
    * + Supported by [TileLayout].
    *
-   * Notice that, if, under your layout, the parent's width is decided by
+   * Notice that, if, under your layout, the parent's height is decided by
    * the child, don't use flex or percentage at child's profile.
    * Otherwise, it will become zero.
    */
   String get maxHeight => getPropertyValue("max-height");
-  /// The expected maximal allowed width of the associated view.
+  /// The expected maximal allowed height of the associated view.
   void set maxHeight(String value) {
     setProperty("max-height", value);
   }

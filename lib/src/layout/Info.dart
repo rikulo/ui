@@ -24,6 +24,9 @@ class AmountType {
   /** Represents content.
    */
   static const AmountType CONTENT = const AmountType._("content");
+  /** Represents ignore.
+   */
+  static const AmountType IGNORE = const AmountType._("ignore");
 
   const AmountType._(String this.name);
 
@@ -45,10 +48,13 @@ class AmountInfo {
   /** Constructor.
    */
   AmountInfo(String profile) {
-    if (profile == null || profile.isEmpty) { //no need to trim since it was trimmed
+    //no need to trim since it was trimmed
+    if (profile == null || profile.isEmpty || profile == "none") {
       type = AmountType.NONE;
     } else if (profile == "content") {
       type = AmountType.CONTENT;
+    } else if (profile == "ignore") {
+      type = AmountType.IGNORE;
     } else if (profile.startsWith("flex")) {
       type = AmountType.FLEX;
       value = profile.length > 4 ? int.parse(profile.substring(4).trim()): 1;

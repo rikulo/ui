@@ -747,32 +747,34 @@ class View {
    * It is called by [LayoutManager].
    *
    * Default: forward to [layoutManager] to handle it.
-   * If [isMeasuredByContent] is false, `measureWidth(mctx, this)` is called.
-   * If true, `measureWidthByContent(mctx, this, true) is called.
+   * If [shallMeasureContent] is false, `measureWidth(mctx, this)` is called.
+   * If true, `measureContentWidth(mctx, this, true) is called.
    */
   int measureWidth_(MeasureContext mctx)
-  => isMeasuredByContent ? mctx.measureWidthByContent(this, true):
+  => shallMeasureContent ? mctx.measureContentWidth(this, true):
     mctx.measureWidth(this);
   /** Measures the height of this view.
    * It is called by [LayoutManager].
    *
    * Default: forward to [layoutManager] to handle it.
-   * If [isMeasuredByContent] is false, `measureHeight(mctx, this)` is called.
-   * If true, `measureHeightByContent(mctx, this, true) is called.
+   * If [shallMeasureContent] is false, `measureHeight(mctx, this)` is called.
+   * If true, `measureContentHeight(mctx, this, true) is called.
    */
   int measureHeight_(MeasureContext mctx)
-  => isMeasuredByContent ? mctx.measureHeightByContent(this, true):
+  => shallMeasureContent ? mctx.measureContentHeight(this, true):
     mctx.measureHeight(this);
-  /** Returns whether the dimension of this view shall be measured by content.
+  /** Returns whether the dimension of this view shall be measured
+   * based on the content shown on the document.
    *
    * Default: `!isViewGroup() || (no child but has some content)`
    *
-   * If false, [MeasureContext.measureWidth] is used instead of
-   * [MeasureContext.measureWidthByContent]. Furthermore, if the view
+   * If false, it means the dimension is based on the layout of child views.
+   * More precisely, [MeasureContext.measureWidth] is used instead of
+   * [MeasureContext.measureContentWidth]. Furthermore, if the view
    * is a root, `profile.width` and `profile.height` are assumed to be `flex`
    * if it is not specified.
    */
-  bool get isMeasuredByContent
+  bool get shallMeasureContent
   => !isViewGroup || (firstChild == null && new _DomAgentX(node).hasContent);
 
   /** Returns whether the given child shall be handled by the layout manager.
@@ -801,13 +803,28 @@ class View {
   }
 
   /** Returns if this view is visible.
+   * It assumes a view is visible if the `display` property (of [style]) is
+   * not `none`.
+   *
+   * Notice, for better performance, this method checks only [style].
+   * If you control the `display` property in CSS rules (e.g.,
+   * `display:none` is in a CSS class that is assigned to this view),
+   * [visible] won't be correct. To resolve the limitation, you can do one of
+   * the following:
+   *
+   * 1. Specify `ignore` to [profile]'s `width` and `height` properties, such
+   * that the layout handlers won't manipulate its dimension.
+   *
+   * 2. Use the `visibility` property instead of `display` in your CSS rules.
+   * Both layout handlers and the browser will handle it as if visible.
    */
   bool get visible => node.style.display != "none";
   /** Sets if this view is visible.
+   * It assumes a view is visible if the `display` property (of [style]) is
+   * not `none`.
    *
-   * Default: true.
-   *
-   * Unlike most API, [requestLayout] will be called automatically if it is becoming visible.
+   * Unlike most API, [requestLayout] will be called automatically if
+   * it is becoming visible (and [inDocument] is true).
    */
   void set visible(bool visible) {
     final changed = visible != this.visible;

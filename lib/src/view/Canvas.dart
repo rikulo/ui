@@ -40,5 +40,5 @@ class Canvas extends View {
   //@override
   bool get isViewGroup => false;
   //@override
-  bool get isMeasuredByContent => false;
+  bool get shallMeasureContent => false;
 }

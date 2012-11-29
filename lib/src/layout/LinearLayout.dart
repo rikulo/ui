@@ -62,6 +62,9 @@ class _HLayout extends _LinearHandler {
               wapp : child.measureWidth_(mctx);
           width += wd != null ? wd: child.realWidth;
           break;
+        case AmountType.IGNORE:
+          width += child.realWidth;
+          break;
         //default: if flex/%, don't count
       }
     }
@@ -98,6 +101,9 @@ class _HLayout extends _LinearHandler {
           final int h = happ != null && amt.type != AmountType.CONTENT ? 
               happ : child.measureHeight_(mctx);
           hgh += h != null ? h: child.realHeight;
+          break;
+        case AmountType.IGNORE:
+          hgh += child.realHeight;
           break;
         default:
           continue; //ignore if flex or ratio is used
@@ -246,6 +252,9 @@ class _VLayout extends _LinearHandler {
               happ : child.measureHeight_(mctx);
           height += hgh != null ? hgh: child.realHeight;
           break;
+        case AmountType.IGNORE:
+          height += child.realHeight;
+          break;
         //default: if flex/%, don't count
       }
     }
@@ -282,6 +291,9 @@ class _VLayout extends _LinearHandler {
           final int w = wapp != null && amt.type != AmountType.CONTENT ? 
               wapp : child.measureWidth_(mctx);
           wd += w != null ? w: child.realWidth;
+          break;
+        case AmountType.IGNORE:
+          wd += child.realWidth;
           break;
         default:
           continue; //ignore if flex or ratio is used

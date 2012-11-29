@@ -97,7 +97,7 @@ class MeasureContext {
           if (getWidthByApp(view) == null) {
             //if view is root and a view group, we use flex
             int wd;
-            if (view.parent == null && !view.isMeasuredByContent
+            if (view.parent == null && !view.shallMeasureContent
             && (wd = width()) > 0)
               _flexWd(view, wd); //FLEX
             else
@@ -133,7 +133,7 @@ class MeasureContext {
           if (getHeightByApp(view) == null) {
             //if view is root and a view group, we use flex
             int hgh;
-            if (view.parent == null && !view.isMeasuredByContent
+            if (view.parent == null && !view.shallMeasureContent
             && (hgh = height()) > 0)
               _flexHgh(view, hgh); //FLEX
             else
@@ -153,12 +153,12 @@ class MeasureContext {
     //note: we always set width/height; otherwise it might wrap because of position
     //example: if we changed the width to 95% (rather than 70%), TextView will wrap
     final wd = view.measureWidth_(this);
-    if (wd != null && (wd != 0 || _realVisible(view)))
+    if (wd != null)
       view.width = wd; //no need to min/max since measureXxx shall handle it
   }
   void _contentHgh(View view) {
     final hgh = view.measureHeight_(this);
-    if (hgh != null && (hgh != 0 || _realVisible(view)))
+    if (hgh != null)
       view.height = hgh; //no need to min/max since measureXxx shall handle it
   }
   int _minMaxWd(View view, int wd)
@@ -212,33 +212,33 @@ class MeasureContext {
     return 0;
   }
 
-  /** Measures the width based on the view's content.
+  /** Measures the width based on the view's content shown on the document.
    * It is an utility for implementing a view's [View.measureWidth_].
    * This method assumes the browser will resize the view automatically,
-   * so it is applied only to a leaf view with some content, such as [TextView]
+   * so it is applied to a leaf view with some content, such as [TextView]
    * and [Button].
    *
    * + [autowidth] specifies whether to adjust the width automatically.
    */
-  int measureWidthByContent(View view, bool autowidth) {
+  int measureContentWidth(View view, bool autowidth) {
     final int wd = widths[view];
     return wd != null || widths.containsKey(view) ?
-      wd: _measureByContent(view, autowidth).width;
+      wd: _measureContent(view, autowidth).width;
   }
-  /** Measures the height based on the view's content.
+  /** Measures the height based on the view's content shown on the document.
    * It is an utility for implementing a view's [View.measureHeight_].
    * This method assumes the browser will resize the view automatically,
-   * so it is applied only to a leaf view with some content, such as [TextView]
+   * so it is applied to a leaf view with some content, such as [TextView]
    * and [Button].
    *
    * + [autowidth] specifies whether to adjust the width automatically.
    */
-  int measureHeightByContent(View view, bool autowidth) {
+  int measureContentHeight(View view, bool autowidth) {
     final int hgh = heights[view];
     return hgh != null || heights.containsKey(view) ?
-      hgh: _measureByContent(view, autowidth).height;
+      hgh: _measureContent(view, autowidth).height;
   }
-  Size _measureByContent(View view, bool autowidth) {
+  Size _measureContent(View view, bool autowidth) {
     if (!view.visible)
       return new Size(widths[view] = 0, heights[view] = 0);
 
@@ -383,5 +383,3 @@ int _amountOf(String profile, AsInt parentInner) {
       return (parentInner() * ai.value).round().toInt();
   }
 }
-bool _realVisible(View view)
-=> new DomAgent(view.node).computedStyle.display != "none";
