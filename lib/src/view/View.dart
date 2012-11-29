@@ -817,6 +817,9 @@ class View {
    *
    * 2. Use the `visibility` property instead of `display` in your CSS rules.
    * Both layout handlers and the browser will handle it as if visible.
+   *
+   * 3. Override this method to check CSS rules:  
+   * `new DomAgent(node).style.display != "none"`
    */
   bool get visible => node.style.display != "none";
   /** Sets if this view is visible.

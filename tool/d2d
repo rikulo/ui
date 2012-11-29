@@ -28,23 +28,21 @@ if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
 else
   dartdoc=dartdoc
 fi
-outdir=$homedir/out
+outdir=$homedir/out/latest
 libdir=$homedir/lib
 
 mkdir -p $outdir
-if [ -d $outdir/docs ] ; then
-	rm -rf $outdir/docs
-fi
+rm -rf $outdir/*
 
 PATH=$PATH:$SDK/bin
 echo Compiling $libdir
-$dartdoc --out $outdir/docs $libdir/*.dart $libdir/view/*.dart 
-if [ ! -f $outdir/docs/index.html ] ; then
-	echo $outdir/docs/index.html not found. Failed?
+$dartdoc --out $outdir $libdir/*.dart $libdir/view/*.dart 
+if [ ! -f $outdir/index.html ] ; then
+	echo $outdir/index.html not found. Failed?
 	exit 1
 fi
 
-cd $outdir/docs
+cd $outdir
 echo Process HTML files at $(pwd)
 tooldir=../../tool/lib
 
