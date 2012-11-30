@@ -38,7 +38,7 @@ implements Selection<T>, Disables<T> {
   void set selection(Collection<T> selection) {
     if (!_equals(_selection, selection)) {
       if (!_multiple && selection.length > 1)
-        throw new ModelException("Only one selection is allowed, $selection");
+        throw new ModelError("Only one selection is allowed, $selection");
       _selection.clear();
       _selection.addAll(selection);
       _sendSelect();
