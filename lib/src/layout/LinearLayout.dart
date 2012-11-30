@@ -151,6 +151,10 @@ class _HLayout extends _LinearHandler {
         case AmountType.RATIO:
           assigned += child.width = (view.innerWidth * amt.value).round().toInt();
           break;
+        case AmountType.IGNORE:
+          ViewImpl.clearWidthByLayout(view);
+          assigned += child.realWidth;
+          break;
         default:
           int wdapp;
           if (amt.type == AmountType.NONE
@@ -340,6 +344,10 @@ class _VLayout extends _LinearHandler {
           break;
         case AmountType.RATIO:
           assigned += child.height = (view.innerHeight * amt.value).round().toInt();
+          break;
+        case AmountType.IGNORE:
+          ViewImpl.clearHeightByLayout(view);
+          assigned += child.realHeight;
           break;
         default:
           int hghapp;

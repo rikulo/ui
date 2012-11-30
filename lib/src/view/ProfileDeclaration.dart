@@ -145,8 +145,10 @@ class ProfileDeclaration extends Declaration {
    * Notice that the width will be adjusted against [minWidth] and
    * [maxWidth] (if they are specified).
    *
-   * If `ignore` is specified, the width won't be assigned. The real width
-   * depends on the `width` and/or `display` properties given in CSS rules.
+   * If `ignore` is specified, the width won't be measured and assigned.
+   * The real width depends on the `width` and/or `display` properties given
+   * in CSS rules. Notice that, if the width is not given in CSS rules,
+   * it could result as zero (unless `View.shallMeasureContent` is true).
    */
   String get width => getPropertyValue("width");
   /// The expected width of the associated view.
@@ -162,8 +164,10 @@ class ProfileDeclaration extends Declaration {
    * Notice that the height will be adjusted against [minHeight] and
    * [maxHeight] (if they are specified).
    *
-   * If `ignore` is specified, the height won't be assigned. The real height
-   * depends on the `height` and/or `display` properties given in CSS rules.
+   * If `ignore` is specified, the height won't be measured and assigned.
+   * The real height depends on the `height` and/or `display` properties given
+   * in CSS rules. Notice that, if the height is not given in CSS rules,
+   * it could result as zero (unless `View.shallMeasureContent` is true).
    */
   String get height => getPropertyValue("height");
   /// The expected height of the associated view.

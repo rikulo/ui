@@ -9,7 +9,7 @@ void main() {
   for (final String type in
   ["text", "password", "multiline", "number", "tel", "date", "color"]) {
     View view = new View();
-    view.layout.text = "type: linear; align: center; spacing: 0 3";
+    view.layout.text = "type: linear; align: center; spacing: 0 4";
     view.profile.width = "flex";
     mainView.addChild(view);
 
