@@ -104,6 +104,9 @@ class MeasureContext {
               _contentWd(view); //CONTENT
           }
           break;
+        case AmountType.IGNORE:
+          ViewImpl.clearWidthByLayout(view);
+          break;
       }
     }
   }
@@ -139,6 +142,9 @@ class MeasureContext {
             else
               _contentHgh(view); //CONTENT
           }
+          break;
+        case AmountType.IGNORE:
+          ViewImpl.clearHeightByLayout(view);
           break;
       }
     }
@@ -321,6 +327,7 @@ class MeasureContext {
       case AmountType.FIXED:
         return amtInf.value;
       case AmountType.NONE:
+      case AmountType.IGNORE:
         return ViewImpl.isWidthByApp(view) ? view.width: null;
     }
   }
@@ -333,6 +340,7 @@ class MeasureContext {
       case AmountType.FIXED:
         return amtInf.value;
       case AmountType.NONE:
+      case AmountType.IGNORE:
         return ViewImpl.isHeightByApp(view) ? view.height: null;
     }
   }

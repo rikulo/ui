@@ -6,6 +6,16 @@ part of rikulo_view_impl;
 /** Utilities for implemnetation.
  */
 class ViewImpl {
+  ///Clears the width set by layout handler, if any
+  static void clearWidthByLayout(View view) {
+    if (!ViewImpl.isWidthByApp(view))
+      view.width = null;
+  }
+  ///Clears the width set by layout handler, if any
+  static void clearHeightByLayout(View view) {
+    if (!ViewImpl.isHeightByApp(view))
+      view.height = null;
+  }
   /** Called to indicate the view's left has been changed.
    * It is called automatically if [View]'s left has been set.
    */
