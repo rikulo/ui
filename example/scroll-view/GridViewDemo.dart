@@ -8,9 +8,7 @@ import 'package:rikulo/event.dart';
 void main() {
   final View mainView = new View()..addToDocument();
   final int barSize = 50, barInnerSize = 40;
-  final Size msize = new DomAgent(mainView.node).innerSize;
-  bool compact = msize.width < 500 || msize.height < 500; // responsive
-  
+  bool compact = browser.size.width < 500 || browser.size.height < 500; // responsive
   final View container = new View();
   final String occupation = compact ? "100%" : "80%";
   container.profile.text = 

@@ -152,7 +152,7 @@ class _HLayout extends _LinearHandler {
           assigned += child.width = (view.innerWidth * amt.value).round().toInt();
           break;
         case AmountType.IGNORE:
-          ViewImpl.clearWidthByLayout(view);
+          ViewImpl.clearWidthByLayout(child);
           assigned += child.realWidth;
           break;
         default:
@@ -346,7 +346,7 @@ class _VLayout extends _LinearHandler {
           assigned += child.height = (view.innerHeight * amt.value).round().toInt();
           break;
         case AmountType.IGNORE:
-          ViewImpl.clearHeightByLayout(view);
+          ViewImpl.clearHeightByLayout(child);
           assigned += child.realHeight;
           break;
         default:
