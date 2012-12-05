@@ -94,13 +94,13 @@ class View {
    *
    * In the above example, [node] will be the TABLE element.
    *
-   * Notice that it is different from [TextView.fromHTML]. [TextView.fromHTML]
+   * Notice that it is different from [TextView.fromHtml]. [TextView.fromHtml]
    * creates an instance of [TextView] and the given HTML fragment
    * will become child elements of [node].
    * For example, the UL element in the following example
    * will be a child of [node] (and [node] is always DIV):
    *
-   *     new TextView.fromHTML(
+   *     new TextView.fromHtml(
    *      "<ul><li>First item</li><li>Second item</li></ul>");
    */
   View.html(String html) {

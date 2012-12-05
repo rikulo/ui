@@ -99,12 +99,12 @@ class XmlUtil {
       k < tl ? out.add(txt.substring(k)).toString(): out.toString();
   }
   /** Returns the inner content of the given element.
-   * It is the same as [Element.innerHTML] if the element is part of [document].
+   * It is the same as [Element.innerHtml] if the element is part of [document].
    * However, it also works if the given element is parsed from a XML document.
    */
   static String getInner(Element elem) {
     try {
-      return elem.innerHTML;
+      return elem.innerHtml;
     } catch (e) {
       final sb = new StringBuffer();
       _xmlInner(sb, elem);
@@ -112,12 +112,12 @@ class XmlUtil {
     }
   }
   /** Returns the outer content of the given element.
-   * It is the same as [Element.outerHTML] if the element is part of [document].
+   * It is the same as [Element.outerHtml] if the element is part of [document].
    * However, it also works if the given element is parsed from a XML document.
    */
   static String getOuter(Element elem) {
     try {
-      return elem.outerHTML;
+      return elem.outerHtml;
     } catch (e) {
       final sb = new StringBuffer();
       _xmlBeg(sb, elem);

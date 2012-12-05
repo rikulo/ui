@@ -24,7 +24,7 @@ class CheckBox extends TextView implements Input<bool> {
    * Notice it must be a valid HTML fragment. Otherwise, the result is
    * unpredictable.
    */
-  CheckBox.fromHTML(String html, [bool value]): super.fromHTML(html) {
+  CheckBox.fromHtml(String html, [bool value]): super.fromHtml(html) {
     if (_b(value))
       this.value = true;
   }
@@ -78,7 +78,7 @@ class CheckBox extends TextView implements Input<bool> {
 
   //@override
   void updateInner_([String html]) {
-    node.query("label").innerHTML = "$encodedText${_s(html)}";
+    node.query("label").innerHtml = "$encodedText${_s(html)}";
   }
   //@override
   Element render_()
@@ -108,7 +108,7 @@ class RadioButton extends CheckBox {
    * Notice it must be a valid HTML fragment. Otherwise, the result is
    * unpredictable.
    */
-  RadioButton.fromHTML(String html, [bool value]): super.fromHTML(html, value);
+  RadioButton.fromHtml(String html, [bool value]): super.fromHtml(html, value);
 
   //@override
   String get type => "radio";

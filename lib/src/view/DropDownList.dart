@@ -219,16 +219,19 @@ class DropDownList<T> extends View {
         final disabled = _model is Disables && (_model as Disables).isDisabled(obj);
         var ret = renderer(new RenderContext(this, _model, obj, selected, disabled, i));
         if (ret == null) ret = "";
-        OptionElement option =
-          ret is String ? new Element.html(
-            '<option value="$i">${XmlUtil.encode(ret)}</option>'):
-            //Note: Firefox doesn't support <option label="xx">
-          ret is OptionElement ? ret:
-            throw new UiError("Neither String nor OptionElement, $ret");
+        OptionElement opt;
+        if (ret is String)
+          opt = new Element.html(
+            '<option value="$i">${XmlUtil.encode(ret)}</option>');
+          //Note: Firefox doesn't support <option label="xx">
+        else if (ret is OptionElement)
+          opt = ret;
+        else
+          throw new UiError("Neither String nor OptionElement, $ret");
 
-        if (selected) option.selected = true;
-        if (disabled) option.disabled = true;
-        node.nodes.add(option);
+        if (selected) opt.selected = true;
+        if (disabled) opt.disabled = true;
+        node.nodes.add(opt);
       }
     } else {
       final TreeModel model = _model;
@@ -251,33 +254,37 @@ class DropDownList<T> extends View {
       var ret = renderer(new RenderContext(this, _model, child, selected, disabled, i));
       if (ret == null) ret = "";
       if (model.isLeaf(child)) {
-        OptionElement option =
-          ret is String ?
-            new Element.html('<option>${XmlUtil.encode(ret)}</option>'):
-            //Note: Firefox doesn't support <option label="xx">
-          ret is OptionElement ? ret:
-            throw new UiError("Neither String nor OptionElement, $ret");
+        OptionElement opt;
+        if (ret is String)
+          opt = new Element.html('<option>${XmlUtil.encode(ret)}</option>');
+          //Note: Firefox doesn't support <option label="xx">
+        else if (ret is OptionElement)
+          opt = ret;
+        else
+          throw new UiError("Neither String nor OptionElement, $ret");
 
-        if (selected) option.selected = true;
-        if (disabled) option.disabled = true;
+        if (selected) opt.selected = true;
+        if (disabled) opt.disabled = true;
 
         //store the path in value
         final out = new StringBuffer();
         if (parentIndex >= 0)
           out.add(parentIndex).add('.');
-        option.value = out.add(i).toString();
+        opt.value = out.add(i).toString();
 
-        parent.nodes.add(option);
+        parent.nodes.add(opt);
       } else {
         if (parentIndex >= 0)
           throw new UiError("Only two levels allowed, $model");
 
-        OptGroupElement optg =
-          ret is String ?
-            new Element.html('<optgroup label="${XmlUtil.encode(ret)}"></optgroup>'):
-            //no matter what browser, it must be specified in 'label'
-          ret is OptGroupElement ? ret:
-            throw new UiError("Neither String nor OptGroupElement, $ret");
+        OptGroupElement optg;
+        if (ret is String)
+          optg = new Element.html('<optgroup label="${XmlUtil.encode(ret)}"></optgroup>');
+          //no matter what browser, it must be specified in 'label'
+        else if (ret is OptGroupElement)
+          optg = ret;
+        else
+          throw new UiError("Neither String nor OptGroupElement, $ret");
 
         if (disabled) optg.disabled = true;
         parent.nodes.add(optg);

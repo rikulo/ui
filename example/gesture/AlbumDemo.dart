@@ -125,7 +125,7 @@ void main() {
     // photo source link
     String link = "$flickerPrefix${authorURLs[i]}/${imgURLs[i]}";
     TextView caption = 
-        new TextView.fromHTML("By <a href='$link'>${authors[i]}</a> @ Flickr");
+        new TextView.fromHtml("By <a href='$link'>${authors[i]}</a> @ Flickr");
     caption.classes.add("photo-caption");
     caption.style.userSelect = "none";
     caption.profile.text = "location: south center";

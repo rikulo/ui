@@ -169,14 +169,14 @@ class DomAgent {
     }
 
     final CSSStyleDeclaration dst = _txtdiv.style;
-    _txtdiv.innerHTML = text;
+    _txtdiv.innerHtml = text;
     if (node != null)
       Css.copy(dst, window.$dom_getComputedStyle(node, ""), Css.textNames);
     if (style != null)
       Css.copy(dst, style, Css.textNames);
 
     final Size sz = new Size(_txtdiv.offsetWidth, _txtdiv.offsetHeight);
-    _txtdiv.innerHTML = "";
+    _txtdiv.innerHtml = "";
     return sz;
   }
   static Element _txtdiv;

@@ -28,7 +28,7 @@ main() {
   _left.on.click.add((event) {_left.visible = false; _right.visible = true; mainView.requestLayout();});
   _right.on.click.add((event) {_left.visible = true; _right.visible = false; mainView.requestLayout();});
   
-  mainView.addChild(new TextView.fromHTML('''
+  mainView.addChild(new TextView.fromHtml('''
 <ul><li>Click FIRST TEXT and you shall see it disappears and SECOND TEXT shows up</li>
 <li>Click SECOND TEXT and you shall see the reversed response</li></ul>
   '''));

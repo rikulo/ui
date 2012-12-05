@@ -16,8 +16,8 @@ class _StyleImpl implements CSSStyleDeclaration {
   String removeProperty(String propertyName)
   => _st.removeProperty(propertyName);
   //@override
-  CSSValue getPropertyCSSValue(String propertyName)
-  => _st.getPropertyCSSValue(propertyName);
+  CSSValue getPropertyCssValue(String propertyName)
+  => _st.getPropertyCssValue(propertyName);
   //@override
   String getPropertyPriority(String propertyName)
   => _st.getPropertyPriority(propertyName);
