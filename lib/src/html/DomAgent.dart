@@ -133,7 +133,7 @@ class DomAgent {
   
   /** Returns the final used values of all the CSS properties
    */
-  CSSStyleDeclaration get computedStyle 
+  CssStyleDeclaration get computedStyle 
   => window.$dom_getComputedStyle(node, "");
 
   /** Returns if a DOM element is a descendant of this element or
@@ -160,7 +160,7 @@ class DomAgent {
    *     new DomAgent(node_text_will_be_assigned).measureText(s);
    *     new DomAgent(null).measureText(s, style);
    */
-  Size measureText(String text, [CSSStyleDeclaration style]) {
+  Size measureText(String text, [CssStyleDeclaration style]) {
     if (_txtdiv == null) {
       _txtdiv = new DivElement();
       _txtdiv.style.cssText =
@@ -168,7 +168,7 @@ class DomAgent {
       document.body.nodes.add(_txtdiv);
     }
 
-    final CSSStyleDeclaration dst = _txtdiv.style;
+    final dst = _txtdiv.style;
     _txtdiv.innerHtml = text;
     if (node != null)
       Css.copy(dst, window.$dom_getComputedStyle(node, ""), Css.textNames);
@@ -215,6 +215,6 @@ class WindowAgent extends DomAgent {
   Offset get offset => new Offset(0, 0);
   Offset get pageOffset => offset;
   bool isDescendantOf(Element parent) => false;
-  CSSStyleDeclaration get computedStyle => new CSSStyleDeclaration();
+  CssStyleDeclaration get computedStyle => new CssStyleDeclaration();
   void set visible(bool visible) {}
 }

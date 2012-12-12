@@ -63,7 +63,7 @@ class View {
   Map<String, dynamic> _dataAttrs, _mntAttrs;
   Map<String, Annotation> _annos;
 
-  CSSStyleDeclaration _style;
+  CssStyleDeclaration _style;
   Element _node;
 
   int _left = 0, _top = 0, _width, _height;
@@ -980,7 +980,7 @@ class View {
 
   /** Retuns the CSS style.
    */
-  CSSStyleDeclaration get style {
+  CssStyleDeclaration get style {
     if (_style == null)
       _style = new _StyleImpl(this);
     return _style;

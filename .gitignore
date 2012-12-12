@@ -14,8 +14,9 @@ out.js.deps
 out
 *.bak
 ~$*.pptx
-~$*.doc
+~$*.docx
 ~$*.xlsx
+*.tmp
 packages
 packages/
 pubspec.lock

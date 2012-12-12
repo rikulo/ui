@@ -144,7 +144,7 @@ class _PrintcPopup {
     broadcaster.on.activate.add(_onPopup());
   }
   void _size(String width, String height) {
-    final CSSStyleDeclaration style = _owner._node.style;
+    final style = _owner._node.style;
     style.width = width;
     style.height = height;
     close();

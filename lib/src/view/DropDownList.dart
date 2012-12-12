@@ -111,7 +111,7 @@ class DropDownList<T> extends View {
             if (_modelSelUpdating)
               return;
             if (_model is ListModel) { //not easy/worth to optimize handling of TreeModel
-              final HTMLOptionsCollection options = (node as SelectElement).options;
+              final options = (node as SelectElement).options;
               final ListModel<T> model = _model as ListModel;
               final Selection<T> selmodel = _model as Selection;
               final bool multiple = selmodel.multiple;

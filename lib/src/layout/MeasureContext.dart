@@ -248,7 +248,7 @@ class MeasureContext {
     if (!view.visible)
       return new Size(widths[view] = 0, heights[view] = 0);
 
-    CSSStyleDeclaration nodestyle;
+    CssStyleDeclaration nodestyle;
     String orgspace, orgwd, orghgh;
     if (autowidth) {
       nodestyle = view.node.style;
@@ -267,7 +267,7 @@ class MeasureContext {
       nodestyle.height = "";
     }
 
-    final DomAgent qview = new DomAgent(view.node);
+    final qview = new DomAgent(view.node);
     num width = qview.width, height = qview.height;
 
     if (orgspace != null)

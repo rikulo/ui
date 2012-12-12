@@ -3,11 +3,11 @@
 // Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 part of rikulo_view;
 
-class _StyleImpl implements CSSStyleDeclaration {
+class _StyleImpl implements CssStyleDeclaration {
   final View _view;
   _StyleImpl(View this._view);
 
-  CSSStyleDeclaration get _st => _view.node.style;
+  CssStyleDeclaration get _st => _view.node.style;
 
   //@override
   String getPropertyValue(String propertyName)
@@ -16,7 +16,7 @@ class _StyleImpl implements CSSStyleDeclaration {
   String removeProperty(String propertyName)
   => _st.removeProperty(propertyName);
   //@override
-  CSSValue getPropertyCssValue(String propertyName)
+  CssValue getPropertyCssValue(String propertyName)
   => _st.getPropertyCssValue(propertyName);
   //@override
   String getPropertyPriority(String propertyName)
@@ -70,7 +70,7 @@ class _StyleImpl implements CSSStyleDeclaration {
   //@override
   String item(int index) => _st.item(index);
   //@override
-  CSSRule get parentRule => _st.parentRule;
+  CssRule get parentRule => _st.parentRule;
 
   String get left => _st.left;
   void set left(String v) {_view.left = Css.intOf(v);}

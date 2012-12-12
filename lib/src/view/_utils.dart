@@ -23,7 +23,7 @@ class _DomAgentX extends DomAgent {
       _sum(true, mar, bor, pad);
   int _sum(bool ver, bool margin, bool border, bool padding) {
     int sum = 0;
-    final CSSStyleDeclaration s = computedStyle;
+    final s = computedStyle;
     if (margin)
       sum += ver ? Css.intOf(s.marginTop) + Css.intOf(s.marginBottom) :
           Css.intOf(s.marginLeft) + Css.intOf(s.marginRight);
