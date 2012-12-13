@@ -37,7 +37,7 @@ void main() {
   mainView.addChild(v = block("Glow", 200, 50));
   
   final num n = 0.3;
-  //final Color c = const HSVColor(210, 50, 100).rgb();
+  //final Color c = const HsvColor(210, 50, 100).rgb();
   final Motion glow = new GlowEffect(v.node, tempo: n);
   v.on.click.add((ViewEvent event) {
     if (!glow.isRunning)

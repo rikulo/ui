@@ -63,7 +63,7 @@ class View {
   Map<String, dynamic> _dataAttrs, _mntAttrs;
   Map<String, Annotation> _annos;
 
-  CSSStyleDeclaration _style;
+  CssStyleDeclaration _style;
   Element _node;
 
   int _left = 0, _top = 0, _width, _height;
@@ -94,13 +94,13 @@ class View {
    *
    * In the above example, [node] will be the TABLE element.
    *
-   * Notice that it is different from [TextView.fromHTML]. [TextView.fromHTML]
+   * Notice that it is different from [TextView.fromHtml]. [TextView.fromHtml]
    * creates an instance of [TextView] and the given HTML fragment
    * will become child elements of [node].
    * For example, the UL element in the following example
    * will be a child of [node] (and [node] is always DIV):
    *
-   *     new TextView.fromHTML(
+   *     new TextView.fromHtml(
    *      "<ul><li>First item</li><li>Second item</li></ul>");
    */
   View.html(String html) {
@@ -980,7 +980,7 @@ class View {
 
   /** Retuns the CSS style.
    */
-  CSSStyleDeclaration get style {
+  CssStyleDeclaration get style {
     if (_style == null)
       _style = new _StyleImpl(this);
     return _style;

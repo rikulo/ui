@@ -12,7 +12,7 @@ void main() {
       ..profile.text = "width:120; height:60";
     dialog
       ..addChild(
-        new TextView.fromHTML("<b>Delete this file?</b>"))
+        new TextView.fromHtml("<b>Delete this file?</b>"))
       ..addChild(
         new View()
           ..layout.text = "type: linear"

@@ -45,7 +45,7 @@ class _Printc {
         }
       }
 
-      document.body.insertAdjacentHTML("afterBegin", '''
+      document.body.insertAdjacentHtml("afterBegin", '''
 <div><style>
 .v-printc-x {
  box-sizing: border-box;
@@ -103,7 +103,7 @@ class _Printc {
       }
       _msgs.clear();
 
-      _node.insertAdjacentHTML("beforeEnd", XmlUtil.encode(sb.toString()));;
+      _node.insertAdjacentHtml("beforeEnd", XmlUtil.encode(sb.toString()));;
       _node.scrollTop = 30000;
     }
   }
@@ -144,7 +144,7 @@ class _PrintcPopup {
     broadcaster.on.activate.add(_onPopup());
   }
   void _size(String width, String height) {
-    final CSSStyleDeclaration style = _owner._node.style;
+    final style = _owner._node.style;
     style.width = width;
     style.height = height;
     close();

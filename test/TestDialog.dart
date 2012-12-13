@@ -21,6 +21,6 @@ void main() {
   mainView.addChild(btn);
 
 //  mainView.addChild(
-//    new TextView.fromHTML("<b>This is used to make scrollbar visible</b>")
+//    new TextView.fromHtml("<b>This is used to make scrollbar visible</b>")
 //      ..top = 1200);
 }

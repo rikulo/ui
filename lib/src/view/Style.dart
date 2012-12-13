@@ -51,7 +51,7 @@ class Style extends View {
    */
   String get content {
     final n = _styleNode;
-    return n != null ? n.innerHTML: null;
+    return n != null ? n.innerHtml: null;
   }
   /** Sets the CSS content.
    * If there is any URI being assigned, it will be removed.
@@ -100,7 +100,7 @@ class Style extends View {
         out.add(content);
       out.add('</style>');
     }
-    node.innerHTML = out.toString();
+    node.innerHtml = out.toString();
   }
   /** Returns false to indicate this view doesn't allow any child views.
    */

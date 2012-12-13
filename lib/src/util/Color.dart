@@ -28,8 +28,8 @@ class Color {
   /// The opacity of color.
   final num alpha;
   
-  /// Convert to [HSVColor].
-  HSVColor hsv() {
+  /// Convert to [HsvColor].
+  HsvColor hsv() {
     final num mx = max(max(red, green), blue), 
         mn = min(min(red, green), blue), ch = mx - mn;
     final int lead = red > green ? 
@@ -39,7 +39,7 @@ class Color {
       lead == 1 ? (blue - red) / ch + 2 : (red - green) / ch + 4);
     final num val = mx * 100 / 255;
     final num sat = mx == 0 ? 0 : ch * 100 / mx;
-    return new HSVColor(hue, sat, val, alpha);
+    return new HsvColor(hue, sat, val, alpha);
   }
   
   // TODO: as utility, later
@@ -80,7 +80,7 @@ class Color {
 String _hex(num n) => n.toInt().toRadixString(16);
 
 /// An HSV based color object.
-class HSVColor {
+class HsvColor {
   
   /** Construct a Color object with given HSV and alpha (i.e., opacity) values.
    * 
@@ -90,7 +90,7 @@ class HSVColor {
    * + [alpha] should be a number between 0 (inclusive) and 1 (inclusive).
    * Default: 1
    */
-  const HSVColor(num hue, num saturation, num value, [num alpha = 1]) : 
+  const HsvColor(num hue, num saturation, num value, [num alpha = 1]) : 
   this.hue = hue, this.saturation = saturation, this.value = value, this.alpha = alpha;
   
   /// The hue of the color.

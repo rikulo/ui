@@ -17,7 +17,7 @@ class Link extends TextView {
    * Notice it must be a valid HTML fragment. Otherwise, the result is
    * unpredictable.
    */
-  Link.fromHTML(String html): super.fromHTML(html);
+  Link.fromHtml(String html): super.fromHtml(html);
 
   /** Returns the INPUT element in this view.
    */

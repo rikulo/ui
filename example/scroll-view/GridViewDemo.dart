@@ -11,7 +11,6 @@ void main() {
   final int barSize = 50, barInnerSize = 40;
   final Size msize = new WindowAgent(window).innerSize;
   bool compact = msize.width < 500 || msize.height < 500; // responsive
-  
   final View container = new View();
   final String occupation = compact ? "100%" : "80%";
   container.profile.text = 

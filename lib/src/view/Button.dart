@@ -15,7 +15,7 @@ class Button extends TextView {
    * Notice it must be a valid HTML fragment. Otherwise, the result is
    * unpredictable.
    */
-  Button.fromHTML(String html): super.fromHTML(html);
+  Button.fromHtml(String html): super.fromHtml(html);
 
   /** Returns the INPUT element in this view.
    */

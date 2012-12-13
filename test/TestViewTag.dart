@@ -4,10 +4,10 @@ import 'package:rikulo/view.dart';
 
 void main() {
   /* Notice that this is only for testing purpose. This sample is better to be
-  done by use of the TextView.fromHTML constructor as follows (not exactly
+  done by use of the TextView.fromHtml constructor as follows (not exactly
   equalivalent but you got the point).
 
-  new TextView.fromHTML('''
+  new TextView.fromHtml('''
   <dl>
   <li type="i" value="$index">This is the <b>$index</b> item</li>
   </dl>
@@ -19,7 +19,7 @@ void main() {
     li.node
       ..type = "i"
       ..value =  i*2 + 1
-      ..innerHTML = "This is the <b>$i</b> item.";
+      ..innerHtml = "This is the <b>$i</b> item.";
     li.top = 22 * i;
     dl.addChild(li);
   }

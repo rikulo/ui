@@ -4,7 +4,7 @@ import 'dart:html';
 import 'package:rikulo/view.dart';
 
 void main() {
-  final webView = new TextView.fromHTML('''
+  final webView = new TextView.fromHtml('''
     <style>
     span.box {
       display:inline-block;width:64px;height:20px;
@@ -30,10 +30,10 @@ void main() {
   for (Element n in webView.node.queryAll("span"))
     new Switch(true).addToDocument(ref: n);
 
-  var tv = new TextView.fromHTML("<b>Right Top</b>")
+  var tv = new TextView.fromHtml("<b>Right Top</b>")
     ..profile.location = "right top"
     ..addToDocument();
-  new TextView.fromHTML("<b>South End</b>")
+  new TextView.fromHtml("<b>South End</b>")
     ..profile.location = "south end"
     ..profile.anchorView = tv
     ..addToDocument();

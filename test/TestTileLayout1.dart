@@ -18,7 +18,7 @@ void main() {
   }
   view.addToDocument();
 
-  new TextView.fromHTML("<h1>Tile layout is not implemented yet</h1")
+  new TextView.fromHtml("<h1>Tile layout is not implemented yet</h1")
     ..classes.add("v-dialog")
     ..addToDocument(mode: "dialog");
 }

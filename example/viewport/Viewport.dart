@@ -22,9 +22,9 @@ class Viewport extends View {
       this.title = title;
   }
 
-  String get title => getNode("title").innerHTML;
+  String get title => getNode("title").innerHtml;
   void set title(String title) {
-    getNode("title").innerHTML = title != null ? title: "";
+    getNode("title").innerHtml = title != null ? title: "";
   }
 
   View get toolbar => _toolbar;

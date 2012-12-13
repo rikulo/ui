@@ -325,7 +325,7 @@ class _EventListenerInfo {
 /** DOM-level event listener that proxies a DOM event to a view event
  * ([ViewEvent]) and dispatch to the right target.
  */
-typedef EventListener _DOMEventDispatcher(View target);
+typedef EventListener _DomEventDispatcher(View target);
 
 Element _domEvtTarget(String type, Element node) {
   //focus/blur not bubble up: http://www.quirksmode.org/js/tests/focusbubble.html
@@ -343,7 +343,7 @@ Element _domEvtTarget(String type, Element node) {
 }
 const _noBubEvts = const ["focus", "blur"];
 final _inpTags = new Set.from(const ["input", "textarea", "select", "button", "a"]);
-_DOMEventDispatcher _domEventDispatcher(String type) {
+_DomEventDispatcher _domEventDispatcher(String type) {
   if (_domEvtDisps == null) {
     _domEvtDisps = {};
     for (final nm in const ["abort", "click", "dblclick",
@@ -358,16 +358,16 @@ _DOMEventDispatcher _domEventDispatcher(String type) {
   }
   return _domEvtDisps[type];
 }
-_DOMEventDispatcher _domEvtDisp(String type) {
+_DomEventDispatcher _domEvtDisp(String type) {
   return (View target) {
     return (Event event) {
       var tv = event.target; //the real target based on the event
       tv = tv is Node ? ViewUtil.getView(tv): null;
-      target.sendEvent(new DOMEvent(event, type, tv != null ? tv: target));
+      target.sendEvent(new DomEvent(event, type, tv != null ? tv: target));
     };
   };
 }
-_DOMEventDispatcher _domChangeEvtDisp() {
+_DomEventDispatcher _domChangeEvtDisp() {
   return (View target) {
     return (Event event) {
       final dt = event.target;
@@ -382,7 +382,7 @@ _DOMEventDispatcher _domChangeEvtDisp() {
     };
   };
 }
-Map<String, _DOMEventDispatcher> _domEvtDisps;
+Map<String, _DomEventDispatcher> _domEvtDisps;
 
 /** A virtual ID space.
  */

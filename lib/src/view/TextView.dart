@@ -7,7 +7,7 @@ part of rikulo_view;
  * Displays plain text or a fragment of HTML content to the user.
  *
  * Notice that there are two kinds of text: plain text and HTML fragment.
- * You can specify the normal text with [text], or the HTML fragment with [innerHTML].
+ * You can specify the normal text with [text], or the HTML fragment with [innerHtml].
  * The later invocation will override the previous ones.
  *
  * When displaying HTML fragment, an extra CSS class called `v-html` will be added.
@@ -29,7 +29,7 @@ class TextView extends View {
    * Notice it must be a valid HTML fragment. Otherwise, the result is
    * unpredictable.
    */
-  TextView.fromHTML(String html) {
+  TextView.fromHtml(String html) {
     this.html = html; //have render_() called
   }
 
@@ -45,7 +45,7 @@ class TextView extends View {
   }
   /** Returns the HTML displayed in this view.
    */
-  String get html => node.innerHTML;
+  String get html => node.innerHtml;
   /** Sets the HTML displayed in this view.
    */
   void set html(String html) {
@@ -57,11 +57,11 @@ class TextView extends View {
   /** Called to update the DOM element, when the content of this view
    * is changed.
    *
-   * Default: invoke [innerHTML_] to retrieve the content
-   * and then update [node]'s innerHTML.
+   * Default: invoke [innerHtml_] to retrieve the content
+   * and then update [node]'s innerHtml.
    */
   void updateInner_([String html]) {
-    node.innerHTML = "$encodedText${_s(html)}";
+    node.innerHtml = "$encodedText${_s(html)}";
   }
   /** Returns the encodes the text ([text]).
    *
@@ -71,7 +71,7 @@ class TextView extends View {
 
   /** Creates and returns the DOM elements of this view.
    *
-   * Default: it creates a DIV element containing [innerHTML_]
+   * Default: it creates a DIV element containing [innerHtml_]
    */
   //@override
   Element render_()

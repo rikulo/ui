@@ -35,7 +35,7 @@ void _addLogView(View view) {
   logView.profile.width = logView.profile.height = "flex";
   logView.style.backgroundColor = "#cca";
   _setBorder(logView);
-  TextView text = new TextView.fromHTML('<h2 style="margin:0">Log View</h2>');
+  TextView text = new TextView.fromHtml('<h2 style="margin:0">Log View</h2>');
   _setBorder(text);
   logView.addChild(text);
 
@@ -70,7 +70,7 @@ void main() {
   view.profile.width = view.profile.height = "flex";
   mainView.addChild(view);
 
-  TextView text = new TextView.fromHTML('<h1 style="margin:0">${document.title}</h1>');
+  TextView text = new TextView.fromHtml('<h1 style="margin:0">${document.title}</h1>');
   _setBorder(text);
   view.addChild(text);
 
