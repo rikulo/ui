@@ -215,6 +215,7 @@ class _HLayout extends _LinearHandler {
           break; 
         default:
           child.top = space;
+          break;
       }
     }
   }
@@ -409,6 +410,7 @@ class _VLayout extends _LinearHandler {
           break; 
         default:
           child.left = space;
+          break;
       }
     }
   }
