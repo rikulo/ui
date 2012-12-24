@@ -65,4 +65,6 @@ class _OnDemandMap<K, V> implements Map<K,V> {
   V putIfAbsent(K key, V ifAbsent()) => _init().putIfAbsent(key, ifAbsent);
   //@override
   V remove(K key) => _map != null ? _map.remove(key): null;
+  //@override
+  String toString() => (_map != null ? _map: EMPTY_MAP).toString();
 }
