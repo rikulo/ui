@@ -43,6 +43,9 @@
   -ms-user-select: text;
   user-select: text;
 }
+textarea.v- {
+  resize: none;
+}
 .v-TextView.v-html {
   padding: 3px 5px;
   -webkit-user-select: text;
