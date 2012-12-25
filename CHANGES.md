@@ -1,5 +1,11 @@
 #Rikulo Changes
 
+##0.6.2
+
+**Features**
+
+* ListModel also implements Sequence
+
 ##0.6.1
 
 **Changes**

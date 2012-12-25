@@ -8,12 +8,8 @@ import "view.dart";
 
 part "src/model/DataEvent.dart";
 part "src/model/DataModel.dart";
-part "src/model/AbstractSelectionModel.dart";
 
 part "src/model/ListModel.dart";
-part "src/model/DefaultListModel.dart";
 
 part "src/model/TreeModel.dart";
-part "src/model/DefaultTreeModel.dart";
 part "src/model/TreeNode.dart";
-part "src/model/Renderer.dart";
