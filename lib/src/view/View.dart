@@ -1002,19 +1002,32 @@ class View {
    * Also notice that the broadcasted event will be sent to every root view
    * if it is `inDocument`.
    *
+   * + [bubbles] specifies whether the event shall *bubbles* up through the
+   * hierarchy of views.
+   *
    * + returns true if it has been dispatched to one of the registered listeners.
    */
-  bool sendEvent(ViewEvent event, [String type]) {
+  bool sendEvent(ViewEvent event, {String type, bool bubbles: true}) {
     if (event.target == null)
       event.target = this;
-    return _evlInfo != null && _evlInfo.send(event, type);
+
+    View view = this;
+    bool dispatched = false;
+    do {
+      if (view._evlInfo != null && view._evlInfo.send(event, type: type))
+        dispatched = true;
+    } while (bubbles && !event.isPropagationStopped && (view = view.parent) != null);
+    return dispatched;
   }
   /** Posts an event to this view.
    * Unlike [sendEvent], [postEvent] puts the event in a queue and returns
    * immediately. The event will be handled later.
+   *
+   * + [bubbles] specifies whether the event shall *bubbles* up through the
+   * hierarchy of views.
    */
-  void postEvent(ViewEvent event, [String type]) {
-    window.setTimeout(() {sendEvent(event, type);}, 0);
+  void postEvent(ViewEvent event, {String type, bool bubbles: true}) {
+    window.setTimeout(() {sendEvent(event, type: type, bubbles: bubbles);}, 0);
       //note: the order of messages is preserved across all views (and message queues)
       //CONSIDER if it is better to have a queue shared by views/message queues/broadcaster
   }

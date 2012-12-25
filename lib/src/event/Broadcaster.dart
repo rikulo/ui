@@ -16,12 +16,12 @@ abstract class Broadcaster {
   BroadcastEvents get on;
   /** Broadcasts an event to all registered listeners.
    */
-  bool sendEvent(ViewEvent event, [String type]);
+  bool sendEvent(ViewEvent event, {String type});
   /** Posts an event to all registered listeners.
    * Unlike [sendEvent], [postEvent] puts the event in a queue and returns
    * immediately. The event will be handled later.
    */
-  void postEvent(ViewEvent event, [String type]);
+  void postEvent(ViewEvent event, {String type});
 }
 /** The broadcaster used to broadcast events.
  *
@@ -53,10 +53,10 @@ class _Broadcaster extends Broadcaster {
 
   BroadcastEvents get on => _on;
 
-  bool sendEvent(ViewEvent event, [String type])
-  => _listeners.send(event, type);
-  void postEvent(ViewEvent event, [String type]) {
-    window.setTimeout(() {sendEvent(event, type);}, 0);
+  bool sendEvent(ViewEvent event, {String type})
+  => _listeners.send(event, type: type);
+  void postEvent(ViewEvent event, {String type}) {
+    window.setTimeout(() {sendEvent(event, type: type);}, 0);
       //note: the order of messages is preserved across all views (and message queues)
       //CONSIDER if it is better to have a queue shared by views/message queues/broadcaster
   }
@@ -90,7 +90,7 @@ class _BroadcastListeners {
   }
   /** Sends an event. (Called by ViewEvents)
    */
-  bool send(ViewEvent event, [String type]) {
+  bool send(ViewEvent event, {String type}) {
     if (type == null)
       type = event.type;
 
@@ -109,7 +109,7 @@ class _BroadcastListeners {
 
 		//broadcast to all root views
     for (final v in rootViews)
-      if (v.sendEvent(event, type))
+      if (v.sendEvent(event, type: type))
         dispatched = true;
     return dispatched;
   }

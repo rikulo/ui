@@ -2,10 +2,15 @@
 
 ##0.6.2
 
+**Changes**
+
+* The signature of View's sendEvent and postEvent are changed.
+
 **Features**
 
 * ListModel also implements Sequence
 * DropDownList accepts both DataModel and List
+* ViewEvent will, by default, bubble up the hierarchy of views.
 
 ##0.6.1
 
