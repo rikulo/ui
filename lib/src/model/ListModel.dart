@@ -33,7 +33,7 @@ class ListDataEvent<T> extends DataEvent {
  * Instead of implementing this interface from scratch, it is suggested
  * to extend from [AbstractListModel] or [AbstractDataModel].
  */
-abstract class ListModel<T> extends DataModel {
+abstract class ListModel<T> extends DataModel implements Sequence<T> {
   /** Returns the value at the specified index.
    */
   T operator [](int index);
