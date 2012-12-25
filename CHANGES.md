@@ -5,6 +5,7 @@
 **Features**
 
 * ListModel also implements Sequence
+* DropDownList accepts both DataModel and List
 
 ##0.6.1
 

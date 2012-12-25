@@ -69,7 +69,10 @@ implements ListModel<T> {
  * The default implementation of [ListModel].
  */
 class DefaultListModel<T> extends AbstractListModel<T> {
-  final List<T> _data;
+  /** The original data.
+   * Don't modify it directly. Otherwise, UI won't be synchronized automatically.
+   */
+  final List<T> data;
 
   /** Constructor.
    *
@@ -84,16 +87,17 @@ class DefaultListModel<T> extends AbstractListModel<T> {
    */
   DefaultListModel(List<T> data,
   {Set<T> selection, Set<T> disables, bool multiple: false}):
-  super(selection: selection, disables: disables, multiple: multiple), _data = data;
+  super(selection: selection, disables: disables, multiple: multiple),
+  this.data = data;
 
   //@override
   /** Returns the object of the given index.
    */
-  T operator [](int index) => _data[index];
+  T operator [](int index) => data[index];
   //@override
   /** Returns the length of the list.
    */
-  int get length => _data.length;
+  int get length => data.length;
 
   //additional interface//
   /** Returns the index of the given data, or -1 if not found.
@@ -105,13 +109,13 @@ class DefaultListModel<T> extends AbstractListModel<T> {
    * This method is designed for use in application. The impelmentation of a view
    * shall access API available in [TreeModel].
    */
-  int indexOf(T value) => _data.indexOf(value);
+  int indexOf(T value) => data.indexOf(value);
 
   /** Assigns a value to the given index.
    */
   void operator[]=(int index, T value) {
-    final T old = _data[index];
-    _data[index] = value;
+    final T old = data[index];
+    data[index] = value;
 
     //Note: no need to send 'select' since 1) 'change' will update UI
     //2) if app modifies model in 'select', a dead loop happens (if we send 'select')
@@ -128,13 +132,13 @@ class DefaultListModel<T> extends AbstractListModel<T> {
   /** Adds a value to the end of the list.
    */
   void add(T value) {
-    _data.add(value);
+    data.add(value);
     sendEvent(new ListDataEvent(this, 'add', length - 1, 1));
   }
   /** Removes the last value.
    */
   T removeLast() {
-    final T value = _data.removeLast();
+    final T value = data.removeLast();
     _selection.remove(value); //no need to fire select
     sendEvent(new ListDataEvent(this, 'remove', length, 1));
     return value;
@@ -142,30 +146,29 @@ class DefaultListModel<T> extends AbstractListModel<T> {
   /** Inserts a range of values to the given index.
    */
   void insertRange(int start, int length, [T value]) {
-    _data.insertRange(start, length, value);
+    data.insertRange(start, length, value);
     sendEvent(new ListDataEvent(this, 'add', start, length));
   }
   /** Removes a range of values starting at the given index.
    */
   void removeRange(int start, int length) {
     for (int i = start, len = length; --len >= 0;)
-      _selection.remove(_data[i++]); //no need to fire select
-    _data.removeRange(start, length);
+      _selection.remove(data[i++]); //no need to fire select
+    data.removeRange(start, length);
     sendEvent(new ListDataEvent(this, 'remove', start, length));
   }
   void clear() {
-    final int len = _data.length;
+    final int len = data.length;
     if (len > 0) {
       _selection.clear(); //no need to fire select
-      _data.clear();
+      data.clear();
       sendEvent(new ListDataEvent(this, 'remove', 0, len));
     }
   }
 
   //@override
-  bool operator==(other) {
-    return (other is DefaultListModel) && super == other
-      && _data == other._data;
-  }
-  String toString() => "DefaultListModel($_data)";
+  bool operator==(other)
+  => (other is DefaultListModel) && super == other && data == other.data;
+  //@override
+  String toString() => "DefaultListModel($data)";
 }

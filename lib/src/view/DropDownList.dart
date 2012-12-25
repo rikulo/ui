@@ -99,6 +99,23 @@ class DropDownList<T> extends View {
       modelRenderer.queue(this); //queue even if _model is null (since cleanup is a bit tricky)
     }
   }
+  /** Returns the data.
+   * Don't use this method if the data is assigned by use [model].
+   */
+  List<T> get data
+  => model is DefaultListModel ? (model as DefaultListModel).data: null;
+  /** Sets the data.
+   * Unlike [model], UI won't be synchronized automatically if the assigned data
+   * is changed. Thus, use this method only if you'd like to synchronize UI
+   * manually or the data is readonly.
+   *
+   * For example, if you're using [MVC](http://docs.rikulo.org/rikulo/latest/UXL/Fundamentals/MVC_Overview.html),
+   * you have to invoke `render()` explicitly.
+   */
+  void set data(List<T> data) {
+    if (data != null) model = new DefaultListModel(data);
+    else model = null;
+  }
   DataEventListener _initDataListener() {
     if (_dataListener == null) {
       _dataListener = (event) {
