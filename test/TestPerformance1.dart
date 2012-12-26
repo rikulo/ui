@@ -8,7 +8,8 @@ void main() {
   final View mainView = new View()
     ..layout.text = "type: linear; orient: vertical"
     ..on.layout.add((event) {
-      printc("done");
+      if (event.target == event.currentTarget) //filter out children
+        printc("done");
     });
 
   for (int i = 0; i < 50; ++i) {

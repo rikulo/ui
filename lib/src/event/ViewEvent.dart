@@ -10,6 +10,28 @@ typedef void ViewEventListener(ViewEvent event);
 /**
  * A view event.
  * The event received by [View]'s event listener must be an instance of this class.
+ *
+ * Notice that the event will bubble up through the hierarchy of views. It
+ * is convenient if you'd like to handle the events of children. For example,
+ * you can handle the click event for all child buttons as follows:
+ *
+ *     view.on.click((event) {
+ *       switch (event.target.id) { //target is the view firing the event
+ *         case "OK": //submit
+ *         case "Cancel": //...
+ *       }
+ *     });
+ *
+ * Sometimes it might cause a problem. For example, [LayoutEvent] will be sent
+ * to every views and then bubbles up. It means your `layout` listener usually
+ * has to filter events not belonging to the target view. It can be done easily
+ * by use `event.target == event.currentTarget'. For example,
+ *
+ *     view.on.layout((event) {
+ *       if (event.target == event.currentTarget) {
+ *          //handle event.target
+ *       }
+ *     })
  */
 class ViewEvent {
   final String _type;
@@ -30,7 +52,6 @@ class ViewEvent {
   ViewEvent._(this._type, View target): _stamp = 0 {
     this.target = currentTarget = target;
   }
-
 
   /** Returns the view that this event is targeting  to.
    */
@@ -185,4 +206,148 @@ class _MsEvent extends _UiEvent {
   Clipboard get dataTransfer => _mc.dataTransfer;
 
   String toString() => "MouseEvent($target,$cause)";
+}
+
+/**
+ * An event to indicate activation.
+ * It is a broadcast event used to notify root views and any listeners
+ * that a view or an element is *activated*. By activated it means the view
+ * or the element will become the *focal point* for users to interact with.
+ * For example, it happens when the user clicks on a view or an element
+ * (it is done automatically).
+ * If the application wants to bring some view to the top, it can broadcast
+ * this event too.
+ *
+ *     broadcaster.sendEvent(new ActivateEvent(activatedView));
+ *
+ * Views that acts as popups shall then dismiss themselves when receiving this event.
+ * For example,
+ *
+ *     class Popup extends View {
+ *       Popup() {
+ *         on.activate.add((event) {
+ *           if (event.shallClose(this))
+ *             remove();
+ *         });
+ *       }
+ *     }
+ *
+ * If the popup is not the root view, it has to register an event listener to
+ * [broadcaster].
+ *
+ * > By popup we mean a UI object that is shown up
+ * only in short period of time, and dismissed as soon as the user takes an action.
+ * Typical examples include a popup menu and an information bubble.
+ */
+class ActivateEvent extends ViewEvent {
+  final _source;
+
+  /** Constructor.
+   * The source parameter is either an instance of [View], a DOM element, or null.
+   * If null, it means all pop ups shall be closed.
+   */
+  ActivateEvent(var source, [String type="activate"]):
+  super(type), _source = source {
+  }
+  /** Returns the UI object triggers this event.
+   * It is either a view or a DOM element.
+   */
+  get source => _source;
+
+  /** Whether the given view or element shall be closed.
+   *
+   * + [popup] is either a view or an element.
+   */
+  bool shallClose(popup) {
+    if (source == null)
+      return true;
+
+    var srcNode, popNode;
+    if (source is View) {
+      if (popup is View)
+        return !source.isDescendantOf(popup);
+      srcNode = source.node;
+      popNode = popup;
+    } else {
+      srcNode = source;
+      popNode = popup is View ? popup.node: popup;
+    }
+    return !new DomAgent(srcNode).isDescendantOf(popNode);
+  }
+}
+
+/**
+ * An event to indicate a view's value has been changed.
+ * It is sent with [ViewEvents.change].
+ */
+class ChangeEvent<T> extends ViewEvent {
+  final T _value;
+  ChangeEvent(T value, [String type="change", View target]):
+  super(type, target), _value = value;
+
+  /** Returns the value.
+   */
+  T get value => _value;
+
+  String toString() => "ChangeEvent($target,$value)";
+}
+
+/**
+ * A layout event. It is sent with [ViewEvents.layout] and [ViewEvents.preLayout].
+ */
+class LayoutEvent extends ViewEvent {
+  final MeasureContext _context;
+  LayoutEvent(MeasureContext context, [String type="layout", View target]):
+  super(type, target), _context = context;
+
+  /** Returns the context.
+   */
+  MeasureContext get context => _context;
+
+  String toString() => "LayoutEvent($target)";
+}
+
+/** Event representing scrolling.
+ */
+class ScrollEvent extends ViewEvent {
+  
+  final ScrollerState state;
+  
+  /** Constructor
+   * 
+   */
+  ScrollEvent(String type, View target, this.state) : 
+    super(type, target);
+}
+
+/**
+ * A select event. It is sent with [ViewEvents.select].
+ */
+class SelectEvent<T> extends ViewEvent {
+  final Collection<T> _selectedValues;
+  final int _selectedIndex;
+
+  /** Constructor.
+   *
+   * + [selectedValues] is the set of selected values. It can't be null.
+   * + [selectedIndex] is the index of the first selected value, or -1
+   * if [selectedValues] is empty.
+   */
+  SelectEvent(Collection<T> selectedValues, int selectedIndex, [String type="select", View target]):
+  super(type, target), _selectedValues = selectedValues, _selectedIndex = selectedIndex;
+
+  /** Returns the selected values.
+   */
+  Collection<T> get selectedValues => _selectedValues;
+  /** Returns the first selected value, or null if no selected value.
+   */
+  T get selectedValue => ListUtil.first(_selectedValues);
+
+  /** Returns the first selected index, or -1 if none is selected.
+   *
+   * Notice that [selectedIndex] is meaningless for [TreeModel].
+   */
+  int get selectedIndex => _selectedIndex;
+
+  String toString() => "SelectEvent($target, $selectedValues, $selectedIndex)";
 }

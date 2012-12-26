@@ -15,9 +15,3 @@ import "util.dart";
 part "src/event/ViewEvent.dart";
 part "src/event/ViewEvents.dart";
 part "src/event/Broadcaster.dart";
-
-part "src/event/ActivateEvent.dart";
-part "src/event/ChangeEvent.dart";
-part "src/event/LayoutEvent.dart";
-part "src/event/ScrollEvent.dart";
-part "src/event/SelectEvent.dart";
