@@ -55,9 +55,9 @@ class Color {
     int r, g, b;
     
     try {
-      r = parseInt("0x${colorCode.substring(1,   bdr)}");
-      g = parseInt("0x${colorCode.substring(bdr, bdg)}");
-      b = parseInt("0x${colorCode.substring(bdg)}");
+      r = int.parse("0x${colorCode.substring(1,   bdr)}");
+      g = int.parse("0x${colorCode.substring(bdr, bdg)}");
+      b = int.parse("0x${colorCode.substring(bdg)}");
       if (short) {
         r *= 17;
         g *= 17;
