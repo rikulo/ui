@@ -5,6 +5,7 @@
 **Changes**
 
 * The signature of View's sendEvent and postEvent are changed.
+* `util.dart` is moved to Rikulo Commons
 
 **Features**
 
@@ -13,6 +14,8 @@
 * ViewEvent will, by default, bubble up the hierarchy of views.
 
 ##0.6.1
+
+December 14, 2012
 
 **Changes**
 

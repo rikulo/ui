@@ -3,7 +3,7 @@
 import 'dart:html';
 import 'package:rikulo/view.dart';
 import 'package:rikulo/event.dart';
-import 'package:rikulo/util.dart';
+import 'package:rikulo_commons/util.dart';
 
 View getContainer(DomEvent event) {
   //to protect the drop from other source, we have to check data first

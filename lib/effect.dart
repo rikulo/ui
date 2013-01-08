@@ -7,8 +7,9 @@ library rikulo_effect;
 import "dart:html";
 import "dart:math";
 
+import "package:rikulo_commons/util.dart";
+
 import "html.dart";
-import "util.dart";
 
 part "src/effect/Animator.dart";
 part "src/effect/Motion.dart";

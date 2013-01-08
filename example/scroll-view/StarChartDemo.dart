@@ -1,9 +1,10 @@
 //Sample Code: Star Chart Demo
 
 import 'dart:math';
+import "package:rikulo_commons/util.dart";
+
 import 'package:rikulo/view.dart';
 import 'package:rikulo/html.dart';
-import 'package:rikulo/util.dart';
 
 View _system(Offset pos, num maxsyssize, int rad, [String name]) {
   View sys = new View();

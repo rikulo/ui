@@ -3,8 +3,8 @@
 import 'dart:html';
 
 import 'package:rikulo/view.dart';
-import 'package:rikulo/util.dart';
 import 'package:rikulo/view/select.dart';
+import 'package:rikulo_commons/util.dart';
 
 void assertIdentical(String src) {
   assertLegal(src, "[${src}]");

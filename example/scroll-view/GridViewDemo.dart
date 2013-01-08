@@ -1,9 +1,11 @@
 //Sample Code: ScrollView
 
 import 'dart:html';
+
+import "package:rikulo_commons/util.dart";
+
 import 'package:rikulo/view.dart';
 import 'package:rikulo/html.dart';
-import 'package:rikulo/util.dart';
 import 'package:rikulo/event.dart';
 
 void main() {

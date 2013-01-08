@@ -6,8 +6,8 @@ import 'dart:math';
 import 'package:rikulo/view.dart';
 import 'package:rikulo/html.dart';
 import 'package:rikulo/gesture.dart';
-import 'package:rikulo/util.dart';
 import 'package:rikulo/event.dart';
+import 'package:rikulo_commons/util.dart';
 
 final int statusHeight = 50;
 

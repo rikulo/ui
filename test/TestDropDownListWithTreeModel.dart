@@ -5,7 +5,7 @@
 import 'package:rikulo/view.dart';
 import 'package:rikulo/model.dart';
 import 'package:rikulo/event.dart';
-import 'package:rikulo/util.dart';
+import 'package:rikulo_commons/util.dart';
 
 DefaultTreeModel<String> createTreeModel() {
   DefaultTreeModel<String> model = new DefaultTreeModel(nodes: [

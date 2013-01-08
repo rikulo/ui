@@ -1,10 +1,11 @@
 import "dart:html";
 import "dart:math";
 
+import "package:rikulo_commons/util.dart";
+
 import 'package:rikulo/view.dart';
 import 'package:rikulo/view/impl.dart';
 import 'package:rikulo/html.dart';
-import 'package:rikulo/util.dart';
 import 'package:rikulo/event.dart';
 import 'package:rikulo/effect.dart';
 

@@ -6,11 +6,12 @@ library rikulo_event;
 
 import "dart:html";
 
+import 'package:rikulo_commons/util.dart';
+
 import "html.dart";
 import "view.dart";
 import "layout.dart";
 import 'gesture.dart';
-import "util.dart";
 
 part "src/event/ViewEvent.dart";
 part "src/event/ViewEvents.dart";

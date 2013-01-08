@@ -7,8 +7,9 @@ library rikulo_gesture;
 import "dart:html";
 import "dart:math";
 
+import 'package:rikulo_commons/util.dart';
+
 import "view.dart";
-import "util.dart";
 import "html.dart";
 import "effect.dart";
 

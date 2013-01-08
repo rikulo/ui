@@ -3,7 +3,7 @@
 import 'package:rikulo/view.dart';
 import 'package:rikulo/html.dart';
 import 'package:rikulo/gesture.dart';
-import 'package:rikulo/util.dart';
+import 'package:rikulo_commons/util.dart';
 
 TextView block(View parent, int duration, num limit, int top) {
   TextView v = new TextView("${duration/1000}s / ${limit}px");

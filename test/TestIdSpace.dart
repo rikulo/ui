@@ -1,7 +1,7 @@
 //Sample Code: Test IdSpace
 
 import 'package:rikulo/view.dart';
-import 'package:rikulo/util.dart';
+import 'package:rikulo_commons/util.dart';
 
 void main() {
   final View mainView = new View()..addToDocument();

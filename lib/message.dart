@@ -7,9 +7,10 @@ library rikulo_message;
 import "dart:html";
 import "dart:json";
 
+import 'package:rikulo_commons/util.dart';
+
 import "html.dart";
 import "view.dart";
-import "util.dart";
 
 part "src/message/MessageQueue.dart";
 part "src/message/InterApplicationBridge.dart";

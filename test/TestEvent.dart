@@ -4,7 +4,7 @@ import 'dart:html';
 import 'package:rikulo/view.dart';
 import 'package:rikulo/event.dart';
 import 'package:rikulo/html.dart';
-import 'package:rikulo/util.dart';
+import 'package:rikulo_commons/util.dart';
 
 View createCube(int size, String txt, String desc) {
   View v = new View();

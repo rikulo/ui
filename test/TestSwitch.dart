@@ -7,7 +7,7 @@ import 'dart:html';
 import 'package:rikulo/view.dart';
 import 'package:rikulo/model.dart';
 import 'package:rikulo/event.dart';
-import 'package:rikulo/util.dart';
+import 'package:rikulo_commons/util.dart';
 
 Switch createSwitch(bool value, [String onLabel, String offLabel, bool small=false]) {
   Switch view = new Switch(value, onLabel, offLabel);

@@ -3,7 +3,8 @@
 
 library rikulo_model;
 
-import "util.dart";
+import 'package:rikulo_commons/util.dart';
+
 import "view.dart";
 
 part "src/model/DataEvent.dart";

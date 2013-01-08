@@ -5,7 +5,8 @@ library rikulo_view_impl;
 
 import "dart:html";
 
-import "../util.dart";
+import 'package:rikulo_commons/util.dart';
+
 import "../html.dart";
 import "../view.dart";
 import "../layout.dart";
