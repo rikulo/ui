@@ -286,8 +286,8 @@ class DropDownList<T> extends View {
         //store the path in value
         final out = new StringBuffer();
         if (parentIndex >= 0)
-          out.add(parentIndex).add('.');
-        opt.value = out.add(i).toString();
+          out..add(parentIndex)..add('.');
+        opt.value = (out..add(i)).toString();
 
         parent.nodes.add(opt);
       } else {

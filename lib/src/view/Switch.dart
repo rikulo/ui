@@ -130,11 +130,11 @@ class Switch extends View implements Input<bool> {
   //@override
   Element render_()
   => new Element.html(
-      new StringBuffer().add('<div><div class="v-bg"><div class="v-bgi" id="')
-        .add(uuid).add('-bg"></div></div><div class="v-slide" id="')
-        .add(uuid).add('-sd"><div class="v-text-on v-button">')
-        .add(onLabel).add('</div><div class="v-text-off v-button">')
-        .add(offLabel).add('</div><div class="v-knot"></div></div></div>')
+      (new StringBuffer()..add('<div><div class="v-bg"><div class="v-bgi" id="')
+        ..add(uuid)..add('-bg"></div></div><div class="v-slide" id="')
+        ..add(uuid)..add('-sd"><div class="v-text-on v-button">')
+        ..add(onLabel)..add('</div><div class="v-text-off v-button">')
+        ..add(offLabel)..add('</div><div class="v-knot"></div></div></div>'))
         .toString());
 
   /** Returns false to indicate this view doesn't allow any child views.

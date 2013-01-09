@@ -95,11 +95,11 @@ class _Printc {
       final StringBuffer sb = new StringBuffer();
       for (final _PrintcMsg msg in _msgs) {
         final Date time = msg.t;
-        sb.add(time.hour).add(':').add(time.minute).add(':').add(time.second);
+        sb..add(time.hour)..add(':')..add(time.minute)..add(':')..add(time.second);
         if (_lastLogTime != null)
-          sb.add('>').add((time.millisecondsSinceEpoch - _lastLogTime)/1000);
+          sb..add('>')..add((time.millisecondsSinceEpoch - _lastLogTime)/1000);
         _lastLogTime = time.millisecondsSinceEpoch;
-        sb.add(': ').add(msg.m).add('\n');
+        sb..add(': ')..add(msg.m)..add('\n');
       }
       _msgs.clear();
 

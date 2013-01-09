@@ -1,5 +1,6 @@
 //Sample Code: Test Log
 
+import 'dart:html';
 import 'package:rikulo/view.dart';
 
 void main() {
@@ -16,7 +17,7 @@ void main() {
   View dl = new View.tag("dl");
   for (int i = 0; i < 10; ++i) {
     View li = new View.tag("li");
-    li.node
+    (li.node as LIElement)
       ..type = "i"
       ..value =  i*2 + 1
       ..innerHtml = "This is the <b>$i</b> item.";

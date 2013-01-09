@@ -58,7 +58,7 @@ class Declaration {
   String get text {
     final StringBuffer sb = new StringBuffer();
     for (final String key in _props.keys)
-      sb.add(key).add(':').add(_props[key]).add(';');
+      sb..add(key)..add(':')..add(_props[key])..add(';');
     return sb.toString();
   }
   /// Sets the text representation of the declaration block.

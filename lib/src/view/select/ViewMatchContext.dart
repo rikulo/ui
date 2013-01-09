@@ -118,9 +118,9 @@ class ViewMatchContext {
     StringBuffer sb = new StringBuffer();
     for (List<bool> qs in _qualified)
       sb.add(qs);
-    return sb.add(" @${view}").toString();
+    return (sb..add(" @${view}")).toString();
   }
-  
+
   // helper //
   static int computeViewChildIndex(View view) {
     int index = -1;

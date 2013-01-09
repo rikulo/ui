@@ -85,12 +85,12 @@ class Style extends View {
   void _updateInner(String content, String src) {
     final out = new StringBuffer();
     if (src != null)
-      out.add('<link rel="stylesheet" type="text/css" href="').add(src).add('"');
+      out..add('<link rel="stylesheet" type="text/css" href="')..add(src)..add('"');
     else
       out.add('<style');
 
     if (media != null)
-      out.add(' media="').add(media).add('"');
+      out..add(' media="')..add(media)..add('"');
 
     if (src != null) {
       out.add('/>');
