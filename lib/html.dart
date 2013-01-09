@@ -10,5 +10,5 @@ import "dart:math";
 import 'package:rikulo_commons/util.dart';
 
 part "src/html/Browser.dart";
-part "src/html/Css.dart";
+part "src/html/dom.dart";
 part "src/html/DomAgent.dart";

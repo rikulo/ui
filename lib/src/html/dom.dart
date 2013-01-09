@@ -4,7 +4,7 @@
 part of rikulo_html;
 
 /**
- * A collection of CSS utilities
+ * CSS utilities
  */
 class Css {
   /** The prefix used for non-standard CSS property.
