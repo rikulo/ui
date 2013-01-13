@@ -35,7 +35,7 @@ abstract class Input<T> {
   T value;
 }
 
-/** An UI exception.
+/** An UI error.
  */
 class UiError implements Error {
   final String message;

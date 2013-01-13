@@ -252,7 +252,7 @@ class _EventListenerInfo {
       throw new ArgumentError("listener");
 
     if (_listeners == null)
-      _listeners = {};
+      _listeners = new Map();
 
     bool first = false;
     _listeners.putIfAbsent(type, () {
@@ -308,7 +308,7 @@ class _EventListenerInfo {
     if (disp != null) {
       final ln = disp(_owner); //must be non-null
       if (_domListeners == null)
-        _domListeners = {};
+        _domListeners = new Map();
       (target != null ? target: _domEvtTarget(type, _owner.node))
         .on[type.toLowerCase()].add(_domListeners[type] = ln);
     }
@@ -345,7 +345,7 @@ const _noBubEvts = const ["focus", "blur"];
 final _inpTags = new Set.from(const ["input", "textarea", "select", "button", "a"]);
 _DomEventDispatcher _domEventDispatcher(String type) {
   if (_domEvtDisps == null) {
-    _domEvtDisps = {};
+    _domEvtDisps = new Map();
     for (final nm in const ["abort", "click", "dblclick",
     "drag", "dragEnd", "dragEnter", "dragLeave", "dragOver", "dragStart", "drop",
     "error", "keyDown", "keyPress", "keyUp", "load",

@@ -36,7 +36,7 @@ class ViewEventListenerMap {
   final _ptr;
   final Map<String, ViewEventListenerList> _lnlist;
 
-  ViewEventListenerMap(this._ptr): _lnlist = {};
+  ViewEventListenerMap(this._ptr): _lnlist = new Map();
   /** Returns the list of [ViewEvent] listeners for the given type.
    */
   ViewEventListenerList operator [](String type) => _get(type); 

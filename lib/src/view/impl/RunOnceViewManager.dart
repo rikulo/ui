@@ -41,7 +41,7 @@ class RunOnceQueue {
     if (_tasks != null)
       cancel(key);
     else
-      _tasks = {};
+      _tasks = new Map();
 
     _tasks[key] = window.setTimeout((){
       _tasks.remove(key);
