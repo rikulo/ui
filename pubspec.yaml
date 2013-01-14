@@ -10,3 +10,4 @@ authors:
 homepage: http://rikulo.org
 dependencies:
   rikulo_commons: any
+  browser: any
