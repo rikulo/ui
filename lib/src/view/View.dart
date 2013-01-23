@@ -171,9 +171,7 @@ class View {
         var so = spaceOwner;
         return so is View ? so as View : null;
     }
-
-    final Iterator<View> iter = queryAll(selector).iterator();
-    return iter.hasNext ? iter.next() : null;
+    return (queryAll(selector).iterator..moveNext()).current;
   }
   /** Searches and returns all views that matches the selector.
    */

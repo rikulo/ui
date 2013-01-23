@@ -13,8 +13,7 @@ class ViewIterator implements Iterator<View> {
   View _offsetRoot;
   ViewMatchContext _currCtx;
   
-  bool _ready = false;
-  View _next;
+  View _curr = null;
   int _index = -1;
   
   ViewIterator(this._root, String selector) : _selectors = Selectors.parse(selector) {
@@ -22,24 +21,9 @@ class ViewIterator implements Iterator<View> {
     this._allIds = _isAllIds(this._selectors, this._posOffset);
   }
   
-  View next() {
-    if (!hasNext) 
-      throw new StateError("No more elements");
-    _ready = false;
-    return _next;
-  }
+  View get current => _curr;
   
-  bool get hasNext {
-    _loadNext();
-    return _next != null;
-  }
-  
-  void _loadNext() {
-    if (_ready) 
-      return;
-    _next = _seekNext();
-    _ready = true;
-  }
+  bool moveNext() => (_curr = _seekNext()) != null;
   
   View _seekNext() {
     _currCtx = _index < 0 ? _buildRootCtx() : _buildNextCtx();
@@ -282,13 +266,14 @@ class ViewIterator implements Iterator<View> {
   
 }
 
-class ViewIterable implements Iterable<View> {
+class ViewIterable extends Iterable<View> {
   
   final View _root;
   final String _selector;
   
   ViewIterable(this._root, this._selector);
   
-  Iterator<View> iterator() => new ViewIterator(_root, _selector);
+  //@override
+  Iterator<View> get iterator => new ViewIterator(_root, _selector);
   
 }
