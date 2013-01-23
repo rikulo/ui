@@ -377,7 +377,7 @@ _DomEventDispatcher _domChangeEvtDisp() {
       target.sendEvent(
         new ChangeEvent(tv != null ? tv.value:
           dt is InputElement && (dt.type == 'checkbox' || dt.type == 'radio') ?
-            (dt as InputElement).checked: (dt as InputElement).value));
+            (dt as InputElement).checked: (dt as dynamic).value));
           //assumes tv has a property called value (at least, dt has a value)
     };
   };
