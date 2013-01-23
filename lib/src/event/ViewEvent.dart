@@ -341,7 +341,7 @@ class SelectEvent<T> extends ViewEvent {
   Collection<T> get selectedValues => _selectedValues;
   /** Returns the first selected value, or null if no selected value.
    */
-  T get selectedValue => ListUtil.first(_selectedValues);
+  T get selectedValue => _selectedValues.isEmpty ? null: _selectedValues.first;
 
   /** Returns the first selected index, or -1 if none is selected.
    *

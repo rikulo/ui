@@ -377,7 +377,7 @@ _DomEventDispatcher _domChangeEvtDisp() {
       target.sendEvent(
         new ChangeEvent(tv != null ? tv.value:
           dt is InputElement && (dt.type == 'checkbox' || dt.type == 'radio') ?
-            dt.checked: dt.value));
+            (dt as InputElement).checked: (dt as InputElement).value));
           //assumes tv has a property called value (at least, dt has a value)
     };
   };
@@ -399,13 +399,36 @@ class _VirtualIdSpace implements IdSpace {
   String toString() => "_VirtualIdSpace($_owner)";
 }
 
-class _SubviewSeq extends Sequence<View> {
+class _SubviewIter implements Iterator<View> {
   final View _owner;
-  _SubviewSeq(this._owner);
+  View _curr;
+  bool _moved = false;
+
+  _SubviewIter(this._owner);
+
+  View get current => _curr;
+  bool moveNext() {
+    if (!_moved) {
+      _moved = true;
+      _curr = _owner.firstChild;
+    } else if (_curr != null) {
+      _curr = _curr.nextSibling;
+    }
+    return _curr != null;
+  }
+}
+/**
+ * A list of child views.
+ * Notice that [set length] are not supported
+ */
+class _SubviewList extends Iterable<View> implements List<View> {
+  final View _owner;
+  _SubviewList(View owner): _owner = owner;
 
   int get length => _owner.childCount;
+  Iterator<View> get iterator => new _SubviewIter(_owner.firstChild);
   View operator[](int index) {
-    ListUtil.rangeCheck(this, index, 1);
+    Arrays.rangeCheck(this, index, 1);
 
     int index2 = length - index - 1;
     if (index <= index2) {
@@ -420,15 +443,6 @@ class _SubviewSeq extends Sequence<View> {
       return child;
     }
   }
-}
-/**
- * A list of child views.
- * Notice that [set length] are not supported
- */
-class _SubviewList extends SequenceList<View> {
-  final View _owner;
-  _SubviewList(View owner): super(new _SubviewSeq(owner)), _owner = owner;
-
   void operator[]=(int index, View value) {
     if (value == null)
       throw new ArgumentError();
@@ -464,8 +478,8 @@ class _SubviewList extends SequenceList<View> {
       throw new RangeError(start);
     } else if (start == this.length) { //append
       if (startFrom == 0) { //optimize
-        for (Iterator<View> it = from.iterator(); --length >= 0;) {
-          add(it.next());
+        for (Iterator<View> it = from.iterator; --length >= 0;) {
+          add((it..moveNext()).current);
         }
       } else {
         while (--length >= 0)
@@ -473,9 +487,9 @@ class _SubviewList extends SequenceList<View> {
       }
     } else if (startFrom == 0) { //optimize
       View w = this[start];
-      Iterator<View> it = from.iterator();
+      Iterator<View> it = from.iterator;
       while (--length >= 0) { //replace
-        View value = it.next();
+        View value = (it..moveNext()).current;
         final View next = w.nextSibling;
         if (!identical(w, value)) {
           w.remove();
@@ -486,7 +500,7 @@ class _SubviewList extends SequenceList<View> {
         w = next;
       }
       while (--length >= 0) //append
-        add(it.next());
+        add((it..moveNext()).current);
     } else {
       View w = this[start];
       while (--length >= 0) { //replace

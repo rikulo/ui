@@ -35,8 +35,11 @@ class DataModel {
    * `removeEventListener("select", listener)` is the same as
    * `on.select.remove(listener)`.
    */
-  bool removeEventListener(String type, DataEventListener listener)
-  => ListUtil.remove(_listeners[type], listener);
+  void removeEventListener(String type, DataEventListener listener) {
+    final list = _listeners[type];
+    if (list != null)
+      list.remove(listener);
+  }
   /** Sends an event to this model.
    *
    * Example: `model.sendEvent(new ListDataEvent(model, "select"))</code>.
@@ -239,7 +242,7 @@ implements Selection<T>, Disables<T> {
   }
 
   //Selection//
-  T get selectedValue => ListUtil.first(_selection);
+  T get selectedValue => _selection.isEmpty ? null: _selection.first;
   Set<T> get selection => _selection;
 
   void set selection(Collection<T> selection) {
@@ -293,7 +296,7 @@ implements Selection<T>, Disables<T> {
       sendEvent(new DataEvent(this, 'multiple'));
 
       if (!multiple && _selection.length > 1) {
-        final T v = _selection.iterator().next();
+        final T v = _selection.first;
         _selection.clear();
         _selection.add(v);
         _sendSelect();
@@ -426,7 +429,7 @@ class RenderContext<T> {
   String getDataAsString([bool encode=false]) {
     var val = data;
     if (val is TreeNode)
-      val = val.data;
+      val = (val as TreeNode).data;
     if (val is Map && (val as Map).containsKey("text"))
       val = val["text"];
     return val != null ? encode ? "${XmlUtil.encode(val)}": val.toString(): "";

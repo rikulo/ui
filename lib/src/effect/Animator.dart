@@ -105,7 +105,7 @@ class _Animator implements Animator {
     if (_tmpRemoved != null) {
       _tmpRemoved.add(task); //handle it later
     } else {
-      ListUtil.remove(_tasks, task);
+      _tasks.remove(task);
     }
   }
   Collection<AnimatorTask> get tasks => _tasks;

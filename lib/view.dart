@@ -4,6 +4,7 @@ library rikulo_view;
 
 import "dart:html";
 import "dart:math";
+import "dart:collection";
 
 import 'package:rikulo_commons/util.dart';
 

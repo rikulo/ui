@@ -84,9 +84,10 @@ class _BroadcastListeners {
   }
   /** Removes an event listener. (Called by ViewEvents)
    */
-  bool remove(String type, ViewEventListener listener) {
-    List<ViewEventListener> ls;
-    return (ls = _listeners[type]) != null && ListUtil.remove(ls, listener);
+  void remove(String type, ViewEventListener listener) {
+    final ls = _listeners[type];
+    if (ls != null)
+      ls.remove(listener);
   }
   /** Sends an event. (Called by ViewEvents)
    */

@@ -213,7 +213,7 @@ class ViewUtil {
       String sval = attrs[_APP_COUNT];
       if (sval != null) {
         _appId = int.parse(sval);
-        attrs[_APP_COUNT] = _appId + 1;
+        attrs[_APP_COUNT] = (_appId + 1).toString();
       } else {
         _appId = 0;
         attrs[_APP_COUNT] = "1";

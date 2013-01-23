@@ -569,7 +569,7 @@ class View {
   void _removeFromDocument() {
     _unmount();
     classes.removeAll(_rootClasses);
-    ListUtil.remove(rootViews, this);
+    rootViews.remove(this);
 
     final dlgInfo = dialogInfos.remove(this);
     if (dlgInfo != null)
