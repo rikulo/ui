@@ -421,12 +421,18 @@ class _SubviewIter implements Iterator<View> {
  * A list of child views.
  * Notice that [set length] are not supported
  */
-class _SubviewList extends Iterable<View> implements List<View> {
+class _SubviewList extends Collection<View> implements List<View> {
   final View _owner;
   _SubviewList(View owner): _owner = owner;
 
   int get length => _owner.childCount;
   Iterator<View> get iterator => new _SubviewIter(_owner.firstChild);
+  View get last {
+    if (isEmpty)
+      throw new StateError("No elements");
+    return _owner.lastChild;
+  }
+  
   View operator[](int index) {
     Arrays.rangeCheck(this, index, 1);
 
@@ -457,6 +463,7 @@ class _SubviewList extends Iterable<View> implements List<View> {
   void add(View view) {
     _owner.addChild(view);
   }
+  void addLast(View view) => add(view);
   void sort([Comparator<View> compare]) {
     List<View> copy = new List.from(this);
     copy.sort(compare);
@@ -541,6 +548,57 @@ class _SubviewList extends Iterable<View> implements List<View> {
       _owner.addChild(initialValue, w);
     }
   }
+  
+  void set length(int newLength) {
+    throw new UnsupportedError("Cannot set the length of view children list.");
+  }
+  
+  int indexOf(View view, [int start = 0]) {
+    if (start >= length)
+      return -1;
+    int i = start;
+    for (View v = elementAt(max(start, 0)); v != null; v = v.nextSibling) {
+      if (v == view)
+        return i;
+      i++;
+    }
+    return -1;
+  }
+  
+  int lastIndexOf(View view, [int start]) {
+    if (start < 0)
+      return -1;
+    bool fromLast = start == null || start >= length - 1;
+    int i = fromLast ? length - 1 : start;
+    for (View v = fromLast ? last : this[start]; v != null; v = v.previousSibling) {
+      if (v == view)
+        return i;
+      i--;
+    }
+    return -1;
+  }
+  
+  void remove(Object element) {
+    if (element is View) {
+      View v = element as View;
+      if (v.parent == _owner)
+        v.remove();
+    }
+  }
+  
+  View removeAt(int index) => this[index]..remove();
+  
+  void clear() {
+    View child = _owner.firstChild;
+    while (child != null) {
+      final View next = child.nextSibling;
+      child.remove();
+      child = next;
+    }
+  }
+  
+  List<View> getRange(int start, int length) => 
+      new ListView<View>(this, start, length);
 }
 
 /** The classes to add to the root node
