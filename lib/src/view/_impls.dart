@@ -426,7 +426,7 @@ class _SubviewList extends Collection<View> implements List<View> {
   _SubviewList(View owner): _owner = owner;
 
   int get length => _owner.childCount;
-  Iterator<View> get iterator => new _SubviewIter(_owner.firstChild);
+  Iterator<View> get iterator => new _SubviewIter(_owner);
   View get last {
     if (isEmpty)
       throw new StateError("No elements");
@@ -597,8 +597,10 @@ class _SubviewList extends Collection<View> implements List<View> {
     }
   }
   
-  List<View> getRange(int start, int length) => 
-      new ListView<View>(this, start, length);
+  List<View> getRange(int start, int length) => null; // TODO
+  
+  List<View> get reversed => null; // TODO
+  
 }
 
 /** The classes to add to the root node
