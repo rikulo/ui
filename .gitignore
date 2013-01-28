@@ -8,6 +8,7 @@ Thumbs.db
 *.dart.js
 *.dart.js_
 *.dart.js.map
+*.dart.js.deps
 out.js
 out.js.map
 out.js.deps
