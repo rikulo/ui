@@ -109,7 +109,7 @@ class _BroadcastListeners {
     }
 
 		//broadcast to all root views
-    for (final v in rootViews)
+    for (final v in new List<View>.from(rootViews))
       if (v.sendEvent(event, type: type))
         dispatched = true;
     return dispatched;
