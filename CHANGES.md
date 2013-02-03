@@ -1,5 +1,9 @@
 #Rikulo Changes
 
+##0.6.3
+
+* View event stream is supported
+
 ##0.6.2
 
 **Changes**

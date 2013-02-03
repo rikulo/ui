@@ -10,8 +10,8 @@ class _ViewImpl {
   static void init() {
     if (!_inited) {
       _inited = true;
-      window.on.resize.add(_onResize);
-      (browser.touch ? document.on.touchStart: document.on.mouseDown).add(_onTouchStart);
+      window.onResize.listen(_onResize);
+      (browser.touch ? document.onTouchStart: document.onMouseDown).listen(_onTouchStart);
     }
   }
   static bool _inited = false;
@@ -247,7 +247,7 @@ class _EventListenerInfo {
   }
   /** Adds an event listener. (Called by ViewEvents)
    */
-  void add(String type, ViewEventListener listener) {
+  void add(String type, ViewEventListener listener, bool useCapture) {
     if (listener == null)
       throw new ArgumentError("listener");
 
@@ -261,11 +261,11 @@ class _EventListenerInfo {
     }).add(listener);
 
     if (first)
-      _owner.onEventListened_(type);
+      _owner.onEventListened_(type, useCapture: useCapture);
   }
   /** Removes an event listener. (Called by ViewEvents)
    */
-  bool remove(String type, ViewEventListener listener) {
+  bool remove(String type, ViewEventListener listener, bool useCapture) {
     List<ViewEventListener> ls;
     bool found = false;
     if (_listeners != null && (ls = _listeners[type]) != null) {
@@ -275,7 +275,7 @@ class _EventListenerInfo {
 
         ls.removeRange(j, 1);
         if (ls.isEmpty)
-          _owner.onEventUnlistened_(type);
+          _owner.onEventUnlistened_(type, useCapture: useCapture);
       }
     }
     return found;
@@ -302,7 +302,7 @@ class _EventListenerInfo {
     return dispatched;
   }
 
-  void onEventListened_(String type, Element target) {
+  void onEventListened_(String type, Element target, bool useCapture) {
     //proxy known DOM events
     final disp = _domEventDispatcher(type);
     if (disp != null) {
@@ -310,15 +310,15 @@ class _EventListenerInfo {
       if (_domListeners == null)
         _domListeners = new Map();
       (target != null ? target: _domEvtTarget(type, _owner.node))
-        .on[type.toLowerCase()].add(_domListeners[type] = ln);
+        .$dom_addEventListener(type.toLowerCase(), _domListeners[type] = ln, useCapture);
     }
   }
-  void onEventUnlistened_(String type, Element target) {
+  void onEventUnlistened_(String type, Element target, bool useCapture) {
     EventListener ln;
     if (_domListeners != null
     && (ln = _domListeners.remove(type)) != null)
       (target != null ? target: _domEvtTarget(type, _owner.node))
-        .on[type.toLowerCase()].remove(ln);
+        .$dom_removeEventListener(type.toLowerCase(), ln, useCapture);
   }
 }
 

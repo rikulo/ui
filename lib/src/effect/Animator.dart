@@ -12,7 +12,7 @@ part of rikulo_effect;
  * If you'd like, you can remove it manually by use of [Animator.remove].
  *
  * + [time] is the milliseconds from 1970-01-01 (UTC).
- * In other words, it is the same as `new Date.now().millisecondsSinceEpoch`.
+ * In other words, it is the same as `new DateTime.now().millisecondsSinceEpoch`.
  */
 typedef bool AnimatorTask(int time);
 
@@ -110,5 +110,5 @@ class _Animator implements Animator {
   }
   Collection<AnimatorTask> get tasks => _tasks;
 
-  static int _now() => new Date.now().millisecondsSinceEpoch;
+  static int _now() => new DateTime.now().millisecondsSinceEpoch;
 }

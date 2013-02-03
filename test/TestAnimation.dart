@@ -51,7 +51,7 @@ void main() {
   cube.on.mouseDown.add((ViewEvent event) {
     motion.pause();
     /*
-    pauseStart = new Date.now().millisecondsSinceEpoch;
+    pauseStart = new DateTime.now().millisecondsSinceEpoch;
     paused = true;
      */
   });
@@ -60,7 +60,7 @@ void main() {
     motion.run();
     /*
     if (paused) {
-    offset += new Date.now().millisecondsSinceEpoch - pauseStart;
+    offset += new DateTime.now().millisecondsSinceEpoch - pauseStart;
     paused = false;
     }
      */

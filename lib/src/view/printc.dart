@@ -94,7 +94,7 @@ class _Printc {
 
       final StringBuffer sb = new StringBuffer();
       for (final _PrintcMsg msg in _msgs) {
-        final Date time = msg.t;
+        final DateTime time = msg.t;
         sb..add(time.hour)..add(':')..add(time.minute)..add(':')..add(time.second);
         if (_lastLogTime != null)
           sb..add('>')..add((time.millisecondsSinceEpoch - _lastLogTime)/1000);
@@ -120,8 +120,8 @@ class _Printc {
 }
 class _PrintcMsg {
   final String m;
-  final Date t;
-  _PrintcMsg(var msg): m = "$msg", t = new Date.now();
+  final DateTime t;
+  _PrintcMsg(var msg): m = "$msg", t = new DateTime.now();
     //we have to 'snapshot' the value since it might be changed later
 }
 class _PrintcPopup {

@@ -117,7 +117,7 @@ abstract class HoldGesture extends Gesture {
     final HoldGestureState state = _state;
     _stop();
     if (_action != null && state != null) {
-      state._time = new Date.now().millisecondsSinceEpoch;
+      state._time = new DateTime.now().millisecondsSinceEpoch;
       _action(state);
     }
   }

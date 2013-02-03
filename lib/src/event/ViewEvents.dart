@@ -3,6 +3,187 @@
 // Author: tomyeh
 part of rikulo_event;
 
+//View Event Streams//
+const ViewEventStreamProvider<ActivateEvent> activateEvent = const ViewEventStreamProvider<ActivateEvent>('activate');
+const ViewEventStreamProvider<ViewEvent> dismissEvent = const ViewEventStreamProvider<ViewEvent>('dismiss');
+const ViewEventStreamProvider<LayoutEvent> layoutEvent = const ViewEventStreamProvider<LayoutEvent>('layout');
+const ViewEventStreamProvider<ViewEvent> mountEvent = const ViewEventStreamProvider<ViewEvent>('mount');
+const ViewEventStreamProvider<LayoutEvent> preLayoutEvent = const ViewEventStreamProvider<LayoutEvent>('preLayout');
+const ViewEventStreamProvider<ViewEvent> renderEvent = const ViewEventStreamProvider<ViewEvent>('render');
+const ViewEventStreamProvider<ScrollEvent> scrollEndEvent = const ViewEventStreamProvider<ScrollEvent>('scrollEnd');
+const ViewEventStreamProvider<ScrollEvent> scrollMoveEvent = const ViewEventStreamProvider<ScrollEvent>('scrollMove');
+const ViewEventStreamProvider<ScrollEvent> scrollStartEvent = const ViewEventStreamProvider<ScrollEvent>('scrollStart');
+const ViewEventStreamProvider<SelectEvent> selectEvent = const ViewEventStreamProvider<SelectEvent>('select');
+const ViewEventStreamProvider<ViewEvent> unmountEvent = const ViewEventStreamProvider<ViewEvent>('unmount');
+
+//DOM Event Proxy Streams//
+const ViewEventStreamProvider<DomEvent> abortEvent = const ViewEventStreamProvider<DomEvent>('abort');
+const ViewEventStreamProvider<DomEvent> beforeCopyEvent = const ViewEventStreamProvider<DomEvent>('beforecopy');
+const ViewEventStreamProvider<DomEvent> beforeCutEvent = const ViewEventStreamProvider<DomEvent>('beforecut');
+const ViewEventStreamProvider<DomEvent> beforePasteEvent = const ViewEventStreamProvider<DomEvent>('beforepaste');
+const ViewEventStreamProvider<DomEvent> blurEvent = const ViewEventStreamProvider<DomEvent>('blur');
+const ViewEventStreamProvider<ChangeEvent> changeEvent = const ViewEventStreamProvider<ChangeEvent>('change');
+const ViewEventStreamProvider<DomEvent> clickEvent = const ViewEventStreamProvider<DomEvent>('click');
+const ViewEventStreamProvider<DomEvent> contextMenuEvent = const ViewEventStreamProvider<DomEvent>('contextmenu');
+const ViewEventStreamProvider<DomEvent> copyEvent = const ViewEventStreamProvider<DomEvent>('copy');
+const ViewEventStreamProvider<DomEvent> cutEvent = const ViewEventStreamProvider<DomEvent>('cut');
+const ViewEventStreamProvider<DomEvent> doubleClickEvent = const ViewEventStreamProvider<DomEvent>('dblclick');
+const ViewEventStreamProvider<DomEvent> dragEvent = const ViewEventStreamProvider<DomEvent>('drag');
+const ViewEventStreamProvider<DomEvent> dragEndEvent = const ViewEventStreamProvider<DomEvent>('dragend');
+const ViewEventStreamProvider<DomEvent> dragEnterEvent = const ViewEventStreamProvider<DomEvent>('dragenter');
+const ViewEventStreamProvider<DomEvent> dragLeaveEvent = const ViewEventStreamProvider<DomEvent>('dragleave');
+const ViewEventStreamProvider<DomEvent> dragOverEvent = const ViewEventStreamProvider<DomEvent>('dragover');
+const ViewEventStreamProvider<DomEvent> dragStartEvent = const ViewEventStreamProvider<DomEvent>('dragstart');
+const ViewEventStreamProvider<DomEvent> dropEvent = const ViewEventStreamProvider<DomEvent>('drop');
+const ViewEventStreamProvider<DomEvent> errorEvent = const ViewEventStreamProvider<DomEvent>('error');
+const ViewEventStreamProvider<DomEvent> focusEvent = const ViewEventStreamProvider<DomEvent>('focus');
+const ViewEventStreamProvider<DomEvent> inputEvent = const ViewEventStreamProvider<DomEvent>('input');
+const ViewEventStreamProvider<DomEvent> invalidEvent = const ViewEventStreamProvider<DomEvent>('invalid');
+const ViewEventStreamProvider<DomEvent> keyDownEvent = const ViewEventStreamProvider<DomEvent>('keydown');
+const ViewEventStreamProvider<DomEvent> keyPressEvent = const ViewEventStreamProvider<DomEvent>('keypress');
+const ViewEventStreamProvider<DomEvent> keyUpEvent = const ViewEventStreamProvider<DomEvent>('keyup');
+const ViewEventStreamProvider<DomEvent> loadEvent = const ViewEventStreamProvider<DomEvent>('load');
+const ViewEventStreamProvider<DomEvent> mouseDownEvent = const ViewEventStreamProvider<DomEvent>('mousedown');
+const ViewEventStreamProvider<DomEvent> mouseMoveEvent = const ViewEventStreamProvider<DomEvent>('mousemove');
+const ViewEventStreamProvider<DomEvent> mouseOutEvent = const ViewEventStreamProvider<DomEvent>('mouseout');
+const ViewEventStreamProvider<DomEvent> mouseOverEvent = const ViewEventStreamProvider<DomEvent>('mouseover');
+const ViewEventStreamProvider<DomEvent> mouseUpEvent = const ViewEventStreamProvider<DomEvent>('mouseup');
+const ViewEventStreamProvider<DomEvent> mouseWheelEvent = const ViewEventStreamProvider<DomEvent>('mousewheel');
+const ViewEventStreamProvider<DomEvent> pasteEvent = const ViewEventStreamProvider<DomEvent>('paste');
+const ViewEventStreamProvider<DomEvent> resetEvent = const ViewEventStreamProvider<DomEvent>('reset');
+const ViewEventStreamProvider<DomEvent> scrollEvent = const ViewEventStreamProvider<DomEvent>('scroll');
+const ViewEventStreamProvider<DomEvent> searchEvent = const ViewEventStreamProvider<DomEvent>('search');
+//const ViewEventStreamProvider<DomEvent> selectEvent = const ViewEventStreamProvider<DomEvent>('select');
+const ViewEventStreamProvider<DomEvent> selectStartEvent = const ViewEventStreamProvider<DomEvent>('selectstart');
+const ViewEventStreamProvider<DomEvent> submitEvent = const ViewEventStreamProvider<DomEvent>('submit');
+const ViewEventStreamProvider<DomEvent> touchCancelEvent = const ViewEventStreamProvider<DomEvent>('touchcancel');
+const ViewEventStreamProvider<DomEvent> touchEndEvent = const ViewEventStreamProvider<DomEvent>('touchend');
+const ViewEventStreamProvider<DomEvent> touchEnterEvent = const ViewEventStreamProvider<DomEvent>('touchenter');
+const ViewEventStreamProvider<DomEvent> touchLeaveEvent = const ViewEventStreamProvider<DomEvent>('touchleave');
+const ViewEventStreamProvider<DomEvent> touchMoveEvent = const ViewEventStreamProvider<DomEvent>('touchmove');
+const ViewEventStreamProvider<DomEvent> touchStartEvent = const ViewEventStreamProvider<DomEvent>('touchstart');
+const ViewEventStreamProvider<DomEvent> transitionEndEvent = const ViewEventStreamProvider<DomEvent>('webkitTransitionEnd');
+const ViewEventStreamProvider<DomEvent> fullscreenChangeEvent = const ViewEventStreamProvider<DomEvent>('webkitfullscreenchange');
+const ViewEventStreamProvider<DomEvent> fullscreenErrorEvent = const ViewEventStreamProvider<DomEvent>('webkitfullscreenerror');
+
+/**
+ * A factory to expose [View]'s events as Streams.
+ */
+class ViewEventStreamProvider<T extends ViewEvent> {
+  final String _eventType;
+
+  const ViewEventStreamProvider(this._eventType);
+
+  /**
+   * Gets a [Stream] for this event type, on the specified target.
+   *
+   * * [useCapture] is applicable only if the view event is caused by a DOM event.
+   */
+  Stream<T> forTarget(View target, {bool useCapture: false}) {
+    return new _EventStream(target, _eventType, useCapture);
+  }
+}
+
+class _EventStream<T extends ViewEvent> extends Stream<T> {
+  final View _target;
+  final String _eventType;
+  final bool _useCapture;
+
+  _EventStream(this._target, this._eventType, this._useCapture);
+
+  // events are inherently multi-subscribers.
+  Stream<T> asMultiSubscriberStream() => this;
+
+  StreamSubscription<T> listen(void onData(T event),
+      { void onError(AsyncError error),
+      void onDone(),
+      bool unsubscribeOnError}) {
+
+    return new _EventStreamSubscription<T>(
+        this._target, this._eventType, onData, this._useCapture);
+  }
+}
+
+class _EventStreamSubscription<T extends ViewEvent> extends StreamSubscription<T> {
+  int _pauseCount = 0;
+  View _target;
+  final String _eventType;
+  var _onData;
+  final bool _useCapture;
+
+  _EventStreamSubscription(this._target, this._eventType, this._onData,
+      this._useCapture) {
+    _tryResume();
+  }
+
+  void cancel() {
+    if (_canceled) {
+      throw new StateError("Subscription has been canceled.");
+    }
+
+    _unlisten();
+    // Clear out the target to indicate this is complete.
+    _target = null;
+    _onData = null;
+  }
+
+  bool get _canceled => _target == null;
+
+  void onData(void handleData(T event)) {
+    if (_canceled) {
+      throw new StateError("Subscription has been canceled.");
+    }
+    // Remove current event listener.
+    _unlisten();
+
+    _onData = handleData;
+    _tryResume();
+  }
+
+  /// Has no effect.
+  void onError(void handleError(AsyncError error)) {}
+
+  /// Has no effect.
+  void onDone(void handleDone()) {}
+
+  void pause([Future resumeSignal]) {
+    if (_canceled) {
+      throw new StateError("Subscription has been canceled.");
+    }
+    ++_pauseCount;
+    _unlisten();
+
+    if (resumeSignal != null) {
+      resumeSignal.whenComplete(resume);
+    }
+  }
+
+  bool get _paused => _pauseCount > 0;
+
+  void resume() {
+    if (_canceled) {
+      throw new StateError("Subscription has been canceled.");
+    }
+    if (!_paused) {
+      throw new StateError("Subscription is not paused.");
+    }
+    --_pauseCount;
+    _tryResume();
+  }
+
+  void _tryResume() {
+    if (_onData != null && !_paused) {
+      _target.on[_eventType].add(_onData, useCapture: _useCapture);
+    }
+  }
+
+  void _unlisten() {
+    if (_onData != null) {
+      _target.on[_eventType].remove(_onData, useCapture: _useCapture);
+    }
+  }
+}
+
 /** A list of [ViewEvent] listeners.
  */
 class ViewEventListenerList {
@@ -12,15 +193,19 @@ class ViewEventListenerList {
   ViewEventListenerList(this._ptr, this._type);
 
   /** Adds an event listener to this list.
+   *
+   * * [useCapture] is applicable only if the view event is caused by a DOM event.
    */
-  ViewEventListenerList add(ViewEventListener handler) {
-    _ptr.add(_type, handler);
+  ViewEventListenerList add(ViewEventListener handler, {bool useCapture: false}) {
+    _ptr.add(_type, handler, useCapture);
     return this;
   }
   /** Removes an event listener from this list.
+   *
+   * * [useCapture] is applicable only if the view event is caused by a DOM event.
    */
-  ViewEventListenerList remove(ViewEventListener handler) {
-    _ptr.remove(_type, handler);
+  ViewEventListenerList remove(ViewEventListener handler, {bool useCapture: false}) {
+    _ptr.remove(_type, handler, useCapture);
     return this;
   }
   /** Sends the event to the listeners in this list.

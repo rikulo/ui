@@ -45,7 +45,7 @@ class ViewEvent {
    * be assigned automatically when the sendEvent method is called.
    */
   ViewEvent(String type, [View target]):
-  _type = type, _stamp = new Date.now().millisecondsSinceEpoch {
+  _type = type, _stamp = new DateTime.now().millisecondsSinceEpoch {
     this.target = currentTarget = target;
   }
   /** Constructor for subclass. */

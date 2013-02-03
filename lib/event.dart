@@ -5,6 +5,7 @@
 library rikulo_event;
 
 import "dart:html";
+import "dart:async";
 
 import 'package:rikulo_commons/util.dart';
 

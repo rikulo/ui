@@ -1044,17 +1044,18 @@ class View {
    * If it is not what you expected, you can override this method and
    * pass the right element to superclass. For example,
    *
-   *     void onEventListened_(String type, [Element target]) {
-   *       super.onEventListened_(type, type == "change" ? getNode("inp"): target);
+   *     void onEventListened_(String type, {Element target, bool useCapture:false}) {
+   *       super.onEventListened_(type,
+   *         target: type == "change" ? getNode("inp"): target, useCapture: useCapture);
    *     }
    */
-  void onEventListened_(String type, [Element target])
-  => _evlInfo.onEventListened_(type, target);
+  void onEventListened_(String type, {Element target, bool useCapture: false})
+  => _evlInfo.onEventListened_(type, target, useCapture);
   /** Called when the last event listener has been unregistered for the given
    * type. It undoes whatever is done in [onEventListened_].
    */
-  void onEventUnlistened_(String type, [Element target])
-  => _evlInfo.onEventUnlistened_(type, target);
+  void onEventUnlistened_(String type, {Element target, bool useCapture: false})
+  => _evlInfo.onEventUnlistened_(type, target, useCapture);
 
   /**
    * A map of application-specific data.

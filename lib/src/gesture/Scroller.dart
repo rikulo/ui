@@ -154,7 +154,7 @@ class Scroller {
       })..run();
       
     } else {
-      int time = new Date.now().millisecondsSinceEpoch;
+      int time = new DateTime.now().millisecondsSinceEpoch;
       _onStart(null, time, false); // TODO: 1rupt drag?
       _onMove(position, time, false);
       _onEnd(false);
