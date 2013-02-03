@@ -75,7 +75,7 @@ class SnakeCanvas {
       }
     });
     
-    document.on.keyDown.add(onKeyDown);
+    document.onKeyDown.listen(onKeyDown);
     startGame();
   }
   

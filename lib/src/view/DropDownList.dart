@@ -180,7 +180,7 @@ class DropDownList<T> extends View {
   //@override
   Element render_() {
     final node = new Element.tag("select");
-    node.on.change.add((e) {
+    node.onChange.listen((e) {
       final List<T> selValues = new List();
       int selIndex = -1;
       if (_model != null) {

@@ -146,9 +146,9 @@ class LayoutManager extends RunOnceViewManager {
       var func = (event) { //DOM event
         _onImageLoaded(imgURI);
       };
-      img.on.load.add(func);
-      img.on.error.add(func);
-      img.src = imgURI;
+      img..onLoad.listen(func)
+        ..onError.listen(func)
+        ..src = imgURI;
     }
   }
   void _onImageLoaded(String imgURI) {

@@ -5,6 +5,7 @@
 library rikulo_message;
 
 import "dart:html";
+import "dart:async";
 import "dart:json" as Json;
 
 import 'package:rikulo_commons/util.dart';

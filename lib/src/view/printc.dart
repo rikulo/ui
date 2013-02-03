@@ -135,10 +135,10 @@ class _PrintcPopup {
     _node = new Element.html('<div style="left:${x+2}px;top:${y+2}px" class="v-printc-pp"><div>[]</div><div>+</div><div>-</div><div>x</div></div>');
 
     final elems = _node.children;
-    elems[0].on.click.add((e) {_size("100%", "100%");});
-    elems[1].on.click.add((e) {_size("100%", "30%");});
-    elems[2].on.click.add((e) {_size("40%", "30%");});
-    elems[3].on.click.add((e) {_owner.close();});
+    elems[0].onClick.listen((e) {_size("100%", "100%");});
+    elems[1].onClick.listen((e) {_size("100%", "30%");});
+    elems[2].onClick.listen((e) {_size("40%", "30%");});
+    elems[3].onClick.listen((e) {_owner.close();});
 
     _owner._node.children.add(_node);
     broadcaster.on.activate.add(_onPopup());

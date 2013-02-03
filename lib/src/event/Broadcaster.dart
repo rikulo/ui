@@ -43,29 +43,29 @@ class BroadcastEvents extends ViewEventListenerMap {
 /** An implementation of [Broadcaster].
  */
 class _Broadcaster extends Broadcaster {
-  _BroadcastListeners _listeners;
+  _BroadcastListenerInfo _lnInfo;
   BroadcastEvents _on;
 
   _Broadcaster() {
-    _listeners = new _BroadcastListeners(this);
-    _on = new BroadcastEvents(_listeners);
+    _lnInfo = new _BroadcastListenerInfo(this);
+    _on = new BroadcastEvents(_lnInfo);
   }
 
   BroadcastEvents get on => _on;
 
   bool sendEvent(ViewEvent event, {String type})
-  => _listeners.send(event, type: type);
+  => _lnInfo.send(event, type);
   void postEvent(ViewEvent event, {String type}) {
     window.setTimeout(() {sendEvent(event, type: type);}, 0);
       //note: the order of messages is preserved across all views (and message queues)
       //CONSIDER if it is better to have a queue shared by views/message queues/broadcaster
   }
 }
-class _BroadcastListeners {
+class _BroadcastListenerInfo { //API must be the same as _EventListenerInfo
   final Broadcaster _owner;
   final Map<String, List<ViewEventListener>> _listeners;
 
-  _BroadcastListeners(Broadcaster this._owner): _listeners = new Map() {
+  _BroadcastListenerInfo(Broadcaster this._owner): _listeners = new Map() {
   }
 
   /** Returns if no event listener registered to the given type. (Called by ViewEvents)
@@ -76,7 +76,7 @@ class _BroadcastListeners {
   }
   /** Adds an event listener.  (Called by ViewEvents)
    */
-  void add(String type, ViewEventListener listener) {
+  void add(String type, ViewEventListener listener, bool useCapture) {
     if (listener == null)
       throw new ArgumentError("listener");
 
@@ -84,14 +84,14 @@ class _BroadcastListeners {
   }
   /** Removes an event listener. (Called by ViewEvents)
    */
-  void remove(String type, ViewEventListener listener) {
+  void remove(String type, ViewEventListener listener, bool useCapture) {
     final ls = _listeners[type];
     if (ls != null)
       ls.remove(listener);
   }
   /** Sends an event. (Called by ViewEvents)
    */
-  bool send(ViewEvent event, {String type}) {
+  bool send(ViewEvent event, String type) {
     if (type == null)
       type = event.type;
 

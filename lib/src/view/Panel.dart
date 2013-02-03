@@ -31,7 +31,7 @@ class Panel extends View {
       new Element.html('<div class="v-btn v-btn-$name" id="$uuid-btn-$name"></div>');
   
   void _addBtn(Element btns, String name, EventListener listener) {
-    btns.nodes.add(_createBtn(name)..on.click.add(listener));
+    btns.nodes.add(_createBtn(name)..onClick.listen(listener));
   }
 
   //@override

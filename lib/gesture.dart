@@ -6,6 +6,7 @@ library rikulo_gesture;
 
 import "dart:html";
 import "dart:math";
+import "dart:async";
 
 import 'package:rikulo_commons/util.dart';
 

@@ -1012,7 +1012,7 @@ class View {
     View view = this;
     bool dispatched = false;
     do {
-      if (view._evlInfo != null && view._evlInfo.send(event, type: type))
+      if (view._evlInfo != null && view._evlInfo.send(event, type))
         dispatched = true;
     } while (bubbles && !event.isPropagationStopped && (view = view.parent) != null);
     return dispatched;

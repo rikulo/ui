@@ -135,57 +135,73 @@ abstract class HoldGesture extends Gesture {
 /** The touch-and-hold handler for touch devices.
  */
 class _TouchHoldGesture extends HoldGesture {
-  EventListener _elStart, _elMove, _elEnd;
+  StreamSubscription<Event> _subStart, _subMove, _subEnd;
 
   _TouchHoldGesture(Element owner, HoldGestureAction action,
   HoldGestureStart start, int duration, num movementLimit) : 
   super._init(owner, action, start, duration, movementLimit);
   
   void _listen() {
-    owner.on.touchStart.add(_elStart = (TouchEvent event) {
+    _subStart = owner.onTouchStart.listen((TouchEvent event) {
       if (event.touches.length > 1)
         _touchEnd(); //ignore multiple fingers
       else
         _touchStart(event.target, event.timeStamp, new Offset(event.pageX, event.pageY));
     });
-    document.on.touchMove.add(_elMove = (TouchEvent event) {
+    _subMove = document.onTouchMove.listen((TouchEvent event) {
       _touchMove(event.timeStamp, new Offset(event.pageX, event.pageY));
     });
-    document.on.touchEnd.add(_elEnd = (event) {
+    _subEnd = document.onTouchEnd.listen((event) {
       _touchEnd();
     });
   }
   void _unlisten() {
-    final ElementEvents on = owner.on;
-    if (_elStart != null) on.touchStart.remove(_elStart);
-    if (_elMove != null) on.touchMove.remove(_elMove);
-    if (_elEnd != null) on.touchEnd.remove(_elEnd);
+    if (_subStart != null) {
+      _subStart.cancel();
+      _subStart = null;
+    }
+    if (_subMove != null) {
+      _subMove.cancel();
+      _subMove = null;
+    }
+    if (_subEnd != null) {
+      _subEnd.cancel();
+      _subEnd = null;
+    }
   }
 }
 /** The touch-and-hold handler for mouse-based devices.
  */
 class _MouseHoldGesture extends HoldGesture {
-  EventListener _elStart, _elMove, _elEnd;
+  StreamSubscription<Event> _subStart, _subMove, _subEnd;
   
   _MouseHoldGesture(Element owner, HoldGestureAction action,
   HoldGestureStart start, int duration, num movementLimit) : 
   super._init(owner, action, start, duration, movementLimit);
   
   void _listen() {
-    owner.on.mouseDown.add(_elStart = (MouseEvent event) {
+    _subStart = owner.onMouseDown.listen((MouseEvent event) {
       _touchStart(event.target, event.timeStamp, new Offset(event.pageX, event.pageY));
     });
-    document.on.mouseMove.add(_elMove = (MouseEvent event) {
+    _subMove = document.onMouseMove.listen((MouseEvent event) {
       _touchMove(event.timeStamp, new Offset(event.pageX, event.pageY));
     });
-    document.on.mouseUp.add(_elEnd = (event) {
+    _subEnd = document.onMouseUp.listen((event) {
       _touchEnd();
     });
   }
   void _unlisten() {
-    final ElementEvents on = owner.on;
-    if (_elStart != null) on.mouseDown.remove(_elStart);
-    if (_elMove != null) on.mouseMove.remove(_elMove);
-    if (_elEnd != null) on.mouseUp.remove(_elEnd);
+    if (_subStart != null) {
+      _subStart.cancel();
+      _subStart = null;
+    }
+    if (_subMove != null) {
+      _subMove.cancel();
+      _subMove = null;
+    }
+    if (_subEnd != null) {
+      _subEnd.cancel();
+      _subEnd = null;
+    }
   }
 }

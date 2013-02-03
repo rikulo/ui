@@ -125,7 +125,7 @@ class ZoomGesture extends Gesture {
   final ZoomGestureMove _move;
   final ZoomGestureEnd _end;
   
-  EventListener _elStart, _elMove, _elEnd;
+  StreamSubscription<Event> _subStart, _subMove, _subEnd;
   ZoomGestureState _state;
   bool _disabled = false;
   
@@ -141,8 +141,7 @@ class ZoomGesture extends Gesture {
   ZoomGestureEnd end}) : _start = start, _move = move, _end = end {
     
     // listen
-    final ElementEvents on = owner.on;
-    on.touchStart.add(_elStart = (TouchEvent event) {
+    _subStart = owner.onTouchStart.listen((TouchEvent event) {
       int fingers = event.touches.length;
       if (fingers > 2) {
         _onEnd(event.timeStamp);
@@ -158,7 +157,7 @@ class ZoomGesture extends Gesture {
         }
       }
     });
-    on.touchMove.add(_elMove = (TouchEvent event) {
+    _subMove = owner.onTouchMove.listen((TouchEvent event) {
       if (event.touches.length == 2) {
         Touch t0 = event.touches[0];
         Touch t1 = event.touches[1];
@@ -166,7 +165,7 @@ class ZoomGesture extends Gesture {
           new Offset(t1.pageX, t1.pageY), event.timeStamp);
       }
     });
-    on.touchEnd.add(_elEnd = (TouchEvent event) => _onEnd(event.timeStamp));
+    _subEnd = owner.onTouchEnd.listen((TouchEvent event) => _onEnd(event.timeStamp));
   }
   
   /** The element to which the gesture applies.
@@ -181,13 +180,18 @@ class ZoomGesture extends Gesture {
     stop();
     
     // unlisten
-    final ElementEvents on = owner.on;
-    if (_elStart != null)
-      on.touchStart.remove(_elStart);
-    if (_elMove != null)
-      on.touchMove.remove(_elMove);
-    if (_elEnd != null)
-      on.touchEnd.remove(_elEnd);
+    if (_subStart != null) {
+      _subStart.cancel();
+      _subStart = null;
+    }
+    if (_subMove != null) {
+      _subMove.cancel();
+      _subMove = null;
+    }
+    if (_subEnd != null) {
+      _subEnd.cancel();
+      _subEnd = null;
+    }
   }
   
   void disable() {

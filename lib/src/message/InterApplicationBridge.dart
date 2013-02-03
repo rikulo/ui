@@ -26,6 +26,7 @@ class InterApplicationBridge<Message> {
   final String _name;
   final String _origin;
   EventListener _evtListener;
+  StreamSubscription<Event> _evtSub;
   MessageListener _msgListener;
   bool _ignoreMessage = false;
 
@@ -111,7 +112,7 @@ class InterApplicationBridge<Message> {
     }
     if (send) {
       if (_sends.length == 0) //only the first send
-        window.on.message.add(_evtListener);
+        _evtSub = window.onMessage.listen(_evtListener);
       _sends.add(queue);
     }
   }
@@ -134,8 +135,10 @@ class InterApplicationBridge<Message> {
     if (send) {
       for (int j = _sends.length; --j >= 0;) {
         if (_sends[j] == queue) {
-          if (_sends.length == 0)
-            window.on.message.remove(_evtListener);
+          if (_sends.length == 0 && _evtSub != null) {
+            _evtSub.cancel();
+            _evtSub = null;
+          }
           _sends.removeRange(j, 1);
           found = true;
           break;

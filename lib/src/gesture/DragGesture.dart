@@ -145,15 +145,14 @@ abstract class DragGesture extends Gesture {
 }
 
 class _TouchDragGesture extends DragGesture {
-  EventListener _elStart, _elMove, _elEnd;
+  StreamSubscription<Event> _subStart, _subMove, _subEnd;
   
   _TouchDragGesture(Element owner, {DragGestureStart start, 
   DragGestureMove move, DragGestureEnd end}):
     super._init(owner, start, move, end);
 
   void _listen() {
-    final ElementEvents on = owner.on;
-    on.touchStart.add(_elStart = (TouchEvent event) {
+    _subStart = owner.onTouchStart.listen((TouchEvent event) {
       if (event.touches.length > 1)
         _touchEnd(); //ignore multiple fingers
       else {
@@ -163,24 +162,32 @@ class _TouchDragGesture extends DragGesture {
           event.preventDefault();
       }
     });
-    on.touchMove.add(_elMove = (TouchEvent event) {
+    _subMove = owner.onTouchMove.listen((TouchEvent event) {
       Touch t = event.touches[0];
       _touchMove(new Offset(t.pageX, t.pageY), event.timeStamp);
     });
-    on.touchEnd.add(_elEnd = (TouchEvent event) {
+    _subEnd = owner.onTouchEnd.listen((TouchEvent event) {
       _touchEnd();
     });
   }
   void _unlisten() {
-    final ElementEvents on = owner.on;
-    if (_elStart != null) on.touchStart.remove(_elStart);
-    if (_elMove != null) on.touchMove.remove(_elMove);
-    if (_elEnd != null) on.touchEnd.remove(_elEnd);
+    if (_subStart != null) {
+      _subStart.cancel();
+      _subStart = null;
+    }
+    if (_subMove != null) {
+      _subMove.cancel();
+      _subMove = null;
+    }
+    if (_subEnd != null) {
+      _subEnd.cancel();
+      _subEnd = null;
+    }
   }
 }
 
 class _MouseDragGesture extends DragGesture {
-  EventListener _elStart, _elMove, _elEnd;
+  StreamSubscription<Event> _subStart, _subMove, _subEnd;
   bool _captured = false;
 
   _MouseDragGesture(Element owner, {DragGestureStart start, 
@@ -188,28 +195,29 @@ class _MouseDragGesture extends DragGesture {
     super._init(owner, start, move, end);
 
   void stop() {
-    if (_captured) {
+    if (_captured)
       _captured = false;
-      final ElementEvents on = document.on;
-      if (_elMove != null)
-        on.mouseMove.remove(_elMove);
-      if (_elEnd != null)
-        on.mouseUp.remove(_elEnd);
+    if (_subMove != null) {
+      _subMove.cancel();
+      _subMove = null;
+    }
+    if (_subEnd != null) {
+      _subEnd.cancel();
+      _subEnd = null;
     }
     super.stop();
   }
   void _capture() {
     _captured = true;
-    final ElementEvents on = document.on;
-    on.mouseMove.add(_elMove = (MouseEvent event) {
+    _subMove = document.onMouseMove.listen((MouseEvent event) {
       _touchMove(new Offset(event.pageX, event.pageY), event.timeStamp);
     });
-    on.mouseUp.add(_elEnd = (MouseEvent event) {
+    _subEnd = document.onMouseUp.listen((MouseEvent event) {
       _touchEnd();
     });
   }
   void _listen() {
-    owner.on.mouseDown.add(_elStart = (MouseEvent event) {
+    _subStart = owner.onMouseDown.listen((MouseEvent event) {
       _touchStart(event.target, new Offset(event.pageX, event.pageY), event.timeStamp);
       _capture();
       if (!new DomAgent(event.target).isInput)
@@ -217,7 +225,9 @@ class _MouseDragGesture extends DragGesture {
     });
   }
   void _unlisten() {
-    if (_elStart != null)
-      owner.on.mouseDown.remove(_elStart);
+    if (_subStart != null) {
+      _subStart.cancel();
+      _subStart = null;
+    }
   }
 }

@@ -282,7 +282,7 @@ class _EventListenerInfo {
   }
   /** Sends an event. (Called by ViewEvents)
    */
-  bool send(ViewEvent event, {String type}) {
+  bool send(ViewEvent event, String type) {
     if (type == null)
       type = event.type;
 
