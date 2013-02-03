@@ -587,7 +587,7 @@ class _SubviewList extends Collection<View> implements List<View> {
   }
   
   View removeAt(int index) => this[index]..remove();
-  
+
   void clear() {
     View child = _owner.firstChild;
     while (child != null) {
@@ -596,11 +596,17 @@ class _SubviewList extends Collection<View> implements List<View> {
       child = next;
     }
   }
-  
-  List<View> getRange(int start, int length) => null; // TODO
-  
-  List<View> get reversed => null; // TODO
-  
+
+  List<View> getRange(int start, int length) {
+    final result = <View>[];
+    for (int i = 0; i < length; i++)
+      result.add(this[start + i]);
+    return result;
+  }
+
+  List<View> get reversed {
+    throw new UnsupportedError("TODO");
+  }
 }
 
 /** The classes to add to the root node
