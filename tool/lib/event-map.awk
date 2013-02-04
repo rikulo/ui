@@ -3,8 +3,8 @@ BEGIN {
 	print
 	print "///A map of [ViewEvent] streams"
 	print "class ViewEvents {"
-	print "  final View _owner;"
-	print "  ViewEvents(View owner): _owner = owner;"
+	print "  final CapturableStreamTarget<ViewEvent> _owner;"
+	print "  ViewEvents(this._owner);"
 	print
 }
 

@@ -15,7 +15,7 @@ DefaultTreeModel<String> createTreeModel() {
       new DefaultTreeNode("New Zealand",
       ["Cromwell", "Queenstown"])]);
 //    model.addToSelection(model.root[1][2]);
-  model.on.select.add((event) {
+  model.on.select.listen((event) {
     printc("Selected: ${model.selection}");
   });
   return model;

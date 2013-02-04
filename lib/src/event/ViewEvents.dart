@@ -71,8 +71,8 @@ const List<String> domEvents = const ['change', 'abort', 'beforeCopy', 'beforeCu
 
 ///A map of [ViewEvent] streams
 class ViewEvents {
-  final ViewEventTarget _owner;
-  ViewEvents(ViewEventTarget owner): _owner = owner;
+  final CapturableStreamTarget<ViewEvent> _owner;
+  ViewEvents(this._owner);
 
   Stream<ActivateEvent> get activate => activateEvent.forTarget(_owner);
   Stream<ChangeEvent> get change => changeEvent.forTarget(_owner);

@@ -10,7 +10,7 @@ part of rikulo_event;
  * (i.e., `inDocument`). Thus, to listen a broadcast event, you can register
  * a listenber to either [broadcaster] or one of the moutned root views.
  */
-abstract class Broadcaster implements ViewEventTarget {
+abstract class Broadcaster implements StreamTarget<ViewEvent> {
   /** Returns [BroadcastEvents] for adding or removing event listeners.
    */
   BroadcastEvents get on;
@@ -33,12 +33,24 @@ Broadcaster broadcaster = new _Broadcaster();
  * A map of event listeners for handling the broadcasted events.
  */
 class BroadcastEvents {
-  final ViewEventTarget _owner;
-  BroadcastEvents(ViewEventTarget owner): _owner = owner;
+  final CapturableStreamTarget<ViewEvent> _owner;
+  BroadcastEvents._(StreamTarget<ViewEvent> owner): _owner = new _CaptStreamTarget(owner);
 
   /** Listeners for the activate event ([ActivateEvent]).
    */
   Stream<ActivateEvent> get activate => activateEvent.forTarget(_owner);
+}
+///for proxy Broadcaster to CapturableStreamTarget
+class _CaptStreamTarget implements CapturableStreamTarget<ViewEvent> {
+  final StreamTarget<ViewEvent> _target;
+  _CaptStreamTarget(this._target);
+
+  void addEventListener(String type, void listener(ViewEvent event), {bool useCapture: false}) {
+    _target.addEventListener(type, listener);
+  }
+  void removeEventListener(String type, void listener(ViewEvent event), {bool useCapture: false}) {
+    _target.removeEventListener(type, listener);
+  }
 }
 
 /** An implementation of [Broadcaster].
@@ -48,18 +60,18 @@ class _Broadcaster extends Broadcaster {
   BroadcastEvents _on;
 
   _Broadcaster(): _listeners = new Map() {
-    _on = new BroadcastEvents(this);
+    _on = new BroadcastEvents._(this);
   }
 
   BroadcastEvents get on => _on;
 
-  void addEventListener(String type, ViewEventListener listener, {bool useCapture:false}) {
+  void addEventListener(String type, ViewEventListener listener) {
     if (listener == null)
       throw new ArgumentError("listener");
 
     _listeners.putIfAbsent(type, () => []).add(listener);
   }
-  void removeEventListener(String type, ViewEventListener listener, {bool useCapture:false}) {
+  void removeEventListener(String type, ViewEventListener listener) {
     final ls = _listeners[type];
     if (ls != null)
       ls.remove(listener);

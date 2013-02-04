@@ -16,6 +16,7 @@ class DropDownList<T> extends View {
   DataModel _model;
   DataEventListener _dataListener;
   Renderer _renderer;
+  StreamSubscription<DataEvent> _subAll;
   bool _modelSelUpdating = false; //whether it's updating model's selection
 
   /** Constructor.
@@ -86,13 +87,15 @@ class DropDownList<T> extends View {
     }
 
     if (!identical(_model, model)) { //Note: it is not !=
-      if (_model != null)
-        _model.on.all.remove(_dataListener);
+      if (_subAll != null) {
+        _subAll.cancel();
+        _subAll = null;
+      }
 
       _model = model;
 
       if (_model != null) {
-        _model.on.all.add(_initDataListener());
+        _subAll = _model.on.all.listen(_initDataListener());
         _selectNode.multiple = (_model as Selection).multiple;
       }
 

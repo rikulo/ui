@@ -24,107 +24,71 @@ class DataEvent {
   String toString() => "$type()";
 }
 
-/** A list of [DataEvent] listeners.
+/**
+ * A factory to expose [DataModel]'s events as Streams.
  */
-class DataEventListenerList {
-  final _ptr;
-  final String _type;
-
-  DataEventListenerList(this._ptr, this._type);
-
-  /** Adds an event listener to this list.
-   */
-  DataEventListenerList add(DataEventListener handler) {
-    _ptr.addEventListener(_type, handler);
-    return this;
-  }
-  /** Removes an event listener from this list.
-   */
-  DataEventListenerList remove(DataEventListener handler) {
-    _ptr.removeEventListener(_type, handler);
-    return this;
-  }
-  /** Dispatches the event to the listeners in this list.
-   */
-  bool dispatch(DataEvent event) => _ptr.sendEvent(event, type: _type);
-  /** Tests if any event listener is registered.
-   */
-  bool get isEmpty => _ptr.isEventListened(_type);
+class DataEventStreamProvider<T extends DataEvent> extends StreamProvider<T> {
+  const DataEventStreamProvider(String eventType): super(eventType);
 }
-/** A map of [DataEvent] listeners.
- * It is a skeletal interface for any object that handles events,
- * such as [View] and [Broadcaster].
- */
-class DataEventListenerMap {
-  //raw event target
-  final _ptr;
-  final Map<String, DataEventListenerList> _lnlist = new Map();
 
-  DataEventListenerMap(this._ptr);
+const DataEventStreamProvider<DataEvent> allEvent = const DataEventStreamProvider<DataEvent>('all');
+const DataEventStreamProvider<DataEvent> addEvent = const DataEventStreamProvider<DataEvent>('add');
+const DataEventStreamProvider<DataEvent> removeEvent = const DataEventStreamProvider<DataEvent>('remove');
+const DataEventStreamProvider<DataEvent> structureEvent = const DataEventStreamProvider<DataEvent>('structure');
+const DataEventStreamProvider<DataEvent> selectEvent = const DataEventStreamProvider<DataEvent>('select');
+const DataEventStreamProvider<DataEvent> multipleEvent = const DataEventStreamProvider<DataEvent>('multiple');
+const DataEventStreamProvider<DataEvent> disableEvent = const DataEventStreamProvider<DataEvent>('disable');
+const DataEventStreamProvider<DataEvent> openEvent = const DataEventStreamProvider<DataEvent>('open');
 
-  /** Returns the list of [DataEvent] listeners for the given type.
-   */
-  DataEventListenerList operator [](String type) => _get(type); 
-
-  /** Tests if the given event type is listened.
-   */
-  bool isListened(String type) {
-    final p = _lnlist[type];
-    return p == null || p.isEmpty;
-  }
-
-  DataEventListenerList _get(String type) {
-    return _lnlist.putIfAbsent(type, () => new DataEventListenerList(_ptr, type));
-  }
-}
 /** A map of [DataEvent] listeners that [View] accepts.
  */
-class DataEvents extends DataEventListenerMap {
-  DataEvents(var ptr): super(ptr);
+class DataEvents {
+  final StreamTarget<DataEvent> _owner;
+  DataEvents._(this._owner);
 
   /** Identifies listeners for all kind of data event type.
    * Listeners added here will be invoked no matter what [DataEvent] is received.
    */
-  DataEventListenerList get all => _get('all');
+  Stream<DataEvent> get all => allEvent.forTarget(_owner);
   /** Identifies the addition of one or more contiguous items to the model.
    *
    * The event is an instance of [ListDataEvent] or [TreeDataEvent], depending
    * on the model.
    */
-  DataEventListenerList get add => _get('add');
+  Stream<DataEvent> get add => addEvent.forTarget(_owner);
   /** Identifies the removal of one or more contiguous items from the model.
    *
    * The event is an instance of [ListDataEvent] or [TreeDataEvent], depending
    * on the model.
    */
-  DataEventListenerList get remove => _get('remove');
+  Stream<DataEvent> get remove => removeEvent.forTarget(_owner);
   /** Identifies the structure of the lists has changed.
    *
    * The event is an instance of [DataEvent].
    */
-  DataEventListenerList get structure => _get('structure');
+  Stream<DataEvent> get structure => structureEvent.forTarget(_owner);
   /** Identifies the selection of the lists has changed.
    *
    * It is applicable only if the model supports [Selection].
    * The event is an instance of [DataEvent].
    */
-  DataEventListenerList get select => _get('select');
+  Stream<DataEvent> get select => selectEvent.forTarget(_owner);
   /** Identified the change of whether the model allows mutiple selection.
    *
    * It is applicable only if the model supports [Selection].
    * The event is an instance of [DataEvent].
    */
-  DataEventListenerList get multiple => _get('multiple');
+  Stream<DataEvent> get multiple => multipleEvent.forTarget(_owner);
   /** Identifies the list of disabled objects has changed.
    *
    * It is applicable only if the model supports [Disables].
    * The event is an instance of [DataEvent].
    */
-  DataEventListenerList get disable => _get('disable');
+  Stream<DataEvent> get disable => disableEvent.forTarget(_owner);
   /** Identifies the change of the open statuses.
    *
    * It is applicable only if the model supports [Opens].
    * The event is an instance of [DataEvent].
    */
-  DataEventListenerList get open => _get('open');
+  Stream<DataEvent> get open => openEvent.forTarget(_owner);
 }

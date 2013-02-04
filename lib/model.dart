@@ -3,7 +3,10 @@
 
 library rikulo_model;
 
-import 'package:rikulo_commons/util.dart';
+import "dart:async" show Stream;
+
+import "package:rikulo_commons/util.dart";
+import "package:rikulo_commons/async.dart";
 
 import "view.dart";
 

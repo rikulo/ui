@@ -3,6 +3,7 @@
 ##0.6.3
 
 * View event stream is supported. Use Steam.listen() instead. For example, view.on.click.listen((event){}).
+* Data event stream is supported. Use Stream.listen() instead. For example, model.on.select.listen((event){}).
 
 ##0.6.2
 

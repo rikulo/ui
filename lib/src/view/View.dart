@@ -50,7 +50,7 @@ typedef void AfterMount(View view);
  *
  * + [ViewUtil]
  */
-class View implements ViewEventTarget {
+class View implements CapturableStreamTarget<ViewEvent> {
   String _uuid;
 
   View _parent;

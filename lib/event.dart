@@ -8,6 +8,7 @@ import "dart:html";
 import "dart:async";
 
 import "package:rikulo_commons/util.dart";
+import "package:rikulo_commons/async.dart";
 
 import "html.dart";
 import "view.dart";

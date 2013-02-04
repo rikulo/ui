@@ -7,7 +7,8 @@ import 'dart:math';
 import 'dart:collection';
 import 'dart:async' show StreamSubscription;
 
-import 'package:rikulo_commons/util.dart';
+import "package:rikulo_commons/util.dart";
+import "package:rikulo_commons/async.dart";
 
 import 'event.dart';
 import 'html.dart';

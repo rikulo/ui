@@ -5,13 +5,12 @@ part of rikulo_model;
 
 /** A data model.
  */
-class DataModel {
+class DataModel implements StreamTarget<DataEvent> {
   DataEvents _on;
-  Map<String, List<DataEventListener>> _listeners;
+  final Map<String, List<DataEventListener>> _listeners = new Map();
 
   DataModel() {
-    _on = new DataEvents(this);
-    _listeners = new Map();
+    _on = new DataEvents._(this);
   }
 
   /** Returns [DataEvents] for adding or removing event listeners.
