@@ -150,7 +150,50 @@ class DomAgent {
   /** Return true if the element is input.
    */
   bool get isInput => node.tagName == 'INPUT' || node.tagName == 'TEXTAREA';
-  
+
+  /** Returns if there is non-empty node in this element.
+   */
+  bool get hasContent => _hasContent(node);
+  static bool _hasContent(Node node) {
+    if (node is Text && !node.text.trim().isEmpty)
+      return true;
+
+    if (node is Element)
+      switch ((node as Element).tagName.toLowerCase()) {
+        case "input":
+        case "option":
+        case "textarea":
+          return true;
+      }
+
+    for (final n in node.nodes)
+      if (_hasContent(n))
+        return true;
+    return false;
+  }
+
+  /// Sum over horizontal sizes of given properties.
+  int sumWidth({bool margin: false, bool border: false, bool padding: false})
+    => _sum(false, margin, border, padding);
+  /// Sum over vertical sizes of given properties.
+  int sumHeight({bool margin: false, bool border: false, bool padding: false})
+    => _sum(true, margin, border, padding);
+  int _sum(bool ver, bool margin, bool border, bool padding) {
+    int sum = 0;
+    final s = computedStyle;
+    if (margin)
+      sum += ver ? Css.intOf(s.marginTop) + Css.intOf(s.marginBottom) :
+          Css.intOf(s.marginLeft) + Css.intOf(s.marginRight);
+    if (border)
+      sum += ver ? Css.intOf(s.borderTopWidth) + Css.intOf(s.borderBottomWidth) :
+        Css.intOf(s.borderLeftWidth) + Css.intOf(s.borderRightWidth);
+        //Note: borderWidth is supported only by Chrome
+    if (padding)
+      sum += ver ? Css.intOf(s.paddingTop) + Css.intOf(s.paddingBottom) :
+        Css.intOf(s.paddingLeft) + Css.intOf(s.paddingRight);
+    return sum;
+  }
+
   /** Measure the size of the given text.
    *
    * If [node] is not null, the size will be based on it CSS style and

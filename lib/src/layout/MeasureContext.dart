@@ -35,22 +35,15 @@ class MeasureContext {
    */
   int getBorderWidth(View view) {
     final v = _borderWds[view];
-    if (v == null) {
-      final qs = new DomAgent(view.node).computedStyle;
-      return _borderWds[view] = Css.intOf(qs.borderLeftWidth) + Css.intOf(qs.borderRightWidth);
-      //Note: qs.borderWidth is supported only by Chrome
-    }
-    return v;
+    return v != null ? v: 
+      (_borderWds[view] = new DomAgent(view.node).sumWidth(border:true));
   }
   /** Returns the border's height (top border plus bottom border).
    */
   int getBorderHeight(View view) {
     final v = _borderHghs[view];
-    if (v == null) {
-      final qs = new DomAgent(view.node).computedStyle;
-      return _borderHghs[view] = Css.intOf(qs.borderTopWidth) + Css.intOf(qs.borderBottomWidth);
-    }
-    return v;
+    return v != null ? v:
+      (_borderHghs[view] = new DomAgent(view.node).sumHeight(border:true));
   }
 
   /** Returns the value of the profile with the given name.

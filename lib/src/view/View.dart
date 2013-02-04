@@ -773,7 +773,7 @@ class View {
    * if it is not specified.
    */
   bool get shallMeasureContent
-  => !isViewGroup || (firstChild == null && new _DomAgentX(node).hasContent);
+  => !isViewGroup || (firstChild == null && new DomAgent(node).hasContent);
 
   /** Returns whether the given child shall be handled by the layout manager.
    *
