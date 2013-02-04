@@ -33,7 +33,7 @@ void main() {
   test1(vlayout);
 
   Button btn = new Button("Change text");
-  btn.on.click.add((event) {
+  btn.on.click.listen((event) {
     for (TextView v in vlayout.queryAll("TextView"))
       v.text = "${v.text} click";
     vlayout.requestLayout();

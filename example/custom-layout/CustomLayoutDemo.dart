@@ -15,7 +15,7 @@ class CustomLayoutDemo {
     TextView text = new TextView("Touch Anywhere You like");
     text.profile.text = "location: center center";
     mainView.addChild(text);
-    mainView.on.click.add((DomEvent event) {
+    mainView.on.click.listen((DomEvent event) {
       if (anchor == null)
         _createViews();
       _move(event.pageOffset - new DomAgent(mainView.node).pageOffset);
@@ -32,14 +32,14 @@ class CustomLayoutDemo {
     mainView.addChild(anchor);
 
     final View red = _createTextView("Mobile", "red");
-    anchor.on.layout.add((event) {
+    anchor.on.layout.listen((event) {
       red.left = anchor.left + anchor.width;
       red.top = anchor.top - anchor.height;
     });
     mainView.addChild(red);
 
     final View green = _createTextView("Web", "yellow");
-    anchor.on.layout.add((event) {
+    anchor.on.layout.listen((event) {
       green.left = anchor.left + anchor.width * 2;
       green.top = anchor.top;
     });

@@ -90,13 +90,13 @@ void main() {
   
   SwitchViewEffect _eff;
   
-  bak.on.click.add((ViewEvent event) {
+  bak.on.click.listen((ViewEvent event) {
     replace(v2, v1, _eff);
   });
   
   container.addChild(btn("Fade")
       ..profile.location = "top left"
-      ..on.click.add((ViewEvent event) {
+      ..on.click.listen((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
       final String n1z = n1.style.zIndex;
       new FadeInEffect(n2, start: (MotionState state) {
@@ -112,7 +112,7 @@ void main() {
   
   container.addChild(btn("Slide")
       ..profile.location = "top right"
-      ..on.click.add((ViewEvent event) {
+      ..on.click.listen((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
       final int width = new DomAgent(body).width;
       new EasingMotion((num x, MotionState state) {
@@ -142,7 +142,7 @@ void main() {
   
   container.addChild(btn("Collapse")
       ..profile.location = "bottom left"
-      ..on.click.add((ViewEvent event) {
+      ..on.click.listen((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
       final List<MotionAction> actions = new List<MotionAction>();
       final List<Function> ends = new List<Function>();
@@ -187,6 +187,6 @@ void main() {
   View w4 = btn("N/A")..profile.location = "bottom right";
   container.addChild(btn("N/A")
       ..profile.location = "bottom right"
-      ..on.click.add((ViewEvent event) => replace(v1, v2, _eff = null)));
+      ..on.click.listen((ViewEvent event) => replace(v1, v2, _eff = null)));
   
 }

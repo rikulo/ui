@@ -7,7 +7,7 @@ void main() {
   printc("started");
   final View mainView = new View()
     ..layout.text = "type: linear; orient: vertical"
-    ..on.layout.add((event) {
+    ..on.layout.listen((event) {
       if (event.target == event.currentTarget) //filter out children
         printc("done");
     });

@@ -8,7 +8,7 @@ void main() {
   printc(null);
   int count = 0;
   Button btn = new Button("Click Me!");
-  btn.on.click.add((event) {
+  btn.on.click.listen((event) {
     printc("Clicked ${++count}");
   });
   final View mainView = new View()..addToDocument();

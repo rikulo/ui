@@ -15,7 +15,7 @@ void main() {
   myView.layout.text = "type: linear; orient: vertical";
   mainView.addChild(myView);
 
-  btn.on.click.add((event) {
+  btn.on.click.listen((event) {
     myView.visible = !myView.visible;
   });
 

@@ -50,7 +50,7 @@ class ViewDemo {
         ..style.boxSizing = "border-box"
         ..style.border = "1px solid #888"
         ..style.borderRadius = "2px"
-        ..on.click.add((ViewEvent event) => select(dir));
+        ..on.click.listen((ViewEvent event) => select(dir));
     View c = new View()..width = 24..height = 24
         ..profile.location = "center center"
         ..style.boxSizing = "border-box";
@@ -72,7 +72,7 @@ class ViewDemo {
     bool mv1 = false, mv2 = false, mv3 = false;
     
     final View v1 = btn("Fade")..profile.location = "top left";
-    container.addChild(v1..on.click.add((ViewEvent event) {
+    container.addChild(v1..on.click.listen((ViewEvent event) {
       if (mv1)
         return;
       mv1 = true;
@@ -82,7 +82,7 @@ class ViewDemo {
       }).run();
     }));
     
-    container.addChild(circle("Fade", v1)..on.click.add((ViewEvent event) {
+    container.addChild(circle("Fade", v1)..on.click.listen((ViewEvent event) {
       if (mv1)
         return;
       mv1 = true;
@@ -94,7 +94,7 @@ class ViewDemo {
     }));
     
     final View v2 = btn("Zoom")..profile.location = "top right";
-    container.addChild(v2..on.click.add((ViewEvent event) {
+    container.addChild(v2..on.click.listen((ViewEvent event) {
       if (mv2)
         return;
       mv2 = true;
@@ -104,7 +104,7 @@ class ViewDemo {
       }).run();
     }));
     
-    container.addChild(circle("Zoom", v2)..on.click.add((ViewEvent event) {
+    container.addChild(circle("Zoom", v2)..on.click.listen((ViewEvent event) {
       if (mv2)
         return;
       mv2 = true;
@@ -116,7 +116,7 @@ class ViewDemo {
     }));
     
     final View v3 = btn("Slide")..profile.location = "bottom left";
-    container.addChild(v3..on.click.add((ViewEvent event) {
+    container.addChild(v3..on.click.listen((ViewEvent event) {
       if (mv3)
         return;
       mv3 = true;
@@ -126,7 +126,7 @@ class ViewDemo {
       }).run();
     }));
     
-    container.addChild(circle("Slide", v3)..on.click.add((ViewEvent event) {
+    container.addChild(circle("Slide", v3)..on.click.listen((ViewEvent event) {
       if (mv3)
         return;
       mv3 = true;
@@ -147,9 +147,9 @@ class ViewDemo {
         ..profile.anchorView = v3..profile.location = "east center");
     
     final View v4 = btn("N/A")..profile.location = "bottom right";
-    container.addChild(v4..on.click.add((ViewEvent event) => v4.remove()));
+    container.addChild(v4..on.click.listen((ViewEvent event) => v4.remove()));
     
-    container.addChild(circle("N/A", v4)..on.click.add((ViewEvent event) {
+    container.addChild(circle("N/A", v4)..on.click.listen((ViewEvent event) {
       container.addChild(v4);
     }));
     
@@ -199,9 +199,9 @@ class PanelDemo {
     ..profile.location = "center center"..style.fontSize = "14px");
     dialog.addChild(btn("OK")
         ..profile.location = browser.mobile ? "bottom center" : "bottom right"
-          ..on.click.add((ViewEvent event) => _remove()));
+          ..on.click.listen((ViewEvent event) => _remove()));
     
-    container.addChild(btn("Fade")..on.click.add((ViewEvent event) {
+    container.addChild(btn("Fade")..on.click.listen((ViewEvent event) {
       dialog.style.visibility = "hidden";
       dialog.addToDocument(ref: body, mode: "dialog");
       final Element mask = dialog.maskNode;
@@ -216,7 +216,7 @@ class PanelDemo {
       });
     }));
     
-    container.addChild(btn("Zoom")..on.click.add((ViewEvent event) {
+    container.addChild(btn("Zoom")..on.click.listen((ViewEvent event) {
       dialog.style.visibility = "hidden";
       dialog.addToDocument(ref: body, mode: "dialog");
       final Element mask = dialog.maskNode;
@@ -231,7 +231,7 @@ class PanelDemo {
       });
     }));
     
-    container.addChild(btn("Slide")..on.click.add((ViewEvent event) {
+    container.addChild(btn("Slide")..on.click.listen((ViewEvent event) {
       dialog.style.visibility = "hidden";
       dialog.addToDocument(ref: body, mode: "dialog");
       dialog.requestLayout(true); // as slide effect depends on initial size
@@ -247,7 +247,7 @@ class PanelDemo {
       });
     }));
     
-    container.addChild(btn("N/A")..on.click.add((ViewEvent event) {
+    container.addChild(btn("N/A")..on.click.listen((ViewEvent event) {
       dialog.addToDocument(ref: body, mode: "dialog");
       removeReady = true;
       removeMotion = null;
@@ -342,13 +342,13 @@ class SwitchViewDemo {
     
     SwitchViewEffect _eff;
     
-    bak.on.click.add((ViewEvent event) {
+    bak.on.click.listen((ViewEvent event) {
       replace(v2, v1, _eff);
     });
     
     container.addChild(btn("Fade")
         ..profile.location = "top left"
-        ..on.click.add((ViewEvent event) {
+        ..on.click.listen((ViewEvent event) {
           replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
             final String n1z = n1.style.zIndex;
             new FadeInEffect(n2, start: (MotionState state) {
@@ -364,7 +364,7 @@ class SwitchViewDemo {
     
     container.addChild(btn("Slide")
         ..profile.location = "top right"
-        ..on.click.add((ViewEvent event) {
+        ..on.click.listen((ViewEvent event) {
           replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
             final int width = new DomAgent(body).width;
             new EasingMotion((num x, MotionState state) {
@@ -394,7 +394,7 @@ class SwitchViewDemo {
     
     container.addChild(btn("Collapse")
         ..profile.location = "bottom left"
-        ..on.click.add((ViewEvent event) {
+        ..on.click.listen((ViewEvent event) {
           replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
             final List<MotionAction> actions = new List<MotionAction>();
             final List<Function> ends = new List<Function>();
@@ -439,7 +439,7 @@ class SwitchViewDemo {
     View w4 = btn("N/A")..profile.location = "bottom right";
     container.addChild(btn("N/A")
         ..profile.location = "bottom right"
-        ..on.click.add((ViewEvent event) => replace(v1, v2, _eff = null)));
+        ..on.click.listen((ViewEvent event) => replace(v1, v2, _eff = null)));
     
   }
 

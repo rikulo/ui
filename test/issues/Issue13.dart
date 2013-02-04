@@ -21,7 +21,7 @@ void main() {
   mainView.addChild(ddl);
 
   final btn = new Button("test");
-  btn.on.click.add((event) {
+  btn.on.click.listen((event) {
     ddl.model = model;
     mainView.requestLayout(true);
     mainView.addChild(

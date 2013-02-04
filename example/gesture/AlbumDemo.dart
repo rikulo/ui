@@ -161,7 +161,7 @@ void main() {
   });
   
   // responsive sizing
-  frame.on.preLayout.add((LayoutEvent event) {
+  frame.on.preLayout.listen((LayoutEvent event) {
     final Size msize = new DomAgent(mainView.node).innerSize;
     frameSize = min(msize.width, msize.height);
     final int photoSize = min(frameSize - 50, 500);

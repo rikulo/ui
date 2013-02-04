@@ -13,7 +13,7 @@ Switch createSwitch(bool value, [String onLabel, String offLabel, bool small=fal
   Switch view = new Switch(value, onLabel, offLabel);
   if (small)
     view.classes.add("v-small");
-  view.on.change.add((event){
+  view.on.change.listen((event){
     printc("Switch${view.uuid}: ${view.value}");
   });
   return view;

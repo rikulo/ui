@@ -6,7 +6,7 @@ class Popup extends View {
   Popup() {
     classes.add("v-popup");
 
-    on.activate.add((event) {
+    on.activate.listen((event) {
       if (event.shallClose(this))
         remove();
     });
@@ -37,14 +37,14 @@ void main() {
   popup.profile..anchorView = btn
     ..location = "south start";
 
-  btn.on.click.add((event) {
+  btn.on.click.listen((event) {
     popup.addToDocument(layout: true);
   });
 
   Button btn2 = new Button("Create Popup 1");
   btn2.profile.anchorView = btn;
   btn2.profile.location = "east start";
-  btn2.on.click.add((event) {
+  btn2.on.click.listen((event) {
     final pp = new Popup()
       ..width = 200
       ..height = 150

@@ -45,7 +45,7 @@ View radio(SlideDirection dir) {
       ..style.boxSizing = "border-box"
       ..style.border = "1px solid #888"
       ..style.borderRadius = "2px"
-      ..on.click.add((ViewEvent event) => select(dir));
+      ..on.click.listen((ViewEvent event) => select(dir));
   View c = new View()..width = 24..height = 24
       ..profile.location = "center center"
       ..style.boxSizing = "border-box";
@@ -67,7 +67,7 @@ void main() {
   bool mv1 = false, mv2 = false, mv3 = false;
   
   final View v1 = btn("Fade")..profile.location = "top left";
-  container.addChild(v1..on.click.add((ViewEvent event) {
+  container.addChild(v1..on.click.listen((ViewEvent event) {
     if (mv1)
       return;
     mv1 = true;
@@ -77,7 +77,7 @@ void main() {
     }).run();
   }));
   
-  container.addChild(circle("Fade", v1)..on.click.add((ViewEvent event) {
+  container.addChild(circle("Fade", v1)..on.click.listen((ViewEvent event) {
     if (mv1)
       return;
     mv1 = true;
@@ -89,7 +89,7 @@ void main() {
   }));
   
   final View v2 = btn("Zoom")..profile.location = "top right";
-  container.addChild(v2..on.click.add((ViewEvent event) {
+  container.addChild(v2..on.click.listen((ViewEvent event) {
     if (mv2)
       return;
     mv2 = true;
@@ -99,7 +99,7 @@ void main() {
     }).run();
   }));
   
-  container.addChild(circle("Zoom", v2)..on.click.add((ViewEvent event) {
+  container.addChild(circle("Zoom", v2)..on.click.listen((ViewEvent event) {
     if (mv2)
       return;
     mv2 = true;
@@ -111,7 +111,7 @@ void main() {
   }));
   
   final View v3 = btn("Slide")..profile.location = "bottom left";
-  container.addChild(v3..on.click.add((ViewEvent event) {
+  container.addChild(v3..on.click.listen((ViewEvent event) {
     if (mv3)
       return;
     mv3 = true;
@@ -121,7 +121,7 @@ void main() {
     }).run();
   }));
   
-  container.addChild(circle("Slide", v3)..on.click.add((ViewEvent event) {
+  container.addChild(circle("Slide", v3)..on.click.listen((ViewEvent event) {
     if (mv3)
       return;
     mv3 = true;
@@ -142,9 +142,9 @@ void main() {
       ..profile.anchorView = v3..profile.location = "east center");
   
   final View v4 = btn("N/A")..profile.location = "bottom right";
-  container.addChild(v4..on.click.add((ViewEvent event) => v4.remove()));
+  container.addChild(v4..on.click.listen((ViewEvent event) => v4.remove()));
   
-  container.addChild(circle("N/A", v4)..on.click.add((ViewEvent event) {
+  container.addChild(circle("N/A", v4)..on.click.listen((ViewEvent event) {
     container.addChild(v4);
   }));
   

@@ -72,7 +72,7 @@ void main() {
     b.left = 350;
     b.top = 350 + 50 * i;
     mainView.addChild(b);
-    b.on.click.add((ViewEvent event) {
+    b.on.click.listen((ViewEvent event) {
       EasingMotion m = motions[i];
       if (m != null)
         m.stop();
@@ -81,7 +81,7 @@ void main() {
   }
   
   for (int i = 0; i < 3; i++) {
-    cubes[i].on.click.add((ViewEvent event) {
+    cubes[i].on.click.listen((ViewEvent event) {
         return;
       green(cubes[i]);
       motions[i] = new EasingMotion(_action(cubes[i].node, centers[i]), 

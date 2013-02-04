@@ -56,7 +56,7 @@ View radio(SlideDirection dir) {
   final int i = _dirs.indexOf(dir);
   _dirviews[i] = v;
   
-  v.on.click.add((ViewEvent event) {
+  v.on.click.listen((ViewEvent event) {
     select(dir);
   });
   
@@ -81,7 +81,7 @@ void main() {
   final View w1 = vs[0], v1 = vs[1];
   container..addChild(w1)..addChild(v1);
   
-  w1.on.click.add((ViewEvent event) {
+  w1.on.click.listen((ViewEvent event) {
     if (mv1)
       return;
     mv1 = true;
@@ -92,7 +92,7 @@ void main() {
     }).run();
   });
   
-  v1.on.click.add((ViewEvent event) {
+  v1.on.click.listen((ViewEvent event) {
     if (mv1)
       return;
     mv1 = true;
@@ -106,7 +106,7 @@ void main() {
   final View w2 = vs[0], v2 = vs[1];
   container..addChild(w2)..addChild(v2);
   
-  w2.on.click.add((ViewEvent event) {
+  w2.on.click.listen((ViewEvent event) {
     if (mv2)
       return;
     mv2 = true;
@@ -117,7 +117,7 @@ void main() {
     }).run();
   });
   
-  v2.on.click.add((ViewEvent event) {
+  v2.on.click.listen((ViewEvent event) {
     if (mv2)
       return;
     mv2 = true;
@@ -141,7 +141,7 @@ void main() {
   radioE.profile..anchorView = w3..location = "east center";
   container..addChild(radioN)..addChild(radioS)..addChild(radioW)..addChild(radioE);
   
-  w3.on.click.add((ViewEvent event) {
+  w3.on.click.listen((ViewEvent event) {
     if (mv3)
       return;
     mv3 = true;
@@ -152,7 +152,7 @@ void main() {
     }).run();
   });
   
-  v3.on.click.add((ViewEvent event) {
+  v3.on.click.listen((ViewEvent event) {
     if (mv3)
       return;
     mv3 = true;
@@ -166,11 +166,11 @@ void main() {
   final View w4 = vs[0], v4 = vs[1];
   container..addChild(w4)..addChild(v4);
   
-  w4.on.click.add((ViewEvent event) {
+  w4.on.click.listen((ViewEvent event) {
     container.addChild(v4);
   });
   
-  v4.on.click.add((ViewEvent event) {
+  v4.on.click.listen((ViewEvent event) {
     v4.remove();
   });
   

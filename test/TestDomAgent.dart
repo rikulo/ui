@@ -31,7 +31,7 @@ void main() {
   _createText(mainView, "Test Case 3", "font-style: italic; font-size: 9px;", ["v-button"]);
 
   final Button button = new Button("Measure");
-  button.on.click.add((event) {
+  button.on.click.listen((event) {
     for (TextView textView in mainView.queryAll("TextView:first-child")) {
       final TextView info = textView.nextSibling;
       info.text = "${new DomAgent(textView.node).measureText(textView.text)}";

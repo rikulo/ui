@@ -22,7 +22,7 @@ class RadGroup<E> {
   void add(E item, View view, void callback()) {
     _map[item] = view;
     if (view != null)
-      view.on.click.add((ViewEvent event) {
+      view.on.click.listen((ViewEvent event) {
         _select(item, view);
         callback();
       });
@@ -182,17 +182,17 @@ void main() {
   rbtn = new View()..left = 0..top = 16..addChild(new View());
   rbtn.classes..add("round-button")..add("run");
   stateBar.addChild(rbtn);
-  rbtn.on.click.add((ViewEvent event) => play());
+  rbtn.on.click.listen((ViewEvent event) => play());
   
   pbtn = new View()..left = 35..top = 16..addChild(new View())..addChild(new View());
   pbtn.classes..add("round-button")..add("pause");
   stateBar.addChild(pbtn);
-  pbtn.on.click.add((ViewEvent event) => pause());
+  pbtn.on.click.listen((ViewEvent event) => pause());
   
   sbtn = new View()..left = 70..top = 16..addChild(new View());
   sbtn.classes..add("round-button")..add("stop");
   stateBar.addChild(sbtn);
-  sbtn.on.click.add((ViewEvent event) => stop());
+  sbtn.on.click.listen((ViewEvent event) => stop());
   
   final View progBox = new View()..height = 10..width = 300;
   progBox.style..border = "1px solid #CCCCCC"..borderRadius = "2px"

@@ -25,8 +25,8 @@ main() {
   hlayout.addChild(right);
   _right = right;
   
-  _left.on.click.add((event) {_left.visible = false; _right.visible = true; mainView.requestLayout();});
-  _right.on.click.add((event) {_left.visible = true; _right.visible = false; mainView.requestLayout();});
+  _left.on.click.listen((event) {_left.visible = false; _right.visible = true; mainView.requestLayout();});
+  _right.on.click.listen((event) {_left.visible = true; _right.visible = false; mainView.requestLayout();});
   
   mainView.addChild(new TextView.fromHtml('''
 <ul><li>Click FIRST TEXT and you shall see it disappears and SECOND TEXT shows up</li>

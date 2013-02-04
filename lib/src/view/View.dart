@@ -50,7 +50,7 @@ typedef void AfterMount(View view);
  *
  * + [ViewUtil]
  */
-class View {
+class View implements ViewEventTarget {
   String _uuid;
 
   View _parent;
@@ -987,9 +987,36 @@ class View {
    */
   CssClassSet get classes => node.classes;
 
-  /** Returns [ViewEvents] for adding or removing event listeners.
+  /** Returns [ViewEvents] for adding event listeners.
+   *
+   *     view.on.click.listen((event) {});
+   *
+   * To remove the listener, you have to store the return value and invoke its `cancel()`:
+   *
+   *     sub = view.on.click.listen((event) {}); //add
+   *     ...
+   *     sub.cancel(); //remove
+   *
+   * Alternatively, you can use [addEventListener] and [removeEventListener] instead.
    */
   ViewEvents get on => _initEventListenerInfo().on;
+  /** Adds an event listener.
+   *
+   * Alternatively, you can use [on] instead.
+   *
+   * * [useCapture] is applicable only if the view event is caused by a DOM event.
+   */
+  void addEventListener(String type, ViewEventListener listener, {bool useCapture: false}) {
+    _initEventListenerInfo().add(type, listener, useCapture);
+  }
+  /** Removes an event listener.
+   *
+   * * [useCapture] is applicable only if the view event is caused by a DOM event.
+   */
+  void removeEventListener(String type, ViewEventListener listener, {bool useCapture: false}) {
+    if (_evlInfo != null)
+      _evlInfo.remove(type, listener, useCapture);
+  }
 
   /** Sends an event to this view.
    *

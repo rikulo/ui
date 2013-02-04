@@ -18,7 +18,7 @@ class LabeledInput extends View {
     addChild(_label = new TextView(label));
     addChild(_input = new TextBox(value));
 
-    _input.on.change.add((ChangeEvent event) {
+    _input.on.change.listen((ChangeEvent event) {
       sendEvent(new ChangeEvent(event.value, "change", this));
       });
   }

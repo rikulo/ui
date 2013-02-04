@@ -22,7 +22,7 @@ fi
 lstfl=$homedir/tool/lib/css.lst
 headfl=$homedir/tool/lib/css.head
 if [ ! -f $lstfl ] || [ ! -f $headfl ] ; then
-	echo Not found $lstfl and $headfl
+	echo Not found: $lstfl or $headfl
 	exit -1
 fi
 

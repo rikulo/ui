@@ -243,7 +243,7 @@ class _EventListenerInfo {
   Map<String, EventListener> _domListeners;
 
   _EventListenerInfo(View this._owner) {
-    on = new ViewEvents(this);
+    on = new ViewEvents(_owner);
   }
 
   /** Returns if no event listener registered to the given type. (Called by ViewEvents)
@@ -272,20 +272,16 @@ class _EventListenerInfo {
   }
   /** Removes an event listener. (Called by ViewEvents)
    */
-  bool remove(String type, ViewEventListener listener, bool useCapture) {
+  void remove(String type, ViewEventListener listener, bool useCapture) {
     List<ViewEventListener> ls;
-    bool found = false;
     if (_listeners != null && (ls = _listeners[type]) != null) {
       int j = ls.indexOf(listener);
       if (j >= 0) {
-        found = true;
-
         ls.removeRange(j, 1);
         if (ls.isEmpty)
           _owner.onEventUnlistened_(type, useCapture: useCapture);
       }
     }
-    return found;
   }
   /** Sends an event. (Called by ViewEvents)
    */
@@ -337,7 +333,7 @@ typedef EventListener _DomEventDispatcher(View target);
 Element _domEvtTarget(String type, Element node) {
   //focus/blur not bubble up: http://www.quirksmode.org/js/tests/focusbubble.html
   //so we have to register it to the right element
-  if (_noBubEvts.contains(type) && !_inpTags.contains(node.tagName.toLowerCase())) {
+  if ((type == "focus" || type == "blur") && !_inpTags.contains(node.tagName.toLowerCase())) {
     for (final tag in _inpTags) {
       final inp = node.query(tag);
       if (inp != null) {
@@ -348,20 +344,13 @@ Element _domEvtTarget(String type, Element node) {
   }
   return node;
 }
-const _noBubEvts = const ["focus", "blur"];
+
 final _inpTags = new Set.from(const ["input", "textarea", "select", "button", "a"]);
 _DomEventDispatcher _domEventDispatcher(String type) {
   if (_domEvtDisps == null) {
     _domEvtDisps = new Map();
-    for (final nm in const ["abort", "click", "dblclick",
-    "drag", "dragEnd", "dragEnter", "dragLeave", "dragOver", "dragStart", "drop",
-    "error", "keyDown", "keyPress", "keyUp", "load",
-    "mouseDown", "mouseMove", "mouseOut", "mouseOver", "mouseUp", "mouseWheel",
-    "reset", "scroll", "select", "submit", "unload"])
-      _domEvtDisps[nm] = _domEvtDisp(nm);
-    for (final nm in _noBubEvts)
-      _domEvtDisps[nm] = _domEvtDisp(nm);
-    _domEvtDisps["change"] = _domChangeEvtDisp();
+    for (final nm in domEvents)
+      _domEvtDisps[nm] = nm == "change" ? _domChangeEvtDisp(): _domEvtDisp(nm);
   }
   return _domEvtDisps[type];
 }

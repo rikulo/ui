@@ -48,9 +48,9 @@ void main() {
   dialog.addChild(btn("OK")
       ..profile.location = browser.touch ? "bottom center" : "bottom right"
       ..profile.margin = browser.touch ? "0 16 0 -16" : "-16 16 16 -16"
-      ..on.click.add((ViewEvent event) => _remove()));
+      ..on.click.listen((ViewEvent event) => _remove()));
   
-  container.addChild(btn("Fade")..on.click.add((ViewEvent event) {
+  container.addChild(btn("Fade")..on.click.listen((ViewEvent event) {
     dialog.style.visibility = "hidden";
     dialog.addToDocument(ref: body, mode: "dialog");
     final Element mask = dialog.maskNode;
@@ -65,7 +65,7 @@ void main() {
     });
   }));
   
-  container.addChild(btn("Zoom")..on.click.add((ViewEvent event) {
+  container.addChild(btn("Zoom")..on.click.listen((ViewEvent event) {
     dialog.style.visibility = "hidden";
     dialog.addToDocument(ref: body, mode: "dialog");
     final Element mask = dialog.maskNode;
@@ -80,7 +80,7 @@ void main() {
     });
   }));
   
-  container.addChild(btn("Slide")..on.click.add((ViewEvent event) {
+  container.addChild(btn("Slide")..on.click.listen((ViewEvent event) {
     dialog.style.visibility = "hidden";
     dialog.addToDocument(ref: body, mode: "dialog");
     dialog.requestLayout(true); // as slide effect depends on initial size
@@ -96,7 +96,7 @@ void main() {
     });
   }));
   
-  container.addChild(btn("N/A")..on.click.add((ViewEvent event) {
+  container.addChild(btn("N/A")..on.click.listen((ViewEvent event) {
     dialog.addToDocument(ref: body, mode: "dialog");
     removeReady = true;
     removeMotion = null;

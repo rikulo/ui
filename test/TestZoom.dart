@@ -65,7 +65,7 @@ void main() {
   mainView..addChild(panel)..addChild(status);
   
   // sizing
-  panel.on.preLayout.add((LayoutEvent e) {
+  panel.on.preLayout.listen((LayoutEvent e) {
     panel.height = new DomAgent(mainView.node).innerHeight - statusHeight;
   });
   

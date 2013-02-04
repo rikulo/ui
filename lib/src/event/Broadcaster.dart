@@ -10,7 +10,7 @@ part of rikulo_event;
  * (i.e., `inDocument`). Thus, to listen a broadcast event, you can register
  * a listenber to either [broadcaster] or one of the moutned root views.
  */
-abstract class Broadcaster {
+abstract class Broadcaster implements ViewEventTarget {
   /** Returns [BroadcastEvents] for adding or removing event listeners.
    */
   BroadcastEvents get on;
@@ -32,66 +32,40 @@ Broadcaster broadcaster = new _Broadcaster();
 /**
  * A map of event listeners for handling the broadcasted events.
  */
-class BroadcastEvents extends ViewEventListenerMap {
-  BroadcastEvents(var ptr): super(ptr);
+class BroadcastEvents {
+  final ViewEventTarget _owner;
+  BroadcastEvents(ViewEventTarget owner): _owner = owner;
 
   /** Listeners for the activate event ([ActivateEvent]).
    */
-  ViewEventListenerList get activate => _get('activate');
+  Stream<ActivateEvent> get activate => activateEvent.forTarget(_owner);
 }
 
 /** An implementation of [Broadcaster].
  */
 class _Broadcaster extends Broadcaster {
-  _BroadcastListenerInfo _lnInfo;
+  final Map<String, List<ViewEventListener>> _listeners;
   BroadcastEvents _on;
 
-  _Broadcaster() {
-    _lnInfo = new _BroadcastListenerInfo(this);
-    _on = new BroadcastEvents(_lnInfo);
+  _Broadcaster(): _listeners = new Map() {
+    _on = new BroadcastEvents(this);
   }
 
   BroadcastEvents get on => _on;
 
-  bool sendEvent(ViewEvent event, {String type})
-  => _lnInfo.send(event, type);
-  void postEvent(ViewEvent event, {String type}) {
-    window.setTimeout(() {sendEvent(event, type: type);}, 0);
-      //note: the order of messages is preserved across all views (and message queues)
-      //CONSIDER if it is better to have a queue shared by views/message queues/broadcaster
-  }
-}
-class _BroadcastListenerInfo { //API must be the same as _EventListenerInfo
-  final Broadcaster _owner;
-  final Map<String, List<ViewEventListener>> _listeners;
-
-  _BroadcastListenerInfo(Broadcaster this._owner): _listeners = new Map() {
-  }
-
-  /** Returns if no event listener registered to the given type. (Called by ViewEvents)
-   */
-  bool isEmpty(String type) {
-    List<ViewEventListener> ls;
-    return _listeners == null || (ls = _listeners[type]) == null || ls.isEmpty;
-  }
-  /** Adds an event listener.  (Called by ViewEvents)
-   */
-  void add(String type, ViewEventListener listener, bool useCapture) {
+  void addEventListener(String type, ViewEventListener listener, {bool useCapture:false}) {
     if (listener == null)
       throw new ArgumentError("listener");
 
     _listeners.putIfAbsent(type, () => []).add(listener);
   }
-  /** Removes an event listener. (Called by ViewEvents)
-   */
-  void remove(String type, ViewEventListener listener, bool useCapture) {
+  void removeEventListener(String type, ViewEventListener listener, {bool useCapture:false}) {
     final ls = _listeners[type];
     if (ls != null)
       ls.remove(listener);
   }
-  /** Sends an event. (Called by ViewEvents)
-   */
-  bool send(ViewEvent event, String type) {
+
+  bool sendEvent(ViewEvent event, {String type}) {
     if (type == null)
       type = event.type;
 
@@ -108,10 +82,16 @@ class _BroadcastListenerInfo { //API must be the same as _EventListenerInfo
       }
     }
 
-		//broadcast to all root views
+    //broadcast to all root views
     for (final v in new List<View>.from(rootViews))
       if (v.sendEvent(event, type: type))
         dispatched = true;
     return dispatched;
+  }
+
+  void postEvent(ViewEvent event, {String type}) {
+    window.setTimeout(() {sendEvent(event, type: type);}, 0);
+      //note: the order of messages is preserved across all views (and message queues)
+      //CONSIDER if it is better to have a queue shared by views/message queues/broadcaster
   }
 }

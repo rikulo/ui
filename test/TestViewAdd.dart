@@ -29,7 +29,7 @@ void main() {
   
   vlayout..addChild(btn)..addChild(v1)..addChild(v3);
   
-  btn.on.click.add((event) {
+  btn.on.click.listen((event) {
     if (!v2.inDocument) {
       btn.disabled = true;
       v2.style.visibility = "hidden";

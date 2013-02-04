@@ -39,7 +39,7 @@ void main() {
   Transformation trans;
   
   // sizing
-  img.on.preLayout.add((LayoutEvent event) {
+  img.on.preLayout.listen((LayoutEvent event) {
     Size psize = new DomAgent(panel.node).innerSize;
     if (psize.width / imgw < psize.height / imgh) {
       img.width = psize.width.toInt();

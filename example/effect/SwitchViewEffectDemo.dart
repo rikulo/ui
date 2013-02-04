@@ -100,7 +100,7 @@ void main() {
   
   SwitchViewEffect _eff;
   
-  w1.on.click.add((ViewEvent event) {
+  w1.on.click.listen((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
       final String n1z = n1.style.zIndex;
       new FadeInEffect(n2, start: (MotionState state) {
@@ -112,7 +112,7 @@ void main() {
     });
   });
   
-  w2.on.click.add((ViewEvent event) {
+  w2.on.click.listen((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
       final int width = browser.size.width;
       new EasingMotion((num x, MotionState state) {
@@ -140,7 +140,7 @@ void main() {
     });
   });
   
-  w3.on.click.add((ViewEvent event) {
+  w3.on.click.listen((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
       final List<MotionAction> actions = new List<MotionAction>();
       final List<Function> ends = new List<Function>();
@@ -181,11 +181,11 @@ void main() {
     });
   });
   
-  w4.on.click.add((ViewEvent event) {
+  w4.on.click.listen((ViewEvent event) {
     replace(v1, v2, _eff = null);
   });
   
-  bak.on.click.add((ViewEvent event) {
+  bak.on.click.listen((ViewEvent event) {
     replace(v2, v1, _eff);
   });
   

@@ -21,7 +21,7 @@ void main() {
     ..width = 500
     ..top = 30;
   new Section()
-    ..addChild(new Button("Click Me")..on.click.add((event) {
+    ..addChild(new Button("Click Me")..on.click.listen((event) {
         webView.top += 50;
       }))
     ..addChild(webView)

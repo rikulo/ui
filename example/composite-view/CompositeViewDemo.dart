@@ -11,7 +11,7 @@ void main() {
   mainView.addChild(new LabeledInput("password"));
 
   for (LabeledInput view in mainView.queryAll("LabeledInput"))
-    view.on.change.add((event) {
+    view.on.change.listen((event) {
       print("$event received");
     });
   

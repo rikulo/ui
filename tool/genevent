@@ -1,0 +1,50 @@
+#!/bin/bash
+# genevent
+#
+#	Purpose:
+#		Generates lib/src/event/ViewEvents.dart
+#
+#Copyright (C) 2012 Potix Corporation. All Rights Reserved.
+#
+homedir=$0
+homedir=${homedir%/*}
+if [ "$homedir" = "." ] ; then
+  homedir=".."
+elif [ "$homedir" = "${homedir%/*}" ] ; then
+  homedir="."
+else
+  homedir=${homedir%/*}
+fi
+if [ "$TERM" = "cygwin" ] || [ "$OSTYPE" = "cygwin" ] ; then
+  homedir=$(cygpath -u $homedir)
+fi
+
+lstfl=$homedir/tool/lib/event.lst
+if [ ! -f $lstfl ] ; then
+	echo Not found: $lstfl
+	exit -1
+fi
+
+df=$homedir/lib/src/event/ViewEvents.dart
+
+if [ -f /usr/bin/gawk ] ; then
+	awkpg=/usr/bin/gawk
+elif [ -f /usr/bin/nawk ] ; then
+	awkpg=/usr/bin/nawk
+else
+	fn=$(which nawk)
+	if [ -f "$fn" ] ; then
+		awkpg=nawk
+	else
+		fn=$(which gawk)
+		if [ -f "$fn" ] ; then
+			awkpg=gawk
+		else
+			awkpg=awk
+		fi
+	fi
+fi
+
+$awkpg -f $homedir/tool/lib/event-static.awk "$lstfl" > $df
+$awkpg -f $homedir/tool/lib/event-list.awk "$lstfl" >> $df
+$awkpg -f $homedir/tool/lib/event-map.awk "$lstfl" >> $df

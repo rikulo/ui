@@ -38,35 +38,35 @@ void main() {
   
   mainView.on
   //create drag effect
-  ..dragStart.add((event) {
+  ..dragStart.listen((event) {
     event.target.classes.add("dragged");
     event.dataTransfer.setData("Text", "id:${event.target.id}");
     //IE accepts only "Text" and "URL" as the first argument
   })
-  ..dragEnd.add((event) {
+  ..dragEnd.listen((event) {
     event.target.classes.remove("dragged");
   })
   //allow drop if it is in a container
-  ..dragOver.add((event) {
+  ..dragOver.listen((event) {
     if (getContainer(event) != null)
       event.preventDefault();
     //calling preventDefault in dragOver means "allow drop"
   })
   //create allow-drop effect
-  ..dragEnter.add((event) {
+  ..dragEnter.listen((event) {
     final container = getContainer(event);
     if (container != null)
       window.setTimeout((){container.classes.add("dragover");}, 0);
     //Chrome issue: prev.dragLeave is fired after nextdragEnter, so
     //we have to defer dragEnter to make the sequence: leave and then enter
   })
-  ..dragLeave.add((event) {
+  ..dragLeave.listen((event) {
     final container = getContainer(event);
     if (container != null)
       container.classes.remove("dragover");
   })
   //handle drop
-  ..drop.add((event) {
+  ..drop.listen((event) {
     final container = getContainer(event);
     if (container != null) {
       container.classes.remove("dragover");

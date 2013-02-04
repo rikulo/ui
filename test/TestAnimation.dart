@@ -48,7 +48,7 @@ void main() {
   bool paused = false;
   */
   
-  cube.on.mouseDown.add((ViewEvent event) {
+  cube.on.mouseDown.listen((ViewEvent event) {
     motion.pause();
     /*
     pauseStart = new DateTime.now().millisecondsSinceEpoch;
@@ -56,7 +56,7 @@ void main() {
      */
   });
   
-  mainView.on.mouseUp.add((ViewEvent event) {
+  mainView.on.mouseUp.listen((ViewEvent event) {
     motion.run();
     /*
     if (paused) {

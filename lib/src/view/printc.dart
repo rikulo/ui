@@ -128,8 +128,13 @@ class _PrintcPopup {
   final _Printc _owner;
   Element _node;
   ViewEventListener _elPopup;
+  StreamSubscription<ActivateEvent> _subActivate;
 
   _PrintcPopup(_Printc this._owner) {
+    _elPopup = (event) {
+      if (_node != null && event.shallClose(_node))
+        close();
+    };
   }
   void open(int x, int y) {
     _node = new Element.html('<div style="left:${x+2}px;top:${y+2}px" class="v-printc-pp"><div>[]</div><div>+</div><div>-</div><div>x</div></div>');
@@ -141,7 +146,7 @@ class _PrintcPopup {
     elems[3].onClick.listen((e) {_owner.close();});
 
     _owner._node.children.add(_node);
-    broadcaster.on.activate.add(_onPopup());
+    _subActivate = broadcaster.on.activate.listen(_elPopup);
   }
   void _size(String width, String height) {
     final style = _owner._node.style;
@@ -150,17 +155,14 @@ class _PrintcPopup {
     close();
   }
   void close() {
-    broadcaster.on.activate.remove(_onPopup());
-    _node.remove();
-    _node = null;
+    if (_subActivate != null) {
+      _subActivate.cancel();
+      _subActivate = null;
+    }
+    if (_node != null) {
+      _node.remove();
+      _node = null;
+    }
     _owner._popup = null;
-  }
-  ViewEventListener _onPopup() {
-    if (_elPopup == null)
-      _elPopup = (event) {
-        if (_node != null && event.shallClose(_node))
-          close();
-      };
-    return _elPopup;
   }
 }

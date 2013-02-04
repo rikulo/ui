@@ -5,7 +5,7 @@ import 'package:rikulo/view.dart';
 void main() {
   Button btn = new Button("Open a dialog");
   btn.profile.location = "center left";
-  btn.on.click.add((event) {
+  btn.on.click.listen((event) {
     final dialog = new View()
       ..classes.add("v-dialog")
       ..layout.text = "type: linear; orient: vertical"
@@ -18,13 +18,13 @@ void main() {
           ..layout.text = "type: linear"
           ..addChild(
           new Button("Yes")
-            ..on.click.add((event) { //delete
+            ..on.click.listen((event) { //delete
               //removeFile(); //assume you have this method
               dialog.remove();
             }))
           ..addChild(
           new Button("No")
-            ..on.click.add((event) { //cancel
+            ..on.click.listen((event) { //cancel
               dialog.remove();
             })))
       ..addToDocument(mode: "dialog");

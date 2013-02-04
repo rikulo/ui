@@ -26,7 +26,7 @@ View _createBoxedDrag(View parent) {
   
   new Dragger(view.node, snap: (Offset ppos, Offset pos) => range.snap(pos));
   
-  view.on.layout.add((event) {
+  view.on.layout.listen((event) {
     final Size vs = new DomAgent(view.node).size;
     final Size bs = new DomAgent(box.node).innerSize;
     range = new Rectangle(0, 0, bs.width - vs.width, bs.height - vs.height);

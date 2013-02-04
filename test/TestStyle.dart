@@ -28,7 +28,7 @@ border: 1px solid #553;
   view.classes.add("subject");
   Button btn = new Button("Click Me!");
   btn.profile.text = "location: center center";
-  btn.on.click.add((event) {
+  btn.on.click.listen((event) {
     style.content = style.content == style1 ? style2: style1;
   });
   view.addChild(btn);

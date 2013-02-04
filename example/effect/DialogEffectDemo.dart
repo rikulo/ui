@@ -57,7 +57,7 @@ void main() {
   bool removeReady = false;
   EasingMotion removeMotion;
   
-  btn.on.click.add((ViewEvent event) {
+  btn.on.click.listen((ViewEvent event) {
     if (removeReady) {
       removeReady = false;
       if (removeMotion == null)
@@ -67,7 +67,7 @@ void main() {
     }
   });
   
-  v1.on.click.add((ViewEvent event) {
+  v1.on.click.listen((ViewEvent event) {
     dialog.style.visibility = "hidden";
     dialog.addToDocument(mode: "dialog");
     final Element mask = dialog.maskNode;
@@ -84,7 +84,7 @@ void main() {
     }, easing: (num t) => t * t, period: 400);
   });
   
-  v2.on.click.add((ViewEvent event) {
+  v2.on.click.listen((ViewEvent event) {
     dialog.style.visibility = "hidden";
     dialog.addToDocument(mode: "dialog");
     final Element mask = dialog.maskNode;
@@ -101,7 +101,7 @@ void main() {
     }, easing: (num t) => t * t, period: 400);
   });
   
-  v3.on.click.add((ViewEvent event) {
+  v3.on.click.listen((ViewEvent event) {
     dialog.style.visibility = "hidden";
     dialog.addToDocument(mode: "dialog");
     final Element mask = dialog.maskNode;
@@ -118,7 +118,7 @@ void main() {
     }, easing: (num t) => t * t, period: 400);
   });
   
-  v4.on.click.add((ViewEvent event) {
+  v4.on.click.listen((ViewEvent event) {
     dialog.addToDocument(mode: "dialog");
     removeReady = true;
     removeMotion = null;

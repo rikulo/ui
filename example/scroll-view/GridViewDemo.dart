@@ -23,7 +23,7 @@ void main() {
   view.profile.text = "location: bottom right";
   view.classes.add("list-view");
   
-  view.on.preLayout.add((LayoutEvent event) {
+  view.on.preLayout.listen((LayoutEvent event) {
     final cs = new DomAgent(container.node).innerSize;
     view.width = cs.width - barSize;
     view.height = cs.height - barSize;
@@ -40,28 +40,28 @@ void main() {
   vbar.classes.add("list-view list-view-vbar");
   
   // link ScrollView
-  view.on.scrollStart.add((ScrollEvent event) {
+  view.on.scrollStart.listen((ScrollEvent event) {
     hbar.scroller.stop();
     vbar.scroller.stop();
   });
-  view.on.scrollMove.add((ScrollEvent event) {
+  view.on.scrollMove.listen((ScrollEvent event) {
     hbar.scroller.scrollPosition = vbar.scroller.scrollPosition = event.state.position;
   });
   
-  hbar.on.scrollStart.add((ScrollEvent event) {
+  hbar.on.scrollStart.listen((ScrollEvent event) {
     view.scroller.stop();
     vbar.scroller.stop();
   });
-  hbar.on.scrollMove.add((ScrollEvent event) {
+  hbar.on.scrollMove.listen((ScrollEvent event) {
     view.scroller.scrollPosition = 
         new Offset(event.state.position.x, view.scroller.scrollPosition.y);
   });
   
-  vbar.on.scrollStart.add((ScrollEvent event) {
+  vbar.on.scrollStart.listen((ScrollEvent event) {
     view.scroller.stop();
     hbar.scroller.stop();
   });
-  vbar.on.scrollMove.add((ScrollEvent event) {
+  vbar.on.scrollMove.listen((ScrollEvent event) {
     view.scroller.scrollPosition = 
         new Offset(view.scroller.scrollPosition.x, event.state.position.y);
   });

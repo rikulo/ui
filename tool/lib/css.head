@@ -1,6 +1,6 @@
 // DO NOT EDIT
 // Auto-generated
-// Copyright (C) 2012 Potix Corporation. All Rights Reserved.
+// Copyright (C) 2013 Potix Corporation. All Rights Reserved.
 part of rikulo_view;
 
 class _StyleImpl implements CssStyleDeclaration {

@@ -18,7 +18,7 @@ void _addOrientation(View parent) {
   CheckBox ckbox = new CheckBox("checkbox sample");
   _setBorder(ckbox);
   int clickCount = 0;
-  ckbox.on.change.add((ChangeEvent<bool> event) {
+  ckbox.on.change.listen((ChangeEvent<bool> event) {
     ckbox.text = 'value: ${event.value} ${++clickCount}';
     ckbox.requestLayout();
   });

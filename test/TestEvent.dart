@@ -51,19 +51,19 @@ void main() {
   cube1.top = 100;
   mainView.addChild(cube1);
   
-  cube1.on.click.add((ViewEvent event) {
+  cube1.on.click.listen((ViewEvent event) {
     log_("Mouse Click");
   });
-  cube1.on.mouseDown.add((ViewEvent event) {
+  cube1.on.mouseDown.listen((ViewEvent event) {
     log_("Mouse Down");
   });
-  cube1.on.mouseUp.add((ViewEvent event) {
+  cube1.on.mouseUp.listen((ViewEvent event) {
     log_("Mouse Up");
   });
-  cube1.on.mouseOver.add((ViewEvent event) {
+  cube1.on.mouseOver.listen((ViewEvent event) {
     log_("Mouse Over");
   });
-  cube1.on.mouseOut.add((ViewEvent event) {
+  cube1.on.mouseOut.listen((ViewEvent event) {
     log_("Mouse Out");
   });
   
@@ -72,10 +72,10 @@ void main() {
   cube2.top = 100;
   mainView.addChild(cube2);
   
-  cube2.on.mouseMove.add((ViewEvent event) {
+  cube2.on.mouseMove.listen((ViewEvent event) {
     log_("Mouse Move");
   });
-  cube2.on.mouseWheel.add((ViewEvent event) {
+  cube2.on.mouseWheel.listen((ViewEvent event) {
     log_("Mouse Wheel");
   });
   
@@ -89,15 +89,15 @@ void main() {
   input.profile.location = "center center";
   cube3.addChild(input);
   
-  input.on.focus.add((ViewEvent event) {
+  input.on.focus.listen((ViewEvent event) {
     log_("Focus");
   });
-  input.on.blur.add((ViewEvent event) {
+  input.on.blur.listen((ViewEvent event) {
     log_("Blur");
   });
   
   mainView.addChild(createCube(100, "Cube 4", "Double Click")
       ..left = 300..top = 300
-      ..on['dblclick'].add((ViewEvent event) => log_("Double Click")));
+      ..on.doubleClick.listen((ViewEvent event) => log_("Double Click")));
   
 }
