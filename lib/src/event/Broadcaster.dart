@@ -38,7 +38,7 @@ class BroadcastEvents {
 
   /** Listeners for the activate event ([ActivateEvent]).
    */
-  Stream<ActivateEvent> get activate => activateEvent.forTarget(_owner);
+  Stream<ActivateEvent> get activate => EventStreams.activate.forTarget(_owner);
 }
 ///for proxy Broadcaster to CapturableStreamTarget
 class _CaptStreamTarget implements CapturableStreamTarget<ViewEvent> {

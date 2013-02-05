@@ -11,7 +11,11 @@ BEGIN {
 /^[A-Za-z]/ {
 	if ($3 == "")
 		$3 = $2
-	printf "  Stream<%s> get %s => %sEvent.forTarget(_owner);\n", $1, $3, $3
+	printf "  Stream<%s> get %s => EventStreams.%s.forTarget(_owner);\n", $1, $3, $3
+}
+
+/^[^A-Za-z]/ {
+	printf "  %s\n", $0
 }
 
 END {

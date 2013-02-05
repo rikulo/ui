@@ -45,6 +45,6 @@ else
 	fi
 fi
 
-$awkpg -f $homedir/tool/lib/event-static.awk "$lstfl" > $df
-$awkpg -f $homedir/tool/lib/event-list.awk "$lstfl" >> $df
-$awkpg -f $homedir/tool/lib/event-map.awk "$lstfl" >> $df
+$awkpg -f $homedir/tool/lib/EventStreams.awk "$lstfl" > $df
+$awkpg -f $homedir/tool/lib/ViewEvents.awk "$lstfl" >> $df
+$awkpg -f $homedir/tool/lib/domEvents.awk "$lstfl" >> $df

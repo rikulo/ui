@@ -1,15 +1,46 @@
 //View Event Streams//
+/** A broadcast event used to notify root views and any listeners of [Broadcaster] 
+ * that a view or an element is *activated*.
+ */
 ActivateEvent, activate
 ChangeEvent, change
+/** Indicates a popup is about to be dismessed.
+ * The event is sent to the popup being dismissed.
+ */
 ViewEvent, dismiss
+/** Indicates the layout of a view and all of its descendant views have been changed.
+ *
+ * See also [preLayout].
+ */
 LayoutEvent, layout
+/// Indicates a view has been attached to a document.
 ViewEvent, mount
+/** Indicates the layout of a view is going to be handled.
+ * It is sent before handling this view and any of its descendant views.
+ *
+ * See also [layout].
+ */
 LayoutEvent, preLayout
+/** Indicates a view has re-rendered itself because its data model has been changed.
+ * It is used with views that support the data model, such as [DropDownList].
+ *
+ * Application usually listens to this event to invoke [View.requestLayout],
+ * if the re-rending of a data model might change the layout.
+ * For example, the height of [DropDownList] will be changed if
+ * the multiple state is changed.
+ */
 ViewEvent, render
+/// Indicates the end of a scrolling.
 ScrollEvent, scrollEnd
+/** Indicates the move of a scrolling. This event will be continuously
+ * fired at each iteration where the scroll position is updated.
+ */
 ScrollEvent, scrollMove
+/// Indicates the start of a scrolling.
 ScrollEvent, scrollStart
+/// Indicates the selection state of a view is changed.
 SelectEvent, select
+/// Indicates a view has been detached from a document.
 ViewEvent, unmount
 
 //DOM Event Proxy Streams//
