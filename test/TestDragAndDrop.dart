@@ -70,7 +70,11 @@ void main() {
     final container = getContainer(event);
     if (container != null) {
       container.classes.remove("dragover");
-      //Chrome issue: dragLeave not called, so clean up here
+        //Chrome issue: dragLeave not called, so clean up here
+
+      event.preventDefault();
+        //Firefox issue: otherwise, it will navigate to the image
+
       final data = event.dataTransfer.getData("Text");
       final dragged = mainView.query("#${data.substring(3).trim()}"); //trim id:
       dragged.classes.remove("dragged");
