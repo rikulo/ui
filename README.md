@@ -23,7 +23,7 @@ Then run the [Pub Package Manager](http://pub.dartlang.org/doc) (comes with the 
 
     pub install
 
-For more information, please refer to [Rikulo: Getting Started](http://docs.rikulo.org/rikulo/latest/Getting_Started/) and [Pub: Getting Started](http://pub.dartlang.org/doc).
+For more information, please refer to [Rikulo: Getting Started](http://docs.rikulo.org/ui/latest/Getting_Started/) and [Pub: Getting Started](http://pub.dartlang.org/doc).
 
 ##Install from Github for Bleeding Edge Stuff
 
@@ -46,7 +46,7 @@ Creating UI in Rikulo is straightforward.
         .addToDocument(); //make it available to the browser
     }
 
-For more information, please refer to [the Hello World sample application](http://docs.rikulo.org/rikulo/latest/Getting_Started/Hello_World.html).
+For more information, please refer to [the Hello World sample application](http://docs.rikulo.org/ui/latest/Getting_Started/Hello_World.html).
 
 ##Notes to Contributors
 

@@ -112,7 +112,7 @@ class DropDownList<T> extends View {
    * is changed. Thus, use this method only if you'd like to synchronize UI
    * manually or the data is readonly.
    *
-   * For example, if you're using [MVC](http://docs.rikulo.org/rikulo/latest/UXL/Fundamentals/MVC_Overview.html),
+   * For example, if you're using [MVC](http://docs.rikulo.org/ui/latest/UXL/Fundamentals/MVC_Overview.html),
    * you have to invoke `render()` explicitly.
    */
   void set data(List<T> data) {
