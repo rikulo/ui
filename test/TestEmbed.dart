@@ -1,7 +1,7 @@
 //Sample Code: Test IdSpace
 
 import 'dart:html';
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 void main() {
   final webView = new TextView.fromHtml('''

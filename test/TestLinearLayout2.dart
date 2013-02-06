@@ -1,7 +1,7 @@
 //Test Code: TestLinearLayout2
 
 import 'dart:html';
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 void test1(View parent, int left, int top) {
   //case 1: fixed size

@@ -1,5 +1,5 @@
 import 'dart:html';
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 void main() {
   new Style(content: ".block { width: 40px; height: 40px; border: 1px solid blue; }").addToDocument();

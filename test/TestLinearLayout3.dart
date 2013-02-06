@@ -1,7 +1,7 @@
 //Test Code: TestLinearLayout3
 
 import 'dart:html';
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 void test1(View parent) {
   View hlayout = new View();

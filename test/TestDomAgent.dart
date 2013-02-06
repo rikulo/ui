@@ -1,7 +1,7 @@
 //Test Code: TestDomAgent
 
-import 'package:rikulo/view.dart';
-import 'package:rikulo/html.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/html.dart';
 
 void _createText(View parent, String text, [String cssText="", Collection<String> classes]) {
   final View hlayout = new View();

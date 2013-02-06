@@ -4,8 +4,8 @@
 
 import 'dart:html';
 
-import 'package:rikulo/view.dart';
-import 'package:rikulo/effect.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/effect.dart';
 import 'package:rikulo_commons/util.dart';
 
 void main() {

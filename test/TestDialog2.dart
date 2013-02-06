@@ -1,6 +1,6 @@
 //Test Code: TestDialog
 
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 void main() {
   Button btn = new Button("Open a dialog");

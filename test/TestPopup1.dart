@@ -1,6 +1,6 @@
 //Sample Code: Test Log
 
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 class Popup extends View {
   Popup() {

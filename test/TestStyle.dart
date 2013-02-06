@@ -2,7 +2,7 @@
 //History: Fri, May 25, 2012  5:00:33 PM
 // Author: tomyeh
 
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 void main() {
   final String style1 = '''

@@ -3,8 +3,8 @@
 import 'dart:math';
 import "package:rikulo_commons/util.dart";
 
-import 'package:rikulo/view.dart';
-import 'package:rikulo/html.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/html.dart';
 
 View _system(Offset pos, num maxsyssize, int rad, [String name]) {
   View sys = new View();

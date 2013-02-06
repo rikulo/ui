@@ -2,8 +2,8 @@
 
 import "package:rikulo_commons/util.dart";
 
-import 'package:rikulo/view.dart';
-import 'package:rikulo/html.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/html.dart';
 
 void main() {
   ScrollView view;

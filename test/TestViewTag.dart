@@ -1,7 +1,7 @@
 //Sample Code: Test Log
 
 import 'dart:html';
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 void main() {
   /* Notice that this is only for testing purpose. This sample is better to be

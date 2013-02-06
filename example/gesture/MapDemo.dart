@@ -4,10 +4,10 @@ import 'dart:html';
 
 import "package:rikulo_commons/util.dart";
 
-import 'package:rikulo/view.dart';
-import 'package:rikulo/html.dart';
-import 'package:rikulo/gesture.dart';
-import 'package:rikulo/event.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/html.dart';
+import 'package:rikulo_ui/gesture.dart';
+import 'package:rikulo_ui/event.dart';
 
 Offset center(View v) {
   final dq = new DomAgent(v.node);

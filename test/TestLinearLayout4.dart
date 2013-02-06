@@ -1,9 +1,9 @@
 //Sample Code: LinearLayout Test 4
 
 import 'dart:html';
-import 'package:rikulo/view.dart';
-import 'package:rikulo/event.dart';
-import 'package:rikulo/model.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/event.dart';
+import 'package:rikulo_ui/model.dart';
 
 void _addOrientation(View parent) {
   View view = new View();

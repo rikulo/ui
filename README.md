@@ -39,7 +39,7 @@ For more information, please refer to [Pub: Dependencies](http://pub.dartlang.or
 
 Creating UI in Rikulo is straightforward.
 
-    import 'package:rikulo/view.dart';
+    import 'package:rikulo_ui/view.dart';
 
     void main() {
       new TextView("Hello World!") //create UI

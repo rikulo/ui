@@ -5,10 +5,10 @@ import 'dart:math';
 
 import "package:rikulo_commons/util.dart";
 
-import 'package:rikulo/view.dart';
-import 'package:rikulo/html.dart';
-import 'package:rikulo/event.dart';
-import 'package:rikulo/effect.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/html.dart';
+import 'package:rikulo_ui/event.dart';
+import 'package:rikulo_ui/effect.dart';
 
 TextView block(String text, int left, int top) {
   TextView tv = new TextView(text);

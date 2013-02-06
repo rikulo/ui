@@ -1,4 +1,4 @@
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 main() {
   View div = new View();

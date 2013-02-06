@@ -1,8 +1,8 @@
 //Sample Code: Test Log
 
-import 'package:rikulo/view.dart';
-import 'package:rikulo/html.dart';
-import 'package:rikulo/gesture.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/html.dart';
+import 'package:rikulo_ui/gesture.dart';
 import 'package:rikulo_commons/util.dart';
 
 TextView block(View parent, int duration, num limit, int top) {

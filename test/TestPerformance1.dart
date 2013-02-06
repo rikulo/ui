@@ -1,7 +1,7 @@
 //Sample Code: LinearLayout Test Performance 1
 
 import 'dart:html';
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 void main() {
   printc("started");

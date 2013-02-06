@@ -7,7 +7,8 @@ authors:
 - Tom Yeh <tomyeh@rikulo.org>
 - Simon Pai <simonpai@rikulo.org>
 - Henri Chen <henrichen@rikulo.org>
-homepage: http://rikulo.org
+homepage: http://rikulo.org/projects/ui
 dependencies:
   rikulo_commons: any
   browser: any
+  meta: any

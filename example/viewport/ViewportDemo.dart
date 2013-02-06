@@ -1,6 +1,6 @@
 //Sample Code: Viewport
 
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 import 'Viewport.dart';
 
 void createToolbar(Viewport parent) {

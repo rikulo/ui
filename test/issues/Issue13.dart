@@ -4,8 +4,8 @@
 
 import 'dart:math';
 
-import 'package:rikulo/view.dart';
-import 'package:rikulo/model.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/model.dart';
 
 void main() {
   final View mainView = new View()..addToDocument();

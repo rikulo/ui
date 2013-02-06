@@ -1,6 +1,6 @@
 //Sample Code: Layout Demostration
 
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 void main() {
   final mainView = new View()

@@ -1,6 +1,6 @@
-import 'package:rikulo/view.dart';
-import 'package:rikulo/model.dart';
-import 'package:rikulo/event.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/model.dart';
+import 'package:rikulo_ui/event.dart';
 import 'package:rikulo_commons/util.dart';
 
 void main() {

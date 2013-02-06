@@ -3,9 +3,9 @@
 import 'dart:html';
 import "dart:math";
 
-import 'package:rikulo/html.dart';
-import 'package:rikulo/view.dart';
-import 'package:rikulo/effect.dart';
+import 'package:rikulo_ui/html.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/effect.dart';
 
 CanvasRenderingContext2D ctx2d;
 Canvas canvas;

@@ -1,7 +1,7 @@
 //Sample Code: CompositeViewDemo
 
 import 'dart:html';
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 import 'LabeledInput.dart';
 
 void main() {

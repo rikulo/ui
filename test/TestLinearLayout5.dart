@@ -1,7 +1,7 @@
 //Sample Code: LinearLayout Test 5
 
 import 'dart:html';
-import 'package:rikulo/view.dart';
+import 'package:rikulo_ui/view.dart';
 
 void main() {
   final View mainView = new View()..addToDocument();

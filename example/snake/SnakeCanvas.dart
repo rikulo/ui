@@ -6,10 +6,10 @@ import 'dart:math';
 
 import "package:rikulo_commons/util.dart";
 
-import 'package:rikulo/view.dart';
-import 'package:rikulo/gesture.dart';
-import 'package:rikulo/effect.dart';
-import 'package:rikulo/event.dart';
+import 'package:rikulo_ui/view.dart';
+import 'package:rikulo_ui/gesture.dart';
+import 'package:rikulo_ui/effect.dart';
+import 'package:rikulo_ui/event.dart';
 
 part 'SnakePoint.dart';
 part 'SnakeEnvironment.dart';
