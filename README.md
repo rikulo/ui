@@ -1,6 +1,6 @@
-#Rikulo
+#Rikulo UI
 
-[Rikulo](http://rikulo.org) is a cross-platform framework for creating amazing Web and native mobile applications in Dart and HTML 5. Our aim is to bring structure to your user interface with a strong layout system, recursive component composition, and neat libraries.
+[Rikulo UI](http://rikulo.org) is a cross-platform framework for creating amazing Web and native mobile applications in Dart and HTML 5. Our aim is to bring structure to your user interface with a strong layout system, recursive component composition, and neat libraries.
 
 You can access your application directly with a modern Web browser without any plug-in. You can also build it as a native mobile application accessing the device's resources transparently.
 
@@ -8,7 +8,7 @@ You can access your application directly with a modern Web browser without any p
 * [Documentation](http://docs.rikulo.org)
 * [API Reference](http://api.rikulo.org)
 * [Discussion](http://stackoverflow.com/questions/tagged/rikulo)
-* [Issues](https://github.com/rikulo/rikulo/issues)
+* [Issues](https://github.com/rikulo/ui/issues)
 
 Rikulo is distributed under an Apache 2.0 License.
 
@@ -31,7 +31,7 @@ To install stuff that is still in development, add this to your `pubspec.yam`:
 
     dependencies:
       rikulo:
-        git: git://github.com/rikulo/rikulo.git
+        git: git://github.com/rikulo/ui.git
 
 For more information, please refer to [Pub: Dependencies](http://pub.dartlang.org/doc/pubspec.html#dependencies).
 
@@ -66,4 +66,4 @@ If you are new to Git or GitHub, please read [this guide](https://help.github.co
 
 ###Compile LESS to CSS
 
-Rikulo CSS rules are placed in [view.less](https://github.com/rikulo/rikulo/blob/master/lib/resource/css/default/view.less). They are written in [LESS](http://lesscss.org/). If you modify [view.less](https://github.com/rikulo/rikulo/blob/master/lib/resource/css/default/view.less), you have to invoke [tool/l2c](https://github.com/rikulo/rikulo/blob/master/tool/l2c) to generate [view.css](https://github.com/rikulo/rikulo/blob/master/lib/resource/css/default/view.css) (under Linux or Cygwin bash).
+Rikulo CSS rules are placed in [view.less](https://github.com/rikulo/ui/blob/master/lib/resource/css/default/view.less). They are written in [LESS](http://lesscss.org/). If you modify [view.less](https://github.com/rikulo/ui/blob/master/lib/resource/css/default/view.less), you have to invoke [tool/l2c](https://github.com/rikulo/ui/blob/master/tool/l2c) to generate [view.css](https://github.com/rikulo/ui/blob/master/lib/resource/css/default/view.css) (under Linux or Cygwin bash).
