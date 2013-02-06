@@ -30,7 +30,7 @@ For more information, please refer to [Rikulo: Getting Started](http://docs.riku
 To install stuff that is still in development, add this to your `pubspec.yam`:
 
     dependencies:
-      rikulo:
+      rikulo_ui:
         git: git://github.com/rikulo/ui.git
 
 For more information, please refer to [Pub: Dependencies](http://pub.dartlang.org/doc/pubspec.html#dependencies).
