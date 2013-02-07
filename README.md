@@ -1,12 +1,12 @@
 #Rikulo UI
 
-[Rikulo UI](http://rikulo.org) is a cross-platform framework for creating amazing Web and native mobile applications in Dart and HTML 5. Our aim is to bring structure to your user interface with a strong layout system, recursive component composition, and neat libraries.
+[Rikulo UI](http://rikulo.org/projects/ui) is a cross-platform framework for creating amazing Web and native mobile applications in Dart and HTML 5. Our aim is to bring structure to your user interface with a strong layout system, recursive component composition, and neat libraries.
 
 You can access your application directly with a modern Web browser without any plug-in. You can also build it as a native mobile application accessing the device's resources transparently.
 
-* [Home](http://rikulo.org)
-* [Documentation](http://docs.rikulo.org)
-* [API Reference](http://api.rikulo.org)
+* [Home](http://rikulo.org/projects/ui)
+* [Documentation](http://docs.rikulo.org/ui/latest)
+* [API Reference](http://api.rikulo.org/ui/latest)
 * [Discussion](http://stackoverflow.com/questions/tagged/rikulo)
 * [Issues](https://github.com/rikulo/ui/issues)
 
