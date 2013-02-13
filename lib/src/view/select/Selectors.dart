@@ -231,7 +231,7 @@ class Selectors {
     
     for (int i = 0; i < len; i++) {
       String c = source.substring(i, i+1);
-      int ci = source.charCodeAt(i);
+      int ci = source.codeUnitAt(i);
       int clz = _getTokenClass(ci);
       
       // TODO: concern attribute

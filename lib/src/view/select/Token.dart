@@ -15,7 +15,7 @@ class Token {
       start = index, end = index + 1, type = getTypeFromChar(c);
   
   static int getTypeFromChar(String c) { // TODO: later, concern attribute
-    int code = c.charCodeAt(0);
+    int code = c.codeUnitAt(0);
     if (isLiteral(code))
       return TYPE_IDENTIFIER;
     if (isWhitespace(code))
