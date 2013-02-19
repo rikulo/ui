@@ -59,7 +59,7 @@ class _Broadcaster extends Broadcaster {
   final Map<String, List<ViewEventListener>> _listeners;
   BroadcastEvents _on;
 
-  _Broadcaster(): _listeners = new Map() {
+  _Broadcaster(): _listeners = new HashMap() {
     _on = new BroadcastEvents._(this);
   }
 

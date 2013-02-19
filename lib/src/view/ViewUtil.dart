@@ -50,7 +50,7 @@ class UiError implements Error {
 class Declaration {
   final Map<String, String> _props;
 
-  Declaration(): _props = new Map();
+  Declaration(): _props = new HashMap();
 
   /** The text representation of the declaration block.
    * Setting this attribute will reset all properties.
@@ -154,7 +154,7 @@ class ViewUtil {
         return view;
     } while ((node = node.parent) != null && node is! Document);
   }
-  static final Map<Element, View> _views = new Map();
+  static final Map<Element, View> _views = new HashMap();
 
   /** Handles the layouts of views queued by [View.requestLayout].
    *

@@ -13,7 +13,7 @@ import 'package:rikulo_ui/effect.dart';
 class RadGroup<E> {
   
   final String className;
-  final Map<E, View> _map = new Map<E, View>();
+  final Map<E, View> _map = new HashMap<E, View>();
   E _item;
   View _view;
   

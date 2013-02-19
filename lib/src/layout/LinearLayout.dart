@@ -120,7 +120,7 @@ class _HLayout extends _LinearHandler {
     final spcinf = new SideInfo(view.layout.spacing, _SPACING);
     final gapinf = new SideInfo(view.layout.gap);
     final String defpwd = view.layout.width;
-    final Map<View, SideInfo> childspcinfs = new Map();
+    final Map<View, SideInfo> childspcinfs = new HashMap();
     final List<View> flexViews = new List();
     final List<int> flexs = new List();
     int nflex = 0, assigned = 0, prevSpacing;
@@ -315,7 +315,7 @@ class _VLayout extends _LinearHandler {
     final spcinf = new SideInfo(view.layout.spacing, _SPACING);
     final gapinf = new SideInfo(view.layout.gap);
     final defphgh = view.layout.height;
-    final Map<View, SideInfo> childspcinfs = new Map();
+    final Map<View, SideInfo> childspcinfs = new HashMap();
     final List<View> flexViews = new List();
     final List<int> flexs = new List();
     int nflex = 0, assigned = 0, prevSpacing;

@@ -22,7 +22,7 @@ class AnchorRelation {
 
   /** Contructors of the anchor relation of all children of the given view.
    */
-  AnchorRelation(View view) : indeps = new List(), anchored = new Map(), parent = view {
+  AnchorRelation(View view) : indeps = new List(), anchored = new HashMap(), parent = view {
     for (final View child in view.children) {
       final View av = child.profile.anchorView;
       if (av == null) {

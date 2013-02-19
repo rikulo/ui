@@ -7,7 +7,7 @@ part of rikulo_model;
  */
 class DataModel implements StreamTarget<DataEvent> {
   DataEvents _on;
-  final Map<String, List<DataEventListener>> _listeners = new Map();
+  final Map<String, List<DataEventListener>> _listeners = new HashMap();
 
   DataModel() {
     _on = new DataEvents._(this);

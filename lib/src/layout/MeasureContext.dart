@@ -28,8 +28,8 @@ class MeasureContext {
   final Map<View, int> _borderWds, _borderHghs;
   Map<String, dynamic> _dataAttrs;
 
-  MeasureContext(): widths = new Map(), heights = new Map(),
-  _borderWds = new Map(), _borderHghs = new Map() {
+  MeasureContext(): widths = new HashMap(), heights = new HashMap(),
+  _borderWds = new HashMap(), _borderHghs = new HashMap() {
   }
   /** Returns the border's width (left border plus right border).
    */
@@ -359,7 +359,7 @@ class MeasureContext {
    * for internal use.
    */
   Map<String, dynamic> get dataAttributes
-  => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
+  => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new HashMap());
 }
 
 int _minMax(int v, String vmin, String vmax) {

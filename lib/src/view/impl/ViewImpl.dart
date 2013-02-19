@@ -119,7 +119,7 @@ class DialogInfo {
  * If a root view is attached with `mode: "dialog"` (`View.addToDocument`),
  * it will be added to this map automatically.
  */
-final Map<View, DialogInfo> dialogInfos = new Map();
+final Map<View, DialogInfo> dialogInfos = new HashMap();
 
 /**
  * The configuration of views.

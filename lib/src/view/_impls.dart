@@ -259,7 +259,7 @@ class _EventListenerInfo {
       throw new ArgumentError("listener");
 
     if (_listeners == null)
-      _listeners = new Map();
+      _listeners = new HashMap();
 
     bool first = false;
     _listeners.putIfAbsent(type, () {
@@ -311,7 +311,7 @@ class _EventListenerInfo {
     if (disp != null) {
       final ln = disp(_owner); //must be non-null
       if (_domListeners == null)
-        _domListeners = new Map();
+        _domListeners = new HashMap();
       (target != null ? target: _domEvtTarget(type, _owner.node))
         .$dom_addEventListener(type.toLowerCase(), _domListeners[type] = ln, useCapture);
     }
@@ -348,7 +348,7 @@ Element _domEvtTarget(String type, Element node) {
 final _inpTags = new Set.from(const ["input", "textarea", "select", "button", "a"]);
 _DomEventDispatcher _domEventDispatcher(String type) {
   if (_domEvtDisps == null) {
-    _domEvtDisps = new Map();
+    _domEvtDisps = new HashMap();
     for (final nm in domEvents)
       _domEvtDisps[nm] = nm == "change" ? _domChangeEvtDisp(): _domEvtDisp(nm);
   }
@@ -390,7 +390,7 @@ class _VirtualIdSpace implements IdSpace {
   
   View query(String selector) => _owner.query(selector);
   List<View> queryAll(String selector) => _owner.queryAll(selector);
-  final Map<String, View> fellows = new Map();
+  final Map<String, View> fellows = new HashMap();
 
   String toString() => "_VirtualIdSpace($_owner)";
 }

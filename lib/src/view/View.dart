@@ -43,7 +43,7 @@ typedef void AfterMount(View view);
  * Implementing [IdSpace] is straightforward:
  *
  *     class MyIdSpace extends View implements IdSpace {
- *       final Map<String, View> fellows = new Map();
+ *       final Map<String, View> fellows = new HashMap();
  *     }
  *
  * ##See Also
@@ -1095,7 +1095,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * See also [mountAttributes].
    */
   Map<String, dynamic> get dataAttributes
-  => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new Map());
+  => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new HashMap());
   /**
    * A map of application-specific data that exist only
    * if the view is attached to the document. It is useful if you'd like to
@@ -1108,7 +1108,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * See also [dataAttributes].
    */
   Map<String, dynamic> get mountAttributes
-  => _mntAttrs != null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new Map());
+  => _mntAttrs != null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new HashMap());
 
   /** A map of annotations.
    * Annotations ([Annotation]) are the meta information providing
@@ -1116,7 +1116,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * The meaning depends on the tool or utility that handles a view.
    */
   Map<String, Annotation> get annotations
-  => _annos != null ? _annos: MapUtil.onDemand(() => _annos = new Map());
+  => _annos != null ? _annos: MapUtil.onDemand(() => _annos = new HashMap());
 
   String toString() => "$className(${id.isEmpty ? _uuid != null ? _uuid: '': id})";
 }

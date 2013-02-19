@@ -11,7 +11,7 @@ class Section extends View implements IdSpace {
   }
 
   //@override
-  final Map<String, View> fellows = new Map();
+  final Map<String, View> fellows = new HashMap();
 
   /** Returns the SECTION element.
    */
