@@ -149,10 +149,10 @@ class DomEvent extends ViewEvent {
   Offset get offset => new Offset(0, 0);
   /** The object in the clipboard.
    */
-  Clipboard get clipboardData => cause.clipboardData;
+  DataTransfer get clipboardData => cause.clipboardData;
   /** The object used to transfer data, or null if not available.
    */
-  Clipboard get dataTransfer => null;
+  DataTransfer get dataTransfer => null;
   /** Returns the time stamp.
    */
   int get timeStamp => cause.timeStamp;
@@ -211,7 +211,7 @@ class _MsEvent extends _UiEvent {
   bool get shiftKey => _mc.shiftKey;
 
   Offset get offset => new Offset(_mc.offsetX, _mc.offsetY);
-  Clipboard get dataTransfer => _mc.dataTransfer;
+  DataTransfer get dataTransfer => _mc.dataTransfer;
 
   String toString() => "MouseEvent($target,$cause)";
 }

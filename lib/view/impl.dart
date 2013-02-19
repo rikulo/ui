@@ -4,6 +4,7 @@
 library rikulo_view_impl;
 
 import "dart:html";
+import "dart:collection" show HashMap;
 
 import 'package:rikulo_commons/util.dart';
 

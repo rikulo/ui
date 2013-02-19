@@ -6,6 +6,7 @@ library rikulo_event;
 
 import "dart:html";
 import "dart:async";
+import "dart:collection" show HashMap;
 
 import "package:rikulo_commons/util.dart";
 import "package:rikulo_commons/async.dart";
