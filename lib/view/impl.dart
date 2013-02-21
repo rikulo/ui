@@ -5,6 +5,7 @@ library rikulo_view_impl;
 
 import "dart:html";
 import "dart:collection" show HashMap;
+import "dart:async" show Timer;
 
 import 'package:rikulo_commons/util.dart';
 

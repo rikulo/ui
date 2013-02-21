@@ -70,7 +70,7 @@ class MessageQueue<Message> {
    * any subscriber to be invoked.
    */
   void post(Message message) {
-    window.setTimeout(() {send(message);}, 0);
+    Timer.run(() {send(message);});
       //note: the order of messages is preserved across all message queues
   }
 

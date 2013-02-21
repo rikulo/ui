@@ -33,7 +33,7 @@ typedef bool RunOnceReadyCheck(View view, Task continueTask, bool force);
  * task will be dropped (and not executed).
  */
 class RunOnceQueue {
-  Map<String, int> _tasks;
+  Map<String, Timer> _tasks;
 
   /** schedules a run-once task for execution.
    */
@@ -43,17 +43,17 @@ class RunOnceQueue {
     else
       _tasks = new HashMap();
 
-    _tasks[key] = window.setTimeout((){
+    _tasks[key] = new Timer(timeout, (){
       _tasks.remove(key);
       task();
-    }, timeout);
+    });
   }
   /** Cancels the scheduled task if it is still pending.
    */
   void cancel(String key) {
-    final int tid = _tasks.remove(key);
-    if (tid != null)
-      window.clearTimeout(tid);
+    final timer = _tasks.remove(key);
+    if (timer != null)
+      timer.cancel();
   }  
 }
 

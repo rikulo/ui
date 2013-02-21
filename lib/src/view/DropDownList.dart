@@ -289,8 +289,8 @@ class DropDownList<T> extends View {
         //store the path in value
         final out = new StringBuffer();
         if (parentIndex >= 0)
-          out..add(parentIndex)..add('.');
-        opt.value = (out..add(i)).toString();
+          out..write(parentIndex)..write('.');
+        opt.value = (out..write(i)).toString();
 
         parent.nodes.add(opt);
       } else {
@@ -323,9 +323,9 @@ class DropDownList<T> extends View {
   }
   static void _renderAttrs(StringBuffer out, bool selected, bool disabled) {
     if (selected)
-      out.add(' selected');
+      out.write(' selected');
     if (disabled)
-      out.add(' disabled');
+      out.write(' disabled');
   }
 
   //@override

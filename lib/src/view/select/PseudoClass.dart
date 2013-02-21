@@ -13,7 +13,7 @@ class PseudoClass {
   String toString() {
     StringBuffer sb = new StringBuffer(":${name}");
     if (parameter != null)
-      sb.add("(${parameter})");
+      sb.write("(${parameter})");
     return sb.toString();
   }
   

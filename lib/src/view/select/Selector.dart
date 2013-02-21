@@ -27,7 +27,7 @@ class Selector {
   String toString() {
     StringBuffer sb = new StringBuffer();
     for (SimpleSelectorSequence seq in seqs)
-      sb.add("$seq${seq.printCombinator()} ");
+      sb.write("$seq${seq.printCombinator()} ");
     return sb.toString().trim();
   }
   

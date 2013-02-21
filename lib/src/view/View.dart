@@ -60,7 +60,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
 
   _ChildInfo _childInfo;
   _EventListenerInfo _evlInfo;
-  Map<String, dynamic> _dataAttrs, _mntAttrs;
+  Map<String, dynamic> _dataset, _mntset;
   Map<String, Annotation> _annos;
 
   CssStyleDeclaration _style;
@@ -671,7 +671,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
   }
   void _mntClean() {
     ViewUtil._views.remove(node);
-    _mntAttrs = null; //clean up
+    _mntset = null; //clean up
     _inDoc = false;
   }
 
@@ -1052,7 +1052,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * hierarchy of views.
    */
   void postEvent(ViewEvent event, {String type, bool bubbles: true}) {
-    window.setTimeout(() {sendEvent(event, type: type, bubbles: bubbles);}, 0);
+    Timer.run(() {sendEvent(event, type: type, bubbles: bubbles);});
       //note: the order of messages is preserved across all views (and message queues)
       //CONSIDER if it is better to have a queue shared by views/message queues/broadcaster
   }
@@ -1090,12 +1090,12 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * Note: the name of the attribute can't start with "rk.", which is reserved
    * for internal use.
    *
-   * Unlike `Element.dataAttributes', you can store any kind of objects here.
+   * Unlike `Element.dataset', you can store any kind of objects here.
    *
-   * See also [mountAttributes].
+   * See also [mountset].
    */
-  Map<String, dynamic> get dataAttributes
-  => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new HashMap());
+  Map<String, dynamic> get dataset
+  => _dataset != null ? _dataset: MapUtil.onDemand(() => _dataset = new HashMap());
   /**
    * A map of application-specific data that exist only
    * if the view is attached to the document. It is useful if you'd like to
@@ -1105,10 +1105,10 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * Note: the name of the attribute can't start with "rk.", which is reserved
    * for internal use.
    *
-   * See also [dataAttributes].
+   * See also [dataset].
    */
-  Map<String, dynamic> get mountAttributes
-  => _mntAttrs != null ? _mntAttrs: MapUtil.onDemand(() => _mntAttrs = new HashMap());
+  Map<String, dynamic> get mountset
+  => _mntset != null ? _mntset: MapUtil.onDemand(() => _mntset = new HashMap());
 
   /** A map of annotations.
    * Annotations ([Annotation]) are the meta information providing

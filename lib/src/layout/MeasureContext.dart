@@ -26,7 +26,7 @@ class MeasureContext {
    */
   final Map<View, int> heights;
   final Map<View, int> _borderWds, _borderHghs;
-  Map<String, dynamic> _dataAttrs;
+  Map<String, dynamic> _dataset;
 
   MeasureContext(): widths = new HashMap(), heights = new HashMap(),
   _borderWds = new HashMap(), _borderHghs = new HashMap() {
@@ -358,8 +358,8 @@ class MeasureContext {
    * Note: the name of the attribute can't start with "rk.", which is reserved
    * for internal use.
    */
-  Map<String, dynamic> get dataAttributes
-  => _dataAttrs != null ? _dataAttrs: MapUtil.onDemand(() => _dataAttrs = new HashMap());
+  Map<String, dynamic> get dataset
+  => _dataset != null ? _dataset: MapUtil.onDemand(() => _dataset = new HashMap());
 }
 
 int _minMax(int v, String vmin, String vmax) {

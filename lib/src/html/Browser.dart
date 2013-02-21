@@ -78,9 +78,9 @@ class Browser {
   String get url {
     final l = window.location;
     final sb = new StringBuffer();
-    sb..add(l.protocol)..add("//")..add(l.hostname);
+    sb..write(l.protocol)..write("//")..write(l.hostname);
     if (l.port != "80" && !l.port.isEmpty)
-      sb..add(':')..add(l.port);
+      sb..write(':')..write(l.port);
     return sb.toString();
   }
 

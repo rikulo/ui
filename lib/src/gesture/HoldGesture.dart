@@ -16,7 +16,8 @@ typedef void HoldGestureAction(HoldGestureState state);
  */
 class HoldGestureState extends GestureState {
   final int startTime;
-  int _timer, _time;
+  Timer _timer;
+  int _time;
   
   HoldGestureState._(this.gesture, this.eventTarget, int time, this.position) : 
   _time = time, this.startTime = time;
@@ -105,7 +106,7 @@ abstract class HoldGesture extends Gesture {
       return;
     }
     
-    _state._timer = window.setTimeout(_call, _duration);
+    _state._timer = new Timer(_duration, _call);
   }
   void _touchMove(int time, Offset position) {
     if (_state != null && (position - _state.position).norm() > _movementLimit)
@@ -124,7 +125,7 @@ abstract class HoldGesture extends Gesture {
   void _stop() {
     if (_state != null) {
       if (_state._timer != null) {
-        window.clearTimeout(_state._timer);
+        _state._timer.cancel();
         _state._timer = null;
       }
       _state = null;

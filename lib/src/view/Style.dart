@@ -85,20 +85,20 @@ class Style extends View {
   void _updateInner(String content, String src) {
     final out = new StringBuffer();
     if (src != null)
-      out..add('<link rel="stylesheet" type="text/css" href="')..add(src)..add('"');
+      out..write('<link rel="stylesheet" type="text/css" href="')..write(src)..write('"');
     else
-      out.add('<style');
+      out.write('<style');
 
     if (media != null)
-      out..add(' media="')..add(media)..add('"');
+      out..write(' media="')..write(media)..write('"');
 
     if (src != null) {
-      out.add('/>');
+      out.write('/>');
     } else {
-      out.add('>');
+      out.write('>');
       if (content != null)
-        out.add(content);
-      out.add('</style>');
+        out.write(content);
+      out.write('</style>');
     }
     node.innerHtml = out.toString();
   }

@@ -117,8 +117,8 @@ class ViewMatchContext {
   String toString() {
     StringBuffer sb = new StringBuffer();
     for (List<bool> qs in _qualified)
-      sb.add(qs);
-    return (sb..add(" @${view}")).toString();
+      sb.write(qs);
+    return (sb..write(" @${view}")).toString();
   }
 
   // helper //

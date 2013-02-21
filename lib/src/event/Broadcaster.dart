@@ -102,7 +102,7 @@ class _Broadcaster extends Broadcaster {
   }
 
   void postEvent(ViewEvent event, {String type}) {
-    window.setTimeout(() {sendEvent(event, type: type);}, 0);
+    Timer.run(() {sendEvent(event, type: type);});
       //note: the order of messages is preserved across all views (and message queues)
       //CONSIDER if it is better to have a queue shared by views/message queues/broadcaster
   }

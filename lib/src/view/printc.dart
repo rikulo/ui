@@ -80,7 +80,7 @@ class _Printc {
   }
 
   void _defer() {
-    window.setTimeout(_globalFlush, 100);
+    new Timer(100, _globalFlush);
   }
   static void _globalFlush() {
     _printc._flush();
@@ -95,11 +95,11 @@ class _Printc {
       final StringBuffer sb = new StringBuffer();
       for (final _PrintcMsg msg in _msgs) {
         final DateTime time = msg.t;
-        sb..add(time.hour)..add(':')..add(time.minute)..add(':')..add(time.second);
+        sb..write(time.hour)..write(':')..write(time.minute)..write(':')..write(time.second);
         if (_lastLogTime != null)
-          sb..add('>')..add((time.millisecondsSinceEpoch - _lastLogTime)/1000);
+          sb..write('>')..write((time.millisecondsSinceEpoch - _lastLogTime)/1000);
         _lastLogTime = time.millisecondsSinceEpoch;
-        sb..add(': ')..add(msg.m)..add('\n');
+        sb..write(': ')..write(msg.m)..write('\n');
       }
       _msgs.clear();
 

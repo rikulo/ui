@@ -1,6 +1,8 @@
 //Sample Code: Test Log
 
 import 'dart:html';
+import "dart:async" show Timer;
+
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/event.dart';
 import 'package:rikulo_commons/util.dart';
@@ -56,7 +58,7 @@ void main() {
   ..dragEnter.listen((event) {
     final container = getContainer(event);
     if (container != null)
-      window.setTimeout((){container.classes.add("dragover");}, 0);
+      Timer.run((){container.classes.add("dragover");});
     //Chrome issue: prev.dragLeave is fired after nextdragEnter, so
     //we have to defer dragEnter to make the sequence: leave and then enter
   })

@@ -60,13 +60,13 @@ class SimpleSelectorSequence {
   String toString() {
     StringBuffer sb = new StringBuffer();
     if (type != null)
-      sb.add(type);
+      sb.write(type);
     if (id != null)
-      sb.add("#${id}");
+      sb.write("#${id}");
     for (String c in classes)
-      sb.add(".${c}");
+      sb.write(".${c}");
     for (PseudoClass p in pseudoClasses)
-      sb.add("${p}");
+      sb.write("${p}");
     return sb.isEmpty ? "*" : sb.toString();
   }
   
