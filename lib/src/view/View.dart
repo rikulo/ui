@@ -298,9 +298,9 @@ class View implements CapturableStreamTarget<ViewEvent> {
    */
   void addChild(View child, [View beforeChild]) {
     if (isDescendantOf(child))
-      throw new UiError("$child is an ancestor of $this");
+      throw new UIError("$child is an ancestor of $this");
     if (!isViewGroup)
-      throw new UiError("No child allowed for $this");
+      throw new UIError("No child allowed for $this");
 
     if (beforeChild != null) {
       if (!identical(beforeChild.parent, this))
@@ -418,14 +418,14 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * until [render_] is called. Furthermore, it must be called before calling
    * the getter, `node`.
    *
-   * It throws [UiError] if it was assigned (such as either the setter or the
+   * It throws [UIError] if it was assigned (such as either the setter or the
    * getter has been called before).
    */
   void set node(Element node) {
     if (node.parent != null)
-      throw new UiError("Root element required, $node");
+      throw new UIError("Root element required, $node");
     if (_node != null)
-      throw new UiError("Already assigned with $_node");
+      throw new UIError("Already assigned with $_node");
     _node = node;
     _initNode();
   }

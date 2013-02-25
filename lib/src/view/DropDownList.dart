@@ -81,9 +81,9 @@ class DropDownList<T> extends View {
   void set model(DataModel model) {
     if (model != null) {
       if (model is! Selection)
-        throw new UiError("Selection required, $model");
+        throw new UIError("Selection required, $model");
       if (model is! ListModel && model is! TreeModel)
-        throw new UiError("Only ListModel or TreeModel allowed, not $model");
+        throw new UIError("Only ListModel or TreeModel allowed, not $model");
     }
 
     if (!identical(_model, model)) { //Note: it is not !=
@@ -247,7 +247,7 @@ class DropDownList<T> extends View {
         else if (ret is OptionElement)
           opt = ret;
         else
-          throw new UiError("Neither String nor OptionElement, $ret");
+          throw new UIError("Neither String nor OptionElement, $ret");
 
         if (selected) opt.selected = true;
         if (disabled) opt.disabled = true;
@@ -281,7 +281,7 @@ class DropDownList<T> extends View {
         else if (ret is OptionElement)
           opt = ret;
         else
-          throw new UiError("Neither String nor OptionElement, $ret");
+          throw new UIError("Neither String nor OptionElement, $ret");
 
         if (selected) opt.selected = true;
         if (disabled) opt.disabled = true;
@@ -295,7 +295,7 @@ class DropDownList<T> extends View {
         parent.nodes.add(opt);
       } else {
         if (parentIndex >= 0)
-          throw new UiError("Only two levels allowed, $model");
+          throw new UIError("Only two levels allowed, $model");
 
         OptGroupElement optg;
         if (ret is String)
@@ -304,7 +304,7 @@ class DropDownList<T> extends View {
         else if (ret is OptGroupElement)
           optg = ret;
         else
-          throw new UiError("Neither String nor OptGroupElement, $ret");
+          throw new UIError("Neither String nor OptGroupElement, $ret");
 
         if (disabled) optg.disabled = true;
         parent.nodes.add(optg);

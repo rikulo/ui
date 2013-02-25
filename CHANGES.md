@@ -4,6 +4,7 @@
 
 * View event stream is supported. Use Steam.listen() instead. For example, view.on.click.listen((event){}).
 * Data event stream is supported. Use Stream.listen() instead. For example, model.on.select.listen((event){}).
+* UiError is renamed to UIError to follow Dart naming convention
 
 ##0.6.2
 
@@ -30,7 +31,7 @@ December 14, 2012
 * Overriding View.className is optional. It will return the class name correctly.
 * View.fellows returns a map instead of a collection, and View.getFellow is removed.
 * Browser.innerSize and innerOffset are removed since they are useless.
-* Follow Dart's new naming guidelines and rename to UiError, DomAgent, Css, XmlUtil, DomEvent
+* Follow Dart's new naming guidelines and rename to DomAgent, Css, XmlUtil, DomEvent
 
 **Features:**
 

@@ -151,14 +151,14 @@ class _ViewImpl {
   static void checkIdSpaces(View view, String newId) {
     IdSpace space = view.spaceOwner;
     if (space.fellows[newId] != null)
-      throw new UiError("Not unique in the ID space of $space: $newId");
+      throw new UIError("Not unique in the ID space of $space: $newId");
 
     //we have to check one level up if view is IdSpace (i.e., unique in two ID spaces)
     View parent;
     if (view is IdSpace && (parent = view.parent) != null) {
       space = parent.spaceOwner;
       if (space.fellows[newId] != null)
-        throw new UiError("Not unique in the ID space of $space: $newId");
+        throw new UIError("Not unique in the ID space of $space: $newId");
     }
   }
   //Add the given view to the ID space

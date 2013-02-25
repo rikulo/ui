@@ -29,7 +29,7 @@ class AnchorRelation {
         indeps.add(child);
       } else {
         if (!identical(av.parent, view) && !identical(av, view))
-          throw new UiError("Anchor can be parent or sibling, not $av");
+          throw new UIError("Anchor can be parent or sibling, not $av");
 
         final deps = anchored[av];
         if (deps != null)
@@ -121,7 +121,7 @@ List<int> _getLocators(String loc) {
     if (locators != null)
       return locators;
   }
-  throw new UiError("Unknown loation ${loc}");
+  throw new UIError("Unknown loation ${loc}");
 }
 const Map<String, List<int>> _locators = const {
   "north start": const [1, 0], "north center": const [2, 0], "north end": const [3, 0],

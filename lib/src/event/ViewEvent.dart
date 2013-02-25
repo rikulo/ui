@@ -94,9 +94,9 @@ class ViewEvent {
 */
 class DomEvent extends ViewEvent {
   factory DomEvent(Event cause, [String type, View target])
-  => cause is MouseEvent ? new _MsEvent(cause, type, target):
-    cause is KeyboardEvent ? new _KbEvent(cause, type, target):
-    cause is UIEvent ? new _UiEvent(cause, type, target):
+  => cause is MouseEvent ? new _MSEvent(cause, type, target):
+    cause is KeyboardEvent ? new _KBEvent(cause, type, target):
+    cause is UIEvent ? new _UIEvent(cause, type, target):
       new DomEvent._(cause, type, target);
 
   DomEvent._(Event cause, String type, View target):
@@ -170,8 +170,8 @@ class DomEvent extends ViewEvent {
   String toString() => "DomEvent($target,$cause)";
 }
 
-class _UiEvent extends DomEvent {
-  _UiEvent(UIEvent cause, String type, View target):
+class _UIEvent extends DomEvent {
+  _UIEvent(UIEvent cause, String type, View target):
   super._(cause, type, target);
 
   UIEvent get _uc => cause;
@@ -181,10 +181,10 @@ class _UiEvent extends DomEvent {
   int get which => _uc.which;
   Offset get pageOffset => new Offset(_uc.pageX, _uc.pageY);
 
-  String toString() => "UiEvent($target,$cause)";
+  String toString() => "UIEvent($target,$cause)";
 }
-class _KbEvent extends _UiEvent {
-  _KbEvent(KeyboardEvent cause, String type, View target):
+class _KBEvent extends _UIEvent {
+  _KBEvent(KeyboardEvent cause, String type, View target):
   super(cause, type, target);
 
   KeyboardEvent get _kc => cause;
@@ -199,8 +199,8 @@ class _KbEvent extends _UiEvent {
 
   String toString() => "KeyboardEvent($target,$cause)";
 }
-class _MsEvent extends _UiEvent {
-  _MsEvent(MouseEvent cause, String type, View target):
+class _MSEvent extends _UIEvent {
+  _MSEvent(MouseEvent cause, String type, View target):
   super(cause, type, target);
 
   MouseEvent get _mc => cause;
