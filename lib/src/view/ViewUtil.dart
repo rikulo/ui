@@ -6,7 +6,7 @@ part of rikulo_view;
 /**
  * An ID space.
  */
-abstract class IdSpace {
+abstract class IDSpace {
   /** Searches and returns the first view that matches the given selector,
    * or null if not found.
    */

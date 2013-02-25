@@ -83,16 +83,16 @@ class _ViewImpl {
     child._parent = view;
 
     ++view._childInfo.nChild;
-    if (child is IdSpace)
-      addToIdSpace(child, true); //skip the first owner (i.e., child)
+    if (child is IDSpace)
+      addToIDSpace(child, true); //skip the first owner (i.e., child)
     else
-      addToIdSpaceDown(child, child.spaceOwner);
+      addToIDSpaceDown(child, child.spaceOwner);
   }
   static void unlink(View view, View child) {
-    if (child is IdSpace)
-      removeFromIdSpace(child, true); //skip the first owner (i.e., child)
+    if (child is IDSpace)
+      removeFromIDSpace(child, true); //skip the first owner (i.e., child)
     else
-      removeFromIdSpaceDown(child, child.spaceOwner);
+      removeFromIDSpaceDown(child, child.spaceOwner);
 
     var p = child._prevSibling, n = child._nextSibling;
     if (p != null) p._nextSibling = n;
@@ -132,37 +132,37 @@ class _ViewImpl {
     return new DialogInfo(parent, mask);
   }
 
-  //IdSpace//
+  //IDSpace//
   //-------//
-  static IdSpace spaceOwner(View view) {
+  static IDSpace spaceOwner(View view) {
     View top, p = view;
     do {
-      if (p is IdSpace)
+      if (p is IDSpace)
         return p;
       top = p;
     } while ((p = p.parent) != null);
 
     if (top._virtIS == null)
-      top._virtIS = new _VirtualIdSpace(top);
+      top._virtIS = new _VirtualIDSpace(top);
     return top._virtIS;
   }
 
   /** Checks the uniqueness in ID space when changing ID. */
-  static void checkIdSpaces(View view, String newId) {
-    IdSpace space = view.spaceOwner;
+  static void checkIDSpaces(View view, String newId) {
+    IDSpace space = view.spaceOwner;
     if (space.fellows[newId] != null)
       throw new UIError("Not unique in the ID space of $space: $newId");
 
-    //we have to check one level up if view is IdSpace (i.e., unique in two ID spaces)
+    //we have to check one level up if view is IDSpace (i.e., unique in two ID spaces)
     View parent;
-    if (view is IdSpace && (parent = view.parent) != null) {
+    if (view is IDSpace && (parent = view.parent) != null) {
       space = parent.spaceOwner;
       if (space.fellows[newId] != null)
         throw new UIError("Not unique in the ID space of $space: $newId");
     }
   }
   //Add the given view to the ID space
-  static void addToIdSpace(View view, [bool skipFirst=false]){
+  static void addToIDSpace(View view, [bool skipFirst=false]){
     String id = view.id;
     if (id.length == 0)
       return;
@@ -170,30 +170,30 @@ class _ViewImpl {
     if (!skipFirst)
       _addFellow(view.spaceOwner, id, view);
 
-    //we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
+    //we have to put it one level up if view is IDSpace (i.e., unique in two ID spaces)
     View parent;
-    if (view is IdSpace && (parent = view.parent) != null)
+    if (view is IDSpace && (parent = view.parent) != null)
       _addFellow(parent.spaceOwner, id, view);
   }
   //Add the given view and all its children to the ID space
-  static void addToIdSpaceDown(View view, var space) {
+  static void addToIDSpaceDown(View view, var space) {
     var id = view.id;
     if (id.length > 0)
       _addFellow(space, id, view);
 
-    if (view is! IdSpace) {
-      final IdSpace vs = view._virtIS;
+    if (view is! IDSpace) {
+      final IDSpace vs = view._virtIS;
       if (vs != null) {
         view._virtIS = null;
         for (final child in vs.fellows.values)
           _addFellow(space, child.id, child);
       } else {
         for (view = view.firstChild; view != null; view = view.nextSibling)
-          addToIdSpaceDown(view, space);
+          addToIDSpaceDown(view, space);
       }
     }
   }
-  static void removeFromIdSpace(View view, [bool skipFirst=false]) {
+  static void removeFromIDSpace(View view, [bool skipFirst=false]) {
     String id = view.id;
     if (id.length == 0)
       return;
@@ -201,26 +201,26 @@ class _ViewImpl {
     if (!skipFirst)
       _rmFellow(view.spaceOwner, id);
 
-    //we have to put it one level up if view is IdSpace (i.e., unique in two ID spaces)
+    //we have to put it one level up if view is IDSpace (i.e., unique in two ID spaces)
     View parent;
-    if (view is IdSpace && (parent = view.parent) != null)
+    if (view is IDSpace && (parent = view.parent) != null)
       _rmFellow(parent.spaceOwner, id);
   }
-  static void removeFromIdSpaceDown(View view, var space) {
+  static void removeFromIDSpaceDown(View view, var space) {
     var id = view.id;
     if (id.length > 0)
       _rmFellow(space, id);
 
-    if (view is! IdSpace)
+    if (view is! IDSpace)
       for (view = view.firstChild; view != null; view = view.nextSibling)
-        removeFromIdSpaceDown(view, space);
+        removeFromIDSpaceDown(view, space);
   }
 }
 
-void _addFellow(IdSpace space, String id, View fellow) {
+void _addFellow(IDSpace space, String id, View fellow) {
   space.fellows[id] = fellow;
 }
-void _rmFellow(IdSpace space, String id) {
+void _rmFellow(IDSpace space, String id) {
   space.fellows.remove(id);
 }
 
@@ -382,17 +382,17 @@ Map<String, _DomEventDispatcher> _domEvtDisps;
 
 /** A virtual ID space.
  */
-class _VirtualIdSpace implements IdSpace {
+class _VirtualIDSpace implements IDSpace {
   View _owner;
 
-  _VirtualIdSpace(this._owner) {
+  _VirtualIDSpace(this._owner) {
   }
   
   View query(String selector) => _owner.query(selector);
   List<View> queryAll(String selector) => _owner.queryAll(selector);
   final Map<String, View> fellows = new HashMap();
 
-  String toString() => "_VirtualIdSpace($_owner)";
+  String toString() => "_VirtualIDSpace($_owner)";
 }
 
 class _SubviewIter implements Iterator<View> {

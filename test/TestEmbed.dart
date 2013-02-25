@@ -1,4 +1,4 @@
-//Sample Code: Test IdSpace
+//Sample Code: Test IDSpace
 
 import 'dart:html';
 import 'package:rikulo_ui/view.dart';

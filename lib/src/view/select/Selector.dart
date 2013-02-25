@@ -16,7 +16,7 @@ class Selector {
   
   int getCombinator(int index) => seqs[index].combinator;
   
-  bool requiresIdSpace(int index) => seqs[index].id != null;
+  bool requiresIDSpace(int index) => seqs[index].id != null;
   
   SimpleSelectorSequence addSequence() {
     SimpleSelectorSequence seq = new SimpleSelectorSequence();

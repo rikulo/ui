@@ -35,14 +35,14 @@ typedef void AfterMount(View view);
  *
  * ##ID Space
  *
- * If a view implements [IdSpace], it and its descendants are considered
+ * If a view implements [IDSpace], it and its descendants are considered
  * as a ID space. And, the topmost view is the owner.
  * All IDs in the given ID space must be unique.
  * On the other hand, views in different ID spaces can have the same ID.
  *
- * Implementing [IdSpace] is straightforward:
+ * Implementing [IDSpace] is straightforward:
  *
- *     class MyIdSpace extends View implements IdSpace {
+ *     class MyIDSpace extends View implements IDSpace {
  *       final Map<String, View> fellows = new HashMap();
  *     }
  *
@@ -55,8 +55,8 @@ class View implements CapturableStreamTarget<ViewEvent> {
 
   View _parent;
   View _nextSibling, _prevSibling;
-  //Virtual ID space. Used only if this is root but not IdSpace
-  IdSpace _virtIS;
+  //Virtual ID space. Used only if this is root but not IDSpace
+  IDSpace _virtIS;
 
   _ChildInfo _childInfo;
   _EventListenerInfo _evlInfo;
@@ -148,10 +148,10 @@ class View implements CapturableStreamTarget<ViewEvent> {
     if (id == null) id = "";
     if (node.id != id) {
       if (id.length > 0)
-        _ViewImpl.checkIdSpaces(this, id);
-      _ViewImpl.removeFromIdSpace(this);
+        _ViewImpl.checkIDSpaces(this, id);
+      _ViewImpl.removeFromIDSpace(this);
       node.id = id;
-      _ViewImpl.addToIdSpace(this);
+      _ViewImpl.addToIDSpace(this);
     }
   }
   /** Searches and returns the first view that matches the given selector.
@@ -190,9 +190,9 @@ class View implements CapturableStreamTarget<ViewEvent> {
   Map<String, View> get fellows => spaceOwner.fellows;
   /** Returns the owner of the ID space that this view belongs to.
    *
-   * A virtual [IdSpace] is used if this view is a root but is not IdSpace.
+   * A virtual [IDSpace] is used if this view is a root but is not IDSpace.
    */
-  IdSpace get spaceOwner => _ViewImpl.spaceOwner(this);
+  IDSpace get spaceOwner => _ViewImpl.spaceOwner(this);
 
   /** Returns if a view is a descendant of this view or
    * it is identical to this view.

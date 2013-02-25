@@ -127,7 +127,7 @@ class ViewIterator implements Iterator<View> {
       for (int j = posStart; j < selector.seqs.length - 1; j++) {
         switch (selector.getCombinator(j)) {
         case SimpleSelectorSequence.COMB_DESCENDANT:
-          if (parent.isQualified(i, j) && checkIdSpace(selector, j+1, ctx))
+          if (parent.isQualified(i, j) && checkIDSpace(selector, j+1, ctx))
             ctx.qualify(i, j);
           if (parent.isQualified(i, j) && match(selector, ctx, j+1)) 
             ctx.qualify(i, j+1);
@@ -163,7 +163,7 @@ class ViewIterator implements Iterator<View> {
         case SimpleSelectorSequence.COMB_DESCENDANT:
           bool parentPass = parent != null && parent.isQualified(i, j);
           ctx.qualify(i, j, 
-              parentPass && checkIdSpace(selector, j+1, ctx));
+              parentPass && checkIDSpace(selector, j+1, ctx));
           if (parentPass && match(selector, ctx, j+1))
             ctx.qualify(i, j+1);
           break;
@@ -190,17 +190,17 @@ class ViewIterator implements Iterator<View> {
     return ctx;
   }
   
-  static bool checkIdSpace(Selector selector, int index, ViewMatchContext ctx) {
-    return !selector.requiresIdSpace(index) || !(ctx.view is IdSpace);
+  static bool checkIDSpace(Selector selector, int index, ViewMatchContext ctx) {
+    return !selector.requiresIDSpace(index) || !(ctx.view is IDSpace);
   }
   
   static bool isDescendant(View c1, View c2) {
     if (c1 == c2)
-      return true; // first c1 can be IdSpace
+      return true; // first c1 can be IDSpace
     while ((c1 = c1.parent) != null) {
       if (c1 == c2)
         return true;
-      if (c1 is IdSpace)
+      if (c1 is IDSpace)
         return c1 == c2;
     }
     return false;
