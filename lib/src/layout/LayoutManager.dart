@@ -13,7 +13,8 @@ class LayoutManager extends RunOnceViewManager {
   final List<Task> _afters;
   int _inLayout = 0, _inCallback = 0;
 
-  LayoutManager(): super(null), _layouts = new HashMap(), _imgWaits = new Set(), _afters = [] {
+  LayoutManager(): _layouts = new HashMap(), _imgWaits = new Set(), _afters = [],
+  super(null) {
     addLayout("linear", new LinearLayout());
     addLayout("tile", new TileLayout());
 

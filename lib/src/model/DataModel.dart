@@ -68,7 +68,7 @@ class DataModel implements StreamTarget<DataEvent> {
 class ModelError implements Error {
   final String message;
 
-  ModelError(String this.message);
+  ModelError(this.message);
   String toString() => "ModelError($message)";
 }
 
@@ -379,9 +379,8 @@ implements Selection<T>, Disables<T> {
  * See also [Renderer].
  */
 class RenderContext<T> {
-  RenderContext(View this.view, DataModel this.model, T this.data,
-    bool this.selected, bool this.disabled,
-    [int this.index = -1, String this.column, int this.columnIndex = -1]);
+  RenderContext(this.view, this.model, this.data, this.selected, this.disabled,
+    [this.index = -1, this.column, this.columnIndex = -1]);
 
   /** The view that renders the model. */
   final View view;

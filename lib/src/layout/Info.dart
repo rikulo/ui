@@ -28,7 +28,7 @@ class AmountType {
    */
   static const AmountType IGNORE = const AmountType._("ignore");
 
-  const AmountType._(String this.name);
+  const AmountType._(this.name);
 
   /** The name of this direction. */
   final String name;

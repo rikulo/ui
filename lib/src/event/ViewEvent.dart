@@ -255,7 +255,7 @@ class ActivateEvent extends ViewEvent {
    * If null, it means all pop ups shall be closed.
    */
   ActivateEvent(var source, [String type="activate"]):
-  super(type), _source = source {
+  _source = source, super(type) {
   }
   /** Returns the UI object triggers this event.
    * It is either a view or a DOM element.

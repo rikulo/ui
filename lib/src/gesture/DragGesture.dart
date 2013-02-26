@@ -90,8 +90,7 @@ abstract class DragGesture extends Gesture {
       new _TouchDragGesture(owner, start: start, move: move, end: end) :
       new _MouseDragGesture(owner, start: start, move: move, end: end);
   //for subclass to call
-  DragGesture._init(Element this.owner, DragGestureStart this._start, 
-  DragGestureMove this._move, DragGestureEnd this._end) {
+  DragGesture._init(this.owner, this._start, this._move, this._end) {
     _listen();
   }
   /** The element that owns this drag gesture (never null).

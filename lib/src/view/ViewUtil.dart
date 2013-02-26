@@ -40,7 +40,7 @@ abstract class Input<T> {
 class UIError implements Error {
   final String message;
 
-  UIError(String this.message);
+  UIError(this.message);
   String toString() => "UIError($message)";
 }
 

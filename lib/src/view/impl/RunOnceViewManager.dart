@@ -234,8 +234,8 @@ class _ModelRenderer extends RunOnceViewManager {
   final List<Task> _contTasks;
   static final RunOnceViewTask _renderTask = (view) {view.renderModel_();};
 
-  _ModelRenderer(): super(_renderTask, ignoreSubviews: false),
-  _contTasks = new List() {
+  _ModelRenderer(): _contTasks = new List(),
+  super(_renderTask, ignoreSubviews: false) {
     //For better performance (though optional), we make layoutManager to
     //wait until all pending renderers are done
     layoutManager.addReadyCheck((View view, Task continueTask, bool force) {

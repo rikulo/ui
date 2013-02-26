@@ -14,7 +14,7 @@ class Ball {
   int radius, centerX, centerY;
   double speed;
 
-  Ball(int this.radius, double this.speed, int size, String color):
+  Ball(this.radius, this.speed, int size, String color):
   view = new View() {
     view.style.cssText = "border-radius: ${size}px;border: ${size}px solid $color";
     view.width = view.height = size << 1;

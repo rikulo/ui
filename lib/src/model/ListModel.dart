@@ -12,7 +12,7 @@ class ListDataEvent<T> extends DataEvent {
    *
    * + [type]: `change`, `add` or `remove`.
    */
-  ListDataEvent(ListModel<T> model, String type, int this.index, int this.length)
+  ListDataEvent(ListModel<T> model, String type, this.index, this.length)
   : super(model, type);
 
   /** The starting index of the change range (nonnegative).

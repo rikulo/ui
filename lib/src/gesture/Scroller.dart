@@ -50,11 +50,11 @@ class Scroller {
    * If it returns false, the scrolling won't be activated.
    * + [dir]: the direction. If not specified, [Dir.BOTH] is assumed.
    */
-  Scroller(Element owner, AsSize viewPortSize, AsSize contentSize,
-  {Element handle, Dir direction: Dir.BOTH, bool scrollbar: true, 
+  Scroller(this.owner, AsSize viewPortSize, AsSize contentSize,
+  {this.handle, Dir direction: Dir.BOTH, this.scrollbar: true, 
   ScrollerSnap snap, ScrollerStart start, ScrollerMove move, ScrollerEnd end}) :
-  this.owner = owner, _fnViewPortSize = viewPortSize, _fnContentSize = contentSize,
-  this.handle = handle, this.direction = direction, this.scrollbar = scrollbar,
+  this.direction = direction,
+  _fnViewPortSize = viewPortSize, _fnContentSize = contentSize,
   _hasHor = identical(direction, Dir.HORIZONTAL) || identical(direction, Dir.BOTH),
   _hasVer = identical(direction, Dir.VERTICAL) || identical(direction, Dir.BOTH),
   _start = start, _move = move, _end = end {
@@ -235,7 +235,7 @@ class ScrollerState extends GestureState {
   Size _contentSizeCache, _viewPortSizeCache;
   Rectangle _dragRangeCache;
 
-  ScrollerState._(Scroller scroller, EventTarget this.eventTarget, 
+  ScrollerState._(Scroller scroller, this.eventTarget, 
   this._fnViewPortSize, this._fnContentSize, this._time) :
   this.scroller = scroller,
   startPosition = new DomAgent(scroller.owner).offset * -1 {
@@ -417,11 +417,10 @@ class _BoundedInertialMotion extends Motion {
   num _posx, _posy, _velx, _vely;
   Motion _snapMotion;
   
-  _BoundedInertialMotion(Element element, Offset velocity, this.range, 
+  _BoundedInertialMotion(this.element, Offset velocity, this.range, 
   this._hor, this._ver, void move(Offset position, int time), void end(),
-  {num friction: 0.0005, num bounce: 0.0002, num snapSpeedThreshold: 0.05, ScrollerSnap snap}) :
-  this.element = element, this.friction = friction, this.bounce = bounce,
-  this.snapSpeedThreshold = snapSpeedThreshold, _move = move, _end = end, _snap = snap {
+  {this.friction: 0.0005, this.bounce: 0.0002, this.snapSpeedThreshold: 0.05,
+  ScrollerSnap snap}) : _move = move, _end = end, _snap = snap {
     final Offset pos = new DomAgent(element).offset;
     _posx = pos.x;
     _posy = pos.y;

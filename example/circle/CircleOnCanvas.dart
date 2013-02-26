@@ -15,7 +15,7 @@ class Ball {
   double speed;
   String color;
 
-  Ball(int this.radius, double this.speed, int this.size, String this.color);
+  Ball(this.radius, this.speed, this.size, this.color);
 
   void updatePosition(int time) {
     final double degree = time * speed / 1000;
