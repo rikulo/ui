@@ -5,6 +5,7 @@
 * View event stream is supported. Use Steam.listen() instead. For example, view.on.click.listen((event){}).
 * Data event stream is supported. Use Stream.listen() instead. For example, model.on.select.listen((event){}).
 * UiError is renamed to UIError to follow Dart naming convention
+* DomAgent.computedStyle is removed. Use Element.getComputedStyle() instead.
 
 ##0.6.2
 

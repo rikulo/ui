@@ -402,7 +402,9 @@ class _SubviewIter implements Iterator<View> {
 
   _SubviewIter(this._owner);
 
+  @override
   View get current => _curr;
+  @override
   bool moveNext() {
     if (!_moved) {
       _moved = true;
@@ -421,14 +423,18 @@ class _SubviewList extends Collection<View> implements List<View> {
   final View _owner;
   _SubviewList(View owner): _owner = owner;
 
+  @override
   int get length => _owner.childCount;
+  @override
   Iterator<View> get iterator => new _SubviewIter(_owner);
+  @override
   View get last {
     if (isEmpty)
       throw new StateError("No elements");
     return _owner.lastChild;
   }
   
+  @override
   View operator[](int index) {
     Arrays.rangeCheck(this, index, 1);
 
@@ -445,6 +451,9 @@ class _SubviewList extends Collection<View> implements List<View> {
       return child;
     }
   }
+  @override
+  View elementAt(int index) => this[index];
+  @override
   void operator[]=(int index, View value) {
     if (value == null)
       throw new ArgumentError();
@@ -456,21 +465,26 @@ class _SubviewList extends Collection<View> implements List<View> {
       _owner.addChild(value, next);
     }
   }
+  @override
   void add(View view) {
     _owner.addChild(view);
   }
+  @override
   void addLast(View view) => add(view);
+  @override
   void sort([Comparator<View> compare]) {
     List<View> copy = new List.from(this);
     copy.sort(compare);
     setRange(0, length, copy);
   }
+  @override
   View removeLast() {
-    final View w = last;
+    final View w = _owner.lastChild;
     if (w != null)
       w.remove();
     return w;
   }
+  @override
   void setRange(int start, int length, List<View> from, [int startFrom]) {
     if (length <= 0)
       return; //nothing to do
@@ -521,6 +535,7 @@ class _SubviewList extends Collection<View> implements List<View> {
         add(from[startFrom++]);
     }
   }
+  @override
   void removeRange(int start, int length) {
     if (length <= 0)
       return; //nothing to do
@@ -532,6 +547,7 @@ class _SubviewList extends Collection<View> implements List<View> {
       child = next;
     }
   }
+  @override
   void insertRange(int start, int length, [View initialValue]) {
     if (length != 1)
       throw new ArgumentError("Allow only one view");
@@ -545,24 +561,25 @@ class _SubviewList extends Collection<View> implements List<View> {
     }
   }
   
+  @override
   void set length(int newLength) {
     throw new UnsupportedError("Cannot set the length of view children list.");
   }
-  
+  @override
   int indexOf(View view, [int start = 0]) {
-    if (start >= length)
+    if (start >= length || view.parent != _owner)
       return -1;
     int i = start;
-    for (View v = elementAt(max(start, 0)); v != null; v = v.nextSibling) {
+    for (View v = this[max(start, 0)]; v != null; v = v.nextSibling) {
       if (v == view)
         return i;
       i++;
     }
     return -1;
   }
-  
+  @override
   int lastIndexOf(View view, [int start]) {
-    if (start < 0)
+    if (start < 0 || view.parent != _owner)
       return -1;
     bool fromLast = start == null || start >= length - 1;
     int i = fromLast ? length - 1 : start;
@@ -573,7 +590,7 @@ class _SubviewList extends Collection<View> implements List<View> {
     }
     return -1;
   }
-  
+  @override
   void remove(Object element) {
     if (element is View) {
       View v = element as View;
@@ -581,9 +598,9 @@ class _SubviewList extends Collection<View> implements List<View> {
         v.remove();
     }
   }
-  
+  @override
   View removeAt(int index) => this[index]..remove();
-
+  @override
   void clear() {
     View child = _owner.firstChild;
     while (child != null) {
@@ -592,17 +609,15 @@ class _SubviewList extends Collection<View> implements List<View> {
       child = next;
     }
   }
-
+  @override
   List<View> getRange(int start, int length) {
     final result = <View>[];
     for (int i = 0; i < length; i++)
       result.add(this[start + i]);
     return result;
   }
-
-  List<View> get reversed {
-    throw new UnsupportedError("TODO");
-  }
+  @override
+  Iterable<View> get reversed => IterableMixinWorkaround.reversedList(this);
 }
 
 /** The classes to add to the root node

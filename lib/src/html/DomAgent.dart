@@ -131,11 +131,6 @@ class DomAgent {
     return new Rectangle(off.left, off.top, off.left + width, off.top + height);
   }
   
-  /** Returns the final used values of all the CSS properties
-   */
-  CssStyleDeclaration get computedStyle 
-  => window.$dom_getComputedStyle(node, "");
-
   /** Returns if a DOM element is a descendant of this element or
    * it is identical to this element.
    */
@@ -180,7 +175,7 @@ class DomAgent {
     => _sum(true, margin, border, padding);
   int _sum(bool ver, bool margin, bool border, bool padding) {
     int sum = 0;
-    final s = computedStyle;
+    final s = node.getComputedStyle();
     if (margin)
       sum += ver ? Css.intOf(s.marginTop) + Css.intOf(s.marginBottom) :
           Css.intOf(s.marginLeft) + Css.intOf(s.marginRight);
@@ -214,7 +209,7 @@ class DomAgent {
     final dst = _txtdiv.style;
     _txtdiv.innerHtml = text;
     if (node != null)
-      Css.copy(dst, window.$dom_getComputedStyle(node, ""), Css.textNames);
+      Css.copy(dst, node.getComputedStyle(), Css.textNames);
     if (style != null)
       Css.copy(dst, style, Css.textNames);
 
@@ -246,18 +241,42 @@ class DomAgent {
 class WindowAgent extends DomAgent {
   WindowAgent(Window w): super._as(w);
 
+  @override
   int get innerWidth => node.innerWidth;
+  @override
   int get innerHeight => node.innerHeight;
+  @override
   int get width => node.innerWidth;
+  @override
   int get height => node.innerHeight;
+  @override
   int get contentWidth => node.innerWidth;
+  @override
   int get contentHeight => node.innerHeight;
+  @override
   Element get offsetParent => null;
+  @override
   int get offsetLeft => 0;
+  @override
   int get offsetTop => 0;
+  @override
   Offset get offset => new Offset(0, 0);
+  @override
   Offset get pageOffset => offset;
+  @override
   bool isDescendantOf(Element parent) => false;
-  CssStyleDeclaration get computedStyle => new CssStyleDeclaration();
-  void set visible(bool visible) {}
+  @override
+  bool get isInput => false;
+  @override
+  bool get hasContent => true;
+  @override
+  int sumWidth({bool margin: false, bool border: false, bool padding: false}) => 0;
+  @override
+  int sumHeight({bool margin: false, bool border: false, bool padding: false}) => 0;
+  @override
+  void show() {
+  }
+  @override
+  void hide() {
+  }
 }
