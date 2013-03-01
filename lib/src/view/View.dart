@@ -1087,10 +1087,11 @@ class View implements CapturableStreamTarget<ViewEvent> {
   /**
    * A map of application-specific data.
    *
-   * Note: the name of the attribute can't start with "rk_", which is reserved
+   * Note: the names of the keys can't start with "rk.", which is reserved
    * for internal use.
    *
-   * Unlike `Element.dataset', you can store any kind of objects here.
+   * Unlike `Element.dataset', you can store any kind of objects here, and
+   * you can use any character to name the key.
    *
    * See also [mountset].
    */
