@@ -209,18 +209,18 @@ class ViewUtil {
       if (body == null)
         throw new UIError("document not ready yet");
 
-      final attrs = body.dataset;
-      String sval = attrs[_APP_COUNT];
+      final dataset = body.dataset;
+      String sval = dataset[_APP_COUNT];
       if (sval != null) {
         _appId = int.parse(sval);
-        attrs[_APP_COUNT] = (_appId + 1).toString();
+        dataset[_APP_COUNT] = (_appId + 1).toString();
       } else {
         _appId = 0;
-        attrs[_APP_COUNT] = "1";
+        dataset[_APP_COUNT] = "1";
       }
     }
     return _appId;
   }
   static int _appId;
-  static const String _APP_COUNT = "data-rkAppCount";
+  static const _APP_COUNT = "rk_apps";
 }
