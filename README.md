@@ -12,7 +12,7 @@ You can access your application directly with a modern Web browser without any p
 
 Rikulo is distributed under an Apache 2.0 License.
 
-##Install from Dart Pub Repository
+##Installation
 
 Add this to your `pubspec.yaml` (or create it):
 
@@ -24,16 +24,6 @@ Then run the [Pub Package Manager](http://pub.dartlang.org/doc) (comes with the 
     pub install
 
 For more information, please refer to [Rikulo: Getting Started](http://docs.rikulo.org/ui/latest/Getting_Started/) and [Pub: Getting Started](http://pub.dartlang.org/doc).
-
-##Install from Github for Bleeding Edge Stuff
-
-To install stuff that is still in development, add this to your `pubspec.yam`:
-
-    dependencies:
-      rikulo_ui:
-        git: git://github.com/rikulo/ui.git
-
-For more information, please refer to [Pub: Dependencies](http://pub.dartlang.org/doc/pubspec.html#dependencies).
 
 ##Usage
 
