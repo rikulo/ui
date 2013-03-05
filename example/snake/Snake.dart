@@ -13,7 +13,7 @@ class Snake {
     body = [];
     
     for(num i =0; i<3; i++) {
-      body.addLast(new SnakePoint(i * SnakeEnvironment.adjustment,0));
+      body.add(new SnakePoint(i * SnakeEnvironment.adjustment,0));
     }
   }
   
