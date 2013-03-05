@@ -43,7 +43,7 @@ class RunOnceQueue {
     else
       _tasks = new HashMap();
 
-    _tasks[key] = new Timer(timeout, (){
+    _tasks[key] = new Timer(new Duration(milliseconds: timeout), (){
       _tasks.remove(key);
       task();
     });

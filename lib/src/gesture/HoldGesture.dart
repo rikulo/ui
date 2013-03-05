@@ -106,7 +106,7 @@ abstract class HoldGesture extends Gesture {
       return;
     }
     
-    _state._timer = new Timer(_duration, _call);
+    _state._timer = new Timer(new Duration(milliseconds: _duration), _call);
   }
   void _touchMove(int time, Offset position) {
     if (_state != null && (position - _state.position).norm() > _movementLimit)

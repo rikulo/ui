@@ -80,7 +80,7 @@ class _Printc {
   }
 
   void _defer() {
-    new Timer(100, _globalFlush);
+    new Timer(const Duration(milliseconds: 100), _globalFlush);
   }
   static void _globalFlush() {
     _printc._flush();
