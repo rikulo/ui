@@ -42,7 +42,7 @@ function d2j {
 	if [ ${f%.dart} != $f ] ; then
 		grep -w 'main[(] *[)]' $f > /dev/null
 		if [ "$?" = "0" ] ; then #found
-			dart2js $f
+			$dart2js $f
 			if [ "$?" = "0" ] ; then
 				mv out.js ${f%.dart}.dart.js
 				mv out.js.map ${f%.dart}.dart.js.map
