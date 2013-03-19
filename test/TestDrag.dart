@@ -1,11 +1,12 @@
 //Sample Code: Test Log
 
+import "dart:html";
+
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/html.dart';
 import 'package:rikulo_ui/gesture.dart';
-import 'package:rikulo_commons/util.dart';
 
-Rectangle range;
+Rect range;
 
 View _createSimpleDrag(View parent, bool transform, [num threshold = -1]) {
   String label = "Simple";
@@ -24,15 +25,15 @@ View _createBoxedDrag(View parent) {
   parent.addChild(box);
   View view = _createDragView(box, "Boxed");
   
-  new Dragger(view.node, snap: (Offset ppos, Offset pos) => range.snap(pos));
+  new Dragger(view.node, snap: (Point ppos, Point pos) => Points.snap(range, pos));
   
   view.on.layout.listen((event) {
     final Size vs = new DomAgent(view.node).size;
     final Size bs = new DomAgent(box.node).innerSize;
-    range = new Rectangle(0, 0, bs.width - vs.width, bs.height - vs.height);
-    final Offset vpos = range.snap(new DomAgent(view.node).offset);
-    view.left = vpos.left;
-    view.top = vpos.top;
+    range = new Rect(0, 0, bs.width - vs.width, bs.height - vs.height);
+    final Point vpos = Points.snap(range, new DomAgent(view.node).position);
+    view.left = vpos.x;
+    view.top = vpos.y;
   });
   
   return box;

@@ -11,7 +11,7 @@ import 'package:rikulo_commons/util.dart';
 
 final int statusHeight = 50;
 
-String printOffset(Offset off) => 
+String printPoint(Point off) => 
     "(${(off.x * 100).toInt() / 100}, ${(off.y * 100).toInt() / 100})";
 
 View dot(String color, int zIndex) {
@@ -71,20 +71,20 @@ void main() {
   
   // zoom gesture
   new ZoomGesture(panel.node, start: (ZoomGestureState state) {
-    List<Offset> poss = state.positions;
-    cf0.left = sf0.left = poss[0].left;
-    cf0.top  = sf0.top  = poss[0].top;
-    cf1.left = sf1.left = poss[1].left;
-    cf1.top  = sf1.top  = poss[1].top;
+    List<Point> poss = state.positions;
+    cf0.left = sf0.left = poss[0].x;
+    cf0.top  = sf0.top  = poss[0].y;
+    cf1.left = sf1.left = poss[1].x;
+    cf1.top  = sf1.top  = poss[1].y;
     cf0.visible = sf0.visible = true;
     cf1.visible = sf1.visible = true;
     
   }, move: (ZoomGestureState state) {
-    List<Offset> poss = state.positions;
-    cf0.left = poss[0].left;
-    cf0.top  = poss[0].top;
-    cf1.left = poss[1].left;
-    cf1.top  = poss[1].top;
+    List<Point> poss = state.positions;
+    cf0.left = poss[0].x;
+    cf0.top  = poss[0].y;
+    cf1.left = poss[1].x;
+    cf1.top  = poss[1].y;
     
     sc.html = "${(state.scalar * 10000).toInt() / 100}%";
     ro.html = "${(state.angle * 1800 ~/ PI) / 10}&deg;";

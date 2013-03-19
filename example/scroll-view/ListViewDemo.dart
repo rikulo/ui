@@ -1,6 +1,6 @@
 //Sample Code: ScrollView
 
-import "package:rikulo_commons/util.dart";
+import "dart:html";
 
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/html.dart';
@@ -8,10 +8,10 @@ import 'package:rikulo_ui/html.dart';
 void main() {
   ScrollView view;
   view = new ScrollView(direction: Dir.VERTICAL, 
-  snap: (Offset off) {
+  snap: (Point off) {
     final num vlimit = 50 * 50 - view.innerHeight;
     final num y = off.y >= vlimit ? vlimit : ((off.y + 25) / 50).floor() * 50;
-    return new Offset(off.x, y);
+    return new Point(off.x, y);
   });
   view.profile.text = "location: center center; width: 80%; height: 80%";
   view.classes.add("list-view");

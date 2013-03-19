@@ -44,12 +44,12 @@ class Css {
    */
   static String translate3d(int x, int y, [int z])
   => "translate3d(${x}px,${y}px,${z != null ? z: 0}px)";
-  /** Converts a string of a 3-tuples to [Offset3d].
-   * If it is 2-tuples, [Offset3d.z] will be zero.
+  /** Converts a string of a 3-tuples to [Point3D].
+   * If it is 2-tuples, [Point3D.z] will be zero.
    */
-  static Offset3d offset3dOf(String value) {
+  static Point3D point3DOf(String value) {
     if (value == null || value.isEmpty)
-      return new Offset3d(0, 0, 0);
+      return new Point3D(0, 0, 0);
 
     final List<int> ary = [0, 0, 0];
     int i = value.indexOf('(');
@@ -60,7 +60,7 @@ class Css {
       if (i == 3)
         break;
     }
-    return new Offset3d(ary[0], ary[1], ary[2]);
+    return new Point3D(ary[0], ary[1], ary[2]);
   }
   /** Converts a string of a CSS value to an integer.
    * It returns 0 if value is null, empty, or failed to parse.

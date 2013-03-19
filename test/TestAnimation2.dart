@@ -8,7 +8,6 @@ import 'package:rikulo_ui/html.dart';
 import 'package:rikulo_ui/gesture.dart';
 import 'package:rikulo_ui/event.dart';
 import 'package:rikulo_ui/effect.dart';
-import 'package:rikulo_commons/util.dart';
 
 View createCube(int size, String txt) {
   View v = new View();
@@ -50,28 +49,28 @@ void main() {
   cube.top = 250;
   mainView.addChild(cube);
   
-  Rectangle range = new Rectangle(50, 50, 446, 446);
+  Rect range = new Rect(50, 50, 446 - 50, 446 - 50);
   Element element = cube.node;
   final num deceleration = 0.0005;
   
   Motion motion;
-  new Dragger(element, snap: (Offset ppos, Offset pos) => range.snap(pos), 
+  new Dragger(element, snap: (Point ppos, Point pos) => Points.snap(range, pos), 
   start: (DraggerState dstate) {
     if (motion != null)
       motion.stop();
     
   }, end: (DraggerState dstate) {
-    final Offset vel = dstate.elementVelocity;
-    num speed = vel.norm();
+    final Point vel = dstate.elementVelocity;
+    num speed = Points.norm(vel);
     if (speed == 0)
       return;
-    Offset unitv = vel / speed;
-    Offset pos = new DomAgent(element).offset;
+    Point unitv = Points.divide(vel, speed);
+    Point pos = new DomAgent(element).position;
     motion = new Motion(move: (MotionState mstate) {
       int elapsed = mstate.elapsedTime;
-      pos = range.snap(pos + (unitv * speed * elapsed));
-      element.style.left = Css.px(pos.left.toInt());
-      element.style.top = Css.px(pos.top.toInt());
+      pos = Points.snap(range, pos + (unitv * speed * elapsed));
+      element.style.left = Css.px(pos.x.toInt());
+      element.style.top = Css.px(pos.y.toInt());
       speed = max(0, speed - deceleration * elapsed);
       return speed > 0;
     })..run();

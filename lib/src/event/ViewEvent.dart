@@ -139,14 +139,14 @@ class DomEvent extends ViewEvent {
 
   /** The offset of the mouse pointer relative to the whole document.
    */
-  Offset get pageOffset => new Offset(0, 0);
+  Point get page => new Point(0, 0);
   /** The offset of the mouse pointer in the target node coordinate.
    * It is available only if [cause] is `MouseEvent`.
    *
    * This value may vary between platforms if the target node moves
    * after the event has fired or if the element has CSS transforms affecting it.
    */
-  Offset get offset => new Offset(0, 0);
+  Point get offset => new Point(0, 0);
   /** The object in the clipboard.
    */
   DataTransfer get clipboardData => cause.clipboardData;
@@ -179,7 +179,7 @@ class _UIEvent extends DomEvent {
   int get charCode => _uc.$dom_charCode;
   int get keyCode => _uc.$dom_keyCode;
   int get which => _uc.which;
-  Offset get pageOffset => new Offset(_uc.pageX, _uc.pageY);
+  Point get page => _uc.page;
 
   String toString() => "UIEvent($target,$cause)";
 }
@@ -210,7 +210,7 @@ class _MSEvent extends _UIEvent {
   bool get metaKey => _mc.metaKey;
   bool get shiftKey => _mc.shiftKey;
 
-  Offset get offset => new Offset(_mc.offsetX, _mc.offsetY);
+  Point get offset => _mc.offset;
   DataTransfer get dataTransfer => _mc.dataTransfer;
 
   String toString() => "MouseEvent($target,$cause)";

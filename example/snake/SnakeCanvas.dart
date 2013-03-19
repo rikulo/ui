@@ -66,7 +66,7 @@ class SnakeCanvas {
     ctx2d = canvas.context2D;
 
     new SwipeGesture(this.canvas.node, (SwipeGestureState state) {
-      final Offset tr = state.transition;
+      final Point tr = state.transition;
       if (max(tr.x.abs(), tr.y.abs()) > MINIMUM_DRAG_LENGTH) {
         environment.snake.direction = 
             tr.x.abs() > tr.y.abs() ?

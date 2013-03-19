@@ -32,7 +32,7 @@ class HoldGestureState extends GestureState {
   
   /** The touch point's offset relative to the whole document.
    */
-  final Offset position;
+  final Point position;
 }
 
 /**
@@ -94,7 +94,7 @@ abstract class HoldGesture extends Gesture {
   void _listen();
   void _unlisten();
   
-  void _touchStart(EventTarget target, int time, Offset position) {
+  void _touchStart(EventTarget target, int time, Point position) {
     if (_disabled)
       return;
     
@@ -108,8 +108,8 @@ abstract class HoldGesture extends Gesture {
     
     _state._timer = new Timer(new Duration(milliseconds: _duration), _call);
   }
-  void _touchMove(int time, Offset position) {
-    if (_state != null && (position - _state.position).norm() > _movementLimit)
+  void _touchMove(int time, Point position) {
+    if (_state != null && Points.norm(position - _state.position) > _movementLimit)
       _stop();
   }
   void _touchEnd() => _stop();
@@ -147,10 +147,10 @@ class _TouchHoldGesture extends HoldGesture {
       if (event.touches.length > 1)
         _touchEnd(); //ignore multiple fingers
       else
-        _touchStart(event.target, event.timeStamp, new Offset(event.pageX, event.pageY));
+        _touchStart(event.target, event.timeStamp, event.page);
     });
     _subMove = document.onTouchMove.listen((TouchEvent event) {
-      _touchMove(event.timeStamp, new Offset(event.pageX, event.pageY));
+      _touchMove(event.timeStamp, event.page);
     });
     _subEnd = document.onTouchEnd.listen((event) {
       _touchEnd();
@@ -182,10 +182,10 @@ class _MouseHoldGesture extends HoldGesture {
   
   void _listen() {
     _subStart = owner.onMouseDown.listen((MouseEvent event) {
-      _touchStart(event.target, event.timeStamp, new Offset(event.pageX, event.pageY));
+      _touchStart(event.target, event.timeStamp, event.page);
     });
     _subMove = document.onMouseMove.listen((MouseEvent event) {
-      _touchMove(event.timeStamp, new Offset(event.pageX, event.pageY));
+      _touchMove(event.timeStamp, event.page);
     });
     _subEnd = document.onMouseUp.listen((event) {
       _touchEnd();

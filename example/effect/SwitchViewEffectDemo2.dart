@@ -39,7 +39,7 @@ void replace(View vo, View vn, SwitchViewEffect effect) {
 
 Button btn(String text) => new Button(text)..width = 96..height = 96;
 
-void addFly(Element element, Offset range, List<MotionAction> actions, List<Function> ends) {
+void addFly(Element element, Point range, List<MotionAction> actions, List<Function> ends) {
   if (element.children.isEmpty)
     addRandFly(element, range, actions, ends);
   else
@@ -47,7 +47,7 @@ void addFly(Element element, Offset range, List<MotionAction> actions, List<Func
       addFly(c, range, actions, ends);
 }
 
-void addRandFly(Element element, Offset range, List<MotionAction> actions, List<Function> ends) {
+void addRandFly(Element element, Point range, List<MotionAction> actions, List<Function> ends) {
   final int initX = Css.intOf(element.style.left);
   final int initY = Css.intOf(element.style.top);
   final num velX = (rand.nextDouble() * 2 - 1) * range.x;
@@ -150,7 +150,7 @@ void main() {
       int h = new DomAgent(body).height;
       final int height = h > 0 ? h : browser.size.height;
       final int width = new DomAgent(body).width;
-      final Offset range = new Offset(width / 2, height / 2);
+      final Point range = new Point(width / 2, height / 2);
       
       final Element vonode = n1;
       actions.add((num x, MotionState state) {

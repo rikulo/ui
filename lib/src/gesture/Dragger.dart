@@ -26,12 +26,12 @@ typedef void DraggerEnd(DraggerState state);
 /** The state of a dragging movement of [Dragger].
  */
 class DraggerState extends GestureState {
-  final Offset _gestureStartPosition;
+  final Point _gestureStartPosition;
   VelocityProvider _vp;
-  Offset _elementPosition;
+  Point _elementPosition;
   int _time;
 
-  DraggerState._(this.dragger, this.draggedElement, Offset targetPosition, 
+  DraggerState._(this.dragger, this.draggedElement, Point targetPosition, 
   DragGestureState gstate) :
   gestureState = gstate, eventTarget = gstate.eventTarget, startTime = gstate.time,
   elementStartPosition = targetPosition,
@@ -59,16 +59,16 @@ class DraggerState extends GestureState {
   final int startTime;
   
   /** The initial element position (offset with respect to parent). */
-  final Offset elementStartPosition;
+  final Point elementStartPosition;
   
   /** The current element position (offset with respect to parent). */
-  Offset get elementPosition => _elementPosition;
+  Point get elementPosition => _elementPosition;
   /** The displacement of the touch/cursor position of this dragging. */
-  Offset get elementTransition => _elementPosition - elementStartPosition;
+  Point get elementTransition => _elementPosition - elementStartPosition;
   /** The current estimated velocity of touch/cursor position movement. */
-  Offset get elementVelocity => _vp.velocity;
+  Point get elementVelocity => _vp.velocity;
 
-  void snapshot(Offset position, int time) {
+  void snapshot(Point position, int time) {
     _vp.snapshot(position, time);
     _elementPosition = position;
     _time = time;
@@ -108,7 +108,7 @@ class Dragger extends Gesture {
    * + [end] Callback invoked when dragging ends.
    */
   Dragger(this.owner, {Element dragged(), 
-  Offset snap(Offset previousPosition, Offset position), 
+  Point snap(Point previousPosition, Point position), 
   num threshold: -1, bool transform: false,
   DraggerStart start, DraggerMove move, DraggerEnd end}) :
   _transform = transform, _start = start, _move = move, _end = end {
@@ -124,15 +124,15 @@ class Dragger extends Gesture {
       return _initState(dragged, state);
       
     }, move: (DragGestureState state) {
-      if (_pending && state.transition.norm() > threshold) {
+      if (_pending && Points.norm(state.transition) > threshold) {
         _pending = false;
         return _initState(dragged, state);
       }
       
       if (_state != null) {
         // calculate element position
-        Offset oldElemPos = _state.elementPosition;
-        Offset elemPos = 
+        Point oldElemPos = _state.elementPosition;
+        Point elemPos = 
             _state.elementStartPosition + state.position - _state._gestureStartPosition;
         if (snap != null)
           elemPos = snap(oldElemPos, elemPos);
@@ -173,20 +173,17 @@ class Dragger extends Gesture {
     return true;
   }
   
-  Offset getElementPosition_(Element target) {
-    if (_transform) {
-      Offset3d off3d = Css.offset3dOf(target.style.transform);
-      return new Offset(off3d.x, off3d.y);
-    }
-    return new DomAgent(target).offset;
+  Point getElementPosition_(Element target) {
+    return _transform ? Css.point3DOf(target.style.transform):
+    		new DomAgent(target).position;
   }
   
-  void setElementPosition_(Element target, Offset position) {
+  void setElementPosition_(Element target, Point position) {
     if (_transform) {
-      target.style.transform = Css.translate3d(position.left, position.top);
+      target.style.transform = Css.translate3d(position.x, position.y);
     } else {
-      target.style.left = Css.px(position.left);
-      target.style.top = Css.px(position.top);
+      target.style.left = Css.px(position.x);
+      target.style.top = Css.px(position.y);
     }
   }
   

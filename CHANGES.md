@@ -1,5 +1,13 @@
 #Rikulo Changes
 
+##0.6.4
+
+* Offset and Rectangle are removed. Use Point and Rect of dart:html instead.
+* Offset3d is renamed to Point3D.
+* View.pageOffset is renamed to View.page
+* DomAgent.pageOffset is renamed to DomAgent.pageOffset.
+* DomAgent.offset is renamed to DomAgent.position.
+
 ##0.6.3
 
 * View event stream is supported. Use Steam.listen() instead. For example, view.on.click.listen((event){}).

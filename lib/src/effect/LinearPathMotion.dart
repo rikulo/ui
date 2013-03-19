@@ -10,8 +10,8 @@ class LinearPathMotion extends EasingMotion {
   
   final Element element;
   final Function _moveCB;
-  final Offset origin, destination, _diff; 
-  Offset _pos;
+  final Point origin, destination, _diff; 
+  Point _pos;
   
   /** Construct a linear position motion.
    * + [element] is the element to move.
@@ -21,9 +21,9 @@ class LinearPathMotion extends EasingMotion {
    * provided, [defaultAction] shall be called to attain the default 
    * behavior of LinearPathMotion.
    */
-  LinearPathMotion(Element element, Offset origin, Offset destination, 
+  LinearPathMotion(Element element, Point origin, Point destination, 
     {EasingFunction easing, int period: 500, MotionStart start, 
-    bool move(MotionState state, Offset position, num x, void defaultAction()), 
+    bool move(MotionState state, Point position, num x, void defaultAction()), 
     MotionEnd end}) :
     this.element = element, this.origin = origin, this.destination = destination, 
     _diff = destination - origin, _moveCB = move, 
@@ -39,12 +39,12 @@ class LinearPathMotion extends EasingMotion {
   }
   
   void _applyPosition() {
-    element.style.left = Css.px(_pos.left);
-    element.style.top = Css.px(_pos.top);
+    element.style.left = Css.px(_pos.x);
+    element.style.top = Css.px(_pos.y);
   }
   
   /** Retrieve the current position of the element.
    */
-  Offset get currentPosition => _pos;
+  Point get currentPosition => _pos;
   
 }

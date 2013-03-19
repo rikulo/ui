@@ -24,10 +24,10 @@ typedef void DragGestureEnd(DragGestureState state);
 class DragGestureState extends GestureState {
   final DragGesture _gesture;
   final VelocityProvider _vp;
-  Offset _position;
+  Point _position;
   int _time;
 
-  DragGestureState._(DragGesture gesture, this.eventTarget, Offset position, int time):
+  DragGestureState._(DragGesture gesture, this.eventTarget, Point position, int time):
   _gesture = gesture, startPosition = position, _position = position, 
   startTime = time, _time = time, _vp = new VelocityProvider(position, time);
 
@@ -43,18 +43,18 @@ class DragGestureState extends GestureState {
   final int startTime;
   
   /** The initial touch/cursor position. */
-  final Offset startPosition;
+  final Point startPosition;
   
   /** The current touch/cursor position. */
-  Offset get position => _position;
+  Point get position => _position;
   
   /** The displacement of the touch/cursor position of this dragging. */
-  Offset get transition => _position - startPosition;
+  Point get transition => _position - startPosition;
 
   /** The current estimated velocity of touched/cursor position movement. */
-  Offset get velocity => _vp.velocity;
+  Point get velocity => _vp.velocity;
 
-  void snapshot(Offset position, int time) {
+  void snapshot(Point position, int time) {
     _vp.snapshot(position, time);
     _position = position;
     _time = time;
@@ -119,7 +119,7 @@ abstract class DragGesture extends Gesture {
   void _listen();
   void _unlisten();
   
-  void _touchStart(Element target, Offset position, int time) {
+  void _touchStart(Element target, Point position, int time) {
     if (_disabled)
       return;
     stop();
@@ -128,7 +128,7 @@ abstract class DragGesture extends Gesture {
     if (_start != null && identical(_start(_state), false))
       stop();
   }
-  void _touchMove(Offset position, int time) {
+  void _touchMove(Point position, int time) {
     if (_state != null) {
       _state.snapshot(position, time);
       
@@ -155,15 +155,13 @@ class _TouchDragGesture extends DragGesture {
       if (event.touches.length > 1)
         _touchEnd(); //ignore multiple fingers
       else {
-        Touch t = event.touches[0];
-        _touchStart(event.target, new Offset(t.pageX, t.pageY), event.timeStamp);
+        _touchStart(event.target, event.touches[0].page, event.timeStamp);
         if (!new DomAgent(event.target).isInput)
           event.preventDefault();
       }
     });
     _subMove = owner.onTouchMove.listen((TouchEvent event) {
-      Touch t = event.touches[0];
-      _touchMove(new Offset(t.pageX, t.pageY), event.timeStamp);
+      _touchMove(event.touches[0].page, event.timeStamp);
     });
     _subEnd = owner.onTouchEnd.listen((TouchEvent event) {
       _touchEnd();
@@ -209,7 +207,7 @@ class _MouseDragGesture extends DragGesture {
   void _capture() {
     _captured = true;
     _subMove = document.onMouseMove.listen((MouseEvent event) {
-      _touchMove(new Offset(event.pageX, event.pageY), event.timeStamp);
+      _touchMove(event.page, event.timeStamp);
     });
     _subEnd = document.onMouseUp.listen((MouseEvent event) {
       _touchEnd();
@@ -217,7 +215,7 @@ class _MouseDragGesture extends DragGesture {
   }
   void _listen() {
     _subStart = owner.onMouseDown.listen((MouseEvent event) {
-      _touchStart(event.target, new Offset(event.pageX, event.pageY), event.timeStamp);
+      _touchStart(event.target, event.page, event.timeStamp);
       _capture();
       if (!new DomAgent(event.target).isInput)
         event.preventDefault();

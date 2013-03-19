@@ -35,11 +35,11 @@ class DomAgent {
   /** Returns the (outer) width of the given element, including padding,
    * border and margin.
    */
-  int get width => node.offsetWidth;
+  int get width => node.$dom_offsetWidth;
   /** Returns the (outer) width of the given element, including padding,
    * border and margin.
    */
-  int get height => node.offsetHeight;
+  int get height => node.$dom_offsetHeight;
   /** Returns the (outer) size of the given element, including padding,
    * border and margin.
    */
@@ -80,15 +80,19 @@ class DomAgent {
   /** Returns the left position of this element relative to the left side of
    * its [offsetParent] element.
    */
-  int get offsetLeft => node.offsetLeft;
+  int get offsetLeft => node.$dom_offsetLeft;
   /** Returns the top position of this element relative to the top side of
    * its [offsetParent] element.
    */
-  int get offsetTop => node.offsetTop;
-  /** Returns the left-top position of this element relative to the top side of
+  int get offsetTop => node.$dom_offsetTop;
+  /** Returns the position and dimension of this element relative to the top side of
    * its [offsetParent] element.
    */
-  Offset get offset => new Offset(node.offsetLeft, node.offsetTop);
+  Rect get offset => node.offset;
+  /** Returns the position of this element relative to the top side of
+   * its [offsetParent] element.
+   */
+  Point get position => new Point(offsetLeft, offsetTop);
 
   /** Returns the offset of this node relative to the document.
    * It takes into account any horizontal scrolling and the `transform` style.
@@ -100,35 +104,28 @@ class DomAgent {
    * In additions, it ignores the translation in z axis (i.e., it ignores
    * the third argument of `translate3d`).
    */
-  Offset get pageOffset {
+  Point get page {
     //1. adds up cumulative offsetLeft/offsetTop
     int left = 0, top = 0;
     Element el = node;
     do {
-      left += el.offsetLeft;
-      top += el.offsetTop;
+      left += el.$dom_offsetLeft;
+      top += el.$dom_offsetTop;
     } while (el.style.position != "fixed" && (el = el.offsetParent) != null);
 
     //2. subtract cumulative scrollLeft/scrollTop
     el = node;
     do {
-      final txofs = Css.offset3dOf(el.style.transform);
+      final txofs = Css.point3DOf(el.style.transform);
         //for performance reason it doesn't handle computed style
-      left -= el.scrollLeft - txofs.left;
-      top -= el.scrollTop - txofs.top;
+      left -= el.scrollLeft - txofs.x;
+      top -= el.scrollTop - txofs.y;
     } while ((el = el.parent) != null && el is! Document);
 
     //3. add the browser's scroll offset
     left += window.pageXOffset;
     top += window.pageYOffset;
-    return new Offset(left, top);
-  }
-  
-  /** Return the rectangular range of the node relative to the document.
-   */
-  Rectangle get rectangle {
-    final Offset off = pageOffset;
-    return new Rectangle(off.left, off.top, off.left + width, off.top + height);
+    return new Point(left, top);
   }
   
   /** Returns if a DOM element is a descendant of this element or
@@ -213,7 +210,7 @@ class DomAgent {
     if (style != null)
       Css.copy(dst, style, Css.textNames);
 
-    final Size sz = new Size(_txtdiv.offsetWidth, _txtdiv.offsetHeight);
+    final Size sz = new Size(_txtdiv.$dom_offsetWidth, _txtdiv.$dom_offsetHeight);
     _txtdiv.innerHtml = "";
     return sz;
   }
@@ -260,9 +257,9 @@ class WindowAgent extends DomAgent {
   @override
   int get offsetTop => 0;
   @override
-  Offset get offset => new Offset(0, 0);
+  Rect get offset => new Rect(0, 0, 0, 0);
   @override
-  Offset get pageOffset => offset;
+  Point get page => new Point(0, 0);
   @override
   bool isDescendantOf(Element parent) => false;
   @override

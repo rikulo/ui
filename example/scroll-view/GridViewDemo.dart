@@ -2,8 +2,6 @@
 
 import 'dart:html';
 
-import "package:rikulo_commons/util.dart";
-
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/html.dart';
 import 'package:rikulo_ui/event.dart';
@@ -54,7 +52,7 @@ void main() {
   });
   hbar.on.scrollMove.listen((ScrollEvent event) {
     view.scroller.scrollPosition = 
-        new Offset(event.state.position.x, view.scroller.scrollPosition.y);
+        new Point(event.state.position.x, view.scroller.scrollPosition.y);
   });
   
   vbar.on.scrollStart.listen((ScrollEvent event) {
@@ -63,7 +61,7 @@ void main() {
   });
   vbar.on.scrollMove.listen((ScrollEvent event) {
     view.scroller.scrollPosition = 
-        new Offset(view.scroller.scrollPosition.x, event.state.position.y);
+        new Point(view.scroller.scrollPosition.x, event.state.position.y);
   });
   
   // fill content

@@ -277,7 +277,7 @@ class _EventListenerInfo {
     if (_listeners != null && (ls = _listeners[type]) != null) {
       int j = ls.indexOf(listener);
       if (j >= 0) {
-        ls.removeRange(j, 1);
+        ls.removeAt(j);
         if (ls.isEmpty)
           _owner.onEventUnlistened_(type, useCapture: useCapture);
       }
@@ -436,7 +436,8 @@ class _SubviewList extends Collection<View> implements List<View> {
   
   @override
   View operator[](int index) {
-    Arrays.rangeCheck(this, index, 1);
+    if (index < 0 || index > length)
+      throw new RangeError.value(index);
 
     int index2 = length - index - 1;
     if (index <= index2) {
@@ -468,6 +469,11 @@ class _SubviewList extends Collection<View> implements List<View> {
   @override
   void add(View view) {
     _owner.addChild(view);
+  }
+  @deprecated
+  @override
+  void addLast(View view) {
+    add(view);
   }
   @override
   void sort([Comparator<View> compare]) {
@@ -535,9 +541,6 @@ class _SubviewList extends Collection<View> implements List<View> {
   }
   @override
   void removeRange(int start, int length) {
-    if (length <= 0)
-      return; //nothing to do
-
     View child = this[start];
     while (--length >= 0 && child != null) {
       final View next = child.nextSibling;
@@ -545,6 +548,8 @@ class _SubviewList extends Collection<View> implements List<View> {
       child = next;
     }
   }
+  @override
+  void insert(int index, View view) => insertRange(index, 1, view);
   @override
   void insertRange(int start, int length, [View initialValue]) {
     if (length != 1)
@@ -600,22 +605,29 @@ class _SubviewList extends Collection<View> implements List<View> {
   View removeAt(int index) => this[index]..remove();
   @override
   void clear() {
-    View child = _owner.firstChild;
-    while (child != null) {
-      final View next = child.nextSibling;
-      child.remove();
-      child = next;
-    }
+    removeRange(0, length);
   }
+  @deprecated
   @override
-  List<View> getRange(int start, int length) {
+  List<View> getRange(int start, int length) => sublist(start, start + length - 1);
+  @override
+  List<View> sublist(int start, [int end]) {
+    if (end == null) end = length;
+    else {
+      if (end < start) throw new RangeError.value(end);
+      if (end > length) throw new RangeError.value(end);
+    }
+
     final result = <View>[];
-    for (int i = 0; i < length; i++)
-      result.add(this[start + i]);
+    View view = this[start];
+    for (int i = end - start + 1; --i >= 0; view = view.nextSibling)
+      result.add(view);
     return result;
   }
   @override
   Iterable<View> get reversed => IterableMixinWorkaround.reversedList(this);
+  @override
+  Map<int, View> asMap() => IterableMixinWorkaround.asMapList(this);
 }
 
 /** The classes to add to the root node

@@ -86,14 +86,14 @@ void locateToView(MeasureContext mctx, View view, String location,
   final locators = _getLocators(location);
   if (anchor != null) {
     final offset =
-      view.style.position == "fixed" ? anchor.pageOffset:
-      identical(anchor, view.parent) ? new Offset(0, 0): //parent
+      view.style.position == "fixed" ? anchor.page:
+      identical(anchor, view.parent) ? new Point(0, 0): //parent
       identical(anchor.parent, view.parent) ?
-        new Offset(anchor.left, anchor.top): //sibling (the same coordiante system)
-        anchor.pageOffset - view.pageOffset + new Offset(view.left, view.top); //neither parent nor sibling
+        new Point(anchor.left, anchor.top): //sibling (the same coordiante system)
+        anchor.page - view.page + new Point(view.left, view.top); //neither parent nor sibling
 
-    _anchorXLocators[locators[0]](offset.left + mi.left, anchor, view);
-    _anchorYLocators[locators[1]](offset.top + mi.top, anchor, view);
+    _anchorXLocators[locators[0]](offset.x + mi.left, anchor, view);
+    _anchorYLocators[locators[1]](offset.y + mi.top, anchor, view);
   } else {
     _anchorXLocators[locators[0]](x + mi.left, _anchorOfPoint, view);
     _anchorYLocators[locators[1]](y + mi.top, _anchorOfPoint, view);

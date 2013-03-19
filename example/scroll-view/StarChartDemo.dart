@@ -1,18 +1,18 @@
 //Sample Code: Star Chart Demo
 
 import 'dart:math';
-import "package:rikulo_commons/util.dart";
+import 'dart:html';
 
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/html.dart';
 
-View _system(Offset pos, num maxsyssize, int rad, [String name]) {
+View _system(Point pos, num maxsyssize, int rad, [String name]) {
   View sys = new View();
   sys.width = sys.height = 0;
   
   final int shownRad = max(3, rad).toInt();
-  sys.left = pos.left.toInt() - shownRad;
-  sys.top = pos.top.toInt() - shownRad;
+  sys.left = pos.x.toInt() - shownRad;
+  sys.top = pos.y.toInt() - shownRad;
   sys.style.borderWidth = sys.style.borderRadius = Css.px(shownRad);
   sys.classes.add("star");
   
@@ -22,7 +22,7 @@ View _system(Offset pos, num maxsyssize, int rad, [String name]) {
     int subrad = (rad * (_rand() * 2 + 1) / 3).toInt();
     num subdist = subsyssize + (maxsyssize - subsyssize) * 3 * _rand();
     num subarg = _rand() * PI * 2;
-    Offset subpos = new Offset(subdist * cos(subarg), subdist * sin(subarg));
+    Point subpos = new Point(subdist * cos(subarg), subdist * sin(subarg));
     View subsys = _system(subpos, subsyssize, subrad);
     sys.addChild(subsys);
     sys.addChild(_line(subpos));
@@ -39,7 +39,7 @@ View _system(Offset pos, num maxsyssize, int rad, [String name]) {
   return sys;
 }
 
-View _line(Offset pos, [num span = 1]) {
+View _line(Point pos, [num span = 1]) {
   View lv = new View();
   lv.style.backgroundColor = "#FFFFFF";
   
@@ -65,7 +65,7 @@ View _line(Offset pos, [num span = 1]) {
 Random _r = new Random();
 double _rand() => _r.nextDouble();
 
-Offset _rollLoc(Size range, num margin) => new Offset(
+Point _rollLoc(Size range, num margin) => new Point(
   margin + (range.width  - 2 * margin) * _rand(),
   margin + (range.height - 2 * margin) * _rand()
 );
@@ -85,13 +85,13 @@ void main() {
   final num syssize = sqrt(range.width * range.height / sysnum) * 0.3;
   
   // roll for star system locations
-  final List<Offset> syslocs = [];
+  final List<Point> syslocs = [];
   for (; syslocs.length < sysnum;) {
-    Offset loc = _rollLoc(range, syssize);
+    Point loc = _rollLoc(range, syssize);
     // avoid collision (too close) to previously assigned positions
     bool collide = false;
-    for (Offset ploc in syslocs) {
-      if ((loc - ploc).norm() < syssize * 1.5) {
+    for (Point ploc in syslocs) {
+      if (Points.norm(loc - ploc) < syssize * 1.5) {
         collide = true;
         break; // comparison loop
       }

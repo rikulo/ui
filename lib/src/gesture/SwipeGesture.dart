@@ -31,19 +31,19 @@ class SwipeGestureState extends GestureState {
   
   /** The touched/cursor position at the start of swipe.
    */
-  final Offset startPosition;
+  final Point startPosition;
   
   /** The touched/cursor position at the end of swipe.
    */
-  final Offset position;
+  final Point position;
   
   /** The displacement of the touched/cursor position of the swipe.
    */
-  final Offset transition;
+  final Point transition;
   
   /** The current estimated velocity of movement.
    */
-  final Offset velocity;
+  final Point velocity;
 }
 
 /** The gesture of a swipe.

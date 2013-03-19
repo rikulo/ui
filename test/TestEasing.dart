@@ -31,7 +31,7 @@ View createCube(int size, String txt) {
   return v;
 }
 
-MotionAction _action(Element elem, Offset center) => 
+MotionAction _action(Element elem, Point center) => 
   (num x, MotionState state) {
     elem.style.left = Css.px(center.x + 50 * sin(x * 2 * PI));
     elem.style.top  = Css.px(center.y - 50 * cos(x * 2 * PI));
@@ -51,15 +51,15 @@ void green(View v) {
 void main() {
   final View mainView = new View()..addToDocument();
   
-  List<Offset> centers = 
-      [new Offset(100, 100), new Offset(400, 100), new Offset(100, 400)];
+  List<Point> centers = 
+      [new Point(100, 100), new Point(400, 100), new Point(100, 400)];
   List<int> repeats = [1, 3, -1];
   
   List<View> cubes = [];
   for (int i = 0; i < 3; i++) {
     View c = createCube(50, "Cube $i");
-    c.left = centers[i].left;
-    c.top = centers[i].top - 50;
+    c.left = centers[i].x;
+    c.top = centers[i].y - 50;
     cubes.add(c);
     mainView.addChild(c);
   }

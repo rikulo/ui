@@ -8,7 +8,6 @@ import 'package:rikulo_ui/html.dart';
 import 'package:rikulo_ui/event.dart';
 import 'package:rikulo_ui/gesture.dart';
 import 'package:rikulo_ui/effect.dart';
-import 'package:rikulo_commons/util.dart';
 
 String createColor(num x) {
   return Css.color((92 * x).toInt(), (115 * x).toInt(), (229 * x).toInt());
@@ -93,13 +92,13 @@ void main() {
   
   mainView.addChild(cube);
   
-  final Rectangle range = new Rectangle(50, 50, 446, 446);
+  final Rect range = new Rect(50, 50, 446 - 50, 446 - 50);
   final Element element = cube.node;
   final num deceleration = 0.0005;
   
   Motion inertialMotion;
   EasingMotion recoveryMotion;
-  new Dragger(element, snap: (Offset ppos, Offset pos) => range.snap(pos), 
+  new Dragger(element, snap: (Point ppos, Point pos) => Points.snap(range, pos), 
   start: (DraggerState dstate) {
     if (inertialMotion != null)
       inertialMotion.stop();
@@ -107,8 +106,8 @@ void main() {
       recoveryMotion.stop();
     
   }, end: (DraggerState dstate) {
-    final Offset vel = dstate.elementVelocity;
-    num speed = vel.norm();
+    final Point vel = dstate.elementVelocity;
+    num speed = Points.norm(vel);
     if (speed == 0) {
       final num initSanity = sanity, diffSanity = 1 - initSanity;
       recoveryMotion = new EasingMotion((num x, MotionState state) {
@@ -116,24 +115,24 @@ void main() {
       }, easing: (num x) => x * x)..run();
       return;
     }
-    Offset unitv = vel / speed;
-    Offset pos = new DomAgent(element).offset;
+    Point unitv = Points.divide(vel, speed);
+    Point pos = new DomAgent(element).position;
     inertialMotion = new Motion(move: (MotionState mstate) {
       int elapsed = mstate.elapsedTime;
       pos += unitv * speed * elapsed;
       if (pos.x < range.left || pos.x > range.right) {
-        unitv = new Offset(-unitv.x, unitv.y);
+        unitv = new Point(-unitv.x, unitv.y);
         speed *= 0.8;
         setSanity(sanity * 0.8);
       }
       if (pos.y < range.top || pos.y > range.bottom) {
-        unitv = new Offset(unitv.x, -unitv.y);
+        unitv = new Point(unitv.x, -unitv.y);
         speed *= 0.8;
         setSanity(sanity * 0.8);
       }
-      pos = range.snap(pos);
-      element.style.left = Css.px(pos.left.toInt());
-      element.style.top = Css.px(pos.top.toInt());
+      pos = Points.snap(range, pos);
+      element.style.left = Css.px(pos.x.toInt());
+      element.style.top = Css.px(pos.y.toInt());
       speed = max(0, speed - deceleration * elapsed);
       return speed > 0;
     }, end: (MotionState mstate) {

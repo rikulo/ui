@@ -2,17 +2,15 @@
 
 import 'dart:html';
 
-import "package:rikulo_commons/util.dart";
-
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/html.dart';
 import 'package:rikulo_ui/gesture.dart';
 import 'package:rikulo_ui/event.dart';
 
-Offset center(View v) {
+Point center(View v) {
   final dq = new DomAgent(v.node);
   Size size = dq.size;
-  return dq.pageOffset + new Offset(size.width / 2, size.height / 2);
+  return dq.page + new Point(size.width / 2, size.height / 2);
 }
 
 void main() {
@@ -35,7 +33,7 @@ void main() {
   mainView.addChild(panel);
   img.node.draggable = false;
   
-  Offset diff;
+  Point diff;
   Transformation trans;
   
   // sizing

@@ -941,16 +941,16 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * of the document.
    * It takes into account any horizontal scrolling of the page.
    */
-  Offset get pageOffset {
+  Point get page {
     if (_inDoc)
-      return new DomAgent(node).pageOffset;
+      return new DomAgent(node).page;
     
     int left = 0, top = 0;
     for (View view = this;;) {
       left += view.left;
       top += view.top;
       if (view.style.position == "fixed" || (view = view.parent) == null)
-        return new Offset(left, top);
+        return new Point(left, top);
     }
   }
   /** Returns the layout instruction of this view.

@@ -69,7 +69,7 @@ class _Printc {
   }
   HoldGestureAction _gestureAction() {
     return (HoldGestureState state) {
-      Offset off = state.position - new DomAgent(state.gesture.owner).pageOffset;
+      Point off = state.position - new DomAgent(state.gesture.owner).page;
       (_popup = new _PrintcPopup(this)).open(off.x, off.y);
     };
   }

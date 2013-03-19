@@ -1,5 +1,7 @@
 //Sample Code: Custom Layout Demo
 
+import 'dart:html' show Point;
+
 import "package:rikulo_commons/util.dart";
 
 import 'package:rikulo_ui/view.dart';
@@ -18,12 +20,12 @@ class CustomLayoutDemo {
     mainView.on.click.listen((DomEvent event) {
       if (anchor == null)
         _createViews();
-      _move(event.pageOffset - new DomAgent(mainView.node).pageOffset);
+      _move(event.page - new DomAgent(mainView.node).page);
     });
   }
-  void _move(Offset offset) {
-    anchor.left = offset.left - 35;
-    anchor.top = offset.top - 35;
+  void _move(Point offset) {
+    anchor.left = offset.x - 35;
+    anchor.top = offset.y - 35;
     anchor.requestLayout(false, true); //only views that depend on anchor (excluding anchor)
   }
 

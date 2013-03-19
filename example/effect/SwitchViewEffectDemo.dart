@@ -38,7 +38,7 @@ TextView block(String text, int left, int top) {
   return tv;
 }
 
-void addFly(Element element, Offset range, List<MotionAction> actions, List<Function> ends) {
+void addFly(Element element, Point range, List<MotionAction> actions, List<Function> ends) {
   if (element.children.isEmpty)
     addRandFly(element, range, actions, ends);
   else
@@ -46,7 +46,7 @@ void addFly(Element element, Offset range, List<MotionAction> actions, List<Func
       addFly(c, range, actions, ends);
 }
 
-void addRandFly(Element element, Offset range, List<MotionAction> actions, List<Function> ends) {
+void addRandFly(Element element, Point range, List<MotionAction> actions, List<Function> ends) {
   final int initX = Css.intOf(element.style.left);
   final int initY = Css.intOf(element.style.top);
   final num velX = (rand.nextDouble() * 2 - 1) * range.x;
@@ -147,7 +147,7 @@ void main() {
       
       final int height = browser.size.height;
       final int width = browser.size.width;
-      final Offset range = new Offset(width / 2, height / 2);
+      final Point range = new Point(width / 2, height / 2);
       
       final Element vonode = n1;
       actions.add((num x, MotionState state) {

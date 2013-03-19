@@ -7,9 +7,9 @@ import 'dart:math';
 import 'dart:collection';
 import 'dart:async' show StreamSubscription, Timer;
 
-import "package:meta/meta.dart";
-import "package:rikulo_commons/util.dart";
-import "package:rikulo_commons/async.dart";
+import 'package:meta/meta.dart';
+import 'package:rikulo_commons/util.dart';
+import 'package:rikulo_commons/async.dart';
 
 import 'event.dart';
 import 'html.dart';
@@ -24,7 +24,7 @@ part 'src/view/View.dart';
 part 'src/view/ViewUtil.dart';
 part 'src/view/ProfileDeclaration.dart';
 part 'src/view/LayoutDeclaration.dart';
-part 'src/view/_impls.dart';
+part 'src/view/view_impls.dart';
 part 'src/view/_StyleImpl.dart';
 part 'src/view/printc.dart';
 

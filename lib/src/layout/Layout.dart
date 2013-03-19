@@ -168,17 +168,17 @@ void rootLayout(MeasureContext mctx, View root) {
       cave != null ? new _AnchorOfNode(cave): _anchorOfRoot;
     final ofs = anchor != null ?
       cave != anchor.parent ?
-        anchor.pageOffset - root.pageOffset + new Offset(root.left, root.top):
-        new Offset(anchor.left, anchor.top):
+        anchor.page - root.page + new Point(root.left, root.top):
+        new Point(anchor.left, anchor.top):
       cave != null && node.offsetParent != node.parent ? //if parent is relative/absolute/fixed
-          new DomAgent(cave).offset: new Offset(0,0);
+          new DomAgent(cave).position: new Point(0,0);
 
     final locators = _getLocators(loc);
     final mi = new SideInfo(root.profile.margin, 0);
     if (!leftByApp)
-      _anchorXLocators[locators[0]](ofs.left + mi.left, ref, root);
+      _anchorXLocators[locators[0]](ofs.x + mi.left, ref, root);
     if (!topByApp)
-      _anchorYLocators[locators[1]](ofs.top + mi.top, ref, root);
+      _anchorYLocators[locators[1]](ofs.y + mi.top, ref, root);
 
     int diff = mi.left + mi.right;
     if (diff != 0 && mctx.getWidthByApp(root) == null)

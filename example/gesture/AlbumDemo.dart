@@ -1,8 +1,7 @@
 //Sample Code: SwipeGesture
 
+import 'dart:html';
 import 'dart:math';
-
-import "package:rikulo_commons/util.dart";
 
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/html.dart';
@@ -43,21 +42,21 @@ void previous() => select(_index - 1);
 void select(int index) {
   if (index < 0 || index >= photoCount) {
     final View photo = frameInner.children[_index];
-    final Offset pos = new DomAgent(photo.node).offset;
+    final Point pos = new DomAgent(photo.node).position;
     new EasingMotion((num x, MotionState state) {
       photo.style.transform = "rotate(${rand()}deg)";
-      photo.left = pos.left + rand();
-      photo.top = pos.top + rand();
+      photo.left = pos.x + rand();
+      photo.top = pos.y + rand();
     }, end: (MotionState state) {
       photo.style.transform = "rotate(0deg)";
-      photo.left = pos.left;
-      photo.top = pos.top;
+      photo.left = pos.x;
+      photo.top = pos.y;
       gesture.enable();
     }).run();
     return;
   }
-  final Offset origin = new Offset(-_index * frameSize, 0);
-  final Offset dest = new Offset(-index * frameSize, 0);
+  final Point origin = new Point(-_index * frameSize, 0);
+  final Point dest = new Point(-index * frameSize, 0);
   new LinearPathMotion(frameInner.node, origin, dest, end: (MotionState state) {
     _index = index;
     updateArrow();

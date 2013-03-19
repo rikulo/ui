@@ -25,7 +25,7 @@ typedef void ScrollerEnd(ScrollerState state);
 
 /** The callback to snap the given position to, say, a grid line.
  */
-typedef Offset ScrollerSnap(Offset position);
+typedef Point ScrollerSnap(Point position);
 
 /** The scroller used to scroll an element by use of its style's
  * transform property.
@@ -65,8 +65,8 @@ class Scroller {
       _onMove(state.transition - _state.startPosition, state.time);
       
     }, end: (DragGestureState state) {
-      final Offset pos = new DomAgent(owner).offset;
-      final Rectangle range = _state.dragRange;
+      final Point pos = new DomAgent(owner).position;
+      final Rect range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
         _hor, _ver, _onMove, _onEnd, snap: snap)..run();
@@ -126,22 +126,22 @@ class Scroller {
 
   /** Return the current scroll position.
    */
-  Offset get scrollPosition => 
-      _state != null ? _state.position : (new DomAgent(owner).offset * -1);
+  Point get scrollPosition => 
+      _state != null ? _state.position : new DomAgent(owner).position * -1;
   
   /** Set the scroll position. The current scrolling motion, if any, will be stopped.
    */
-  void set scrollPosition(Offset position) => scrollTo(position, false);
+  void set scrollPosition(Point position) => scrollTo(position, false);
   
   /** Set the scroll position. The current scrolling, if any, will be stopped.
    * + If [animate], scroll to the position continously. Otherwise the position
    * is updated instantly.
    */
-  void scrollTo(Offset position, [bool animate = true]) {
+  void scrollTo(Point position, [bool animate = true]) {
     position = position * -1;
     stop();
     if (animate) {
-      final Offset initPos = scrollPosition * -1, diffPos = position - initPos;
+      final Point initPos = scrollPosition * -1, diffPos = position - initPos;
       _stm = new EasingMotion((num x, MotionState state) {
         _onMove(initPos + diffPos * x, state.currentTime, false);
         
@@ -174,7 +174,7 @@ class Scroller {
     return res == null || res;
   }
   
-  void _onMove(Offset position, int time, [bool callback = true]) {
+  void _onMove(Point position, int time, [bool callback = true]) {
     _state.snapshot(position, time);
     if (scrollbar && _scrollbarCtrl != null)
       _applyScrollBarFunction1(_scrollbarCtrl.move, _state);
@@ -195,11 +195,11 @@ class Scroller {
     _bim = null;
   }
   
-  void _applyPosition(Offset position) {
+  void _applyPosition(Point position) {
     if (_hor)
-      owner.style.left = Css.px(position.left);
+      owner.style.left = Css.px(position.x);
     if (_ver)
-      owner.style.top = Css.px(position.top);
+      owner.style.top = Css.px(position.y);
   }
   
   // scroll bar //
@@ -230,15 +230,15 @@ class Scroller {
 class ScrollerState extends GestureState {
   final AsSize _fnViewPortSize, _fnContentSize;
   bool _hor, _ver;
-  Offset _pos, _ppos;
+  Point _pos, _ppos;
   int _time, _ptime;
   Size _contentSizeCache, _viewPortSizeCache;
-  Rectangle _dragRangeCache;
+  Rect _dragRangeCache;
 
   ScrollerState._(Scroller scroller, this.eventTarget, 
   this._fnViewPortSize, this._fnContentSize, this._time) :
   this.scroller = scroller,
-  startPosition = new DomAgent(scroller.owner).offset * -1 {
+  startPosition = new DomAgent(scroller.owner).position * -1 {
     _pos = startPosition;
     Size cs = contentSize, vs = viewPortSize;
     _hor = scroller._hasHor && cs.width > vs.width;
@@ -255,15 +255,15 @@ class ScrollerState extends GestureState {
   
   /** Returns the current scroll offset.
    */
-  Offset get position => _pos;
+  Point get position => _pos;
   /** The starting position.
    */
-  final Offset startPosition;
+  final Point startPosition;
   
   /** Returns the current scrolling velocity.
    */
-  Offset get velocity => _ppos == null || _pos == null || _time == null || _ptime == null ? 
-      new Offset(0, 0) : ((_pos - _ppos) / (_time - _ptime));
+  Point get velocity => _ppos == null || _pos == null || _time == null || _ptime == null ? 
+      new Point(0, 0) : Points.divide(_pos - _ppos, _time - _ptime);
   /** Returns the size of view port.
    */
   Size get viewPortSize {
@@ -286,16 +286,17 @@ class ScrollerState extends GestureState {
     _dragRangeCache = null;
   }
   
-  Rectangle get dragRange {
+  Rect get dragRange {
     if (_dragRangeCache == null) {
-      Size vsize = viewPortSize,
-          csize = contentSize;
-      _dragRangeCache = new Rectangle(vsize.width - csize.width, vsize.height - csize.height, 0, 0);
+      Size vsize = viewPortSize, csize = contentSize;
+      num left = vsize.width - csize.width,
+          top = vsize.height - csize.height;
+      _dragRangeCache = new Rect(left, top, -left, -top);
     }
     return _dragRangeCache;
   }
 
-  void snapshot(Offset pos, int time) {
+  void snapshot(Point pos, int time) {
     if (_time == null || time > _time) {
       _ppos = _pos;
       _ptime = _time;
@@ -412,16 +413,16 @@ class _BoundedInertialMotion extends Motion {
   final bool _hor, _ver;
   final Element element;
   final num friction, bounce, snapSpeedThreshold;
-  final Rectangle range;
+  final Rect range;
   final Function _move, _end, _snap;
   num _posx, _posy, _velx, _vely;
   Motion _snapMotion;
   
-  _BoundedInertialMotion(this.element, Offset velocity, this.range, 
-  this._hor, this._ver, void move(Offset position, int time), void end(),
+  _BoundedInertialMotion(this.element, Point velocity, this.range, 
+  this._hor, this._ver, void move(Point position, int time), void end(),
   {this.friction: 0.0005, this.bounce: 0.0002, this.snapSpeedThreshold: 0.05,
   ScrollerSnap snap}) : _move = move, _end = end, _snap = snap {
-    final Offset pos = new DomAgent(element).offset;
+    final Point pos = new DomAgent(element).position;
     _posx = pos.x;
     _posy = pos.y;
     _velx = _hor ? velocity.x : 0;
@@ -429,37 +430,37 @@ class _BoundedInertialMotion extends Motion {
   }
   //@override  
   bool onMove(MotionState state) {
-    final Offset vel = new Offset(_velx, _vely);
-    final num speed = vel.norm();
-    final Offset dir = speed == 0 ? new Offset(0, 0) : vel / speed;
-    final Offset dec = dir * friction;
+    final Point vel = new Point(_velx, _vely);
+    final num speed = Points.norm(vel);
+    final Point dir = speed == 0 ? new Point(0, 0) : Points.divide(vel, speed);
+    final Point dec = dir * friction;
     final int elapsed = state.elapsedTime;
     
     if (_hor)
-      _posx = _updatePosition(_posx, _velx, dec.x, elapsed, range.x, range.right);
+      _posx = _updatePosition(_posx, _velx, dec.x, elapsed, range.left, range.right);
     if (_ver)
-      _posy = _updatePosition(_posy, _vely, dec.y, elapsed, range.y, range.bottom);
+      _posy = _updatePosition(_posy, _vely, dec.y, elapsed, range.top, range.bottom);
     
     if (_move != null)
-      _move(new Offset(_posx, _posy), state.currentTime);
+      _move(new Point(_posx, _posy), state.currentTime);
     
     if (_hor)
-      _velx = _updateVelocity(_posx, _velx, dec.x, elapsed, range.x, range.right);
+      _velx = _updateVelocity(_posx, _velx, dec.x, elapsed, range.left, range.right);
     if (_ver)
-      _vely = _updateVelocity(_posy, _vely, dec.y, elapsed, range.y, range.bottom);
+      _vely = _updateVelocity(_posy, _vely, dec.y, elapsed, range.top, range.bottom);
     
     if (_shallSnap())
       return false;
     
-    return (_hor && !_shallStop(_posx, _velx, range.x, range.right)) ||
-        (_ver && !_shallStop(_posy, _vely, range.y, range.bottom)); 
+    return (_hor && !_shallStop(_posx, _velx, range.left, range.right)) ||
+        (_ver && !_shallStop(_posy, _vely, range.top, range.bottom)); 
   }
   
   //@override  
   void onEnd(MotionState state) {
     if (_snapTo != null) {
-      _snapMotion = new LinearPathMotion(element, new Offset(_posx, _posy), _snapTo,
-      move: (MotionState ms, Offset pos, num x, void defaultAction()) {
+      _snapMotion = new LinearPathMotion(element, new Point(_posx, _posy), _snapTo,
+      move: (MotionState ms, Point pos, num x, void defaultAction()) {
         defaultAction();
         if (_move != null)
           _move(pos, ms.currentTime);
@@ -501,7 +502,7 @@ class _BoundedInertialMotion extends Motion {
     lbnd <= pos && pos <= rbnd && vel == 0;
   
   // snap //
-  Offset _snapTo;
+  Point _snapTo;
   
   bool _shallSnap() {
     // use max, not norm, as x/y motion should be considered independent
@@ -509,13 +510,13 @@ class _BoundedInertialMotion extends Motion {
     if (_snap == null || max(_velx.abs(), _vely.abs()) > snapSpeedThreshold)
       return false;
     // do not snap outside of the range
-    if ((!_hor || _posx < range.x || _posx > range.right) &&
-        (!_ver || _posy < range.y || _posy > range.bottom))
+    if ((!_hor || _posx < range.left || _posx > range.right) &&
+        (!_ver || _posy < range.top || _posy > range.bottom))
       return false;
-    Offset scrPos = new Offset(-_posx, -_posy), scrSnapPos = _snap(scrPos);
+    Point scrPos = new Point(-_posx, -_posy), scrSnapPos = _snap(scrPos);
     if (scrSnapPos == null)
       return false;
-    scrSnapPos = range.snap(scrSnapPos * -1) * -1;
+    scrSnapPos = Points.snap(range, scrSnapPos * -1) * -1;
     if ((!_hor || scrSnapPos.x == scrPos.x) &&
         (!_ver || scrSnapPos.y == scrPos.y))
       return false;
