@@ -35,11 +35,11 @@ class DomAgent {
   /** Returns the (outer) width of the given element, including padding,
    * border and margin.
    */
-  int get width => node.$dom_offsetWidth;
+  int get width => node.offsetWidth;
   /** Returns the (outer) width of the given element, including padding,
    * border and margin.
    */
-  int get height => node.$dom_offsetHeight;
+  int get height => node.offsetHeight;
   /** Returns the (outer) size of the given element, including padding,
    * border and margin.
    */
@@ -80,11 +80,11 @@ class DomAgent {
   /** Returns the left position of this element relative to the left side of
    * its [offsetParent] element.
    */
-  int get offsetLeft => node.$dom_offsetLeft;
+  int get offsetLeft => node.offsetLeft;
   /** Returns the top position of this element relative to the top side of
    * its [offsetParent] element.
    */
-  int get offsetTop => node.$dom_offsetTop;
+  int get offsetTop => node.offsetTop;
   /** Returns the position and dimension of this element relative to the top side of
    * its [offsetParent] element.
    */
@@ -109,8 +109,8 @@ class DomAgent {
     int left = 0, top = 0;
     Element el = node;
     do {
-      left += el.$dom_offsetLeft;
-      top += el.$dom_offsetTop;
+      left += el.offsetLeft;
+      top += el.offsetTop;
     } while (el.style.position != "fixed" && (el = el.offsetParent) != null);
 
     //2. subtract cumulative scrollLeft/scrollTop
@@ -210,7 +210,7 @@ class DomAgent {
     if (style != null)
       Css.copy(dst, style, Css.textNames);
 
-    final Size sz = new Size(_txtdiv.$dom_offsetWidth, _txtdiv.$dom_offsetHeight);
+    final Size sz = new Size(_txtdiv.offsetWidth, _txtdiv.offsetHeight);
     _txtdiv.innerHtml = "";
     return sz;
   }
