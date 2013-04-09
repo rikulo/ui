@@ -14,10 +14,6 @@ class Canvas extends View {
    * A drawing context lets you draw on the canvas.
    */
   CanvasRenderingContext2D get context2D => canvasNode.getContext("2d");
-  /** Returns a drawing context for WebGL on the canvas, or null
-   * if the browser doesn't support WebGL.
-   */
-  WebGLRenderingContext get contextWebGL => canvasNode.getContext("experimental-webgl");
 
   /** Returns the canvas element. It is the same as [node].
    */

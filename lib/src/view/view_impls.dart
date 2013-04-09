@@ -470,11 +470,6 @@ class _SubviewList extends Collection<View> implements List<View> {
   void add(View view) {
     _owner.addChild(view);
   }
-  @deprecated
-  @override
-  void addLast(View view) {
-    add(view);
-  }
   @override
   void sort([Comparator<View> compare]) {
     List<View> copy = new List.from(this);
