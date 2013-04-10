@@ -11,7 +11,7 @@ DIR=$( cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )
 pushd $DIR/..
 echo Analyzing library for warnings or type errors
 dart_analyzer --fatal-warnings --fatal-type-errors lib/*.dart lib/view/*.dart \
-  || echo -e "Ignoring analyzer errors ([36mdartbug.com/8132[0m)"
+  || echo -e "Ignoring analyzer errors"
 rm -rf out/*
 popd
 
