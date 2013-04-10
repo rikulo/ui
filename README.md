@@ -12,6 +12,8 @@ You can access your application directly with a modern Web browser without any p
 
 Rikulo is distributed under an Apache 2.0 License.
 
+[![Build Status](https://drone.io/github.com/rikulo/ui/status.png)](https://drone.io/github.com/rikulo/ui/latest)
+
 ##Installation
 
 Add this to your `pubspec.yaml` (or create it):
