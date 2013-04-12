@@ -1,5 +1,11 @@
 #Rikulo Changes
 
+##0.6.5
+
+*Upgrade Notes*
+
+* Change `packages/rikulo_ui/resource/css/default/view.css` to `packages/rikulo_ui/css/default/view.css`.
+
 ##0.6.4
 
 * Offset and Rectangle are removed. Use Point and Rect of dart:html instead.
