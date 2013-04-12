@@ -9,8 +9,8 @@ import "dart:async";
 import "dart:json" as Json;
 
 import 'package:rikulo_commons/util.dart';
+import 'package:rikulo_commons/html.dart';
 
-import "html.dart";
 import "view.dart";
 
 part "src/message/MessageQueue.dart";

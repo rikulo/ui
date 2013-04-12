@@ -9,9 +9,9 @@ import "dart:math";
 import "dart:async";
 
 import 'package:rikulo_commons/util.dart';
+import 'package:rikulo_commons/html.dart';
 
 import "view.dart";
-import "html.dart";
 import "effect.dart";
 
 part "src/gesture/Gesture.dart";

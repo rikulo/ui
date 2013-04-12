@@ -4,7 +4,7 @@ import 'dart:math';
 import 'dart:html';
 
 import 'package:rikulo_ui/view.dart';
-import 'package:rikulo_ui/html.dart';
+import 'package:rikulo_commons/html.dart';
 
 View _system(Point pos, num maxsyssize, int rad, [String name]) {
   View sys = new View();

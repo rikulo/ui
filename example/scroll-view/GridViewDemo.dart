@@ -3,8 +3,8 @@
 import 'dart:html';
 
 import 'package:rikulo_ui/view.dart';
-import 'package:rikulo_ui/html.dart';
 import 'package:rikulo_ui/event.dart';
+import 'package:rikulo_commons/html.dart';
 
 void main() {
   final View mainView = new View()..addToDocument();

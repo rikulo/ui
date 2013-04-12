@@ -8,8 +8,8 @@ import "dart:collection" show HashMap;
 import "dart:async" show Timer;
 
 import 'package:rikulo_commons/util.dart';
+import 'package:rikulo_commons/html.dart';
 
-import "../html.dart";
 import "../view.dart";
 import "../layout.dart";
 

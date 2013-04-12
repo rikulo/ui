@@ -1,7 +1,6 @@
 //Sample Code: Test Log
 
 import 'package:rikulo_ui/view.dart';
-import 'package:rikulo_ui/html.dart';
 import 'package:rikulo_ui/gesture.dart';
 import 'package:rikulo_commons/util.dart';
 

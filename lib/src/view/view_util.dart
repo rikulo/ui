@@ -28,6 +28,29 @@ abstract class IDSpace {
 }
 
 /**
+ * The direction enumeration.
+ */
+class Dir {
+  /** Represents the vertical direction.
+   */
+  static const Dir VERTICAL = const Dir._("vertical");
+  /** Represents the horizontal direction.
+   */
+  static const Dir HORIZONTAL = const Dir._("horizontal");
+  /** Represents the both direction.
+   */
+  static const Dir BOTH = const Dir._("both");
+
+  const Dir._(this.name);
+
+  /** The name of this direction. */
+  final String name;
+
+  operator==(other) => identical(this, other);
+  String toString() => name;
+}
+
+/**
  * Represents an input that store a value.
  */
 abstract class Input<T> {
