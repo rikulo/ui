@@ -44,7 +44,7 @@ ver=${ver#version: }
 
 PATH=$PATH:$SDK/bin
 echo Compiling $libdir $ver
-$dartdoc --pkg $homedir/packages --exclude-lib args,args.src.parser,args.src.usage,logging,meta,metadata,rikulo_async,rikulo_io,rikulo_mirrors,rikulo_util,rikulo_html --out $outdir $libdir/*.dart $libdir/view/*.dart 
+$dartdoc --package-root $homedir/packages --exclude-lib args,args.src.parser,args.src.usage,logging,meta,metadata,rikulo_async,rikulo_io,rikulo_mirrors,rikulo_util,rikulo_html --out $outdir $libdir/*.dart $libdir/view/*.dart 
 if [ ! -f $outdir/index.html ] ; then
 	echo $outdir/index.html not found. Failed?
 	exit 1
