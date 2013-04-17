@@ -107,7 +107,7 @@ class Declaration {
   /** Returns a collection of properties that are assigned with
    * a non-empty value.
    */
-  Collection<String> get propertyNames {
+  Iterable<String> get propertyNames {
     return _props.keys;
   }
   /** Retrieves the property's value.

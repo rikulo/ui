@@ -56,7 +56,7 @@ class EasingMotion extends Motion {
         start(state);
       for (EasingMotion em in motions)
         if (em._start != null)
-          em._start(state);
+          (em._start)(state);
     };
   }
   
@@ -64,7 +64,7 @@ class EasingMotion extends Motion {
     return (MotionState state) {
       for (EasingMotion em in motions)
         if (em._end != null)
-          em._end(state);
+          (em._end)(state);
       if (end != null)
         end(state);
     };

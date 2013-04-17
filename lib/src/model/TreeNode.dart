@@ -68,7 +68,7 @@ abstract class TreeNode<T> {
    * + [index] is the index that [child] will be added at.
    * If null, [child] will be added to the end.
    */
-  void addAll(Collection nodes, [int index]);
+  void addAll(Iterable nodes, [int index]);
   /** Removes the child at index from this node.
    *
    * This method returns the tree node being removed.
@@ -98,7 +98,7 @@ class DefaultTreeNode<T> extends TreeNode<T> {
   T _data;
   bool _leaf, _loaded = false;
 
-  DefaultTreeNode([T data, Collection nodes, bool leaf]) {
+  DefaultTreeNode([T data, Iterable nodes, bool leaf]) {
     _data = data;
     _leaf = leaf;
     if (nodes != null)
@@ -162,7 +162,7 @@ class DefaultTreeNode<T> extends TreeNode<T> {
 
     if (_children == null)
       _children = new List();
-    _children.insertRange(index != null ? index: _children.length, 1, child);
+    _children.insert(index != null ? index: _children.length, child);
 
     if (child is DefaultTreeNode) {
       final DefaultTreeNode c = child;
@@ -173,7 +173,7 @@ class DefaultTreeNode<T> extends TreeNode<T> {
     if (m != null)
       m.sendEvent(new TreeDataEvent(model, 'add', child));
   }
-  void addAll(Collection nodes, [int index]) {
+  void addAll(Iterable nodes, [int index]) {
     _init();
     if (index == null)
       index = _children != null ? _children.length: 0;
@@ -249,6 +249,6 @@ class DefaultTreeNode<T> extends TreeNode<T> {
    * If you'd like to load tree nodes lazily, you can override this method, and
    * return a collection of child nodes.
    */
-  Collection<TreeNode<T>> loadLazily_() => null;
+  Iterable<TreeNode<T>> loadLazily_() => null;
   String toString() => "DefaultTreeNode($data)";
 }

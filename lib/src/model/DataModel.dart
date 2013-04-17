@@ -89,7 +89,7 @@ abstract class Opens<T> {
    * Notice this method copies the content of [opens], so it is OK
    * to use it after the invocation.
    */
-  void set opens(Collection<T> opens);
+  void set opens(Iterable<T> opens);
 
   /** Returns true if the node shall be opened.
    * That is, it tests if the given node is in the list of opened nodes.
@@ -127,7 +127,7 @@ abstract class Disables<T> {
    * Notice this method copies the content of [disables], so it is OK
    * to use it after the invocation.
    */
-  void set disables(Collection<T> disables);
+  void set disables(Iterable<T> disables);
 
   /** Returns whether an object is disabled.
    */
@@ -176,7 +176,7 @@ abstract class Selection<T> {
    * Notice this method copies the content of [selection], so it is OK
    * to use it after the invocation.
    */
-  void set selection(Collection<T> selection);
+  void set selection(Iterable<T> selection);
   /** Returns whether an object is selected.
    */
   bool isSelected(Object obj);
@@ -244,7 +244,7 @@ implements Selection<T>, Disables<T> {
   T get selectedValue => _selection.isEmpty ? null: _selection.first;
   Set<T> get selection => _selection;
 
-  void set selection(Collection<T> selection) {
+  void set selection(Iterable<T> selection) {
     if (!_equals(_selection, selection)) {
       if (!_multiple && selection.length > 1)
         throw new ModelError("Only one selection is allowed, $selection");
@@ -305,7 +305,7 @@ implements Selection<T>, Disables<T> {
 
   //Disables//
   Set<T> get disables => _disables;
-  void set disables(Collection<T> disables) {
+  void set disables(Iterable<T> disables) {
     if (!_equals(_disables, disables)) {
       _disables.clear();
       _disables.addAll(disables);
@@ -339,7 +339,7 @@ implements Selection<T>, Disables<T> {
   //Additional API//
   /**Removes the given collection from the selection.
    */
-  void removeAllSelection(Collection<dynamic> c) {
+  void removeAllSelection(Iterable c) {
     final int oldlen = _selection.length;
     _selection.removeAll(c);
     if (oldlen != _selection.length)
@@ -347,7 +347,7 @@ implements Selection<T>, Disables<T> {
   }
   /**Removes the given collection from the list of disabled object.
    */
-  void removeAllDisables(Collection<dynamic> c) {
+  void removeAllDisables(Iterable c) {
     final int oldlen = _disables.length;
     _disables.removeAll(c);
     if (oldlen != _disables.length)
@@ -361,7 +361,7 @@ implements Selection<T>, Disables<T> {
 
   /** Compares a set with a collection.
    */
-  static bool _equals(Set set, Collection col) {
+  static bool _equals(Set set, Iterable col) {
     if (set.length != col.length)
       return false;
 

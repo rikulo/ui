@@ -172,7 +172,7 @@ implements TreeModel<T>, Opens<T> {
 
   //Open//
   Set<T> get opens => _opens;
-  void set opens(Collection<T> opens) {
+  void set opens(Iterable<T> opens) {
     if (_opens != opens) {
       _opens.clear();
       _opens.addAll(opens);
@@ -208,7 +208,7 @@ implements TreeModel<T>, Opens<T> {
   //Additional API//
   /**Removes the given collection from the list of opened nodes.
    */
-  void removeAllOpens(Collection<dynamic> c) {
+  void removeAllOpens(Iterable c) {
     final int oldlen = _opens.length;
     _opens.removeAll(c);
     if (oldlen != _opens.length)
@@ -263,7 +263,7 @@ class DefaultTreeModel<T> extends AbstractTreeModel<TreeNode<T>> {
    * + [opens]: if not null, it will be used to hold the list of opened items.
    * Unlike [set opens], it won't make a copy.
    */
-  DefaultTreeModel({TreeNode<T> root, Collection nodes, Set<TreeNode<T>> selection,
+  DefaultTreeModel({TreeNode<T> root, Iterable nodes, Set<TreeNode<T>> selection,
   Set<TreeNode<T>> disables, Set<TreeNode<T>> opens, bool multiple:false}):
   super(root != null ? root: new DefaultTreeNode(), selection: selection,
   disables: disables, opens: opens, multiple: multiple) {
@@ -308,7 +308,7 @@ class DefaultTreeModel<T> extends AbstractTreeModel<TreeNode<T>> {
       if (parent == null)
         break; //child is not in the same model
 
-      path.insertRange(0, 1, child.index);
+      path.insert(0, child.index);
       child = parent;
     }
     return path;

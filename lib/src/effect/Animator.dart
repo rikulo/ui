@@ -33,7 +33,7 @@ abstract class Animator {
   void remove(AnimatorTask task);
   /** Returns a readonly collection of all animation tasks.
    */
-  Collection<AnimatorTask> get tasks;
+  List<AnimatorTask> get tasks;
 }
 
 class _Animator implements Animator {
@@ -108,7 +108,7 @@ class _Animator implements Animator {
       _tasks.remove(task);
     }
   }
-  Collection<AnimatorTask> get tasks => _tasks;
+  List<AnimatorTask> get tasks => _tasks;
 
   static int _now() => new DateTime.now().millisecondsSinceEpoch;
 }

@@ -12,16 +12,17 @@ class ListDataEvent<T> extends DataEvent {
    *
    * + [type]: `change`, `add` or `remove`.
    */
-  ListDataEvent(ListModel<T> model, String type, this.index, this.length)
+  ListDataEvent(ListModel<T> model, String type, [this.start, this.end])
   : super(model, type);
 
   /** The starting index of the change range (nonnegative).
+   * It is null, if not applicable.
    */
-  final int index;
-  /** The total number of items of the change range.
-   * If -1, it means all items starting at [index].
+  final int start;
+  /** The ending index of the change range (excluded).
+   * It is null, if not applicable.
    */
-  final int length;
+  final int end;
 }
 
 /**
@@ -127,38 +128,38 @@ class DefaultListModel<T> extends AbstractListModel<T> {
       _disables.remove(old);
       _disables.add(value);
     }
-    sendEvent(new ListDataEvent(this, 'change', index, 1));
+    sendEvent(new ListDataEvent(this, 'change', index, index + 1));
   }
   /** Adds a value to the end of the list.
    */
   void add(T value) {
     data.add(value);
-    sendEvent(new ListDataEvent(this, 'add', length - 1, 1));
+    sendEvent(new ListDataEvent(this, 'add', length - 1, length));
   }
   /** Removes the last value.
    */
   T removeLast() {
     final T value = data.removeLast();
     _selection.remove(value); //no need to fire select
-    sendEvent(new ListDataEvent(this, 'remove', length, 1));
+    sendEvent(new ListDataEvent(this, 'remove', length, length + 1));
     return value;
   }
   /** Inserts a range of values to the given index.
    */
-  void insertRange(int start, int length, [T value]) {
-    data.insertRange(start, length, value);
-    sendEvent(new ListDataEvent(this, 'add', start, length));
+  void insert(int index, [T value]) {
+    data.insert(index, value);
+    sendEvent(new ListDataEvent(this, 'add', index, index + 1));
   }
   /** Removes a range of values starting at the given index.
    */
-  void removeRange(int start, int length) {
-    for (int i = start, len = length; --len >= 0;)
+  void removeRange(int start, int end) {
+    for (int i = start, len = end - start; --len >= 0;)
       _selection.remove(data[i++]); //no need to fire select
-    data.removeRange(start, length);
-    sendEvent(new ListDataEvent(this, 'remove', start, length));
+    data.removeRange(start, end);
+    sendEvent(new ListDataEvent(this, 'remove', start, end));
   }
   void clear() {
-    final int len = data.length;
+    final len = data.length;
     if (len > 0) {
       _selection.clear(); //no need to fire select
       data.clear();

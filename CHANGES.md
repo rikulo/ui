@@ -1,5 +1,12 @@
 #Rikulo Changes
 
+##0.6.6
+
+*Upgrade Notes*
+
+* ListDataEvent replace index and length with start and end (to be consistent with Dart SDK)
+* Use Iterable instead of Collection because of Dart SDK changes.
+
 ##0.6.5
 
 *Upgrade Notes*

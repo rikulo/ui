@@ -3,7 +3,7 @@
 import 'package:rikulo_ui/view.dart';
 import "package:rikulo_commons/html.dart";
 
-void _createText(View parent, String text, [String cssText="", Collection<String> classes]) {
+void _createText(View parent, String text, [String cssText="", Iterable<String> classes]) {
   final View hlayout = new View();
   hlayout.layout.text = "type: linear";
   hlayout.profile.width = "flex";

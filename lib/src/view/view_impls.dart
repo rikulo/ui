@@ -371,8 +371,9 @@ _DomEventDispatcher _domChangeEvtDisp() {
       if (tv != null)
         tv = ViewUtil.getView(tv);
       target.sendEvent(
-        new ChangeEvent(tv != null ? tv.value:
-          dt is InputElement && (dt.type == 'checkbox' || dt.type == 'radio') ?
+        new ChangeEvent(tv != null ? (tv as dynamic).value:
+          dt is InputElement && ((dt as InputElement).type == 'checkbox'
+          || (dt as InputElement).type == 'radio') ?
             (dt as InputElement).checked: (dt as dynamic).value));
           //assumes tv has a property called value (at least, dt has a value)
     };
@@ -419,7 +420,8 @@ class _SubviewIter implements Iterator<View> {
  * A list of child views.
  * Notice that [set length] are not supported
  */
-class _SubviewList extends Collection<View> implements List<View> {
+class _SubviewList extends IterableBase<View> with ListMixin<View>
+    implements List<View> {
   final View _owner;
   _SubviewList(View owner): _owner = owner;
 
@@ -483,79 +485,67 @@ class _SubviewList extends Collection<View> implements List<View> {
       w.remove();
     return w;
   }
-  @override
-  void setRange(int start, int length, List<View> from, [int startFrom]) {
-    if (length <= 0)
-      return; //nothing to do
-    if (startFrom == null)
-      startFrom = 0;
-
-    if (start > this.length) {
-      throw new RangeError(start);
-    } else if (start == this.length) { //append
-      if (startFrom == 0) { //optimize
-        for (Iterator<View> it = from.iterator; --length >= 0;) {
-          add((it..moveNext()).current);
-        }
-      } else {
-        while (--length >= 0)
-          add(from[startFrom++]);
-      }
-    } else if (startFrom == 0) { //optimize
-      View w = this[start];
-      Iterator<View> it = from.iterator;
-      while (--length >= 0) { //replace
-        View value = (it..moveNext()).current;
-        final View next = w.nextSibling;
-        if (!identical(w, value)) {
-          w.remove();
-          _owner.addChild(value, next);
-        }
-        if (next == null)
-          break;
-        w = next;
-      }
-      while (--length >= 0) //append
-        add((it..moveNext()).current);
-    } else {
-      View w = this[start];
-      while (--length >= 0) { //replace
-        View value = from[startFrom++];
-        final View next = w.nextSibling;
-        if (!identical(w, value)) {
-          w.remove();
-          _owner.addChild(value, next);
-        }
-        if (next == null)
-          break;
-        w = next;
-      }
-      while (--length >= 0) //append
-        add(from[startFrom++]);
-    }
+  void _rangeCheck(int start, int end) {
+    if (start < 0 || start > this.length)
+      throw new RangeError.range(start, 0, this.length);
+    if (end < start || end > this.length)
+      throw new RangeError.range(end, start, this.length);
   }
   @override
-  void removeRange(int start, int length) {
+  void setRange(int start, int end, Iterable<View> iterable, [int skipCount = 0]) {
+    _rangeCheck(start, end);
+    int length = end - start;
+    if (length == 0) return;
+    if (skipCount < 0) throw new ArgumentError(skipCount);
+    if (skipCount + length > iterable.length)
+      throw new StateError("Not enough elements");
+
+    final iter = iterable.skip(skipCount).iterator;
+    if (start < this.length) {
+      View dst = this[start];
+      while (--length >= 0) { //replace
+        View value = (iter..moveNext()).current;
+        final next = dst.nextSibling;
+        if (!identical(dst, value)) {
+          dst.remove();
+          _owner.addChild(value, next);
+        }
+        if ((dst = next) == null)
+          break;
+      }
+    }
+    while (--length >= 0) //append
+      add((iter..moveNext()).current);
+  }
+  @override
+  void removeRange(int start, int end) {
+    _rangeCheck(start, end);
+    int length = end - start;
+    if (length == 0) return;
+
     View child = this[start];
-    while (--length >= 0 && child != null) {
+    while (--length >= 0) {
       final View next = child.nextSibling;
       child.remove();
       child = next;
     }
   }
   @override
-  void insert(int index, View view) => insertRange(index, 1, view);
-  @override
-  void insertRange(int start, int length, [View initialValue]) {
+  void fillRange(int start, int end, [View fill]) {
+    _rangeCheck(start, end);
+    int length = end - start;
+    if (length == 0) return;
     if (length != 1)
-      throw new ArgumentError("Allow only one view");
-    if (initialValue == null)
-      throw new ArgumentError("Require initialValue");
-    if (start == this.length) {
-      add(initialValue);
+      throw new UnsupportedError("Only one view can be filled");
+    this[start] = fill;
+  }
+  @override
+  void insert(int index, View view) {
+    _rangeCheck(index, this.length);
+    if (index == this.length) {
+      add(view);
     } else {
-      View w = this[start];
-      _owner.addChild(initialValue, w);
+      _owner.addChild(view, this[index]);
     }
   }
   
@@ -602,27 +592,17 @@ class _SubviewList extends Collection<View> implements List<View> {
   void clear() {
     removeRange(0, length);
   }
-  @deprecated
-  @override
-  List<View> getRange(int start, int length) => sublist(start, start + length - 1);
   @override
   List<View> sublist(int start, [int end]) {
     if (end == null) end = length;
-    else {
-      if (end < start) throw new RangeError.value(end);
-      if (end > length) throw new RangeError.value(end);
-    }
+    _rangeCheck(start, end);
 
     final result = <View>[];
     View view = this[start];
-    for (int i = end - start + 1; --i >= 0; view = view.nextSibling)
+    for (int i = end - start; --i >= 0; view = view.nextSibling)
       result.add(view);
     return result;
   }
-  @override
-  Iterable<View> get reversed => IterableMixinWorkaround.reversedList(this);
-  @override
-  Map<int, View> asMap() => IterableMixinWorkaround.asMapList(this);
 }
 
 /** The classes to add to the root node

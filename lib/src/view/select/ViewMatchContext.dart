@@ -90,7 +90,7 @@ class ViewMatchContext {
     return type == null || type == view.className;
   }
   
-  static bool matchClasses(View view, Collection<String> classes) {
+  static bool matchClasses(View view, Iterable<String> classes) {
     if (classes == null || classes.isEmpty)
       return true;
     for (String c in classes)
@@ -99,7 +99,7 @@ class ViewMatchContext {
     return true;
   }
   
-  bool matchPseudoClasses(Collection<PseudoClass> pseudoClasses) {
+  bool matchPseudoClasses(Iterable<PseudoClass> pseudoClasses) {
     if (pseudoClasses == null || pseudoClasses.isEmpty)
       return true;
     for (PseudoClass pc in pseudoClasses) {

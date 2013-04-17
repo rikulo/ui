@@ -9,26 +9,23 @@ class _StyleImpl implements CssStyleDeclaration {
 
   CssStyleDeclaration get _st => _view.node.style;
 
-  //@override
+  @override
   String getPropertyValue(String propertyName)
   => _st.getPropertyValue(propertyName);
-  //@override
+  @override
   String removeProperty(String propertyName)
   => _st.removeProperty(propertyName);
-  //@override
-  CssValue getPropertyCssValue(String propertyName)
-  => _st.getPropertyCssValue(propertyName);
-  //@override
+  @override
   String getPropertyPriority(String propertyName)
   => _st.getPropertyPriority(propertyName);
-  //@override
+  @override
   String getPropertyShorthand(String propertyName)
   => _st.getPropertyShorthand(propertyName); 
-  //@override
+  @override
   bool isPropertyImplicit(String propertyName)
   => _st.isPropertyImplicit(propertyName);
 
-  //@override
+  @override
   void setProperty(String propertyName, String value, [String priority]) {
     if (?priority)
       _st.setProperty(propertyName, value, priority);
@@ -36,9 +33,9 @@ class _StyleImpl implements CssStyleDeclaration {
       _st.setProperty(propertyName, value);
   }
 
-  //@override
+  @override
   String get cssText => _st.cssText;
-  //@override
+  @override
   void set cssText(String value) {
     final st = _st;
     st.cssText = value;
@@ -65,11 +62,11 @@ class _StyleImpl implements CssStyleDeclaration {
       _view.height = Css.intOf(v, defaultValue: null);
   }
 
-  //@override
+  @override
   int get length => _st.length;
-  //@override
+  @override
   String item(int index) => _st.item(index);
-  //@override
+  @override
   CssRule get parentRule => _st.parentRule;
 
   String get left => _st.left;
