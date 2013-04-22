@@ -75,12 +75,9 @@ November 06, 2012
 * TextBox no longer supports multiline. Rather, MultilineBox is introduced.
 * HTMLRenderer, StringRender and ViewRenderer are removed and replaced with Renderer.
 * View.addToDocument() is changed to use named parameters
-* Rename DOMQuery to DOMAgent
 * Move printc() to the view library
 * Activity and Application were removed. Use View.addToDocument() instead.
 * View.addToDocument() was simplified.
-* View.outerWidth and outerHeight were renamed to realWidth and realHeight
-* DOMAgent.outerWidth, outerHeight and outerSize were renamed to width, height and size
 * Cordova is moved to another repository, [rikulo_gap](https://github.com/rikulo/gap).
 
 ##0.5.0

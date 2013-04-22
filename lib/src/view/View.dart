@@ -908,19 +908,19 @@ class View implements CapturableStreamTarget<ViewEvent> {
     ViewImpl.heightUpdated(this);
   }
 
-  /** Returns the real width of this view (never null).
+  /** Returns the offset width of this view (never null).
    * If [width] is assigned, this method is the same as [width].
-   * However, if not assigned (i.e., null), this method calculates it from [node]'s width.
+   * However, if not assigned (i.e., null), this method returns `node.offsetWidth`.
    */
-  int get realWidth
+  int get offsetWidth
   => _width != null ? _width: node.offsetWidth;
     //for better performance, we don't need to get the outer width if _width is
     //assigned (because we use box-sizing: border-box)
-  /** Returns the real height of this view (never null).
+  /** Returns the offset height of this view (never null).
    * If [height] is assigned, this method is the same as [height].
-   * However, if not assigned (i.e., null), this method calculates it from [node]'s height.
+   * However, if not assigned (i.e., null), this method returns `node.offsetHeight`.
    */
-  int get realHeight
+  int get offsetHeight
   => _height != null ? _height: node.offsetHeight;
     //for better performance, we don't need to get the outer height if _height is
     //assigned (because we use box-sizing: border-box)
@@ -936,6 +936,10 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * Derives can override this method if the child views occupies only a portion.
    */
   int get clientHeight => node.clientHeight;
+  @deprecated //TODO: remove
+  int get realWidth => offsetWidth;
+  @deprecated //TODO: remove
+  int get realHeight => offsetHeight;
   @deprecated //TODO: remove
   int get innerWidth => node.clientWidth;
   @deprecated //TODO: remove

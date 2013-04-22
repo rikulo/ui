@@ -191,9 +191,9 @@ void rootLayout(MeasureContext mctx, View root) {
 //Used by _locateRoot to simulate an achor for root views
 class _AnchorOfRoot { //mimic View API
   const _AnchorOfRoot();
-  int get realWidth => browser.size.width;
+  int get offsetWidth => browser.size.width;
   int get clientWidth => browser.size.width;
-  int get realHeight => browser.size.height;
+  int get offsetHeight => browser.size.height;
   int get clientHeight => browser.size.height;
 }
 const _anchorOfRoot = const _AnchorOfRoot();
@@ -201,8 +201,8 @@ const _anchorOfRoot = const _AnchorOfRoot();
 class _AnchorOfNode { //mimic View API
   final Element _n;
   _AnchorOfNode(this._n);
-  int get realWidth => _n.offsetWidth;
+  int get offsetWidth => _n.offsetWidth;
   int get clientWidth => _n.clientWidth;
-  int get realHeight => _n.offsetHeight;
+  int get offsetHeight => _n.offsetHeight;
   int get clientHeight => _n.clientHeight;
 }

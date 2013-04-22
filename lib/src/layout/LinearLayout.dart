@@ -60,10 +60,10 @@ class _HLayout extends _LinearHandler {
           final int wapp = mctx.getWidthByApp(child);
           final int wd = wapp != null && amt.type != AmountType.CONTENT ? 
               wapp : child.measureWidth_(mctx);
-          width += wd != null ? wd: child.realWidth;
+          width += wd != null ? wd: child.offsetWidth;
           break;
         case AmountType.IGNORE:
-          width += child.realWidth;
+          width += child.offsetWidth;
           break;
         //default: if flex/%, don't count
       }
@@ -100,10 +100,10 @@ class _HLayout extends _LinearHandler {
           final happ = mctx.getHeightByApp(child);
           final int h = happ != null && amt.type != AmountType.CONTENT ? 
               happ : child.measureHeight_(mctx);
-          hgh += h != null ? h: child.realHeight;
+          hgh += h != null ? h: child.offsetHeight;
           break;
         case AmountType.IGNORE:
-          hgh += child.realHeight;
+          hgh += child.offsetHeight;
           break;
         default:
           continue; //ignore if flex or ratio is used
@@ -153,7 +153,7 @@ class _HLayout extends _LinearHandler {
           break;
         case AmountType.IGNORE:
           ViewImpl.clearWidthByLayout(child);
-          assigned += child.realWidth;
+          assigned += child.offsetWidth;
           break;
         default:
           int wdapp;
@@ -165,7 +165,7 @@ class _HLayout extends _LinearHandler {
             if (wd != null)
               assigned += child.width = wd;
             else
-              assigned += child.realWidth;
+              assigned += child.offsetWidth;
           }
           break;
       }
@@ -200,7 +200,7 @@ class _HLayout extends _LinearHandler {
       final si = childspcinfs[child];
       child.left = assigned += prevSpacing == null ? si.left: //first
         gapinf.left != null ? gapinf.left: max(prevSpacing, si.left);
-      assigned += child.realWidth;
+      assigned += child.offsetWidth;
       prevSpacing = si.right;
 
       String align = child.profile.align;
@@ -209,7 +209,7 @@ class _HLayout extends _LinearHandler {
       switch (align) {
         case "center":
         case "end":
-          int delta = view.innerHeight - si.top - si.bottom - child.realHeight;
+          int delta = view.innerHeight - si.top - si.bottom - child.offsetHeight;
           if (align == "center") delta ~/= 2;
           child.top = space + delta;
           break; 
@@ -255,10 +255,10 @@ class _VLayout extends _LinearHandler {
           final happ = mctx.getHeightByApp(child);
           final int hgh = happ != null && amt.type != AmountType.CONTENT ? 
               happ : child.measureHeight_(mctx);
-          height += hgh != null ? hgh: child.realHeight;
+          height += hgh != null ? hgh: child.offsetHeight;
           break;
         case AmountType.IGNORE:
-          height += child.realHeight;
+          height += child.offsetHeight;
           break;
         //default: if flex/%, don't count
       }
@@ -295,10 +295,10 @@ class _VLayout extends _LinearHandler {
           final int wapp = mctx.getWidthByApp(child);
           final int w = wapp != null && amt.type != AmountType.CONTENT ? 
               wapp : child.measureWidth_(mctx);
-          wd += w != null ? w: child.realWidth;
+          wd += w != null ? w: child.offsetWidth;
           break;
         case AmountType.IGNORE:
-          wd += child.realWidth;
+          wd += child.offsetWidth;
           break;
         default:
           continue; //ignore if flex or ratio is used
@@ -348,7 +348,7 @@ class _VLayout extends _LinearHandler {
           break;
         case AmountType.IGNORE:
           ViewImpl.clearHeightByLayout(child);
-          assigned += child.realHeight;
+          assigned += child.offsetHeight;
           break;
         default:
           int hghapp;
@@ -360,7 +360,7 @@ class _VLayout extends _LinearHandler {
             if (hgh != null)
               assigned += child.height = hgh;
             else
-              assigned += child.realHeight;
+              assigned += child.offsetHeight;
           }
           break;
       }
@@ -395,7 +395,7 @@ class _VLayout extends _LinearHandler {
       final si = childspcinfs[child];
       child.top = assigned += prevSpacing == null ? si.top: //first
         gapinf.top != null ? gapinf.top: max(prevSpacing, si.top);
-      assigned += child.realHeight;
+      assigned += child.offsetHeight;
       prevSpacing = si.bottom;
 
       String align = child.profile.align;
@@ -404,7 +404,7 @@ class _VLayout extends _LinearHandler {
       switch (align) {
         case "center":
         case "end":
-          int delta = view.innerWidth - si.left - si.right - child.realWidth;
+          int delta = view.innerWidth - si.left - si.right - child.offsetWidth;
           if (align == "center") delta ~/= 2;
           child.left = space + delta;
           break; 
