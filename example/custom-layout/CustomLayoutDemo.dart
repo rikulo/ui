@@ -20,7 +20,7 @@ class CustomLayoutDemo {
     mainView.on.click.listen((DomEvent event) {
       if (anchor == null)
         _createViews();
-      _move(event.page - new DomAgent(mainView.node).page);
+      _move(event.page - DomUtil.page(mainView.node));
     });
   }
   void _move(Point offset) {

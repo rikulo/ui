@@ -34,19 +34,19 @@ class Panel extends View {
     btns.nodes.add(_createBtn(name)..onClick.listen(listener));
   }
 
-  //@override
+  @override
   Element render_() =>
       new Element.html('<div class="v-shadow"><div class="v-btns" id="$uuid-btns"></div></div>');
-  
-  //@override
+
+  @override
   int measureHeight_(MeasureContext mctx) {
-    final int btnh = new DomAgent(getNode("btns")).height + new DomAgent(node).sumHeight(border: true);
+    final int btnh = getNode("btns").offsetHeight + DomUtil.sumHeight(node, border: true);
     return max(super.measureHeight_(mctx), btnh);
   }
-  
-  //@override
+
+  @override
   int measureWidth_(MeasureContext mctx) {
-    final int btnw = new DomAgent(getNode("btns")).width + new DomAgent(node).sumWidth(border: true);
+    final int btnw = getNode("btns").offsetWidth + DomUtil.sumWidth(node, border: true);
     return max(super.measureWidth_(mctx), btnw);
   }
   

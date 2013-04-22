@@ -26,12 +26,12 @@ View _createBoxedDrag(View parent) {
   View view = _createDragView(box, "Boxed");
   
   new Dragger(view.node, snap: (Point ppos, Point pos) => Points.snap(range, pos));
-  
+
   view.on.layout.listen((event) {
-    final Size vs = new DomAgent(view.node).size;
-    final Size bs = new DomAgent(box.node).innerSize;
+    final Size vs = DomUtil.offsetSize(view.node);
+    final Size bs = DomUtil.clientSize(box.node);
     range = new Rect(0, 0, bs.width - vs.width, bs.height - vs.height);
-    final Point vpos = Points.snap(range, new DomAgent(view.node).position);
+    final Point vpos = Points.snap(range, DomUtil.position(view.node));
     view.left = vpos.x;
     view.top = vpos.y;
   });

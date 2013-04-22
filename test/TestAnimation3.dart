@@ -116,7 +116,7 @@ void main() {
       return;
     }
     Point unitv = Points.divide(vel, speed);
-    Point pos = new DomAgent(element).position;
+    Point pos = DomUtil.position(element);
     inertialMotion = new Motion(move: (MotionState mstate) {
       int elapsed = mstate.elapsedTime;
       pos += unitv * speed * elapsed;

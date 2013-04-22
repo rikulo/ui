@@ -177,8 +177,8 @@ final List<_AnchorLocator> _anchorYLocators = [
 class _AnchorOfPoint { //mimic View API
   const _AnchorOfPoint();
   int get realWidth => 0;
-  int get innerWidth => 0;
+  int get clientWidth => 0;
   int get realHeight => 0;
-  int get innerHeight => 0;
+  int get clientHeight => 0;
 }
 const _anchorOfPoint = const _AnchorOfPoint();

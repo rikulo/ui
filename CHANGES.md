@@ -18,15 +18,12 @@
 * Offset and Rectangle are removed. Use Point and Rect of dart:html instead.
 * Offset3d is renamed to Point3D.
 * View.pageOffset is renamed to View.page
-* DomAgent.pageOffset is renamed to DomAgent.pageOffset.
-* DomAgent.offset is renamed to DomAgent.position.
 
 ##0.6.3
 
 * View event stream is supported. Use Steam.listen() instead. For example, view.on.click.listen((event){}).
 * Data event stream is supported. Use Stream.listen() instead. For example, model.on.select.listen((event){}).
 * UiError is renamed to UIError to follow Dart naming convention
-* DomAgent.computedStyle is removed. Use Element.getComputedStyle() instead.
 
 ##0.6.2
 
@@ -53,7 +50,6 @@ December 14, 2012
 * Overriding View.className is optional. It will return the class name correctly.
 * View.fellows returns a map instead of a collection, and View.getFellow is removed.
 * Browser.innerSize and innerOffset are removed since they are useless.
-* Follow Dart's new naming guidelines and rename to DomAgent, Css, XmlUtil, DomEvent
 
 **Features:**
 

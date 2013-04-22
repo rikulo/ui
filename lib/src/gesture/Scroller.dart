@@ -65,7 +65,7 @@ class Scroller {
       _onMove(state.transition - _state.startPosition, state.time);
       
     }, end: (DragGestureState state) {
-      final Point pos = new DomAgent(owner).position;
+      final Point pos = DomUtil.position(owner);
       final Rect range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
@@ -127,7 +127,7 @@ class Scroller {
   /** Return the current scroll position.
    */
   Point get scrollPosition => 
-      _state != null ? _state.position : new DomAgent(owner).position * -1;
+      _state != null ? _state.position : DomUtil.position(owner) * -1;
   
   /** Set the scroll position. The current scrolling motion, if any, will be stopped.
    */
@@ -238,7 +238,7 @@ class ScrollerState extends GestureState {
   ScrollerState._(Scroller scroller, this.eventTarget, 
   this._fnViewPortSize, this._fnContentSize, this._time) :
   this.scroller = scroller,
-  startPosition = new DomAgent(scroller.owner).position * -1 {
+  startPosition = DomUtil.position(scroller.owner) * -1 {
     _pos = startPosition;
     Size cs = contentSize, vs = viewPortSize;
     _hor = scroller._hasHor && cs.width > vs.width;
@@ -422,7 +422,7 @@ class _BoundedInertialMotion extends Motion {
   this._hor, this._ver, void move(Point position, int time), void end(),
   {this.friction: 0.0005, this.bounce: 0.0002, this.snapSpeedThreshold: 0.05,
   ScrollerSnap snap}) : _move = move, _end = end, _snap = snap {
-    final Point pos = new DomAgent(element).position;
+    final Point pos = DomUtil.position(element);
     _posx = pos.x;
     _posy = pos.y;
     _velx = _hor ? velocity.x : 0;

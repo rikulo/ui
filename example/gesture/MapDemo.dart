@@ -8,11 +8,8 @@ import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/gesture.dart';
 import 'package:rikulo_ui/event.dart';
 
-Point center(View v) {
-  final dq = new DomAgent(v.node);
-  Size size = dq.size;
-  return dq.page + new Point(size.width / 2, size.height / 2);
-}
+Point center(View v)
+=> DomUtil.page(v.node) + new Point(v.node.offsetWidth / 2, v.node.offsetHeight / 2);
 
 void main() {
   final int imgw = 500, imgh = 395;
@@ -39,7 +36,7 @@ void main() {
   
   // sizing
   img.on.preLayout.listen((LayoutEvent event) {
-    Size psize = new DomAgent(panel.node).innerSize;
+    Size psize = DomUtil.clientSize(panel.node);
     if (psize.width / imgw < psize.height / imgh) {
       img.width = psize.width.toInt();
       img.height = psize.width * imgh ~/ imgw;

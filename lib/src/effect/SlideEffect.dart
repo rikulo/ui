@@ -100,8 +100,8 @@ class SlideOutEffect extends HideEffect {
   static MotionAction createAction(Element element, bool fade, SlideDirection dir) {
     switch (dir) {
       case SlideDirection.EAST:
-        final int size = new DomAgent(element).width;
-        final int initLeft = new DomAgent(element).offsetLeft;
+        final int size = element.offsetWidth;
+        final int initLeft = element.offsetLeft;
         return (num x, MotionState state) {
           final int w = (x * size).toInt();
           element.style.left = CssUtil.px(initLeft + w);
@@ -110,15 +110,15 @@ class SlideOutEffect extends HideEffect {
             element.style.opacity = "${1-x}";
         };
       case SlideDirection.WEST:
-        final int size = new DomAgent(element).width;
+        final int size = element.offsetWidth;
         return (num x, MotionState state) {
           element.style.width = CssUtil.px(((1-x) * size).toInt());
           if (fade)
             element.style.opacity = "${1-x}";
         };
       case SlideDirection.SOUTH:
-        final int size = new DomAgent(element).height;
-        final int initTop = new DomAgent(element).offsetTop;
+        final int size = element.offsetHeight;
+        final int initTop = element.offsetTop;
         return (num x, MotionState state) {
           final int h = (x * size).toInt();
           element.style.top = CssUtil.px(initTop + h);
@@ -128,7 +128,7 @@ class SlideOutEffect extends HideEffect {
         };
       case SlideDirection.NORTH:
       default:
-        final int size = new DomAgent(element).height;
+        final int size = element.offsetHeight;
         return (num x, MotionState state) {
           element.style.height = CssUtil.px(((1-x) * size).toInt());
           if (fade)
@@ -142,18 +142,18 @@ class SlideOutEffect extends HideEffect {
 class _SlideEffectUtil {
   
   static int leftOf(Element element) => 
-      _valueOf(element, element.style.left, (DomAgent dq) => dq.offsetLeft);
+      _valueOf(element, element.style.left, (Element n) => n.offsetLeft);
   
   static int topOf(Element element) => 
-      _valueOf(element, element.style.top, (DomAgent dq) => dq.offsetTop);
+      _valueOf(element, element.style.top, (Element n) => n.offsetTop);
   
   static int widthOf(Element element) => 
-      _valueOf(element, element.style.width, (DomAgent dq) => dq.width);
+      _valueOf(element, element.style.width, (Element n) => n.offsetWidth);
   
   static int heightOf(Element element) => 
-      _valueOf(element, element.style.height, (DomAgent dq) => dq.height);
+      _valueOf(element, element.style.height, (Element n) => n.offsetHeight);
   
-  static int _valueOf(Element elem, String stxt, int f(DomAgent dq)) => 
-      stxt != null && stxt.endsWith("px") ? CssUtil.intOf(stxt) : f(new DomAgent(elem));
+  static int _valueOf(Element element, String stxt, int f(Element n)) => 
+      stxt != null && stxt.endsWith("px") ? CssUtil.intOf(stxt) : f(element);
   
 }

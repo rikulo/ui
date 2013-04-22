@@ -773,7 +773,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * if it is not specified.
    */
   bool get shallMeasureContent
-  => !isViewGroup || (firstChild == null && new DomAgent(node).hasContent);
+  => !isViewGroup || (firstChild == null && DomUtil.hasContent(node));
 
   /** Returns whether the given child shall be handled by the layout manager.
    *
@@ -817,7 +817,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * Both layout handlers and the browser will handle it as if visible.
    *
    * 3. Override this method to check CSS rules:  
-   * `new DomAgent(node).style.display != "none"`
+   * `node.style.display != "none"`
    */
   bool get visible => node.style.display != "none";
   /** Sets if this view is visible.
@@ -913,7 +913,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * However, if not assigned (i.e., null), this method calculates it from [node]'s width.
    */
   int get realWidth
-  => _width != null ? _width: new DomAgent(node).width;
+  => _width != null ? _width: node.offsetWidth;
     //for better performance, we don't need to get the outer width if _width is
     //assigned (because we use box-sizing: border-box)
   /** Returns the real height of this view (never null).
@@ -921,7 +921,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * However, if not assigned (i.e., null), this method calculates it from [node]'s height.
    */
   int get realHeight
-  => _height != null ? _height: new DomAgent(node).height;
+  => _height != null ? _height: node.offsetHeight;
     //for better performance, we don't need to get the outer height if _height is
     //assigned (because we use box-sizing: border-box)
   /** Returns the viewable width of this view, excluding the borders, margins
@@ -929,13 +929,17 @@ class View implements CapturableStreamTarget<ViewEvent> {
    *
    * Derives can override this method if the child views occupies only a portion.
    */
-  int get innerWidth => new DomAgent(node).innerWidth;
+  int get clientWidth => node.clientWidth;
   /** Returns the viewable height of this view, excluding the borders, margins
    * and scrollbars.
    *
    * Derives can override this method if the child views occupies only a portion.
    */
-  int get innerHeight => new DomAgent(node).innerHeight;
+  int get clientHeight => node.clientHeight;
+  @deprecated //TODO: remove
+  int get innerWidth => node.clientWidth;
+  @deprecated //TODO: remove
+  int get innerHeight => node.clientHeight;
 
   /** Returns the offset of this view relative to the left-top corner
    * of the document.
@@ -943,7 +947,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
    */
   Point get page {
     if (_inDoc)
-      return new DomAgent(node).page;
+      return DomUtil.page(node);
     
     int left = 0, top = 0;
     for (View view = this;;) {

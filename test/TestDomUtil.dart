@@ -1,4 +1,4 @@
-//Test Code: TestDomAgent
+//Test Code: TestDomUtil
 
 import 'package:rikulo_ui/view.dart';
 import "package:rikulo_commons/html.dart";
@@ -34,7 +34,7 @@ void main() {
   button.on.click.listen((event) {
     for (TextView textView in mainView.queryAll("TextView:first-child")) {
       final TextView info = textView.nextSibling;
-      info.text = "${new DomAgent(textView.node).measureText(textView.text)}";
+      info.text = "${DomUtil.measureText(textView.node, textView.text)}";
     }
   });
   mainView.addChild(button);

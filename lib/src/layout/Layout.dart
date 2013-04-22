@@ -99,7 +99,7 @@ class FreeLayout extends AbstractLayout {
   int measureWidth(MeasureContext mctx, View view) {
     int wd = mctx.getWidthByApp(view);
     if (wd == null) {
-      wd = view.innerWidth;
+      wd = view.clientWidth;
       for (final View child in view.children) {
         if (view.shallLayout_(child) && child.profile.anchorView == null) {
           int subsz = child.measureWidth_(mctx);
@@ -117,7 +117,7 @@ class FreeLayout extends AbstractLayout {
   int measureHeight(MeasureContext mctx, View view) {
     int hgh = mctx.getHeightByApp(view);
     if (hgh == null) {
-      hgh = view.innerHeight;
+      hgh = view.clientHeight;
       for (final View child in view.children) {
         if (view.shallLayout_(child) && child.profile.anchorView == null) {
           int subsz = child.measureHeight_(mctx);
@@ -134,11 +134,11 @@ class FreeLayout extends AbstractLayout {
   }
   bool get isProfileInherited => false;
   void doLayout_(MeasureContext mctx, View view, List<View> children) {
-    final AsInt innerWidth = () => view.innerWidth,
-      innerHeight = () => view.innerHeight; //future: introduce cache
+    final AsInt clientWidth = () => view.clientWidth,
+      clientHeight = () => view.clientHeight; //future: introduce cache
     for (final View child in children) {
-      mctx.setWidthByProfile(child, innerWidth);
-      mctx.setHeightByProfile(child, innerHeight);
+      mctx.setWidthByProfile(child, clientWidth);
+      mctx.setHeightByProfile(child, clientHeight);
     }
   }
 }
@@ -151,7 +151,7 @@ void rootLayout(MeasureContext mctx, View root) {
   Element cave = dlgInfo != null ? dlgInfo.cave.parent: node.parent;
   if (cave == document.body)
     cave = null;
-  final size = cave == null ? browser.size: new DomAgent(cave).innerSize;
+  final size = cave == null ? browser.size: DomUtil.clientSize(cave);
 
   final anchor = root.profile.anchorView;
   mctx.setWidthByProfile(root,
@@ -171,7 +171,7 @@ void rootLayout(MeasureContext mctx, View root) {
         anchor.page - root.page + new Point(root.left, root.top):
         new Point(anchor.left, anchor.top):
       cave != null && node.offsetParent != node.parent ? //if parent is relative/absolute/fixed
-          new DomAgent(cave).position: new Point(0,0);
+          DomUtil.position(cave): new Point(0,0);
 
     final locators = _getLocators(loc);
     final mi = new SideInfo(root.profile.margin, 0);
@@ -192,17 +192,17 @@ void rootLayout(MeasureContext mctx, View root) {
 class _AnchorOfRoot { //mimic View API
   const _AnchorOfRoot();
   int get realWidth => browser.size.width;
-  int get innerWidth => browser.size.width;
+  int get clientWidth => browser.size.width;
   int get realHeight => browser.size.height;
-  int get innerHeight => browser.size.height;
+  int get clientHeight => browser.size.height;
 }
 const _anchorOfRoot = const _AnchorOfRoot();
 
 class _AnchorOfNode { //mimic View API
-  final DomAgent _q;
-  _AnchorOfNode(Element n): _q = new DomAgent(n);
-  int get realWidth => _q.width;
-  int get innerWidth => _q.innerWidth;
-  int get realHeight => _q.height;
-  int get innerHeight => _q.innerHeight;
+  final Element _n;
+  _AnchorOfNode(this._n);
+  int get realWidth => _n.offsetWidth;
+  int get clientWidth => _n.clientWidth;
+  int get realHeight => _n.offsetHeight;
+  int get clientHeight => _n.clientHeight;
 }

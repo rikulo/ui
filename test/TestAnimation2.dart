@@ -65,7 +65,7 @@ void main() {
     if (speed == 0)
       return;
     Point unitv = Points.divide(vel, speed);
-    Point pos = new DomAgent(element).position;
+    Point pos = DomUtil.position(element);
     motion = new Motion(move: (MotionState mstate) {
       int elapsed = mstate.elapsedTime;
       pos = Points.snap(range, pos + (unitv * speed * elapsed));

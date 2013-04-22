@@ -43,7 +43,7 @@ void previous() => select(_index - 1);
 void select(int index) {
   if (index < 0 || index >= photoCount) {
     final View photo = frameInner.children[_index];
-    final Point pos = new DomAgent(photo.node).position;
+    final Point pos = DomUtil.position(photo.node);
     new EasingMotion((num x, MotionState state) {
       photo.style.transform = "rotate(${rand()}deg)";
       photo.left = pos.x + rand();
@@ -162,7 +162,7 @@ void main() {
   
   // responsive sizing
   frame.on.preLayout.listen((LayoutEvent event) {
-    final Size msize = new DomAgent(mainView.node).innerSize;
+    final Size msize = DomUtil.clientSize(mainView.node);
     frameSize = min(msize.width, msize.height);
     final int photoSize = min(frameSize - 50, 500);
     final int photoOffset = (frameSize - photoSize) ~/ 2;

@@ -36,14 +36,14 @@ class MeasureContext {
   int getBorderWidth(View view) {
     final v = _borderWds[view];
     return v != null ? v: 
-      (_borderWds[view] = new DomAgent(view.node).sumWidth(border:true));
+      (_borderWds[view] = DomUtil.sumWidth(view.node, border:true));
   }
   /** Returns the border's height (top border plus bottom border).
    */
   int getBorderHeight(View view) {
     final v = _borderHghs[view];
     return v != null ? v:
-      (_borderHghs[view] = new DomAgent(view.node).sumHeight(border:true));
+      (_borderHghs[view] = DomUtil.sumHeight(view.node, border:true));
   }
 
   /** Returns the value of the profile with the given name.
@@ -260,8 +260,7 @@ class MeasureContext {
       nodestyle.height = "";
     }
 
-    final qview = new DomAgent(view.node);
-    num width = qview.width, height = qview.height;
+    num width = view.node.offsetWidth, height = view.node.offsetHeight;
 
     if (orgspace != null)
       nodestyle.whiteSpace = orgspace; //restore
@@ -280,8 +279,8 @@ class MeasureContext {
     || (limit != null && width > limit)) {
       nodestyle.width = CssUtil.px(limit != null ? limit: browser.size.width);
 
-      width = qview.width;
-      height = qview.height;
+      width = view.node.offsetWidth;
+      height = view.node.offsetHeight;
       //Note: we don't restore the width such that browser will really limit the width
     }
 

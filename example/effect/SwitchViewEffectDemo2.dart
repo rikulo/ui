@@ -114,7 +114,7 @@ void main() {
       ..profile.location = "top right"
       ..on.click.listen((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
-      final int width = new DomAgent(body).width;
+      final int width = body.offsetWidth;
       new EasingMotion((num x, MotionState state) {
         final int l = (width * x).toInt();
         n1.style.left = CssUtil.px(-l);
@@ -146,10 +146,10 @@ void main() {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
       final List<MotionAction> actions = new List<MotionAction>();
       final List<Function> ends = new List<Function>();
-      
-      int h = new DomAgent(body).height;
+
+      int h = body.offsetHeight;
       final int height = h > 0 ? h : browser.size.height;
-      final int width = new DomAgent(body).width;
+      final int width = body.offsetWidth;
       final Point range = new Point(width / 2, height / 2);
       
       final Element vonode = n1;

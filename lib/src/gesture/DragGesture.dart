@@ -156,7 +156,7 @@ class _TouchDragGesture extends DragGesture {
         _touchEnd(); //ignore multiple fingers
       else {
         _touchStart(event.target, event.touches[0].page, event.timeStamp);
-        if (!new DomAgent(event.target).isInput)
+        if (!DomUtil.isInput(event.target))
           event.preventDefault();
       }
     });
@@ -217,7 +217,7 @@ class _MouseDragGesture extends DragGesture {
     _subStart = owner.onMouseDown.listen((MouseEvent event) {
       _touchStart(event.target, event.page, event.timeStamp);
       _capture();
-      if (!new DomAgent(event.target).isInput)
+      if (!DomUtil.isInput(event.target))
         event.preventDefault();
     });
   }

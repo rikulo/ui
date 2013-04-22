@@ -69,14 +69,13 @@ class _Printc {
   }
   HoldGestureAction _gestureAction() {
     return (HoldGestureState state) {
-      Point off = state.position - new DomAgent(state.gesture.owner).page;
+      Point off = state.position - DomUtil.page(state.gesture.owner);
       (_popup = new _PrintcPopup(this)).open(off.x, off.y);
     };
   }
   HoldGestureStart _gestureStart() {
     return (HoldGestureState state)
-      => _popup == null
-      || !new DomAgent(state.eventTarget).isDescendantOf(_popup._node);
+      => _popup == null || !DomUtil.isDescendant(state.eventTarget, _popup._node);
   }
 
   void _defer() {

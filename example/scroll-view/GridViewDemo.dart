@@ -9,7 +9,7 @@ import 'package:rikulo_commons/html.dart';
 void main() {
   final View mainView = new View()..addToDocument();
   final int barSize = 50, barInnerSize = 40;
-  final Size msize = new WindowAgent(window).innerSize;
+  final Size msize = new Size(window.innerWidth, window.innerHeight);
   bool compact = msize.width < 500 || msize.height < 500; // responsive
   final View container = new View();
   final String occupation = compact ? "100%" : "80%";
@@ -22,9 +22,8 @@ void main() {
   view.classes.add("list-view");
   
   view.on.preLayout.listen((LayoutEvent event) {
-    final cs = new DomAgent(container.node).innerSize;
-    view.width = cs.width - barSize;
-    view.height = cs.height - barSize;
+    view.width = container.node.clientWidth - barSize;
+    view.height = container.node.clientHeight - barSize;
   });
   
   final ScrollView hbar = new ScrollView(direction: Dir.HORIZONTAL);

@@ -280,7 +280,7 @@ class ActivateEvent extends ViewEvent {
       srcNode = source;
       popNode = popup is View ? popup.node: popup;
     }
-    return !new DomAgent(srcNode).isDescendantOf(popNode);
+    return !DomUtil.isDescendant(srcNode, popNode);
   }
 }
 
