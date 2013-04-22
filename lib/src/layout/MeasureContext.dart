@@ -278,7 +278,7 @@ class MeasureContext {
     int limit = _amountOf(view.profile.maxWidth, parentInnerWidth);
     if ((autowidth && width > browser.size.width)
     || (limit != null && width > limit)) {
-      nodestyle.width = Css.px(limit != null ? limit: browser.size.width);
+      nodestyle.width = CssUtil.px(limit != null ? limit: browser.size.width);
 
       width = qview.width;
       height = qview.height;
@@ -364,11 +364,11 @@ class MeasureContext {
 
 int _minMax(int v, String vmin, String vmax) {
   if (!vmin.isEmpty) {
-    final int w = Css.intOf(vmin);
+    final int w = CssUtil.intOf(vmin);
     if (v < w) v = w;
   }
   if (!vmax.isEmpty) {
-    final int w = Css.intOf(vmax);
+    final int w = CssUtil.intOf(vmax);
     if (w > 0 && v > w) v = w;
   }
   return v;

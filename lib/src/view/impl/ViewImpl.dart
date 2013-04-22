@@ -110,8 +110,8 @@ class DialogInfo {
     final size = p == document.body || p == null ?
       browser.size: new DomAgent(p).innerSize;
     mask.style
-      ..width = Css.px(size.width)
-      ..height = Css.px(size.height);
+      ..width = CssUtil.px(size.width)
+      ..height = CssUtil.px(size.height);
   }
 
 }

@@ -95,8 +95,8 @@ class ScrollView extends View {
     _contentSize = null; //force the calculation
     final Size sz = contentSize;
     final style = contentNode.style;
-    style.width = Css.px(sz.width);
-    style.height = Css.px(sz.height);
+    style.width = CssUtil.px(sz.width);
+    style.height = CssUtil.px(sz.height);
 
     super.onPreLayout_(mctx);
   }

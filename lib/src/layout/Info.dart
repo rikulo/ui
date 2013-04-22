@@ -64,7 +64,7 @@ class AmountInfo {
       value= double.parse(profile.substring(0, profile.length - 1).trim()) / 100;
     } else {
       type = AmountType.FIXED;
-      value = Css.intOf(profile, reportError: true); //report error if no number at all
+      value = CssUtil.intOf(profile, reportError: true); //report error if no number at all
         //since it is common to end the number with px (because of CSS),
         //we retrieve only the number (and ignore the text following it).
     }

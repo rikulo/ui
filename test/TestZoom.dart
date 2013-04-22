@@ -29,8 +29,8 @@ TextView label([String text]) {
   final int fontSize = statusHeight ~/ 2;
   TextView lb = new TextView();
   lb.profile.text = "height: 100%; width: flex";
-  lb.style.fontSize = Css.px(fontSize);
-  lb.style.lineHeight = Css.px(statusHeight);
+  lb.style.fontSize = CssUtil.px(fontSize);
+  lb.style.lineHeight = CssUtil.px(statusHeight);
   if (text != null)
     lb.html = text;
   return lb;

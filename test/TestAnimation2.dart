@@ -69,8 +69,8 @@ void main() {
     motion = new Motion(move: (MotionState mstate) {
       int elapsed = mstate.elapsedTime;
       pos = Points.snap(range, pos + (unitv * speed * elapsed));
-      element.style.left = Css.px(pos.x.toInt());
-      element.style.top = Css.px(pos.y.toInt());
+      element.style.left = CssUtil.px(pos.x.toInt());
+      element.style.top = CssUtil.px(pos.y.toInt());
       speed = max(0, speed - deceleration * elapsed);
       return speed > 0;
     })..run();

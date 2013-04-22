@@ -48,7 +48,7 @@ void main() {
       img.height = psize.height.toInt();
     }
     trans = new Transformation.identity();
-    img.style.transform = Css.transform(trans);
+    img.style.transform = CssUtil.transform(trans);
     
   });
   
@@ -56,7 +56,7 @@ void main() {
     diff = center(img) - state.startMidpoint;
     
   }, move: (ZoomGestureState state) {
-    img.style.transform = Css.transform(state.transformation.originAt(diff) * trans);
+    img.style.transform = CssUtil.transform(state.transformation.originAt(diff) * trans);
     
   }, end: (ZoomGestureState state) {
     trans = state.transformation.originAt(diff) * trans;
@@ -64,7 +64,7 @@ void main() {
   });
   
   new DragGesture(mainView.node, move: (DragGestureState state) {
-    img.style.transform = Css.transform(new Transformation.transit(state.transition) * trans);
+    img.style.transform = CssUtil.transform(new Transformation.transit(state.transition) * trans);
     
   }, end: (DragGestureState state) {
     trans = new Transformation.transit(state.transition) * trans;

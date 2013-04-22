@@ -855,7 +855,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
    */
   void set left(int left) {
     _left = left;
-    node.style.left = Css.px(left);
+    node.style.left = CssUtil.px(left);
     ViewImpl.leftUpdated(this);
   }
   /** Returns the top position of this view relative to its parent.
@@ -867,7 +867,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
    */
   void set top(int top) {
     _top = top;
-    node.style.top = Css.px(top);
+    node.style.top = CssUtil.px(top);
     ViewImpl.topUpdated(this);
   }
 
@@ -886,7 +886,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
   void set width(int width) {
     _width = width;
 
-    node.style.width = Css.px(width);
+    node.style.width = CssUtil.px(width);
     ViewImpl.widthUpdated(this);
   }
   /** Returns the height of this view.
@@ -904,7 +904,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
   void set height(int height) {
     _height = height;
 
-    node.style.height = Css.px(height);
+    node.style.height = CssUtil.px(height);
     ViewImpl.heightUpdated(this);
   }
 

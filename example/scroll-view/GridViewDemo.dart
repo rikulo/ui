@@ -71,7 +71,7 @@ void main() {
     for (int y = 0; y < rowCount; y++) {
       TextView child = new TextView("(${y+1}, ${x+1})");
       child.classes.add("list-item");
-      child.style.lineHeight = Css.px(cellSize - 2);
+      child.style.lineHeight = CssUtil.px(cellSize - 2);
       child.width = child.height = cellSize;
       child.left = x * cellSize;
       child.top = y * cellSize;
@@ -82,7 +82,7 @@ void main() {
   for (int x = 0; x < columnCount; x++) {
     TextView child = new TextView("Column ${x+1}");
     child.classes.add("list-item");
-    child.style.lineHeight = Css.px(barInnerSize);
+    child.style.lineHeight = CssUtil.px(barInnerSize);
     child.width = cellSize;
     child.height = barInnerSize;
     child.top = 0;
@@ -93,7 +93,7 @@ void main() {
   for (int y = 0; y < rowCount; y++) {
     TextView child = new TextView("R-${y+1}");
     child.classes.add("list-item");
-    child.style.lineHeight = Css.px(cellSize - 2);
+    child.style.lineHeight = CssUtil.px(cellSize - 2);
     child.height = cellSize;
     child.width = barInnerSize;
     child.left = 0;

@@ -48,15 +48,15 @@ class SlideInEffect extends ShowEffect {
         final int initLeft = _SlideEffectUtil.leftOf(element) + destSize;
         return (num x, MotionState state) {
           final int w = (x * destSize).toInt();
-          element.style.left = Css.px(initLeft - w);
-          element.style.width = Css.px(w);
+          element.style.left = CssUtil.px(initLeft - w);
+          element.style.width = CssUtil.px(w);
           if (fade)
             element.style.opacity = "$x";
         };
       case SlideDirection.WEST:
         final int destSize = size != null ? size : _SlideEffectUtil.widthOf(element);
         return (num x, MotionState state) {
-          element.style.width = Css.px((x * destSize).toInt());
+          element.style.width = CssUtil.px((x * destSize).toInt());
           if (fade)
             element.style.opacity = "$x";
         };
@@ -65,8 +65,8 @@ class SlideInEffect extends ShowEffect {
         final int initTop = _SlideEffectUtil.topOf(element) + destSize;
         return (num x, MotionState state) {
           final int h = (x * destSize).toInt();
-          element.style.top = Css.px(initTop - h);
-          element.style.height = Css.px(h);
+          element.style.top = CssUtil.px(initTop - h);
+          element.style.height = CssUtil.px(h);
           if (fade)
             element.style.opacity = "$x";
         };
@@ -74,7 +74,7 @@ class SlideInEffect extends ShowEffect {
       default:
         final int destSize = size != null ? size : _SlideEffectUtil.heightOf(element);
         return (num x, MotionState state) {
-          element.style.height = Css.px((x * destSize).toInt());
+          element.style.height = CssUtil.px((x * destSize).toInt());
           if (fade)
             element.style.opacity = "$x";
         };
@@ -104,15 +104,15 @@ class SlideOutEffect extends HideEffect {
         final int initLeft = new DomAgent(element).offsetLeft;
         return (num x, MotionState state) {
           final int w = (x * size).toInt();
-          element.style.left = Css.px(initLeft + w);
-          element.style.width = Css.px(size - w);
+          element.style.left = CssUtil.px(initLeft + w);
+          element.style.width = CssUtil.px(size - w);
           if (fade)
             element.style.opacity = "${1-x}";
         };
       case SlideDirection.WEST:
         final int size = new DomAgent(element).width;
         return (num x, MotionState state) {
-          element.style.width = Css.px(((1-x) * size).toInt());
+          element.style.width = CssUtil.px(((1-x) * size).toInt());
           if (fade)
             element.style.opacity = "${1-x}";
         };
@@ -121,8 +121,8 @@ class SlideOutEffect extends HideEffect {
         final int initTop = new DomAgent(element).offsetTop;
         return (num x, MotionState state) {
           final int h = (x * size).toInt();
-          element.style.top = Css.px(initTop + h);
-          element.style.height = Css.px(size - h);
+          element.style.top = CssUtil.px(initTop + h);
+          element.style.height = CssUtil.px(size - h);
           if (fade)
             element.style.opacity = "${1-x}";
         };
@@ -130,7 +130,7 @@ class SlideOutEffect extends HideEffect {
       default:
         final int size = new DomAgent(element).height;
         return (num x, MotionState state) {
-          element.style.height = Css.px(((1-x) * size).toInt());
+          element.style.height = CssUtil.px(((1-x) * size).toInt());
           if (fade)
             element.style.opacity = "${1-x}";
         };
@@ -154,6 +154,6 @@ class _SlideEffectUtil {
       _valueOf(element, element.style.height, (DomAgent dq) => dq.height);
   
   static int _valueOf(Element elem, String stxt, int f(DomAgent dq)) => 
-      stxt != null && stxt.endsWith("px") ? Css.intOf(stxt) : f(new DomAgent(elem));
+      stxt != null && stxt.endsWith("px") ? CssUtil.intOf(stxt) : f(new DomAgent(elem));
   
 }

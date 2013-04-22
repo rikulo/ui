@@ -48,17 +48,17 @@ void addFly(Element element, Point range, List<MotionAction> actions, List<Funct
 }
 
 void addRandFly(Element element, Point range, List<MotionAction> actions, List<Function> ends) {
-  final int initX = Css.intOf(element.style.left);
-  final int initY = Css.intOf(element.style.top);
+  final int initX = CssUtil.intOf(element.style.left);
+  final int initY = CssUtil.intOf(element.style.top);
   final num velX = (rand.nextDouble() * 2 - 1) * range.x;
   final num velY = (rand.nextDouble() * 2 - 1) * range.y;
   actions.add((num x, MotionState state) {
-    element.style.left = Css.px(initX + (velX * x).toInt());
-    element.style.top  = Css.px(initY + (velY * x).toInt());
+    element.style.left = CssUtil.px(initX + (velX * x).toInt());
+    element.style.top  = CssUtil.px(initY + (velY * x).toInt());
   });
   ends.add(() {
-    element.style.left = Css.px(initX);
-    element.style.top  = Css.px(initY);
+    element.style.left = CssUtil.px(initX);
+    element.style.top  = CssUtil.px(initY);
   });
 }
 
@@ -83,8 +83,8 @@ void main() {
   bak.profile.location = "center center";
   bak.width = bak.height = rad * 2;
   bak.classes.add("dashed-block");
-  bak.style..lineHeight = Css.px(rad * 2 - 4)
-      ..borderRadius = Css.px(rad)..fontSize = "17px"
+  bak.style..lineHeight = CssUtil.px(rad * 2 - 4)
+      ..borderRadius = CssUtil.px(rad)..fontSize = "17px"
       ..color = "#444444"..borderColor = "#444444";
   v2.addChild(bak);
   
@@ -117,8 +117,8 @@ void main() {
       final int width = new DomAgent(body).width;
       new EasingMotion((num x, MotionState state) {
         final int l = (width * x).toInt();
-        n1.style.left = Css.px(-l);
-        n2.style.left = Css.px(width - l);
+        n1.style.left = CssUtil.px(-l);
+        n2.style.left = CssUtil.px(width - l);
         
       }, start: (MotionState state) {
         final Element parent = n1.parent;
@@ -126,7 +126,7 @@ void main() {
           state.data = parent.style.overflow;
           parent.style.overflow = "hidden";
         }
-        n1.style.left = Css.px(width);
+        n1.style.left = CssUtil.px(width);
         n2.style.left = "0";
         n2.style.visibility = "";
         
@@ -154,7 +154,7 @@ void main() {
       
       final Element vonode = n1;
       actions.add((num x, MotionState state) {
-        vonode.style.top = Css.px((height * x * x).toInt()); // free fall
+        vonode.style.top = CssUtil.px((height * x * x).toInt()); // free fall
       });
       addFly(n1, range, actions, ends);
       

@@ -13,7 +13,7 @@ View _system(Point pos, num maxsyssize, int rad, [String name]) {
   final int shownRad = max(3, rad).toInt();
   sys.left = pos.x.toInt() - shownRad;
   sys.top = pos.y.toInt() - shownRad;
-  sys.style.borderWidth = sys.style.borderRadius = Css.px(shownRad);
+  sys.style.borderWidth = sys.style.borderRadius = CssUtil.px(shownRad);
   sys.classes.add("star");
   
   final int subsysnum = (rad * _rand() / 3).toInt();
@@ -32,7 +32,7 @@ View _system(Point pos, num maxsyssize, int rad, [String name]) {
     TextView tv = new TextView(name);
     tv.profile.location = "south center";
     tv.style.color = "#CCCCCC";
-    tv.style.paddingTop = Css.px(rad);
+    tv.style.paddingTop = CssUtil.px(rad);
     sys.addChild(tv);
   }
   

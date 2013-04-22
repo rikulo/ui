@@ -39,8 +39,8 @@ class LinearPathMotion extends EasingMotion {
   }
   
   void _applyPosition() {
-    element.style.left = Css.px(_pos.x);
-    element.style.top = Css.px(_pos.y);
+    element.style.left = CssUtil.px(_pos.x);
+    element.style.top = CssUtil.px(_pos.y);
   }
   
   /** Retrieve the current position of the element.

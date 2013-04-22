@@ -197,9 +197,9 @@ class Scroller {
   
   void _applyPosition(Point position) {
     if (_hor)
-      owner.style.left = Css.px(position.x);
+      owner.style.left = CssUtil.px(position.x);
     if (_ver)
-      owner.style.top = Css.px(position.y);
+      owner.style.top = CssUtil.px(position.y);
   }
   
   // scroll bar //
@@ -331,13 +331,13 @@ class ScrollbarControl {
     if (vertical) {
       _vbar = new Element.tag("div");
       _vbar.classes = ["v-scrollbar-ver"];
-      _vbar.style.width = Css.px(_ins); // do here to have better sync
+      _vbar.style.width = CssUtil.px(_ins); // do here to have better sync
       _vbar.style.display = "none";
       owner.parent.insertBefore(_vbar, owner.nextElementSibling);
     } else {
       _hbar = new Element.tag("div");
       _hbar.classes = ["v-scrollbar-hor"];
-      _hbar.style.height = Css.px(_ins); // do here to have better sync
+      _hbar.style.height = CssUtil.px(_ins); // do here to have better sync
       _hbar.style.display = "none";
       owner.parent.insertBefore(_hbar, owner.nextElementSibling);
     }
@@ -385,11 +385,11 @@ class ScrollbarControl {
     final num s = ((vsize0 - _mgs * 2) * (csize0 > vsize0 ? vsize0 / csize0 : 1)).toInt() - _bds * 2;
     final num off = (ver ? vsize.width : vsize.height) - _mgs - _ins - _bds * 2;
     if (ver) {
-      _vbar.style.height = Css.px(s);
-      _vbar.style.left = Css.px(off);
+      _vbar.style.height = CssUtil.px(s);
+      _vbar.style.left = CssUtil.px(off);
     } else {
-      _hbar.style.width = Css.px(s);
-      _hbar.style.top = Css.px(off);
+      _hbar.style.width = CssUtil.px(s);
+      _hbar.style.top = CssUtil.px(off);
     }
   }
   
@@ -401,9 +401,9 @@ class ScrollbarControl {
     final num pos = ver ? state.position.y : state.position.x;
     final num x = _mgs + (csize0 > vsize0 ? ((vsize0 - _mgs * 2) * pos / csize0) : 0);
     if (ver)
-      _vbar.style.top = Css.px(x);
+      _vbar.style.top = CssUtil.px(x);
     else
-      _hbar.style.left = Css.px(x);
+      _hbar.style.left = CssUtil.px(x);
   }
   
 }

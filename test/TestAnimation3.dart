@@ -10,7 +10,7 @@ import 'package:rikulo_ui/effect.dart';
 import "package:rikulo_commons/html.dart";
 
 String createColor(num x) {
-  return Css.color((92 * x).toInt(), (115 * x).toInt(), (229 * x).toInt());
+  return CssUtil.color((92 * x).toInt(), (115 * x).toInt(), (229 * x).toInt());
 }
 
 List<View> createCube(int size) {
@@ -131,8 +131,8 @@ void main() {
         setSanity(sanity * 0.8);
       }
       pos = Points.snap(range, pos);
-      element.style.left = Css.px(pos.x.toInt());
-      element.style.top = Css.px(pos.y.toInt());
+      element.style.left = CssUtil.px(pos.x.toInt());
+      element.style.top = CssUtil.px(pos.y.toInt());
       speed = max(0, speed - deceleration * elapsed);
       return speed > 0;
     }, end: (MotionState mstate) {

@@ -174,16 +174,16 @@ class Dragger extends Gesture {
   }
   
   Point getElementPosition_(Element target) {
-    return _transform ? Css.point3DOf(target.style.transform):
+    return _transform ? CssUtil.point3DOf(target.style.transform):
     		new DomAgent(target).position;
   }
   
   void setElementPosition_(Element target, Point position) {
     if (_transform) {
-      target.style.transform = Css.translate3d(position.x, position.y);
+      target.style.transform = CssUtil.translate3d(position.x, position.y);
     } else {
-      target.style.left = Css.px(position.x);
-      target.style.top = Css.px(position.y);
+      target.style.left = CssUtil.px(position.x);
+      target.style.top = CssUtil.px(position.y);
     }
   }
   

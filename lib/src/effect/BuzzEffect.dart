@@ -41,7 +41,7 @@ class BuzzEffect extends EasingMotion {
    */
   static MotionAction createAction(Element element, num movement, num rotation) {
     return (num x, MotionState state) {
-      element.style.transform = Css.transform(_randomTransform(movement, rotation));
+      element.style.transform = CssUtil.transform(_randomTransform(movement, rotation));
     };
   }
   

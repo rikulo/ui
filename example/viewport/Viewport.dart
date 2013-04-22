@@ -72,8 +72,8 @@ class Viewport extends View {
     super.mount_();
 
     final style = contentNode.style;
-    style.left = Css.px(_spacingLeft);
-    style.top = Css.px(_spacingTop);
+    style.left = CssUtil.px(_spacingLeft);
+    style.top = CssUtil.px(_spacingTop);
     _adjustWidth();
     _adjustHeight();
   }
@@ -95,10 +95,10 @@ class Viewport extends View {
   }
   void _adjustWidth() {
     int v = new DomAgent(node).innerWidth - _spacingLeft - _spacingRight;
-    contentNode.style.width = Css.px(v > 0 ? v: 0);
+    contentNode.style.width = CssUtil.px(v > 0 ? v: 0);
   }
   void _adjustHeight() {
     int v = new DomAgent(node).innerHeight - _spacingTop - _spacingBottom;
-    contentNode.style.height = Css.px(v > 0 ? v: 0);
+    contentNode.style.height = CssUtil.px(v > 0 ? v: 0);
   }
 }

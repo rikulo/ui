@@ -42,24 +42,24 @@ class _StyleImpl implements CssStyleDeclaration {
 
     var v;
     if ((v = st.left).isEmpty) //restore if not set
-      st.left = Css.px(_view.left);
+      st.left = CssUtil.px(_view.left);
     else
-      _view.left = Css.intOf(v);
+      _view.left = CssUtil.intOf(v);
 
     if ((v = st.top).isEmpty)
-      st.top = Css.px(_view.top);
+      st.top = CssUtil.px(_view.top);
     else
-      _view.top = Css.intOf(v);
+      _view.top = CssUtil.intOf(v);
 
     if ((v = st.width).isEmpty)
-      st.width = Css.px(_view.width);
+      st.width = CssUtil.px(_view.width);
     else
-      _view.width = Css.intOf(v, defaultValue: null);
+      _view.width = CssUtil.intOf(v, defaultValue: null);
 
     if ((v = st.height).isEmpty)
-      st.height = Css.px(_view.height);
+      st.height = CssUtil.px(_view.height);
     else
-      _view.height = Css.intOf(v, defaultValue: null);
+      _view.height = CssUtil.intOf(v, defaultValue: null);
   }
 
   @override
@@ -70,17 +70,17 @@ class _StyleImpl implements CssStyleDeclaration {
   CssRule get parentRule => _st.parentRule;
 
   String get left => _st.left;
-  void set left(String v) {_view.left = Css.intOf(v);}
+  void set left(String v) {_view.left = CssUtil.intOf(v);}
   String get top => _st.top;
-  void set top(String v) {_view.top = Css.intOf(v);}
+  void set top(String v) {_view.top = CssUtil.intOf(v);}
 
   String get width => _st.width;
   void set width(String v) {
-    _view.width = Css.intOf(v, defaultValue: null);
+    _view.width = CssUtil.intOf(v, defaultValue: null);
   }
   String get height => _st.height;
   void set height(String v) {
-    _view.height = Css.intOf(v, defaultValue: null);
+    _view.height = CssUtil.intOf(v, defaultValue: null);
   }
 
   @override
