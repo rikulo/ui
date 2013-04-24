@@ -180,7 +180,7 @@ class DropDownList<T> extends View {
   }
   static final Renderer _defRenderer = (ctx) => ctx.getDataAsString();
 
-  //@override
+  @override
   Element render_() {
     final node = new Element.tag("select");
     node.onChange.listen((e) {
@@ -328,7 +328,7 @@ class DropDownList<T> extends View {
       out.write(' disabled');
   }
 
-  //@override
+  @override
   /** Returns false to indicate this view doesn't allow any child views.
    */
   bool get isViewGroup => false;

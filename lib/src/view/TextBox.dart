@@ -134,13 +134,13 @@ class TextBox extends View implements Input<String> {
     inputNode.maxLength = maxLength;
   }
 
-  //@override
+  @override
   Element render_() => new Element.tag("input");
 
-  //@override
+  @override
   /** Returns false to indicate this view doesn't allow any child views.
    */
   bool get isViewGroup => false;
-  //@override
+  @override
   String toString() => "$className('$value')";
 }

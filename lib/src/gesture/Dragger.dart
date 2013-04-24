@@ -39,9 +39,9 @@ class DraggerState extends GestureState {
     _vp = new VelocityProvider(elementStartPosition, startTime);
   }
 
-  //@override
+  @override
   final EventTarget eventTarget;
-  //@override
+  @override
   int get time => _time;
 
   /** The associated [Dragger]. */

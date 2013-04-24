@@ -89,7 +89,7 @@ class ScrollView extends View {
    */
   Scroller get scroller => _scroller;
   
-  //@override
+  @override
   void onPreLayout_(MeasureContext mctx) {
     //we have to decide the content size here, since its children might depend on it
     _contentSize = null; //force the calculation
@@ -100,22 +100,22 @@ class ScrollView extends View {
 
     super.onPreLayout_(mctx);
   }
-  //@override
+  @override
   void mount_() {
     super.mount_();
     _scroller = newScroller_();
   }
-  //@override
+  @override
   void unmount_() {
     _scroller.destroy();
     _scroller = null;
     super.unmount_();
   }
-  //@override
+  @override
   Element render_()
   => new Element.html('<div><div class="v-inner" id="$uuid-inner"></div></div>');
 
-  //@override
+  @override
   void addChildNode_(View child, View beforeChild) {
     if (beforeChild != null)
       super.addChildNode_(child, beforeChild);

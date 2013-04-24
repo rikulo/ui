@@ -6,6 +6,7 @@ library rikulo_model;
 import "dart:async" show Stream;
 import "dart:collection" show HashMap;
 
+import 'package:meta/meta.dart';
 import "package:rikulo_commons/util.dart";
 import "package:rikulo_commons/async.dart";
 

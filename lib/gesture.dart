@@ -8,6 +8,7 @@ import "dart:html";
 import "dart:math";
 import "dart:async";
 
+import 'package:meta/meta.dart';
 import 'package:rikulo_commons/util.dart';
 import 'package:rikulo_commons/html.dart';
 

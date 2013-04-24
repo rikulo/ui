@@ -58,7 +58,7 @@ class Button extends TextView {
       btn.focus();
   }
 
-  //@override
+  @override
   Element render_()
   => new Element.html("<button>$encodedText</button>");
 }

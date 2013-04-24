@@ -16,9 +16,9 @@ class SwipeGestureState extends GestureState {
   startPosition = ds.startPosition, position = ds.position,
   transition = ds.transition, velocity = ds.velocity;
 
-  //@override  
+  @override  
   final EventTarget eventTarget;
-  //@override
+  @override
   final int time;
 
   /** Retrieve the associated [SwipeGesture].

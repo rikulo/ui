@@ -19,22 +19,22 @@ class Canvas extends View {
    */
   CanvasElement get canvasNode => node;
 
-  //@override
+  @override
   void set width(int width) {
     super.width = width;
     canvasNode.width = width;
   }
-  //@override
+  @override
   void set height(int height) {
     super.height = height;
     canvasNode.height = height;
   }
-  //@override
+  @override
   Element render_() => new Element.tag("canvas");
   /** Returns false to indicate this view doesn't allow any child views.
    */
-  //@override
+  @override
   bool get isViewGroup => false;
-  //@override
+  @override
   bool get shallMeasureContent => false;
 }

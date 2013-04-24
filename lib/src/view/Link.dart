@@ -71,7 +71,7 @@ class Link extends TextView {
     _anchorNode.rel = _s(rel);
   }
 
-  //@override
+  @override
   Element render_()
   => new Element.html("<a>$encodedText</a>");
 }

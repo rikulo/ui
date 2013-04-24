@@ -71,7 +71,7 @@ class LayoutManager extends RunOnceViewManager {
    */
   bool get inLayout => _inLayout > 0 && _inCallback <= 0;
 
-  //@override
+  @override
   void flush([View view, bool force=false]) {
     //ignore flush if not empty (_onImageLoaded will invoke it later)
     if (_imgWaits.isEmpty)
@@ -80,7 +80,7 @@ class LayoutManager extends RunOnceViewManager {
       queue(view); //do it later
   }
 
-  //@override
+  @override
   void handle_(View view) {
     ++_inLayout;
     try {

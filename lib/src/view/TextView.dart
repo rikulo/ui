@@ -73,14 +73,14 @@ class TextView extends View {
    *
    * Default: it creates a DIV element containing [innerHtml_]
    */
-  //@override
+  @override
   Element render_()
   => new Element.html("<div>$encodedText</div>");
 
-  //@override
+  @override
   /** Returns false to indicate this view doesn't allow any child views.
    */
   bool get isViewGroup => false;
-  //@override
+  @override
   String toString() => "$className($text)";
 }

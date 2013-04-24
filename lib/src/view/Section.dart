@@ -10,11 +10,11 @@ class Section extends View implements IDSpace {
   Section() {
   }
 
-  //@override
+  @override
   final Map<String, View> fellows = new HashMap();
 
   /** Returns the SECTION element.
    */
-  //@override
+  @override
   Element render_() => new Element.tag("section");
 }

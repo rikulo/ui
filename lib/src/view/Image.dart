@@ -25,12 +25,12 @@ class Image extends View {
    */
   ImageElement get imageNode => node;
 
-  //@override
+  @override
   Element render_()
   => new Element.tag("img");
   /** Returns false to indicate this view doesn't allow any child views.
    */
-  //@override
+  @override
   bool get isViewGroup => false;
 
   int measureWidth_(MeasureContext mctx)

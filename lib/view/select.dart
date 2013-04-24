@@ -2,6 +2,7 @@
 //Jun. 07, 2012
 library rikulo_view_select;
 
+import "package:meta/meta.dart";
 import "../view.dart";
 
 part "../src/view/select/Token.dart";

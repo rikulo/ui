@@ -84,7 +84,7 @@ class ViewEvent {
    */
   void preventDefault() {
   }
-  //@override
+  @override
   String toString() => "ViewEvent($target,$type)";
 }
 
@@ -157,16 +157,16 @@ class DomEvent extends ViewEvent {
    */
   int get timeStamp => cause.timeStamp;
 
-  //@override
+  @override
   void stopPropagation() {
     super.stopPropagation();
     cause.stopPropagation();
   }
-  //@override
+  @override
   void preventDefault() {
     cause.preventDefault();
   }
-  //@override
+  @override
   String toString() => "DomEvent($target,$cause)";
 }
 

@@ -127,7 +127,7 @@ class Switch extends View implements Input<bool> {
     super.onLayout_(mctx);
   }
 
-  //@override
+  @override
   Element render_()
   => new Element.html(
       (new StringBuffer()..write('<div><div class="v-bg"><div class="v-bgi" id="')
@@ -139,7 +139,7 @@ class Switch extends View implements Input<bool> {
 
   /** Returns false to indicate this view doesn't allow any child views.
    */
-  //@override
+  @override
   bool get isViewGroup => false;
   String toString() => "$className($value)";
 }

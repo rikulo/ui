@@ -245,9 +245,9 @@ class ScrollerState extends GestureState {
     _ver = scroller._hasVer && cs.height > vs.height;
   }
 
-  //@override
+  @override
   final EventTarget eventTarget;
-  //@override
+  @override
   int get time => _time;
   /** Returns the associated [Scroller].
    */
@@ -428,7 +428,7 @@ class _BoundedInertialMotion extends Motion {
     _velx = _hor ? velocity.x : 0;
     _vely = _ver ? velocity.y : 0;
   }
-  //@override  
+  @override  
   bool onMove(MotionState state) {
     final Point vel = new Point(_velx, _vely);
     final num speed = Points.norm(vel);
@@ -456,7 +456,7 @@ class _BoundedInertialMotion extends Motion {
         (_ver && !_shallStop(_posy, _vely, range.top, range.bottom)); 
   }
   
-  //@override  
+  @override  
   void onEnd(MotionState state) {
     if (_snapTo != null) {
       _snapMotion = new LinearPathMotion(element, new Point(_posx, _posy), _snapTo,

@@ -76,11 +76,11 @@ class CheckBox extends TextView implements Input<bool> {
    */
   InputElement get inputNode => getNode("inp");
 
-  //@override
+  @override
   void updateInner_([String html]) {
     node.query("label").innerHtml = "$encodedText${_s(html)}";
   }
-  //@override
+  @override
   Element render_()
   => new Element.html(
   '<div><input type="$type" id="$uuid-inp"/><label for="$uuid-inp" class="${viewConfig.classPrefix}inner"></label></div>');
@@ -88,7 +88,7 @@ class CheckBox extends TextView implements Input<bool> {
   /** Returns the type of the INPUT element.
    */
   String get type => "checkbox";
-  //@override
+  @override
   String toString() => "$className($text, $value)";
 }
 
@@ -110,6 +110,6 @@ class RadioButton extends CheckBox {
    */
   RadioButton.fromHtml(String html, [bool value]): super.fromHtml(html, value);
 
-  //@override
+  @override
   String get type => "radio";
 }

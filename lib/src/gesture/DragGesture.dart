@@ -31,9 +31,9 @@ class DragGestureState extends GestureState {
   _gesture = gesture, startPosition = position, _position = position, 
   startTime = time, _time = time, _vp = new VelocityProvider(position, time);
 
-  //@override
+  @override
   final EventTarget eventTarget;
-  //@override
+  @override
   int get time => _time;
 
   /** The associated [DragGesture]. */
@@ -97,21 +97,21 @@ abstract class DragGesture extends Gesture {
    */
   final Element owner;
 
-  //@override  
+  @override
   void destroy() {
     stop();
     _unlisten();
   }
-  //@override  
+  @override
   void disable() {
     stop();
     _disabled = true;
   }
-  //@override  
+  @override
   void enable() {
     _disabled = false;
   }
-  //@override  
+  @override
   void stop() {
     _state = null;
   }

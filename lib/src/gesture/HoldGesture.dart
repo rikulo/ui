@@ -22,9 +22,9 @@ class HoldGestureState extends GestureState {
   HoldGestureState._(this.gesture, this.eventTarget, int time, this.position) : 
   _time = time, this.startTime = time;
 
-  //@override
+  @override
   final EventTarget eventTarget;
-  //@override
+  @override
   int get time => _time;
 
   /** The associated [HoldGesture]. */
@@ -72,21 +72,21 @@ abstract class HoldGesture extends Gesture {
    */
   final Element owner;
 
-  //@override  
+  @override  
   void destroy() {
     _stop();
     _unlisten();
   }
-  //@override  
+  @override  
   void stop() {
     _stop();
   }
-  //@override  
+  @override  
   void disable() {
     _stop();
     _disabled = true;
   }
-  //@override  
+  @override  
   void enable() {
     _disabled = false;
   }

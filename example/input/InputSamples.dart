@@ -21,7 +21,7 @@ void main() {
     var input = type == "multiline" ? new TextArea(): new TextBox(null, type);
     input.on.change.listen((event) {
       TextView inf = input.nextSibling;
-      inf.text = input.value;
+      inf.text = (input as Input).value;
     });
     view.addChild(input);
 

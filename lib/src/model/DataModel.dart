@@ -254,12 +254,12 @@ implements Selection<T>, Disables<T> {
     }
   }
 
-  //@override
+  @override
   bool isSelected(Object obj)  => _selection.contains(obj);
-  //@override
+  @override
   bool get isSelectionEmpty => _selection.isEmpty;
 
-  //@override
+  @override
   bool addToSelection(T obj) {
     if (_selection.contains(obj))
       return false;
@@ -270,7 +270,7 @@ implements Selection<T>, Disables<T> {
     _sendSelect();
     return true;
   }
-  //@override
+  @override
   bool removeFromSelection(Object obj) {
     if (_selection.remove(obj)) {
       _sendSelect();
@@ -278,7 +278,7 @@ implements Selection<T>, Disables<T> {
     }
     return false;
   }
-  //@override
+  @override
   void clearSelection() {
     if (!_selection.isEmpty) {
       _selection.clear();
@@ -286,9 +286,9 @@ implements Selection<T>, Disables<T> {
     }
   }
 
-  //@override
+  @override
   bool get multiple => _multiple;
-  //@override
+  @override
   void set multiple(bool multiple) {
     if (_multiple != multiple) {
       _multiple = multiple;

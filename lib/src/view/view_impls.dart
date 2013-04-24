@@ -137,7 +137,7 @@ class _ViewImpl {
     View top, p = view;
     do {
       if (p is IDSpace)
-        return p;
+        return p as IDSpace;
       top = p;
     } while ((p = p.parent) != null);
 
