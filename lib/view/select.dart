@@ -2,6 +2,7 @@
 //Jun. 07, 2012
 library rikulo_view_select;
 
+import "dart:collection" show IterableBase;
 import "package:meta/meta.dart";
 import "../view.dart";
 

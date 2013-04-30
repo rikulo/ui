@@ -34,13 +34,13 @@ part of rikulo_layout;
  */
 class TileLayout extends AbstractLayout {
   void doLayout_(MeasureContext mctx, View view, List<View> children) {
-    final innerWidth = () => view.innerWidth,
-      innerHeight = () => view.innerHeight;
+    final clientWidth = () => view.clientWidth,
+      clientHeight = () => view.clientHeight;
     int sum = 0;
     for (final View child in children) {
       if (!view.shallLayout_(child)) {
-        mctx.setWidthByProfile(child, innerWidth);
-        mctx.setHeightByProfile(child, innerHeight);
+        mctx.setWidthByProfile(child, clientWidth);
+        mctx.setHeightByProfile(child, clientHeight);
         continue;
       }
     }

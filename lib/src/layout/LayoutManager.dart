@@ -95,8 +95,8 @@ class LayoutManager extends RunOnceViewManager {
         new AnchorRelation(parent)
           ._layoutAnchored(mctx, view.profile.anchorView, view);
       } else if (parent.layout.type.isEmpty) {
-        mctx.setWidthByProfile(view, () => parent.innerWidth);
-        mctx.setHeightByProfile(view, () => parent.innerHeight);
+        mctx.setWidthByProfile(view, () => parent.clientWidth);
+        mctx.setHeightByProfile(view, () => parent.clientHeight);
       }
 
       doLayout(mctx, view);

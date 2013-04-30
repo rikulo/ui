@@ -126,8 +126,8 @@ class _HLayout extends _LinearHandler {
     int nflex = 0, assigned = 0, prevSpacing;
     for (final View child in children) {
       if (!view.shallLayout_(child)) {
-        mctx.setWidthByProfile(child, () => view.innerWidth);
-        mctx.setHeightByProfile(child, () => view.innerHeight);
+        mctx.setWidthByProfile(child, () => view.clientWidth);
+        mctx.setHeightByProfile(child, () => view.clientHeight);
         continue;
       }
 
@@ -149,7 +149,7 @@ class _HLayout extends _LinearHandler {
           flexViews.add(child);
           break;
         case AmountType.RATIO:
-          assigned += child.width = (view.innerWidth * amt.value).round().toInt();
+          assigned += child.width = (view.clientWidth * amt.value).round().toInt();
           break;
         case AmountType.IGNORE:
           ViewImpl.clearWidthByLayout(child);
@@ -171,12 +171,12 @@ class _HLayout extends _LinearHandler {
       }
 
       mctx.setHeightByProfile(child,
-        () => view.innerHeight - si.top - si.bottom); //subtract spacing from borders
+        () => view.clientHeight - si.top - si.bottom); //subtract spacing from borders
     }
 
     //1a) size flex
     if (nflex > 0) {
-      int space = view.innerWidth - assigned - prevSpacing; //prevSpacing not null here
+      int space = view.clientWidth - assigned - prevSpacing; //prevSpacing not null here
       double per = space / nflex;
       for (int j = 0, len = flexs.length - 1;; ++j) {
         if (j == len) { //last
@@ -209,7 +209,7 @@ class _HLayout extends _LinearHandler {
       switch (align) {
         case "center":
         case "end":
-          int delta = view.innerHeight - si.top - si.bottom - child.offsetHeight;
+          int delta = view.clientHeight - si.top - si.bottom - child.offsetHeight;
           if (align == "center") delta ~/= 2;
           child.top = space + delta;
           break; 
@@ -321,8 +321,8 @@ class _VLayout extends _LinearHandler {
     int nflex = 0, assigned = 0, prevSpacing;
     for (final View child in children) {
       if (!view.shallLayout_(child)) {
-        mctx.setWidthByProfile(child, () => view.innerWidth);
-        mctx.setHeightByProfile(child, () => view.innerHeight);
+        mctx.setWidthByProfile(child, () => view.clientWidth);
+        mctx.setHeightByProfile(child, () => view.clientHeight);
         continue;
       }
 
@@ -344,7 +344,7 @@ class _VLayout extends _LinearHandler {
           flexViews.add(child);
           break;
         case AmountType.RATIO:
-          assigned += child.height = (view.innerHeight * amt.value).round().toInt();
+          assigned += child.height = (view.clientHeight * amt.value).round().toInt();
           break;
         case AmountType.IGNORE:
           ViewImpl.clearHeightByLayout(child);
@@ -366,12 +366,12 @@ class _VLayout extends _LinearHandler {
       }
 
       mctx.setWidthByProfile(child,
-        () => view.innerWidth - si.left - si.right); //subtract spacing from border
+        () => view.clientWidth - si.left - si.right); //subtract spacing from border
     }
 
     //1a) size flex
     if (nflex > 0) {
-      int space = view.innerHeight - assigned - prevSpacing; //prevSpacing must not null
+      int space = view.clientHeight - assigned - prevSpacing; //prevSpacing must not null
       double per = space / nflex;
       for (int j = 0, len = flexs.length - 1;; ++j) {
         if (j == len) { //last
@@ -404,7 +404,7 @@ class _VLayout extends _LinearHandler {
       switch (align) {
         case "center":
         case "end":
-          int delta = view.innerWidth - si.left - si.right - child.offsetWidth;
+          int delta = view.clientWidth - si.left - si.right - child.offsetWidth;
           if (align == "center") delta ~/= 2;
           child.left = space + delta;
           break; 

@@ -578,12 +578,15 @@ class _SubviewList extends IterableBase<View> with ListMixin<View>
     return -1;
   }
   @override
-  void remove(Object element) {
+  bool remove(Object element) {
     if (element is View) {
       View v = element as View;
-      if (v.parent == _owner)
+      if (v.parent == _owner) {
         v.remove();
+        return true;
+      }
     }
+    return false;
   }
   @override
   View removeAt(int index) => this[index]..remove();

@@ -43,7 +43,7 @@ void test2(View parent, int left, int top) {
   hlayout.layout.orient = "horizontal";
   hlayout.layout.spacing = "5 5";
   hlayout.profile.width = "70%";
-  //we can't use flex (which implies parent.innerWidth)
+  //we can't use flex (which implies parent.clientWidth)
   //of course, we can use hlayout to partition but it is not tested here
   hlayout.profile.height = "40"; //..profile.height = "40" is also OK
   parent.addChild(hlayout);

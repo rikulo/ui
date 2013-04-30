@@ -8,7 +8,7 @@ void main() {
   ScrollView view;
   view = new ScrollView(direction: Dir.VERTICAL, 
   snap: (Point off) {
-    final num vlimit = 50 * 50 - view.innerHeight;
+    final num vlimit = 50 * 50 - view.clientHeight;
     final num y = off.y >= vlimit ? vlimit : ((off.y + 25) / 50).floor() * 50;
     return new Point(off.x, y);
   });

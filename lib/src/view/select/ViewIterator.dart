@@ -266,7 +266,7 @@ class ViewIterator implements Iterator<View> {
   
 }
 
-class ViewIterable extends Iterable<View> {
+class ViewIterable extends IterableBase<View> {
   
   final View _root;
   final String _selector;

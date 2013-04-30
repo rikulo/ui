@@ -43,7 +43,7 @@ void test2(View parent, int left, int top) {
   vlayout.layout.orient = "vertical";
   vlayout.layout.spacing = "5 5";
   vlayout.profile.height = "70%";
-  //we can't use flex (which implies parent.innerHeight)
+  //we can't use flex (which implies parent.clientHeight)
   //of course, we can use vlayout to partition but it is not tested here
   vlayout.width = 50; //..layout.width = "50" is also OK
   parent.addChild(vlayout);

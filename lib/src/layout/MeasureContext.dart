@@ -175,13 +175,13 @@ class MeasureContext {
 
       wd = view.layout.handler.measureWidth(this, view);
 
-      final AsInt parentInnerWidth =
-        () => view.parent != null ? view.parent.innerWidth: browser.size.width;
+      final AsInt parentClientWidth =
+        () => view.parent != null ? view.parent.clientWidth: browser.size.width;
       int limit;
-      if ((limit = _amountOf(view.profile.maxWidth, parentInnerWidth)) != null
+      if ((limit = _amountOf(view.profile.maxWidth, parentClientWidth)) != null
       && (wd == null || wd > limit))
         wd = limit;
-      if ((limit = _amountOf(view.profile.minWidth, parentInnerWidth)) != null
+      if ((limit = _amountOf(view.profile.minWidth, parentClientWidth)) != null
       && (wd == null || wd < limit))
         wd = limit;
       return widths[view] = wd;
@@ -197,13 +197,13 @@ class MeasureContext {
         return hgh;
 
       hgh = view.layout.handler.measureHeight(this, view);
-      final AsInt parentInnerHeight =
-        () => view.parent != null ? view.parent.innerHeight: browser.size.height;
+      final AsInt parentClientHeight =
+        () => view.parent != null ? view.parent.clientHeight: browser.size.height;
       int limit;
-      if ((limit = _amountOf(view.profile.maxHeight, parentInnerHeight)) != null
+      if ((limit = _amountOf(view.profile.maxHeight, parentClientHeight)) != null
       && (hgh == null || hgh > limit))
         hgh = limit;
-      if ((limit = _amountOf(view.profile.minHeight, parentInnerHeight)) != null
+      if ((limit = _amountOf(view.profile.minHeight, parentClientHeight)) != null
       && (hgh == null || hgh < limit))
         hgh = limit;
       return heights[view] = hgh;
@@ -269,12 +269,12 @@ class MeasureContext {
     if (orghgh != null && !orghgh.isEmpty)
       nodestyle.height = orghgh;
 
-    final AsInt parentInnerWidth =
-      () => view.parent != null ? view.parent.innerWidth: browser.size.width;
-    final AsInt parentInnerHeight =
-      () => view.parent != null ? view.parent.innerHeight: browser.size.height;
+    final AsInt parentClientWidth =
+      () => view.parent != null ? view.parent.clientWidth: browser.size.width;
+    final AsInt parentClientHeight =
+      () => view.parent != null ? view.parent.clientHeight: browser.size.height;
 
-    int limit = _amountOf(view.profile.maxWidth, parentInnerWidth);
+    int limit = _amountOf(view.profile.maxWidth, parentClientWidth);
     if ((autowidth && width > browser.size.width)
     || (limit != null && width > limit)) {
       nodestyle.width = CssUtil.px(limit != null ? limit: browser.size.width);
@@ -284,13 +284,13 @@ class MeasureContext {
       //Note: we don't restore the width such that browser will really limit the width
     }
 
-    if ((limit = _amountOf(view.profile.maxHeight, parentInnerHeight)) != null
+    if ((limit = _amountOf(view.profile.maxHeight, parentClientHeight)) != null
     && height > limit)
       height = limit;
-    if ((limit = _amountOf(view.profile.minWidth, parentInnerWidth)) != null
+    if ((limit = _amountOf(view.profile.minWidth, parentClientWidth)) != null
     && width < limit)
       width = limit;
-    if ((limit = _amountOf(view.profile.minHeight, parentInnerHeight)) != null
+    if ((limit = _amountOf(view.profile.minHeight, parentClientHeight)) != null
     && height < limit)
       height = limit;
 
@@ -372,14 +372,14 @@ int _minMax(int v, String vmin, String vmax) {
   }
   return v;
 }
-int _amountOf(String profile, AsInt parentInner) {
+int _amountOf(String profile, AsInt parentClient) {
   final AmountInfo ai = new AmountInfo(profile);
   switch (ai.type) {
     case AmountType.FIXED:
       return ai.value;
     case AmountType.FLEX:
-      return parentInner();
+      return parentClient();
     case AmountType.RATIO:
-      return (parentInner() * ai.value).round().toInt();
+      return (parentClient() * ai.value).round().toInt();
   }
 }

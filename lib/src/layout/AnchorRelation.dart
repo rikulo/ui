@@ -134,9 +134,9 @@ const Map<String, List<int>> _locators = const {
 };
 
 int _anchorWidth(var anchor, View view)
-=> identical(anchor, view.parent) ? anchor.innerWidth: anchor.offsetWidth;
+=> identical(anchor, view.parent) ? anchor.clientWidth: anchor.offsetWidth;
 int _anchorHeight(var anchor, View view)
-=> identical(anchor, view.parent) ? anchor.innerHeight: anchor.offsetHeight;
+=> identical(anchor, view.parent) ? anchor.clientHeight: anchor.offsetHeight;
 
 //TODO: use const to instantiate List when Dart considers Closure as constant
 final List<_AnchorLocator> _anchorXLocators = [
