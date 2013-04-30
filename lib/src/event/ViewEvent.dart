@@ -353,7 +353,7 @@ class SelectEvent<T> extends ViewEvent {
 
   /** Returns the first selected index, or -1 if none is selected.
    *
-   * Notice that [selectedIndex] is meaningless for [TreeModel].
+   * Notice that [selectedIndex] is meaningless for `TreeModel`.
    */
   int get selectedIndex => _selectedIndex;
 

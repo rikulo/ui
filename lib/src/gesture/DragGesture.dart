@@ -78,7 +78,7 @@ abstract class DragGesture extends Gesture {
    * If it returns false, the dragging won't be activated.
    * + [end] is the callback when the dragging is ended. Unlike other callbacks,
    * it must be specified.
-   * + [movement] is the allowed movement to consider if a user is dragging a touch.
+   * + [move] is the allowed movement to consider if a user is dragging a touch.
    * The user has to drag more than this number to activate the dragging.
    * If negative, it is ignored, i.e., it is considered as dragging as long
    * as the touch starts.

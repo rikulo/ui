@@ -32,7 +32,7 @@ class ListDataEvent<T> extends DataEvent {
  * is a concrete class that implements [ListModel], [Selection] and [Disables].
  *
  * Instead of implementing this interface from scratch, it is suggested
- * to extend from [AbstractListModel] or [AbstractDataModel].
+ * to extend from [AbstractListModel].
  */
 abstract class ListModel<T> extends DataModel {
   /** Returns the value at the specified index.

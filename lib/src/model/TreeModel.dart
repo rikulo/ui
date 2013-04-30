@@ -62,7 +62,7 @@ class TreeDataEvent<T> extends DataEvent {
  * ##Selection
  *
  * If you'd like to use [TreeModel] with a UI object that allows the user to select the data,
- * such as [DropDownList] and [TreeView]. You have to implement `Selection<T>`.
+ * such as [DropDownList]. You have to implement `Selection<T>`.
  * Both [DefaultTreeModel] and [AbstractTreeModel] implements it, so you need to implement
  * it only if you implement [TreeModel] from scratch.
  *

@@ -65,8 +65,8 @@ abstract class TreeNode<T> {
    *
    * + [nodes] is a collection of nodes to add. Any element of it can
    * be [TreeNode] or the data.
-   * + [index] is the index that [child] will be added at.
-   * If null, [child] will be added to the end.
+   * + [index] is the index that nodes will be added at.
+   * If null, nodes will be added to the end.
    */
   void addAll(Iterable nodes, [int index]);
   /** Removes the child at index from this node.

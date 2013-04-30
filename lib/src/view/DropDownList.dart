@@ -9,7 +9,7 @@ part of rikulo_view;
  * ##Events
  *
  * + select: an instance of [SelectEvent] indicates the selected item has been changed.
- * Notice that [SelectEvent.selectedItems] is always null. Use [SelectEvent.selectedValues]
+ * Notice that [SelectEvent.selectedValues] is always null. Use [SelectEvent.selectedValues]
  * instead.
  */
 class DropDownList<T> extends View {

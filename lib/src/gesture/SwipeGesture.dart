@@ -51,7 +51,7 @@ class SwipeGestureState extends GestureState {
 class SwipeGesture extends Gesture {
   DragGesture _drag;
 
-  /** Construct a swipe gesture on [owner] with the given callback [swipe].
+  /** Construct a swipe gesture on [owner] with the given callback [action()].
    */
   SwipeGesture(this.owner, SwipeGestureAction action) {
     _drag = new DragGesture(owner, 

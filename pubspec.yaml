@@ -8,6 +8,7 @@ authors:
 - Simon Pai <simonpai@rikulo.org>
 - Henri Chen <henrichen@rikulo.org>
 homepage: http://rikulo.org/projects/ui
+documentation: http://docs.rikulo.org/ui
 dependencies:
   rikulo_commons: any
   browser: any

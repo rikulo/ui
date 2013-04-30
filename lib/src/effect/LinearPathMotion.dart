@@ -18,7 +18,7 @@ class LinearPathMotion extends EasingMotion {
    * + [origin] is the starting offset of the element.
    * + [destination] is the goal offset of the movement.
    * + [move] is invoked continuously during the motion, and if this callback is
-   * provided, [defaultAction] shall be called to attain the default 
+   * provided, [defaultAction()] shall be called to attain the default 
    * behavior of LinearPathMotion.
    */
   LinearPathMotion(Element element, Point origin, Point destination, 

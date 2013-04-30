@@ -677,7 +677,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
 
   /** Places this view at the given location.
    *
-   * + [ref] - the reference view.
+   * + [reference] - the reference view.
    * + [location] - one of the following. If null, "left top" is assumed.   
    * "north start", "north center", "north end",
    * "south start", "south center", "south end",
@@ -686,13 +686,13 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * "top left", "top center", "top right",
    * "center left", "center center", "center right",
    * "bottom left", "bottom center", and "bottom right"
-   * + [x] - the reference point's X coordinate if [ref] is not specified.
+   * + [x] - the reference point's X coordinate if [reference] is not specified.
    * If [reference] is specified, [x] and [y] are ignored.
-   * + [y] - the reference point's Y coordinate if [ref] is not specified.
+   * + [y] - the reference point's Y coordinate if [reference] is not specified.
    * If [reference] is specified, [x] and [y] are ignored.
    */
-  void locateTo(String location, [View ref, int x=0, int y=0]) {
-      locateToView(null, this, location, ref, x, y);
+  void locateTo(String location, [View reference, int x=0, int y=0]) {
+      locateToView(null, this, location, reference, x, y);
   }
 
   /** Requests the layout manager to re-position the layout of this view.
