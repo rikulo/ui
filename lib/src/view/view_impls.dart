@@ -58,7 +58,10 @@ class _ViewImpl {
   //Link//
   //----//
   static void link(View view, View child, View beforeChild) {
-    final _ChildInfo ci = view._initChildInfo();
+    _ChildInfo ci = view._childInfo;
+    if (ci == null)
+      ci = view._childInfo = new _ChildInfo();
+
     if (beforeChild == null) {
       View p = ci.lastChild;
       if (p != null) {
@@ -82,7 +85,7 @@ class _ViewImpl {
     }
     child._parent = view;
 
-    ++view._childInfo.nChild;
+    ++ci.nChild;
     if (child is IDSpace)
       addToIDSpace(child, true); //skip the first owner (i.e., child)
     else
@@ -94,14 +97,16 @@ class _ViewImpl {
     else
       removeFromIDSpaceDown(child, child.spaceOwner);
 
+    final ci = view._childInfo;
     var p = child._prevSibling, n = child._nextSibling;
     if (p != null) p._nextSibling = n;
-    else view._childInfo.firstChild = n;
+    else ci.firstChild = n;
     if (n != null) n._prevSibling = p;
-    else view._childInfo.lastChild = p;
+    else ci.lastChild = p;
     child._nextSibling = child._prevSibling = child._parent = null;
 
-    --view._childInfo.nChild;
+    if (--ci.nChild == 0)
+      view._childInfo = null; //save memory
   }
 
   //utilities//
@@ -224,11 +229,11 @@ void _rmFellow(IDSpace space, String id) {
 }
 
 /** The children information used in [View].
+ * It is designed to save the memory use (since most of them has no child).
  */
 class _ChildInfo {
   View firstChild, lastChild;
   int nChild = 0;
-  List children;
 }
 
 /** The information of an event listener used in [View].

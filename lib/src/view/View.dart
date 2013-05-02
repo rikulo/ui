@@ -59,6 +59,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
   IDSpace _virtIS;
 
   _ChildInfo _childInfo;
+  List<View> _children;
   _EventListenerInfo _evlInfo;
   Map<String, dynamic> _dataset, _mntset;
   Map<String, Annotation> _annos;
@@ -117,11 +118,6 @@ class View implements CapturableStreamTarget<ViewEvent> {
   String get className => "$runtimeType";
     //TODO: check if dart changes its implement and replace with mirrors if necessary
 
-  _ChildInfo _initChildInfo() {
-    if (_childInfo == null)
-      _childInfo = new _ChildInfo();
-    return _childInfo;
-  }
   _EventListenerInfo _initEventListenerInfo() {
     if (_evlInfo == null)
       _evlInfo = new _EventListenerInfo(this);
@@ -223,10 +219,9 @@ class View implements CapturableStreamTarget<ViewEvent> {
   /** Returns a list of child views.
    */
   List<View> get children {
-    final _ChildInfo ci = _initChildInfo();
-    if (ci.children == null)
-      ci.children = new _SubviewList(this);
-    return ci.children;
+    if (_children == null)
+      _children = new _SubviewList(this);
+    return _children;
   }
   /** Returns the number of child views.
    */
