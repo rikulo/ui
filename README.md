@@ -8,6 +8,7 @@ You can access your application directly with a modern Web browser without any p
 * [Documentation](http://docs.rikulo.org/ui/latest)
 * [API Reference](http://api.rikulo.org/ui/latest)
 * [Discussion](http://stackoverflow.com/questions/tagged/rikulo)
+* [Source Code Repos](https://github.com/rikulo/ui)
 * [Issues](https://github.com/rikulo/ui/issues)
 
 Rikulo is distributed under an Apache 2.0 License.
