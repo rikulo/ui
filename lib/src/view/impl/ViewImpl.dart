@@ -108,7 +108,7 @@ class DialogInfo {
   void updateSize() {
     final p = cave.parent;
     final size = p == document.body || p == null ?
-      browser.size: DomUtil.clientSize(p);
+      DomUtil.windowSize: DomUtil.clientSize(p);
     mask.style
       ..width = CssUtil.px(size.width)
       ..height = CssUtil.px(size.height);

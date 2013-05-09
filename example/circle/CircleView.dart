@@ -19,8 +19,8 @@ class Ball {
   view = new View() {
     view.style.cssText = "border-radius: ${size}px;border: ${size}px solid $color";
     view.width = view.height = size << 1;
-    centerX = (browser.size.width ~/ 2) - size;
-    centerY = (browser.size.height ~/ 2) - size;
+    centerX = (window.innerWidth ~/ 2) - size;
+    centerY = (window.innerHeight ~/ 2) - size;
     animator.add((int time) {
       updatePosition(time);
       return true;

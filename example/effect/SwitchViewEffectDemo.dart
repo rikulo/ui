@@ -114,7 +114,7 @@ void main() {
   
   w2.on.click.listen((ViewEvent event) {
     replace(v1, v2, _eff = (Element n1, Element n2, void end()) {
-      final int width = browser.size.width;
+      final int width = window.innerWidth;
       new EasingMotion((num x, MotionState state) {
         final int l = (width * x).toInt();
         n1.style.left = CssUtil.px(-l);
@@ -145,8 +145,8 @@ void main() {
       final List<MotionAction> actions = new List<MotionAction>();
       final List<Function> ends = new List<Function>();
       
-      final int height = browser.size.height;
-      final int width = browser.size.width;
+      final int height = window.innerHeight;
+      final int width = window.innerWidth;
       final Point range = new Point(width / 2, height / 2);
       
       final Element vonode = n1;

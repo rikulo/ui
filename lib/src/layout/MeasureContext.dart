@@ -27,10 +27,19 @@ class MeasureContext {
   final Map<View, int> heights;
   final Map<View, int> _borderWds, _borderHghs;
   Map<String, dynamic> _dataset;
+  Size _windowSize;
 
   MeasureContext(): widths = new HashMap(), heights = new HashMap(),
-  _borderWds = new HashMap(), _borderHghs = new HashMap() {
+  _borderWds = new HashMap(), _borderHghs = new HashMap();
+
+  ///Returns the inner size of the window.
+  Size get windowSize {
+    ///It assumes the window size won't change during layout
+    if (_windowSize == null)  
+      _windowSize = DomUtil.windowSize;
+    return _windowSize;
   }
+
   /** Returns the border's width (left border plus right border).
    */
   int getBorderWidth(View view) {
@@ -176,7 +185,7 @@ class MeasureContext {
       wd = view.layout.handler.measureWidth(this, view);
 
       final AsInt parentClientWidth =
-        () => view.parent != null ? view.parent.clientWidth: browser.size.width;
+        () => view.parent != null ? view.parent.clientWidth: windowSize.width;
       int limit;
       if ((limit = _amountOf(view.profile.maxWidth, parentClientWidth)) != null
       && (wd == null || wd > limit))
@@ -198,7 +207,7 @@ class MeasureContext {
 
       hgh = view.layout.handler.measureHeight(this, view);
       final AsInt parentClientHeight =
-        () => view.parent != null ? view.parent.clientHeight: browser.size.height;
+        () => view.parent != null ? view.parent.clientHeight: windowSize.height;
       int limit;
       if ((limit = _amountOf(view.profile.maxHeight, parentClientHeight)) != null
       && (hgh == null || hgh > limit))
@@ -270,14 +279,14 @@ class MeasureContext {
       nodestyle.height = orghgh;
 
     final AsInt parentClientWidth =
-      () => view.parent != null ? view.parent.clientWidth: browser.size.width;
+      () => view.parent != null ? view.parent.clientWidth: windowSize.width;
     final AsInt parentClientHeight =
-      () => view.parent != null ? view.parent.clientHeight: browser.size.height;
+      () => view.parent != null ? view.parent.clientHeight: windowSize.height;
 
     int limit = _amountOf(view.profile.maxWidth, parentClientWidth);
-    if ((autowidth && width > browser.size.width)
+    if ((autowidth && width > windowSize.width)
     || (limit != null && width > limit)) {
-      nodestyle.width = CssUtil.px(limit != null ? limit: browser.size.width);
+      nodestyle.width = CssUtil.px(limit != null ? limit: windowSize.width);
 
       width = view.node.offsetWidth;
       height = view.node.offsetHeight;

@@ -400,7 +400,7 @@ class SwitchViewDemo {
             final List<Function> ends = new List<Function>();
 
             int h = body.offsetHeight;
-            final int height = h > 0 ? h : browser.size.height;
+            final int height = h > 0 ? h : window.innerHeight;
             final int width = body.offsetWidth;
             final Point range = new Point(width / 2, height / 2);
             

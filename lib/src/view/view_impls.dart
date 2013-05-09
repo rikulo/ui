@@ -32,13 +32,11 @@ class _ViewImpl {
           final cur = new Size(window.innerWidth, window.innerHeight);
           if (old.width != cur.width || old.height < cur.height) {
             old = cur;
-            browser.updateSize();
             _updRootSize();
           }
         };
     } else {
       return (event) { //DOM event
-          browser.updateSize();
           _updRootSize();
         };
     }
@@ -113,7 +111,7 @@ class _ViewImpl {
   /** Creates a dialog encloser.
    */
   static DialogInfo createDialog(Element node, View view, [String maskClass="v-mask"]) {
-    Size size = node == document.body ? browser.size: DomUtil.clientSize(node);
+    Size size = node == document.body ? DomUtil.windowSize: DomUtil.clientSize(node);
 
     final parent = new DivElement();
     parent.style.position = "relative";
