@@ -48,7 +48,7 @@ class MessageQueue<Message> {
     for (int j = _listenerInfos.length; --j >= 0;) {
       final _ListenerInfo info = _listenerInfos[j];
       if (listener == info.listener && filter == info.filter) {
-        _listenerInfos.removeRange(j, 1);
+        _listenerInfos.removeAt(j);
         return true;
       }
     }

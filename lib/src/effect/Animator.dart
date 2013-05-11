@@ -53,7 +53,7 @@ class _Animator implements Animator {
           //so it is OK to use index to iterate
           for (int j = 0; j < _tasks.length; ++j) { //note: length might increase
             if (!_isRemoved(j) && !_tasks[j](inow)) {
-              _tasks.removeRange(j, j + 1);
+              _tasks.removeAt(j);
               --j;
             }
           }

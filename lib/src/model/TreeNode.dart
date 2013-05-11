@@ -189,7 +189,7 @@ class DefaultTreeNode<T> extends TreeNode<T> {
     if (m != null)
       _cleanSelOpen(m, child);
 
-    _children.removeRange(index, 1);
+    _children.removeAt(index);
 
     if (child is DefaultTreeNode) {
       final DefaultTreeNode c = child;

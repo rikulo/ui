@@ -126,7 +126,7 @@ class InterApplicationBridge<Message> {
       for (int j = _receives.length; --j >= 0;) {
         if (_receives[j] == queue) {
           queue.unsubscribe(_msgListener);
-          _receives.removeRange(j, 1);
+          _receives.removeAt(j);
           found = true;
           break;
         }
@@ -139,7 +139,7 @@ class InterApplicationBridge<Message> {
             _evtSub.cancel();
             _evtSub = null;
           }
-          _sends.removeRange(j, 1);
+          _sends.removeAt(j);
           found = true;
           break;
         }

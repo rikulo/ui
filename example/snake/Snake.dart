@@ -60,7 +60,7 @@ class Snake {
     
     if(!grow) {
       removed = body[0];
-      body.removeRange(0, 1);
+      body.removeAt(0);
     }
  
     body.add(to);
