@@ -1,5 +1,9 @@
 #Rikulo Changes
 
+##0.6.7
+
+* Issue 25: rename Selection to SelectionModel, Disables to DisablesModel, Opens to OpensModel, and AbstractSelectionModel to AbstractDataModel
+
 ##0.6.6
 
 *Upgrade Notes*

@@ -59,16 +59,16 @@ class TreeDataEvent<T> extends DataEvent {
  * On the other hand, [DefaultTreeModel] and [TreeNode] do
  * provide `getPath()` to retrieve the path of any given node.
  *
- * ##Selection
+ * ##SelectionModel
  *
  * If you'd like to use [TreeModel] with a UI object that allows the user to select the data,
- * such as [DropDownList]. You have to implement `Selection<T>`.
+ * such as [DropDownList]. You have to implement [SelectionModel].
  * Both [DefaultTreeModel] and [AbstractTreeModel] implements it, so you need to implement
  * it only if you implement [TreeModel] from scratch.
  *
- * ##Opens
+ * ##OpensModel
  *
- * A tree model maintains a list of opened nodes ([Opens]). If a tree node matches
+ * A tree model maintains a list of opened nodes ([OpensModel]). If a tree node matches
  * one of the open nodes, the tree node will be opened, i.e., the child views
  * will be visible to the user.
  */
@@ -113,8 +113,8 @@ abstract class TreeModel<T> extends DataModel {
  * To extend from this class, you have to implement [getChild], [getChildCount]
  * and [isLeaf]. This class provides a default implementation for all other methods.
  */
-abstract class AbstractTreeModel<T> extends AbstractSelectionModel<T>
-implements TreeModel<T>, Opens<T> {
+abstract class AbstractTreeModel<T> extends AbstractDataModel<T>
+implements TreeModel<T>, OpensModel<T> {
   T _root;
   Set<T> _opens;
 

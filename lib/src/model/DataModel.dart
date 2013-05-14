@@ -76,7 +76,7 @@ class ModelError implements Error {
  * Indicates a model that allows to open some of the objects.
  * It is a supplymental interface used with other models, such as [TreeModel].
  */
-abstract class Opens<T> {
+abstract class OpensModel<T> {
   /**
    * Returns the current list of nodes that are opened.
    * It is readonly. Don't modify it directly. Otherwise, UI won't be
@@ -114,7 +114,7 @@ abstract class Opens<T> {
  * Indicates a model that allows to disable some of the objects.
  * It is a supplymental interface used with other models, such as [ListModel].
  */
-abstract class Disables<T> {
+abstract class DisablesModel<T> {
   /**
    * Returns the current list of disabled objects.
    * It is readonly. Don't modify it directly. Otherwise, UI won't be
@@ -159,7 +159,7 @@ abstract class Disables<T> {
  * Indicates a model that allows selection.
  * It is a supplymental interface used with other models, such as [ListModel].
  */
-abstract class Selection<T> {
+abstract class SelectionModel<T> {
   /**
    * Returns the first selected value, or null if none is selected.
    */
@@ -213,10 +213,10 @@ abstract class Selection<T> {
 }
 
 /**
- * A skeletal implementation of [DataModel], [Selection] and [Disables].
+ * A skeletal implementation of [DataModel], [SelectionModel] and [DisablesModel].
  */
-class AbstractSelectionModel<T> extends DataModel
-implements Selection<T>, Disables<T> {
+class AbstractDataModel<T> extends DataModel
+implements SelectionModel<T>, DisablesModel<T> {
   Set<T> _selection, _disables;
   bool _multiple = false;
   /** Constructor.
@@ -226,7 +226,7 @@ implements Selection<T>, Disables<T> {
    * + [disables]: if not null, it will be used to hold the list of disabled items.
    * Unlike [set disables], it won't make a copy.
    */
-  AbstractSelectionModel({Set<T> selection, Set<T> disables, bool multiple:false}) {
+  AbstractDataModel({Set<T> selection, Set<T> disables, bool multiple:false}) {
     _selection = selection != null ? selection: new Set();
     _disables = disables != null ? disables: new Set();
     _multiple = multiple;
@@ -240,7 +240,7 @@ implements Selection<T>, Disables<T> {
     sendEvent(new DataEvent(this, 'disable'));
   }
 
-  //Selection//
+  //SelectionModel//
   T get selectedValue => _selection.isEmpty ? null: _selection.first;
   Set<T> get selection => _selection;
 
@@ -303,7 +303,7 @@ implements Selection<T>, Disables<T> {
     }
   }
 
-  //Disables//
+  //DisablesModel//
   Set<T> get disables => _disables;
   void set disables(Iterable<T> disables) {
     if (!_equals(_disables, disables)) {
@@ -355,7 +355,7 @@ implements Selection<T>, Disables<T> {
   }
 
   bool operator==(other) {
-    return (other is AbstractSelectionModel) && multiple == other.multiple
+    return (other is AbstractDataModel) && multiple == other.multiple
       && _selection == other._selection && _disables == other._disables;
   }
 
