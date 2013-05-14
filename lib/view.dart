@@ -2,7 +2,7 @@
 //Feb. 04, 2012
 library rikulo_view;
 
-import 'dart:html';
+import 'dart:html' hide Selection;
 import 'dart:math';
 import 'dart:collection';
 import 'dart:async' show StreamSubscription, Timer;
