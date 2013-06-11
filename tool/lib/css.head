@@ -18,12 +18,6 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   String getPropertyPriority(String propertyName)
   => _st.getPropertyPriority(propertyName);
-  @override
-  String getPropertyShorthand(String propertyName)
-  => _st.getPropertyShorthand(propertyName); 
-  @override
-  bool isPropertyImplicit(String propertyName)
-  => _st.isPropertyImplicit(propertyName);
 
   @override
   void setProperty(String propertyName, String value, [String priority]) {
