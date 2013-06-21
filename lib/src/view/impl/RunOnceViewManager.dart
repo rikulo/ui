@@ -43,7 +43,7 @@ class RunOnceQueue {
     else
       _tasks = new HashMap();
 
-    _tasks[key] = new Timer(new Duration(milliseconds: timeout), (){
+    _tasks[key] = new Timer(new Duration(milliseconds: timeout), () {
       _tasks.remove(key);
       task();
     });
@@ -153,21 +153,24 @@ class RunOnceViewManager {
 
   void _flushAll() {
     //remove redundent
-    for (final View view in _views) {
+    final List<View> toRemove = [];
+    for (final view in _views) {
       if (_ignoreDetached && !view.inDocument) {
-        _views.remove(view); //ignore detached
+        toRemove.add(view); //ignore detached
         continue;
       }
 
       if (_ignoreSubviews) {
         for (View v = view; (v = v.parent) != null;) {
           if (_views.contains(v)) {//view is subview of v
-            _views.remove(view);  //ignore subview (i.e., view)
+            toRemove.add(view);  //ignore subview (i.e., view)
             break;
           }
         }
       }
     }
+    for (final view in toRemove)
+      _views.remove(view);
 
     //1. handle non-achored roots, 2. handle anchored root, 3. handle others
     final root1 = [], root2 = [], others = [];
@@ -191,9 +194,12 @@ class RunOnceViewManager {
             if (_views.contains(v)) //view is subview of v
               return; //no need to do since the parent will handle it (later)
 
+        final List<View> toRemove = [];
         for (final View v in _views)
           if (v.isDescendantOf(view))
-            _views.remove(v);
+            toRemove.add(v);
+        for (final v in toRemove)
+          _views.remove(v);
 
         handle_(view);
       } else {
