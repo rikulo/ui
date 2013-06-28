@@ -21,7 +21,7 @@ class _StyleImpl implements CssStyleDeclaration {
 
   @override
   void setProperty(String propertyName, String value, [String priority]) {
-    if (?priority)
+    if (priority != null)
       _st.setProperty(propertyName, value, priority);
     else
       _st.setProperty(propertyName, value);
