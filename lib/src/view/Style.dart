@@ -108,4 +108,6 @@ class Style extends View {
   bool get isViewGroup => false;
   @override
   String toString() => "$className($src)";
+  @override
+  String get className => "Style";
 }

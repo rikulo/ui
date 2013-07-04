@@ -11,6 +11,7 @@ class Popup extends View {
         remove();
     });
   }
+  String get className => "Popup";
 }
 void main() {
   View view = new View();

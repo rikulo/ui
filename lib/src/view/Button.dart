@@ -61,4 +61,6 @@ class Button extends TextView {
   @override
   Element render_()
   => new Element.html("<button>$encodedText</button>");
+  @override
+  String get className => "Button";
 }

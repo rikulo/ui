@@ -50,4 +50,6 @@ class Panel extends View {
     return max(super.measureWidth_(mctx), btnw);
   }
   
+  @override
+  String get className => "Panel";
 }

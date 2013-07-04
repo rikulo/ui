@@ -37,4 +37,6 @@ class Canvas extends View {
   bool get isViewGroup => false;
   @override
   bool get shallMeasureContent => false;
+  @override
+  String get className => "Canvas";
 }

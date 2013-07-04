@@ -82,4 +82,6 @@ class TextView extends View {
   bool get isViewGroup => false;
   @override
   String toString() => "$className($text)";
+  @override
+  String get className => "TextView";
 }

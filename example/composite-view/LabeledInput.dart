@@ -30,4 +30,5 @@ class LabeledInput extends View {
   void set value(String value) {
     _input.value = value;
   }
+  String get className => "LabeledInput";
 }

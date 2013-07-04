@@ -74,4 +74,6 @@ class Link extends TextView {
   @override
   Element render_()
   => new Element.html("<a>$encodedText</a>");
+  @override
+  String get className => "Link";
 }

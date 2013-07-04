@@ -142,4 +142,6 @@ class Switch extends View implements Input<bool> {
   @override
   bool get isViewGroup => false;
   String toString() => "$className($value)";
+  @override
+  String get className => "Switch";
 }

@@ -110,12 +110,12 @@ class View implements CapturableStreamTarget<ViewEvent> {
 
   /** Returns the Dart class name.
    *
-   * Default: the class's name
+   * Default: `"View"`. The deriving class shall override with its own class name.
    *
    * A CSS class named `v-$className` will be added to [classes]. In additions, [query]
    * and [queryAll] uses it as the *tag* name for matching the given selector.
    */
-  String get className => "$runtimeType";
+  String get className => "View";
     //TODO: check if dart changes its implement and replace with mirrors if necessary
 
   _EventListenerInfo _initEventListenerInfo() {

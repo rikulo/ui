@@ -332,4 +332,6 @@ class DropDownList<T> extends View {
   /** Returns false to indicate this view doesn't allow any child views.
    */
   bool get isViewGroup => false;
+  @override
+  String get className => "DropDownList";
 }

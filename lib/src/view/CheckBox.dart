@@ -90,6 +90,8 @@ class CheckBox extends TextView implements Input<bool> {
   String get type => "checkbox";
   @override
   String toString() => "$className($text, $value)";
+  @override
+  String get className => "CheckBox";
 }
 
 /**
@@ -112,4 +114,6 @@ class RadioButton extends CheckBox {
 
   @override
   String get type => "radio";
+  @override
+  String get className => "RadioButton";
 }

@@ -17,4 +17,6 @@ class Section extends View implements IDSpace {
    */
   @override
   Element render_() => new Element.tag("section");
+  @override
+  String get className => "Section";
 }

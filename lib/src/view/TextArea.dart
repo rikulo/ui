@@ -111,4 +111,6 @@ class TextArea extends View implements Input<String> {
   bool get isViewGroup => false;
   @override
   String toString() => "$className('$value')";
+  @override
+  String get className => "TextArea";
 }

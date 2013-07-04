@@ -122,4 +122,6 @@ class ScrollView extends View {
     else
       contentNode.nodes.add(child.node);
   }
+  @override
+  String get className => "ScrollView";
 }

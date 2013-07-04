@@ -101,4 +101,6 @@ class Viewport extends View {
     int v = node.clientHeight - _spacingTop - _spacingBottom;
     contentNode.style.height = CssUtil.px(v > 0 ? v: 0);
   }
+  //@override
+  String get className => "Viewport";
 }

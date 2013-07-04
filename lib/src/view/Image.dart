@@ -45,5 +45,8 @@ class Image extends View {
       layoutManager.waitImageLoaded(src);
   }
 
+  @override
   String toString() => "$className('$src')";
+  @override
+  String get className => "Image";
 }
