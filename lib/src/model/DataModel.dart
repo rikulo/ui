@@ -65,7 +65,7 @@ class DataModel implements StreamTarget<DataEvent> {
 
 /** A model exception.
  */
-class ModelError implements Error {
+class ModelError extends Error {
   final String message;
 
   ModelError(this.message);

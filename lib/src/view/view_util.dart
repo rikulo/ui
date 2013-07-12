@@ -60,7 +60,7 @@ abstract class Input<T> {
 
 /** An UI error.
  */
-class UIError implements Error {
+class UIError extends Error {
   final String message;
 
   UIError(this.message);
