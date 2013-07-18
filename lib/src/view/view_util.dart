@@ -46,7 +46,6 @@ class Dir {
   /** The name of this direction. */
   final String name;
 
-  operator==(other) => identical(this, other);
   String toString() => name;
 }
 

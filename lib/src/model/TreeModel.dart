@@ -214,11 +214,6 @@ implements TreeModel<T>, OpensModel<T> {
     if (oldlen != _opens.length)
       _sendOpen();
   }
-  @override
-  bool operator==(other) {
-    return (other is AbstractTreeModel) && super == other
-      && _opens == other._opens;
-  }
 }
 
 /**

@@ -168,8 +168,5 @@ class DefaultListModel<T> extends AbstractListModel<T> {
   }
 
   @override
-  bool operator==(other)
-  => (other is DefaultListModel) && super == other && data == other.data;
-  @override
   String toString() => "DefaultListModel($data)";
 }

@@ -354,11 +354,6 @@ implements SelectionModel<T>, DisablesModel<T> {
       _sendDisable();
   }
 
-  bool operator==(other) {
-    return (other is AbstractDataModel) && multiple == other.multiple
-      && _selection == other._selection && _disables == other._disables;
-  }
-
   /** Compares a set with a collection.
    */
   static bool _equals(Set set, Iterable col) {
