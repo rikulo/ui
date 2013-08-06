@@ -176,8 +176,6 @@ class _UIEvent extends DomEvent {
 
   UIEvent get _uc => cause;
 
-  int get charCode => _uc.$dom_charCode;
-  int get keyCode => _uc.$dom_keyCode;
   int get which => _uc.which;
   Point get page => _uc.page;
 
