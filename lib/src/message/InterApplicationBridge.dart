@@ -54,7 +54,7 @@ class InterApplicationBridge<Message> {
     _evtListener = (event) { //DOM event
       var data;
       try {
-        data = Json.parse(event.data);
+        data = JSON.decode(event.data);
 
         if (data["iabId"] != _name || (_origin != "*" && _origin != event.origin))
           return; //not matched
@@ -78,7 +78,7 @@ class InterApplicationBridge<Message> {
     _msgListener = (message) {
       if (!_ignoreMessage) {
         for (final MessageQueue<Message> queue in _receives) {
-          window.postMessage(Json.stringify({
+          window.postMessage(JSON.encode({
             "queId": queue.uuid,
             "iabId": _name,
             "message": message}), _origin);
