@@ -33,24 +33,12 @@ Broadcaster broadcaster = new _Broadcaster();
  * A map of event listeners for handling the broadcasted events.
  */
 class BroadcastEvents {
-  final CapturableStreamTarget<ViewEvent> _owner;
-  BroadcastEvents._(StreamTarget<ViewEvent> owner): _owner = new _CaptStreamTarget(owner);
+  final StreamTarget<ViewEvent> _owner;
+  BroadcastEvents._(this._owner);
 
   /** Listeners for the activate event ([ActivateEvent]).
    */
   Stream<ActivateEvent> get activate => EventStreams.activate.forTarget(_owner);
-}
-///for proxy Broadcaster to CapturableStreamTarget
-class _CaptStreamTarget implements CapturableStreamTarget<ViewEvent> {
-  final StreamTarget<ViewEvent> _target;
-  _CaptStreamTarget(this._target);
-
-  void addEventListener(String type, void listener(ViewEvent event), {bool useCapture: false}) {
-    _target.addEventListener(type, listener);
-  }
-  void removeEventListener(String type, void listener(ViewEvent event), {bool useCapture: false}) {
-    _target.removeEventListener(type, listener);
-  }
 }
 
 /** An implementation of [Broadcaster].

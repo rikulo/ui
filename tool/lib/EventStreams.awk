@@ -9,7 +9,7 @@ BEGIN {
 	print " *"
 	print " * This may be used to capture DOM events:"
 	print " *"
-	print " *     EventStreams.keyDown.forTarget(element, useCapture: true).listen(...);"
+	print " *     EventStreams.keyDown.forTarget(element).listen(...);"
 	print " *"
 	print " * Otherwise, you can use `view.on.keyDown.listen(...)` instead (see [View])."
 	print " */"

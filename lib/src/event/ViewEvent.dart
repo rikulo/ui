@@ -361,6 +361,6 @@ class SelectEvent<T> extends ViewEvent {
 /**
  * A factory to expose [View]'s events as Streams.
  */
-class ViewEventStreamProvider<T extends ViewEvent> extends CapturableStreamProvider<T> {
+class ViewEventStreamProvider<T extends ViewEvent> extends StreamProvider<T> {
   const ViewEventStreamProvider(String eventType): super(eventType);
 }

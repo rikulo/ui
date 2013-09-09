@@ -241,8 +241,8 @@ class _EventListenerInfo {
   ViewEvents on;
   //the registered event listeners; created on demand
   Map<String, List<ViewEventListener>> _listeners;
-  //generic DOM event listener
-  Map<String, EventListener> _domListeners;
+  //generic DOM subscriptions
+  Map<String, StreamSubscription> _domSubscriptions;
 
   _EventListenerInfo(View this._owner) {
     on = new ViewEvents(_owner);
@@ -256,7 +256,7 @@ class _EventListenerInfo {
   }
   /** Adds an event listener. (Called by ViewEvents)
    */
-  void add(String type, ViewEventListener listener, bool useCapture) {
+  void add(String type, ViewEventListener listener) {
     if (listener == null)
       throw new ArgumentError("listener");
 
@@ -270,18 +270,18 @@ class _EventListenerInfo {
     }).add(listener);
 
     if (first)
-      _owner.onEventListened_(type, useCapture: useCapture);
+      _owner.onDomEventListened_(type);
   }
   /** Removes an event listener. (Called by ViewEvents)
    */
-  void remove(String type, ViewEventListener listener, bool useCapture) {
+  void remove(String type, ViewEventListener listener) {
     List<ViewEventListener> ls;
     if (_listeners != null && (ls = _listeners[type]) != null) {
       int j = ls.indexOf(listener);
       if (j >= 0) {
         ls.removeAt(j);
         if (ls.isEmpty)
-          _owner.onEventUnlistened_(type, useCapture: useCapture);
+          _owner.onDomEventUnlistened_(type);
       }
     }
   }
@@ -307,23 +307,24 @@ class _EventListenerInfo {
     return dispatched;
   }
 
-  void onEventListened_(String type, Element target, bool useCapture) {
+  void onDomEventListened_(String type, Element target) {
     //proxy known DOM events
     final disp = _domEventDispatcher(type);
     if (disp != null) {
       final ln = disp(_owner); //must be non-null
-      if (_domListeners == null)
-        _domListeners = new HashMap();
-      (target != null ? target: _domEvtTarget(type, _owner.node))
-        .$dom_addEventListener(type.toLowerCase(), _domListeners[type] = ln, useCapture);
+      if (_domSubscriptions == null)
+        _domSubscriptions = new HashMap();
+      _domSubscriptions[type] =
+        (target != null ? target: _domEvtTarget(type, _owner.node))
+          .on[type.toLowerCase()].listen(ln);
     }
   }
-  void onEventUnlistened_(String type, Element target, bool useCapture) {
-    EventListener ln;
-    if (_domListeners != null
-    && (ln = _domListeners.remove(type)) != null)
-      (target != null ? target: _domEvtTarget(type, _owner.node))
-        .$dom_removeEventListener(type.toLowerCase(), ln, useCapture);
+  void onDomEventUnlistened_(String type) {
+    if (_domSubscriptions != null) {
+      final subscription = _domSubscriptions.remove(type);
+      if (subscription != null)
+        subscription.cancel();
+    }
   }
 }
 

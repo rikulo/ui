@@ -50,7 +50,7 @@ typedef void AfterMount(View view);
  *
  * + [ViewUtil]
  */
-class View implements CapturableStreamTarget<ViewEvent> {
+class View implements StreamTarget<ViewEvent> {
   String _uuid;
 
   View _parent;
@@ -1006,19 +1006,15 @@ class View implements CapturableStreamTarget<ViewEvent> {
   /** Adds an event listener.
    *
    * Alternatively, you can use [on] instead.
-   *
-   * * [useCapture] is applicable only if the view event is caused by a DOM event.
    */
-  void addEventListener(String type, ViewEventListener listener, {bool useCapture: false}) {
-    _initEventListenerInfo().add(type, listener, useCapture);
+  void addEventListener(String type, ViewEventListener listener) {
+    _initEventListenerInfo().add(type, listener);
   }
   /** Removes an event listener.
-   *
-   * * [useCapture] is applicable only if the view event is caused by a DOM event.
    */
-  void removeEventListener(String type, ViewEventListener listener, {bool useCapture: false}) {
+  void removeEventListener(String type, ViewEventListener listener) {
     if (_evlInfo != null)
-      _evlInfo.remove(type, listener, useCapture);
+      _evlInfo.remove(type, listener);
   }
 
   /** Sends an event to this view.
@@ -1060,7 +1056,7 @@ class View implements CapturableStreamTarget<ViewEvent> {
       //CONSIDER if it is better to have a queue shared by views/message queues/broadcaster
   }
 
-  /** Called when the first event listener is registered for the given type.
+  /** Called when the first DOM event listener is registered for the given type.
    *
    * By default, it checks if the given type is a DOM event. If so, it will
    * register a DOM event listener to [node] for proxying the DOM event to
@@ -1074,18 +1070,20 @@ class View implements CapturableStreamTarget<ViewEvent> {
    * If it is not what you expected, you can override this method and
    * pass the right element to superclass. For example,
    *
-   *     void onEventListened_(String type, {Element target, bool useCapture:false}) {
-   *       super.onEventListened_(type,
-   *         target: type == "change" ? getNode("inp"): target, useCapture: useCapture);
+   *     void onDomEventListened_(String type, {Element target}) {
+   *       super.onDomEventListened_(type,
+   *         target: type == "change" ? getNode("inp"): target);
    *     }
    */
-  void onEventListened_(String type, {Element target, bool useCapture: false})
-  => _evlInfo.onEventListened_(type, target, useCapture);
+  void onDomEventListened_(String type, {Element target}) {
+    _evlInfo.onDomEventListened_(type, target);
+  }
   /** Called when the last event listener has been unregistered for the given
-   * type. It undoes whatever is done in [onEventListened_].
+   * type. It undoes whatever is done in [onDomEventListened_].
    */
-  void onEventUnlistened_(String type, {Element target, bool useCapture: false})
-  => _evlInfo.onEventUnlistened_(type, target, useCapture);
+  void onDomEventUnlistened_(String type) {
+    _evlInfo.onDomEventUnlistened_(type);
+  }
 
   /**
    * A map of application-specific data.

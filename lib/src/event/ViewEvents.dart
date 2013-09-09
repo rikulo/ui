@@ -7,7 +7,7 @@ part of rikulo_event;
  *
  * This may be used to capture DOM events:
  *
- *     EventStreams.keyDown.forTarget(element, useCapture: true).listen(...);
+ *     EventStreams.keyDown.forTarget(element).listen(...);
  *
  * Otherwise, you can use `view.on.keyDown.listen(...)` instead (see [View]).
  */
@@ -167,7 +167,7 @@ class EventStreams {
 
 ///A map of [ViewEvent] streams
 class ViewEvents {
-  final CapturableStreamTarget<ViewEvent> _owner;
+  final StreamTarget<ViewEvent> _owner;
   ViewEvents(this._owner);
 
   //View Event Streams//
