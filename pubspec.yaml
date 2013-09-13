@@ -1,5 +1,5 @@
 name: rikulo_ui
-version: 0.7.0
+version: 0.7.0+1
 description: > 
   A cross-platform framework for creating amazing 
   Web and native mobile applications in Dart & HTML5.

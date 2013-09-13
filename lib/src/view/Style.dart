@@ -100,7 +100,7 @@ class Style extends View {
         out.write(content);
       out.write('</style>');
     }
-    node.innerHtml = out.toString();
+    DomUtil.setUncheckedInnerHtml(node, out.toString());
   }
   /** Returns false to indicate this view doesn't allow any child views.
    */
