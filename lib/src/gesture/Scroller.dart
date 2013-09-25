@@ -414,7 +414,8 @@ class _BoundedInertialMotion extends Motion {
   final Element element;
   final num friction, bounce, snapSpeedThreshold;
   final Rect range;
-  final Function _move, _end, _snap;
+  final Function _move, _end;
+  final ScrollerSnap _snap;
   num _posx, _posy, _velx, _vely;
   Motion _snapMotion;
   
