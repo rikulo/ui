@@ -3,6 +3,8 @@
 // Author: tomyeh
 part of rikulo_layout;
 
+typedef void _Task();
+
 /**
  * The layout mananger that manages the layout controllers ([Layout]).
  * There is exactly one layout manager per application.
@@ -10,7 +12,7 @@ part of rikulo_layout;
 class LayoutManager extends RunOnceViewManager {
   final Map<String, Layout> _layouts;
   final Set<String> _imgWaits;
-  final List<Task> _afters;
+  final List<_Task> _afters;
   int _inLayout = 0, _inCallback = 0;
 
   LayoutManager(): _layouts = new HashMap(), _imgWaits = new Set(), _afters = [],
@@ -102,9 +104,9 @@ class LayoutManager extends RunOnceViewManager {
       doLayout(mctx, view);
     } finally {
       if (--_inLayout <= 0 && isQueueEmpty() && !_afters.isEmpty) {
-        final List<Task> afters = new List.from(_afters);
+        final List<_Task> afters = new List.from(_afters);
         _afters.clear();
-        for (final Task task in afters)
+        for (final _Task task in afters)
           task();
       }
     }
@@ -112,7 +114,7 @@ class LayoutManager extends RunOnceViewManager {
   /** Schedules a task to be run after the layout is done.
    * If there is no pending layouts, it will be executed immediately.
    */
-  void afterLayout(Task task) {
+  void afterLayout(void task()) {
     if (_inLayout <= 0 && isQueueEmpty())
       task();
     else

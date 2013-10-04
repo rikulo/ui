@@ -3,9 +3,8 @@
 // Author: tomyeh
 part of rikulo_view_impl;
 
-/** The task used with [RunOnceViewManager] for handling a view.
- */
-typedef void RunOnceViewTask(View view);
+typedef void _ViewTask(View view);
+typedef void _Task();
 
 /** The callback to check if [RunOnceViewManager] is allowed to handle views.
  * You can register a callback to [RunOnceViewManager] by use of [RunOnceViewManager.addReadyCheck].
@@ -18,11 +17,11 @@ typedef void RunOnceViewTask(View view);
  *
  * + [force] whether to force the task to flush the queued task if any.
  */
-typedef bool RunOnceReadyCheck(View view, Task continueTask, bool force);
+typedef bool RunOnceReadyCheck(View view, void continueTask(), bool force);
 
 /**
  * A task queue used to manage deferred run-once tasks.
- * A run-once task is a task ([Task]) that needs to be executed only once.
+ * A run-once task is a task that needs to be executed only once.
  * In other words, the result is the same no matter how many
  * times they are executed.
  *
@@ -61,7 +60,7 @@ class RunOnceQueue {
  * A run-once view manager is used to manage the view-handling task in
  * a way that the task will be executed only once for each view .
  *
- * To use it, first you assign the view-handling task ([RunOnceViewTask])
+ * To use it, first you assign the view-handling task
  * in the constructor.
  * Then, you can invoke [queue] to put a view into the queue. The view won't be handled
  * immediately. Rather it will be handled later automatically.
@@ -78,7 +77,7 @@ class RunOnceQueue {
 class RunOnceViewManager {
   final RunOnceQueue _runQue;
   final Set<View> _views;
-  final RunOnceViewTask _task;
+  final _ViewTask _task;
   final List<RunOnceReadyCheck> _readyChecks;
   final bool _ignoreDetached;
   final bool _ignoreSubviews;
@@ -92,7 +91,7 @@ class RunOnceViewManager {
    * + [ignoreSubviews] specifies whether to ignore the sub views. In other words,
    * a view will be ignored, if one of its ancestor has been queued for handling too.
    */
-  RunOnceViewManager(RunOnceViewTask task,
+  RunOnceViewManager(void task(View view),
   {bool ignoreDetached: true, bool ignoreSubviews: true}):
   _runQue = new RunOnceQueue(), _views = new Set(), _readyChecks = new List(),
   _task = task, _ignoreDetached = ignoreDetached, _ignoreSubviews = ignoreSubviews {
@@ -227,7 +226,7 @@ class RunOnceViewManager {
   }
   bool _ready(View view, bool force) {
     if (!_readyChecks.isEmpty) {
-      final Task continueTask = () {flush(view, force);};
+      final _Task continueTask = () {flush(view, force);};
       for (final RunOnceReadyCheck ready in _readyChecks)
         if (!ready(view, continueTask, force))
           return false;
@@ -237,14 +236,14 @@ class RunOnceViewManager {
 }
 
 class _ModelRenderer extends RunOnceViewManager {
-  final List<Task> _contTasks;
-  static final RunOnceViewTask _renderTask = (view) {view.renderModel_();};
+  final List<_Task> _contTasks;
+  static final _ViewTask _renderTask = (view) {view.renderModel_();};
 
   _ModelRenderer(): _contTasks = new List(),
   super(_renderTask, ignoreSubviews: false) {
     //For better performance (though optional), we make layoutManager to
     //wait until all pending renderers are done
-    layoutManager.addReadyCheck((View view, Task continueTask, bool force) {
+    layoutManager.addReadyCheck((View view, void continueTask(), bool force) {
       if (force)
         flush(view, true);
 
@@ -259,7 +258,7 @@ class _ModelRenderer extends RunOnceViewManager {
     super.flush(view, force);
 
     if (isQueueEmpty()) { //_contTasks runs only after all views are processed
-      final List<Task> tasks = new List.from(_contTasks);
+      final List<_Task> tasks = new List.from(_contTasks);
       _contTasks.clear();
 
       for (final task in tasks)
