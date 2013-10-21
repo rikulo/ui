@@ -66,7 +66,7 @@ class Scroller {
       
     }, end: (DragGestureState state) {
       final Point pos = DomUtil.position(owner);
-      final Rect range = _state.dragRange;
+      final Rectangle range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 
         _hor, _ver, _onMove, _onEnd, snap: snap)..run();
@@ -233,7 +233,7 @@ class ScrollerState extends GestureState {
   Point _pos, _ppos;
   int _time, _ptime;
   Size _contentSizeCache, _viewPortSizeCache;
-  Rect _dragRangeCache;
+  Rectangle _dragRangeCache;
 
   ScrollerState._(Scroller scroller, this.eventTarget, 
   this._fnViewPortSize, this._fnContentSize, this._time) :
@@ -286,12 +286,12 @@ class ScrollerState extends GestureState {
     _dragRangeCache = null;
   }
   
-  Rect get dragRange {
+  Rectangle get dragRange {
     if (_dragRangeCache == null) {
       Size vsize = viewPortSize, csize = contentSize;
       num left = vsize.width - csize.width,
           top = vsize.height - csize.height;
-      _dragRangeCache = new Rect(left, top, -left, -top);
+      _dragRangeCache = new Rectangle(left, top, -left, -top);
     }
     return _dragRangeCache;
   }
@@ -413,7 +413,7 @@ class _BoundedInertialMotion extends Motion {
   final bool _hor, _ver;
   final Element element;
   final num friction, bounce, snapSpeedThreshold;
-  final Rect range;
+  final Rectangle range;
   final Function _move, _end;
   final ScrollerSnap _snap;
   num _posx, _posy, _velx, _vely;

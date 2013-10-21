@@ -6,7 +6,7 @@ import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/gesture.dart';
 import "package:rikulo_commons/html.dart";
 
-Rect range;
+Rectangle range;
 
 View _createSimpleDrag(View parent, bool transform, [num threshold = -1]) {
   String label = "Simple";
@@ -30,7 +30,7 @@ View _createBoxedDrag(View parent) {
   view.on.layout.listen((event) {
     final Size vs = DomUtil.offsetSize(view.node);
     final Size bs = DomUtil.clientSize(box.node);
-    range = new Rect(0, 0, bs.width - vs.width, bs.height - vs.height);
+    range = new Rectangle(0, 0, bs.width - vs.width, bs.height - vs.height);
     final Point vpos = Points.snap(range, DomUtil.position(view.node));
     view.left = vpos.x;
     view.top = vpos.y;

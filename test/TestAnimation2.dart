@@ -49,7 +49,7 @@ void main() {
   cube.top = 250;
   mainView.addChild(cube);
   
-  Rect range = new Rect(50, 50, 446 - 50, 446 - 50);
+  Rectangle range = new Rectangle(50, 50, 446 - 50, 446 - 50);
   Element element = cube.node;
   final num deceleration = 0.0005;
   

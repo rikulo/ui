@@ -199,7 +199,7 @@ class ViewUtil {
    * It doesn't count the child views that are anchored or [View.shallLayout_]
    * returns false.
    */
-  static Rect getRect(List<View> children) {
+  static Rectangle getRect(List<View> children) {
     int left = 0, top = 0, right = 0, bottom = 0;
     for (final View child in children) {
       if ((child.parent == null || child.parent.shallLayout_(child))
@@ -218,7 +218,7 @@ class ViewUtil {
         }
       }
     }
-    return new Rect(left, top, right - left, bottom - top);
+    return new Rectangle(left, top, right - left, bottom - top);
   }
 
   /** Returns an ID that uniquely identifying this application.
