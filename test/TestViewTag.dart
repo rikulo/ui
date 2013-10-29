@@ -18,7 +18,6 @@ void main() {
   for (int i = 0; i < 10; ++i) {
     View li = new View.tag("li");
     (li.node as LIElement)
-      ..type = "i"
       ..value =  i*2 + 1
       ..innerHtml = "This is the <b>$i</b> item.";
     li.top = 22 * i;

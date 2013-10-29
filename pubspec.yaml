@@ -1,5 +1,5 @@
 name: rikulo_ui
-version: 0.7.2
+version: 0.7.3
 description: > 
   A cross-platform framework for creating amazing 
   Web and native mobile applications in Dart & HTML5.
@@ -12,4 +12,5 @@ documentation: http://docs.rikulo.org/ui
 dependencies:
   rikulo_commons: any
   browser: any
-  meta: any
+environment:
+  sdk: ">=0.8.7"

@@ -100,7 +100,7 @@ class Style extends View {
         out.write(content);
       out.write('</style>');
     }
-    node.unsafeInnerHtml = out.toString();
+    node.setInnerHtml(out.toString(), treeSanitizer: const _NullTreeSanitizer());
   }
   /** Returns false to indicate this view doesn't allow any child views.
    */
@@ -110,4 +110,9 @@ class Style extends View {
   String toString() => "$className($src)";
   @override
   String get className => "Style";
+}
+
+class _NullTreeSanitizer implements NodeTreeSanitizer {
+  const _NullTreeSanitizer();
+  void sanitizeTree(Node node) {}
 }
