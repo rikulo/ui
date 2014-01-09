@@ -66,7 +66,7 @@ class TextView extends View {
    *
    * Default: it encodes [text] by replacing linefeed with <br/>, if any.
    */
-  String get encodedText => XmlUtil.encode(text, multiline:true);
+  String get encodedText => XmlUtil.encode(text, multiLine:true);
 
   /** Creates and returns the DOM elements of this view.
    *
