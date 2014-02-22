@@ -223,6 +223,13 @@ class View implements StreamTarget<ViewEvent> {
       _children = new _SubviewList(this);
     return _children;
   }
+  /**
+   * Sets the list of children
+   */
+  set children(List<View> children) {
+    this.children.clear();
+    children.forEach((child) => this.addChild(child));
+  }
   /** Returns the number of child views.
    */
   int get childCount => _childInfo != null ? _childInfo.nChild: 0;
