@@ -974,6 +974,25 @@ class View implements StreamTarget<ViewEvent> {
       _layout = new LayoutDeclaration(this);
     return _layout;
   }
+  
+  setLayout({
+    String type, 
+    String orientation, 
+    String align,
+    String spacing,
+    String gap,
+    String width,
+    String height
+    }) {
+    _layout = new LayoutDeclaration(this)
+      ..type = type
+      ..orient = orientation
+      ..align = align
+      ..spacing = spacing
+      ..gap = gap
+      ..width = width
+      ..height = height;
+  }
   /** Returns the profile, i.e., the layout requirement, of this view.
    * It provides additional information for the parent view to
    * layout this view.
