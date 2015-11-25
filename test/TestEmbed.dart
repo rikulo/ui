@@ -27,7 +27,7 @@ void main() {
     ..addChild(webView)
     ..addToDocument();
 
-  for (Element n in webView.node.queryAll("span"))
+  for (Element n in webView.node.querySelectorAll("span"))
     new Switch(true).addToDocument(ref: n);
 
   var tv = new TextView.fromHtml("<b>Right Top</b>")

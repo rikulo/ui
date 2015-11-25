@@ -8,7 +8,7 @@ String _s(String s) => s != null ? s: "";
 ///Converts null to false
 bool _b(bool b) => b != null && b;
 ///Converts null to 0
-num _n(num n) => n != null ? n: 0;
+//num _n(num n) => n != null ? n: 0;
 
 /** Collection of utilities for View's implementation
  */
@@ -18,7 +18,8 @@ class _ViewImpl {
     if (!_inited) {
       _inited = true;
       window.onResize.listen(_onResize);
-      (browser.touch ? document.onTouchStart: document.onMouseDown).listen(_onTouchStart);
+      (browser.touch ? document.onTouchStart as Stream: document.onMouseDown as Stream)
+        .listen(_onTouchStart);
     }
   }
   static bool _inited = false;
@@ -338,7 +339,7 @@ Element _domEvtTarget(String type, Element node) {
   //so we have to register it to the right element
   if ((type == "focus" || type == "blur") && !_inpTags.contains(node.tagName.toLowerCase())) {
     for (final tag in _inpTags) {
-      final inp = node.query(tag);
+      final inp = node.querySelector(tag);
       if (inp != null) {
         node = inp;
         break;
@@ -584,9 +585,8 @@ class _SubviewList extends IterableBase<View> with ListMixin<View>
   @override
   bool remove(Object element) {
     if (element is View) {
-      View v = element as View;
-      if (v.parent == _owner) {
-        v.remove();
+      if (element.parent == _owner) {
+        element.remove();
         return true;
       }
     }

@@ -5,12 +5,12 @@ library rikulo_view;
 import 'dart:html';
 import 'dart:math';
 import 'dart:collection';
-import 'dart:async' show StreamSubscription, Timer;
+import 'dart:async' show StreamSubscription, Timer, Stream;
 
 import 'package:rikulo_commons/util.dart';
 import 'package:rikulo_commons/async.dart';
-import 'package:rikulo_commons/html.dart';
 
+import 'html.dart';
 import 'event.dart';
 import 'gesture.dart';
 import 'effect.dart';

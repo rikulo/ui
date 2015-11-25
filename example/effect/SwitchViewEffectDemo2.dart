@@ -3,9 +3,7 @@
 import 'dart:html';
 import 'dart:math';
 
-import "package:rikulo_commons/util.dart";
-import "package:rikulo_commons/html.dart";
-
+import 'package:rikulo_ui/html.dart';
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/event.dart';
 import 'package:rikulo_ui/effect.dart';
@@ -65,7 +63,7 @@ void addRandFly(Element element, Point range, List<MotionAction> actions, List<F
 final Random rand = new Random();
 
 void main() {
-  Element body = query("#v-main-switch");
+  Element body = querySelector("#v-main-switch");
   if (body == null)
     body = document.body;
   final View v1 = new View()..addToDocument(ref: body);
@@ -184,7 +182,7 @@ void main() {
     });
   }));
   
-  View w4 = btn("N/A")..profile.location = "bottom right";
+  btn("N/A")..profile.location = "bottom right";
   container.addChild(btn("N/A")
       ..profile.location = "bottom right"
       ..on.click.listen((ViewEvent event) => replace(v1, v2, _eff = null)));

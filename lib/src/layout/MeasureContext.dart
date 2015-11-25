@@ -331,6 +331,7 @@ class MeasureContext {
       case AmountType.IGNORE:
         return ViewImpl.isWidthByApp(view) ? view.width: null;
     }
+    return null;
   }
   /** Returns the height set by the applicaiton, or null if it is not set yet or set
    * by a layout.
@@ -344,6 +345,7 @@ class MeasureContext {
       case AmountType.IGNORE:
         return ViewImpl.isHeightByApp(view) ? view.height: null;
     }
+    return null;
   }
 
   /** Calls back [View.onPreLayout_].
@@ -367,7 +369,7 @@ class MeasureContext {
    * for internal use.
    */
   Map<String, dynamic> get dataset
-  => _dataset != null ? _dataset: MapUtil.onDemand(() => _dataset = new HashMap());
+  => _dataset != null ? _dataset: MapUtil.auto(() => _dataset = new HashMap());
 }
 
 int _minMax(int v, String vmin, String vmax) {
@@ -391,4 +393,5 @@ int _amountOf(String profile, AsInt parentClient) {
     case AmountType.RATIO:
       return (parentClient() * ai.value).round().toInt();
   }
+  return null;
 }

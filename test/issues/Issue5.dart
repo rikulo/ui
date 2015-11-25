@@ -1,7 +1,4 @@
 import 'package:rikulo_ui/view.dart';
-import 'package:rikulo_ui/model.dart';
-import 'package:rikulo_ui/event.dart';
-import 'package:rikulo_commons/util.dart';
 
 void main() {
   Button btn = new Button("Click me to show switches and check if one is on and the other off");

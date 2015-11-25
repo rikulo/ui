@@ -11,7 +11,6 @@ class Selectors {
   static List<Selector> parse(String source) {
     final List<Token> tokens = tokenize(source);
     final List<Selector> selectors = new List<Selector>();
-    final int len = tokens.length;
     int state = STATE_PRE_SLCT;
     Selector curr = null;
     SimpleSelectorSequence currSeq = null;

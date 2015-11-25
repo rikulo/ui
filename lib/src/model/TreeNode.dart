@@ -104,7 +104,6 @@ class DefaultTreeNode<T> extends TreeNode<T> {
     if (nodes != null)
       addAll(nodes);
   }
-  static int _$uuid = 0;
   DefaultTreeModel<T> get model => _parent != null ? _parent.model: _model;
   void set model(DefaultTreeModel<T> model) {
     _model = model;

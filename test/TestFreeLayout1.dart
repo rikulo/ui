@@ -1,6 +1,5 @@
 //Test Code: TestFreeLayout1
 
-import 'dart:html';
 import 'package:rikulo_ui/view.dart';
 
 void main() {

@@ -4,7 +4,7 @@ import 'dart:math';
 import 'dart:html';
 
 import 'package:rikulo_ui/view.dart';
-import 'package:rikulo_commons/html.dart';
+import 'package:rikulo_ui/html.dart';
 
 View _system(Point pos, num maxsyssize, int rad, [String name]) {
   View sys = new View();
@@ -16,10 +16,10 @@ View _system(Point pos, num maxsyssize, int rad, [String name]) {
   sys.style.borderWidth = sys.style.borderRadius = CssUtil.px(shownRad);
   sys.classes.add("star");
   
-  final int subsysnum = (rad * _rand() / 3).toInt();
+  final int subsysnum = rad * _rand() ~/ 3;
   for (int i = 0; i < subsysnum; i++) {
-    int subsyssize = (maxsyssize * (1 + _rand()) / 2).toInt();
-    int subrad = (rad * (_rand() * 2 + 1) / 3).toInt();
+    int subsyssize = maxsyssize * (1 + _rand()) ~/ 2;
+    int subrad = rad * (_rand() * 2 + 1) ~/ 3;
     num subdist = subsyssize + (maxsyssize - subsyssize) * 3 * _rand();
     num subarg = _rand() * PI * 2;
     Point subpos = new Point(subdist * cos(subarg), subdist * sin(subarg));

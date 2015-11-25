@@ -232,7 +232,6 @@ class DropDownList<T> extends View {
     if (_model is ListModel) {
       final ListModel<T> model = _model;
       final SelectionModel<T> selmodel = _model as SelectionModel;
-      final multiple = selmodel.multiple;
       for (int i = 0, len = model.length; i < len; ++i) {
         final obj = model[i];
         final selected = selmodel.isSelected(obj);
@@ -266,7 +265,6 @@ class DropDownList<T> extends View {
   void _renderTree(Element parent, TreeModel<T> model,
   Renderer renderer, var parentData, int parentIndex) {
     final SelectionModel<T> selmodel = _model as SelectionModel;
-    final bool multiple = selmodel.multiple;
     for (int i = 0, len = model.getChildCount(parentData); i < len; ++i) {
       final T child = model.getChild(parentData, i);
       final bool selected = selmodel.isSelected(child);
@@ -321,12 +319,12 @@ class DropDownList<T> extends View {
     final TreeModel<T> model = _model;
     return model.getChildAt(path);
   }
-  static void _renderAttrs(StringBuffer out, bool selected, bool disabled) {
+  /*static void _renderAttrs(StringBuffer out, bool selected, bool disabled) {
     if (selected)
       out.write(' selected');
     if (disabled)
       out.write(' disabled');
-  }
+  }*/
 
   @override
   /** Returns false to indicate this view doesn't allow any child views.

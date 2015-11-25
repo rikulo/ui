@@ -36,7 +36,6 @@ class TileLayout extends AbstractLayout {
   void doLayout_(MeasureContext mctx, View view, List<View> children) {
     final clientWidth = () => view.clientWidth,
       clientHeight = () => view.clientHeight;
-    int sum = 0;
     for (final View child in children) {
       if (!view.shallLayout_(child)) {
         mctx.setWidthByProfile(child, clientWidth);

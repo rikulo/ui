@@ -4,12 +4,10 @@ library snake;
 import 'dart:html';
 import 'dart:math';
 
-import "package:rikulo_commons/util.dart";
 
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/gesture.dart';
 import 'package:rikulo_ui/effect.dart';
-import 'package:rikulo_ui/event.dart';
 
 part 'SnakePoint.dart';
 part 'SnakeEnvironment.dart';

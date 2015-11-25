@@ -48,6 +48,7 @@ class LayoutManager extends RunOnceViewManager {
     for (final nm in _layouts.keys)
       if (layout == _layouts[nm])
         return nm;
+    return null;
   }
 
   /** Handles the layout of the given view.

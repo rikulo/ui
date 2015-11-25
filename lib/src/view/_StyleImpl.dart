@@ -78,6 +78,9 @@ class _StyleImpl implements CssStyleDeclaration {
   }
 
   @override
+  bool supportsProperty(String propertyName)
+  => _st.supportsProperty(propertyName);
+  @override
   String get alignContent => _st.alignContent;
   @override
   void set alignContent(String v) {_st.alignContent = _s(v);}
@@ -150,6 +153,10 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set backgroundAttachment(String v) {_st.backgroundAttachment = _s(v);}
   @override
+  String get backgroundBlendMode => _st.backgroundBlendMode;
+  @override
+  void set backgroundBlendMode(String v) {_st.backgroundBlendMode = _s(v);}
+  @override
   String get backgroundClip => _st.backgroundClip;
   @override
   void set backgroundClip(String v) {_st.backgroundClip = _s(v);}
@@ -197,10 +204,6 @@ class _StyleImpl implements CssStyleDeclaration {
   String get backgroundSize => _st.backgroundSize;
   @override
   void set backgroundSize(String v) {_st.backgroundSize = _s(v);}
-  @override
-  String get blendMode => _st.blendMode;
-  @override
-  void set blendMode(String v) {_st.blendMode = _s(v);}
   @override
   String get border => _st.border;
   @override
@@ -482,14 +485,6 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set color(String v) {_st.color = _s(v);}
   @override
-  String get colorCorrection => _st.colorCorrection;
-  @override
-  void set colorCorrection(String v) {_st.colorCorrection = _s(v);}
-  @override
-  String get columnAxis => _st.columnAxis;
-  @override
-  void set columnAxis(String v) {_st.columnAxis = _s(v);}
-  @override
   String get columnBreakAfter => _st.columnBreakAfter;
   @override
   void set columnBreakAfter(String v) {_st.columnBreakAfter = _s(v);}
@@ -506,13 +501,13 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set columnCount(String v) {_st.columnCount = _s(v);}
   @override
+  String get columnFill => _st.columnFill;
+  @override
+  void set columnFill(String v) {_st.columnFill = _s(v);}
+  @override
   String get columnGap => _st.columnGap;
   @override
   void set columnGap(String v) {_st.columnGap = _s(v);}
-  @override
-  String get columnProgression => _st.columnProgression;
-  @override
-  void set columnProgression(String v) {_st.columnProgression = _s(v);}
   @override
   String get columnRule => _st.columnRule;
   @override
@@ -530,6 +525,10 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set columnRuleWidth(String v) {_st.columnRuleWidth = _s(v);}
   @override
+  String get columns => _st.columns;
+  @override
+  void set columns(String v) {_st.columns = _s(v);}
+  @override
   String get columnSpan => _st.columnSpan;
   @override
   void set columnSpan(String v) {_st.columnSpan = _s(v);}
@@ -537,10 +536,6 @@ class _StyleImpl implements CssStyleDeclaration {
   String get columnWidth => _st.columnWidth;
   @override
   void set columnWidth(String v) {_st.columnWidth = _s(v);}
-  @override
-  String get columns => _st.columns;
-  @override
-  void set columns(String v) {_st.columns = _s(v);}
   @override
   String get content => _st.content;
   @override
@@ -557,10 +552,6 @@ class _StyleImpl implements CssStyleDeclaration {
   String get cursor => _st.cursor;
   @override
   void set cursor(String v) {_st.cursor = _s(v);}
-  @override
-  String get dashboardRegion => _st.dashboardRegion;
-  @override
-  void set dashboardRegion(String v) {_st.dashboardRegion = _s(v);}
   @override
   String get direction => _st.direction;
   @override
@@ -610,14 +601,6 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set float(String v) {_st.float = _s(v);}
   @override
-  String get flowFrom => _st.flowFrom;
-  @override
-  void set flowFrom(String v) {_st.flowFrom = _s(v);}
-  @override
-  String get flowInto => _st.flowInto;
-  @override
-  void set flowInto(String v) {_st.flowInto = _s(v);}
-  @override
   String get font => _st.font;
   @override
   void set font(String v) {_st.font = _s(v);}
@@ -666,21 +649,65 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set fontWeight(String v) {_st.fontWeight = _s(v);}
   @override
+  String get grid => _st.grid;
+  @override
+  void set grid(String v) {_st.grid = _s(v);}
+  @override
+  String get gridArea => _st.gridArea;
+  @override
+  void set gridArea(String v) {_st.gridArea = _s(v);}
+  @override
+  String get gridAutoColumns => _st.gridAutoColumns;
+  @override
+  void set gridAutoColumns(String v) {_st.gridAutoColumns = _s(v);}
+  @override
+  String get gridAutoFlow => _st.gridAutoFlow;
+  @override
+  void set gridAutoFlow(String v) {_st.gridAutoFlow = _s(v);}
+  @override
+  String get gridAutoRows => _st.gridAutoRows;
+  @override
+  void set gridAutoRows(String v) {_st.gridAutoRows = _s(v);}
+  @override
   String get gridColumn => _st.gridColumn;
   @override
   void set gridColumn(String v) {_st.gridColumn = _s(v);}
   @override
-  String get gridColumns => _st.gridColumns;
+  String get gridColumnEnd => _st.gridColumnEnd;
   @override
-  void set gridColumns(String v) {_st.gridColumns = _s(v);}
+  void set gridColumnEnd(String v) {_st.gridColumnEnd = _s(v);}
+  @override
+  String get gridColumnStart => _st.gridColumnStart;
+  @override
+  void set gridColumnStart(String v) {_st.gridColumnStart = _s(v);}
   @override
   String get gridRow => _st.gridRow;
   @override
   void set gridRow(String v) {_st.gridRow = _s(v);}
   @override
-  String get gridRows => _st.gridRows;
+  String get gridRowEnd => _st.gridRowEnd;
   @override
-  void set gridRows(String v) {_st.gridRows = _s(v);}
+  void set gridRowEnd(String v) {_st.gridRowEnd = _s(v);}
+  @override
+  String get gridRowStart => _st.gridRowStart;
+  @override
+  void set gridRowStart(String v) {_st.gridRowStart = _s(v);}
+  @override
+  String get gridTemplate => _st.gridTemplate;
+  @override
+  void set gridTemplate(String v) {_st.gridTemplate = _s(v);}
+  @override
+  String get gridTemplateAreas => _st.gridTemplateAreas;
+  @override
+  void set gridTemplateAreas(String v) {_st.gridTemplateAreas = _s(v);}
+  @override
+  String get gridTemplateColumns => _st.gridTemplateColumns;
+  @override
+  void set gridTemplateColumns(String v) {_st.gridTemplateColumns = _s(v);}
+  @override
+  String get gridTemplateRows => _st.gridTemplateRows;
+  @override
+  void set gridTemplateRows(String v) {_st.gridTemplateRows = _s(v);}
   @override
   String get highlight => _st.highlight;
   @override
@@ -690,45 +717,25 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set hyphenateCharacter(String v) {_st.hyphenateCharacter = _s(v);}
   @override
-  String get hyphenateLimitAfter => _st.hyphenateLimitAfter;
-  @override
-  void set hyphenateLimitAfter(String v) {_st.hyphenateLimitAfter = _s(v);}
-  @override
-  String get hyphenateLimitBefore => _st.hyphenateLimitBefore;
-  @override
-  void set hyphenateLimitBefore(String v) {_st.hyphenateLimitBefore = _s(v);}
-  @override
-  String get hyphenateLimitLines => _st.hyphenateLimitLines;
-  @override
-  void set hyphenateLimitLines(String v) {_st.hyphenateLimitLines = _s(v);}
-  @override
-  String get hyphens => _st.hyphens;
-  @override
-  void set hyphens(String v) {_st.hyphens = _s(v);}
-  @override
-  String get imageOrientation => _st.imageOrientation;
-  @override
-  void set imageOrientation(String v) {_st.imageOrientation = _s(v);}
-  @override
   String get imageRendering => _st.imageRendering;
   @override
   void set imageRendering(String v) {_st.imageRendering = _s(v);}
   @override
-  String get imageResolution => _st.imageResolution;
+  String get isolation => _st.isolation;
   @override
-  void set imageResolution(String v) {_st.imageResolution = _s(v);}
+  void set isolation(String v) {_st.isolation = _s(v);}
   @override
   String get justifyContent => _st.justifyContent;
   @override
   void set justifyContent(String v) {_st.justifyContent = _s(v);}
   @override
+  String get justifySelf => _st.justifySelf;
+  @override
+  void set justifySelf(String v) {_st.justifySelf = _s(v);}
+  @override
   String get letterSpacing => _st.letterSpacing;
   @override
   void set letterSpacing(String v) {_st.letterSpacing = _s(v);}
-  @override
-  String get lineAlign => _st.lineAlign;
-  @override
-  void set lineAlign(String v) {_st.lineAlign = _s(v);}
   @override
   String get lineBoxContain => _st.lineBoxContain;
   @override
@@ -742,17 +749,9 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set lineClamp(String v) {_st.lineClamp = _s(v);}
   @override
-  String get lineGrid => _st.lineGrid;
-  @override
-  void set lineGrid(String v) {_st.lineGrid = _s(v);}
-  @override
   String get lineHeight => _st.lineHeight;
   @override
   void set lineHeight(String v) {_st.lineHeight = _s(v);}
-  @override
-  String get lineSnap => _st.lineSnap;
-  @override
-  void set lineSnap(String v) {_st.lineSnap = _s(v);}
   @override
   String get listStyle => _st.listStyle;
   @override
@@ -838,37 +837,9 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set marginTopCollapse(String v) {_st.marginTopCollapse = _s(v);}
   @override
-  String get marquee => _st.marquee;
-  @override
-  void set marquee(String v) {_st.marquee = _s(v);}
-  @override
-  String get marqueeDirection => _st.marqueeDirection;
-  @override
-  void set marqueeDirection(String v) {_st.marqueeDirection = _s(v);}
-  @override
-  String get marqueeIncrement => _st.marqueeIncrement;
-  @override
-  void set marqueeIncrement(String v) {_st.marqueeIncrement = _s(v);}
-  @override
-  String get marqueeRepetition => _st.marqueeRepetition;
-  @override
-  void set marqueeRepetition(String v) {_st.marqueeRepetition = _s(v);}
-  @override
-  String get marqueeSpeed => _st.marqueeSpeed;
-  @override
-  void set marqueeSpeed(String v) {_st.marqueeSpeed = _s(v);}
-  @override
-  String get marqueeStyle => _st.marqueeStyle;
-  @override
-  void set marqueeStyle(String v) {_st.marqueeStyle = _s(v);}
-  @override
   String get mask => _st.mask;
   @override
   void set mask(String v) {_st.mask = _s(v);}
-  @override
-  String get maskAttachment => _st.maskAttachment;
-  @override
-  void set maskAttachment(String v) {_st.maskAttachment = _s(v);}
   @override
   String get maskBoxImage => _st.maskBoxImage;
   @override
@@ -938,6 +909,10 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set maskSize(String v) {_st.maskSize = _s(v);}
   @override
+  String get maskSourceType => _st.maskSourceType;
+  @override
+  void set maskSourceType(String v) {_st.maskSourceType = _s(v);}
+  @override
   String get maxHeight => _st.maxHeight;
   @override
   void set maxHeight(String v) {_st.maxHeight = _s(v);}
@@ -978,9 +953,17 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set minZoom(String v) {_st.minZoom = _s(v);}
   @override
-  String get nbspMode => _st.nbspMode;
+  String get mixBlendMode => _st.mixBlendMode;
   @override
-  void set nbspMode(String v) {_st.nbspMode = _s(v);}
+  void set mixBlendMode(String v) {_st.mixBlendMode = _s(v);}
+  @override
+  String get objectFit => _st.objectFit;
+  @override
+  void set objectFit(String v) {_st.objectFit = _s(v);}
+  @override
+  String get objectPosition => _st.objectPosition;
+  @override
+  void set objectPosition(String v) {_st.objectPosition = _s(v);}
   @override
   String get opacity => _st.opacity;
   @override
@@ -1021,10 +1004,6 @@ class _StyleImpl implements CssStyleDeclaration {
   String get overflow => _st.overflow;
   @override
   void set overflow(String v) {_st.overflow = _s(v);}
-  @override
-  String get overflowScrolling => _st.overflowScrolling;
-  @override
-  void set overflowScrolling(String v) {_st.overflowScrolling = _s(v);}
   @override
   String get overflowWrap => _st.overflowWrap;
   @override
@@ -1122,22 +1101,6 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set quotes(String v) {_st.quotes = _s(v);}
   @override
-  String get regionBreakAfter => _st.regionBreakAfter;
-  @override
-  void set regionBreakAfter(String v) {_st.regionBreakAfter = _s(v);}
-  @override
-  String get regionBreakBefore => _st.regionBreakBefore;
-  @override
-  void set regionBreakBefore(String v) {_st.regionBreakBefore = _s(v);}
-  @override
-  String get regionBreakInside => _st.regionBreakInside;
-  @override
-  void set regionBreakInside(String v) {_st.regionBreakInside = _s(v);}
-  @override
-  String get regionOverflow => _st.regionOverflow;
-  @override
-  void set regionOverflow(String v) {_st.regionOverflow = _s(v);}
-  @override
   String get resize => _st.resize;
   @override
   void set resize(String v) {_st.resize = _s(v);}
@@ -1150,9 +1113,17 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set rtlOrdering(String v) {_st.rtlOrdering = _s(v);}
   @override
-  String get shapeInside => _st.shapeInside;
+  String get rubyPosition => _st.rubyPosition;
   @override
-  void set shapeInside(String v) {_st.shapeInside = _s(v);}
+  void set rubyPosition(String v) {_st.rubyPosition = _s(v);}
+  @override
+  String get scrollBehavior => _st.scrollBehavior;
+  @override
+  void set scrollBehavior(String v) {_st.scrollBehavior = _s(v);}
+  @override
+  String get shapeImageThreshold => _st.shapeImageThreshold;
+  @override
+  void set shapeImageThreshold(String v) {_st.shapeImageThreshold = _s(v);}
   @override
   String get shapeMargin => _st.shapeMargin;
   @override
@@ -1161,10 +1132,6 @@ class _StyleImpl implements CssStyleDeclaration {
   String get shapeOutside => _st.shapeOutside;
   @override
   void set shapeOutside(String v) {_st.shapeOutside = _s(v);}
-  @override
-  String get shapePadding => _st.shapePadding;
-  @override
-  void set shapePadding(String v) {_st.shapePadding = _s(v);}
   @override
   String get size => _st.size;
   @override
@@ -1206,6 +1173,10 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set textDecoration(String v) {_st.textDecoration = _s(v);}
   @override
+  String get textDecorationColor => _st.textDecorationColor;
+  @override
+  void set textDecorationColor(String v) {_st.textDecorationColor = _s(v);}
+  @override
   String get textDecorationLine => _st.textDecorationLine;
   @override
   void set textDecorationLine(String v) {_st.textDecorationLine = _s(v);}
@@ -1242,9 +1213,9 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set textIndent(String v) {_st.textIndent = _s(v);}
   @override
-  String get textLineThrough => _st.textLineThrough;
+  String get textJustify => _st.textJustify;
   @override
-  void set textLineThrough(String v) {_st.textLineThrough = _s(v);}
+  void set textJustify(String v) {_st.textJustify = _s(v);}
   @override
   String get textLineThroughColor => _st.textLineThroughColor;
   @override
@@ -1269,10 +1240,6 @@ class _StyleImpl implements CssStyleDeclaration {
   String get textOverflow => _st.textOverflow;
   @override
   void set textOverflow(String v) {_st.textOverflow = _s(v);}
-  @override
-  String get textOverline => _st.textOverline;
-  @override
-  void set textOverline(String v) {_st.textOverline = _s(v);}
   @override
   String get textOverlineColor => _st.textOverlineColor;
   @override
@@ -1302,10 +1269,6 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set textShadow(String v) {_st.textShadow = _s(v);}
   @override
-  String get textSizeAdjust => _st.textSizeAdjust;
-  @override
-  void set textSizeAdjust(String v) {_st.textSizeAdjust = _s(v);}
-  @override
   String get textStroke => _st.textStroke;
   @override
   void set textStroke(String v) {_st.textStroke = _s(v);}
@@ -1322,10 +1285,6 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set textTransform(String v) {_st.textTransform = _s(v);}
   @override
-  String get textUnderline => _st.textUnderline;
-  @override
-  void set textUnderline(String v) {_st.textUnderline = _s(v);}
-  @override
   String get textUnderlineColor => _st.textUnderlineColor;
   @override
   void set textUnderlineColor(String v) {_st.textUnderlineColor = _s(v);}
@@ -1334,6 +1293,10 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set textUnderlineMode(String v) {_st.textUnderlineMode = _s(v);}
   @override
+  String get textUnderlinePosition => _st.textUnderlinePosition;
+  @override
+  void set textUnderlinePosition(String v) {_st.textUnderlinePosition = _s(v);}
+  @override
   String get textUnderlineStyle => _st.textUnderlineStyle;
   @override
   void set textUnderlineStyle(String v) {_st.textUnderlineStyle = _s(v);}
@@ -1341,6 +1304,14 @@ class _StyleImpl implements CssStyleDeclaration {
   String get textUnderlineWidth => _st.textUnderlineWidth;
   @override
   void set textUnderlineWidth(String v) {_st.textUnderlineWidth = _s(v);}
+  @override
+  String get touchAction => _st.touchAction;
+  @override
+  void set touchAction(String v) {_st.touchAction = _s(v);}
+  @override
+  String get touchActionDelay => _st.touchActionDelay;
+  @override
+  void set touchActionDelay(String v) {_st.touchActionDelay = _s(v);}
   @override
   String get transform => _st.transform;
   @override
@@ -1426,6 +1397,10 @@ class _StyleImpl implements CssStyleDeclaration {
   @override
   void set widows(String v) {_st.widows = _s(v);}
   @override
+  String get willChange => _st.willChange;
+  @override
+  void set willChange(String v) {_st.willChange = _s(v);}
+  @override
   String get wordBreak => _st.wordBreak;
   @override
   void set wordBreak(String v) {_st.wordBreak = _s(v);}
@@ -1437,10 +1412,6 @@ class _StyleImpl implements CssStyleDeclaration {
   String get wordWrap => _st.wordWrap;
   @override
   void set wordWrap(String v) {_st.wordWrap = _s(v);}
-  @override
-  String get wrap => _st.wrap;
-  @override
-  void set wrap(String v) {_st.wrap = _s(v);}
   @override
   String get wrapFlow => _st.wrapFlow;
   @override

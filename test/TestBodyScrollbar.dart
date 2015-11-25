@@ -2,7 +2,6 @@
 
 import "dart:html" show window;
 import 'package:rikulo_ui/view.dart';
-import "package:rikulo_commons/html.dart";
 
 void main() {
   final View mainView = new View()..addToDocument();

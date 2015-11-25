@@ -8,7 +8,7 @@ import "dart:html";
 import "dart:math";
 
 import "package:rikulo_commons/util.dart";
-import 'package:rikulo_commons/html.dart';
+import "html.dart";
 
 part "src/effect/Animator.dart";
 part "src/effect/Motion.dart";

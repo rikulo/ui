@@ -1,9 +1,7 @@
 //Sample Code: Test Animation
 
-import 'dart:html';
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/event.dart';
-import 'package:rikulo_commons/util.dart';
 
 View createCube(int size, String txt, String desc) {
   View v = new View();

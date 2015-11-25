@@ -2,9 +2,7 @@
 
 import 'dart:html' show Point;
 
-import 'package:rikulo_commons/html.dart';
-import "package:rikulo_commons/util.dart";
-
+import 'package:rikulo_ui/html.dart';
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/event.dart';
 

@@ -118,7 +118,7 @@ class Declaration {
   /** Removes the property of the given name.
    */
   String removeProperty(String propertyName) {
-    _props.remove(propertyName);
+    return _props.remove(propertyName);
   }
   /** Sets the value of the given property.
    * If the given value is null or empty, the property will be removed.
@@ -175,6 +175,7 @@ class ViewUtil {
       if ((view = _views[node]) != null)
         return view;
     } while ((node = node.parent) != null && node is! Document);
+    return null;
   }
   static final Map<Element, View> _views = new HashMap();
 

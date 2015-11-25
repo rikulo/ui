@@ -5,9 +5,8 @@ import 'dart:math';
 
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/gesture.dart';
-import 'package:rikulo_ui/event.dart';
 import 'package:rikulo_ui/effect.dart';
-import "package:rikulo_commons/html.dart";
+import "package:rikulo_ui/html.dart";
 
 View createCube(int size, String txt) {
   View v = new View();

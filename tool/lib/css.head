@@ -77,3 +77,6 @@ class _StyleImpl implements CssStyleDeclaration {
     _view.height = CssUtil.intOf(v, defaultValue: null);
   }
 
+  @override
+  bool supportsProperty(String propertyName)
+  => _st.supportsProperty(propertyName);

@@ -1,6 +1,5 @@
 //Sample Code: Test Animation
 
-import 'dart:html';
 import 'dart:math';
 
 import 'package:rikulo_ui/view.dart';

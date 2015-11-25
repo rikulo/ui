@@ -4,7 +4,7 @@ import "dart:html";
 
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/gesture.dart';
-import "package:rikulo_commons/html.dart";
+import 'package:rikulo_ui/html.dart';
 
 Rectangle range;
 

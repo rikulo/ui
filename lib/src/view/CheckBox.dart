@@ -78,7 +78,7 @@ class CheckBox extends TextView implements Input<bool> {
 
   @override
   void updateInner_([String html]) {
-    node.query("label").innerHtml = "$encodedText${_s(html)}";
+    node.querySelector("label").innerHtml = "$encodedText${_s(html)}";
   }
   @override
   Element render_()

@@ -6,7 +6,7 @@ library rikulo_example_viewport;
 import "dart:html";
 
 import 'package:rikulo_ui/view.dart';
-import "package:rikulo_commons/html.dart";
+import "package:rikulo_ui/html.dart";
 
 /**
  * A view port that demostrates how to implement a view that the origin of

@@ -1,11 +1,9 @@
 //Sample Code: Test Log
 
-import 'dart:html';
 import "dart:async" show Timer;
 
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/event.dart';
-import 'package:rikulo_commons/util.dart';
 
 View getContainer(DomEvent event) {
   //to protect the drop from other source, we have to check data first
@@ -14,6 +12,7 @@ View getContainer(DomEvent event) {
     for (View view = event.target; view != null; view = view.parent)
       if (view.classes.contains('container'))
         return view;
+  return null;
 }
 
 void main() {

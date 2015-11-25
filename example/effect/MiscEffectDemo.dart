@@ -1,11 +1,8 @@
 import "dart:html";
 import "dart:math";
 
-import "package:rikulo_commons/util.dart";
-import 'package:rikulo_commons/html.dart';
-
+import 'package:rikulo_ui/html.dart';
 import 'package:rikulo_ui/view.dart';
-import 'package:rikulo_ui/view/impl.dart';
 import 'package:rikulo_ui/event.dart';
 import 'package:rikulo_ui/effect.dart';
 
@@ -62,7 +59,7 @@ class ViewDemo {
   }
 
   void main() {
-    final Element body = query("#v-main-view");
+    final Element body = querySelector("#v-main-view");
     
     final View mainView = new View()..addToDocument(ref: body);
     View container = new View()..width = 240..height = 240;
@@ -171,7 +168,7 @@ class PanelDemo {
           easing: (num t) => t * t, period: 300, end: end);
 
   void main() {
-    final Element body = query("#v-main-panel");
+    final Element body = querySelector("#v-main-panel");
     
     final View mainView = new View()..addToDocument(ref: body);
     mainView.addChild(new Style(content: ".v-mask {background: rgba(127,127,127,0.25);}"));
@@ -317,7 +314,7 @@ class SwitchViewDemo {
   final Random rand = new Random();
 
   void main() {
-    Element body = query("#v-main-switch");
+    Element body = querySelector("#v-main-switch");
     if (body == null)
       body = document.body;
     final View v1 = new View()..addToDocument(ref: body);
@@ -436,7 +433,7 @@ class SwitchViewDemo {
           });
         }));
     
-    View w4 = btn("N/A")..profile.location = "bottom right";
+    btn("N/A")..profile.location = "bottom right";
     container.addChild(btn("N/A")
         ..profile.location = "bottom right"
         ..on.click.listen((ViewEvent event) => replace(v1, v2, _eff = null)));

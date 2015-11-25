@@ -6,7 +6,6 @@ import 'dart:html';
 
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/effect.dart';
-import 'package:rikulo_commons/util.dart';
 
 void main() {
   final View mainView = new View()..addToDocument();

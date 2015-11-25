@@ -29,8 +29,8 @@ class MessageQueue<Message> {
   String get uuid {
     if (_uuid == null) {
       final int appid = ViewUtil.appId;
-      _uuid = StringUtil.encodeId(_uuidNext++,
-        appid > 0 ? "q${StringUtil.encodeId(appid)}_": "q_");
+      _uuid = encodeId(_uuidNext++,
+        appid > 0 ? "q${encodeId(appid)}_": "q_");
     }
     return _uuid;
   }

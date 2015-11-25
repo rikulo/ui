@@ -46,7 +46,7 @@ void main() {
   btn2.profile.anchorView = btn;
   btn2.profile.location = "east start";
   btn2.on.click.listen((event) {
-    final pp = new Popup()
+    new Popup()
       ..width = 200
       ..height = 150
       ..style.backgroundColor = "orange"

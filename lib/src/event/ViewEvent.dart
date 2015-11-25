@@ -123,7 +123,7 @@ class DomEvent extends ViewEvent {
   int get which => 0;
   /** Indicates whether Alt+Graph key was pressed when the event fire.d
    */
-  bool get altGraphKey => false;
+//  bool get altGraphKey => false;
   /** Indicates whether the ALT key was pressed when the event fired.
    */
   bool get altKey => false;
@@ -189,7 +189,7 @@ class _KBEvent extends _UIEvent {
 
   int get charCode => _kc.charCode;
   int get keyCode => _kc.keyCode;
-  bool get altGraphKey => _kc.altGraphKey;
+//  bool get altGraphKey => _kc.altGraphKey;
   bool get altKey => _kc.altKey;
   bool get ctrlKey => _kc.ctrlKey;
   bool get metaKey => _kc.metaKey;

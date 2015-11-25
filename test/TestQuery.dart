@@ -1,10 +1,7 @@
 //Sample Code: Test Query
 
-import 'dart:html';
-
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/view/select.dart';
-import 'package:rikulo_commons/util.dart';
 
 void assertIdentical(String src) {
   assertLegal(src, "[${src}]");
@@ -18,16 +15,16 @@ void assertLegal(String src, [String result]) {
       if (r != result)
         logMsg("* Unexpected parse result: ${r} (expecting ${result})");
     }
-  } on SelectorParseException catch (e) {
+  } on SelectorParseException catch (_) {
     logMsg("* Should be legal: ${src}");
   }
 }
 
 void assertIllegal(String src) {
   try {
-    List<Selector> selectors = Selectors.parse(src);
+    Selectors.parse(src);
     logMsg("* Should be illegal: ${src}");
-  } on SelectorParseException catch (e) {
+  } on SelectorParseException catch (_) {
   }
 }
 

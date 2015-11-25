@@ -28,6 +28,7 @@ class Style extends View {
       return n.sheet;
     if ((n = _styleNode) != null)
       return n.sheet;
+    return null;
   }
   /** Returns the URL of the CSS file, or null if no CSS file specified.
    */
@@ -61,8 +62,8 @@ class Style extends View {
     _updateInner(content, null);
   }
 
-  LinkElement get _linkNode => node.query("link");
-  StyleElement get _styleNode => node.query("style");
+  LinkElement get _linkNode => node.querySelector("link");
+  StyleElement get _styleNode => node.querySelector("style");
 
   /** Returns the CSS media, or null if no media specified.
    *

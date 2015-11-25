@@ -24,9 +24,7 @@ class DataModel implements StreamTarget<DataEvent> {
     if (listener == null)
       throw new ArgumentError("listener");
 
-    bool first = false;
     _listeners.putIfAbsent(type, () {
-      first = true;
       return [];
     }).add(listener);
   }

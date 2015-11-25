@@ -2,8 +2,6 @@
 //History: Fri, May 25, 2012  5:00:33 PM
 // Author: tomyeh
 
-import 'dart:math';
-
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/model.dart';
 
@@ -25,7 +23,7 @@ void main() {
     ddl.model = model;
     mainView.requestLayout(true);
     mainView.addChild(
-      new TextView(ddl.node.query('option') != null ?
+      new TextView(ddl.node.querySelector('option') != null ?
         "Success!":
         "Wrong! requestLayout+immediate shall force model to render immediately"));
     mainView.requestLayout();

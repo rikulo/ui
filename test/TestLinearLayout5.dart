@@ -1,6 +1,5 @@
 //Sample Code: LinearLayout Test 5
 
-import 'dart:html';
 import 'package:rikulo_ui/view.dart';
 
 void main() {

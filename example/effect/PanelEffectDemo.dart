@@ -1,10 +1,7 @@
 import "dart:html";
 
-import "package:rikulo_commons/util.dart";
-import 'package:rikulo_commons/html.dart' show browser;
-
+import 'package:rikulo_ui/html.dart' show browser;
 import 'package:rikulo_ui/view.dart';
-import 'package:rikulo_ui/view/impl.dart';
 import 'package:rikulo_ui/event.dart';
 import 'package:rikulo_ui/effect.dart';
 
@@ -19,7 +16,7 @@ EasingMotion hideWithMask(EasingMotion motion, Element mask, MotionEnd end) =>
         easing: (num t) => t * t, period: 300, end: end);
 
 void main() {
-  final Element body = query("#v-main-panel");
+  final Element body = querySelector("#v-main-panel");
   
   final View mainView = new View()..addToDocument(ref: body);
   mainView.addChild(new Style(content: ".v-mask {background: rgba(127,127,127,0.25);}"));

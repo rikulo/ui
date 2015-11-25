@@ -8,8 +8,8 @@ import "dart:math";
 import "dart:collection" show HashMap;
 
 import 'package:rikulo_commons/util.dart';
-import 'package:rikulo_commons/html.dart';
 
+import "html.dart";
 import "view.dart";
 import "view/impl.dart";
 

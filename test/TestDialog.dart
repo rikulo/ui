@@ -1,7 +1,6 @@
 //Test Code: TestDialog
 
 import 'package:rikulo_ui/view.dart';
-import 'package:rikulo_commons/util.dart';
 
 void main() {
   final mainView = new View()..addToDocument();

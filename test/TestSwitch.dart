@@ -2,12 +2,7 @@
 //History: Fri, May 25, 2012  5:00:33 PM
 // Author: tomyeh
 
-import 'dart:html';
-
 import 'package:rikulo_ui/view.dart';
-import 'package:rikulo_ui/model.dart';
-import 'package:rikulo_ui/event.dart';
-import 'package:rikulo_commons/util.dart';
 
 Switch createSwitch(bool value, [String onLabel, String offLabel, bool small=false]) {
   Switch view = new Switch(value, onLabel, offLabel);

@@ -130,7 +130,7 @@ class View implements StreamTarget<ViewEvent> {
    */
   String get uuid {
     if (_uuid == null)
-      _uuid = StringUtil.encodeId(_uuidNext++, viewConfig.uuidPrefix);
+      _uuid = encodeId(_uuidNext++, viewConfig.uuidPrefix);
     return _uuid;
   }
   static int _uuidNext = 0;
@@ -459,7 +459,7 @@ class View implements StreamTarget<ViewEvent> {
     if (subId == null || subId.isEmpty)
       return node;
     subId = "#$uuid-$subId";
-    return inDocument ? document.query(subId): node.query(subId);
+    return inDocument ? document.querySelector(subId): node.querySelector(subId);
       //For better performance, we use document.query if possible
   }
   /** Retrieve the mask node if the view is added to the document as a dialog, 
@@ -519,7 +519,7 @@ class View implements StreamTarget<ViewEvent> {
 
     _ViewImpl.init();
 
-    if (ref == null && (ref = document.query("#v-main")) == null)
+    if (ref == null && (ref = document.querySelector("#v-main")) == null)
       ref = document.body;
 
     Node p, nxt;
@@ -529,7 +529,7 @@ class View implements StreamTarget<ViewEvent> {
         nxt = ref;
         break;
       case "replace":
-        final refid = ref is Element ? (ref as Element).id: "";
+        final refid = ref is Element ? ref.id: "";
         if (!refid.isEmpty && id.isEmpty)
           id = refid;
 
@@ -876,8 +876,6 @@ class View implements StreamTarget<ViewEvent> {
   /** Returns the width of this view.
    *
    * Default: null (means the width shall be calculated based on its content).
-   *
-   * + To get the real width on the document, use [realWidth].
    */
   int get width => _width;
   /** Sets the width of this view.
@@ -894,8 +892,6 @@ class View implements StreamTarget<ViewEvent> {
   /** Returns the height of this view.
    *
    * Default: null (means the height shall be calculated based on its content).
-   *
-   * + To get the real height on the document, use [realHeight].
    */
   int get height => _height;
   /** Sets the height of this view.
@@ -1105,7 +1101,7 @@ class View implements StreamTarget<ViewEvent> {
    * See also [mountset].
    */
   Map<String, dynamic> get dataset
-  => _dataset != null ? _dataset: MapUtil.onDemand(() => _dataset = new HashMap());
+  => _dataset != null ? _dataset: MapUtil.auto(() => _dataset = new HashMap());
   /**
    * A map of application-specific data that exist only
    * if the view is attached to the document. It is useful if you'd like to
@@ -1118,7 +1114,7 @@ class View implements StreamTarget<ViewEvent> {
    * See also [dataset].
    */
   Map<String, dynamic> get mountset
-  => _mntset != null ? _mntset: MapUtil.onDemand(() => _mntset = new HashMap());
+  => _mntset != null ? _mntset: MapUtil.auto(() => _mntset = new HashMap());
 
   /** A map of annotations.
    * Annotations ([Annotation]) are the meta information providing
@@ -1126,7 +1122,7 @@ class View implements StreamTarget<ViewEvent> {
    * The meaning depends on the tool or utility that handles a view.
    */
   Map<String, Annotation> get annotations
-  => _annos != null ? _annos: MapUtil.onDemand(() => _annos = new HashMap());
+  => _annos != null ? _annos: MapUtil.auto(() => _annos = new HashMap());
 
   String toString() => "$className(${id.isEmpty ? _uuid != null ? _uuid: '': id})";
 }

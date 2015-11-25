@@ -6,7 +6,7 @@ You can access your application directly with a modern Web browser without any p
 
 * [Home](http://rikulo.org/projects/ui)
 * [Documentation](http://docs.rikulo.org/ui/latest)
-* [API Reference](http://api.rikulo.org/ui/latest)
+* [API Reference](http://www.dartdocs.org/documentation/rikulo_ui/0.8.0)
 * [Discussion](http://stackoverflow.com/questions/tagged/rikulo)
 * [Source Code Repos](https://github.com/rikulo/ui)
 * [Issues](https://github.com/rikulo/ui/issues)

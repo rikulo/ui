@@ -32,13 +32,13 @@ class _Printc {
   }
   bool _ready() {
     if (_node == null) {
-      final Element db = document.query("#v-dashboard");
+      final Element db = document.querySelector("#v-dashboard");
       if (db == null) { //not in simulator
         _node = new Element.html(
   '<div class="v-printc-x"></div>');
         document.body.children.add(_node);
       } else { //running in simulator
-        _node = db.query(".v-printc");
+        _node = db.querySelector(".v-printc");
         if (_node == null) {
           _defer(); //later
           return false;

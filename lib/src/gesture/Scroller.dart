@@ -65,7 +65,7 @@ class Scroller {
       _onMove(state.transition - _state.startPosition, state.time);
       
     }, end: (DragGestureState state) {
-      final Point pos = DomUtil.position(owner);
+//      final Point pos = DomUtil.position(owner);
       final Rectangle range = _state.dragRange;
       // always go through this motion
       _bim = new _BoundedInertialMotion(owner, state.velocity, range, 

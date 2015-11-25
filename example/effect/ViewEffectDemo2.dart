@@ -1,7 +1,4 @@
 import 'dart:html';
-import 'dart:math';
-
-import "package:rikulo_commons/util.dart";
 
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/event.dart';
@@ -56,7 +53,7 @@ View radio(SlideDirection dir) {
 }
 
 void main() {
-  final Element body = query("#v-main-view");
+  final Element body = querySelector("#v-main-view");
   
   final View mainView = new View()..addToDocument(ref: body);
   View container = new View()..width = 240..height = 240;

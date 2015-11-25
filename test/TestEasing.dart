@@ -5,8 +5,6 @@ import 'dart:math';
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/event.dart';
 import 'package:rikulo_ui/effect.dart';
-import 'package:rikulo_commons/util.dart';
-import "package:rikulo_commons/html.dart";
 
 View createCube(int size, String txt) {
   View v = new View();
@@ -31,11 +29,11 @@ View createCube(int size, String txt) {
   return v;
 }
 
-MotionAction _action(Element elem, Point center) => 
+/*MotionAction _action(Element elem, Point center) =>
   (num x, MotionState state) {
     elem.style.left = CssUtil.px(center.x + 50 * sin(x * 2 * PI));
     elem.style.top  = CssUtil.px(center.y - 50 * cos(x * 2 * PI));
-  };
+  };*/
 
 
 void blue(View v) {
@@ -53,7 +51,7 @@ void main() {
   
   List<Point> centers = 
       [new Point(100, 100), new Point(400, 100), new Point(100, 400)];
-  List<int> repeats = [1, 3, -1];
+//  List<int> repeats = [1, 3, -1];
   
   List<View> cubes = [];
   for (int i = 0; i < 3; i++) {
@@ -65,7 +63,7 @@ void main() {
   }
   
   List<EasingMotion> motions = [null, null, null];
-  List<Button> stops = [];
+//  List<Button> stops = [];
   
   for (int i = 0; i < 3; i++) {
     Button b = new Button("Stop $i");
@@ -83,11 +81,13 @@ void main() {
   for (int i = 0; i < 3; i++) {
     cubes[i].on.click.listen((ViewEvent event) {
         return;
+/*
       green(cubes[i]);
-      motions[i] = new EasingMotion(_action(cubes[i].node, centers[i]), 
+      motions[i] = new EasingMotion(_action(cubes[i].node, centers[i]),
           end: (MotionState state) {
             blue(cubes[i]);
           }, period: 1000, repeat: repeats[i])..run();
+*/
     });
   }
 }

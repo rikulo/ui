@@ -1,6 +1,5 @@
 //Sample Code: Layout Demostration
 
-import 'dart:html';
 import 'package:rikulo_ui/view.dart';
 
 void addLocations(View anchor, View parent, String prefix) {

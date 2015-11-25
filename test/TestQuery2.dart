@@ -1,10 +1,6 @@
 //Sample Code: Test Query
 
-import 'dart:html';
-
 import 'package:rikulo_ui/view.dart';
-import 'package:rikulo_ui/view/select.dart';
-import 'package:rikulo_commons/util.dart';
 
 void assertQueryCount(View v, String selector, int count) {
   int c = countQuery(v, selector);
@@ -25,10 +21,7 @@ View apply(View v, {String id, List<String> cls}) {
 }
 
 int countQuery(View v, String selector) {
-  int s = 0;
-  for (View q in v.queryAll(selector))
-    s++;
-  return s;
+  return v.queryAll(selector).length;
 }
 
 View mainView;

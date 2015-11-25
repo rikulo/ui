@@ -2,7 +2,6 @@
 
 import 'package:rikulo_ui/view.dart';
 import 'package:rikulo_ui/effect.dart';
-import 'package:rikulo_commons/util.dart';
 
 View block(String text) {
   final View v = new TextView(text);

@@ -91,6 +91,7 @@ class ViewImpl {
       case 2: return view.width;
       case 3: return view.height;
     }
+    return null;
   }
   static String _sbaAttr(int type) => 'rk.layout.$type';
 }
@@ -140,7 +141,7 @@ class ViewConfig {
   ViewConfig() {
     final int appid = ViewUtil.appId;
     if (appid > 0)
-      uuidPrefix = "${StringUtil.encodeId(appid, 'v')}_";
+      uuidPrefix = "${encodeId(appid, 'v')}_";
   }
 }
 final ViewConfig viewConfig = new ViewConfig();
